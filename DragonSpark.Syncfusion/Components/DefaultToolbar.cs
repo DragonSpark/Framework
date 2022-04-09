@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Compose;
 using System.Collections.Generic;
 
-namespace DragonSpark.Syncfusion.Components;
+namespace DragonSpark.SyncfusionRendering.Components;
 
 public sealed class DefaultToolbar : List<string>
 {

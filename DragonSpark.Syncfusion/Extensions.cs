@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Application.Compose;
 using DragonSpark.Compose;
 
-namespace DragonSpark.Syncfusion;
+namespace DragonSpark.SyncfusionRendering;
 
 public static class Extensions
 {

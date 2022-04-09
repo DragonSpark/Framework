@@ -3,7 +3,7 @@ using DragonSpark.Compose;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Syncfusion.Queries;
+namespace DragonSpark.SyncfusionRendering.Queries;
 
 sealed class Body<T> : IBody<T>
 {

@@ -1,21 +1,19 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Operations;
-using DragonSpark.Presentation;
+﻿using DragonSpark.Model.Operations;
 using DragonSpark.Presentation.Components.Content.Templates;
 using DragonSpark.Presentation.Components.State;
-using DragonSpark.Syncfusion.Queries;
+using DragonSpark.SyncfusionRendering.Queries;
 using Microsoft.AspNetCore.Components;
 using Syncfusion.Blazor;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Syncfusion.Components;
+namespace DragonSpark.SyncfusionRendering.Components;
 
-public class DataQueryComponent : DragonSpark.Presentation.Components.ComponentBase
+public abstract class DataQueryComponent : DragonSpark.Presentation.Components.ComponentBase
 {
 	[Parameter]
-	public virtual IDataRequest Content
+	public IDataRequest Content
 	{
 		get => _content;
 		set
@@ -24,9 +22,12 @@ public class DataQueryComponent : DragonSpark.Presentation.Components.ComponentB
 			{
 				_content = value;
 				Input = null;
+				OnContentChanged();
 			}
 		}
 	}	IDataRequest _content = default!;
+
+	protected virtual void OnContentChanged(){}
 
 	[Parameter]
 	public Type? ReportedType { get; set; }
@@ -56,18 +57,18 @@ public class DataQueryComponent : DragonSpark.Presentation.Components.ComponentB
 	public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
 
 	[CascadingParameter]
-	IActivityReceiver Receiver { get; set; } = default!;
+	protected IActivityReceiver Receiver { get; set; } = default!;
 
 	Await<DataManagerRequest, object>? Input { get; set; }
 
 	protected override void OnParametersSet()
 	{
-		Input ??= _content.Then()
-		                  .Then()
-		                  .UpdateActivity(Receiver)
-		                  .Handle(Exceptions, ReportedType ?? GetType(), EmptyDataResult.Default);
+		Input ??= CreateInput();
 		base.OnParametersSet();
 	}
+
+	protected abstract Await<DataManagerRequest, object> CreateInput();
+	
 
 	protected async Task OnRequest(DataRequestResult parameter)
 	{

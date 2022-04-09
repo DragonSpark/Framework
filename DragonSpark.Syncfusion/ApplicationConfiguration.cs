@@ -3,7 +3,7 @@ using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Syncfusion;
+namespace DragonSpark.SyncfusionRendering;
 
 sealed class ApplicationConfiguration : ICommand<IApplicationBuilder>
 {

@@ -4,8 +4,8 @@
 @using DragonSpark.Presentation
 @using DragonSpark.Presentation.Components.Content.Templates
 @using DragonSpark.Presentation.Components.State
-@using DragonSpark.Syncfusion.Queries
-@using global::Syncfusion.Blazor
+@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Grids
 @using Microsoft.AspNetCore.Components
 
 @typeparam T
@@ -21,15 +21,15 @@ else
 	        AllowFiltering="@AllowFiltering"
 	        AllowPaging="@AllowPaging"
 	        AllowSorting="@AllowSorting"
-	        Clipping="@ClipMode.EllipsisWithTooltip"
+	        ClipMode="@ClipMode.EllipsisWithTooltip"
 	        Toolbar="@(Matches ? null : DefaultToolbar.Default)"
 	        EnableAdaptiveUI="@(!Matches)"
-	        RowDirection="@(Matches ? RowDirection.Horizontal :  RowDirection.Vertical)"
+	        RowRenderingMode="@(Matches ? RowDirection.Horizontal :  RowDirection.Vertical)"
 			DataSource="@DataSource"
 	        class="@Class"
 	        @attributes="@AdditionalAttributes">
 		<GridPageSettings PageSize="@PageSize" />
-		<GridFilterSettings FilterType="@FilterType" />
+		<GridFilterSettings Type="@FilterType" />
 		<GridColumns ChildContent="@Columns" />
 		@if (ChildContent is not null)
 		{

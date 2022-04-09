@@ -2,7 +2,7 @@
 using Syncfusion.Blazor;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Syncfusion.Queries;
+namespace DragonSpark.SyncfusionRendering.Queries;
 
 sealed class Sort<T> : IQuery<T>
 {

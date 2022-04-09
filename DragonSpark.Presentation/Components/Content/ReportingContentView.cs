@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Application.Runtime.Operations;
+using DragonSpark.Presentation.Components.Content.Templates;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Threading.Tasks;
@@ -35,6 +36,12 @@ partial class ReportingContentView<TIn, TOut> where TIn : class
 
 	[Parameter]
 	public IReporter<TIn, TOut> Reporter { get; set; } = default!;
+	
+	[Parameter]
+	public RenderFragment? SubsequentLoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
+
+	RenderFragment? DetermineLoadingTemplate()
+		=> Loaded ? null : Current is null ? LoadingTemplate : SubsequentLoadingTemplate;
 
 	TOut? Subject { get; set; }
 

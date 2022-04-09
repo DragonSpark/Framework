@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model.Results;
 using Syncfusion.Blazor;
 
-namespace DragonSpark.Syncfusion.Queries;
+namespace DragonSpark.SyncfusionRendering.Queries;
 
 public sealed class DataRequestResult : Variable<object>
 {

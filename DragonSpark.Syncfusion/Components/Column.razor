@@ -1,6 +1,7 @@
 ﻿@typeparam T
+@using Syncfusion.Blazor.Grids
 
-<GridColumnDefinition
+<GridColumn
 	AutoFit="@AutoFit"
 	AllowFiltering="@AllowFiltering"
 	AllowSorting="@AllowSorting"
@@ -9,7 +10,7 @@
 	Field="@Field"
 	Width="@Width"
 	Template="@ActualTemplate"
-	Clipping="@ClipMode"
+    ClipMode="@ClipMode"
 />
 
 @code {

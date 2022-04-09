@@ -2,7 +2,7 @@
 using DragonSpark.Model.Selection;
 using Syncfusion.Blazor;
 
-namespace DragonSpark.Syncfusion.Queries;
+namespace DragonSpark.SyncfusionRendering.Queries;
 
 sealed class SelectQueryInput : ISelect<DataManagerRequest, SyncfusionQueryInput>
 {

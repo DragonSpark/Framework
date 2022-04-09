@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+	<TargetFramework>net6.0</TargetFramework>
+	<LangVersion>preview</LangVersion>
+	<Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Components\ClipMode.cs" />
+    <Compile Remove="Components\ComboBoxTemplates.cs" />
+    <Compile Remove="Components\FilterType.cs" />
+    <Compile Remove="Components\GridColumnDefinition.cs" />
+    <Compile Remove="Components\GridColumns.cs" />
+    <Compile Remove="Components\GridFilterSettings.cs" />
+    <Compile Remove="Components\GridPageSettings.cs" />
+    <Compile Remove="Components\GridTemplates.cs" />
+    <Compile Remove="Components\RowDirection.cs" />
+    <Compile Remove="Components\SfComboBox.cs" />
+    <Compile Remove="Components\SfDataManager.cs" />
+    <Compile Remove="Components\SfGrid.cs" />
+  </ItemGroup>
+  <ItemGroup>
+	<FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+  <ItemGroup>
+	<PackageReference Include="Syncfusion.Blazor" Version="19.4.0.56" />
+  </ItemGroup>
+  <ItemGroup>
+	<ProjectReference Include="..\DragonSpark.Presentation\DragonSpark.Presentation.csproj" />
+  </ItemGroup>
+</Project>

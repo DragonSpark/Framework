@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model.Commands;
 using Syncfusion.Licensing;
 
-namespace DragonSpark.Syncfusion;
+namespace DragonSpark.SyncfusionRendering;
 
 sealed class RegisterLicense : Command<string>
 {

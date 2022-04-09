@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Syncfusion;
+﻿namespace DragonSpark.SyncfusionRendering;
 
 public sealed class SyncfusionConfiguration
 {

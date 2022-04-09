@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Application.Compose;
 using DragonSpark.Model.Selection.Alterations;
 
-namespace DragonSpark.Syncfusion;
+namespace DragonSpark.SyncfusionRendering;
 
 sealed class Configure : IAlteration<ApplicationProfileContext>
 {

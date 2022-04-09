@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model.Results;
 using Syncfusion.Blazor.Data;
 
-namespace DragonSpark.Syncfusion.Queries;
+namespace DragonSpark.SyncfusionRendering.Queries;
 
 public sealed class EmptyDataResult : Instance<DataResult>
 {

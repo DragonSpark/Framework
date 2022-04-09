@@ -1,7 +1,7 @@
 ﻿using Syncfusion.Blazor;
 using System.Linq;
 
-namespace DragonSpark.Syncfusion.Queries;
+namespace DragonSpark.SyncfusionRendering.Queries;
 
 public readonly struct Parameter<T>
 {

@@ -4,8 +4,9 @@
 @using DragonSpark.Presentation
 @using DragonSpark.Presentation.Components.Content.Templates
 @using DragonSpark.Presentation.Components.State
-@using DragonSpark.Syncfusion.Queries
-@using global::Syncfusion.Blazor
+@using DragonSpark.SyncfusionRendering.Queries
+@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Grids
 
 @typeparam T
 @inherits DataQueryComponent
@@ -22,10 +23,10 @@
 	PageSize="@PageSize"
 	LoadingTemplate="@LoadingTemplate"
 	@attributes="@AdditionalAttributes">
-	<GridTemplates LoadingTemplate="@LoadingTemplate" />
-	<SfDataManager>
+	<GridTemplates EmptyRecordTemplate="@LoadingTemplate.Accept" />
+	<Syncfusion.Blazor.Data.SfDataManager Adaptor="Adaptors.CustomAdaptor">
 		<DataRequestCallbackAdaptor Requested="@OnRequest" />
-	</SfDataManager>
+	</Syncfusion.Blazor.Data.SfDataManager>
 	@if (ChildContent is not null)
 	{
 		@ChildContent
@@ -35,17 +36,12 @@
 @code {
 	AdaptiveGrid<T> _subject = default!;
 
-	[Parameter]
-	public override IDataRequest Content
-	{
-		set
-		{
-			RefreshRequested = Input != null;
-			base.Content = value;
-		}
-	}	
+    protected override void OnContentChanged()
+    {
+        RefreshRequested = Input != null;
+    }
 
-	[Parameter]
+    [Parameter]
 	public FilterType FilterType { get; set; } = FilterType.Excel;
 
 	[Parameter]
@@ -69,4 +65,11 @@
 		}
 		return base.OnParametersSetAsync();
 	}
+
+    protected override Await<DataManagerRequest, object> CreateInput()
+    {
+        return Content.Then().Then().UpdateActivity(Receiver)
+                      .Handle(Exceptions, ReportedType ?? GetType(), EmptyDataResult.Default);
+    }
+
 }

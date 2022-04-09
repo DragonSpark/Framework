@@ -2,6 +2,7 @@
 @using DragonSpark.Application.Runtime.Operations
 @using DragonSpark.Presentation.Components.Content
 @using DragonSpark.Presentation.Components.Content.Sequences
+@using DragonSpark.Presentation.Components.Content.Templates
 @typeparam T
 
 @inherits DragonSpark.Presentation.Components.Content.Templates.ManyActiveContentTemplateComponentBase<IDataRequest>
@@ -12,6 +13,7 @@
 	Content="@Subject"
 	Reporter="@Reporter"
 	LoadingTemplate="@LoadingTemplate"
+	SubsequentLoadingTemplate="@SubsequentLoadingTemplate"
 	ExceptionTemplate="@ExceptionTemplate"
 	NotFoundTemplate="@NotFoundTemplate"
 >
@@ -38,6 +40,9 @@
 
 	[Parameter]
 	public IReporter<IDataRequest> Reporter { get; set; } = Queries.Reporter.Default;
+
+    [Parameter]
+    public RenderFragment? SubsequentLoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
 
 	IDataRequest? Subject { get; set; }
 

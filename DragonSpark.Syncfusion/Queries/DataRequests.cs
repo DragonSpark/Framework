@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Application.Entities.Queries.Runtime.Shape;
 using DragonSpark.Model.Selection.Stores;
 
-namespace DragonSpark.Syncfusion.Queries;
+namespace DragonSpark.SyncfusionRendering.Queries;
 
 public sealed class DataRequests<T> : ReferenceValueStore<IPaging<T>, IDataRequest>, IDataRequests<T>
 {

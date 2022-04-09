@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Application.Entities.Queries.Runtime.Shape;
 
-namespace DragonSpark.Syncfusion.Queries;
+namespace DragonSpark.SyncfusionRendering.Queries;
 
 public sealed class SyncfusionCompose<T> : Compose<T>
 {

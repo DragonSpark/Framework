@@ -3,7 +3,6 @@ using DragonSpark.Application.Entities.Queries.Runtime;
 using DragonSpark.Application.Entities.Queries.Runtime.Shape;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
-using DragonSpark.Presentation.Components.Content.Rendering;
 using Microsoft.AspNetCore.Components;
 using System;
 
@@ -46,24 +45,14 @@ partial class QueryContentContainer<T>
 
 	protected override void OnInitialized()
 	{
-		var key       = Identification.Get(this);
-		var formatter = new QueryInputKey(key);
-		var pagers    = new PreRenderAwarePagers<T>(Builder, formatter);
-		var any       = Any.Get(key);
-		Paging = new Pagings<T>(pagers, any);
+		Paging = Pagings.Get(this);
 		base.OnInitialized();
 	}
 
 	Pagings<T> Paging { get; set; } = default!;
 
 	[Inject]
-	IRenderContentKey Identification { get; set; } = default!;
-
-	[Inject]
-	PreRenderingAwarePagerBuilder<T> Builder { get; set; } = default!;
-
-	[Inject]
-	PreRenderingAwareAnyBuilder<T> Any { get; set; } = default!;
+	IdentifiedPagings<T> Pagings { get; set; } = default!;
 
 	protected override void OnParametersSet()
 	{

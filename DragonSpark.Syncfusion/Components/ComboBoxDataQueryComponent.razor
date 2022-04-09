@@ -1,13 +1,20 @@
-﻿@inherits DataQueryComponent
+﻿@using DragonSpark.Compose
+@using DragonSpark.Model.Operations
+@using DragonSpark.Presentation
+@using Syncfusion.Blazor.DropDowns
+@using Syncfusion.Blazor.Data
 
-@using DragonSpark.Syncfusion.Queries
+@using DragonSpark.SyncfusionRendering.Queries
+@using Syncfusion.Blazor
+
+@inherits DataQueryComponent
 
 @typeparam TItem
 @typeparam TValue
 
-<SfComboBox TValue="string" TItem="TItem" TValue="TValue" CssClass="CssClass" Placeholder="@Placeholder">
+<SfComboBox TItem="TItem" TValue="TValue" Value="@Value" Placeholder="@Placeholder" AllowFiltering="@AllowFiltering" CssClass="@CssClass">
     <ComboBoxTemplates TItem="TItem" HeaderTemplate="@HeaderTemplate" ItemTemplate="@ItemTemplate" />
-    <SfDataManager>
+    <SfDataManager Adaptor="Adaptors.CustomAdaptor">
         <DataRequestCallbackAdaptor Requested="@OnRequest" />
     </SfDataManager>
     @if (ChildContent is not null)
@@ -17,6 +24,8 @@
 </SfComboBox>
 
 @code {
+    [Parameter]
+    public TValue? Value { get; set; }
 
     [Parameter]
     public string Placeholder { get; set; } = default!;
@@ -27,6 +36,11 @@
     [Parameter]
     public RenderFragment<TItem> ItemTemplate { get; set; } = default!;
 
-    
+    protected override Await<DataManagerRequest, object> CreateInput()
+    {
+        return Content.Then()
+                      .Then()
+                      .Handle(Exceptions, ReportedType ?? GetType(), EmptyDataResult.Default);
+    }
 
 }

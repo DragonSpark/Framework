@@ -10,10 +10,10 @@
 }
 else
 {
-	var initializing = Current is null || !Loaded;
-	if (initializing)
+	var loading = DetermineLoadingTemplate();
+	if (loading is not null)
 	{
-		@LoadingTemplate
+		@loading
 	}
 
 	<ContentView ChildContent="@ChildContent" Content="@Subject" NotFoundTemplate="@NotFoundTemplate" />
@@ -21,56 +21,5 @@ else
 
 @code
 {
-	/*Action _call = default!;
-	Action<Task> _report = default!;
-
-	protected override ValueTask Initialize()
-	{
-		_call = Update;
-		_report = Report;
-		return base.Initialize();
-	}
-
-	[Parameter]
-	public TIn? Content
-	{
-		get => _content;
-		set
-		{
-			if (_content != value)
-			{
-				_content = value;
-				Loaded = false;
-				Current = null;
-				Subject = default;
-			}
-		}
-	}	TIn? _content;
-
-	[Parameter]
-	public IReporter<TIn, TOut> Reporter { get; set; } = default!;
-
-	TOut? Subject { get; set; }
-
-	Worker? Current { get; set; }
-
-	bool Loaded { get; set; }
-
-	protected override void OnParametersSet()
-	{
-		Subject ??= Content != null ? Reporter.Get(new(Content, _report)) : default;
-	}
-
-	protected override Task OnParametersSetAsync() => Current?.AsTask() ?? base.OnParametersSetAsync();
-
-	void Report(Task parameter)
-	{
-		Current = Workers.Default.Get(new (parameter, _call));
-	}
-
-	void Update()
-	{
-		Loaded = Current is { Status.IsCompletedSuccessfully: true };
-		StateHasChanged();
-	}*/
+	
 }

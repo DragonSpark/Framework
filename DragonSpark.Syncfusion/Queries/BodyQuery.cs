@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Model.Operations;
 
-namespace DragonSpark.Syncfusion.Queries;
+namespace DragonSpark.SyncfusionRendering.Queries;
 
 sealed class BodyQuery<T> : Alterings<Parameter<T>>, IQuery<T>
 {

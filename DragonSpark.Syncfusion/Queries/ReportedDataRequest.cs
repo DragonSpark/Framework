@@ -3,7 +3,7 @@ using Syncfusion.Blazor;
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Syncfusion.Queries;
+namespace DragonSpark.SyncfusionRendering.Queries;
 
 sealed class ReportedDataRequest : Reporting<DataManagerRequest, object>, IDataRequest
 {

@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model.Commands;
 using System;
 
-namespace DragonSpark.Syncfusion;
+namespace DragonSpark.SyncfusionRendering;
 
 sealed class Initializer : FixedParameterCommand<string>
 {

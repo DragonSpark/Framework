@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Model.Operations;
 
-namespace DragonSpark.Syncfusion.Queries;
+namespace DragonSpark.SyncfusionRendering.Queries;
 
 public interface IQuery<T> : IAltering<Parameter<T>> {}

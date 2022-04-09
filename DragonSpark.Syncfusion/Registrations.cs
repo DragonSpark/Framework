@@ -3,7 +3,7 @@ using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 using Syncfusion.Blazor;
 
-namespace DragonSpark.Syncfusion;
+namespace DragonSpark.SyncfusionRendering;
 
 sealed class Registrations : ICommand<IServiceCollection>
 {

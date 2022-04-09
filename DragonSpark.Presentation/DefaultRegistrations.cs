@@ -55,12 +55,8 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Include(x => x.Dependencies.Recursive())
 		         .Scoped()
 		         //
-		         .Then.ForDefinition<PreRenderingAwarePagerBuilder<object>>()
-		         .Include(x => x.Dependencies)
-		         .Scoped()
-		         //
-		         .Then.ForDefinition<PreRenderingAwareAnyBuilder<object>>()
-		         .Include(x => x.Dependencies)
+		         .Then.ForDefinition<IdentifiedPagings<object>>()
+		         .Include(x => x.Dependencies.Recursive())
 		         .Scoped()
 		         //
 		         .Then.Start<ContentIdentification>()

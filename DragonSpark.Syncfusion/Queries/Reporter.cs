@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Application.Runtime.Operations;
 
-namespace DragonSpark.Syncfusion.Queries;
+namespace DragonSpark.SyncfusionRendering.Queries;
 
 public sealed class Reporter : IReporter<IDataRequest>
 {

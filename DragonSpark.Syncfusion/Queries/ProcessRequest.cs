@@ -5,7 +5,7 @@ using Syncfusion.Blazor;
 using Syncfusion.Blazor.Data;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Syncfusion.Queries;
+namespace DragonSpark.SyncfusionRendering.Queries;
 
 sealed class ProcessRequest<T> : IDataRequest
 {

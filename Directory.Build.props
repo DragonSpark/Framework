@@ -1,7 +1,7 @@
 ﻿<Project>
   <PropertyGroup>
     <RunAnalyzersDuringLiveAnalysis>false</RunAnalyzersDuringLiveAnalysis>
-	<EnableNETAnalyzers>true</EnableNETAnalyzers>
+	<EnableNETAnalyzers>false</EnableNETAnalyzers>
 	<DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>	
 	 <GitVersionBaseDirectory>$(MSBuildThisFileDirectory)</GitVersionBaseDirectory>
 	 <Company>DragonSpark Technologies Incorporated</Company>
