@@ -6,14 +6,17 @@
 
 @using DragonSpark.SyncfusionRendering.Queries
 @using Syncfusion.Blazor
+@using FilterType = Syncfusion.Blazor.DropDowns.FilterType
 
 @inherits DataQueryComponent
 
 @typeparam TItem
 @typeparam TValue
 
-<SfComboBox TItem="TItem" TValue="TValue" Value="@Value" Placeholder="@Placeholder" AllowFiltering="@AllowFiltering" CssClass="@CssClass">
-    <ComboBoxTemplates TItem="TItem" HeaderTemplate="@HeaderTemplate" ItemTemplate="@ItemTemplate" />
+<SfComboBox TItem="TItem" TValue="TValue" Value="@Value" Placeholder="@Placeholder" AllowFiltering="@AllowFiltering" 
+    CssClass="@CssClass"
+    FilterType="FilterType.Contains" >
+    <ComboBoxTemplates TItem="TItem" HeaderTemplate="@HeaderTemplate" ItemTemplate="@ItemTemplate"  />
     <SfDataManager Adaptor="Adaptors.CustomAdaptor">
         <DataRequestCallbackAdaptor Requested="@OnRequest" />
     </SfDataManager>
@@ -37,10 +40,8 @@
     public RenderFragment<TItem> ItemTemplate { get; set; } = default!;
 
     protected override Await<DataManagerRequest, object> CreateInput()
-    {
-        return Content.Then()
-                      .Then()
-                      .Handle(Exceptions, ReportedType ?? GetType(), EmptyDataResult.Default);
-    }
+        => Content.Then()
+                  .Then()
+                  .Handle(Exceptions, ReportedType ?? GetType(), EmptyDataResult.Default);
 
 }
