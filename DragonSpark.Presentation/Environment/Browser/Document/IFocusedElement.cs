@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model.Operations;
 using System;
 
-namespace DragonSpark.Presentation.Environment.Browser;
+namespace DragonSpark.Presentation.Environment.Browser.Document;
 
 public interface IFocusedElement : IAsyncDisposable
 {

@@ -1,0 +1,66 @@
+﻿@using DragonSpark.Presentation.Environment.Browser
+@using DragonSpark.Compose
+@using DragonSpark.Presentation.Environment.Browser.Document
+
+@implements IAsyncDisposable
+
+@inject DialogService Model
+@inject CreateDocumentElementHandle Create
+
+@code {
+
+    [Parameter]
+    public string ClassName { get; set; } = default!;
+
+    Func<Task> _apply  = null!;
+
+    string? Current { get; set; }
+
+    byte Count { get; set; }
+
+    protected override void OnInitialized()
+    {
+        _apply = Apply;
+
+        Model.OnOpen += ModelOnOpen;
+        Model.OnClose += ModelOnClose;
+        base.OnInitialized();
+    }
+
+    DocumentElement? _element;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _element = await Create.Await();
+            await Apply().ConfigureAwait(false);
+        }
+    }
+
+    Task Apply() => (Current != null && Count == 1 ? _element?.AddClass(Current).AsTask() : null) ?? Task.CompletedTask;
+
+    // ReSharper disable once TooManyArguments
+    void ModelOnOpen(string arg1, Type arg2, Dictionary<string, object> arg3, DialogOptions arg4)
+    {
+        switch (Count++)
+        {
+            case 0:
+                Current = ClassName;
+                InvokeAsync(_apply);
+                break;
+        }
+    }
+
+    void ModelOnClose(object obj)
+    {
+        switch (--Count)
+        {
+            case 0:
+                InvokeAsync(() => _element?.RemoveClass(ClassName).AsTask() ?? Task.CompletedTask);
+                break;
+        }
+    }
+
+    public ValueTask DisposeAsync() => _element?.DisposeAsync() ?? ValueTask.CompletedTask;
+}

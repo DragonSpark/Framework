@@ -36,6 +36,11 @@ public class OperationResultSelector<T> : ResultContext<ValueTask<T>>
 	public OperationResultSelector<T> Watching(Func<CancellationToken> token)
 		=> new(new TokenAwareOperationResult<T>(Get(), token));
 
+	public OperationResultSelector<TTo> Select<TTo>(ISelecting<T, TTo> select) => Select(select.Get);
+
+	public OperationResultSelector<TTo> Select<TTo>(Func<T, ValueTask<TTo>> select)
+		=> new(new SelectResulting<T, TTo>(Get().Out(), select));
+
 	public OperationResultSelector<TTo> Select<TTo>(Func<T, TTo> select)
 		=> new(new OperationResulting<T, TTo>(Get().Get, select));
 

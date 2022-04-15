@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
+using DragonSpark.Presentation.Environment.Browser.Document;
 using Microsoft.JSInterop;
 using System.Threading.Tasks;
 

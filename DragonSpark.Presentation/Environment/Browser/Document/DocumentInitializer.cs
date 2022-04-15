@@ -4,7 +4,7 @@ using Radzen;
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Presentation.Environment.Browser;
+namespace DragonSpark.Presentation.Environment.Browser.Document;
 
 public class DocumentInitializer : RadzenComponent
 {

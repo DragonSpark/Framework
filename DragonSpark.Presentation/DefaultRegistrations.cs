@@ -14,7 +14,7 @@ using DragonSpark.Presentation.Components.Navigation;
 using DragonSpark.Presentation.Components.Routing;
 using DragonSpark.Presentation.Connections.Initialization;
 using DragonSpark.Presentation.Environment;
-using DragonSpark.Presentation.Environment.Browser;
+using DragonSpark.Presentation.Environment.Browser.Document;
 using DragonSpark.Presentation.Security.Identity;
 using Majorsoft.Blazor.Components.Common.JsInterop;
 using Microsoft.Extensions.DependencyInjection;
