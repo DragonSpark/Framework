@@ -19,8 +19,7 @@ sealed class ApplyScopedInjections : ICommand<ScopedInjection>
 
 	readonly ISelect<Type, Array<PropertyInfo>> _properties;
 
-	public ApplyScopedInjections(ISelect<Type, Array<PropertyInfo>> properties,
-	                             IPropertyAssignmentDelegate @delegate)
+	public ApplyScopedInjections(ISelect<Type, Array<PropertyInfo>> properties, IPropertyAssignmentDelegate @delegate)
 	{
 		_properties = properties;
 		_delegate   = @delegate;
