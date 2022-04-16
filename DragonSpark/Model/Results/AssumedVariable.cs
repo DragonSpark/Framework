@@ -1,10 +1,10 @@
 ﻿namespace DragonSpark.Model.Results;
 
-public class DeferredVariable<T> : IMutable<T?>
+public class AssumedVariable<T> : IMutable<T?>
 {
 	readonly IResult<IMutable<T?>> _source;
 
-	protected DeferredVariable(IResult<IMutable<T?>> source) => _source = source;
+	protected AssumedVariable(IResult<IMutable<T?>> source) => _source = source;
 
 	public T? Get() => _source.Get().Get();
 

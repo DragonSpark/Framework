@@ -1,10 +1,10 @@
 ﻿namespace DragonSpark.Model.Results;
 
-public class AssumeVariable<T> : IMutable<T?>
+public class AssumedVariableStore<T> : IMutable<T?>
 {
 	readonly IMutable<IMutable<T?>?> _variable;
 
-	protected AssumeVariable(IMutable<IMutable<T?>?> variable) => _variable = variable;
+	protected AssumedVariableStore(IMutable<IMutable<T?>?> variable) => _variable = variable;
 
 	public void Execute(T? parameter)
 	{
