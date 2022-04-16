@@ -125,7 +125,7 @@ partial class Extensions
 	public static Assignment<T> Assigned<T>(this IMutable<T?> @this, T value)
 	{
 		@this.Pass(value);
-		return new (@this);
+		return new(@this);
 	}
 
 	public static bool TryPop<T>(this IMutable<T?> @this, out T? element)
@@ -133,5 +133,16 @@ partial class Extensions
 		element = @this.Get();
 		@this.Execute(default);
 		return element is not null;
+	}
+
+	public static bool IfPop<T>(this IMutable<T?> @this, T @if)
+	{
+		var stored = @this.Get();
+		var result = EqualityComparer<T?>.Default.Equals(@if, stored);
+		if (result)
+		{
+			@this.Execute(default);
+		}
+		return result;
 	}
 }
