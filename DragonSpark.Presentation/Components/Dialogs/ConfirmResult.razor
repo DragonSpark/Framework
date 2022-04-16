@@ -1,8 +1,8 @@
 ﻿@using DragonSpark.Compose
 
-<Confirm PrimaryClass="@PrimaryClass" SecondaryClass="@SecondaryClass" Confirmation="@Confirmation"
-         ChildContent="@ChildContent" PrimaryText="@PrimaryText" SecondaryText="@SecondaryText"
-         Accept="() => Result = DialogResult.Ok" Cancel="() => Result = DialogResult.Cancel" />
+<Confirm PrimaryClass="@PrimaryClass" SecondaryClass="@SecondaryClass" ContentClass="@ContentClass"
+         Confirmation="@Confirmation" ChildContent="@ChildContent" PrimaryText="@PrimaryText" SecondaryText="@SecondaryText"
+         Accept="() => Result = DialogResult.Ok" Cancel="() => Result = DialogResult.Cancel"/>
 
 @code {
     [Parameter]
@@ -16,6 +16,9 @@
 
     [Parameter]
     public string SecondaryText { get; set; } = "Cancel";
+
+    [Parameter]
+    public string ContentClass { get; set; } = "ds-dialog-content card-body";
 
     [Parameter]
     public Func<ValueTask<bool>> Confirmation { get; set; } = () => true.ToOperation();

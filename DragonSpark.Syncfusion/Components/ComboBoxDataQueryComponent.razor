@@ -13,8 +13,8 @@
 @typeparam TItem
 @typeparam TValue
 
-<SfComboBox TItem="TItem" TValue="TValue" Value="@Value" Placeholder="@Placeholder" AllowFiltering="@AllowFiltering" 
-    CssClass="@CssClass"
+<SfComboBox TItem="TItem" TValue="TValue" Value="@Value" Placeholder="@Placeholder" AllowFiltering="@AllowFiltering"
+    CssClass="@CssClass" ShowClearButton="true"
     FilterType="FilterType.Contains" >
     <ComboBoxTemplates TItem="TItem" HeaderTemplate="@HeaderTemplate" ItemTemplate="@ItemTemplate"  />
     <SfDataManager Adaptor="Adaptors.CustomAdaptor">
@@ -38,6 +38,15 @@
 
     [Parameter]
     public RenderFragment<TItem> ItemTemplate { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback<DataRequestResult> Requested { get; set; }
+
+    protected override async Task OnRequest(DataRequestResult parameter)
+    {
+        await base.OnRequest(parameter);
+        await Requested.InvokeAsync(parameter).ConfigureAwait(false);
+    }
 
     protected override Await<DataManagerRequest, object> CreateInput()
         => Content.Then()

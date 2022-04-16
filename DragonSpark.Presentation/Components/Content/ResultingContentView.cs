@@ -70,6 +70,7 @@ partial class ResultingContentView<T>
 		Loaded = loaded;
 		if (update)
 		{
+			// ReSharper disable once AsyncApostle.AsyncWait
 			var result  = Subject.Value().Status.Result;
 			var refresh = Fragment is not null;
 			Fragment = result is not null ? ChildContent(result) : NotFoundTemplate;

@@ -10,7 +10,8 @@ sealed class ContentIdentification : IFormatter<object>
 	readonly CurrentPath                _path;
 	readonly IResult<ContentIdentifier> _identifiers;
 
-	public ContentIdentification(CurrentPath path) : this(path, ContentIdentifiers.Default.Then().Bind(path).Get()) {}
+	public ContentIdentification(CurrentPath path)
+		: this(path, ContentIdentifiers.Default.Then().Bind((object)path).Get()) {}
 
 	public ContentIdentification(CurrentPath path, IResult<ContentIdentifier> identifiers)
 	{

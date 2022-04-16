@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Application.Runtime.Operations;
-using DragonSpark.Presentation.Components.Content.Templates;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Threading.Tasks;
@@ -26,10 +25,11 @@ partial class ReportingContentView<TIn, TOut> where TIn : class
 		{
 			if (_content != value)
 			{
-				_content = value;
-				Loaded   = false;
-				Current  = null;
-				Subject  = default;
+				_content               = value;
+				Current                = null;
+				Subject                = default;
+				Loaded                 = true;
+				CurrentLoadingTemplate = null;
 			}
 		}
 	}	TIn? _content;
@@ -37,17 +37,13 @@ partial class ReportingContentView<TIn, TOut> where TIn : class
 	[Parameter]
 	public IReporter<TIn, TOut> Reporter { get; set; } = default!;
 	
-	[Parameter]
-	public RenderFragment? SubsequentLoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
+	bool Loaded { get; set; } = true;
 
-	RenderFragment? DetermineLoadingTemplate()
-		=> Loaded ? null : Current is null ? LoadingTemplate : SubsequentLoadingTemplate;
+	RenderFragment? CurrentLoadingTemplate { get; set; }
 
 	TOut? Subject { get; set; }
 
 	Worker? Current { get; set; }
-
-	bool Loaded { get; set; }
 
 	protected override void OnParametersSet()
 	{
@@ -58,7 +54,8 @@ partial class ReportingContentView<TIn, TOut> where TIn : class
 
 	void Report(Task parameter)
 	{
-		Current = Workers.Default.Get(new (parameter, _call));
+		CurrentLoadingTemplate = Current == null ? LoadingTemplate : null;
+		Current                = Workers.Default.Get(new (parameter, _call));
 		Update();
 	}
 

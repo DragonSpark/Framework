@@ -10,16 +10,14 @@
 }
 else
 {
-	var loading = DetermineLoadingTemplate();
-	if (loading is not null)
+	if (!Loaded && CurrentLoadingTemplate != null)
 	{
-		@loading
+		@CurrentLoadingTemplate
 	}
-
 	<ContentView ChildContent="@ChildContent" Content="@Subject" NotFoundTemplate="@NotFoundTemplate" />
 }
 
 @code
 {
-	
+
 }

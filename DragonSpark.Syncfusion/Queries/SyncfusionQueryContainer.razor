@@ -24,7 +24,6 @@
 		Reporter="@Reporter"
 		ChildContent="@ChildContent"
 		LoadingTemplate="@LoadingTemplate"
-        SubsequentLoadingTemplate="@SubsequentLoadingTemplate"
 		ExceptionTemplate="@ExceptionTemplate"
 		NotFoundTemplate="@NotFoundTemplate"
 	/>
@@ -42,8 +41,5 @@
 	public IReporter<IDataRequest>? Reporter { get; set; } = Queries.Reporter.Default;
 
     [Parameter]
-    public RenderFragment? SubsequentLoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
-
-	[Parameter]
 	public Type? ReportedType { get; set; }
 }

@@ -13,7 +13,6 @@
 	Content="@Subject"
 	Reporter="@Reporter"
 	LoadingTemplate="@LoadingTemplate"
-	SubsequentLoadingTemplate="@SubsequentLoadingTemplate"
 	ExceptionTemplate="@ExceptionTemplate"
 	NotFoundTemplate="@NotFoundTemplate"
 >
@@ -41,10 +40,7 @@
 	[Parameter]
 	public IReporter<IDataRequest> Reporter { get; set; } = Queries.Reporter.Default;
 
-    [Parameter]
-    public RenderFragment? SubsequentLoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
-
-	IDataRequest? Subject { get; set; }
+    IDataRequest? Subject { get; set; }
 
 	protected override void OnParametersSet()
 	{

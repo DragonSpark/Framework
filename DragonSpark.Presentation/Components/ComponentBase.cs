@@ -20,7 +20,7 @@ public class ComponentBase : Microsoft.AspNetCore.Components.ComponentBase
 	}
 
 	protected ValueTask DefaultRefreshState() => InvokeAsync(StateHasChanged).ToOperation();
-	
+
 	[Inject]
 	protected IExceptions Exceptions { get; [UsedImplicitly]set; } = default!;
 

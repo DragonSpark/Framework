@@ -3,7 +3,7 @@
 @typeparam T
 
 <DialogContext T="T" @ref="_context" Title="@Title" Width="@Width" Context="parameter">
-    <ConfirmResult @ref="_result" PrimaryClass="@PrimaryClass" SecondaryClass="@SecondaryClass" Confirmation="@Confirmation" ChildContent="@ChildContent(parameter)" />
+    <ConfirmResult @ref="_result" PrimaryClass="@PrimaryClass" SecondaryClass="@SecondaryClass" ContentClass="@ContentClass" Confirmation="@Confirmation" ChildContent="@ChildContent(parameter)" />
 </DialogContext>
 
 @code {
@@ -23,6 +23,9 @@
 
     [Parameter]
     public string SecondaryClass { get; set; } = default!;
+
+    [Parameter]
+    public string ContentClass { get; set; } = "ds-dialog-content card-body";
 
     [Parameter]
     public Func<ValueTask<bool>> Confirmation { get; set; } = () => true.ToOperation();

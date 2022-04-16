@@ -68,9 +68,8 @@ public abstract class DataQueryComponent : DragonSpark.Presentation.Components.C
 	}
 
 	protected abstract Await<DataManagerRequest, object> CreateInput();
-	
 
-	protected async Task OnRequest(DataRequestResult parameter)
+	protected virtual async Task OnRequest(DataRequestResult parameter)
 	{
 		var data = await Input!(parameter.Request);
 		parameter.Execute(data);
