@@ -34,5 +34,5 @@ public class Remove<TIn, T> : Modify<TIn, T> where T : class
 
 public class Remove<T> : Modify<T> where T : class
 {
-	public Remove(IEnlistedScopes scopes) : base(scopes, RemoveLocal<T>.Default.Then().Operation()) {}
+	protected Remove(IScopes scopes) : base(scopes, RemoveLocal<T>.Default.Then().Operation()) {}
 }

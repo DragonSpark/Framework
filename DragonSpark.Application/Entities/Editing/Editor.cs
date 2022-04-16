@@ -39,7 +39,15 @@ sealed class Editor : IEditor
 
 	public void Remove(object entity)
 	{
-		_context.Remove(entity);
+		var record = _context.Entry(entity);
+		switch (record.State)
+		{
+			case EntityState.Added:
+			case EntityState.Modified:
+			case EntityState.Unchanged:
+				_context.Remove(entity);
+				break;
+		}
 	}
 
 	public void Clear()
