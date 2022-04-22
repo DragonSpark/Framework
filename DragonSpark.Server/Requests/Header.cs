@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace DragonSpark.Server.Requests;
 
-public class Header : ISelect<IHeaderDictionary, string?>
+public class Header : IHeader
 {
 	readonly string _name;
 
@@ -11,4 +11,10 @@ public class Header : ISelect<IHeaderDictionary, string?>
 
 	public string? Get(IHeaderDictionary parameter)
 		=> parameter.TryGetValue(_name, out var value) ? value.ToString() : null;
+}
+
+// TODO 
+public interface IHeader : ISelect<IHeaderDictionary, string?>
+{
+	
 }

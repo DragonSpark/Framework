@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Model.Commands;
+using DragonSpark.Server.Requests.Warmup;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using System;
@@ -18,7 +19,7 @@ sealed class DefaultApplicationConfiguration : ICommand<IApplicationBuilder>
 
 	public void Execute(IApplicationBuilder parameter)
 	{
-		parameter.UseHttpsRedirection()
+		parameter.UseWarmupAwareHttpsRedirection()
 		         .UseStaticFiles()
 		         .UseRouting()
 		         .UseAuthentication()
