@@ -6,6 +6,9 @@ using System;
 
 namespace DragonSpark.Server.Requests.Warmup;
 
+/// <summary>
+/// ATTRIBUTION: https://haacked.com/archive/2020/09/28/azure-swap-with-warmup-aspnetcore
+/// </summary>
 sealed class WarmupAwareHttpsRedirection : ICommand<IApplicationBuilder>
 {
 	public static WarmupAwareHttpsRedirection Default { get; } = new();
