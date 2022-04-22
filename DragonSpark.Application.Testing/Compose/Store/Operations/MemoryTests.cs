@@ -5,6 +5,7 @@ using FluentAssertions;
 using Microsoft.Extensions.Caching.Memory;
 using System.Threading.Tasks;
 using Xunit;
+// ReSharper disable AsyncApostle.AsyncWait
 
 namespace DragonSpark.Application.Testing.Compose.Store.Operations;
 

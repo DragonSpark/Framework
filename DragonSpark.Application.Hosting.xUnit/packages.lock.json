@@ -24,9 +24,9 @@
       },
       "FluentAssertions": {
         "type": "Direct",
-        "requested": "[6.5.1, )",
-        "resolved": "6.5.1",
-        "contentHash": "hdY/upTFYEc7SFJQ+pKsMZP1J5bELh9feB8kXzk6FKAGE/tvAPDzHd76Z+nIYdgnqkocthaDUq+tKPsGD0um2A==",
+        "requested": "[6.6.0, )",
+        "resolved": "6.6.0",
+        "contentHash": "gBsgPrNRkzUQfnxZSKnU0oVILIc5dr+dmdKXscyYKD5URcwNVQ72a7uuCvTyBzRZW98MZQNolSYC0y/MQTJ03A==",
         "dependencies": {
           "System.Configuration.ConfigurationManager": "4.4.0"
         }
@@ -143,8 +143,8 @@
       },
       "JetBrains.Annotations": {
         "type": "Transitive",
-        "resolved": "2021.3.0",
-        "contentHash": "Ddxjs5RRjf+c8m9m++WvhW1lz1bqNhsTjWvCLbQN9bvKbkJeR9MhtfNwKgBRRdG2yLHcXFr5Lf7fsvvkiPaDRg=="
+        "resolved": "2022.1.0",
+        "contentHash": "ASfpoFJxiRsC9Xc4TWuPM41Zb/gl64xwfMOhnOZ3RnVWGYIZchjpWQV5zshJgoc/ZxVtgjaF7b577lURj7E6ig=="
       },
       "Microsoft.Extensions.Configuration": {
         "type": "Transitive",
@@ -1587,7 +1587,7 @@
         "dependencies": {
           "AsyncUtilities": "1.1.1",
           "Ben.Demystifier": "0.4.1",
-          "JetBrains.Annotations": "2021.3.0",
+          "JetBrains.Annotations": "2022.1.0",
           "Microsoft.Extensions.Hosting": "6.0.1",
           "NetFabric.Hyperlinq": "3.0.0-beta48",
           "Polly": "7.2.3",

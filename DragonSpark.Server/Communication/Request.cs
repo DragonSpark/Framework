@@ -8,6 +8,7 @@ sealed class Request<T> : Select<Task<T>, T>
 {
 	public static Request<T> Default { get; } = new Request<T>();
 
+	// ReSharper disable once AsyncApostle.AsyncWait
 	Request() : base(x => x.Result) {}
 }
 

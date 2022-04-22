@@ -18,11 +18,11 @@ sealed class TheoryTestCaseRunner : XunitTheoryTestCaseRunner
 		base(testCase, displayName, skipReason, constructorArguments, diagnosticMessageSink, messageBus, aggregator,
 		     cancellationTokenSource) {}
 
-	protected override async Task AfterTestCaseStartingAsync()
+	protected override Task AfterTestCaseStartingAsync()
 	{
 		var @case = TestCase;
 		TestCase = new TestCase(@case, () => TestCase = @case);
-		await base.AfterTestCaseStartingAsync();
+		return base.AfterTestCaseStartingAsync();
 	}
 
 	// ReSharper disable once TooManyArguments

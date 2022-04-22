@@ -10,5 +10,6 @@ public sealed class Handle<TIn, TOut> : ISelect<Task<TIn>, TOut>
 
 	public Handle(Func<TIn, TOut> select) => _select = select;
 
+	// ReSharper disable once AsyncApostle.AsyncWait
 	public TOut Get(Task<TIn> parameter) => _select(parameter.Result);
 }

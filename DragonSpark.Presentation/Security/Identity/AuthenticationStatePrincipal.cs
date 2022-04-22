@@ -26,6 +26,7 @@ sealed class AuthenticationStatePrincipal : IResult<ClaimsPrincipal?>
 			var state = _authentication.GetAuthenticationStateAsync();
 			if (state.IsCompletedSuccessfully)
 			{
+				// ReSharper disable once AsyncApostle.AsyncWait
 				return state.Result.User;
 			}
 		}
