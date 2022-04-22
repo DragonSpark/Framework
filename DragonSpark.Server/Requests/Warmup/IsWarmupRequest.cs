@@ -6,7 +6,7 @@ namespace DragonSpark.Server.Requests.Warmup;
 /// <summary>
 /// ATTRIBUTION: https://haacked.com/archive/2020/09/28/azure-swap-with-warmup-aspnetcore/#6b495a64
 /// </summary>
-public sealed class IsWarmupRequest : ICondition<HttpContext>
+sealed class IsWarmupRequest : ICondition<HttpContext>
 {
 	public static IsWarmupRequest Default { get; } = new();
 
