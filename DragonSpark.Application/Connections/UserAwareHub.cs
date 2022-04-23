@@ -3,6 +3,7 @@ using DragonSpark.Model;
 using DragonSpark.Model.Selection.Stores;
 using Microsoft.AspNetCore.SignalR;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,11 +12,22 @@ namespace DragonSpark.Application.Connections;
 
 public class UserAwareHub : Hub
 {
-	readonly ITable<string, List<UserConnection>> _names;
+	readonly ConcurrentDictionary<string, List<UserConnection>> _store;
+	readonly ITable<string, List<UserConnection>>               _names;
 
-	protected UserAwareHub() : this(Sessions.Default.Get()) {}
+	protected UserAwareHub() : this(new MappedConnections()) {}
 
-	protected UserAwareHub(ITable<string, List<UserConnection>> names) => _names = names;
+	protected UserAwareHub(ConcurrentDictionary<string, List<UserConnection>> store)
+		: this(store, Stores.Default.Get(store)) {}
+
+	protected UserAwareHub(ConcurrentDictionary<string, List<UserConnection>> store,
+	                       ITable<string, List<UserConnection>> names)
+	{
+		_store = store;
+		_names = names;
+	}
+
+	public uint Count => _store.Count.Grade();
 
 	public override Task OnConnectedAsync()
 	{
