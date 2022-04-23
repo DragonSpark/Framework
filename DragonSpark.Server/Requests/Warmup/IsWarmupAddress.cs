@@ -11,18 +11,11 @@ sealed class IsWarmupAddress : AnyCondition<HttpContext>
 {
 	public static IsWarmupAddress Default { get; } = new();
 
-	IsWarmupAddress() : this(Start.A.Selection<HttpContext>()) { }
+	IsWarmupAddress() : this(Start.A.Selection<HttpContext>()) {}
 
 	IsWarmupAddress(SelectionExtent<HttpContext> extent)
-		: this(extent.By.Calling(x => x.Connection.RemoteIpAddress.Verify()),
-		       extent.By.Calling(x => x.Request.Headers))
-	{ }
+		: this(extent.By.Calling(x => x.Connection.RemoteIpAddress.Verify())) {}
 
-	IsWarmupAddress(Selector<HttpContext, IPAddress> address, Selector<HttpContext, IHeaderDictionary> header)
-		: base(address.Select(IsLocalHostConnection.Default),
-		       address.Select(IsInternalAddress.Default)
-		              .Out()
-		              .Then()
-		              .And(header.Select(IsMicrosoftAuthenticationHeader.Default)))
-	{ }
+	IsWarmupAddress(Selector<HttpContext, IPAddress> address)
+		: base(address.Select(IsLocalHostConnection.Default), address.Select(IsInternalAddress.Default)) {}
 }

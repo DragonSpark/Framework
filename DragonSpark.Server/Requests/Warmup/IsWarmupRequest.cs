@@ -10,7 +10,7 @@ sealed class IsWarmupRequest : ICondition<HttpContext>
 {
 	public static IsWarmupRequest Default { get; } = new();
 
-	IsWarmupRequest() : this(IsKnownUserAgent.Default, IsWarmupAddress.Default) { }
+	IsWarmupRequest() : this(IsKnownWarmupAgent.Default, IsWarmupAddress.Default) {}
 
 	readonly ICondition<IHeaderDictionary> _agent;
 	readonly ICondition<HttpContext>       _address;
@@ -21,5 +21,6 @@ sealed class IsWarmupRequest : ICondition<HttpContext>
 		_address = address;
 	}
 
-	public bool Get(HttpContext parameter) => _agent.Get(parameter.Request.Headers) && _address.Get(parameter);
+	public bool Get(HttpContext parameter)
+		=> _agent.Get(parameter.Request.Headers) && _address.Get(parameter);
 }

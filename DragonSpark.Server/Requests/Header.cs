@@ -1,5 +1,4 @@
-﻿using DragonSpark.Model.Selection;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace DragonSpark.Server.Requests;
 
@@ -11,10 +10,4 @@ public class Header : IHeader
 
 	public string? Get(IHeaderDictionary parameter)
 		=> parameter.TryGetValue(_name, out var value) ? value.ToString() : null;
-}
-
-// TODO 
-public interface IHeader : ISelect<IHeaderDictionary, string?>
-{
-	
 }

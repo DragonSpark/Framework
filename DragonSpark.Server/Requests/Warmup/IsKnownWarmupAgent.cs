@@ -4,16 +4,16 @@ using Microsoft.AspNetCore.Http;
 
 namespace DragonSpark.Server.Requests.Warmup;
 
-sealed class IsKnownUserAgent : ICondition<IHeaderDictionary>
+sealed class IsKnownWarmupAgent : ICondition<IHeaderDictionary>
 {
-	public static IsKnownUserAgent Default { get; } = new();
+	public static IsKnownWarmupAgent Default { get; } = new();
 
-	IsKnownUserAgent() : this(UserAgentHeader.Default, KnownUserAgents.Default) { }
+	IsKnownWarmupAgent() : this(UserAgentHeader.Default, KnownUserAgents.Default) { }
 
 	readonly IHeader       _header;
 	readonly Array<string> _agents;
 
-	public IsKnownUserAgent(IHeader header, Array<string> agents)
+	public IsKnownWarmupAgent(IHeader header, Array<string> agents)
 	{
 		_header = header;
 		_agents = agents;
