@@ -18,7 +18,7 @@ public class UserAwareHub : Hub
 	protected UserAwareHub() : this(new MappedConnections()) {}
 
 	protected UserAwareHub(ConcurrentDictionary<string, List<UserConnection>> store)
-		: this(store, Stores.Default.Get(store)) {}
+		: this(store, Tables.Default.Get(store)) {}
 
 	protected UserAwareHub(ConcurrentDictionary<string, List<UserConnection>> store,
 	                       ITable<string, List<UserConnection>> names)

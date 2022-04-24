@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 namespace DragonSpark.Application.Connections;
 
-sealed class Stores : Select<ConcurrentDictionary<string, List<UserConnection>>, ITable<string, List<UserConnection>>>
+sealed class Tables : Select<ConcurrentDictionary<string, List<UserConnection>>, ITable<string, List<UserConnection>>>
 {
-	public static Stores Default { get; } = new();
+	public static Tables Default { get; } = new();
 
-	Stores() : base(x => new ConcurrentTable<string, List<UserConnection>>(x, _ => new List<UserConnection>())) {}
+	Tables() : base(x => new ConcurrentTable<string, List<UserConnection>>(x, _ => new List<UserConnection>())) {}
 }
