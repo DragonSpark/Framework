@@ -18,16 +18,16 @@ else
 {
 	<SfGrid TValue="T"
 			@ref="@_subject" AllowSelection="false"
-	        AllowFiltering="@AllowFiltering"
-	        AllowPaging="@AllowPaging"
-	        AllowSorting="@AllowSorting"
-	        ClipMode="@ClipMode.EllipsisWithTooltip"
-	        Toolbar="@(Matches ? null : DefaultToolbar.Default)"
-	        EnableAdaptiveUI="@(!Matches)"
-	        RowRenderingMode="@(Matches ? RowDirection.Horizontal :  RowDirection.Vertical)"
+			AllowFiltering="@AllowFiltering"
+			AllowPaging="@AllowPaging"
+			AllowSorting="@AllowSorting"
+			ClipMode="@ClipMode.EllipsisWithTooltip"
+			Toolbar="@(Matches ? null : DefaultToolbar.Default)"
+			EnableAdaptiveUI="@(!Matches)"
+			RowRenderingMode="@(Matches ? RowDirection.Horizontal :  RowDirection.Vertical)"
 			DataSource="@DataSource"
-	        class="@Class"
-	        @attributes="@AdditionalAttributes">
+			class="@Class"
+			@attributes="@AdditionalAttributes">
 		<GridPageSettings PageSize="@PageSize" />
 		<GridFilterSettings Type="@FilterType" />
 		<GridColumns ChildContent="@Columns" />
@@ -85,11 +85,7 @@ else
 	[Parameter(CaptureUnmatchedValues = true)]
 	public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
 
-	public Task Refresh()
-	{
-		_subject.Refresh();
-		return Task.CompletedTask;
-	}
+	public Task Refresh() => _subject.Refresh();
 
 	bool? State { get; set; }
 
