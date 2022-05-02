@@ -2,6 +2,7 @@
 using DragonSpark.Model.Results;
 using Microsoft.EntityFrameworkCore;
 using Polly;
+using Policy = Polly.Policy;
 
 namespace DragonSpark.Application.Entities.Diagnostics;
 
