@@ -1,4 +1,3 @@
-export var jQuery = window["jQuery"];
 class DocumentElement {
     constructor(body) { this.body = body; }
     AddClass(name) {
@@ -9,6 +8,6 @@ class DocumentElement {
     }
 }
 export function NewDocumentElement() {
-    return new DocumentElement(jQuery(document.body));
+    return new DocumentElement(window["$"](document.body));
 }
 //# sourceMappingURL=DocumentElement.js.map

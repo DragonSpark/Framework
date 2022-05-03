@@ -1,6 +1,4 @@
-﻿export var jQuery: any = window["jQuery"];
-
-class DocumentElement {
+﻿class DocumentElement {
     private body: any;
 
     constructor(body : any) { this.body = body; }
@@ -15,5 +13,5 @@ class DocumentElement {
 }
 
 export function NewDocumentElement(): DocumentElement {
-	return new DocumentElement(jQuery(document.body));
+	return new DocumentElement(window["$"](document.body));
 }
