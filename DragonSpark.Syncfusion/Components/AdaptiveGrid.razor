@@ -85,9 +85,13 @@ else
 	[Parameter(CaptureUnmatchedValues = true)]
 	public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
 
-	public Task Refresh() => _subject.Refresh();
+	public Task Refresh()
+	{
+	    _subject.Refresh(); // TODO
+	    return Task.CompletedTask;
+	}
 
-	bool? State { get; set; }
+    bool? State { get; set; }
 
 	bool Matches
 	{
