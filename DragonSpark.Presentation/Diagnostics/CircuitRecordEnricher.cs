@@ -26,9 +26,14 @@ sealed class CircuitRecordEnricher : ILogEventEnricher
 					logEvent.AddPropertyIfAbsent(property);
 				}
 			}
+			var manager = current.Navigation;
 			{
-				var path     = $"/{current.Navigation.ToBaseRelativePath(current.Navigation.Uri)}";
+				var path     = $"/{manager.ToBaseRelativePath(manager.Uri)}";
 				var property = propertyFactory.CreateProperty("CircuitRequestPath", path);
+				logEvent.AddPropertyIfAbsent(property);
+			}
+			{
+				var property = propertyFactory.CreateProperty("CircuitRequestBaseUri", manager.BaseUri);
 				logEvent.AddPropertyIfAbsent(property);
 			}
 		}
