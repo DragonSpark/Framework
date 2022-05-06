@@ -59,16 +59,17 @@ public static class Extensions
 	public static CallbackContext Callback(this ModelContext @this, Func<ValueTask> method)
 		=> @this.Callback(method.Start().Select(x => x.AsTask()));
 
-	public static CallbackContext Callback(this ModelContext _, Func<Task> method) => new CallbackContext(method);
+	public static CallbackContext Callback(this ModelContext _, Func<Task> method) => new(method);
 
-	public static SubmitCallbackContext Callback(this ModelContext _, Func<EditContext, Task> submit)
-		=> new SubmitCallbackContext(submit);
+	public static SubmitCallbackContext Callback(this ModelContext _, Func<EditContext, Task> submit,
+	                                             IOperation invalid)
+		=> new(submit, invalid);
 
-	public static CallbackContext<object> Callback(this ModelContext _, Func<object, Task> method)
-		=> new CallbackContext<object>(method);
+	public static SubmitCallbackContext Callback(this ModelContext _, Func<EditContext, Task> submit) => new(submit);
 
-	public static CallbackContext<T> Callback<T>(this ModelContext _, Func<T, Task> method)
-		=> new CallbackContext<T>(method);
+	public static CallbackContext<object> Callback(this ModelContext _, Func<object, Task> method) => new(method);
+
+	public static CallbackContext<T> Callback<T>(this ModelContext _, Func<T, Task> method) => new(method);
 
 	public static CallbackContext<T> Callback<T>(this ModelContext @this, Action callback)
 		=> @this.Callback<T>(Start.A.Command(callback).Accept<T>().Operation().Allocate());
@@ -79,10 +80,9 @@ public static class Extensions
 	public static CallbackContext Callback(this ModelContext @this, Action callback)
 		=> @this.Callback(Start.A.Command(callback).Operation());
 
-	public static EditContextCallbackContext Callback(this ModelContext _, EditContext context)
-		=> new EditContextCallbackContext(context);
+	public static EditContextCallbackContext Callback(this ModelContext _, EditContext context) => new(context);
 
-	public static CallbackContext Callback(this ResultContext<Task> @this) => new CallbackContext(@this);
+	public static CallbackContext Callback(this ResultContext<Task> @this) => new(@this);
 
 	public static CallbackContext<T> Callback<T>(this TaskSelector<T> @this) => new(@this);
 
@@ -141,8 +141,9 @@ public static class Extensions
 	public static InteractionResultHandlerComposer<T> Then<T>(this IOperation<T> @this) where T : IInteractionResult
 		=> new(@this);
 
-	public static ActiveContentComposer<T> Then<T>(this IActiveContent<T> @this) => new (@this);
+	public static ActiveContentComposer<T> Then<T>(this IActiveContent<T> @this) => new(@this);
 
-	public static Compose.OperationResultSelector<_, T> Then<_, T>(this DragonSpark.Compose.Model.Operations.OperationResultSelector<_, T> @this)
+	public static Compose.OperationResultSelector<_, T> Then<_, T>(
+		this DragonSpark.Compose.Model.Operations.OperationResultSelector<_, T> @this)
 		=> new(@this.Out());
 }

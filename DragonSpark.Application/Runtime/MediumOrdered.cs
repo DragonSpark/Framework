@@ -4,15 +4,15 @@ using System.Collections.Generic;
 
 namespace DragonSpark.Application.Runtime;
 
-sealed class LargeOrdered<T> : ICommand<IEnumerable<T>> where T : class, ILargeOrderAware
+sealed class MediumOrdered<T> : ICommand<IEnumerable<T>> where T : class, IMediumOrderAware
 {
-	public static LargeOrdered<T> Default { get; } = new();
+	public static MediumOrdered<T> Default { get; } = new ();
 
-	LargeOrdered() {}
+	MediumOrdered() {}
 
 	public void Execute(IEnumerable<T> parameter)
 	{
-		var order = 0u;
+		ushort order = 0;
 		foreach (var aware in parameter.AsValueEnumerable())
 		{
 			aware.Order ??= order++;

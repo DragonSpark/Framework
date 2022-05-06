@@ -29,3 +29,15 @@ window.applyLocationHash = () => {
 		window.scrollToElementId(current.substring(1));
 	}
 }
+
+// ATTRIBUTION: https://stackoverflow.com/a/71221325/10340424
+function scrollToFirstValidationMessage() {
+    const elements = document.getElementsByClassName("validation-message");
+    if (elements != undefined) {
+        const element = elements[0];
+        if (element != null) {
+            element.parentNode.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+}
+

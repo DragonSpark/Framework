@@ -1,13 +1,9 @@
-﻿using Microsoft.JSInterop;
-using System.Threading.Tasks;
+﻿using DragonSpark.Presentation.Environment.Browser;
+using Microsoft.JSInterop;
 
 namespace DragonSpark.Presentation.Components.Routing;
 
-sealed class SetPageExitCheck : ISetPageExitCheck
+sealed class SetPageExitCheck : BrowserCommand<bool>, ISetPageExitCheck
 {
-	readonly IJSRuntime _runtime;
-
-	public SetPageExitCheck(IJSRuntime runtime) => _runtime = runtime;
-
-	public ValueTask Get(bool parameter) => _runtime.InvokeVoidAsync("cec_setEditorExitCheck", parameter);
+	public SetPageExitCheck(IJSRuntime runtime) : base(runtime, "cec_setEditorExitCheck") {}
 }

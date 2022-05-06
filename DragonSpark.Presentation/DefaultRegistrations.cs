@@ -97,8 +97,9 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .And<NotificationService>()
 		         .And<RouterSession>()
 		         .And<NavigateToInitialize>()
+		         .And<ScrollToFirstValidationMessage>()
 		         .Scoped()
-				 //
+		         //
 		         .Then.Start<ISetPageExitCheck>()
 		         .Forward<SetPageExitCheck>()
 		         .Decorate<ConnectionAwareSetPageExitCheck>()
