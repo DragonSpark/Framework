@@ -1,0 +1,89 @@
+﻿@using DragonSpark.Compose
+@using Syncfusion.Blazor.DropDowns
+
+@typeparam TValue
+@typeparam TItem where TItem : class
+
+<ListBox @ref="_subject" CssClass="@CssClass" TValue="TValue[]" TItem="TItem" DataSource="@Items" MaximumSelectionLength="1">
+    <ListBoxFieldSettings Value="@IdNameField" Text="@DisplayNameField" />
+    <ListBoxSelectionSettings Mode="SelectionMode.Single" />
+    <ListBoxEvents TValue="TValue[]" TItem="TItem" ValueChange="@OnSelect" />
+</ListBox>
+
+@code {
+
+    ListBox<TValue[], TItem> _subject = default!;
+
+    [Parameter]
+    public string CssClass { get; set; } = default!;
+
+    [Parameter]
+    public string IdNameField { get; set; } = "Id";
+
+    [Parameter]
+    public string DisplayNameField { get; set; } = "Name";
+
+    [Parameter]
+    public ICollection<TItem> Items
+    {
+        get => _items;
+        set
+        {
+            if (!ReferenceEquals(_items, value))
+            {
+                _items = value;
+                Count = (ushort)_items.Count;
+            }
+        }
+    }	ICollection<TItem> _items = default!;
+
+    [Parameter]
+    public TItem Value
+    {
+        get => _value;
+        set
+        {
+            if (_value != value)
+            {
+                _value = value;
+                ValueUpdated = true;
+            }
+        }
+    }	TItem _value = default!;
+
+    [Parameter]
+    public EventCallback<TItem> ValueChanged { get; set; }
+
+    bool ValueUpdated { get; set; }
+    ushort Count { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (_items.Count != Count)
+        {
+            Count = (ushort)_items.Count;
+            var update = ValueUpdated;
+            ValueUpdated = false;
+            await _subject.Refresh();
+            ValueUpdated = update;
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (ValueUpdated)
+        {
+            if (firstRender)
+            {
+                StateHasChanged();
+            }
+            else if (!(ValueUpdated = false))
+            {
+                await _subject.SelectItemsAsync(Value);
+            }
+        }
+    }
+
+    Task OnSelect(ListBoxChangeEventArgs<TValue[], TItem> parameter)
+        => ValueChanged.InvokeAsync(Value = _subject.GetDataByValue(parameter.Value).Single());
+}

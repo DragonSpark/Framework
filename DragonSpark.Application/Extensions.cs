@@ -7,9 +7,7 @@ using DragonSpark.Application.Security.Identity.Authentication;
 using DragonSpark.Application.Security.Identity.Claims.Access;
 using DragonSpark.Compose;
 using DragonSpark.Composition.Compose;
-using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
-using DragonSpark.Model.Sequences;
 using Humanizer;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
@@ -17,7 +15,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Security.Claims;
 
 namespace DragonSpark.Application;
@@ -81,8 +78,11 @@ partial class Extensions
 
 	/**/
 
-	public static Array<T> ApplyOrder<T>(this Array<T> @this) where T : class, IOrderAware
-		=> Ordered<T>.Default.Get(@this);
+	public static ICollection<T> OrderedLarge<T>(this ICollection<T> @this) where T : class, ILargeOrderAware
+		=> LargeOrdered<T>.Default.Parameter(@this).Return(@this);
+
+	public static ICollection<T> Ordered<T>(this ICollection<T> @this) where T : class, IOrderAware
+		=> Runtime.Ordered<T>.Default.Parameter(@this).Return(@this);
 
 	public static SelectedCollection<T> ToSelectedCollection<T>(this IEnumerable<T> @this) where T : class
 		=> new(@this);
@@ -91,10 +91,6 @@ partial class Extensions
 		=> CopyList<TList, T>.Default.Get(new(range, @this));
 
 	/**/
-
-	public static ConfiguredValueTaskAwaitable Await<T>(this IOperation<(Type Owner, Exception Exception)> @this,
-	                                                    Exception exception)
-		=> @this.Await(A.Type<T>(), exception);
 
 	public static string Format<T>(this IResult<string> @this, T parameter) where T : notnull
 		=> @this.Get().FormatWith(parameter.ToString());
