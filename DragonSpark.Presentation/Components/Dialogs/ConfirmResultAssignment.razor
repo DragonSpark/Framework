@@ -1,0 +1,24 @@
+﻿@using DragonSpark.Model.Commands
+
+@inherits ConfirmResultComponent
+
+<ConfirmResult @ref="_result"
+               PrimaryClass="@PrimaryClass" SecondaryClass="@SecondaryClass"
+               ContentClass="@ContentClass" Confirmation="@Confirmation" ChildContent="@ChildContent" 
+               />
+
+@code {
+    ConfirmResult _result = default!;
+
+    [Parameter]
+    public ICommand<ConfirmResult?> Assignment { get; set; } = default!;
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            Assignment.Execute(_result);
+        }
+        base.OnAfterRender(firstRender);
+    }
+}

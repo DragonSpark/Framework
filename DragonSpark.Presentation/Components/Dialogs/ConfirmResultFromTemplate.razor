@@ -1,0 +1,13 @@
+﻿@typeparam T
+
+@using DragonSpark.Model.Commands
+@inherits ConfirmResultContextComponent<T>
+
+<DialogContext T="T" @ref="_context" Title="@Title" Width="@Width">
+    @ChildContent(new (context, Store))
+</DialogContext>
+
+@code {
+    [Parameter]
+    public RenderFragment<ConfirmRecord<T>> ChildContent { get; set; } = default!;
+}

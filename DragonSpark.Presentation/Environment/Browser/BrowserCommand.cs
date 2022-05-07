@@ -4,8 +4,6 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Environment.Browser;
 
-internal class Class1 {}
-
 public class BrowserCommand<T> : IOperation<T>
 {
 	readonly IJSRuntime _runtime;

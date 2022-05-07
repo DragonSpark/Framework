@@ -1,0 +1,19 @@
+﻿<DragonSpark.Presentation.Components.Eventing.HandlerView T="UpdateStateMessage" Received="@OnReceived" />
+
+@ChildContent
+
+@code {
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+
+    [Parameter]
+    public object? Subject { get; set; }
+
+    void OnReceived(UpdateStateMessage parameter)
+    {
+        if (parameter.Subject == Subject)
+        {
+            StateHasChanged();
+        }
+    }
+}

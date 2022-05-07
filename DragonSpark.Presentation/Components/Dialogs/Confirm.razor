@@ -11,19 +11,19 @@
 
 <DragonSpark.Presentation.Components.Dialogs.DefaultEscapeContainer Escaped="@(() => Cancel.InvokeAsync(default!))">
 	<ActivityReceiverContainer Context="receiver">
-		<div class="card">
-			<div class="@ContentClass">@ChildContent</div>
-			<div class="card-footer">
-				<div class="d-flex justify-content-between" style="gap: 20px">
-					<ButtonComponent Text="@SecondaryText" Click="OnCancel" ButtonStyle="ButtonStyle.Secondary"
-					                 class="@SecondaryClass" />
+        <div class="card">
+            <div class="@ContentClass">@ChildContent</div>
+            <div class="card-footer">
+                <div class="d-flex justify-content-between" style="gap: 20px">
+                    <ButtonComponent Text="@SecondaryText" Click="OnCancel" ButtonStyle="ButtonStyle.Secondary"
+                                     class="@SecondaryClass" />
 
-					<ButtonComponent Text="@PrimaryText" Click="@(Start.A.Callback<MouseEventArgs>(OnAccept).Handle(Exceptions, ReportedType ?? GetType()).Using(receiver).UpdateActivity())"
-					                 class="@PrimaryClass" />
-				</div>
-			</div>
-		</div>
-	</ActivityReceiverContainer>
+                    <ButtonComponent Text="@PrimaryText" Click="@(Start.A.Callback<MouseEventArgs>(OnAccept).Handle(Exceptions, ReportedType ?? GetType()).Using(receiver).UpdateActivity())"
+                                     class="@PrimaryClass" />
+                </div>
+            </div>
+        </div>
+    </ActivityReceiverContainer>
 </DragonSpark.Presentation.Components.Dialogs.DefaultEscapeContainer>
 
 @code

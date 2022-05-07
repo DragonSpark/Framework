@@ -25,15 +25,17 @@ public sealed class ResourceExistsValidation : IValidatingValue<string>
 	/// <returns></returns>
 	public async ValueTask<bool> Get(string parameter)
 	{
-		if (!string.IsNullOrEmpty(parameter))
+		using var client = _clients.CreateClient();
+		client.Timeout = _timeout;
+		try
 		{
-			using var client = _clients.CreateClient();
-			client.Timeout = _timeout;
 			var response = await client.SendAsync(new HttpRequestMessage(HttpMethod.Head, parameter))
 			                           .ConfigureAwait(false);
 			return response.IsSuccessStatusCode;
 		}
-
-		return true;
+		catch (UriFormatException)
+		{
+			return false;
+		}
 	}
 }

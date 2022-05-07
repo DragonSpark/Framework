@@ -1,31 +1,14 @@
 ﻿@using DragonSpark.Compose
 
+@inherits ConfirmResultComponent
+
 <Confirm PrimaryClass="@PrimaryClass" SecondaryClass="@SecondaryClass" ContentClass="@ContentClass"
          Confirmation="@Confirmation" ChildContent="@ChildContent" PrimaryText="@PrimaryText" SecondaryText="@SecondaryText"
-         Accept="() => Result = DialogResult.Ok" Cancel="() => Result = DialogResult.Cancel"/>
+         Accept="() => Result = DialogResult.Ok" Cancel="() => Result = DialogResult.Cancel"
+         />
 
 @code {
-    [Parameter]
-    public string PrimaryClass { get; set; } = default!;
-
-    [Parameter]
-    public string SecondaryClass { get; set; } = default!;
-
-    [Parameter]
-    public string PrimaryText { get; set; } = "OK";
-
-    [Parameter]
-    public string SecondaryText { get; set; } = "Cancel";
-
-    [Parameter]
-    public string ContentClass { get; set; } = "ds-dialog-content card-body";
-
-    [Parameter]
-    public Func<ValueTask<bool>> Confirmation { get; set; } = () => true.ToOperation();
-
-    [Parameter]
-    public RenderFragment ChildContent { get; set; } = default!;
-
+    
     protected override void OnParametersSet()
     {
         Result = null;
