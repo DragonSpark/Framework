@@ -4,7 +4,7 @@ using System.Runtime.CompilerServices;
 namespace DragonSpark.Model.Selection.Stores;
 
 sealed class ConditionalWeakTableContainsAdapter<TKey, TValue> : ICondition<TKey>
-	where TKey : class where TValue : class
+	where TKey : class where TValue : class?
 {
 	readonly ConditionalWeakTable<TKey, TValue> _store;
 

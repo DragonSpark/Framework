@@ -120,7 +120,11 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Scoped()
 		         //
 		         .Then.Start<ResourceExistsValidation>()
-		         .Singleton()
+		         .Scoped()
+		         .Then.Start<IResourceQuery>()
+		         .Forward<ResourceQuery>()
+		         .Decorate<StoreAwareResourceQuery>()
+		         .Scoped()
 		         //
 		         .Then.Start<IFocusedElement>()
 		         .Forward<FocusedElement>()

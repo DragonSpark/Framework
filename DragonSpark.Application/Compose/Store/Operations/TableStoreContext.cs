@@ -10,9 +10,9 @@ namespace DragonSpark.Application.Compose.Store.Operations;
 public sealed class TableStoreContext<TIn, TOut>
 {
 	readonly ISelect<TIn, ValueTask<TOut>> _subject;
-	readonly ITable<string, object>        _storage;
+	readonly ITable<string, TOut>          _storage;
 
-	public TableStoreContext(ISelect<TIn, ValueTask<TOut>> subject, ITable<string, object> storage)
+	public TableStoreContext(ISelect<TIn, ValueTask<TOut>> subject, ITable<string, TOut> storage)
 	{
 		_subject = subject;
 		_storage = storage;
@@ -28,11 +28,11 @@ public sealed class TableStoreContext<TIn, TOut>
 
 	sealed class Source : ISelecting<TIn, TOut>
 	{
-		readonly ITable<string, object>     _store;
+		readonly ITable<string, TOut>       _store;
 		readonly Func<TIn, ValueTask<TOut>> _source;
 		readonly Func<TIn, string>          _key;
 
-		public Source(ITable<string, object> store, Func<TIn, ValueTask<TOut>> source, Func<TIn, string> key)
+		public Source(ITable<string, TOut> store, Func<TIn, ValueTask<TOut>> source, Func<TIn, string> key)
 		{
 			_store  = store;
 			_source = source;
@@ -42,14 +42,15 @@ public sealed class TableStoreContext<TIn, TOut>
 		public async ValueTask<TOut> Get(TIn parameter)
 		{
 			var key = _key(parameter);
-			if (!_store.TryGet(key, out var result))
+			if (_store.TryGet(key, out var result))
 			{
-				var source = await _source(parameter);
-				_store.Assign(key, source!);
-				return source;
+				return result;
 			}
 
-			return result.To<TOut>();
+			var source = await _source(parameter);
+			_store.Assign(key, source!);
+			return source;
+
 		}
 	}
 }
