@@ -33,7 +33,7 @@ public readonly struct Edit<T> : IEditor
 
 	public Edit(IEditor editor, T subject)
 	{
-		Subject  = subject;
+		Subject = subject;
 		_editor = editor;
 	}
 

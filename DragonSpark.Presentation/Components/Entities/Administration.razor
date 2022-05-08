@@ -4,9 +4,8 @@
 @using Microsoft.EntityFrameworkCore
 @using DragonSpark.Application.Diagnostics
 
-@typeparam TEntity
+@typeparam TEntity where TEntity : class
 
-@inject DialogService Dialogs
 @inject IExceptions Exceptions
 
 <RadzenGrid TItem="TEntity" @ref="_grid" AllowFiltering="true" AllowPaging="true" PageSize="@PageSize" AllowSorting="true"
@@ -34,7 +33,7 @@
 
 
 <DialogContext T="TEntity" @ref="_new" Title="@($"Create {A.Type<TEntity>().Name}")" Context="parameter">
-    <Confirm Confirmation="ConfirmCreate" Accept="@(Start.A.Callback(() => CompleteCreate(parameter.Context)).Using(Context ?? this).Handle<Entities<TEntity>>(Exceptions).UpdateActivity())">
+    <Confirm Confirmation="ConfirmCreate" Accept="@(Start.A.Callback(() => CompleteCreate(parameter.Context)).Using(Context ?? this).Handle<Administration<TEntity>>(Exceptions).UpdateActivity())">
         <RadzenTemplateForm TItem="TEntity" @ref="_newForm" Data="parameter.Context">
             @EditContent(parameter.Context)
         </RadzenTemplateForm>
@@ -42,7 +41,7 @@
 </DialogContext>
 
 <DialogContext T="TEntity" @ref="_editor" Title="@($"Edit {A.Type<TEntity>().Name}")" Context="parameter">
-    <Confirm Confirmation="ConfirmEdit" Accept="@(Start.A.Callback(() => CompleteEdit(parameter.Context)).Using(Context ?? this).Handle<Entities<TEntity>>(Exceptions).UpdateActivity())" Cancel="@(() => CancelEdit(parameter.Context))">
+    <Confirm Confirmation="ConfirmEdit" Accept="@(Start.A.Callback(() => CompleteEdit(parameter.Context)).Using(Context ?? this).Handle<Administration<TEntity>>(Exceptions).UpdateActivity())" Cancel="@(() => CancelEdit(parameter.Context))">
         <RadzenTemplateForm TItem="TEntity" @ref="_editForm" Data="parameter.Context">
             @EditContent(parameter.Context)
         </RadzenTemplateForm>
@@ -50,7 +49,7 @@
 </DialogContext>
 
 <DialogContext T="TEntity" @ref="_delete" Title="@($"Delete {A.Type<TEntity>().Name}")" Context="parameter">
-    <Confirm Accept="@(Start.A.Callback(() => Delete(parameter.Context)).Using(Context ?? this).Handle<Entities<TEntity>>(Exceptions).UpdateActivity())">
+    <Confirm Accept="@(Start.A.Callback(() => Delete(parameter.Context)).Using(Context ?? this).Handle<Administration<TEntity>>(Exceptions).UpdateActivity())">
         Delete entry named '@Name(parameter.Context)'?  This cannot be undone.
     </Confirm>
 </DialogContext>

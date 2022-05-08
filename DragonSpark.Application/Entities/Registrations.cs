@@ -14,7 +14,10 @@ sealed class Registrations<T> : ICommand<IServiceCollection> where T : DbContext
 
 	public void Execute(IServiceCollection parameter)
 	{
-		parameter.Start<IContexts<T>>()
+		parameter.Start<AttachMany>()
+		         .Scoped()
+				 //
+		         .Then.Start<IContexts<T>>()
 		         .Forward<Contexts<T>>()
 		         .Singleton()
 		         //
