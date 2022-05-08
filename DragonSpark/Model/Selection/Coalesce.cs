@@ -2,7 +2,7 @@
 
 namespace DragonSpark.Model.Selection;
 
-public class Coalesce<TIn, TOut> : ISelect<TIn, TOut> where TOut : class
+public class Coalesce<TIn, TOut> : ISelect<TIn, TOut>
 {
 	readonly Func<TIn, TOut?> _first;
 	readonly Func<TIn, TOut>  _second;

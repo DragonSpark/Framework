@@ -2,7 +2,7 @@
 
 namespace DragonSpark.Model.Selection;
 
-public class Maybe<TIn, TOut> : ISelect<TIn, TOut?> where TOut : class
+public class Maybe<TIn, TOut> : ISelect<TIn, TOut?>
 {
 	readonly Func<TIn, TOut?> _first, _second;
 
