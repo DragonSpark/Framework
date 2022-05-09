@@ -1,12 +1,6 @@
-﻿using DragonSpark.Model.Results;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace DragonSpark.Application.Model;
-
-internal class Class1 {}
-
-public interface IIdentityAware : IResult<Guid> {}
 
 public sealed class IdentityAwareEqualityComparer : IEqualityComparer<IIdentityAware>
 {

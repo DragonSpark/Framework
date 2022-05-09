@@ -3,8 +3,6 @@ using System;
 
 namespace DragonSpark.Application.Runtime;
 
-internal class Class1 {}
-
 public class IdentityTransactional<T> : Transactional<T> where T : class, IIdentityAware
 {
 	protected IdentityTransactional(Func<(T, T), bool> modified)
