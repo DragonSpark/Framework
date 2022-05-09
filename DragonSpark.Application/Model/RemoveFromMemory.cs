@@ -8,22 +8,14 @@ namespace DragonSpark.Application.Model;
 
 public class RemoveFromMemory<TFrom, TTo> : Select<TFrom, TTo>
 {
-	public RemoveFromMemory(ISelect<TFrom, TTo> previous, IMemoryCache memory, Func<TFrom, string> key)
+	protected RemoveFromMemory(ISelect<TFrom, TTo> previous, IMemoryCache memory, Func<TFrom, string> key)
 		: this(previous, memory.Remove, key) {}
 
-	public RemoveFromMemory(ISelect<TFrom, TTo> previous, Action<string> remove, Func<TFrom, string> key)
-		: base(Start.A.Selection(key)
-		            .Then()
-		            .Terminate(remove)
-		            .ToConfiguration()
-		            .Select(previous)) {}
+	protected RemoveFromMemory(ISelect<TFrom, TTo> previous, Action<string> remove, Func<TFrom, string> key)
+		: base(Start.A.Selection(key).Then().Terminate(remove).ToConfiguration().Select(previous)) {}
 
-	public RemoveFromMemory(ISelect<TFrom, TTo> previous, Func<string, bool> remove, Func<TFrom, string> key)
-		: base(Start.A.Selection(key)
-		            .Then()
-		            .Terminate(remove)
-		            .ToConfiguration()
-		            .Select(previous)) {}
+	protected RemoveFromMemory(ISelect<TFrom, TTo> previous, Func<string, bool> remove, Func<TFrom, string> key)
+		: base(Start.A.Selection(key).Then().Terminate(remove).ToConfiguration().Select(previous)) {}
 }
 
 public class RemoveFromMemory<T> : ICommand<T>
@@ -31,7 +23,7 @@ public class RemoveFromMemory<T> : ICommand<T>
 	readonly IMemoryCache       _memory;
 	readonly ISelect<T, string> _key;
 
-	public RemoveFromMemory(IMemoryCache memory, ISelect<T, string> key)
+	protected RemoveFromMemory(IMemoryCache memory, ISelect<T, string> key)
 	{
 		_memory = memory;
 		_key    = key;

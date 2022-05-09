@@ -1,17 +1,31 @@
 ﻿@using DragonSpark.Compose
+@using DragonSpark.Model
 @using Syncfusion.Blazor.DropDowns
 
 @typeparam TValue
 @typeparam TItem where TItem : class
 
-<ListBox @ref="_subject" CssClass="@CssClass" TValue="TValue[]" TItem="TItem" DataSource="@Items" MaximumSelectionLength="1">
+<ListBox @ref="_subject" TValue="TValue[]" TItem="TItem" CssClass="@CssClass"
+    AllowDragAndDrop="AllowDragDrop" Scope="@Scope" DataSource="@Items" MaximumSelectionLength="1"
+    Value="@CurrentValue"
+>
     <ListBoxFieldSettings Value="@IdNameField" Text="@DisplayNameField" />
     <ListBoxSelectionSettings Mode="SelectionMode.Single" />
     <ListBoxEvents TValue="TValue[]" TItem="TItem" ValueChange="@OnSelect" />
+    @if (ChildContent is not null)
+    {
+        @ChildContent
+    }
 </ListBox>
 
 @code {
     ListBox<TValue[], TItem> _subject = default!;
+
+    [Parameter]
+    public bool AllowDragDrop { get; set; }
+
+    [Parameter]
+    public string Scope { get; set; } = default!;
 
     [Parameter]
     public string CssClass { get; set; } = default!;
@@ -45,7 +59,7 @@
             if (_value != value)
             {
                 _value = value;
-                ValueUpdated = true;
+                CurrentValue = SelectValue is not null ? SelectValue.Verify()(_value).Yield().ToArray() : Empty.Array<TValue>();
             }
         }
     }	TItem _value = default!;
@@ -53,7 +67,13 @@
     [Parameter]
     public EventCallback<TItem> ValueChanged { get; set; }
 
-    bool ValueUpdated { get; set; }
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public Func<TItem, TValue>? SelectValue { get; set; }
+
+    TValue[] CurrentValue { get; set; } = Empty.Array<TValue>();
     ushort Count { get; set; }
 
     protected override async Task OnParametersSetAsync()
@@ -61,25 +81,7 @@
         if (_items.Count != Count)
         {
             Count = (ushort)_items.Count;
-            var update = ValueUpdated;
-            ValueUpdated = false;
             await _subject.Refresh();
-            ValueUpdated = update;
-        }
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (ValueUpdated)
-        {
-            if (firstRender)
-            {
-                StateHasChanged();
-            }
-            else if (!(ValueUpdated = false))
-            {
-                await _subject.SelectItemsAsync(Value);
-            }
         }
     }
 
