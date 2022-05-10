@@ -1,0 +1,31 @@
+﻿<CascadingValue TValue="FieldRegistry" Value="@Registry">
+    @ChildContent(Registry)
+</CascadingValue>
+
+@code {
+    [CascadingParameter]
+    EditContext? EditContext
+    {
+        get => _context;
+        set
+        {
+            if (_context != value)
+            {
+                if (_context != null)
+                {
+                    Registry.Clear();
+                }
+
+                if ((_context = value) != null)
+                {
+                    Registry = new FieldRegistry(_context);
+                }
+            }
+        }
+    }	EditContext? _context;
+
+    FieldRegistry Registry { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment<FieldRegistry> ChildContent { get; set; } = default!;
+}

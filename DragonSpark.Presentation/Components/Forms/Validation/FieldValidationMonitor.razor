@@ -1,0 +1,45 @@
+﻿@code {
+    Func<Task> _update = default!;
+
+    protected override void OnInitialized()
+    {
+        _update = OnUpdate;
+    }
+
+    [CascadingParameter]
+    EditContext? EditContext
+    {
+        get => _context;
+        set
+        {
+            if (_context != value)
+            {
+                if (_context != null)
+                {
+                    _context.OnValidationRequested -= Update;
+                }
+
+                if ((_context = value) != null)
+                {
+                    _context.OnValidationRequested += Update;
+                }
+            }
+        }
+    }   EditContext? _context;
+
+    [Parameter]
+    public FieldIdentifier Identifier { get; set; }
+
+    [Parameter]
+    public EventCallback<ValidatedField> Validated { get; set; }
+
+    Task OnUpdate() => EditContext is not null ?
+                           Validated.InvokeAsync(new(Identifier, EditContext.GetValidationMessages(Identifier).Any()))
+                           : Task.CompletedTask;
+
+    void Update(object? sender, EventArgs e)
+    {
+        InvokeAsync(_update);
+    }
+
+}

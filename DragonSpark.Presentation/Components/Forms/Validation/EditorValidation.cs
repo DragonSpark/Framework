@@ -25,9 +25,8 @@ public sealed class EditorValidation : IResulting<bool>
 		var result = _subject.Validate();
 		if (result)
 		{
-			var args      = new ValidationCallbackEventArgs();
-			var validated = _validated();
-			validated(_sender, args);
+			var args = new ValidationCallbackEventArgs();
+			_validated()(_sender, args);
 			foreach (var callback in args.Callbacks.AsValueEnumerable())
 			{
 				await callback.InvokeAsync();
