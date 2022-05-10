@@ -19,14 +19,14 @@ public sealed class FieldRegistry
 		_identifiers = identifiers;
 	}
 
-	public FieldIdentifier Register(Expression<Func<object>> identifier)
+	public FieldIdentifier Register(Expression<Func<object?>> identifier)
 	{
 		var key         = identifier.ToString();
 		var tryGetValue = _identifiers.TryGetValue(key, out var existing);
 		return tryGetValue ? existing : Add(key, identifier);
 	}
 
-	FieldIdentifier Add(string key, Expression<Func<object>> identifier)
+	FieldIdentifier Add(string key, Expression<Func<object?>> identifier)
 	{
 		var result = FieldIdentifier.Create(identifier);
 		_identifiers.Add(key, result);

@@ -8,19 +8,19 @@ namespace DragonSpark.Application.Runtime;
 
 public class Transactional<T> : ITransactional<T> where T : class
 {
-	readonly IEqualityComparer<T>         _equals;
-	readonly Func<(T, T), bool>           _modified;
-	readonly Func<(T, Memory<T>), (T, T)> _select;
+	readonly IEqualityComparer<T>          _equals;
+	readonly Func<Mapping<T>, bool>        _modified;
+	readonly Func<Elements<T>, Mapping<T>> _select;
 
 	protected Transactional() : this(_ => false) {}
 
-	protected Transactional(Func<(T, T), bool> modified) : this(EqualityComparer<T>.Default, modified) {}
+	protected Transactional(Func<Mapping<T>, bool> modified) : this(EqualityComparer<T>.Default, modified) {}
 
-	protected Transactional(IEqualityComparer<T> equals, Func<(T, T), bool> modified)
+	protected Transactional(IEqualityComparer<T> equals, Func<Mapping<T>, bool> modified)
 		: this(equals, modified, new Selector(equals).Get) {}
 
-	protected Transactional(IEqualityComparer<T> equals, Func<(T, T), bool> modified,
-	                        Func<(T, Memory<T>), (T, T)> select)
+	protected Transactional(IEqualityComparer<T> equals, Func<Mapping<T>, bool> modified,
+	                        Func<Elements<T>, Mapping<T>> select)
 	{
 		_equals   = equals;
 		_modified = modified;
@@ -33,12 +33,12 @@ public class Transactional<T> : ITransactional<T> where T : class
 		var (left, add)     = Left(first, second);
 		var (right, delete) = Right(first, second);
 
-		using var update = ArrayBuilder.New<(T, T)>(right.Count);
+		using var update = ArrayBuilder.New<Mapping<T>>(right.Count);
 		using var lease  = left.AsLease();
 		var       both   = lease.AsMemory();
 		foreach (var element in right.AsSpan())
 		{
-			var select = _select((element, both));
+			var select = _select(new (element, both));
 			if (_modified(select))
 			{
 				update.UncheckedAdd(select);
@@ -101,15 +101,16 @@ public class Transactional<T> : ITransactional<T> where T : class
 		}
 	}
 
-	sealed class Selector : ISelect<(T, Memory<T>), (T, T)>
+	sealed class Selector : ISelect<Elements<T>, Mapping<T>>
 	{
 		readonly IEqualityComparer<T> _equals;
 
 		public Selector(IEqualityComparer<T> equals) => _equals = equals;
 
-		public (T, T) Get((T, Memory<T>) parameter) => (parameter.Item1, Other(parameter.Item2, parameter.Item1));
+		public Mapping<T> Get(Elements<T> parameter)
+			=> new (parameter.Source, Destination(parameter.Candidates, parameter.Source));
 
-		T Other(Memory<T> source, T identity)
+		T Destination(Memory<T> source, T identity)
 		{
 			var length = source.Length;
 			for (var i = 0; i < length; i++)
@@ -125,3 +126,9 @@ public class Transactional<T> : ITransactional<T> where T : class
 		}
 	}
 }
+
+// TODO
+
+public readonly record struct Elements<T>(T Source, Memory<T> Candidates);
+
+public readonly record struct Mapping<T>(T Stored, T Destination);

@@ -5,9 +5,9 @@ namespace DragonSpark.Application.Runtime;
 
 public class IdentityTransactional<T> : Transactional<T> where T : class, IIdentityAware
 {
-	protected IdentityTransactional(Func<(T, T), bool> modified)
+	protected IdentityTransactional(Func<Mapping<T>, bool> modified)
 		: base(IdentityAwareEqualityComparer.Default, modified) {}
 
-	protected IdentityTransactional(Func<(T, T), bool> modified, Func<(T, Memory<T>), (T, T)> select)
+	protected IdentityTransactional(Func<Mapping<T>, bool> modified, Func<Elements<T>, Mapping<T>> select)
 		: base(IdentityAwareEqualityComparer.Default, modified, select) {}
 }

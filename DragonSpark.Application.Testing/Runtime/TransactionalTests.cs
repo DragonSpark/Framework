@@ -23,7 +23,7 @@ public sealed class TransactionalTests
 		public static Transactional Default { get; } = new Transactional();
 
 		Transactional() : base(new DelegatedEqualityComparer<Subject, Guid>(x => x.Id),
-		                       x => x.Item1.Message != x.Item2.Message) {}
+		                       x => x.Stored.Message != x.Destination.Message) {}
 	}
 
 	[Fact]
