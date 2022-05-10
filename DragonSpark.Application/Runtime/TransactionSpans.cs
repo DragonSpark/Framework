@@ -4,7 +4,7 @@ namespace DragonSpark.Application.Runtime;
 
 public readonly struct TransactionSpans<T>
 {
-	public TransactionSpans(Memory<T> add, Memory<Mapping<T>> update, Memory<T> delete)
+	public TransactionSpans(Memory<T> add, Memory<Update<T>> update, Memory<T> delete)
 	{
 		Add    = add;
 		Update = update;
@@ -13,11 +13,11 @@ public readonly struct TransactionSpans<T>
 
 	public Memory<T> Add { get; }
 
-	public Memory<Mapping<T>> Update { get; }
+	public Memory<Update<T>> Update { get; }
 
 	public Memory<T> Delete { get; }
 
-	public void Deconstruct(out Span<T> add, out Span<Mapping<T>> update, out Span<T> delete)
+	public void Deconstruct(out Span<T> add, out Span<Update<T>> update, out Span<T> delete)
 	{
 		add    = Add.Span;
 		update = Update.Span;

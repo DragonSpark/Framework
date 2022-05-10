@@ -5,7 +5,7 @@ namespace DragonSpark.Application.Runtime;
 
 public readonly struct Transactions<T> : IDisposable
 {
-	public Transactions(Leasing<T> add, Leasing<Mapping<T>> update, Leasing<T> delete)
+	public Transactions(Leasing<T> add, Leasing<Update<T>> update, Leasing<T> delete)
 	{
 		Add    = add;
 		Update = update;
@@ -14,7 +14,7 @@ public readonly struct Transactions<T> : IDisposable
 
 	public Leasing<T> Add { get; }
 
-	public Leasing<Mapping<T>> Update { get; }
+	public Leasing<Update<T>> Update { get; }
 
 	public Leasing<T> Delete { get; }
 
@@ -22,7 +22,7 @@ public readonly struct Transactions<T> : IDisposable
 
 	public TransactionSpans<T> AsSpans() => new(Add.AsMemory(), Update.AsMemory(), Delete.AsMemory());
 
-	public void Deconstruct(out Memory<T> add, out Memory<Mapping<T>> update, out Memory<T> delete)
+	public void Deconstruct(out Memory<T> add, out Memory<Update<T>> update, out Memory<T> delete)
 	{
 		add    = Add.AsMemory();
 		update = Update.AsMemory();

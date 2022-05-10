@@ -9,5 +9,5 @@ sealed class ClaimsTransactional : Transactional<Claim>
 	public static ClaimsTransactional Default { get; } = new();
 
 	ClaimsTransactional() : base(new DelegatedEqualityComparer<Claim, string>(x => x.Type),
-	                             x => x.Stored.Value != x.Destination.Value) {}
+	                             x => x.Stored.Value != x.Input.Value) {}
 }
