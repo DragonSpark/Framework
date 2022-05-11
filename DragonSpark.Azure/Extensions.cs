@@ -15,11 +15,20 @@ public static class Extensions
 	public static ISaveContent Save(this IContainer @this) => new SaveContent(@this.Write());
 
 	public static IPath Path(this IContainer @this) => new Path(@this.Get());
+
 	public static IEntry Entry(this IContainer @this) => new Entry(@this.Get());
+
 	public static IWrite Write(this IContainer @this) => new Write(@this.Get());
+
 	public static IAppend Append(this IContainer @this) => new Append(@this.Get());
+
+	public static IMove Move(this IContainer @this, IContainer destination)
+		=> new Move(@destination.Copy(), @this.Delete());
+
 	public static IMove Move(this IContainer @this) => new Move(@this.Copy(), @this.Delete());
+
 	public static ICopy Copy(this IContainer @this) => new Copy(@this.Get());
+
 	public static IDelete Delete(this IContainer @this) => new Delete(@this.Get());
 
 	public static IDeleteContents DeleteContents(this IContainer @this) => new DeleteContents(@this.Get());
