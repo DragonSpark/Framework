@@ -2,11 +2,11 @@
 using System;
 using System.Collections.Generic;
 
-namespace DragonSpark.Application.Runtime;
+namespace DragonSpark.Application.Model.Sequences;
 
 public class SelectedStructureCollection<T> : List<T> where T : struct
 {
-	public SelectedStructureCollection(IEnumerable<T> list) : base(list) {}
+	public SelectedStructureCollection(IEnumerable<T> list) : base(list) { }
 
 	public virtual T? Selected { get; set; }
 }
@@ -14,17 +14,17 @@ public class SelectedStructureCollection<T> : List<T> where T : struct
 public class SelectedStructureCollection<T, TValue> : SelectedStructureCollection<T>, ICondition<TValue>
 	where T : struct
 {
-	readonly Func<T, TValue>           _select;
+	readonly Func<T, TValue> _select;
 	readonly IEqualityComparer<TValue> _equality;
 
 	public SelectedStructureCollection(IEnumerable<T> list, Func<T, TValue> select)
-		: this(list, select, EqualityComparer<TValue>.Default) {}
+		: this(list, select, EqualityComparer<TValue>.Default) { }
 
 	public SelectedStructureCollection(IEnumerable<T> list, Func<T, TValue> select,
-	                                   IEqualityComparer<TValue> equality)
+									   IEqualityComparer<TValue> equality)
 		: base(list)
 	{
-		_select   = select;
+		_select = select;
 		_equality = equality;
 	}
 

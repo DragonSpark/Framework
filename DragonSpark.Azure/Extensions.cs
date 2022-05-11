@@ -14,6 +14,7 @@ public static class Extensions
 
 	public static ISaveContent Save(this IContainer @this) => new SaveContent(@this.Write());
 
+	public static IPath Path(this IContainer @this) => new Path(@this.Get());
 	public static IEntry Entry(this IContainer @this) => new Entry(@this.Get());
 	public static IWrite Write(this IContainer @this) => new Write(@this.Get());
 	public static IAppend Append(this IContainer @this) => new Append(@this.Get());

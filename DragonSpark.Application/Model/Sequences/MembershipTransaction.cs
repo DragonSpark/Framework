@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 
-namespace DragonSpark.Application.Runtime;
+namespace DragonSpark.Application.Model.Sequences;
 
 public sealed class MembershipTransaction<T> : MembershipTransaction<T, T>
 {
 	public static MembershipTransaction<T> Default { get; } = new MembershipTransaction<T>();
 
-	MembershipTransaction() {}
+	MembershipTransaction() { }
 }
 
 public class MembershipTransaction<T, V> : IMembershipTransaction<T, V> where V : T

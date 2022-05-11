@@ -1,13 +1,13 @@
 ﻿using DragonSpark.Model.Sequences.Memory;
 using System;
 
-namespace DragonSpark.Application.Runtime;
+namespace DragonSpark.Application.Model.Sequences;
 
 public readonly struct Transactions<T> : IDisposable
 {
 	public Transactions(Leasing<T> add, Leasing<Update<T>> update, Leasing<T> delete)
 	{
-		Add    = add;
+		Add = add;
 		Update = update;
 		Delete = delete;
 	}
@@ -24,7 +24,7 @@ public readonly struct Transactions<T> : IDisposable
 
 	public void Deconstruct(out Memory<T> add, out Memory<Update<T>> update, out Memory<T> delete)
 	{
-		add    = Add.AsMemory();
+		add = Add.AsMemory();
 		update = Update.AsMemory();
 		delete = Delete.AsMemory();
 	}

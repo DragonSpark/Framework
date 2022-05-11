@@ -162,4 +162,22 @@ public static partial class ExtensionMethods
 
 		return result;
 	}
+
+	public static IEnumerable<TLeft> Outstanding<TLeft, TRight, TKey>(this IEnumerable<TLeft> @this,
+	                                                                  IEnumerable<TRight> other,
+	                                                                  Func<TLeft, TKey> leftKey,
+	                                                                  Func<TRight, TKey> rightKey)
+		where TLeft : class
+		=> @this.OuterJoin(other, leftKey, rightKey, (left, right) => right is null ? left : default)
+		        .Where(x => x is not null)!;
+
+	// ATTRIBUTION: https://stackoverflow.com/a/39020068/10340424
+	public static IEnumerable<TResult> OuterJoin<TLeft, TRight, TKey, TResult>(this IEnumerable<TLeft> @this,
+	                                                                           IEnumerable<TRight> other,
+	                                                                           Func<TLeft, TKey> leftKey,
+	                                                                           Func<TRight, TKey> rightKey,
+	                                                                           Func<TLeft, TRight?, TResult> result)
+		=> @this.GroupJoin(other, leftKey, rightKey, (l, r) => new { l, r })
+		        .SelectMany(o => o.r.DefaultIfEmpty(), (l, r) => new { lft = l.l, rght = r })
+		        .Select(o => result(o.lft, o.rght));
 }

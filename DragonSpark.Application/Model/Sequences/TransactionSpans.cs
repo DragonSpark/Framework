@@ -1,12 +1,12 @@
 ﻿using System;
 
-namespace DragonSpark.Application.Runtime;
+namespace DragonSpark.Application.Model.Sequences;
 
 public readonly struct TransactionSpans<T>
 {
 	public TransactionSpans(Memory<T> add, Memory<Update<T>> update, Memory<T> delete)
 	{
-		Add    = add;
+		Add = add;
 		Update = update;
 		Delete = delete;
 	}
@@ -19,7 +19,7 @@ public readonly struct TransactionSpans<T>
 
 	public void Deconstruct(out Span<T> add, out Span<Update<T>> update, out Span<T> delete)
 	{
-		add    = Add.Span;
+		add = Add.Span;
 		update = Update.Span;
 		delete = Delete.Span;
 	}

@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Runtime;
+﻿using DragonSpark.Application.Model.Sequences;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;

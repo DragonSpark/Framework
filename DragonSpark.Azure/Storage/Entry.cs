@@ -6,7 +6,7 @@ namespace DragonSpark.Azure.Storage;
 
 sealed class Entry : IEntry
 {
-	readonly BlobContainerClient                          _client;
+	readonly BlobContainerClient                    _client;
 	readonly ISelecting<BlobClient, IStorageEntry?> _entry;
 
 	public Entry(BlobContainerClient client) : this(client, DetermineClientEntry.Default) {}
