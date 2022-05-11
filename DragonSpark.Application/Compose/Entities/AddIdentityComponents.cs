@@ -19,15 +19,15 @@ sealed class AddIdentityComponents<T> : ICommand<IServiceCollection> where T : c
 	{
 		parameter.Start<IStateViews<T>>()
 		         .Forward<StateViews<T>>()
-				 .Decorate<PolicyAwareStateViews<T>>()
+		         .Decorate<PolicyAwareStateViews<T>>()
 		         .Decorate<MemoryAwareStateViews<T>>()
 		         .Decorate<AnonymousAwareState<T>>()
 		         .Scoped()
-		         //
+//
 		         .Then.Start<IAdapters>()
 		         .Forward<Adapters<T>>()
 		         .Scoped()
-		         //
+//
 		         .Then.Start<IAuthenticationValidation>()
 		         .Forward<AuthenticationValidation<T>>()
 		         .Scoped()
@@ -37,11 +37,11 @@ sealed class AddIdentityComponents<T> : ICommand<IServiceCollection> where T : c
 		         .Then.Start<AuthenticationStateProvider>()
 		         .Forward<Revalidation>()
 		         .Scoped()
-		         //
+//
 		         .Then.Start<IUserClaimsPrincipalFactory<T>>()
 		         .Forward<UserClaimsPrincipals<T>>()
 		         .Scoped()
-				 //
+//
 		         .Then.Decorate<INavigateToSignOut, AuthenticationStateAwareNavigateToSignOut>();
 	}
 }
