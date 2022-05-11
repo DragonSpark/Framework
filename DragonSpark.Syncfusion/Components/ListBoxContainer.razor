@@ -1,25 +1,29 @@
 ﻿@using DragonSpark.Compose
 @using DragonSpark.Model
+@using NetFabric.Hyperlinq
+@using Syncfusion.Blazor.Data
 @using Syncfusion.Blazor.DropDowns
+@using System.Buffers
+@using System.Collections.ObjectModel
 
 @typeparam TValue
 @typeparam TItem where TItem : class
 
-<ListBox @ref="_subject" TValue="TValue[]" TItem="TItem" CssClass="@CssClass"
+<SfListBox @ref="_subject" TValue="TValue[]" TItem="TItem" CssClass="@CssClass"
     AllowDragAndDrop="AllowDragDrop" Scope="@Scope" DataSource="@Items" MaximumSelectionLength="1"
     Value="@CurrentValue"
 >
     <ListBoxFieldSettings Value="@IdNameField" Text="@DisplayNameField" />
     <ListBoxSelectionSettings Mode="SelectionMode.Single" />
-    <ListBoxEvents TValue="TValue[]" TItem="TItem" ValueChange="@OnSelect" />
+    <ListBoxEvents TValue="TValue[]" TItem="TItem" ValueChange="@OnSelect" OnActionComplete="@OnActionComplete" />
     @if (ChildContent is not null)
     {
         @ChildContent
     }
-</ListBox>
+</SfListBox>
 
 @code {
-    ListBox<TValue[], TItem> _subject = default!;
+    SfListBox<TValue[], TItem> _subject = default!;
 
     [Parameter]
     public bool AllowDragDrop { get; set; }
@@ -37,18 +41,7 @@
     public string DisplayNameField { get; set; } = "Name";
 
     [Parameter]
-    public ICollection<TItem> Items
-    {
-        get => _items;
-        set
-        {
-            if (!ReferenceEquals(_items, value))
-            {
-                _items = value;
-                Count = (ushort)_items.Count;
-            }
-        }
-    }	ICollection<TItem> _items = default!;
+    public ObservableCollection<TItem> Items { get; set; } = default!;
 
     [Parameter]
     public TItem Value
@@ -74,17 +67,30 @@
     public Func<TItem, TValue>? SelectValue { get; set; }
 
     TValue[] CurrentValue { get; set; } = Empty.Array<TValue>();
-    ushort Count { get; set; }
-
-    protected override async Task OnParametersSetAsync()
-    {
-        if (_items.Count != Count)
-        {
-            Count = (ushort)_items.Count;
-            await _subject.Refresh();
-        }
-    }
 
     Task OnSelect(ListBoxChangeEventArgs<TValue[], TItem> parameter)
         => ValueChanged.InvokeAsync(Value = _subject.GetDataByValue(parameter.Value).Single());
+
+    void OnActionComplete(ActionCompleteEventArgs<TItem> parameter)
+    {
+        switch (parameter.EventName)
+        {
+            case "MoveDown":
+            case "MoveTo":
+            case "MoveUp":
+                {
+                    using var source = _subject.GetDataList().AsValueEnumerable().ToArray(ArrayPool<TItem>.Shared);
+                    using var items = parameter.Result.AsValueEnumerable().ToArray(ArrayPool<TItem>.Shared);
+                    var       span = items.Memory.Span;
+                    for (ushort i = 0; i < items.Length; i++)
+                    {
+                        var current = span[i];
+                        var from = Items.IndexOf(current);
+                        var to = source.IndexOf(current);
+                        Items.Move(from, to);
+                    }
+                }
+                break;
+        }
+    }
 }
