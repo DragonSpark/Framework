@@ -1,4 +1,5 @@
-﻿@using DragonSpark.Compose
+﻿@using DragonSpark.Application.Model.Sequences
+@using DragonSpark.Compose
 @using DragonSpark.Model
 @using NetFabric.Hyperlinq
 @using Syncfusion.Blazor.Data
@@ -41,7 +42,7 @@
     public string DisplayNameField { get; set; } = "Name";
 
     [Parameter]
-    public ObservableCollection<TItem> Items { get; set; } = default!;
+    public ObservedList<TItem> Items { get; set; } = default!;
 
     [Parameter]
     public TItem Value
@@ -52,7 +53,7 @@
             if (_value != value)
             {
                 _value = value;
-                CurrentValue = SelectValue is not null ? SelectValue.Verify()(_value).Yield().ToArray() : Empty.Array<TValue>();
+                CurrentValue = _value.Account() is not null && SelectValue is not null ? SelectValue.Verify()(_value).Yield().ToArray() : Empty.Array<TValue>();
             }
         }
     }	TItem _value = default!;

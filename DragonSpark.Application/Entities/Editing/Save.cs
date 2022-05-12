@@ -18,9 +18,11 @@ public sealed class Save : IOperation
 	}
 }
 
-public sealed class Save<T> : Update<T> where T : class
+public class Save<T> : Update<T> where T : class
 {
 	public Save(IEnlistedScopes scopes) : base(scopes) {}
+
+	protected Save(IScopes scopes) : base(scopes) {}
 }
 
 public class Save<TIn, TOut> : IOperation<TIn> where TOut : class
