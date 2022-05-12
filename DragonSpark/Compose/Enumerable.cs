@@ -168,7 +168,7 @@ public static partial class ExtensionMethods
 	                                                                  Func<TLeft, TKey> leftKey,
 	                                                                  Func<TRight, TKey> rightKey)
 		=> @this.OuterJoin(other, leftKey, rightKey, (left, right) => right is null ? left : default)
-		        .Where(x => x is not null);
+		        .Where(x => x is not null)!;
 
 	// ATTRIBUTION: https://stackoverflow.com/a/39020068/10340424
 	public static IEnumerable<TResult> OuterJoin<TLeft, TRight, TKey, TResult>(this IEnumerable<TLeft> @this,
