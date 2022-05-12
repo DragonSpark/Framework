@@ -2,5 +2,5 @@
 
 namespace DragonSpark.Application.Model.Sequences;
 
-public readonly record struct ActionMemory<TModel, TView>(Memory<TView> Add, Memory<Update<TModel, TView>> Update,
+public readonly record struct ActionMemory<TView, TModel>(Memory<TView> Add, Memory<Update<TView, TModel>> Update,
                                                           Memory<TModel> Delete);

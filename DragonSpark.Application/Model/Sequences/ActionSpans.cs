@@ -2,22 +2,10 @@
 
 namespace DragonSpark.Application.Model.Sequences;
 
-public readonly struct ActionSpans<TModel, TView>
+public readonly record struct ActionSpans<TView, TModel>(Memory<TView> Add, Memory<Update<TView, TModel>> Update,
+                                                         Memory<TModel> Delete)
 {
-	public ActionSpans(Memory<TView> add, Memory<Update<TModel, TView>> update, Memory<TModel> delete)
-	{
-		Add    = add;
-		Update = update;
-		Delete = delete;
-	}
-
-	public Memory<TView> Add { get; }
-
-	public Memory<Update<TModel, TView>> Update { get; }
-
-	public Memory<TModel> Delete { get; }
-
-	public void Deconstruct(out Span<TView> add, out Span<Update<TModel, TView>> update, out Span<TModel> delete)
+	public void Deconstruct(out Span<TView> add, out Span<Update<TView, TModel>> update, out Span<TModel> delete)
 	{
 		add    = Add.Span;
 		update = Update.Span;

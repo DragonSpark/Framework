@@ -7,6 +7,14 @@
 	<NoWarn>EF1001</NoWarn>
   </PropertyGroup>
 
+  <!--<ItemGroup>
+    <None Remove=".editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EditorConfigFiles Include=".editorconfig" />
+  </ItemGroup>-->
+
 
   <ItemGroup>
 	<PackageReference Include="Flurl" Version="3.0.5" />
@@ -31,7 +39,7 @@
 	<PackageReference Include="SmartFormat.NET" Version="3.0.0" />
 	<PackageReference Include="System.Linq.Async" Version="6.0.1" />
 	<PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.18" />
-	  
+
   </ItemGroup>
 
   <ItemGroup>
