@@ -62,6 +62,9 @@
     public EventCallback<TItem> ValueChanged { get; set; }
 
     [Parameter]
+    public EventCallback Updated { get; set; }
+
+    [Parameter]
     public RenderFragment? ChildContent { get; set; }
 
     [Parameter]
@@ -69,8 +72,18 @@
 
     TValue[] CurrentValue { get; set; } = Empty.Array<TValue>();
 
+    Func<Task> _update = default!;
+
+    protected override void OnInitialized()
+    {
+        _update = Update;
+        base.OnInitialized();
+    }
+
     Task OnSelect(ListBoxChangeEventArgs<TValue[], TItem> parameter)
         => ValueChanged.InvokeAsync(Value = _subject.GetDataByValue(parameter.Value).Single());
+
+    Task Update() => Updated.InvokeAsync(this);
 
     void OnActionComplete(ActionCompleteEventArgs<TItem> parameter)
     {
@@ -90,6 +103,7 @@
                         var to = source.IndexOf(current);
                         Items.Move(from, to);
                     }
+                    InvokeAsync(_update);
                 }
                 break;
         }
