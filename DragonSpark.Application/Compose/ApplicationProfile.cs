@@ -29,12 +29,3 @@ public class ApplicationProfile : IApplicationProfile
 		_application(parameter);
 	}
 }
-
-// TODO:
-
-public sealed class DefaultApplicationProfile : ApplicationProfile
-{
-	public static DefaultApplicationProfile Default { get; } = new();
-
-	DefaultApplicationProfile() : base(_ => {}, _ => {}) {}
-}
