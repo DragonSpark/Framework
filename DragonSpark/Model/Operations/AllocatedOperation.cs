@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations;
 
-public class AllocatedOperation<T> : Select<T, Task>
+public class AllocatedOperation<T> : Select<T, Task>, IAllocated<T>
 {
 	public AllocatedOperation(ISelect<T, Task> @select) : base(@select) {}
 
