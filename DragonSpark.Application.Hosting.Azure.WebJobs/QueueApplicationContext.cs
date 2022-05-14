@@ -6,7 +6,7 @@ using System;
 
 namespace DragonSpark.Application.Hosting.Azure.WebJobs;
 
-public sealed class QueueApplicationContext<T> where T : class, IApplication
+public sealed class QueueApplicationContext<T> where T : class, IApplication // TODO: remove
 {
 	readonly BuildHostContext _subject;
 

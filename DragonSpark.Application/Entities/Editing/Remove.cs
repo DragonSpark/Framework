@@ -32,7 +32,7 @@ public class Remove<TIn, T> : Modify<TIn, T> where T : class
 		: base(select, Start.An.Operation(configure).Append(RemoveLocal<T>.Default)) {}
 }
 
-public class Remove<T> : Modify<T> where T : class
+public sealed class Remove<T> : Modify<T> where T : class
 {
-	protected Remove(IScopes scopes) : base(scopes, RemoveLocal<T>.Default.Then().Operation()) {}
+	public Remove(IEnlistedScopes scopes) : base(scopes, RemoveLocal<T>.Default.Then().Operation()) {}
 }

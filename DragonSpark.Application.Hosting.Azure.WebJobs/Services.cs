@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Application.Hosting.Azure.WebJobs;
 
-sealed class Services<T> : ICommand<IServiceCollection> where T : QueueHost
+sealed class Services<T> : ICommand<IServiceCollection> where T : QueueHost // TODO: Remove
 {
 	public static Services<T> Default { get; } = new();
 
