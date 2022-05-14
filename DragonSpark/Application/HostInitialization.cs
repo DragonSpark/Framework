@@ -8,7 +8,7 @@ namespace DragonSpark.Application;
 
 sealed class HostInitialization : IHostInitializer
 {
-	public static HostInitialization Default { get; } = new HostInitialization();
+	public static HostInitialization Default { get; } = new();
 
 	HostInitialization() {}
 

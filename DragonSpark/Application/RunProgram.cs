@@ -7,7 +7,7 @@ namespace DragonSpark.Application;
 
 sealed class RunProgram : IOperation<IHost>
 {
-	public static RunProgram Default { get; } = new RunProgram();
+	public static RunProgram Default { get; } = new();
 
 	RunProgram() {}
 
