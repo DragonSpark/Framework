@@ -26,7 +26,7 @@ public sealed class BuildHostContext : ISelecting<HostBuilder, IHost>, IActivate
 		=> Select(configuration.Then().ToConfiguration().Out());
 
 	public BuildHostContext Configure(params ICommand<IServiceCollection>[] configurations)
-		=> Configure(new CompositeCommand<IServiceCollection>(configurations));
+		=> Configure(new Commands<IServiceCollection>(configurations));
 
 	public BuildHostContext Configure(ICommand<IServiceCollection> configure) => Configure(configure.Execute);
 

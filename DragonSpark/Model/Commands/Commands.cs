@@ -2,16 +2,16 @@
 
 namespace DragonSpark.Model.Commands;
 
-public class CompositeCommand<T> : ICommand<T>
+public class Commands<T> : ICommand<T>
 {
 	readonly Array<ICommand<T>> _items;
 	readonly uint               _length;
 
-	public CompositeCommand(params ICommand<T>[] items) : this(new Array<ICommand<T>>(items)) {}
+	public Commands(params ICommand<T>[] items) : this(new Array<ICommand<T>>(items)) {}
 
-	public CompositeCommand(Array<ICommand<T>> items) : this(items, items.Length) {}
+	public Commands(Array<ICommand<T>> items) : this(items, items.Length) {}
 
-	public CompositeCommand(Array<ICommand<T>> items, uint length)
+	public Commands(Array<ICommand<T>> items, uint length)
 	{
 		_items  = items;
 		_length = length;

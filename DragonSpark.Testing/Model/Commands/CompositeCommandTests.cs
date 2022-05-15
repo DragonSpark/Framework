@@ -12,7 +12,7 @@ public class CompositeCommandTests
 	public void Verify()
 	{
 		var count = 0;
-		new CompositeCommand<None>(new Command<None>(_ => count++), new Command<None>(_ => count++))
+		new Commands<None>(new Command<None>(_ => count++), new Command<None>(_ => count++))
 			.Execute();
 		count.Should()
 		     .Be(2);

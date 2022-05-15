@@ -41,14 +41,14 @@ public class CommandContext<T> : DragonSpark.Model.Results.Instance<ICommand<T>>
 		=> new(new AppendedCommand<T>(command, Get()));
 
 	public CommandContext<T> Prepend(params ICommand<T>[] commands)
-		=> new(new CompositeCommand<T>(commands.Append(Get()).Result()));
+		=> new(new Commands<T>(commands.Append(Get()).Result()));
 
 	public CommandContext<T> Append(System.Action<T> command) => Append(Start.A.Command(command).Get());
 
 	public CommandContext<T> Append(ICommand<T> command) => new(new AppendedCommand<T>(Get(), command));
 
 	public CommandContext<T> Append(params ICommand<T>[] commands)
-		=> new(new CompositeCommand<T>(commands.Prepend(Get()).Result()));
+		=> new(new Commands<T>(commands.Prepend(Get()).Result()));
 
 
 	public Selector<T, None> Selection() => new(new Action<T>(this));

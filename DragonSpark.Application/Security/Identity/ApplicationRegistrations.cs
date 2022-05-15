@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Application.Security.Identity;
 
-public sealed class ApplicationRegistrations<TContext, T> : CompositeCommand<IServiceCollection>
+public sealed class ApplicationRegistrations<TContext, T> : Commands<IServiceCollection>
 	where TContext : DbContext
 	where T : IdentityUser
 {
