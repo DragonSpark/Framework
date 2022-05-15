@@ -20,8 +20,8 @@ public abstract class ValidationComponent : ComponentBase, IDisposable
 		{
 			if (_enabled != value)
 			{
-				_enabled = value;
-				Update();
+				_enabled        = value;
+				UpdateRequested = true;
 			}
 		}
 	}
@@ -58,6 +58,8 @@ public abstract class ValidationComponent : ComponentBase, IDisposable
 		}
 	}
 
+	bool UpdateRequested { get; set; }
+
 	void ValidationRequested(object? sender, ValidationRequestedEventArgs e)
 	{
 		if (!_messages[Identifier].AsValueEnumerable().Any())
@@ -75,6 +77,15 @@ public abstract class ValidationComponent : ComponentBase, IDisposable
 	}
 
 	protected abstract bool Validate();
+
+	protected override void OnParametersSet()
+	{
+		if (UpdateRequested && !(UpdateRequested = false))
+		{
+			Update();
+		}
+		base.OnParametersSet();
+	}
 
 	void Update()
 	{
