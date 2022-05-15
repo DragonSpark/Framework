@@ -22,7 +22,6 @@ sealed class ConfigureHostBuilderFromEnvironmentCommand : ICommand<HostingInput>
 
 	public void Execute(HostingInput parameter)
 	{
-		var configuration = _configuration.Get(parameter.Context);
-		configuration.Execute(parameter);
+		_configuration.Get(parameter.Context).Execute(parameter);
 	}
 }

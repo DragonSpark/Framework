@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Composition.Compose;
+using DragonSpark.Composition.Compose.Deferred;
 using DragonSpark.Model.Commands;
 using DragonSpark.Runtime.Environment;
 using LightInject;
@@ -98,8 +99,16 @@ public static class Extensions
 	public static BuildHostContext WithDefaultComposition(this BuildHostContext @this)
 		=> @this.Configure(Registrations.Default).ComposeUsing<ConfigureDefaultActivation>();
 
+	public static BuildHostContext WithDeferredRegistrations(this BuildHostContext @this)
+		=> @this.Configure(AddDeferredRegistrations.Default);
+
+	public static BuildHostContext ApplyDeferredRegistrations(this BuildHostContext @this)
+		=> @this.Configure(Compose.Deferred.ApplyDeferredRegistrations.Default);
+
 	public static BuildHostContext RegisterModularity(this BuildHostContext @this)
 		=> @this.Configure(Composition.RegisterModularity.Default);
+
+	public static ICommand<IServiceCollection> Deferred(this ICommand<IServiceCollection> @this) => new Deferred(@this);
 
 	/*public static BuildHostContext RegisterModularity<T>(this BuildHostContext @this)
 		where T : class, IActivateUsing<Assembly>, IArray<Type>
