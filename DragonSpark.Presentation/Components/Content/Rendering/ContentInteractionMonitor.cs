@@ -1,4 +1,6 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Presentation.Connections.Circuits;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
 using System;
 using System.Threading.Tasks;
@@ -10,7 +12,8 @@ partial class ContentInteractionMonitor
 	Func<Task>                             _execute = default!;
 	EventHandler<LocationChangedEventArgs> _changed = default!;
 
-	bool Rendered { get; set; }
+	[Inject]
+	Rendered Rendered { get; set; } = default!;
 
 	protected override void OnInitialized()
 	{
@@ -38,9 +41,9 @@ partial class ContentInteractionMonitor
 		{
 			StateHasChanged();
 		}
-		else if (!Rendered)
+		else if (!Rendered.Get())
 		{
-			Rendered = true;
+			Rendered.Execute(true);
 			Debounce(_execute, (int)PreRenderingWindow.Default.Get().TotalMilliseconds);
 		}
 	}
@@ -48,7 +51,7 @@ partial class ContentInteractionMonitor
 	public override void Dispose()
 	{
 		base.Dispose();
-		if (Rendered)
+		if (Rendered.Get())
 		{
 			Interaction.Execute();
 		}

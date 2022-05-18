@@ -37,6 +37,11 @@ public sealed class CallbackContext : IResult<EventCallback>
 		return result;
 	}
 
+	public OperationCallbackContext Throttle() => Throttle(TimeSpan.FromSeconds(1));
+
+	public OperationCallbackContext Throttle(TimeSpan duration)
+		=> new (_receiver.Verify(), new ThrottleEntryOperation(Start.A.Result(_method).Then().Structure().Out(), duration));
+
 	public OperationCallbackContext UpdateActivity()
 	{
 		var receiver  = _receiver.Verify();

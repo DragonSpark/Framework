@@ -14,8 +14,8 @@ sealed class RecordAwareCircuitHandler : CircuitHandler
 
 	public RecordAwareCircuitHandler(RegisterCircuit register, ClearCircuit clear, Template template)
 	{
-		_register      = register;
-		_clear         = clear;
+		_register = register;
+		_clear    = clear;
 		_template = template;
 	}
 

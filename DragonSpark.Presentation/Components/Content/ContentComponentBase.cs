@@ -1,7 +1,9 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Presentation.Components.Content.Rendering;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
 using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content;
@@ -42,11 +44,17 @@ public abstract class ContentComponentBase<T> : ComponentBase
 		_current = null;
 	}
 
-	protected override ValueTask RefreshState()
+	// TODO:
+	[CascadingParameter]
+	Task<AuthenticationState> Service { get; set; } = default!;
+	protected override async ValueTask RefreshState()
 	{
+		// TODO:
+		var state = await Service;
+		Debug.WriteLine("RefreshState: {0}", state.User.Identity?.Name ?? "Anon");
 		Interaction.Execute();
 		RequestNewContent();
 		Apply();
-		return base.RefreshState();
+		await base.RefreshState();
 	}
 }

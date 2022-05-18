@@ -129,6 +129,8 @@ public static partial class ExtensionMethods
 		return result!;
 	}
 
+	public static ITime Then(this DateTimeOffset @this) => new FixedTime(@this);
+
 	public static bool Inverse(this in bool @this) => !@this;
 
 	public static short Degrade(this in ushort @this) => (short)@this;

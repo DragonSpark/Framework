@@ -1,0 +1,51 @@
+﻿@using System.Timers
+@using DragonSpark.Runtime
+
+<Refresher Timer="_timer" Repeat="true" Interval="@Interval" Updated="@OnTick" />
+@if(ChildContent is not null)
+{
+    @ChildContent(Until)
+}
+
+@code {
+    Timer? _timer = new ();
+
+    [Parameter]
+    public TimeSpan Interval { get; set; } = TimeSpan.FromSeconds(1);
+
+    [Parameter]
+    public DateTimeOffset Until 
+    {
+        get => _until;
+        set
+        {
+            if (_until != value)
+            {
+                _until = value;
+                _timer = new();
+            }
+        }
+    }	DateTimeOffset _until = default!;
+
+    [Parameter]
+    public RenderFragment<DateTimeOffset>? ChildContent { get; set; }
+
+    [Parameter]
+    public EventCallback Updated { get; set; }
+
+    [Parameter]
+    public EventCallback Refreshed { get; set; }
+
+
+    Task OnTick()
+    {
+        var time = Time.Default.Get();
+        if (time >= Until && _timer is not null)
+        {
+            _timer = null;
+            return Refreshed.InvokeAsync(this);
+        }
+        return Updated.InvokeAsync();
+    }
+
+}

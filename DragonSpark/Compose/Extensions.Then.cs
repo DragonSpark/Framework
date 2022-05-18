@@ -229,6 +229,9 @@ public static partial class ExtensionMethods
 
 	public static IResulting<T> Out<T>(this ResultContext<ValueTask<T>> @this) => @this.Get().Out();
 	public static IResulting<T> Out<T>(this IResult<ValueTask<T>> @this) => new Resulting<T>(@this);
+	
+	public static IDepending Out(this ResultContext<ValueTask<bool>> @this) => @this.Get().Out();
+	public static IDepending Out(this IResult<ValueTask<bool>> @this) => new Depending(@this);
 
 	/**/
 

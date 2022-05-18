@@ -89,6 +89,8 @@ public static partial class Extensions
 
 	public static IWindow FromNow(this ITime @this, TimeSpan window) => new FromNow(@this, window);
 
+	public static IWindow Outside(this ITime @this, TimeSpan window) => new Outside(@this, window);
+
 	/**/
 
 	public static QueryComposer<T> Query<T>(this ModelContext _) where T : class => Set<T>.Default.Then();
