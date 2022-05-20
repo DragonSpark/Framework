@@ -10,7 +10,7 @@ sealed class ExistingAwareConnectionPolicy : Instance<PolicyBuilder<HttpResponse
 	public static ExistingAwareConnectionPolicy Default { get; } = new ExistingAwareConnectionPolicy();
 
 	ExistingAwareConnectionPolicy()
-		: base(ConnectionPolicy.Default.Then()
+		: base(ConnectionBuilder.Default.Then()
 		                       .Select(x => x.OrResult(y => y.StatusCode == System.Net.HttpStatusCode.NotFound))
 		                       .Instance()) {}
 }

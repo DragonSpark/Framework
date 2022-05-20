@@ -4,9 +4,9 @@ using System.Net.Http;
 
 namespace DragonSpark.Application.Communication;
 
-sealed class ConnectionPolicy : Policy<HttpResponseMessage>
+sealed class ConnectionBuilder : Builder<HttpResponseMessage>
 {
-	public static ConnectionPolicy Default { get; } = new ConnectionPolicy();
+	public static ConnectionBuilder Default { get; } = new ConnectionBuilder();
 
-	ConnectionPolicy() : base(HttpPolicyExtensions.HandleTransientHttpError()) {}
+	ConnectionBuilder() : base(HttpPolicyExtensions.HandleTransientHttpError()) {}
 }

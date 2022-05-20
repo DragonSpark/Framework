@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Model.Operations;
 using Majorsoft.Blazor.Components.Common.JsInterop.Focus;
-using Microsoft.JSInterop;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Environment.Browser.Document;
@@ -21,12 +20,5 @@ sealed class FocusedElement : IFocusedElement
 
 	public IOperation Store { get; }
 
-	public async ValueTask DisposeAsync()
-	{
-		try
-		{
-			await _previous.DisposeAsync().ConfigureAwait(false);
-		}
-		catch (JSDisconnectedException) {}
-	}
+	public ValueTask DisposeAsync() => _previous.DisposeAsync();
 }

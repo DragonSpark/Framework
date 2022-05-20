@@ -1,24 +1,8 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Operations;
-using DragonSpark.Presentation.Environment.Browser.Document;
-using Microsoft.JSInterop;
-using System.Threading.Tasks;
+﻿using DragonSpark.Presentation.Environment.Browser.Document;
 
 namespace DragonSpark.Presentation.Environment.Browser;
 
-sealed class ConnectionAwareStoreFocusedElement : IOperation
+sealed class ConnectionAwareStoreFocusedElement : ConnectionAware
 {
-	readonly StoreFocusedElement _previous;
-
-	public ConnectionAwareStoreFocusedElement(StoreFocusedElement previous) => _previous = previous;
-
-	public async ValueTask Get()
-	{
-		try
-		{
-			await _previous.Await();
-		}
-		catch (JSDisconnectedException) {}
-		catch (TaskCanceledException) {}
-	}
+	public ConnectionAwareStoreFocusedElement(StoreFocusedElement previous) : base(previous) {}
 }

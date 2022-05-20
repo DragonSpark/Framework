@@ -22,7 +22,7 @@ sealed class ConfigureApi<T> : ICommand<IServiceCollection> where T : class
 		       ExistingAwareConnectionPolicy.Default.Then()
 		                                    .Select(RetryPolicy.Default)
 		                                    .Instance(),
-		       ConnectionPolicy.Default.Then().Select(CircuitBreakerPolicy.Default).Instance()) {}
+		       ConnectionBuilder.Default.Then().Select(CircuitBreakerPolicy.Default).Instance()) {}
 
 	public ConfigureApi(Action<IServiceProvider, HttpClient> configure,
 	                    Func<IServiceProvider, RefitSettings?> settings,

@@ -9,5 +9,5 @@ public sealed class DurableApplicationContentPolicy : DeferredSingleton<IAsyncPo
 	public static DurableApplicationContentPolicy Default { get; } = new DurableApplicationContentPolicy();
 
 	DurableApplicationContentPolicy()
-		: base(ApplicationContentPolicy.Default.Then().Select(ApplicationContentRetryPolicy.Default)) {}
+		: base(ApplicationContentBuilder.Default.Then().Select(ApplicationContentRetryPolicy.Default)) {}
 }

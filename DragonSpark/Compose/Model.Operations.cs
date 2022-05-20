@@ -3,6 +3,7 @@ using DragonSpark.Model;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
+using System;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
@@ -92,9 +93,10 @@ public static partial class ExtensionMethods
 
 	public static Task Allocate(this IOperation<None> @this) => @this.Get().AsTask();
 
-	public static Task Allocate(this IOperation @this) => @this.Get().AsTask();
+	public static Task Allocate(this IResult<ValueTask> @this) => @this.Get().AsTask();
+	public static Task Allocate(this Func<ValueTask> @this) => @this().AsTask();
 
-	public static Task Allocate<T>(this IOperation<T> @this, T parameter) => @this.Get(parameter).AsTask();
+	public static Task Allocate<T>(this ISelect<T, ValueTask> @this, T parameter) => @this.Get(parameter).AsTask();
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static async ValueTask<TOut?> Accounting<TIn, TOut>(this ISelecting<TIn, TOut> @this, TIn parameter)

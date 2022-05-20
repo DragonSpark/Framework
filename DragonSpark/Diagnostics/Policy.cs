@@ -1,13 +1,12 @@
-﻿using Polly;
+﻿using DragonSpark.Model.Results;
+using Polly;
+using System;
 
 namespace DragonSpark.Diagnostics;
 
-public class Policy<T> : Model.Results.Instance<PolicyBuilder<T>>
+public class Policy : DeferredSingleton<IAsyncPolicy>
 {
-	protected Policy(PolicyBuilder<T> instance) : base(instance) {}
-}
+	protected Policy(Func<IAsyncPolicy> source) : base(source) {}
 
-public class Policy : Model.Results.Instance<PolicyBuilder>
-{
-	protected Policy(PolicyBuilder instance) : base(instance) {}
+	protected Policy(Lazy<IAsyncPolicy> source) : base(source) {}
 }
