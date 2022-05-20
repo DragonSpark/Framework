@@ -1,3 +1,3 @@
 ﻿export function GetClientTimeOffset(): number {
-	return new Date().getTimezoneOffset();
+	return new Date().getTimezoneOffset() * -1;
 }
