@@ -38,6 +38,8 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Then.Decorate<IExceptions, CompensationAwareExceptions>()
 		         .Decorate<IExceptions, NotificationAwareExceptions>()
 		         .Decorate<IExceptions, NavigationAwareExceptions>()
+				 //
+				 .Decorate<ILogException, NavigationAwareLogException>()
 		         //
 		         .Start<IEventAggregator>()
 		         .Forward<EventAggregator>()
