@@ -1,0 +1,32 @@
+﻿@if(Rendered)
+{
+    <Evaluate Force="true" Type="@Type" ChildContent="@Subsequent" />
+}
+else
+{
+    <Evaluate Type="@Type" ChildContent="@Initial" />
+}
+
+@code {
+
+    [Parameter]
+    public RenderFragment Initial { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment Subsequent { get; set; } = default!;
+
+    [Parameter]
+    public string Type { get; set; } = "text/javascript";
+
+    [Parameter]
+    public bool Force { get; set; }
+
+    bool Rendered { get; set; }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        Rendered |= firstRender;
+        base.OnAfterRender(firstRender);
+    }
+
+}
