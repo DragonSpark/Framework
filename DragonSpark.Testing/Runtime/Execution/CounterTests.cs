@@ -9,7 +9,7 @@ namespace DragonSpark.Testing.Runtime.Execution;
 public sealed class CounterTests
 {
 	[Theory, AutoDataModest]
-	public void Verify(Counter sut)
+	public void Verify(SafeCounter sut)
 	{
 		for (var i = 0; i < 100; i++)
 		{
@@ -18,7 +18,7 @@ public sealed class CounterTests
 	}
 
 	[Theory, AutoData]
-	public void VerifyReference(Counter<object> sut, object first, object second)
+	public void VerifyReference(SafeCounter<object> sut, object first, object second)
 	{
 		for (var i = 0; i < 100; i++)
 		{
@@ -32,7 +32,7 @@ public sealed class CounterTests
 	}
 
 	[Theory, AutoData]
-	public void VerifyEquality(Counter<int> sut, int first, int second)
+	public void VerifyEquality(SafeCounter<int> sut, int first, int second)
 	{
 		for (var i = 0; i < 100; i++)
 		{
@@ -48,6 +48,6 @@ public sealed class CounterTests
 	[Fact]
 	public void VerifyBasic()
 	{
-		Start.A.Selection<int>().AndOf<Counter>().By.Instantiation.Return(1);
+		Start.A.Selection<int>().AndOf<SafeCounter>().By.Instantiation.Return(1);
 	}
 }

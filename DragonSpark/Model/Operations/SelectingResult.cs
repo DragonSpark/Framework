@@ -4,15 +4,15 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations;
 
-public class SelectResulting<TIn, TOut> : IResulting<TOut>
+public class SelectingResult<TIn, TOut> : IResulting<TOut>
 {
 	readonly IResulting<TIn>            _previous;
 	readonly Func<TIn, ValueTask<TOut>> _select;
 
-	public SelectResulting(IResulting<TIn> previous, Func<TIn, ValueTask<TOut>> select)
+	public SelectingResult(IResulting<TIn> previous, Func<TIn, ValueTask<TOut>> select)
 	{
-		_previous    = previous;
-		_select = @select;
+		_previous = previous;
+		_select   = @select;
 	}
 
 	public async ValueTask<TOut> Get()

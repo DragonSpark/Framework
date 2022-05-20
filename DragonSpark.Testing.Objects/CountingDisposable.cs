@@ -9,7 +9,7 @@ public sealed class CountingDisposable : Disposable, IResult<int>
 {
 	readonly ICounter _counter;
 
-	public CountingDisposable() : this(new Counter()) {}
+	public CountingDisposable() : this(new SafeCounter()) {}
 
 	public CountingDisposable(ICounter counter) : base(counter.Execute) => _counter = counter;
 

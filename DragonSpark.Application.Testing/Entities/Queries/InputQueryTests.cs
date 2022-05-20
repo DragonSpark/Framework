@@ -22,7 +22,7 @@ public sealed class InputQueryTests
 	[Fact]
 	public async Task VerifySelected()
 	{
-		var counter = new Counter();
+		var counter = new SafeCounter();
 		var factory = new CounterAwareDbContexts<Context>(new InMemoryDbContextFactory<Context>(), counter);
 		{
 			await using var context = factory.CreateDbContext();
@@ -124,7 +124,7 @@ public sealed class InputQueryTests
 	[Fact]
 	public async Task VerifyComplexSelected()
 	{
-		var counter = new Counter();
+		var counter = new SafeCounter();
 		var contexts =
 			new CounterAwareDbContexts<ContextWithData>(new InMemoryDbContextFactory<ContextWithData>(), counter);
 		{

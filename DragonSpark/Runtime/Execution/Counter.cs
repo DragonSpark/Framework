@@ -1,29 +1,21 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model;
-using DragonSpark.Model.Selection;
-using JetBrains.Annotations;
-using System.Threading;
+﻿using DragonSpark.Model;
+using DragonSpark.Model.Results;
 
 namespace DragonSpark.Runtime.Execution;
 
 public sealed class Counter : ICounter
 {
-	int _count;
+	readonly IMutable<int> _store;
 
-	public int Get() => _count;
+	public Counter() : this(new Variable<int>()) {}
+
+	public Counter(IMutable<int> store) => _store = store;
+
+	public int Get() => _store.Get();
 
 	public void Execute(None parameter)
 	{
-		Interlocked.Increment(ref _count);
+		_store.Execute(_store.Get() + 1);
 	}
 }
 
-[UsedImplicitly]
-public sealed class Counter<T> : Select<T, int> where T : notnull
-{
-	public Counter() : base(Start.A.Selection<T>()
-	                             .AndOf<Counter>()
-	                             .By.Instantiation.Get()
-	                             .ToTable()
-	                             .Select(x => x.Count())) {}
-}

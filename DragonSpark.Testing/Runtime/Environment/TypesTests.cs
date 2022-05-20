@@ -13,6 +13,6 @@ public sealed class TypesTests
 {
 	sealed class Types : Instances<Type>
 	{
-		public Types(Counter counter, IEnumerable<Type> types) : base(types.Select(counter.Parameter!)) {}
+		public Types(SafeCounter counter, IEnumerable<Type> types) : base(types.Select(counter.Parameter!)) {}
 	}
 }

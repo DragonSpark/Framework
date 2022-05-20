@@ -10,7 +10,7 @@ public sealed class First : ICondition
 	readonly ICounter _counter;
 
 	[UsedImplicitly]
-	public First() : this(new Counter()) {}
+	public First() : this(new SafeCounter()) {}
 
 	public First(ICounter counter) => _counter = counter;
 

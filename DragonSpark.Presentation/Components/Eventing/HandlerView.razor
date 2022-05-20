@@ -27,7 +27,8 @@
 
 	public async Task HandleAsync(T parameter)
 	{
-		if (Enabled && await Condition.Get(parameter))
+	    var b = await Condition.Get(parameter);
+	    if (Enabled && b)
 		{
 			await InvokeAsync(() => Received.InvokeAsync(parameter));
 		}

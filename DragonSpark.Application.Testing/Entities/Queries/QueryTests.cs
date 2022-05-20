@@ -48,7 +48,7 @@ public sealed class QueryTests
 	[Fact]
 	public async Task VerifyInvoke()
 	{
-		var counter = new Counter();
+		var counter = new SafeCounter();
 		var factory = new CounterAwareDbContexts<Context>(new InMemoryDbContextFactory<Context>(), counter);
 		{
 			await using var context = factory.CreateDbContext();
@@ -74,7 +74,7 @@ public sealed class QueryTests
 	[Fact]
 	public async Task VerifyEvaluate()
 	{
-		var counter = new Counter();
+		var counter = new SafeCounter();
 		var factory = new CounterAwareDbContexts<Context>(new InMemoryDbContextFactory<Context>(), counter);
 		{
 			await using var context = factory.CreateDbContext();
@@ -99,7 +99,7 @@ public sealed class QueryTests
 	[Fact]
 	public async Task VerifyComplex()
 	{
-		var counter = new Counter();
+		var counter = new SafeCounter();
 		var factory = new CounterAwareDbContexts<Context>(new InMemoryDbContextFactory<Context>(), counter);
 		{
 			await using var context = factory.CreateDbContext();
@@ -124,7 +124,7 @@ public sealed class QueryTests
 	[Fact]
 	public async Task VerifyParameter()
 	{
-		var counter = new Counter();
+		var counter = new SafeCounter();
 		var factory = new CounterAwareDbContexts<Context>(new InMemoryDbContextFactory<Context>(), counter);
 		{
 			await using var context = factory.CreateDbContext();

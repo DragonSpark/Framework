@@ -21,8 +21,9 @@ sealed class Registrations : ICommand<IServiceCollection>
 		         .Scoped()
 		         //
 		         .Then.Decorate<IIsInitialized, BotAwareIsInitialized>()
-				 //
-				 .Start<CreateDocumentElementHandle>().Include(x => x.Dependencies).Scoped()
-				 ;
+		         //
+		         .Start<CreateDocumentElementHandle>()
+		         .Include(x => x.Dependencies)
+		         .Scoped();
 	}
 }
