@@ -1,0 +1,27 @@
+﻿@using DragonSpark.Presentation.Environment.Browser
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@using DragonSpark.Application
+@typeparam T
+
+@inherits ComponentStateComponentBase<T>
+
+@ChildContent(Store)
+
+@code
+{
+    [Parameter]
+    public ProtectedBrowserStorage Storage { get; set; } = default!;
+
+    [CascadingParameter]
+    Task<AuthenticationState> State { get; set; } = default!;
+
+    IClientVariable<T> Store { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var state = await State.ConfigureAwait(false);
+        var name = state.User.UserName();
+        var key = $"{Owner.GetType().AssemblyQualifiedName}+{name}+{Qualifier}";
+        Store = new ComponentStateVariable<T>(key, Storage);
+    }
+}

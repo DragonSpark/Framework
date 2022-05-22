@@ -1,0 +1,62 @@
+﻿@using DragonSpark.Presentation.Environment.Browser
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@using DragonSpark.Compose
+
+@typeparam T
+
+@ChildContent(Binding)
+
+@code
+{
+    [Parameter]
+    public IClientVariable<T> Store { get; set; } = default!;
+
+    [Parameter]
+    public T DefaultValue { get; set; } = default!;
+
+    [Parameter]
+    public IEqualityComparer<T> Comparer { get; set; } = EqualityComparer<T>.Default;
+
+    [Parameter]
+    public RenderFragment<Binding<T>> ChildContent { get; set; } = default!;
+
+    ProtectedBrowserStorageResult<T>? Result { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Binding = new Binding<T>(DefaultValue, RequestUpdate);
+        base.OnInitialized();
+    }
+
+    void RequestUpdate(T parameter)
+    {
+        UpdateRequested = true;
+        StateHasChanged();
+    }
+
+    bool UpdateRequested { get; set; }
+    bool Rendered { get; set; }
+    Binding<T> Binding { get; set; } = default!;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (UpdateRequested && Rendered)
+        {
+            UpdateRequested = true;
+            await Store.Await(Binding.Value);
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        Rendered = true;
+        if (Result is null)
+        {
+            Result = await Store.Get();
+            if (Result?.Success ?? false)
+            {
+                Binding.Value = Result.Value.Value ?? DefaultValue;
+            }
+        }
+    }
+}

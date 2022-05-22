@@ -19,7 +19,7 @@ else
 {
 
     [Parameter]
-    public IHostedVariableDefinition<T> Definition { get; set; } = default!;
+    public IClientVariable<T> Definition { get; set; } = default!;
 
     [Parameter]
     public IResult<T> New { get; set; } = New<T>.Default;

@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model;
 using DragonSpark.Model.Operations;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using System;
@@ -6,21 +7,21 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Environment.Browser;
 
-public class HostedVariableDefinition<T> : IHostedVariableDefinition<T>
+public class ClientVariable<T> : IClientVariable<T>
 {
 	readonly string             _key;
-	readonly IHostedVariable<T> _store;
+	readonly IClientVariableAccessor<T> _store;
 
-	protected HostedVariableDefinition(Type key, ProtectedBrowserStorage storage)
+	protected ClientVariable(Type key, ProtectedBrowserStorage storage)
 		: this(key.AssemblyQualifiedName.Verify(), storage) {}
 
-	protected HostedVariableDefinition(string key, ProtectedBrowserStorage storage)
-		: this(key, new HostedVariable<T>(storage)) {}
+	protected ClientVariable(string key, ProtectedBrowserStorage storage)
+		: this(key, new ClientVariableAccessor<T>(storage)) {}
 
-	protected HostedVariableDefinition(string key, IHostedVariable<T> store)
+	protected ClientVariable(string key, IClientVariableAccessor<T> store)
 		: this(key, store, new Operation(store.Remove.Then().Bind(key))) {}
 
-	protected HostedVariableDefinition(string key, IHostedVariable<T> store, IOperation remove)
+	protected ClientVariable(string key, IClientVariableAccessor<T> store, IOperation remove)
 	{
 		Remove = remove;
 		_key   = key;
@@ -29,7 +30,7 @@ public class HostedVariableDefinition<T> : IHostedVariableDefinition<T>
 
 	public ValueTask<ProtectedBrowserStorageResult<T>> Get() => _store.Get(_key);
 
-	public ValueTask Get(T parameter) => _store.Get((_key, parameter));
+	public ValueTask Get(T parameter) => _store.Get(Pairs.Create(_key, parameter));
 
 	public IOperation Remove { get; }
 }

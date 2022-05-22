@@ -1,0 +1,9 @@
+﻿@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+
+@typeparam T
+
+@inherits ComponentStateComponentBase<T>
+
+@inject ProtectedLocalStorage Storage
+
+<ComponentStateComponent T="T" Owner="@Owner" Qualifier="@Qualifier" Storage="@Storage" ChildContent="@ChildContent" />
