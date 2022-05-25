@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Application.Diagnostics;
 using DragonSpark.Application.Navigation;
-using DragonSpark.Application.Runtime;
 using DragonSpark.Application.Security;
 using DragonSpark.Application.Security.Identity;
 using DragonSpark.Application.Security.Identity.Model;
@@ -34,10 +33,6 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         //
 		         .Then.Start<RefreshCurrentPath>()
 		         .And<CurrentPath>()
-		         .Scoped()
-		         //
-		         .Then.Start<IScopedTable>()
-		         .Forward<ScopedTable>()
 		         .Scoped()
 		         //
 		         .Then.Start<ICurrentContext>()

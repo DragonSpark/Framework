@@ -1,4 +1,4 @@
-﻿using DragonSpark.Model.Selection;
+﻿using DragonSpark.Text;
 using System;
 
 namespace DragonSpark.Presentation.Components;
@@ -6,7 +6,7 @@ namespace DragonSpark.Presentation.Components;
 /// <summary>
 /// ATTRIBUTION: https://www.nuget.org/packages/Radzen.Blazor/
 /// </summary>
-public sealed class UniqueIdentifier : ISelect<Guid, string>
+public sealed class UniqueIdentifier : IFormatter<Guid>
 {
 	public static UniqueIdentifier Default { get; } = new UniqueIdentifier();
 
