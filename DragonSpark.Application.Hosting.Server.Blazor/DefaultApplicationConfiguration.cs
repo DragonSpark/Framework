@@ -8,22 +8,21 @@ namespace DragonSpark.Application.Hosting.Server.Blazor;
 
 sealed class DefaultApplicationConfiguration : ICommand<IApplicationBuilder>
 {
-	readonly StaticFileOptions             _files;
+	public static DefaultApplicationConfiguration Default { get; } = new();
+
+	DefaultApplicationConfiguration() : this(EndpointConfiguration.Default.Execute) {}
+
 	readonly Action<IEndpointRouteBuilder> _endpoints;
 
-	public DefaultApplicationConfiguration(StaticFileOptions files)
-		: this(files, EndpointConfiguration.Default.Execute) {}
-
-	public DefaultApplicationConfiguration(StaticFileOptions files, Action<IEndpointRouteBuilder> endpoints)
+	public DefaultApplicationConfiguration(Action<IEndpointRouteBuilder> endpoints)
 	{
-		_files     = files;
 		_endpoints = endpoints;
 	}
 
 	public void Execute(IApplicationBuilder parameter)
 	{
 		parameter.UseWarmupAwareHttpsRedirection()
-		         .UseStaticFiles(_files)
+		         .UseStaticFiles()
 		         .UseRouting()
 		         .UseAuthentication()
 		         .UseAuthorization()
