@@ -10,9 +10,9 @@ sealed class BlazorApplicationProfile : ApplicationProfile
 {
 	public static BlazorApplicationProfile Default { get; } = new BlazorApplicationProfile();
 
-	BlazorApplicationProfile() : this(EmptyCommand<IApplicationBuilder>.Default.Execute) {}
+	BlazorApplicationProfile() : this(new StaticFileOptions(), EmptyCommand<IApplicationBuilder>.Default.Execute) {}
 
-	public BlazorApplicationProfile(Action<IApplicationBuilder> application)
+	public BlazorApplicationProfile(StaticFileOptions files, Action<IApplicationBuilder> application)
 		: base(DefaultServiceConfiguration.Default.Execute,
-		       Start.A.Command(application).Append(DefaultApplicationConfiguration.Default)) {}
+		       Start.A.Command(application).Append(new DefaultApplicationConfiguration(files))) {}
 }
