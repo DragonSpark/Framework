@@ -37,5 +37,9 @@ public class StartWhereMany<TIn, T, TTo> : WhereMany<TIn, T, TTo> where T : clas
 public class StartWhereMany<T, TTo> : WhereMany<T, TTo> where T : class
 {
 	protected StartWhereMany(Expression<Func<T, bool>> where, Expression<Func<T, IEnumerable<TTo>>> select)
-		: base(Set<T>.Default.Then(), where, select) {}
+		: this(x => x, where, select) {}
+
+	protected StartWhereMany(Expression<Func<IQueryable<T>, IQueryable<T>>> previous,
+	                         Expression<Func<T, bool>> where, Expression<Func<T, IEnumerable<TTo>>> select)
+		: base(context => previous.Invoke(context.Set<T>()), where, select) {}
 }

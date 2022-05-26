@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Model.Operations;
 using System;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Editing;
 
@@ -14,4 +15,6 @@ public interface IEditor : IOperation, IDisposable
 	void Remove(object entity);
 
 	void Clear();
+
+	ValueTask Refresh(object entity);
 }

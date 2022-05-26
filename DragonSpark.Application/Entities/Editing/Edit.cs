@@ -66,6 +66,8 @@ public readonly struct Edit<T> : IEditor
 		_editor.Clear();
 	}
 
+	public ValueTask Refresh(object entity) => _editor.Refresh(entity);
+
 	public void Dispose()
 	{
 		_editor.Dispose();

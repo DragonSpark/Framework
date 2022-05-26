@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DragonSpark.Compose;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 
@@ -54,6 +55,8 @@ sealed class Editor : IEditor
 	{
 		_context.ChangeTracker.Clear();
 	}
+
+	public ValueTask Refresh(object entity) => _context.Entry(entity).ReloadAsync().ToOperation();
 
 	public void Dispose()
 	{

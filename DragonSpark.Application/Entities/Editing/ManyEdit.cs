@@ -50,4 +50,6 @@ public readonly struct ManyEdit<T> : IEditor
 	{
 		_editor.Clear();
 	}
+
+	public ValueTask Refresh(object entity) => _editor.Refresh(entity);
 }
