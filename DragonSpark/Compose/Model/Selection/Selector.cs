@@ -58,8 +58,7 @@ public class Selector<TIn, TOut> : IResult<ISelect<TIn, TOut>>, IActivateUsing<I
 	public Selector<TIn, TTo> Select<TTo>(Func<TOut, TTo> select)
 		=> new Selection<TIn, TOut, TTo>(Get().Get, select).Then();
 
-	public Selector<TIn, TOut> Configure(IAssign<TIn, TOut> configure)
-		=> Configure(configure.Assign);
+	public Selector<TIn, TOut> Configure(IAssign<TIn, TOut> configure) => Configure(configure.Assign);
 
 	public Selector<TIn, TOut> Configure(ICommand<(TIn, TOut)> configuration) => Configure(configuration.Execute);
 
@@ -73,7 +72,7 @@ public class Selector<TIn, TOut> : IResult<ISelect<TIn, TOut>>, IActivateUsing<I
 
 	public SequenceSelector<TIn, TOut> Yield() => new(Select(x => x.Yield()).Get());
 
-	public Selector<TIn, TOut> EnsureAssignedOrDefault() => OrDefault(Is.Assigned<TIn>());
+	public Selector<TIn?, TOut> EnsureAssignedOrDefault() => OrDefault(Is.Assigned<TIn>())!;
 
 	public Selector<TIn, TOut> OrDefault(ISelect<TIn, bool> use) => OrDefault(use.Get);
 
