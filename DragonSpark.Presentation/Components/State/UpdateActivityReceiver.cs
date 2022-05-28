@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.State;
 
-sealed class UpdateActivityReceiver : IUpdateActivityReceiver
+public sealed class UpdateActivityReceiver : IUpdateActivityReceiver
 {
 	public static UpdateActivityReceiver Default { get; } = new UpdateActivityReceiver();
 

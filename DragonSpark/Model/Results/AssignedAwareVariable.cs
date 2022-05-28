@@ -1,35 +1,27 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Selection.Conditions;
-using DragonSpark.Runtime.Execution;
+﻿using DragonSpark.Model.Selection.Conditions;
 
 namespace DragonSpark.Model.Results;
 
-public class AssignedAwareVariable<T> : IMutationAware<T>
+public sealed class AssignedAwareVariable<T> : IMutationAware<T?>
 {
 	readonly IMutable<T?> _mutable;
-	readonly ICounter     _counter;
 
 	public AssignedAwareVariable() : this(new Variable<T>()) {}
 
-	public AssignedAwareVariable(IMutable<T?> mutable) : this(mutable, new Counter()) {}
+	public AssignedAwareVariable(IMutable<T?> mutable) : this(mutable, new IsAssigned<T>(mutable)) {}
 
-	public AssignedAwareVariable(IMutable<T?> mutable, ICounter counter)
-		: this(mutable, counter, new HasCounted(counter)) {}
-
-	public AssignedAwareVariable(IMutable<T?> mutable, ICounter counter, ICondition condition)
+	public AssignedAwareVariable(IMutable<T?> mutable, ICondition condition)
 	{
 		_mutable  = mutable;
-		_counter  = counter;
 		Condition = condition;
 	}
 
 	public ICondition<None> Condition { get; }
 
-	public T Get() => _mutable.Get().Verify();
+	public T? Get() => _mutable.Get();
 
-	public void Execute(T parameter)
+	public void Execute(T? parameter)
 	{
-		_counter.Execute();
 		_mutable.Execute(parameter);
 	}
 }

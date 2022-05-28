@@ -32,7 +32,7 @@ public class Storing<TIn, TOut> : ISelecting<TIn, TOut>
 
 public class Storing<T> : IResulting<T>
 {
-	readonly IMutationAware<T> _store;
+	readonly IMutationAware<T?> _store;
 	readonly AwaitOf<T>        _source;
 
 	public Storing(IResult<ValueTask<T>> source) : this(new Variable<T>(), source) {}
@@ -40,9 +40,9 @@ public class Storing<T> : IResulting<T>
 	public Storing(IMutable<T?> mutable, IResult<ValueTask<T>> source) 
 		: this(new AssignedAwareVariable<T>(mutable), source) {}
 
-	public Storing(IMutationAware<T> store, IResult<ValueTask<T>> source) : this(store, source.Await) {}
+	public Storing(IMutationAware<T?> store, IResult<ValueTask<T>> source) : this(store, source.Await) {}
 
-	public Storing(IMutationAware<T> store, AwaitOf<T> source)
+	public Storing(IMutationAware<T?> store, AwaitOf<T> source)
 	{
 		_store  = store;
 		_source = source;

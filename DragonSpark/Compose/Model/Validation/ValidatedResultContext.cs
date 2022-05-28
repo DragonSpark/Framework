@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Compose.Model.Results;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection.Conditions;
-using DragonSpark.Runtime;
 using System;
 
 namespace DragonSpark.Compose.Model.Validation;
@@ -17,7 +16,7 @@ public sealed class ValidatedResultContext<T>
 		_other   = other;
 	}
 
-	public ResultContext<T> IsAssigned() => Is(IsAssigned<T>.Default);
+	public ResultContext<T> IsAssigned() => Is(Runtime.IsAssigned<T>.Default);
 
 	public ResultContext<T> Is(Func<T, bool> condition) => Is(Start.A.Condition(condition).Out());
 

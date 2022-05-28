@@ -7,5 +7,5 @@ namespace DragonSpark.Application.Security.Identity.Authentication;
 sealed class PolicyAwareStateViews<T> : PolicyAwareSelecting<ClaimsPrincipal, StateView<T>>, IStateViews<T>
 	where T : class
 {
-	public PolicyAwareStateViews(IStateViews<T> previous) : base(previous, TimeoutAwarePolicy.Default.Get()) {}
+	public PolicyAwareStateViews(IStateViews<T> previous) : base(previous, DurableConnectionPolicy.Default.Get()) {}
 }

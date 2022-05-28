@@ -15,7 +15,7 @@ sealed class ClientTimeOffsetStore : IOperation<TimeSpan>, IResult<TimeSpan>, IC
 	readonly IMutationAware<TimeSpan> _previous;
 
 	public ClientTimeOffsetStore(IEventAggregator aggregator) :
-		this(aggregator, new AssignedAwareVariable<TimeSpan>()) {}
+		this(aggregator, new VisitedAwareVariable<TimeSpan>()) {}
 
 	public ClientTimeOffsetStore(IEventAggregator aggregator, IMutationAware<TimeSpan> previous)
 		: this(aggregator, previous, previous.Condition) {}
