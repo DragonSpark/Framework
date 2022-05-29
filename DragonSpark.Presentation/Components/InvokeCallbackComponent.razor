@@ -1,0 +1,7 @@
+﻿@code {
+    [Parameter]
+    public EventCallback Subject { get; set; }
+
+    protected override Task OnInitializedAsync() => Subject.InvokeAsync(this);
+
+}
