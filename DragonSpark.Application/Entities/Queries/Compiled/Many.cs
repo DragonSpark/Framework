@@ -12,8 +12,7 @@ sealed class Many<TIn, TOut> : IElements<TIn, TOut>
 {
 	readonly Func<DbContext, IAsyncEnumerable<TOut>> _select;
 
-	public Many(Expression<Func<DbContext, IQueryable<TOut>>> expression)
-		: this(EF.CompileAsyncQuery(expression)) {}
+	public Many(Expression<Func<DbContext, IQueryable<TOut>>> expression) : this(EF.CompileAsyncQuery(expression)) {}
 
 	public Many(Func<DbContext, IAsyncEnumerable<TOut>> select) => _select = select;
 
