@@ -88,6 +88,7 @@ public sealed class LeaseSelectorTests
 		result.Should().Be(first.Concat(second).Sum());
 	}
 
+	/*
 	[Fact]
 	public void VerifyConcatEnumerable()
 	{
@@ -110,6 +111,7 @@ public sealed class LeaseSelectorTests
 
 		result.Should().Be(expected, "Count: {0}", span.Length);
 	}
+	*/
 
 	public class Benchmarks
 	{
