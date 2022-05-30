@@ -19,6 +19,6 @@ sealed class RenderStateAwareActiveContents<T> : ISelect<RenderStateContentInput
 		var (previous, key) = parameter;
 		var content = new RenderStateContent<T>(previous, _memory, key);
 		var state   = new ComponentRenderState(key, _states);
-		return new RenderStateAwareActiveContent<T>(state, content);
+		return new RenderStateAwareActiveContent<T>(previous, state, content);
 	}
 }

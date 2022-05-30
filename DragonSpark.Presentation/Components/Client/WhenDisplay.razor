@@ -1,0 +1,8 @@
+﻿<WhenComponent When="@When">
+    @($"{context:f} (Your) Local Time {context:%K} GMT")
+</WhenComponent>
+
+@code {
+    [Parameter]
+    public DateTimeOffset When { get; set; }
+}

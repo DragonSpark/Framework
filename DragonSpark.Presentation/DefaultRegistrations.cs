@@ -87,6 +87,8 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Forward<ContentInteraction>()
 		         .Include(x => x.Dependencies.Recursive())
 		         .Scoped()
+				 //
+				 .Then.Start<ClearComponentKey>().Scoped()
 		         //
 		         .Then.Start<DefaultExternalLogin>()
 		         .And<IsPreRendering>()

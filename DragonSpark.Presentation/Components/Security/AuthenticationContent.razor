@@ -1,13 +1,11 @@
 ﻿@using DragonSpark.Application.Security.Identity.Authentication
 @using DragonSpark.Compose
+@using DragonSpark.Model.Selection.Alterations
 @typeparam T where T : class
 <DragonSpark.Presentation.Components.Security.CascadingAuthenticationState>
-	<DragonSpark.Presentation.Components.Security.AuthenticationStateDisplay>
-		@{
-			var state = context.To<AuthenticationState<T>>();
-		}
-		<CascadingValue TValue="AuthenticationState<T>" Value="@state">
-			@ChildContent(state)
+	<DragonSpark.Presentation.Components.Security.AuthenticationStateDisplay T="T">
+		<CascadingValue TValue="AuthenticationState<T>" Value="@context">
+			@ChildContent(context)
 		</CascadingValue>
 	</DragonSpark.Presentation.Components.Security.AuthenticationStateDisplay>
 </DragonSpark.Presentation.Components.Security.CascadingAuthenticationState>

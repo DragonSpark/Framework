@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 
 namespace DragonSpark.Runtime.Execution;
 
-public sealed class First : ICondition
+public class First : ICondition
 {
 	readonly ICounter _counter;
 
@@ -25,4 +25,11 @@ public sealed class First<T> : Condition<T> where T : notnull
 	                           .Get()
 	                           .ToTable()
 	                           .Select(ConditionSelector.Default)) {}
+}
+
+// TODO:
+
+public sealed class LocalFirst : First
+{
+	public LocalFirst() : base(new Counter()) {}
 }

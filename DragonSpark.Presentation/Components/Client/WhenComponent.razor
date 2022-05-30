@@ -1,0 +1,59 @@
+﻿@using Humanizer
+@using DragonSpark.Presentation.Environment.Browser
+@using DragonSpark.Compose
+@using DragonSpark.Model
+@using DragonSpark.Presentation.Components.Content.Templates
+@using DragonSpark.Presentation.Environment.Browser.Time
+
+@inject IAdjustToClientTime Offset
+
+@if (Subject is not null)
+{
+    @ChildContent(Subject.Value)
+}
+else
+{
+    @LoadingTemplate
+    <DragonSpark.Presentation.Components.Eventing.HandlerView T="ClientOffsetAssignedMessage" Received="@OnUpdate" />
+}
+
+
+@code
+{
+    [Parameter]
+    public DateTimeOffset When
+    {
+        get => _when;
+        set
+        {
+            if (_when != value)
+            {
+                _when = value;
+                Subject = null;
+                Update();
+            }
+        }
+    }	DateTimeOffset _when;
+
+    [Parameter]
+    public RenderFragment<DateTimeOffset> ChildContent { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment LoadingTemplate { get; set; } = MinimalLoadingTemplate.Default;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
+
+    DateTimeOffset? Subject { get; set; }
+
+    void Update()
+    {
+        Subject ??= Offset.Get(When);
+    }
+
+    void OnUpdate(ClientOffsetAssignedMessage parameter)
+    {
+        Update();
+        StateHasChanged();
+    }
+}

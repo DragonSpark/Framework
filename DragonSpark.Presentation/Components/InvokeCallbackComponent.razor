@@ -1,7 +1,14 @@
-﻿@code {
+﻿@using DragonSpark.Compose
+@using DragonSpark.Model
+@using DragonSpark.Model.Selection.Conditions
+
+@code {
     [Parameter]
     public EventCallback Subject { get; set; }
 
-    protected override Task OnInitializedAsync() => Subject.InvokeAsync(this);
+    [Parameter]
+    public ICondition<None> Condition { get; set; } = Is.Always<None>().Out();
+
+    protected override Task OnInitializedAsync() => Condition.Get() ? Subject.InvokeAsync(this) : Task.CompletedTask;
 
 }

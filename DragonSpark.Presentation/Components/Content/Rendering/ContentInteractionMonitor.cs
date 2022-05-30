@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Presentation.Connections.Circuits;
+using DragonSpark.Runtime.Execution;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
 using System;
@@ -9,6 +10,7 @@ namespace DragonSpark.Presentation.Components.Content.Rendering;
 
 partial class ContentInteractionMonitor
 {
+	readonly LocalFirst                    _active  = new();
 	Func<Task>                             _execute = default!;
 	EventHandler<LocationChangedEventArgs> _changed = default!;
 
@@ -25,7 +27,10 @@ partial class ContentInteractionMonitor
 
 	Task OnReady()
 	{
-		Interaction.Execute();
+		if (_active.Get())
+		{
+			Interaction.Execute();
+		}
 		return Task.CompletedTask;
 	}
 
@@ -50,11 +55,12 @@ partial class ContentInteractionMonitor
 
 	public override void Dispose()
 	{
+		_active.Get();
 		base.Dispose();
-		if (Rendered.Get())
+		/*if (Rendered.Get())
 		{
 			Interaction.Execute();
-		}
+		}*/
 		Navigation.LocationChanged -= _changed;
 	}
 }

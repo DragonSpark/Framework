@@ -16,6 +16,10 @@ sealed class Registrations<T> : ICommand<IServiceCollection> where T : IdentityU
 		         .Forward<UserSynchronization<T>>()
 		         .Scoped()
 		         //
+		         .Then.Start<IUserReference<T>>()
+		         .Forward<UserReference<T>>()
+		         .Singleton()
+		         //
 		         .Then.Start<IUserSynchronizer<T>>()
 		         .Forward<UserSynchronizer<T>>()
 		         .Singleton()
@@ -33,7 +37,7 @@ sealed class Registrations<T> : ICommand<IServiceCollection> where T : IdentityU
 		         .Forward<CreateExternal<T>>()
 		         .Decorate<SynchronizationAwareCreateExternal<T>>()
 		         .Decorate<LoggingAwareCreateExternal<T>>()
-				 .Decorate<FailureAwareCreateExternal<T>>()
+		         .Decorate<FailureAwareCreateExternal<T>>()
 		         .Include(x => x.Dependencies)
 		         .Scoped()
 		         //

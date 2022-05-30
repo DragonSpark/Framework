@@ -18,8 +18,11 @@ public class MemoryStoreContext<TIn, TOut>
 	protected IMemoryCache Memory { get; }
 
 	public ConfiguredMemoryStoreContext<TIn, TOut> For(TimeSpan duration)
-		=> new ConfiguredMemoryStoreContext<TIn, TOut>(Subject, Memory, new RelativeExpiration(duration));
+		=> new(Subject, Memory, new RelativeExpiration(duration));
+
+	public ConfiguredMemoryStoreContext<TIn, TOut> For(Slide duration)
+		=> new(Subject, Memory, new SlidingExpiration(duration.For));
 
 	public ConfiguredMemoryStoreContext<TIn, TOut> ForProcessLifetime()
-		=> new ConfiguredMemoryStoreContext<TIn, TOut>(Subject, Memory, EmptyCommand<ICacheEntry>.Default);
+		=> new(Subject, Memory, EmptyCommand<ICacheEntry>.Default);
 }

@@ -1,4 +1,10 @@
-﻿
+﻿@using DragonSpark.Application.Security.Identity.Authentication
+@using DragonSpark.Compose
+@using DragonSpark.Presentation.Security.Identity
+@typeparam T where T : class
+
+@inject Application.Security.Identity.Profile.IUserReference<T> Reference
+
 @if (State != null)
 {
 	@ChildContent(State)
@@ -7,16 +13,18 @@
 @code
 {
 	[Parameter]
-	public RenderFragment<AuthenticationState> ChildContent { get; set; } = default!;
+	public RenderFragment<AuthenticationState<T>> ChildContent { get; set; } = default!;
 
 	[CascadingParameter]
 	Task<AuthenticationState> Operation { get; set; } = default!;
 
-	AuthenticationState? State { get; set; } = default!;
+	AuthenticationState<T>? State { get; set; } = default!;
 
 	protected override async Task OnInitializedAsync()
 	{
-		// ReSharper disable once AsyncApostle.AsyncWait
-		State = Operation.IsCompletedSuccessfully ? Operation.Result : await Operation;
+		var state = Operation.IsCompletedSuccessfully ? Operation.Result : await Operation;
+		var subject = state.To<AuthenticationState<T>>();
+		var (security, profile) = subject;
+		State = profile is not null ? new AuthenticationState<T>(security, await Reference.Await(profile)) : subject;
 	}
 }

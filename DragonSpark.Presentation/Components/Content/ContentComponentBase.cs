@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Presentation.Components.Content.Rendering;
+using DragonSpark.Runtime.Execution;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Threading.Tasks;
@@ -16,37 +17,38 @@ public abstract class ContentComponentBase<T> : ComponentBase
 	public IActiveContents<T> Contents { get; set; } = ActiveContents<T>.Default;
 
 	[Inject]
-	IContentInteraction Interaction { get; set; } = default!;
+	IContentInteraction Clear { get; set; } = default!;
+
+	protected override void OnInitialized()
+	{
+		_current = Create(Contents.Get(_content));
+		base.OnInitialized();
+	}
 
 	protected IActiveContent<T> Content => _current.Verify();
 
-	IActiveContent<T>? _current;
+	IActiveContent<T> _current = default!;
+
+	LocalFirst? first;
 
 	protected abstract ValueTask<T?> GetContent();
-
-	protected override void OnParametersSet()
-	{
-		Apply();
-	}
-
-	protected void Apply()
-	{
-		_current ??= Create(Contents.Get(_content));
-	}
 
 	protected virtual IActiveContent<T> Create(IActiveContent<T> parameter)
 		=> parameter.Then().Handle(Exceptions, GetType()).Get();
 
 	protected virtual void RequestNewContent()
 	{
-		_current = null;
+		first = new();
 	}
 
 	protected override ValueTask RefreshState()
 	{
-		Interaction.Execute();
+		Clear.Execute();
+		//Clear.Execute(this);
 		RequestNewContent();
-		Apply();
 		return base.RefreshState();
 	}
+
+	protected override Task OnAfterRenderAsync(bool firstRender)
+		=> first?.Get() ?? false ? _current.Refresh.Get(StateHasChanged).AsTask() : base.OnAfterRenderAsync(firstRender);
 }

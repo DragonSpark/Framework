@@ -9,9 +9,9 @@ public class VisitedAwareVariable<T> : IMutationAware<T>
 	readonly IMutable<T?> _mutable;
 	readonly ICounter     _counter;
 
-	public VisitedAwareVariable() : this(new Variable<T>()) {}
+	public VisitedAwareVariable() : this(new Variable<T>(), new Variable<int>()) {}
 
-	public VisitedAwareVariable(IMutable<T?> mutable) : this(mutable, new Counter()) {}
+	public VisitedAwareVariable(IMutable<T?> mutable, IMutable<int> counts) : this(mutable, new Counter(counts)) {}
 
 	public VisitedAwareVariable(IMutable<T?> mutable, ICounter counter)
 		: this(mutable, counter, new HasCounted(counter)) {}

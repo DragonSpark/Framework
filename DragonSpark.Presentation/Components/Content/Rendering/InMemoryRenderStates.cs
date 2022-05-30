@@ -15,6 +15,6 @@ sealed class InMemoryRenderStates : Select<Guid, RenderStates>
 		            .By.Instantiation<RenderStates>()
 		            .Store()
 		            .In(memory)
-		            .For(window)
+		            .For(window.Slide())
 		            .Using(RenderStatesKey.Default)) {}
 }

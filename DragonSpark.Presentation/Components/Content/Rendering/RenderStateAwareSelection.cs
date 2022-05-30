@@ -29,7 +29,7 @@ class RenderStateAwareSelection<TIn, TOut> : ISelecting<TIn, TOut>
 				_store.Assign(key, RenderState.Stored);
 				break;
 			case RenderState.Stored:
-				_store.Assign(key, RenderState.Ready);
+				_store.Remove(key);
 				break;
 		}
 

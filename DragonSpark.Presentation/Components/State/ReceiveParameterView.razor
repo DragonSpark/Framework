@@ -21,8 +21,7 @@
     protected override Task OnInitializedAsync()
     {
         connection = Registration.Get(OnReceive);
-        connection.Get();
-        return base.OnInitializedAsync();
+        return connection.Get().AsTask();
     }
 
     async Task OnReceive(T parameter)
