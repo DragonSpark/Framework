@@ -12,5 +12,5 @@ sealed class OncePerParameter<TIn, TOut> : IAlteration<ISelect<TIn, TOut>> where
 	OncePerParameter() {}
 
 	public ISelect<TIn, TOut> Get(ISelect<TIn, TOut> parameter)
-		=> parameter.Then().OrDefault(new First<TIn>()).Get();
+		=> parameter.Then().OrDefault(new ThreadAwareFirst<TIn>()).Get();
 }

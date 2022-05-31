@@ -1,5 +1,4 @@
-﻿using DragonSpark.Application.Runtime;
-using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
 using System;
 using System.Threading.Tasks;
@@ -83,25 +82,5 @@ sealed class BlockingEntryOperation<T> : IOperation<T>
 				_active.Execute(false);
 			}
 		}
-	}
-}
-
-// TODO
-
-sealed class ThrottleOperation<T> : IOperation<T>
-{
-	readonly IThrottling<T> _throttling;
-	readonly Operate<T>     _operate;
-
-	public ThrottleOperation(IThrottling<T> throttling, Operate<T> operate)
-	{
-		_throttling = throttling;
-		_operate    = operate;
-	}
-
-	public ValueTask Get(T parameter)
-	{
-		_throttling.Execute(new(parameter, _operate));
-		return ValueTask.CompletedTask;
 	}
 }

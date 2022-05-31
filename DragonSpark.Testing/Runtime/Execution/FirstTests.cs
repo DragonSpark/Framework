@@ -9,14 +9,14 @@ namespace DragonSpark.Testing.Runtime.Execution;
 public sealed class FirstTests
 {
 	[Theory, AutoDataModest]
-	void VerifyFirst(First sut)
+	void VerifyFirst(ThreadAwareFirst sut)
 	{
 		sut.Get().Should().BeTrue();
 		sut.Get().Should().BeFalse();
 	}
 
 	[Theory, AutoData]
-	void VerifyFirstReference(First<object> sut, object first, object second)
+	void VerifyFirstReference(ThreadAwareFirst<object> sut, object first, object second)
 	{
 		sut.Get(first).Should().BeTrue();
 		sut.Get(first).Should().BeFalse();
@@ -26,7 +26,7 @@ public sealed class FirstTests
 	}
 
 	[Theory, AutoData]
-	void VerifyFirstEquality(First<int> sut, int first, int second)
+	void VerifyFirstEquality(ThreadAwareFirst<int> sut, int first, int second)
 	{
 		sut.Get(first).Should().BeTrue();
 		sut.Get(first).Should().BeFalse();

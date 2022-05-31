@@ -12,5 +12,5 @@ sealed class PreRenderActiveContent<T> : Validated<ValueTask<T?>>, IActiveConten
 		: base(condition, memory, previous)
 		=> _previous = previous;
 
-	public IRequiresUpdate Refresh => _previous.Refresh;
+	public IUpdateMonitor Monitor => _previous.Monitor;
 }

@@ -10,7 +10,7 @@ namespace DragonSpark.Presentation.Components.Content.Rendering;
 
 partial class ContentInteractionMonitor
 {
-	readonly LocalFirst                    _active  = new();
+	readonly First                    _active  = new();
 	Func<Task>                             _execute = default!;
 	EventHandler<LocationChangedEventArgs> _changed = default!;
 

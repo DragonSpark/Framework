@@ -36,5 +36,5 @@ sealed class RenderStateAwareActiveContent<T> : IActiveContent<T>
 		return result;
 	}
 
-	public IRequiresUpdate Refresh => _previous.Refresh;
+	public IUpdateMonitor Monitor => _previous.Monitor;
 }

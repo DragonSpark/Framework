@@ -61,7 +61,7 @@ sealed class RenderStateContent<T> : ISelecting<RenderState, T?>
 
 	public async ValueTask<T?> Get(RenderState parameter)
 	{
-		if (_previous.Refresh.Get())
+		if (_previous.Monitor.Get())
 		{
 			_memory.Remove(_key);
 		}

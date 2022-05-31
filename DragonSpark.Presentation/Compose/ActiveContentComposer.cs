@@ -14,7 +14,7 @@ public class ActiveContentComposer<T> : IResult<IActiveContent<T>>
 	public ActiveContentComposer(IActiveContent<T> subject) => _subject = subject;
 
 	public ActiveContentComposer<T> Handle(IExceptions exceptions, Type reportedType)
-		=> new(new ActiveContentAdapter<T>(_subject.Refresh,
+		=> new(new ActiveContentAdapter<T>(_subject.Monitor,
 		                                   A.Result(_subject).Then().Handle(exceptions, reportedType).Out()));
 
 	public IActiveContent<T> Get() => _subject;

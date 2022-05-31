@@ -6,10 +6,10 @@ namespace DragonSpark.Presentation.Components.Content;
 public sealed class ActivityAwareActiveContent<T> : Resulting<T?>, IActiveContent<T>
 {
 	public ActivityAwareActiveContent(IActiveContent<T> previous, object receiver)
-		: this(previous.Refresh, new ActivityAwareResult<T>(previous, receiver)) {}
+		: this(previous.Monitor, new ActivityAwareResult<T>(previous, receiver)) {}
 
-	public ActivityAwareActiveContent(IRequiresUpdate refresh, IResulting<T?> resulting) : base(resulting)
-		=> Refresh = refresh;
+	public ActivityAwareActiveContent(IUpdateMonitor refresh, IResulting<T?> resulting) : base(resulting)
+		=> Monitor = refresh;
 
-	public IRequiresUpdate Refresh { get; }
+	public IUpdateMonitor Monitor { get; }
 }

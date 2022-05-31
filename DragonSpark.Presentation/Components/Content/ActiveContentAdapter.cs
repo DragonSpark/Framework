@@ -7,13 +7,13 @@ public sealed class ActiveContentAdapter<T> : IActiveContent<T>
 {
 	readonly IResulting<T?> _previous;
 
-	public ActiveContentAdapter(IRequiresUpdate refresh, IResulting<T?> previous)
+	public ActiveContentAdapter(IUpdateMonitor refresh, IResulting<T?> previous)
 	{
-		Refresh   = refresh;
+		Monitor   = refresh;
 		_previous = previous;
 	}
 
-	public IRequiresUpdate Refresh { get; }
+	public IUpdateMonitor Monitor { get; }
 
 	public ValueTask<T?> Get() => _previous.Get();
 }

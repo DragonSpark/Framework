@@ -5,10 +5,10 @@ namespace DragonSpark.Presentation.Components.Content;
 
 sealed class InstanceActiveContent<T> : Deferring<T?>, IActiveContent<T>
 {
-	public InstanceActiveContent(IActiveContent<T> previous) : this(previous, RequiresUpdate.Default) {}
+	public InstanceActiveContent(IActiveContent<T> previous) : this(previous, UpdateMonitor.Default) {}
 
-	public InstanceActiveContent(IActiveContent<T> previous, IRequiresUpdate refresh) : base(previous.ToDelegate())
-		=> Refresh = refresh;
+	public InstanceActiveContent(IActiveContent<T> previous, IUpdateMonitor refresh) : base(previous.ToDelegate())
+		=> Monitor = refresh;
 
-	public IRequiresUpdate Refresh { get; }
+	public IUpdateMonitor Monitor { get; }
 }

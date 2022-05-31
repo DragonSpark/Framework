@@ -20,8 +20,8 @@ sealed class TestCase : LongLivedMarshalByRefObject, IXunitTestCase
 
 	public TestCase() {}
 
-	public TestCase(IXunitTestCase @case, Action action) : this(@case, new TestMethod(@case.TestMethod),
-	                                                            new First(), action) {}
+	public TestCase(IXunitTestCase @case, Action action)
+		: this(@case, new TestMethod(@case.TestMethod), new ThreadAwareFirst(), action) {}
 
 	// ReSharper disable once TooManyDependencies
 	public TestCase(IXunitTestCase @case, ITestMethod method, ICondition condition, Action action)

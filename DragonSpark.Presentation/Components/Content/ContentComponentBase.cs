@@ -15,11 +15,6 @@ public abstract class ContentComponentBase<T> : ComponentBase
 	[Parameter, Inject]
 	public IActiveContents<T> Contents { get; set; } = ActiveContents<T>.Default;
 
-	/*[Inject]
-	ClearComponentKey Clear { get; set; } = default!;
-	// TODO:
-	protected bool CallClear { get; set; }*/
-
 	protected override void OnInitialized()
 	{
 		_current = Create(Contents.Get(_content));
@@ -30,7 +25,7 @@ public abstract class ContentComponentBase<T> : ComponentBase
 
 	IActiveContent<T> _current = default!;
 
-	LocalFirst? first;
+	First? first;
 
 	protected abstract ValueTask<T?> GetContent();
 
@@ -44,14 +39,10 @@ public abstract class ContentComponentBase<T> : ComponentBase
 
 	protected override ValueTask RefreshState()
 	{
-		/*if (CallClear)
-		{
-			Clear.Execute(this);
-		}*/
 		RequestNewContent();
 		return base.RefreshState();
 	}
 
 	protected override Task OnAfterRenderAsync(bool firstRender)
-		=> first?.Get() ?? false ? _current.Refresh.Get(StateChanged).AsTask() : base.OnAfterRenderAsync(firstRender);
+		=> first?.Get() ?? false ? _current.Monitor.Get(StateChanged).AsTask() : base.OnAfterRenderAsync(firstRender);
 }

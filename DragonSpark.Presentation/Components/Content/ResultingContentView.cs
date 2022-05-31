@@ -28,7 +28,7 @@ partial class ResultingContentView<T>
 
 
 	[Parameter]
-	public IRequiresUpdate? UpdateMonitor { get; set; }
+	public IUpdateMonitor? UpdateMonitor { get; set; }
 
 	[Parameter]
 	public EventCallback<T> Rendered { get; set; }

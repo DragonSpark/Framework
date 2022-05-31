@@ -19,19 +19,3 @@ public class Operation : IOperation
 
 	public ValueTask Get() => _select();
 }
-
-// TODO
-
-public sealed class EmptyOperation : Operation
-{
-	public static EmptyOperation Default { get; } = new();
-
-	EmptyOperation() : base(() => ValueTask.CompletedTask) {}
-}
-
-public sealed class EmptyOperation<T> : Operation<T>
-{
-	public static EmptyOperation<T> Default { get; } = new();
-
-	EmptyOperation() : base(_ => ValueTask.CompletedTask) {}
-}

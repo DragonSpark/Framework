@@ -4,5 +4,5 @@ namespace DragonSpark.Presentation.Components.Content;
 
 public interface IActiveContent<T> : IResulting<T?>
 {
-	IRequiresUpdate Refresh { get; }
+	IUpdateMonitor Monitor { get; }
 }

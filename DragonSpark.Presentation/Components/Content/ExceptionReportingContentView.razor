@@ -5,15 +5,16 @@
 
 @inherits DragonSpark.Presentation.Components.Content.Templates.ActiveContentTemplateComponentBase<TValue>
 
-<ResultingContentView Content="@Subject"
-					  ChildContent="@ChildContent"
-					  LoadingTemplate="@LoadingTemplate"
-					  NotFoundTemplate="@NotFoundTemplate"
-					  ExceptionTemplate="@ExceptionTemplate"
-					  UpdateMonitor="@UpdateMonitor"
-                      Rendered="@Rendered"
-                      Refreshed="@Refreshed"
-					  />
+<ResultingContentView T="TValue"
+	Content="@Subject"
+	ChildContent="@ChildContent"
+	LoadingTemplate="@LoadingTemplate"
+	NotFoundTemplate="@NotFoundTemplate"
+	ExceptionTemplate="@ExceptionTemplate"
+	UpdateMonitor="@UpdateMonitor"
+	Rendered="@Rendered"
+	Refreshed="@Refreshed"
+	/>
 
 @code
 {
@@ -32,7 +33,7 @@
 	}	IResulting<TValue?>? _content;
 
     [Parameter]
-    public IRequiresUpdate? UpdateMonitor { get; set; }
+    public IUpdateMonitor? UpdateMonitor { get; set; }
 
 	[Parameter]
 	public Type? ReportedType { get; set; }

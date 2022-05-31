@@ -96,7 +96,6 @@ public class CallbackContext<T> : IResult<EventCallback<T>>
 
 	public OperationCallbackContext<T> Throttle(TimeSpan window)
 	{
-		// TODO:
 #pragma warning disable CS8714
 		var throttling = new Throttling<T>(new Table<T, Timer>(), window);
 #pragma warning restore CS8714
