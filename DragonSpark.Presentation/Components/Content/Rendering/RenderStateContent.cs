@@ -61,23 +61,30 @@ sealed class RenderStateContent<T> : ISelecting<RenderState, T?>
 
 	public async ValueTask<T?> Get(RenderState parameter)
 	{
-		switch (parameter)
+		if (_previous.Refresh.Get())
 		{
-			case RenderState.Default:
+			_memory.Remove(_key);
+		}
+		else
+		{
+			switch (parameter)
 			{
-				var result = await _previous.Await();
-				_memory.Set(_key, result, PreRenderingWindow.Default);
-				return result;
-			}
-			case RenderState.Stored:
-			{
-				if (_memory.TryGetValue(_key, out var existing))
+				case RenderState.Default:
 				{
-					_memory.Remove(_key);
-					return (T?)existing;
+					var result = await _previous.Await();
+					_memory.Set(_key, result, PreRenderingWindow.Default);
+					return result;
 				}
+				case RenderState.Stored:
+				{
+					if (_memory.TryGetValue(_key, out var existing))
+					{
+						_memory.Remove(_key);
+						return (T?)existing;
+					}
 
-				break;
+					break;
+				}
 			}
 		}
 

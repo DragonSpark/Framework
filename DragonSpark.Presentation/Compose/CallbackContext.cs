@@ -1,12 +1,15 @@
 ﻿using DragonSpark.Application.Diagnostics;
+using DragonSpark.Application.Runtime;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
+using DragonSpark.Model.Selection.Stores;
 using DragonSpark.Presentation.Components.Diagnostics;
 using DragonSpark.Presentation.Components.State;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace DragonSpark.Presentation.Compose;
 
@@ -39,8 +42,18 @@ public sealed class CallbackContext : IResult<EventCallback>
 
 	public OperationCallbackContext Throttle() => Throttle(TimeSpan.FromSeconds(1));
 
-	public OperationCallbackContext Throttle(TimeSpan duration)
-		=> new (_receiver.Verify(), new ThrottleEntryOperation(Start.A.Result(_method).Then().Structure().Out(), duration));
+	public OperationCallbackContext Throttle(TimeSpan window)
+	{
+		var throttling = new Throttling(Start.A.Result(_method).Then().Structure(), window);
+		var operation  = throttling.Then().Operation().Out();
+		var result     = new OperationCallbackContext(_receiver.Verify(), operation);
+		return result;
+	}
+
+	public OperationCallbackContext Block() => BlockFor(TimeSpan.FromSeconds(1));
+
+	public OperationCallbackContext BlockFor(TimeSpan duration)
+		=> new (_receiver.Verify(), new BlockingEntryOperation(Start.A.Result(_method).Then().Structure().Out(), duration));
 
 	public OperationCallbackContext UpdateActivity()
 	{
@@ -78,6 +91,19 @@ public class CallbackContext<T> : IResult<EventCallback<T>>
 	}
 
 	public CallbackContext<T> Using(object receiver) => new CallbackContext<T>(receiver, _method);
+
+	public OperationCallbackContext<T> Throttle() => Throttle(TimeSpan.FromSeconds(1));
+
+	public OperationCallbackContext<T> Throttle(TimeSpan window)
+	{
+		// TODO:
+#pragma warning disable CS8714
+		var throttling = new Throttling<T>(new Table<T, Timer>(), window);
+#pragma warning restore CS8714
+		var operation  = new ThrottleOperation<T>(throttling, Start.A.Selection(_method).Then().Structure());
+		var result     = new OperationCallbackContext<T>(_receiver.Verify(), operation);
+		return result;
+	}
 
 	public OperationCallbackContext<T> UpdateActivity()
 	{

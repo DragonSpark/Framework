@@ -1,7 +1,5 @@
-﻿using DragonSpark.Model.Operations;
-using DragonSpark.Model.Results;
+﻿using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection.Conditions;
-using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content.Rendering;
@@ -14,5 +12,5 @@ sealed class PreRenderActiveContent<T> : Validated<ValueTask<T?>>, IActiveConten
 		: base(condition, memory, previous)
 		=> _previous = previous;
 
-	public IOperation<Action> Refresh => _previous.Refresh;
+	public IRequiresUpdate Refresh => _previous.Refresh;
 }

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Runtime.Operations;
 
-public class WorkingResult<T> : IWorkingResult<T>
+public sealed class WorkingResult<T> : IWorkingResult<T>
 {
 	readonly IResulting<T>    _previous;
 	readonly Func<Task>  _complete;

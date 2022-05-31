@@ -7,7 +7,7 @@
 
 @code
 {
-    IReceiver? connection;
+    IReceiver connection = default!;
 
     [Parameter]
     public IReceive<T> Registration { get; set; } = default!;
@@ -21,7 +21,8 @@
     protected override Task OnInitializedAsync()
     {
         connection = Registration.Get(OnReceive);
-        return connection.Get().AsTask();
+        connection.Get();
+        return base.OnInitializedAsync();
     }
 
     async Task OnReceive(T parameter)
@@ -32,5 +33,8 @@
         }
     }
 
-    public ValueTask DisposeAsync() => connection?.DisposeAsync() ?? Task.CompletedTask.ToOperation();
+    /*protected override Task OnAfterRenderAsync(bool firstRender)
+        => firstRender ? connection.Get().AsTask() : base.OnAfterRenderAsync(firstRender);*/
+
+    public ValueTask DisposeAsync() => connection.DisposeAsync();
 }

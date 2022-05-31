@@ -4,6 +4,8 @@ using DragonSpark.Application.Security.Identity.Authentication;
 using DragonSpark.Composition;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Selection.Alterations;
+using DragonSpark.Presentation.Components.Content;
+using DragonSpark.Presentation.Components.Content.Rendering;
 using DragonSpark.Presentation.Connections.Initialization;
 using DragonSpark.Presentation.Environment;
 using DragonSpark.Presentation.Security.Identity;
@@ -24,7 +26,7 @@ sealed class Configure : IAlteration<BuildHostContext>
 		                       Diagnostics.Registrations.Default,
 		                       Interaction.Registrations.Default)
 		            .ComposeUsing(Registrations.Default)
-		            .ComposeUsing(x => x/*.Decorate(typeof(IActiveContents<>), typeof(PreRenderAwareActiveContents<>))*/
+		            .ComposeUsing(x => x.Decorate(typeof(IActiveContents<>), typeof(PreRenderAwareActiveContents<>))
 		                                .Decorate<IClientIdentifier, ClientIdentifier>()
 		                                .Decorate<ICurrentContext, StoreAwareCurrentContext>()
 		                                //

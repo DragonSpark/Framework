@@ -2,12 +2,17 @@
 using DragonSpark.Compose;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Components;
+using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components;
 
 public class ComponentBase : Microsoft.AspNetCore.Components.ComponentBase
 {
+	protected readonly Action StateChanged;
+
+	public ComponentBase() => StateChanged = StateHasChanged;
+
 	protected override Task OnInitializedAsync() => Execute.Get(GetType(), Initialize()).AsTask();
 
 	protected virtual ValueTask Initialize() => Task.CompletedTask.ToOperation();
@@ -19,7 +24,7 @@ public class ComponentBase : Microsoft.AspNetCore.Components.ComponentBase
 		DefaultRefreshState();
 	}
 
-	protected ValueTask DefaultRefreshState() => InvokeAsync(StateHasChanged).ToOperation();
+	protected ValueTask DefaultRefreshState() => InvokeAsync(StateChanged).ToOperation();
 
 	[Inject]
 	protected IExceptions Exceptions { get; [UsedImplicitly]set; } = default!;

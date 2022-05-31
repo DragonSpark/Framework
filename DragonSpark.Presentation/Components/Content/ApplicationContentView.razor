@@ -5,7 +5,8 @@
 @inherits DragonSpark.Presentation.Components.Content.Templates.ActiveContentTemplateComponentBase<TValue>
 
 <ActivityContainer CssClass="@CssClass" Context="receiver">
-	<ResultingContentView T="TValue" Content="@Contents.Get(receiver)"
+	@{ var content = Contents.Get(receiver); }
+	<ResultingContentView T="TValue" Content="@content" UpdateMonitor="@content.Refresh"
 		ChildContent="@ChildContent"
 		LoadingTemplate="@LoadingTemplate"
 		NotFoundTemplate="@NotFoundTemplate"

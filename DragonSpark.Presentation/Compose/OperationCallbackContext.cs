@@ -26,7 +26,7 @@ public sealed class OperationCallbackContext : IResult<EventCallback>
 	public OperationCallbackContext Throttle() => Throttle(TimeSpan.FromSeconds(1));
 
 	public OperationCallbackContext Throttle(TimeSpan duration)
-		=> new OperationCallbackContext(_receiver, new ThrottleEntryOperation(_operation, duration));
+		=> new OperationCallbackContext(_receiver, new BlockingEntryOperation(_operation, duration));
 
 	public OperationCallbackContext UpdateActivity()
 		=> new OperationCallbackContext(_receiver, new ActivityAwareOperation(_operation, _receiver));
@@ -53,7 +53,7 @@ public sealed class OperationCallbackContext<T> : IResult<EventCallback<T>>
 	public OperationCallbackContext<T> Throttle() => Throttle(TimeSpan.FromSeconds(1));
 
 	public OperationCallbackContext<T> Throttle(TimeSpan duration)
-		=> new OperationCallbackContext<T>(_receiver, new ThrottleEntryOperation<T>(_operation, duration));
+		=> new OperationCallbackContext<T>(_receiver, new BlockingEntryOperation<T>(_operation, duration));
 
 	public OperationCallbackContext<T> UpdateActivity()
 		=> new OperationCallbackContext<T>(_receiver, new ActivityAwareOperation<T>(_operation, _receiver));

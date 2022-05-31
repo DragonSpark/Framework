@@ -43,8 +43,7 @@ public class Selector<TIn, TOut> : IResult<ISelect<TIn, TOut>>, IActivateUsing<I
 	public Selector<TIn, TTo> StoredActivation<TTo>() where TTo : IActivateUsing<TOut>
 		=> Select(Activations<TOut, TTo>.Default);
 
-	public ResultContext<TOut> Bind(TIn parameter)
-		=> new FixedSelection<TIn, TOut>(_subject, parameter).Then();
+	public ResultContext<TOut> Bind(TIn parameter) => new FixedSelection<TIn, TOut>(_subject, parameter).Then();
 
 	public ResultContext<TOut> Bind(IResult<TIn> parameter) => Bind(parameter.Get);
 

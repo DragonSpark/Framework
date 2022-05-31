@@ -8,6 +8,7 @@ using DragonSpark.Compose.Model.Operations;
 using DragonSpark.Compose.Model.Selection;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Runtime.Activation;
@@ -85,4 +86,15 @@ public static partial class ExtensionMethods
 
 	public static GuardModelContext<T> Guard<T>(this ModelContext _) where T : Exception
 		=> GuardModelContext<T>.Default;
+
+	public static bool Down(this IMutable<bool> @this)
+	{
+		if (@this.Get())
+		{
+			@this.Execute(false);
+			return true;
+		}
+
+		return false;
+	}
 }

@@ -26,6 +26,10 @@ partial class ResultingContentView<T>
 		}
 	}	IResulting<T?>? _content;
 
+
+	[Parameter]
+	public IRequiresUpdate? UpdateMonitor { get; set; }
+
 	[Parameter]
 	public EventCallback<T> Rendered { get; set; }
 
@@ -45,6 +49,11 @@ partial class ResultingContentView<T>
 	protected override void OnParametersSet()
 	{
 		base.OnParametersSet();
+		Load();
+	}
+
+	void Load()
+	{
 		Subject ??= new WorkingResult<T?>(Content ?? Defaulting<T>.Default, _update, Logger).Get();
 	}
 
@@ -65,20 +74,29 @@ partial class ResultingContentView<T>
 
 	Task Update()
 	{
-		var loaded = Subject is { Status.IsCompletedSuccessfully: true };
-		var update = loaded && loaded != Loaded;
-		Loaded = loaded;
-		if (update)
+		if (UpdateMonitor?.Down() ?? false)
 		{
-			// ReSharper disable once AsyncApostle.AsyncWait
-			var result  = Subject.Value().Status.Result;
-			var refresh = Fragment is not null;
-			Fragment = result is not null ? ChildContent(result) : NotFoundTemplate;
-			StateHasChanged();
-			if (result is not null)
+			Loaded  = false;
+			Subject = null;
+			Load();
+		}
+		else
+		{
+			var loaded = Subject is { Status.IsCompletedSuccessfully: true };
+			var update = loaded && loaded != Loaded;
+			Loaded = loaded;
+			if (update)
 			{
-				var callback = refresh ? Refreshed : Rendered;
-				return callback.InvokeAsync(result);
+				// ReSharper disable once AsyncApostle.AsyncWait
+				var result  = Subject.Value().Status.Result;
+				var refresh = Fragment is not null;
+				Fragment = result is not null ? ChildContent(result) : NotFoundTemplate;
+				StateHasChanged();
+				if (result is not null)
+				{
+					var callback = refresh ? Refreshed : Rendered;
+					return callback.InvokeAsync(result);
+				}
 			}
 		}
 		return Task.CompletedTask;

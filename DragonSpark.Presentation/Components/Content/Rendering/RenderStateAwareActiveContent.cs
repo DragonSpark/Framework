@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
-using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content.Rendering;
@@ -37,5 +36,5 @@ sealed class RenderStateAwareActiveContent<T> : IActiveContent<T>
 		return result;
 	}
 
-	public IOperation<Action> Refresh => _previous.Refresh;
+	public IRequiresUpdate Refresh => _previous.Refresh;
 }

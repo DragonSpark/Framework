@@ -19,40 +19,54 @@ sealed class ActiveContent<T> : Resulting<T?>, IActiveContent<T>
 	public ActiveContent(IResulting<T?> result, IMutable<int> counts)
 		: this(result, new RefreshActiveContent<T?>(result, counts)) {}
 
-	public ActiveContent(IResulting<T?> result, IOperation<Action> refresh) : base(result) => Refresh = refresh;
+	public ActiveContent(IResulting<T?> result, IRequiresUpdate refresh) : base(result) => Refresh = refresh;
 
-	public IOperation<Action> Refresh { get; }
+	public IRequiresUpdate Refresh { get; }
 }
 
 // TODO
-/*
-sealed class ActiveContentStore<T> : Storing<T?>
+
+public interface IRequiresUpdate : IOperation<Action>, IMutable<bool> {}
+
+sealed class RequiresUpdate : IRequiresUpdate
 {
-	readonly IMutable<T?> _store;
+	public static RequiresUpdate Default { get; } = new();
 
-	public ActiveContentStore(Func<ValueTask<T?>> content, IMutable<bool> @switch, IMutable<T?> mutable)
-		: this(content, new SwitchAwareVariable<T>(@switch, mutable)) {}
+	RequiresUpdate() : this(EmptyOperation<Action>.Default, new Variable<bool>()) {}
 
-	public ActiveContentStore(Func<ValueTask<T?>> content, IMutationAware<T?> store)
-		: base(store, content.Start().Get())
-		=> _store = store;
+	readonly IOperation<Action> _operation;
+	readonly IMutable<bool>     _store;
 
-	public void Execute(None parameter)
+	public RequiresUpdate(IOperation<Action> operation, IMutable<bool> store)
 	{
-		_store.Execute(default);
+		_operation  = operation;
+		_store = store;
+	}
+
+	public ValueTask Get(Action parameter) => _operation.Get(parameter);
+
+	public bool Get() => _store.Get();
+
+	public void Execute(bool parameter)
+	{
+		_store.Execute(parameter);
 	}
 }
-*/
 
-sealed class RefreshActiveContent<T> : IOperation<Action>
+sealed class RefreshActiveContent<T> : IRequiresUpdate
 {
-	readonly IResulting<T> _result;
-	readonly IMutable<int> _counts;
+	readonly IResulting<T>  _result;
+	readonly IMutable<bool> _state;
+	readonly IMutable<int>  _counts;
 
 	public RefreshActiveContent(IResulting<T> result, IMutable<int> counts)
+		: this(result, new Variable<bool>(), counts) {}
+
+	public RefreshActiveContent(IResulting<T> result, IMutable<bool> state, IMutable<int> counts)
 	{
-		_result = result;
-		_counts = counts;
+		_result     = result;
+		_state = state;
+		_counts     = counts;
 	}
 
 	public async ValueTask Get(Action parameter)
@@ -60,6 +74,14 @@ sealed class RefreshActiveContent<T> : IOperation<Action>
 		_counts.Execute(0);
 		var result = _result.Get();
 		await result;
+		_state.Execute(true);
 		parameter();
+	}
+
+	public bool Get() => _state.Get();
+
+	public void Execute(bool parameter)
+	{
+		_state.Execute(parameter);
 	}
 }

@@ -10,11 +10,13 @@
 					  LoadingTemplate="@LoadingTemplate"
 					  NotFoundTemplate="@NotFoundTemplate"
 					  ExceptionTemplate="@ExceptionTemplate"
+					  UpdateMonitor="@UpdateMonitor"
+                      Rendered="@Rendered"
+                      Refreshed="@Refreshed"
 					  />
 
 @code
 {
-
 	[Parameter]
 	public IResulting<TValue?>? Content
 	{
@@ -29,8 +31,17 @@
 		}
 	}	IResulting<TValue?>? _content;
 
+    [Parameter]
+    public IRequiresUpdate? UpdateMonitor { get; set; }
+
 	[Parameter]
 	public Type? ReportedType { get; set; }
+
+    [Parameter]
+    public EventCallback<TValue> Rendered { get; set; }
+
+    [Parameter]
+    public EventCallback<TValue> Refreshed { get; set; }
 
 	IResulting<TValue?>? Subject { get; set; }
 

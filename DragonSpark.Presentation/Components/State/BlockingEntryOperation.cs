@@ -1,20 +1,21 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Application.Runtime;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
 using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.State;
 
-sealed class ThrottleEntryOperation : IOperation
+sealed class BlockingEntryOperation : IOperation
 {
 	readonly IOperation     _operation;
 	readonly IMutable<bool> _active;
 	readonly TimeSpan       _duration;
 
-	public ThrottleEntryOperation(IOperation operation, TimeSpan duration)
+	public BlockingEntryOperation(IOperation operation, TimeSpan duration)
 		: this(operation, new Variable<bool>(), duration) {}
 
-	public ThrottleEntryOperation(IOperation operation, IMutable<bool> active, TimeSpan duration)
+	public BlockingEntryOperation(IOperation operation, IMutable<bool> active, TimeSpan duration)
 	{
 		_operation = operation;
 		_active    = active;
@@ -45,16 +46,16 @@ sealed class ThrottleEntryOperation : IOperation
 	}
 }
 
-sealed class ThrottleEntryOperation<T> : IOperation<T>
+sealed class BlockingEntryOperation<T> : IOperation<T>
 {
 	readonly IOperation<T>  _operation;
 	readonly IMutable<bool> _active;
 	readonly TimeSpan       _duration;
 
-	public ThrottleEntryOperation(IOperation<T> operation, TimeSpan duration)
+	public BlockingEntryOperation(IOperation<T> operation, TimeSpan duration)
 		: this(operation, new Variable<bool>(), duration) {}
 
-	public ThrottleEntryOperation(IOperation<T> operation, IMutable<bool> active, TimeSpan duration)
+	public BlockingEntryOperation(IOperation<T> operation, IMutable<bool> active, TimeSpan duration)
 	{
 		_operation = operation;
 		_active    = active;
@@ -82,5 +83,25 @@ sealed class ThrottleEntryOperation<T> : IOperation<T>
 				_active.Execute(false);
 			}
 		}
+	}
+}
+
+// TODO
+
+sealed class ThrottleOperation<T> : IOperation<T>
+{
+	readonly IThrottling<T> _throttling;
+	readonly Operate<T>     _operate;
+
+	public ThrottleOperation(IThrottling<T> throttling, Operate<T> operate)
+	{
+		_throttling = throttling;
+		_operate    = operate;
+	}
+
+	public ValueTask Get(T parameter)
+	{
+		_throttling.Execute(new(parameter, _operate));
+		return ValueTask.CompletedTask;
 	}
 }
