@@ -1,10 +1,10 @@
 ﻿@using System.Timers
-<Refresher Timer="@Timer" Repeat="@Repeat" Interval="@Interval" Updated="@Updated" />
+<Refresher Timer="@Timer" Repeat="@Repeat" Interval="@Interval" Updated="@OnUpdate" />
 @ChildContent
 
 @code {
     [Parameter]
-    public Timer? Timer { get; set; }
+    public Timer? Timer { get; set; } = new ();
 
     [Parameter]
     public TimeSpan Interval { get; set; } = TimeSpan.FromSeconds(30);
@@ -17,4 +17,10 @@
 
     [Parameter]
     public RenderFragment ChildContent { get; set; } = default!;
+
+    Task OnUpdate()
+    {
+        StateHasChanged();
+        return Updated.InvokeAsync(this);
+    }
 }
