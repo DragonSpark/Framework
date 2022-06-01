@@ -17,7 +17,7 @@ sealed class HasSingleParameterConstructor<T> : Model.Selection.Conditions.Condi
 		                              .Then()
 		                              .Metadata()
 		                              .Select(Is.AssignableFrom<T>().Get())
-		                              .EnsureAssignedOrDefault()!) // TODO: Report
+		                              .EnsureAssignedOrDefault()!)
 		                 .Then()
 		                 .And(parameters.Subject.Select(RemainingParametersAreOptional.Default))) {}
 }
