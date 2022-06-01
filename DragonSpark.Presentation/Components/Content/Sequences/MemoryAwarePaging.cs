@@ -7,7 +7,6 @@ namespace DragonSpark.Presentation.Components.Content.Sequences;
 
 sealed class MemoryAwarePaging<T> : RenderStateAwareSelection<QueryInput, Current<T>>, IPaging<T>
 {
-	public MemoryAwarePaging(IFormatter<QueryInput> key, RenderStates store,
-	                         ISelecting<RenderStateInput<QueryInput>, Current<T>> content)
-		: base(key, store, content) {}
+	public MemoryAwarePaging(IFormatter<QueryInput> key, ISelecting<RenderStateInput<QueryInput>, Current<T>> content)
+		: base(key, content) {}
 }

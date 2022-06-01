@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Commands;
+﻿using DragonSpark.Application.Model;
+using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
 using Microsoft.Extensions.Caching.Memory;
 using System;

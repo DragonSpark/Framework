@@ -11,4 +11,6 @@
 
     protected override Task OnInitializedAsync() => Condition.Get() ? Subject.InvokeAsync(this) : Task.CompletedTask;
 
+    /*protected override Task OnAfterRenderAsync(bool firstRender)
+        => firstRender && Condition.Get() ? Subject.InvokeAsync(this) : base.OnAfterRenderAsync(firstRender);*/
 }

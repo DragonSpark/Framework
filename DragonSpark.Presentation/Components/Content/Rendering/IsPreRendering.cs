@@ -10,6 +10,6 @@ namespace DragonSpark.Presentation.Components.Content.Rendering;
 sealed class IsPreRendering : AllCondition<None>, ICondition
 {
 	public IsPreRendering(IsTracking tracking, ConnectionStartTime start)
-		: base(A.Result(tracking).Then().Accept(),
+		: base(tracking.Get,
 		       Time.Default.WithinLast(PreRenderingWindow.Default).Then().Bind(start.Get).Accept()) {}
 }

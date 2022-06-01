@@ -5,13 +5,13 @@ namespace DragonSpark.Presentation.Components.Content.Rendering;
 
 sealed class ClearContentKeys : ICommand
 {
-	readonly RenderContentKeys _keys;
-	readonly ClearContentKey   _clear;
+	readonly RenderContentKeys   _keys;
+	readonly ClearContentKey     _clear;
 
 	public ClearContentKeys(RenderContentKeys keys, ClearContentKey clear)
 	{
-		_keys  = keys;
-		_clear = clear;
+		_keys   = keys;
+		_clear  = clear;
 	}
 
 	public void Execute(None parameter)

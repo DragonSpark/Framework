@@ -2,9 +2,9 @@
 using Microsoft.Extensions.Caching.Memory;
 using System;
 
-namespace DragonSpark.Application.Compose.Store;
+namespace DragonSpark.Application.Model;
 
-sealed class RelativeExpiration : ICommand<ICacheEntry>
+public class RelativeExpiration : ICommand<ICacheEntry>
 {
 	readonly TimeSpan _valid;
 

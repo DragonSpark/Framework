@@ -7,20 +7,20 @@ namespace DragonSpark.Presentation.Components.Content.Sequences;
 
 sealed class PreRenderingAwarePagers<T> : ISelect<PreRenderingAwarePagersInput<T>, IPaging<T>>
 {
-	readonly IMemoryCache _memory;
-	readonly RenderStates _states;
+	readonly IMemoryCache       _memory;
+	readonly CurrentRenderState _state;
 
-	public PreRenderingAwarePagers(IMemoryCache memory, RenderStates states)
+	public PreRenderingAwarePagers(IMemoryCache memory, CurrentRenderState state)
 	{
 		_memory = memory;
-		_states = states;
+		_state  = state;
 	}
 
 	public IPaging<T> Get(PreRenderingAwarePagersInput<T> parameter)
 	{
 		var (previous, formatter) = parameter;
-		var content = new MemoryAwarePagingContent<T>(previous, _memory);
-		var result  = new MemoryAwarePaging<T>(formatter, _states, content);
+		var content = new MemoryAwarePagingContent<T>(previous, _state, new(_memory));
+		var result  = new MemoryAwarePaging<T>(formatter, content);
 		return result;
 	}
 }

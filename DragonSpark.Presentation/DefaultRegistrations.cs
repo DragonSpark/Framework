@@ -45,10 +45,8 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Forward<EventAggregator>()
 		         .Scoped()
 		         //
-		         .Then.Start<InMemoryRenderStates>()
-		         .Singleton()
-		         .Then.Start<RenderStates>()
-		         .Use<CurrentRenderStates>()
+		         .Then.Start<CurrentRenderState>().And<RenderStateMonitor>()
+		         .Include(x => x.Dependencies)
 		         .Scoped()
 		         //
 		         .Then.AddScoped(typeof(IPublisher<>), typeof(Publisher<>))

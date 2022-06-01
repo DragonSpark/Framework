@@ -3,6 +3,6 @@
 public enum RenderState
 {
 	Default,
-	Stored/*,
-	Ready*/
+	Ready,
+	Established,
 }

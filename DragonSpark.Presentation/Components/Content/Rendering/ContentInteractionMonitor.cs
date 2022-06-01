@@ -1,7 +1,5 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Presentation.Connections.Circuits;
 using DragonSpark.Runtime.Execution;
-using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
 using System;
 using System.Threading.Tasks;
@@ -10,12 +8,9 @@ namespace DragonSpark.Presentation.Components.Content.Rendering;
 
 partial class ContentInteractionMonitor
 {
-	readonly First                    _active  = new();
+	readonly First                         _active  = new(), _rendered = new();
 	Func<Task>                             _execute = default!;
 	EventHandler<LocationChangedEventArgs> _changed = default!;
-
-	[Inject]
-	Rendered Rendered { get; set; } = default!;
 
 	protected override void OnInitialized()
 	{
@@ -23,14 +18,17 @@ partial class ContentInteractionMonitor
 		_execute                   =  OnReady;
 		_changed                   =  NavigationOnLocationChanged;
 		Navigation.LocationChanged += _changed;
+		Monitor.Execute();
 	}
 
 	Task OnReady()
 	{
 		if (_active.Get())
 		{
+			Monitor.Execute();
 			Interaction.Execute();
 		}
+
 		return Task.CompletedTask;
 	}
 
@@ -46,9 +44,8 @@ partial class ContentInteractionMonitor
 		{
 			StateHasChanged();
 		}
-		else if (!Rendered.Get())
+		else if (_rendered.Get())
 		{
-			Rendered.Execute(true);
 			Debounce(_execute, (int)PreRenderingWindow.Default.Get().TotalMilliseconds);
 		}
 	}

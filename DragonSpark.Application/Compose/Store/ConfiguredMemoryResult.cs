@@ -1,16 +1,15 @@
-﻿using DragonSpark.Model.Selection;
-using Microsoft.Extensions.Caching.Memory;
+﻿using Microsoft.Extensions.Caching.Memory;
 using System;
 
 namespace DragonSpark.Application.Compose.Store;
 
-sealed class Source<TIn, TOut> : ISelect<(TIn Parameter, object Key), TOut>
+class ConfiguredMemoryResult<TIn, TOut> : IConfiguredMemoryResult<TIn, TOut>
 {
 	readonly IMemoryCache        _memory;
 	readonly Func<TIn, TOut>     _source;
 	readonly Action<ICacheEntry> _configure;
 
-	public Source(IMemoryCache memory, Func<TIn, TOut> source, Action<ICacheEntry> configure)
+	public ConfiguredMemoryResult(IMemoryCache memory, Func<TIn, TOut> source, Action<ICacheEntry> configure)
 	{
 		_memory    = memory;
 		_source    = source;
@@ -26,4 +25,10 @@ sealed class Source<TIn, TOut> : ISelect<(TIn Parameter, object Key), TOut>
 		_configure(entry);
 		return result;
 	}
+}
+
+sealed class ConfiguredMemoryResult<T> : ConfiguredMemoryResult<T, T>, IConfiguredMemoryResult<T>
+{
+	public ConfiguredMemoryResult(IMemoryCache memory, Action<ICacheEntry> configure)
+		: base(memory, x => x, configure) {}
 }

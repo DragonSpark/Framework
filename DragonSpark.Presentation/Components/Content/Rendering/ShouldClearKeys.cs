@@ -1,8 +1,13 @@
-﻿using DragonSpark.Runtime.Execution;
+﻿using DragonSpark.Model;
+using DragonSpark.Model.Selection.Conditions;
 
 namespace DragonSpark.Presentation.Components.Content.Rendering;
 
-sealed class ShouldClearKeys : FirstAssigned
+sealed class ShouldClearKeys : ICondition
 {
-	public ShouldClearKeys(IsTracking store) : base(store) {}
+	readonly CurrentRenderState _state;
+
+	public ShouldClearKeys(CurrentRenderState state) => _state = state;
+
+	public bool Get(None parameter) => _state.Get() == RenderState.Ready;
 }

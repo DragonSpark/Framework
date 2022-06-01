@@ -1,4 +1,5 @@
-﻿using DragonSpark.Compose;
+﻿using DragonSpark.Application.Model;
+using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using Microsoft.Extensions.Caching.Memory;
 using System.Threading.Tasks;
@@ -7,35 +8,44 @@ namespace DragonSpark.Presentation.Components.Content.Rendering;
 
 class RenderStateContent<TIn, TOut> : ISelecting<RenderStateInput<TIn>, TOut>
 {
-	readonly ISelecting<TIn, TOut> _previous;
-	readonly IMemoryCache          _memory;
+	readonly ISelecting<TIn, TOut>  _previous;
+	readonly CurrentRenderState     _state;
+	readonly RenderAssignment<TOut> _store;
 
-	protected RenderStateContent(ISelecting<TIn, TOut> previous, IMemoryCache memory)
+	protected RenderStateContent(ISelecting<TIn, TOut> previous, CurrentRenderState state, RenderAssignment<TOut> store)
 	{
-		_previous = previous;
-		_memory   = memory;
+		_previous   = previous;
+		_state = state;
+		_store      = store;
 	}
 
 	public async ValueTask<TOut> Get(RenderStateInput<TIn> parameter)
 	{
-		var (input, key, state) = parameter;
-		switch (state)
+		var (input, key) = parameter;
+		/*if (_monitor.Get())
 		{
-			case RenderState.Default:
+			_store.Remove(key);
+		}
+		else*/
+		var state = _state.Get();
+		{
+			switch (state)
 			{
-				var result = await _previous.Await(input);
-				_memory.Set(key, result, PreRenderingWindow.Default);
-				return result;
-			}
-			case RenderState.Stored:
-			{
-				if (_memory.TryGetValue(key, out var existing))
+				case RenderState.Default:
 				{
-					_memory.Remove(key);
-					return existing.To<TOut>();
+					var result = await _previous.Await(input);
+					_store.Assign(key, result);
+					return result;
 				}
+				case RenderState.Ready:
+				{
+					if (_store.Pop(key, out var result))
+					{
+						return result.Verify();
+					}
 
-				break;
+					break;
+				}
 			}
 		}
 
@@ -46,24 +56,24 @@ class RenderStateContent<TIn, TOut> : ISelecting<RenderStateInput<TIn>, TOut>
 	}
 }
 
+
+
 sealed class RenderStateContent<T> : ISelecting<RenderState, T?>
 {
 	readonly IActiveContent<T> _previous;
-	readonly IMemoryCache      _memory;
-	readonly string            _key;
+	readonly RenderStore<T>    _store;
 
-	public RenderStateContent(IActiveContent<T> previous, IMemoryCache memory, string key)
+	public RenderStateContent(IActiveContent<T> previous, RenderStore<T> store)
 	{
 		_previous = previous;
-		_memory   = memory;
-		_key      = key;
+		_store    = store;
 	}
 
 	public async ValueTask<T?> Get(RenderState parameter)
 	{
 		if (_previous.Monitor.Get())
 		{
-			_memory.Remove(_key);
+			_store.Remove();
 		}
 		else
 		{
@@ -72,15 +82,14 @@ sealed class RenderStateContent<T> : ISelecting<RenderState, T?>
 				case RenderState.Default:
 				{
 					var result = await _previous.Await();
-					_memory.Set(_key, result, PreRenderingWindow.Default);
+					_store.Execute(result);
 					return result;
 				}
-				case RenderState.Stored:
+				case RenderState.Ready:
 				{
-					if (_memory.TryGetValue(_key, out var existing))
+					if (_store.Pop(out var result))
 					{
-						_memory.Remove(_key);
-						return (T?)existing;
+						return result;
 					}
 
 					break;
@@ -93,4 +102,21 @@ sealed class RenderStateContent<T> : ISelecting<RenderState, T?>
 			return result;
 		}
 	}
+}
+
+sealed class RenderStoreConfiguration : RelativeExpiration
+{
+	public static RenderStoreConfiguration Default { get; } = new();
+
+	RenderStoreConfiguration() : base(PreRenderingWindow.Default) {}
+}
+
+sealed class RenderAssignment<T> : MemoryAssignment<T>
+{
+	public RenderAssignment(IMemoryCache subject) : base(subject, RenderStoreConfiguration.Default) {}
+}
+
+sealed class RenderStore<T> : MemoryVariable<T>
+{
+	public RenderStore(IMemoryCache memory, string key) : base(memory, key, RenderStoreConfiguration.Default) {}
 }
