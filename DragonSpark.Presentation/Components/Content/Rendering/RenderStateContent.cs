@@ -1,7 +1,5 @@
-﻿using DragonSpark.Application.Model;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
-using Microsoft.Extensions.Caching.Memory;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content.Rendering;
@@ -22,11 +20,6 @@ class RenderStateContent<TIn, TOut> : ISelecting<RenderStateInput<TIn>, TOut>
 	public async ValueTask<TOut> Get(RenderStateInput<TIn> parameter)
 	{
 		var (input, key) = parameter;
-		/*if (_monitor.Get())
-		{
-			_store.Remove(key);
-		}
-		else*/
 		var state = _state.Get();
 		{
 			switch (state)
@@ -89,7 +82,7 @@ sealed class RenderStateContent<T> : ISelecting<RenderState, T?>
 				{
 					if (_store.Pop(out var result))
 					{
-						return result;
+						return result is not null ? _previous.Parameter(result) : result;
 					}
 
 					break;
@@ -102,21 +95,4 @@ sealed class RenderStateContent<T> : ISelecting<RenderState, T?>
 			return result;
 		}
 	}
-}
-
-sealed class RenderStoreConfiguration : RelativeExpiration
-{
-	public static RenderStoreConfiguration Default { get; } = new();
-
-	RenderStoreConfiguration() : base(PreRenderingWindow.Default) {}
-}
-
-sealed class RenderAssignment<T> : MemoryAssignment<T>
-{
-	public RenderAssignment(IMemoryCache subject) : base(subject, RenderStoreConfiguration.Default) {}
-}
-
-sealed class RenderStore<T> : MemoryVariable<T>
-{
-	public RenderStore(IMemoryCache memory, string key) : base(memory, key, RenderStoreConfiguration.Default) {}
 }

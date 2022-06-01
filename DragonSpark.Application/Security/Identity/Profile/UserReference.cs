@@ -1,9 +1,13 @@
-﻿using DragonSpark.Application.Entities;
-using DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
+﻿using DragonSpark.Compose;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Profile;
 
-sealed class UserReference<T> : EvaluateToSingle<T, T>, IUserReference<T> where T : class
+sealed class UserReference<T> : IUserReference<T> where T : IdentityUser
 {
-	public UserReference(IStandardScopes scopes) : base(scopes, SelectUserReference<T>.Default) {}
+	public static UserReference<T> Default { get; } = new();
+
+	UserReference() {}
+
+	public ValueTask<T> Get(T parameter) => parameter.Reference().To<T>().ToOperation();
 }

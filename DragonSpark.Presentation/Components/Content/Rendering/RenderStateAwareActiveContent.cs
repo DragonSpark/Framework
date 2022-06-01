@@ -7,15 +7,16 @@ namespace DragonSpark.Presentation.Components.Content.Rendering;
 
 sealed class RenderStateAwareActiveContent<T> : IActiveContent<T>
 {
+	readonly IActiveContent<T>           _previous;
 	readonly IResult<RenderState>        _state;
 	readonly ISelecting<RenderState, T?> _content;
 
-	public RenderStateAwareActiveContent(IUpdateMonitor monitor, IResult<RenderState> state,
+	public RenderStateAwareActiveContent(IActiveContent<T> previous, IResult<RenderState> state,
 	                                     ISelecting<RenderState, T?> content)
 	{
-		Monitor  = monitor;
-		_state   = state;
-		_content = content;
+		_previous = previous;
+		_state    = state;
+		_content  = content;
 	}
 
 	public async ValueTask<T?> Get()
@@ -25,5 +26,10 @@ sealed class RenderStateAwareActiveContent<T> : IActiveContent<T>
 		return result;
 	}
 
-	public IUpdateMonitor Monitor { get; }
+	public IUpdateMonitor Monitor => _previous.Monitor;
+
+	public void Execute(T parameter)
+	{
+		_previous.Execute(parameter);
+	}
 }

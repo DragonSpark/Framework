@@ -13,4 +13,9 @@ sealed class PreRenderActiveContent<T> : Validated<ValueTask<T?>>, IActiveConten
 		=> _previous = previous;
 
 	public IUpdateMonitor Monitor => _previous.Monitor;
+
+	public void Execute(T parameter)
+	{
+		_previous.Execute(parameter);
+	}
 }

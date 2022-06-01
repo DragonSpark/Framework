@@ -16,7 +16,6 @@ public sealed class ObservedList<T> : ObservableCollection<T>
 	// ReSharper disable once CognitiveComplexity
 	protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
 	{
-		base.OnCollectionChanged(e);
 		var @new = (e.NewItems?.Cast<T>() ?? Empty.Array<T>()).Only();
 		if (@new is not null)
 		{
@@ -47,5 +46,6 @@ public sealed class ObservedList<T> : ObservableCollection<T>
 				}
 			}
 		}
+		base.OnCollectionChanged(e);
 	}
 }

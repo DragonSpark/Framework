@@ -37,7 +37,7 @@ public class Storing<T> : IResulting<T>
 
 	public Storing(IResult<ValueTask<T>> source) : this(new Variable<T>(), source) {}
 
-	public Storing(IMutable<T?> mutable, IResult<ValueTask<T>> source) 
+	public Storing(IMutable<T?> mutable, IResult<ValueTask<T>> source)
 		: this(new AssignedAwareVariable<T>(mutable), source) {}
 
 	public Storing(IMutationAware<T?> store, IResult<ValueTask<T>> source) : this(store, source.Await) {}
