@@ -45,6 +45,7 @@
             _timer = null;
             return Refreshed.InvokeAsync(this);
         }
+        StateHasChanged();
         return Updated.InvokeAsync();
     }
 
