@@ -37,6 +37,8 @@ public static class Extensions
 		=> new Send(@this.Get(), life.GetValueOrDefault(DefaultLife.Default),
 		            visibility.GetValueOrDefault(DefaultVisibility.Default));
 
+	public static IMessage Message(this IQueue @this) => new Message(@this.Get());
+
 	public static RegistrationResult Storage<T>(this IServiceCollection @this) where T : class, IContainer
 		=> @this.Start<IContainer>()
 		        .Forward<T>()
