@@ -6,10 +6,11 @@ using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using IdentityUser = DragonSpark.Application.Security.Identity.IdentityUser;
 
 namespace DragonSpark.Application.Compose.Entities;
 
-sealed class AddIdentityComponents<T> : ICommand<IServiceCollection> where T : class
+sealed class AddIdentityComponents<T> : ICommand<IServiceCollection> where T : IdentityUser
 {
 	public static AddIdentityComponents<T> Default { get; } = new AddIdentityComponents<T>();
 

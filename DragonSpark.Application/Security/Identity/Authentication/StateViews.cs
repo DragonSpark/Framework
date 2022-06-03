@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Authentication;
 
-sealed class StateViews<T> : IStateViews<T> where T : class
+sealed class StateViews<T> : IStateViews<T> where T : IdentityUser
 {
 	readonly IUsers<T>    _users;
 	readonly StateView<T> _default;

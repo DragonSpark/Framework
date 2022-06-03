@@ -7,7 +7,7 @@ using System.Security.Claims;
 
 namespace DragonSpark.Application.Security.Identity.Authentication;
 
-sealed class MemoryAwareStateViews<T> : Selecting<ClaimsPrincipal, StateView<T>>, IStateViews<T> where T : class
+sealed class MemoryAwareStateViews<T> : Selecting<ClaimsPrincipal, StateView<T>>, IStateViews<T> where T : IdentityUser
 {
 	[UsedImplicitly]
 	public MemoryAwareStateViews(IStateViews<T> previous, IMemoryCache memory)

@@ -1,12 +1,13 @@
 ﻿@using DragonSpark.Compose
 @using DragonSpark.Model.Operations
+@using DragonSpark.Presentation.Components.Content.Rendering
 @typeparam T
 
 @implements IHandle<T>
 @implements IDisposable
 
 @inject IEventAggregator Events
-
+@inject CurrentRenderState State
 
 @code
 {
@@ -21,15 +22,27 @@
 
 	protected override Task OnInitializedAsync()
 	{
-		Events.Subscribe(this);
+	    switch (State.Get())
+	    {
+	        case RenderState.Default:
+	            break;
+	        default:
+	            Events.Subscribe(this);
+	            break;
+	    }
 		return Task.CompletedTask;
 	}
 
 	public async Task HandleAsync(T parameter)
 	{
-	    var b = await Condition.Get(parameter);
-	    if (Enabled && b)
+	    if (Enabled && await Condition.Get(parameter))
 		{
+		    switch (State.Get())
+		    {
+		        case RenderState.Ready:
+		            await Task.Delay(TimeSpan.FromSeconds(3));
+		            break;
+		    }
 			await InvokeAsync(() => Received.InvokeAsync(parameter));
 		}
 	}

@@ -17,6 +17,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
+using IdentityUser = DragonSpark.Application.Security.Identity.IdentityUser;
 
 namespace DragonSpark.Application;
 
@@ -71,7 +72,7 @@ partial class Extensions
 		return result;
 	}
 
-	public static T User<T>(this AuthenticationState @this) where T : class
+	public static T User<T>(this AuthenticationState @this) where T : IdentityUser
 		=> @this.To<AuthenticationState<T>>().Profile.Verify();
 
 	public static ProviderIdentity AsIdentity(this ExternalLoginInfo @this)

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Authentication;
 
-sealed class Adapters<T> : IAdapters where T : class
+sealed class Adapters<T> : IAdapters where T : IdentityUser
 {
 	readonly IStateViews<T>      _views;
 	readonly INavigateToSignOut  _exit;

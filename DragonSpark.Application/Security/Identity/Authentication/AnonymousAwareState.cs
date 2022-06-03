@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Authentication;
 
-sealed class AnonymousAwareState<T> : IStateViews<T> where T : class
+sealed class AnonymousAwareState<T> : IStateViews<T> where T : IdentityUser
 {
 	readonly IStateViews<T> _previous;
 	readonly StateView<T>   _default;

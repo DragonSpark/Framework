@@ -1,6 +1,6 @@
 ﻿namespace DragonSpark.Application.Security.Identity.Authentication;
 
-public sealed class StateView<T> where T : class
+public sealed class StateView<T> where T : IdentityUser
 {
 	public static StateView<T> Default { get; } = new();
 

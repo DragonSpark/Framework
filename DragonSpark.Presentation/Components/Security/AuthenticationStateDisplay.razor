@@ -1,7 +1,7 @@
 ﻿@using DragonSpark.Application.Security.Identity.Authentication
 @using DragonSpark.Compose
 @using DragonSpark.Presentation.Security.Identity
-@typeparam T where T : class
+@typeparam T where T : DragonSpark.Application.Security.Identity.IdentityUser
 
 @inject Application.Security.Identity.Profile.IUserReference<T> Reference
 

@@ -2,12 +2,14 @@
 @using DragonSpark.Compose
 @using DragonSpark.Model.Operations
 @using DragonSpark.Application.Connections.Client
+@using DragonSpark.Presentation.Components.Content.Rendering
 @implements IAsyncDisposable
 @typeparam T
 
+@inject CurrentRenderState State
 @code
 {
-    IReceiver connection = default!;
+    IReceiver? connection = default!;
 
     [Parameter]
     public IReceive<T> Registration { get; set; } = default!;
@@ -20,8 +22,15 @@
 
     protected override Task OnInitializedAsync()
     {
-        connection = Registration.Get(OnReceive);
-        connection.Get();
+        switch (State.Get())
+        {
+            case RenderState.Default:
+                break;
+            default:
+                connection = Registration.Get(OnReceive);
+                connection.Get();
+                break;
+        }
         return base.OnInitializedAsync();
     }
 
@@ -29,6 +38,12 @@
     {
         if (await Condition.Get(parameter))
         {
+            switch (State.Get())
+            {
+                case RenderState.Ready:
+                    await Task.Delay(TimeSpan.FromSeconds(3));
+                    break;
+            }
             await Received.InvokeAsync(parameter);
         }
     }
@@ -36,5 +51,5 @@
     /*protected override Task OnAfterRenderAsync(bool firstRender)
         => firstRender ? connection.Get().AsTask() : base.OnAfterRenderAsync(firstRender);*/
 
-    public ValueTask DisposeAsync() => connection.DisposeAsync();
+    public ValueTask DisposeAsync() => connection?.DisposeAsync() ?? Task.CompletedTask.ToOperation();
 }

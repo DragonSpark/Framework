@@ -1,4 +1,6 @@
-﻿using System;
+﻿using NetFabric.Hyperlinq;
+using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -40,7 +42,8 @@ public class EventAggregator : IEventAggregator, IDisposable
 
 		lock (_handlers)
 		{
-			foreach (var handler in _handlers.Where(x => x.Matches(subscriber)).ToArray())
+			using var lease = _handlers.AsValueEnumerable().Where(x => x.Matches(subscriber)).ToArray(ArrayPool<Handler>.Shared);
+			foreach (var handler in lease)
 			{
 				_handlers.Remove(handler);
 			}
