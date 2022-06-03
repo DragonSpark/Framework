@@ -1,8 +1,10 @@
 ﻿using DragonSpark.Application.Diagnostics;
 using DragonSpark.Application.Runtime;
 using DragonSpark.Compose;
+using DragonSpark.Model;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
+using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Selection.Stores;
 using DragonSpark.Presentation.Components.Diagnostics;
 using DragonSpark.Presentation.Components.State;
@@ -50,10 +52,22 @@ public sealed class CallbackContext : IResult<EventCallback>
 		return result;
 	}
 
+	public OperationCallbackContext Throttle(ICondition<None> when, TimeSpan @for)
+		=> Throttle(when.Then().Operation().Out(), @for);
+
+	public OperationCallbackContext Throttle(IDepending<None> when, TimeSpan @for)
+	{
+		var operate   = Start.A.Result(_method).Then().Structure();
+		var operation = new Throttling(operate, @for).Then().Operation();
+		var result = new OperationCallbackContext(_receiver.Verify(), new Validating(when.Await, operation, operate));
+		return result;
+	}
+
 	public OperationCallbackContext Block() => BlockFor(TimeSpan.FromSeconds(1));
 
 	public OperationCallbackContext BlockFor(TimeSpan duration)
-		=> new (_receiver.Verify(), new BlockingEntryOperation(Start.A.Result(_method).Then().Structure().Out(), duration));
+		=> new(_receiver.Verify(),
+		       new BlockingEntryOperation(Start.A.Result(_method).Then().Structure().Out(), duration));
 
 	public OperationCallbackContext UpdateActivity()
 	{
@@ -99,8 +113,8 @@ public class CallbackContext<T> : IResult<EventCallback<T>>
 #pragma warning disable CS8714
 		var throttling = new Throttling<T>(new Table<T, Timer>(), window);
 #pragma warning restore CS8714
-		var operation  = new ThrottleOperation<T>(throttling, Start.A.Selection(_method).Then().Structure());
-		var result     = new OperationCallbackContext<T>(_receiver.Verify(), operation);
+		var operation = new ThrottleOperation<T>(throttling, Start.A.Selection(_method).Then().Structure());
+		var result    = new OperationCallbackContext<T>(_receiver.Verify(), operation);
 		return result;
 	}
 

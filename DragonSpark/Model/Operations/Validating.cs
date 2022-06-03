@@ -29,6 +29,35 @@ public class Validating<TIn, TOut> : ISelecting<TIn, TOut>
 		=> await _specification(parameter) ? await _true(parameter) : await _false(parameter);
 }
 
+public class Validating : IOperation
+{
+	readonly Await<None, bool> _specification;
+	readonly Await             _true, _false;
+
+	public Validating(IDepending<None> condition, IOperation @true)
+		: this(condition.Await, @true.Await, EmptyOperation.Default.Await) {}
+
+	public Validating(IDepending<None> condition, IOperation @true, IOperation @false)
+		: this(condition.Await, @true.Await, @false.Await) {}
+
+	public Validating(Await<None, bool> specification, Await @true)
+		: this(specification, @true, EmptyOperation.Default.Await) {}
+
+	public Validating(Await<None, bool> specification, Await @true, Await @false)
+	{
+		_specification = specification;
+		_true          = @true;
+		_false         = @false;
+	}
+
+	public async ValueTask Get()
+	{
+		var operation = await _specification(None.Default) ? _true : _false;
+		await operation();
+	}
+
+}
+
 public class Validating<T> : IOperation<T>
 {
 	readonly Await<T, bool> _specification;

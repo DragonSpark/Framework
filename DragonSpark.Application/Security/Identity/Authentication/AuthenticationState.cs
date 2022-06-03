@@ -21,6 +21,6 @@ public sealed class AuthenticationState<T> : AuthenticationState where T : Ident
 	public void Deconstruct(out ClaimsPrincipal principal, out T? profile)
 	{
 		principal = User;
-		profile   = Profile;
+		profile   = _profile;
 	}
 }

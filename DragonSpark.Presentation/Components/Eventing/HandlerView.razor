@@ -37,13 +37,7 @@
 	{
 	    if (Enabled && await Condition.Get(parameter))
 		{
-		    switch (State.Get())
-		    {
-		        case RenderState.Ready:
-		            await Task.Delay(TimeSpan.FromSeconds(3));
-		            break;
-		    }
-			await InvokeAsync(() => Received.InvokeAsync(parameter));
+		    await InvokeAsync(() => Received.InvokeAsync(parameter));
 		}
 	}
 

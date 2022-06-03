@@ -1,0 +1,22 @@
+﻿@using DragonSpark.Runtime.Execution
+@using DragonSpark.Model.Selection.Conditions
+@using DragonSpark.Model
+@using DragonSpark.Presentation.Components.Content.Rendering
+@using DragonSpark.Compose
+
+@inject IsReady Tracking
+
+<DragonSpark.Presentation.Components.InvokeCallbackComponent Subject="@Subject" Condition="@_condition" />
+
+@code {
+    ICondition<None> _condition = default!;
+
+    protected override void OnInitialized()
+    {
+        _condition = Tracking.Then().And(new First()).Out();
+        base.OnInitialized();
+    }
+
+    [Parameter]
+    public EventCallback Subject { get; set; }
+}

@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Presentation.Components.Content.Rendering;
 using DragonSpark.Runtime.Execution;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -14,6 +15,9 @@ public abstract class ContentComponentBase<T> : ComponentBase
 
 	[Parameter, Inject]
 	public IActiveContents<T> Contents { get; set; } = ActiveContents<T>.Default;
+
+	[Inject]
+	CurrentRenderState Current { get; set; } = default!;
 
 	protected override void OnInitialized()
 	{
@@ -39,8 +43,15 @@ public abstract class ContentComponentBase<T> : ComponentBase
 
 	protected override ValueTask RefreshState()
 	{
-		RequestNewContent();
-		return base.RefreshState();
+		switch (Current.Get())
+		{
+			case RenderState.Default:
+				break;
+			default:
+				RequestNewContent();
+				return base.RefreshState();
+		}
+		return ValueTask.CompletedTask;
 	}
 
 	protected override Task OnAfterRenderAsync(bool firstRender)
