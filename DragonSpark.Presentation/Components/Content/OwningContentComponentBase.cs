@@ -17,7 +17,7 @@ public abstract class OwningContentComponentBase<TService, TContent> : Scoped.Ow
 	public IActiveContents<TContent> Contents { get; set; } = ActiveContents<TContent>.Default;
 
 	[Inject]
-	IContentInteraction Interaction { get; set; } = default!;
+	IResetRenderState Interaction { get; set; } = default!;
 
 	protected IActiveContent<TContent> Content => _current.Verify();
 

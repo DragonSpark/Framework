@@ -14,7 +14,7 @@ public class Deferring<T> : IDeferring<T>
 
 	public Deferring(Lazy<Task<T>> store) => _store = store;
 
-	public bool Get(None parameter) => _store.IsValueCreated;
+	public bool Get(None parameter) => _store.IsValueCreated && _store.Value.IsCompletedSuccessfully;
 
 	public ValueTask<T> Get() => _store.Value.ToOperation();
 }

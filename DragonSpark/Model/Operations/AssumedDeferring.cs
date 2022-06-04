@@ -26,7 +26,7 @@ public class AssumedDeferring<T> : IDeferring<T>
 		_result = result;
 	}
 
-	public ValueTask<T> Get() => _result.Get().Get();
+	public ValueTask<T> Get() => _result.Instance();
 
 	public bool Get(None parameter) => _store.Get()?.Get(None.Default) ?? false;
 }

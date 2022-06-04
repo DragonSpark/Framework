@@ -6,5 +6,6 @@ namespace DragonSpark.Presentation.Environment;
 
 sealed class ContextHostRenderKey : HostRenderKey<HttpContext>
 {
-	public ContextHostRenderKey(ClientSessionIdentifier identifier) : base(identifier, A.Type<HttpContext>()) {}
+	public ContextHostRenderKey(ClientSessionIdentifier identifier)
+		: base(identifier, A.Type<ContextHostRenderKey>()) {}
 }

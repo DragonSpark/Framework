@@ -5,7 +5,7 @@ namespace DragonSpark.Model.Operations;
 
 public class DelayedDisperse : DelayedDisperse<None>
 {
-	protected DelayedDisperse(IOperation previous) : this(previous, TimeSpan.FromSeconds(1)) {}
+	public DelayedDisperse(IOperation previous) : this(previous, TimeSpan.FromSeconds(1)) {}
 
 	protected DelayedDisperse(IOperation previous, TimeSpan delay) : base(previous.Then().Accept().Out(), delay) {}
 }

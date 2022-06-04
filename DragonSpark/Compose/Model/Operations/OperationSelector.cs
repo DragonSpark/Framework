@@ -19,4 +19,6 @@ public class OperationSelector : ResultContext<ValueTask>
 	public OperationSelector Append(Operate next) => new OperationSelector(new AppendedOperate(Get().Get, next));
 
 	public AllocatedOperationSelector Allocate() => new AllocatedOperationSelector(Select(x => x.AsTask()).Get());
+
+	public OperationSelector Disperse() => new(new DelayedDisperse(new Operation(this)).Then().Bind().Get());
 }

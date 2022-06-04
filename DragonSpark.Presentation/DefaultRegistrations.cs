@@ -38,17 +38,34 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Then.Decorate<IExceptions, CompensationAwareExceptions>()
 		         .Decorate<IExceptions, NotificationAwareExceptions>()
 		         .Decorate<IExceptions, NavigationAwareExceptions>()
-				 //
-				 .Decorate<ILogException, NavigationAwareLogException>()
+		         //
+		         .Decorate<ILogException, NavigationAwareLogException>()
 		         //
 		         .Start<IEventAggregator>()
 		         .Forward<EventAggregator>()
 		         .Scoped()
 		         //
-		         .Then.Start<CurrentRenderState>().And<RenderStateMonitor>().And<IsReady>()
+		         .Then.Start<RenderStateMonitor>()
+		         .Include(x => x.Dependencies.Recursive())
+		         .Scoped()
+		         //
+		         .Then.Start<DefaultExternalLogin>()
+		         .And<ContextRenderApply>()
+		         .And<ClientIdentifier>()
+		         .And<SignOut>()
+		         .And<IsReady>()
 		         .Include(x => x.Dependencies)
 		         .Scoped()
-				 //
+		         //
+		         .Then.Start<DialogService>()
+		         .And<NotificationService>()
+		         .And<RouterSession>()
+		         .And<NavigateToInitialize>()
+		         .And<ScrollToFirstValidationMessage>()
+		         .And<ContentIdentification>()
+		         .And<ResourceExistsValidation>()
+		         .Scoped()
+		         //
 		         .Then.AddScoped(typeof(IPublisher<>), typeof(Publisher<>))
 		         .AddScoped(typeof(IActiveContents<>), typeof(ActiveContents<>))
 		         .ForDefinition<RenderAwareActiveContentBuilder<object>>()
@@ -57,9 +74,6 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         //
 		         .Then.ForDefinition<IdentifiedPagings<object>>()
 		         .Include(x => x.Dependencies.Recursive())
-		         .Scoped()
-		         //
-		         .Then.Start<ContentIdentification>()
 		         .Scoped()
 		         //
 		         .Then.Start<IRenderContentKey>()
@@ -72,34 +86,23 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Forward<ApplyQueryStringValues>()
 		         .Scoped()
 		         //
-		         .Then.Start<SignOut>()
-		         .Include(x => x.Dependencies)
-		         .Scoped()
-		         //
 		         .Then.Start<ICurrentPrincipal>()
 		         .Forward<CurrentPrincipal>()
 		         .Include(x => x.Dependencies)
 		         .Scoped()
 		         //
-		         .Then.Start<IContentInteraction>()
-		         .Forward<ContentInteraction>()
+		         .Then.Start<IResetRenderState>()
+		         .Forward<ResetRenderState>()
+		         .Scoped()
+		         //
+		         .Then.Start<IClearRenderState>()
+		         .Forward<ClearRenderState>()
+		         .Decorate<StoreAwareClearRenderState>()
 		         .Include(x => x.Dependencies.Recursive())
 		         .Scoped()
-				 //
-				 .Then.Start<ClearComponentKey>().Scoped()
 		         //
-		         .Then.Start<DefaultExternalLogin>()
-		         .And<IsPreRendering>()
-		         .And<ContextRenderApply>()
-		         .And<ClientIdentifier>()
-		         .Include(x => x.Dependencies)
-		         .Scoped()
-		         //
-		         .Then.Start<DialogService>()
-		         .And<NotificationService>()
-		         .And<RouterSession>()
-		         .And<NavigateToInitialize>()
-		         .And<ScrollToFirstValidationMessage>()
+		         .Then.Start<IAdjustRenderState>()
+		         .Forward<AdjustRenderState>()
 		         .Scoped()
 		         //
 		         .Then.Start<ISetPageExitCheck>()
@@ -121,8 +124,6 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Forward<InitializeConnection>()
 		         .Scoped()
 		         //
-		         .Then.Start<ResourceExistsValidation>()
-		         .Scoped()
 		         .Then.Start<IResourceQuery>()
 		         .Forward<ResourceQuery>()
 		         .Decorate<StoreAwareResourceQuery>()

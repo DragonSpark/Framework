@@ -13,7 +13,7 @@ sealed class CurrentRenderState : IMutable<RenderState>
 		_session    = session;
 	}
 
-	public RenderState Get() => _connection.Get() ?? _session.Get() ?? RenderState.Default;
+	public RenderState Get() => _session.Get() ?? _connection.Get() ?? RenderState.Default;
 
 	public void Execute(RenderState parameter)
 	{

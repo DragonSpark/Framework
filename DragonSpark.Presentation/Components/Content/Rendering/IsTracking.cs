@@ -11,12 +11,3 @@ sealed class IsTracking : ICondition
 
 	public bool Get(None parameter) => _current.Get() is RenderState.Default or RenderState.Ready;
 }
-
-sealed class IsReady : ICondition
-{
-	readonly CurrentRenderState _current;
-
-	public IsReady(CurrentRenderState current) => _current = current;
-
-	public bool Get(None parameter) => _current.Get() is RenderState.Ready;
-}

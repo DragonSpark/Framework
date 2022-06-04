@@ -6,7 +6,5 @@ namespace DragonSpark.Presentation.Components.Content.Rendering;
 
 sealed class ConnectionRenderKey : Key<Guid>
 {
-	public static ConnectionRenderKey Default { get; } = new();
-
-	ConnectionRenderKey() : base(A.Type<ConnectionRenderKey>(), x => x.ToString()) {}
+	public ConnectionRenderKey(ConnectionLocationKey key) : base(A.Type<ConnectionRenderKey>(), key.Get) {}
 }

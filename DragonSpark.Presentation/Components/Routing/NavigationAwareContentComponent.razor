@@ -1,5 +1,6 @@
 ﻿
 @inherits DragonSpark.Presentation.Components.ComponentBase
+@using Humanizer
 @implements IDisposable
 
 @inject NavigationManager Navigation
@@ -7,16 +8,20 @@
 @ChildContent
 
 @code {
-	[Parameter]
+	readonly EventHandler<LocationChangedEventArgs> _changed;
+
+	public NavigationAwareContentComponent() => _changed = OnChange;
+
+    [Parameter]
 	public RenderFragment ChildContent { get; set; } = default!;
 
 	protected override Task OnInitializedAsync()
 	{
-		Navigation.LocationChanged += SessionOnIntraPageNavigation;
+		Navigation.LocationChanged += _changed;
 		return base.OnInitializedAsync();
 	}
 
-	void SessionOnIntraPageNavigation(object? sender, EventArgs e)
+	void OnChange(object? sender, EventArgs e)
 	{
 		StateHasChanged();
 	}
@@ -32,8 +37,8 @@
 		GC.SuppressFinalize(this);
 	}
 
-	protected virtual void OnDispose(bool disposing)
+	protected virtual void OnDispose(bool _)
 	{
-		Navigation.LocationChanged -= SessionOnIntraPageNavigation;
+		Navigation.LocationChanged -= _changed;
 	}
 }
