@@ -46,6 +46,9 @@ public class WhereSelect<TIn, T, TTo> : Combine<TIn, T, TTo>
 
 public class WhereSelect<T, TTo> : WhereSelect<None, T, TTo>, IQuery<TTo>
 {
+	protected WhereSelect(IQuery<T> previous, Expression<Func<T, bool>> where, Expression<Func<T, TTo>> select)
+		: this(previous.Then(), where, select) {}
+
 	protected WhereSelect(Expression<Func<DbContext, IQueryable<T>>> previous, Expression<Func<T, bool>> where,
 	                      Expression<Func<T, TTo>> select)
 		: base((context, _) => previous.Invoke(context), where, select) {}
