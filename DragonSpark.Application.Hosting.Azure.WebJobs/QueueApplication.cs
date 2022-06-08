@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Allocated;
 using System;
 
 namespace DragonSpark.Application.Hosting.Azure.WebJobs;

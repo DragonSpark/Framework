@@ -7,6 +7,7 @@ using DragonSpark.Compose.Model.Sequences;
 using DragonSpark.Model;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Allocated;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Alterations;
@@ -24,10 +25,6 @@ namespace DragonSpark.Compose;
 // ReSharper disable once MismatchedFileName
 public static partial class ExtensionMethods
 {
-	/*
-	 * https://youtu.be/oqwzuiSy9y0
-	 */
-
 	public static ResultContext<T> Then<T>(this IResult<T> @this) => new(@this);
 
 	public static NestedResultContext<T> Then<T>(this IResult<IResult<T>> @this)

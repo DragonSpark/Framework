@@ -1,4 +1,4 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model.Operations.Allocated;
 
 namespace DragonSpark.Application.Entities.Queries.Compiled;
 

@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations;
 
-public class Terminated<T> : IOperation
+public class ConfiguredTermination<T> : IOperation
 {
 	readonly IResult<ValueTask<T>> _result;
 	readonly Func<T, ValueTask>    _configure;
 
-	public Terminated(IResult<ValueTask<T>> result, Func<T, ValueTask> configure)
+	public ConfiguredTermination(IResult<ValueTask<T>> result, Func<T, ValueTask> configure)
 	{
 		_result    = result;
 		_configure = configure;

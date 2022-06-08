@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Compose.Model.Operations;
 using DragonSpark.Model;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Allocated;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using System;
@@ -86,14 +87,18 @@ public static partial class ExtensionMethods
 	public static ConfiguredValueTaskAwaitable<T> Await<T>(this IResult<ValueTask<T>> @this)
 		=> @this.Get().ConfigureAwait(false);
 
-
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ConfiguredValueTaskAwaitable Await<T>(this T @this) where T : IResult<ValueTask>
+		=> @this.Get().ConfigureAwait(false);
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static ConfiguredTaskAwaitable<T> Await<T>(this IResult<Task<T>> @this)
 		=> @this.Get().ConfigureAwait(false);
 
 	public static Task Allocate(this IOperation<None> @this) => @this.Get().AsTask();
 
 	public static Task Allocate(this IResult<ValueTask> @this) => @this.Get().AsTask();
+
 	public static Task Allocate(this Func<ValueTask> @this) => @this().AsTask();
 
 	public static Task Allocate<T>(this ISelect<T, ValueTask> @this, T parameter) => @this.Get(parameter).AsTask();

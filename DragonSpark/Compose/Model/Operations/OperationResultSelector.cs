@@ -24,10 +24,10 @@ public class OperationResultSelector<T> : ResultContext<ValueTask<T>>
 
 	public OperationSelector Terminate() => Terminate(_ => ValueTask.CompletedTask);
 
-	public OperationSelector Terminate(Func<T, ValueTask> command) => new(new Terminated<T>(Get(), command));
+	public OperationSelector Terminate(Func<T, ValueTask> command) => new(new ConfiguredTermination<T>(Get(), command));
 
 	public OperationSelector Terminate(Action<T> command)
-		=> new(new Terminated<T>(Get(), Start.A.Command(command).Operation()));
+		=> new(new ConfiguredTermination<T>(Get(), Start.A.Command(command).Operation()));
 
 	public OperationResultSelector<T> Watching(CancellationToken token) => Watching(Start.A.Result(token));
 
@@ -44,7 +44,7 @@ public class OperationResultSelector<T> : ResultContext<ValueTask<T>>
 	public OperationResultSelector<TTo> Select<TTo>(Func<T, TTo> select)
 		=> new(new OperationResulting<T, TTo>(Get().Get, select));
 
-	public AllocatedOperationResultSelector<T> Allocate() => new(Get().Then().Select(x => x.AsTask()).Get());
+	public AllocatedResultComposer<T> Allocate() => new(Get().Then().Select(x => x.AsTask()).Get());
 }
 
 public class OperationResultSelector<_, T> : Selector<_, ValueTask<T>>

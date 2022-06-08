@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Model.Operations;
+namespace DragonSpark.Model.Operations.Allocated;
 
 public class AllocatedOperation<T> : Select<T, Task>, IAllocated<T>
 {

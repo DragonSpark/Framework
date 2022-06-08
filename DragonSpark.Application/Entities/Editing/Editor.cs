@@ -5,22 +5,17 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Editing;
 
-sealed class Editor : IEditor
+sealed class Editor : DragonSpark.Model.Operations.Allocated.Terminating<int>, IEditor
 {
 	readonly DbContext   _context;
 	readonly IDisposable _disposable;
 
 	public Editor(DbContext context) : this(context, context) {}
 
-	public Editor(DbContext context, IDisposable disposable)
+	public Editor(DbContext context, IDisposable disposable) : base(context.Save)
 	{
 		_context    = context;
 		_disposable = disposable;
-	}
-
-	public async ValueTask Get()
-	{
-		await _context.SaveChangesAsync().ConfigureAwait(false);
 	}
 
 	public void Add(object entity)

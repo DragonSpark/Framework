@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Application.Security.Identity.Claims.Compile;
 using DragonSpark.Model.Commands;
-using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Allocated;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 

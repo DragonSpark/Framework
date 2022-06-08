@@ -16,3 +16,17 @@ public class Terminating<TIn, TOut> : IOperation<TIn>
 		await _await(parameter);
 	}
 }
+
+public class Terminating<T> : IOperation
+{
+	readonly AwaitOf<T> _await;
+
+	public Terminating(IResulting<T> operation) : this(operation.Await) {}
+
+	public Terminating(AwaitOf<T> await) => _await = @await;
+
+	public async ValueTask Get()
+	{
+		await _await();
+	}
+}

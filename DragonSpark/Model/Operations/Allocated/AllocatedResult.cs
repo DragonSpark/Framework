@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Model.Operations;
+namespace DragonSpark.Model.Operations.Allocated;
 
 public class AllocatedResult<T> : Result<Task<T>>, IAllocatedResult<T>
 {

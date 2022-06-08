@@ -1,4 +1,4 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model.Operations.Allocated;
 using Microsoft.AspNetCore.Http;
 using System.Threading.Tasks;
 
