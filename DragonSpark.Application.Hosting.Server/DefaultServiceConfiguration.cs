@@ -1,11 +1,18 @@
-﻿using DragonSpark.Composition;
+﻿using DragonSpark.Model.Commands;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace DragonSpark.Application.Hosting.Server;
 
-sealed class DefaultServiceConfiguration : ServiceConfiguration
+sealed class DefaultServiceConfiguration : ICommand<IServiceCollection>
 {
-	public static DefaultServiceConfiguration Default { get; } = new();
+	readonly Action<MvcOptions> _configure;
 
-	DefaultServiceConfiguration() : base(x => x.AddControllers()) {}
+	public DefaultServiceConfiguration(Action<MvcOptions> configure) => _configure = configure;
+
+	public void Execute(IServiceCollection parameter)
+	{
+		parameter.AddControllers(_configure);
+	}
 }
