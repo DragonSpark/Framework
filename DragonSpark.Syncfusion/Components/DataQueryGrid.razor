@@ -36,9 +36,9 @@
 @code {
 	AdaptiveGrid<T> _subject = default!;
 
-    protected override void OnContentChanged()
+    protected override void OnContentChanged(Await<DataManagerRequest, object>? parameter)
     {
-        RefreshRequested = Input != null;
+        RefreshRequested = parameter != null;
     }
 
     [Parameter]
@@ -51,8 +51,6 @@
 	public string Breakpoint { get; set; } = Breakpoints.SmallUp;
 
 	public Task Refresh() => _subject.Refresh();
-
-	Await<DataManagerRequest, object>? Input { get; set; }
 
 	bool RefreshRequested { get; set; }
 

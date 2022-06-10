@@ -21,13 +21,13 @@ public abstract class DataQueryComponent : DragonSpark.Presentation.Components.C
 			if (_content != value)
 			{
 				_content = value;
+				OnContentChanged(Input);
 				Input = null;
-				OnContentChanged();
 			}
 		}
 	}	IDataRequest _content = default!;
 
-	protected virtual void OnContentChanged(){}
+	protected virtual void OnContentChanged(Await<DataManagerRequest, object>? parameter){}
 
 	[Parameter]
 	public Type? ReportedType { get; set; }
