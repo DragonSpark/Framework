@@ -1,0 +1,43 @@
+﻿@using DragonSpark.Application.Entities.Queries.Runtime.Shape
+@using DragonSpark.Application
+@typeparam T
+
+@if (_render)
+{
+    @ChildContent
+}
+
+@code {
+    bool _render;
+
+    [Parameter]
+    public IPaging<T> Subject
+    {
+        get => _subject;
+        set
+        {
+            if (_subject != value)
+            {
+                _subject = value;
+                _render |= _subject.HasResults();
+            }
+        }
+    }	IPaging<T> _subject = default!;
+
+    [Parameter]
+    public bool Enabled 
+    {
+        get => _enabled.GetValueOrDefault(true);
+        set
+        {
+            if (_enabled != value)
+            {
+                _enabled = value;
+                _render |= Enabled;
+            }
+        }
+    }	bool? _enabled;
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+}

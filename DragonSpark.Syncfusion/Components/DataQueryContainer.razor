@@ -12,38 +12,40 @@
 
 <DragonSpark.Presentation.Components.State.ActivityReceiverContainer Context="_">
 	<SyncfusionQueryContainer T="T" Content="@Content" Compose="@Compose" Reporter="@Reporter"
-	                          LoadingTemplate="@EmptyContentTemplate.Default"
-	                          EmptyElementsTemplate="@EmptyElementsTemplate"
-	                          NotFoundTemplate="@NotFoundTemplate"
-	                          ExceptionTemplate="@ExceptionTemplate"
-	                          >
-		@if (HeaderTemplate is not null)
+							  LoadingTemplate="@EmptyContentTemplate.Default"
+							  EmptyElementsTemplate="@EmptyElementsTemplate"
+							  NotFoundTemplate="@NotFoundTemplate"
+							  ExceptionTemplate="@ExceptionTemplate"
+							  HeaderTemplate="@HeaderTemplate"
+							  FooterTemplate="@FooterTemplate"
+							  >
+		@if (BodyHeaderTemplate is not null)
 		{
-			@HeaderTemplate
+			@BodyHeaderTemplate
 		}
 
 		<DataQueryGrid T="T" Content="context"
-		               FilterType="@FilterType"
-		               ReportedType="@ReportedType"
-		               Columns="@Columns"
-		               AllowPaging="@AllowPaging"
-		               AllowFiltering="@AllowFiltering"
-		               AllowSorting="@AllowSorting"
+					   FilterType="@FilterType"
+					   ReportedType="@ReportedType"
+					   Columns="@Columns"
+					   AllowPaging="@AllowPaging"
+					   AllowFiltering="@AllowFiltering"
+					   AllowSorting="@AllowSorting"
 					   LoadingTemplate="@LoadingTemplate"
 					   CssClass="@CssClass"
-		               Breakpoint="@Breakpoint"
-		               PageSize="@PageSize"
-		               @attributes="@AdditionalAttributes"
+					   Breakpoint="@Breakpoint"
+					   PageSize="@PageSize"
+					   @attributes="@AdditionalAttributes"
 		>
-			@if (ChildContentTemplate is not null)
+			@if (BodyContentTemplate is not null)
 			{
-				@ChildContentTemplate
+				@BodyContentTemplate
 			}
 		</DataQueryGrid>
 
-		@if (FooterTemplate is not null)
+		@if (BodyFooterTemplate is not null)
 		{
-			@FooterTemplate
+			@BodyFooterTemplate
 		}
 	</SyncfusionQueryContainer>
 </DragonSpark.Presentation.Components.State.ActivityReceiverContainer>
@@ -68,13 +70,19 @@
 	public RenderFragment Columns { get; set; } = default!;
 
 	[Parameter]
-	public RenderFragment? HeaderTemplate { get; set; }
+	public RenderFragment? BodyHeaderTemplate { get; set; }
 
 	[Parameter]
-	public RenderFragment? ChildContentTemplate { get; set; }
+	public RenderFragment? BodyContentTemplate { get; set; }
 
 	[Parameter]
-	public RenderFragment? FooterTemplate { get; set; }
+	public RenderFragment? BodyFooterTemplate { get; set; }
+
+	[Parameter]
+	public RenderFragment<IPaging<T>>? HeaderTemplate { get; set; }
+
+	[Parameter]
+	public RenderFragment<IPaging<T>>? FooterTemplate { get; set; }
 
 	[Parameter]
 	public bool AllowPaging { get; set; } = true;

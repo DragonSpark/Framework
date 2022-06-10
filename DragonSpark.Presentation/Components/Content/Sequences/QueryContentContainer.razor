@@ -10,11 +10,19 @@
 
 @inherits DragonSpark.Presentation.Components.Content.Templates.ManyActiveContentTemplateComponentBase<IPaging<T>>
 
-<ResultingContentView Content="@Subject"
-					  LoadingTemplate="@LoadingTemplate"
-					  NotFoundTemplate="@NotFoundTemplate"
-					  ExceptionTemplate="@ExceptionTemplate">
-	@if (context != EmptyPaging<T>.Default)
+@inject IdentifiedPagings<T> Pagings
+
+<ResultingContentView T="IPaging<T>"
+    Content="@Subject"
+	LoadingTemplate="@LoadingTemplate"
+    NotFoundTemplate="@NotFoundTemplate"
+	ExceptionTemplate="@ExceptionTemplate">
+	@if (HeaderTemplate is not null)
+	{
+		@HeaderTemplate(context)
+	}
+
+	@if (context.HasResults())
 	{
 		@ChildContent(context)
 	}
@@ -22,6 +30,11 @@
 	{
 		@EmptyElementsTemplate
 	}
+
+    @if (FooterTemplate is not null)
+    {
+        @FooterTemplate(context)
+    }
 </ResultingContentView>
 
 @code {}

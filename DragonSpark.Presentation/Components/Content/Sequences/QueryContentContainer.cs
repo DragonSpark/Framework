@@ -41,6 +41,12 @@ partial class QueryContentContainer<T>
 	[Parameter]
 	public Type? ReportedType { get; set; }
 
+	[Parameter]
+	public RenderFragment<IPaging<T>>? HeaderTemplate { get; set; }
+
+	[Parameter]
+	public RenderFragment<IPaging<T>>? FooterTemplate { get; set; }
+
 	IResulting<IPaging<T>?>? Subject { get; set; }
 
 	protected override void OnInitialized()
@@ -51,9 +57,7 @@ partial class QueryContentContainer<T>
 
 	Pagings<T> Paging { get; set; } = default!;
 
-	[Inject]
-	IdentifiedPagings<T> Pagings { get; set; } = default!;
-
+	
 	protected override void OnParametersSet()
 	{
 		base.OnParametersSet();

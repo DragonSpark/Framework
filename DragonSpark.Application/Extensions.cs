@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Application.Components.Validation.Expressions;
 using DragonSpark.Application.Compose;
 using DragonSpark.Application.Compose.Runtime;
+using DragonSpark.Application.Entities.Queries.Runtime.Shape;
 using DragonSpark.Application.Model.Sequences;
 using DragonSpark.Application.Runtime;
 using DragonSpark.Application.Security.Identity;
@@ -147,4 +148,8 @@ partial class Extensions
 	}
 
 	public static Task<int> Save(this DbContext @this) => @this.SaveChangesAsync();
+
+	/**/
+	public static bool HasResults<T>(this IPaging<T> @this) => @this != EmptyPaging<T>.Default;
+	public static bool IsEmpty<T>(this IPaging<T> @this) => @this == EmptyPaging<T>.Default;
 }

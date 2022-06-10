@@ -15,6 +15,8 @@
 	Compose="@Compose"
 	LoadingTemplate="@LoadingTemplate"
 	EmptyElementsTemplate="@EmptyElementsTemplate"
+	HeaderTemplate="@HeaderTemplate"
+	FooterTemplate="@FooterTemplate"
 	NotFoundTemplate="@NotFoundTemplate"
 	ExceptionTemplate="@ExceptionTemplate"
 	ReportedType="@ReportedType"
@@ -40,6 +42,13 @@
 	[Parameter]
 	public IReporter<IDataRequest>? Reporter { get; set; } = Queries.Reporter.Default;
 
-    [Parameter]
+	[Parameter]
 	public Type? ReportedType { get; set; }
+
+
+	[Parameter]
+	public RenderFragment<IPaging<T>>? HeaderTemplate { get; set; }
+
+	[Parameter]
+	public RenderFragment<IPaging<T>>? FooterTemplate { get; set; }
 }
