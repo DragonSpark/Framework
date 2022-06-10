@@ -50,7 +50,6 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Scoped()
 		         //
 		         .Then.Start<DefaultExternalLogin>()
-		         .And<ContextRenderApply>()
 		         .And<ClientIdentifier>()
 		         .And<SignOut>()
 		         .And<IsReady>()

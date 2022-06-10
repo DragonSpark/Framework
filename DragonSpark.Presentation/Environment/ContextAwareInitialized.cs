@@ -6,15 +6,14 @@ namespace DragonSpark.Presentation.Environment;
 
 sealed class ContextAwareInitialized : IInitialized
 {
-	readonly ContextRenderInitialize  _store;
+	readonly ContextStore             _store;
 	readonly IInitialized             _previous;
 	readonly IAlteration<HttpContext> _context;
 
-	public ContextAwareInitialized(ContextRenderInitialize store, IInitialized previous)
+	public ContextAwareInitialized(ContextStore store, IInitialized previous)
 		: this(store, previous, CloneHttpContext.Default) {}
 
-	public ContextAwareInitialized(ContextRenderInitialize store, IInitialized previous,
-	                               IAlteration<HttpContext> context)
+	public ContextAwareInitialized(ContextStore store, IInitialized previous, IAlteration<HttpContext> context)
 	{
 		_store    = store;
 		_previous = previous;
