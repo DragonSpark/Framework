@@ -58,8 +58,7 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         //
 		         .Then.Start<DialogService>()
 		         .And<NotificationService>()
-		         .And<RouterSession>()
-		         .And<NavigateToInitialize>()
+				 .And<RouterSession>()
 		         .And<ScrollToFirstValidationMessage>()
 		         .And<ContentIdentification>()
 		         .And<ResourceExistsValidation>()
