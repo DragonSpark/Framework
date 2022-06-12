@@ -8,13 +8,13 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
 
 public class EvaluateToSingle<T> : EvaluateToSingle<None, T>
 {
-	public EvaluateToSingle(IScopes scopes, Expression<Func<DbContext, IQueryable<T>>> expression)
+	protected EvaluateToSingle(IScopes scopes, Expression<Func<DbContext, IQueryable<T>>> expression)
 		: base(scopes, expression.Then()) {}
 
-	public EvaluateToSingle(IScopes scopes, Expression<Func<DbContext, None, IQueryable<T>>> expression)
+	protected EvaluateToSingle(IScopes scopes, Expression<Func<DbContext, None, IQueryable<T>>> expression)
 		: base(scopes, expression) {}
 
-	public EvaluateToSingle(IReading<None, T> reading) : base(reading) {}
+	protected EvaluateToSingle(IReading<None, T> reading) : base(reading) {}
 }
 
 public class EvaluateToSingle<TIn, T> : Evaluate<TIn, T, T>

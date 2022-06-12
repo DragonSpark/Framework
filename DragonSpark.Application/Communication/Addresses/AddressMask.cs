@@ -1,9 +1,10 @@
-﻿using DragonSpark.Model.Selection.Alterations;
+﻿using DragonSpark.Application.Security.Data;
+using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Text;
 using System.Linq;
 using System.Net.Mail;
 
-namespace DragonSpark.Application.Security.Data;
+namespace DragonSpark.Application.Communication.Addresses;
 
 public sealed class AddressMask : IFormatter<MailAddress>
 {
@@ -19,7 +20,9 @@ public sealed class AddressMask : IFormatter<MailAddress>
 	{
 		var parts  = parameter.Host.Split('.');
 		var domain = _mask.Get(string.Join('.', parts[..^1]));
-		var result = $"{_mask.Get(parameter.User)}@{domain}.{parts.Last()}";
+		var tags   = parameter.User.Split('+');
+		var tag    = tags.Length > 1 ? $"+{string.Join('.', tags[1..])}" : string.Empty;
+		var result = $"{_mask.Get(tags[0])}{tag}@{domain}.{parts.Last()}";
 		return result;
 	}
 }
