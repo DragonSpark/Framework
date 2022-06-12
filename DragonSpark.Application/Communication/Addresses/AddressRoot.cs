@@ -3,8 +3,6 @@ using System.Net.Mail;
 
 namespace DragonSpark.Application.Communication.Addresses;
 
-internal class Class1 {}
-
 public sealed class AddressRoot : IAlteration<string>
 {
 	public static AddressRoot Default { get; } = new();
