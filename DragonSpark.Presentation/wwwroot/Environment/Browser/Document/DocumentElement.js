@@ -8,6 +8,6 @@ class DocumentElement {
     }
 }
 export function NewDocumentElement() {
-    return new DocumentElement(window["$"](document.body));
+    return new DocumentElement(window["jQuery"](document.body));
 }
 //# sourceMappingURL=DocumentElement.js.map

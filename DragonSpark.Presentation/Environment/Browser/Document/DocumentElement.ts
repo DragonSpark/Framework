@@ -13,5 +13,5 @@
 }
 
 export function NewDocumentElement(): DocumentElement {
-	return new DocumentElement(window["$"](document.body));
+	return new DocumentElement(window["jQuery"](document.body));
 }
