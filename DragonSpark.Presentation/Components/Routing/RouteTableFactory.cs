@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components;
+using NetFabric.Hyperlinq;
 using System;
+using System.Buffers;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-
-// ReSharper disable All
 
 namespace DragonSpark.Presentation.Components.Routing;
 
@@ -14,9 +14,8 @@ namespace DragonSpark.Presentation.Components.Routing;
 /// </summary>
 static class RouteTableFactory
 {
-	private static readonly ConcurrentDictionary<Key, RouteTable> Cache =
-		new ConcurrentDictionary<Key, RouteTable>();
-	public static readonly IComparer<RouteEntry> RoutePrecedence = Comparer<RouteEntry>.Create(RouteComparison);
+	private readonly static ConcurrentDictionary<Key, RouteTable> Cache = new();
+	readonly static         IComparer<RouteEntry> RoutePrecedence = Comparer<RouteEntry>.Create(RouteComparison);
 
 	public static RouteTable Create(IEnumerable<Assembly> assemblies)
 	{
@@ -33,7 +32,7 @@ static class RouteTableFactory
 		return routeTable;
 	}
 
-	internal static RouteTable Create(IEnumerable<Type> componentTypes)
+	static RouteTable Create(IEnumerable<Type> componentTypes)
 	{
 		var templatesByHandler = new Dictionary<Type, string[]>();
 		foreach (var componentType in componentTypes)
@@ -51,38 +50,30 @@ static class RouteTableFactory
 		return Create(templatesByHandler);
 	}
 
-	internal static RouteTable Create(Dictionary<Type, string[]> templatesByHandler)
+	static RouteTable Create(Dictionary<Type, string[]> templatesByHandler)
 	{
-		var routes = new List<RouteEntry>();
-		foreach (var keyValuePair in templatesByHandler)
+		var comparer = StringComparer.OrdinalIgnoreCase;
+		var routes   = new List<RouteEntry>();
+		foreach (var (key, value) in templatesByHandler)
 		{
-			var parsedTemplates =
-				Enumerable.ToArray(keyValuePair.Value.Select(v => TemplateParser.ParseTemplate(v)));
-			var allRouteParameterNames = parsedTemplates
-			                             .SelectMany(GetParameterNames)
-			                             .Distinct(StringComparer.OrdinalIgnoreCase)
-			                             .ToArray();
+			var parsedTemplates = value.Select(TemplateParser.ParseTemplate).ToArray();
+			using var all = parsedTemplates.SelectMany(GetParameterNames)
+			                               .AsValueEnumerable()
+			                               .Distinct(comparer)
+			                               .ToArray(ArrayPool<string>.Shared);
 
 			foreach (var parsedTemplate in parsedTemplates)
 			{
-				var unusedRouteParameterNames = allRouteParameterNames
-				                                .Except(GetParameterNames(parsedTemplate),
-				                                        StringComparer.OrdinalIgnoreCase)
-				                                .ToArray();
-				var entry = new RouteEntry(parsedTemplate, keyValuePair.Key, unusedRouteParameterNames);
-				routes.Add(entry);
+				var unused = all.Except(GetParameterNames(parsedTemplate), comparer).ToArray();
+				routes.Add(new(parsedTemplate, key, unused));
 			}
 		}
 
-		return new RouteTable(routes.OrderBy(id => id, RoutePrecedence).ToArray());
+		return new(routes.OrderBy(id => id, RoutePrecedence).ToArray());
 	}
 
-	private static string[] GetParameterNames(RouteTemplate routeTemplate)
-	{
-		return Enumerable.ToArray(routeTemplate.Segments
-		                                       .Where(s => s.IsParameter)
-		                                       .Select(s => s.Value));
-	}
+	private static IEnumerable<string> GetParameterNames(RouteTemplate routeTemplate)
+		=> routeTemplate.Segments.Where(s => s.IsParameter).Select(s => s.Value);
 
 	/// <summary>
 	/// Route precedence algorithm.
@@ -113,6 +104,9 @@ static class RouteTableFactory
 	/// * For parameters with different numbers of constraints, the one with more wins
 	/// If we get to the end of the comparison routing we've detected an ambiguous pair of routes.
 	/// </summary>
+	// ReSharper disable once MethodTooLong
+	// ReSharper disable once ExcessiveIndentation
+	// ReSharper disable once CognitiveComplexity
 	internal static int RouteComparison(RouteEntry x, RouteEntry y)
 	{
 		if (ReferenceEquals(x, y))
@@ -195,10 +189,12 @@ static class RouteTableFactory
 
 		public bool Equals(Key other)
 		{
+			// ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
 			if (Assemblies == null && other.Assemblies == null)
 			{
 				return true;
 			}
+			// ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
 			else if (Assemblies == null ^ other.Assemblies == null)
 			{
 				return false;
