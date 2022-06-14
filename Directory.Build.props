@@ -1,6 +1,5 @@
 ﻿<Project>
   <PropertyGroup>
-	<PublishReadyToRun>true</PublishReadyToRun>
 	<RunAnalyzersDuringLiveAnalysis>false</RunAnalyzersDuringLiveAnalysis>
 	<EnableNETAnalyzers>false</EnableNETAnalyzers>
 	<DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>	
