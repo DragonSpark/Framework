@@ -30,10 +30,13 @@ public static partial class ExtensionMethods
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static TOut Return<T, TOut>(this T _, TOut result) => result;
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static TOut To<T, TOut>(this T @this, ISelect<T, TOut> select) => @this.To(select.Get);
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static TOut To<T, TOut>(this T @this, Func<T, TOut> select) => select(@this);
 
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static T To<T>(this T @this, Action<T> action)
 	{
 		action(@this);

@@ -24,7 +24,7 @@ public class Selector<T> : Selector<None, T>
 
 public class Selector<TIn, TOut> : IResult<ISelect<TIn, TOut>>, IActivateUsing<ISelect<TIn, TOut>>
 {
-	public static implicit operator Func<TIn, TOut>(Selector<TIn, TOut> instance) => instance.Get().Get;
+	public static implicit operator Func<TIn, TOut>(Selector<TIn, TOut> instance) => instance._subject.Get;
 
 
 	readonly ISelect<TIn, TOut> _subject;
@@ -55,7 +55,7 @@ public class Selector<TIn, TOut> : IResult<ISelect<TIn, TOut>>, IActivateUsing<I
 	public Selector<TIn, TTo> Select<TTo>(ISelect<TOut, TTo> select) => Select(select.Get);
 
 	public Selector<TIn, TTo> Select<TTo>(Func<TOut, TTo> select)
-		=> new Selection<TIn, TOut, TTo>(Get().Get, select).Then();
+		=> new Selection<TIn, TOut, TTo>(_subject.Get, select).Then();
 
 	public Selector<TIn, TOut> Configure(IAssign<TIn, TOut> configure) => Configure(configure.Assign);
 
@@ -106,7 +106,7 @@ public class Selector<TIn, TOut> : IResult<ISelect<TIn, TOut>>, IActivateUsing<I
 #pragma warning restore 8714
 
 	public Selector<TIn, TOut> Try<TException>() where TException : Exception
-		=> new Try<TException, TIn, TOut>(Get().Get).Then();
+		=> new Try<TException, TIn, TOut>(_subject.Get).Then();
 
 	public CommandContext<TIn> Terminate() => new InvokeParameterCommand<TIn, TOut>(this).Then();
 
