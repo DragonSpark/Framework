@@ -152,4 +152,9 @@ partial class Extensions
 	/**/
 	public static bool HasResults<T>(this IPaging<T> @this) => @this != EmptyPaging<T>.Default;
 	public static bool IsEmpty<T>(this IPaging<T> @this) => @this == EmptyPaging<T>.Default;
+
+/**/
+	public static string Ordinalize(this in byte @this) => ((int)@this).Ordinalize();
+	public static string Ordinalize(this in ushort @this) => ((int)@this).Ordinalize();
+	public static string Ordinalize(this in uint @this) => ((int)@this).Ordinalize();
 }
