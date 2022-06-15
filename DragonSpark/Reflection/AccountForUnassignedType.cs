@@ -4,12 +4,11 @@ using System.Reflection;
 
 namespace DragonSpark.Reflection;
 
-sealed class AccountForUnassignedType : IAlteration<TypeInfo>
+sealed class AccountForUnassignedType : IAlteration<Type>
 {
 	public static AccountForUnassignedType Default { get; } = new AccountForUnassignedType();
 
 	AccountForUnassignedType() {}
 
-	public TypeInfo Get(TypeInfo parameter) => Nullable.GetUnderlyingType(parameter.AsType())
-	                                                   ?.GetTypeInfo() ?? parameter;
+	public Type Get(Type parameter) => Nullable.GetUnderlyingType(parameter)?.GetTypeInfo() ?? parameter;
 }

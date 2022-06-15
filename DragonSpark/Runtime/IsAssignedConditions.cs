@@ -4,11 +4,10 @@ using DragonSpark.Model.Selection.Stores;
 using DragonSpark.Reflection;
 using JetBrains.Annotations;
 using System;
-using System.Reflection;
 
 namespace DragonSpark.Runtime;
 
-sealed class IsAssignedConditions<T> : ReferenceValueStore<TypeInfo, Func<T, bool>>
+sealed class IsAssignedConditions<T> : ReferenceValueStore<Type, Func<T, bool>>
 {
 	readonly static Type Type = AccountForUnassignedType.Default.Get(A.Type<T>());
 
@@ -34,5 +33,5 @@ sealed class IsAssignedConditions<T> : ReferenceValueStore<TypeInfo, Func<T, boo
 				       : IsModified<T>.Default) {}
 
 	public IsAssignedConditions(ISelect<T, bool> condition)
-		: base(Start.A.Selection.Of.System.Metadata.By.Returning(condition).Get().Then().Delegate()) {}
+		: base(Start.A.Selection.Of.System.Type.By.Returning(condition).Get().Then().Delegate()) {}
 }

@@ -1,5 +1,4 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Reflection;
+﻿using DragonSpark.Reflection;
 using FluentAssertions;
 using Xunit;
 
