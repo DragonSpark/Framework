@@ -1,6 +1,6 @@
 ﻿namespace DragonSpark.Presentation.Components.Content.Rendering;
 
-sealed class StoreAwareRenderContentKey : IRenderContentKey
+/*sealed class StoreAwareRenderContentKey : IRenderContentKey
 {
 	readonly IRenderContentKey _previous;
 	readonly RenderContentKeys _store;
@@ -17,4 +17,4 @@ sealed class StoreAwareRenderContentKey : IRenderContentKey
 		_store.Add(result);
 		return result;
 	}
-}
+}*/

@@ -4,7 +4,7 @@ using Polly;
 
 namespace DragonSpark.Application.Entities.Diagnostics;
 
-public sealed class DurableApplicationContentPolicy : DeferredSingleton<IAsyncPolicy>
+public sealed class DurableApplicationContentPolicy : Deferred<IAsyncPolicy>
 {
 	public static DurableApplicationContentPolicy Default { get; } = new DurableApplicationContentPolicy();
 

@@ -4,7 +4,7 @@ using System;
 
 namespace DragonSpark.Diagnostics;
 
-public class Policy : DeferredSingleton<IAsyncPolicy>
+public class Policy : Deferred<IAsyncPolicy>
 {
 	protected Policy(Func<IAsyncPolicy> source) : base(source) {}
 

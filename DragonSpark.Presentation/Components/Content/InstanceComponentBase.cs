@@ -10,9 +10,6 @@ public abstract class InstanceComponentBase<T> : ContentComponentBase<T>
 
 	protected override ValueTask<T?> GetContent() => GetInstance().ToOperation();
 
-	protected override IActiveContent<T> Create(IActiveContent<T> parameter)
-		=> new InstanceActiveContent<T>(base.Create(parameter));
-
 	protected T? Instance
 	{
 		get

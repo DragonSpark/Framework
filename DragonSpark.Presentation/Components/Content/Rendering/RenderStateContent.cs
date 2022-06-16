@@ -1,9 +1,6 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Operations;
-using System.Threading.Tasks;
+﻿namespace DragonSpark.Presentation.Components.Content.Rendering;
 
-namespace DragonSpark.Presentation.Components.Content.Rendering;
-
+/*
 class RenderStateContent<TIn, TOut> : ISelecting<RenderStateInput<TIn>, TOut>
 {
 	readonly ISelecting<TIn, TOut>  _previous;
@@ -12,9 +9,9 @@ class RenderStateContent<TIn, TOut> : ISelecting<RenderStateInput<TIn>, TOut>
 
 	protected RenderStateContent(ISelecting<TIn, TOut> previous, CurrentRenderState state, RenderAssignment<TOut> store)
 	{
-		_previous   = previous;
-		_state = state;
-		_store      = store;
+		_previous = previous;
+		_state    = state;
+		_store    = store;
 	}
 
 	public async ValueTask<TOut> Get(RenderStateInput<TIn> parameter)
@@ -48,10 +45,9 @@ class RenderStateContent<TIn, TOut> : ISelecting<RenderStateInput<TIn>, TOut>
 		}
 	}
 }
+*/
 
-
-
-sealed class RenderStateContent<T> : ISelecting<RenderState, T?>
+/*sealed class RenderStateContent<T> : ISelecting<RenderState, T?>
 {
 	readonly IActiveContent<T> _previous;
 	readonly RenderStore<T>    _store;
@@ -95,4 +91,4 @@ sealed class RenderStateContent<T> : ISelecting<RenderState, T?>
 			return result;
 		}
 	}
-}
+}*/

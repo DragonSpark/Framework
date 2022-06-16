@@ -1,10 +1,6 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Commands;
-using DragonSpark.Model.Operations;
+﻿namespace DragonSpark.Presentation.Components.Content;
 
-namespace DragonSpark.Presentation.Components.Content;
-
-sealed class InstanceActiveContent<T> : Deferring<T?>, IActiveContent<T>
+/*sealed class InstanceActiveContent<T> : Deferring<T?>, IActiveContent<T>
 {
 	readonly ICommand<T> _store;
 
@@ -23,4 +19,4 @@ sealed class InstanceActiveContent<T> : Deferring<T?>, IActiveContent<T>
 	{
 		_store.Execute(parameter);
 	}
-}
+}*/

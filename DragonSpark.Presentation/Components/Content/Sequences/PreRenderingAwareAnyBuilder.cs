@@ -1,14 +1,6 @@
-﻿using DragonSpark.Application.Entities.Queries.Runtime;
-using DragonSpark.Application.Entities.Queries.Runtime.Materialize;
-using DragonSpark.Compose;
-using DragonSpark.Model.Operations;
-using DragonSpark.Model.Selection;
-using DragonSpark.Presentation.Components.Content.Rendering;
-using System.Threading.Tasks;
+﻿namespace DragonSpark.Presentation.Components.Content.Sequences;
 
-namespace DragonSpark.Presentation.Components.Content.Sequences;
-
-sealed class PreRenderingAwareAnyBuilder<T> : ISelect<string, IDepending<IQueries<T>>>
+/*sealed class PreRenderingAwareAnyBuilder<T> : ISelect<string, IDepending<IQueries<T>>>
 {
 	readonly IDepending<IQueries<T>> _previous;
 	readonly IsPreRendering          _condition;
@@ -52,4 +44,4 @@ sealed class PreRenderingAwareAnyBuilder<T> : ISelect<string, IDepending<IQuerie
 		}
 	}
 
-}
+}*/

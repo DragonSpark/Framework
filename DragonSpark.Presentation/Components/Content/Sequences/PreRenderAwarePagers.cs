@@ -1,18 +1,14 @@
 ﻿using DragonSpark.Application.Entities.Queries.Runtime.Shape;
-using DragonSpark.Text;
 
 namespace DragonSpark.Presentation.Components.Content.Sequences;
 
+// TODO:
+
 sealed class PreRenderAwarePagers<T> : IPagers<T>
 {
-	readonly PreRenderingAwarePagerBuilder<T> _builder;
-	readonly IFormatter<QueryInput>           _key;
+	readonly IPagers<T> _previous;
 
-	public PreRenderAwarePagers(PreRenderingAwarePagerBuilder<T> builder, IFormatter<QueryInput> key)
-	{
-		_builder = builder;
-		_key     = key;
-	}
+	public PreRenderAwarePagers(IPagers<T> previous) => _previous = previous;
 
-	public IPaging<T> Get(PagingInput<T> parameter) => _builder.Get(new(parameter, _key));
+	public IPaging<T> Get(PagingInput<T> parameter) => _previous.Get(parameter);
 }

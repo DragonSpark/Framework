@@ -7,40 +7,27 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content;
 
-public abstract class ContentComponentBase<T> : ComponentBase
+public abstract class ContentComponentBase<T> : ComponentBase, IDisposable
 {
-	readonly Func<ValueTask<T?>> _content;
-
-	protected ContentComponentBase() => _content = GetContent;
+	First? first;
 
 	[Inject]
 	IActiveContents<T> Contents { get; set; } = default!;
 
 	[Inject]
-	CurrentRenderState Current { get; set; } = default!;
-
-	[Inject]
-	PersistentComponentState ApplicationState { get; set; } = default!;
+	SessionRenderState Current { get; set; } = default!;
 
 	protected override void OnInitialized()
 	{
-		_current = Create(Contents.Get(_content));
-
-		ApplicationState.
+		var start = Start.A.Result<ValueTask<T?>>().By.Calling(GetContent).Out();
+		Content = Contents.Get(new(this, start));
 
 		base.OnInitialized();
 	}
 
-	protected IActiveContent<T> Content => _current.Verify();
-
-	IActiveContent<T> _current = default!;
-
-	First? first;
+	protected IActiveContent<T> Content { get; private set; } = default!;
 
 	protected abstract ValueTask<T?> GetContent();
-
-	protected virtual IActiveContent<T> Create(IActiveContent<T> parameter)
-		=> parameter.Then().Handle(Exceptions, GetType()).Get();
 
 	protected virtual void RequestNewContent()
 	{
@@ -61,5 +48,10 @@ public abstract class ContentComponentBase<T> : ComponentBase
 	}
 
 	protected override Task OnAfterRenderAsync(bool firstRender)
-		=> first?.Get() ?? false ? _current.Monitor.Get(StateChanged).AsTask() : base.OnAfterRenderAsync(firstRender);
+		=> first?.Get() ?? false ? Content.Monitor.Get(StateChanged).AsTask() : base.OnAfterRenderAsync(firstRender);
+
+	public void Dispose()
+	{
+		Content.Dispose();
+	}
 }

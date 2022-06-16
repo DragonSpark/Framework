@@ -8,7 +8,7 @@ using Policy = Polly.Policy;
 
 namespace DragonSpark.Application.Entities.Diagnostics;
 
-public sealed class DurableConnectionPolicy : DeferredSingleton<IAsyncPolicy>
+public sealed class DurableConnectionPolicy : Deferred<IAsyncPolicy>
 {
 	public static DurableConnectionPolicy Default { get; } = new();
 

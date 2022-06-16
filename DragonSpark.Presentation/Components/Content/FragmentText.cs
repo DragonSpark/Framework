@@ -12,7 +12,7 @@ namespace DragonSpark.Presentation.Components.Content;
 /// </summary>
 public sealed class FragmentText : ISelect<RenderFragment, string>
 {
-	public static FragmentText Default { get; } = new FragmentText();
+	public static FragmentText Default { get; } = new();
 
 	FragmentText() {}
 

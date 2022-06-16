@@ -1,11 +1,6 @@
-﻿using DragonSpark.Model.Commands;
-using DragonSpark.Model.Results;
-using DragonSpark.Model.Selection;
-using Microsoft.Extensions.Caching.Memory;
+﻿namespace DragonSpark.Presentation.Components.Content.Rendering;
 
-namespace DragonSpark.Presentation.Components.Content.Rendering;
-
-public class RenderInitialize<T> : ICommand<T>
+/*public class RenderInitialize<T> : ICommand<T>
 {
 	readonly IMemoryCache       _memory;
 	readonly ISelect<T, string> _key;
@@ -24,4 +19,4 @@ public class RenderInitialize<T> : ICommand<T>
 		var key = _key.Get(parameter);
 		_memory.Set(key, parameter, PreRenderingWindow.Default);
 	}
-}
+}*/

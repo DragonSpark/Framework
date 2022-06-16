@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Application.Entities.Editing;
+using DragonSpark.Application.Entities.Queries.Runtime.Shape;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.EntityFrameworkCore;
@@ -57,6 +58,8 @@ sealed class Registrations<T> : ICommand<IServiceCollection> where T : DbContext
 		         .Forward<AmbientContext>()
 		         .Decorate<ProviderAwareAmbientContext>()
 		         .Singleton()
+				 //
+				 .Then.AddSingleton(typeof(IPagers<>), typeof(Pagers<>))
 			;
 	}
 }

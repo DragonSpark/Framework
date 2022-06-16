@@ -1,8 +1,6 @@
-﻿using DragonSpark.Model;
+﻿namespace DragonSpark.Presentation.Components.Content.Rendering;
 
-namespace DragonSpark.Presentation.Components.Content.Rendering;
-
-sealed class StoreAwareClearRenderState : IClearRenderState
+/*sealed class StoreAwareClearRenderState : IClearRenderState
 {
 	readonly IClearRenderState     _previous;
 	readonly ConnectionRenderState _state;
@@ -22,4 +20,4 @@ sealed class StoreAwareClearRenderState : IClearRenderState
 		_state.Remove();
 		_session.Execute(RenderState.Established);
 	}
-}
+}*/

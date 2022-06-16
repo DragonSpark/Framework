@@ -2,11 +2,11 @@
 using DragonSpark.Application.Diagnostics;
 using DragonSpark.Application.Navigation.Security.Identity;
 using DragonSpark.Application.Security.Identity;
+using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using DragonSpark.Presentation.Components.Content;
 using DragonSpark.Presentation.Components.Content.Rendering;
-using DragonSpark.Presentation.Components.Content.Sequences;
 using DragonSpark.Presentation.Components.Diagnostics;
 using DragonSpark.Presentation.Components.Eventing;
 using DragonSpark.Presentation.Components.Forms.Validation;
@@ -52,13 +52,12 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Then.Start<DefaultExternalLogin>()
 		         .And<ClientIdentifier>()
 		         .And<SignOut>()
-		         .And<IsReady>()
 		         .Include(x => x.Dependencies)
 		         .Scoped()
 		         //
 		         .Then.Start<DialogService>()
 		         .And<NotificationService>()
-				 .And<RouterSession>()
+		         .And<RouterSession>()
 		         .And<ScrollToFirstValidationMessage>()
 		         .And<ContentIdentification>()
 		         .And<ResourceExistsValidation>()
@@ -66,17 +65,13 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         //
 		         .Then.AddScoped(typeof(IPublisher<>), typeof(Publisher<>))
 		         .AddScoped(typeof(IActiveContents<>), typeof(ActiveContents<>))
-		         .ForDefinition<RenderAwareActiveContentBuilder<object>>()
-		         .Include(x => x.Dependencies.Recursive())
-		         .Scoped()
 		         //
-		         .Then.ForDefinition<IdentifiedPagings<object>>()
+		         .ForDefinition<RenderingAwareActiveContents<object>>()
 		         .Include(x => x.Dependencies.Recursive())
 		         .Scoped()
 		         //
 		         .Then.Start<IRenderContentKey>()
 		         .Forward<RenderContentKey>()
-		         .Decorate<StoreAwareRenderContentKey>()
 		         .Include(x => x.Dependencies)
 		         .Scoped()
 		         //
@@ -87,20 +82,6 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Then.Start<ICurrentPrincipal>()
 		         .Forward<CurrentPrincipal>()
 		         .Include(x => x.Dependencies)
-		         .Scoped()
-		         //
-		         .Then.Start<IResetRenderState>()
-		         .Forward<ResetRenderState>()
-		         .Scoped()
-		         //
-		         .Then.Start<IClearRenderState>()
-		         .Forward<ClearRenderState>()
-		         .Decorate<StoreAwareClearRenderState>()
-		         .Include(x => x.Dependencies.Recursive())
-		         .Scoped()
-		         //
-		         .Then.Start<IAdjustRenderState>()
-		         .Forward<AdjustRenderState>()
 		         .Scoped()
 		         //
 		         .Then.Start<ISetPageExitCheck>()

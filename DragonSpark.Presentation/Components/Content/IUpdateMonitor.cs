@@ -4,4 +4,4 @@ using System;
 
 namespace DragonSpark.Presentation.Components.Content;
 
-public interface IUpdateMonitor : IOperation<Action>, IMutable<bool> {}
+public interface IUpdateMonitor : IOperation<Action>, ISwitch {}

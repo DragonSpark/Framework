@@ -26,7 +26,8 @@ sealed class Configure : IAlteration<BuildHostContext>
 		                       Diagnostics.Registrations.Default,
 		                       Interaction.Registrations.Default)
 		            .ComposeUsing(Registrations.Default)
-		            .ComposeUsing(x => x.Decorate(typeof(IActiveContents<>), typeof(PreRenderAwareActiveContents<>))
+		            .ComposeUsing(x => x.Decorate(typeof(IActiveContents<>), typeof(RenderingAwareActiveContents<>))
+		                                .Decorate(typeof(IActiveContents<>), typeof(ExceptionAwareActiveContents<>))
 		                                .Decorate<IClientIdentifier, ClientIdentifier>()
 		                                .Decorate<ICurrentContext, StoreAwareCurrentContext>()
 		                                //

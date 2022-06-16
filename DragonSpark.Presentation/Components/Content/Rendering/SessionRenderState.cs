@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Presentation.Components.Content.Rendering;
 
-sealed class SessionRenderState : Variable<RenderState?> {}
+sealed class SessionRenderState : Variable<RenderState> {}

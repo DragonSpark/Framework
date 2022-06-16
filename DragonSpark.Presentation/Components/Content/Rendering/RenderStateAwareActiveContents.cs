@@ -1,9 +1,6 @@
-﻿using DragonSpark.Model.Selection;
-using Microsoft.Extensions.Caching.Memory;
+﻿namespace DragonSpark.Presentation.Components.Content.Rendering;
 
-namespace DragonSpark.Presentation.Components.Content.Rendering;
-
-sealed class RenderStateAwareActiveContents<T> : ISelect<RenderStateContentInput<T>, IActiveContent<T>>
+/*sealed class RenderStateAwareActiveContents<T> : ISelect<RenderStateContentInput<T>, IActiveContent<T>>
 {
 	readonly IMemoryCache       _memory;
 	readonly CurrentRenderState _state;
@@ -20,4 +17,4 @@ sealed class RenderStateAwareActiveContents<T> : ISelect<RenderStateContentInput
 		var content = new RenderStateContent<T>(previous, new(_memory, key));
 		return new RenderStateAwareActiveContent<T>(previous, _state, content);
 	}
-}
+}*/

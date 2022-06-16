@@ -1,12 +1,6 @@
-﻿using DragonSpark.Application.Entities.Queries.Runtime;
-using DragonSpark.Model.Operations;
-using DragonSpark.Model.Selection;
-using DragonSpark.Presentation.Components.Content.Rendering;
-using Microsoft.Extensions.Caching.Memory;
+﻿namespace DragonSpark.Presentation.Components.Content.Sequences;
 
-namespace DragonSpark.Presentation.Components.Content.Sequences;
-
-sealed class PreRenderingAwareAny<T> : ISelect<PreRenderingAwareAnyInput<T>, IDepending<IQueries<T>>>
+/*sealed class PreRenderingAwareAny<T> : ISelect<PreRenderingAwareAnyInput<T>, IDepending<IQueries<T>>>
 {
 	readonly IMemoryCache       _memory;
 	readonly CurrentRenderState _state;
@@ -24,4 +18,4 @@ sealed class PreRenderingAwareAny<T> : ISelect<PreRenderingAwareAnyInput<T>, IDe
 		var result  = new MemoryAwareAny<T>(key, content);
 		return result;
 	}
-}
+}*/

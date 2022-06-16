@@ -1,10 +1,6 @@
-﻿using DragonSpark.Model.Results;
-using DragonSpark.Model.Selection.Conditions;
-using System.Threading.Tasks;
+﻿namespace DragonSpark.Presentation.Components.Content.Rendering;
 
-namespace DragonSpark.Presentation.Components.Content.Rendering;
-
-sealed class PreRenderActiveContent<T> : Validated<ValueTask<T?>>, IActiveContent<T>
+/*sealed class PreRenderActiveContent<T> : Validated<ValueTask<T?>>, IActiveContent<T>
 {
 	readonly IActiveContent<T> _previous;
 
@@ -18,4 +14,4 @@ sealed class PreRenderActiveContent<T> : Validated<ValueTask<T?>>, IActiveConten
 	{
 		_previous.Execute(parameter);
 	}
-}
+}*/

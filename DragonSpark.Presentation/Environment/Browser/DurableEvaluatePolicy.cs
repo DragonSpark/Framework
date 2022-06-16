@@ -5,7 +5,7 @@ using Polly;
 
 namespace DragonSpark.Presentation.Environment.Browser;
 
-public sealed class DurableEvaluatePolicy : DeferredSingleton<IAsyncPolicy>
+public sealed class DurableEvaluatePolicy : Deferred<IAsyncPolicy>
 {
 	public static DurableEvaluatePolicy Default { get; } = new();
 

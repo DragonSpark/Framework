@@ -1,29 +1,16 @@
-﻿using System;
+using System;
 
 namespace DragonSpark.Model.Results;
 
 public class Deferred<T> : IResult<T>
 {
-	readonly IMutable<T?> _store;
-	readonly Func<T>      _result;
+	public static implicit operator T(Deferred<T> source) => source.Get();
 
-	public Deferred(IMutable<T?> store, IResult<T> result) : this(store, result.Get) {}
+	readonly Lazy<T> _source;
 
-	public Deferred(IMutable<T?> store, Func<T> result)
-	{
-		_store  = store;
-		_result = result;
-	}
+	public Deferred(Func<T> source) : this(new Lazy<T>(source)) {}
 
-	public T Get()
-	{
-		var current = _store.Get();
-		if (current is null)
-		{
-			var result = _result();
-			_store.Execute(result);
-			return result;
-		}
-		return current;
-	}
+	public Deferred(Lazy<T> source) => _source = source;
+
+	public T Get() => _source.Value;
 }

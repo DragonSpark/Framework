@@ -1,11 +1,6 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Operations;
-using DragonSpark.Model.Results;
-using System.Threading.Tasks;
+﻿namespace DragonSpark.Presentation.Components.Content.Rendering;
 
-namespace DragonSpark.Presentation.Components.Content.Rendering;
-
-sealed class RenderStateAwareActiveContent<T> : IActiveContent<T>
+/*sealed class RenderStateAwareActiveContent<T> : IActiveContent<T>
 {
 	readonly IActiveContent<T>           _previous;
 	readonly IResult<RenderState>        _state;
@@ -32,4 +27,4 @@ sealed class RenderStateAwareActiveContent<T> : IActiveContent<T>
 	{
 		_previous.Execute(parameter);
 	}
-}
+}*/

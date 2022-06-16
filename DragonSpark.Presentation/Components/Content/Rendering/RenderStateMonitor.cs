@@ -3,36 +3,25 @@ using DragonSpark.Model.Commands;
 
 namespace DragonSpark.Presentation.Components.Content.Rendering;
 
-sealed class RenderStateMonitor : ICommand
+sealed class RenderStateMonitor : ICommand, ICommand<RenderState>
 {
-	readonly ConnectionRenderState _connection;
-	readonly CurrentRenderState    _store;
-	readonly SessionRenderState    _session;
+	readonly SessionRenderState _session;
 
-	public RenderStateMonitor(ConnectionRenderState connection, CurrentRenderState store, SessionRenderState session)
-	{
-		_connection = connection;
-		_store      = store;
-		_session    = session;
-	}
+	public RenderStateMonitor(SessionRenderState session)
+		=> _session = session;
 
 	public void Execute(None parameter)
 	{
-		if (_connection.Get().HasValue || _session.Get().HasValue)
+		var state = _session.Get();
+		switch (state)
 		{
-			switch (_store.Get())
-			{
-				case RenderState.Default:
-					_store.Execute(RenderState.Ready);
-					break;
-				case RenderState.Ready:
-					_store.Execute(RenderState.Established);
-					break;
-			}
-		}
-		else
-		{
-			_store.Execute(RenderState.Default);
-		}
+			case RenderState.Ready:
+				_session.Execute(RenderState.Established);
+				break;
+		}	}
+
+	public void Execute(RenderState parameter)
+	{
+		_session.Execute(parameter);
 	}
 }

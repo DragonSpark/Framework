@@ -10,11 +10,9 @@ namespace DragonSpark.Runtime.Invocation;
 
 public class Deferred<TIn, TOut> : Select<TIn, TOut>, IActivateUsing<ISelect<TIn, TOut>>
 {
-	public Deferred(ISelect<TIn, TOut> select)
-		: this(select, Start.A.Selection<TIn>().AndOf<TOut>().Into.Table()) {}
+	public Deferred(ISelect<TIn, TOut> select) : this(select, Start.A.Selection<TIn>().AndOf<TOut>().Into.Table()) {}
 
-	public Deferred(ISelect<TIn, TOut> select, ITable<TIn, TOut> assignable)
-		: this(select, assignable, assignable) {}
+	public Deferred(ISelect<TIn, TOut> select, ITable<TIn, TOut> assignable) : this(select, assignable, assignable) {}
 
 	public Deferred(ISelect<TIn, TOut> select, IAssign<TIn, TOut> assign, ISelect<TIn, TOut> source)
 		: base(new Model.Selection.Configure<TIn, TOut>(select.Get, assign.Assign).Then()

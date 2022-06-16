@@ -1,14 +1,13 @@
-﻿using DragonSpark.Application;
-using DragonSpark.Application.Components;
-using DragonSpark.Compose;
-using DragonSpark.Model;
+﻿using DragonSpark.Model;
 using DragonSpark.Model.Selection.Conditions;
-using DragonSpark.Runtime;
 
 namespace DragonSpark.Presentation.Components.Content.Rendering;
 
-sealed class IsPreRendering : AllCondition<None>, ICondition
+sealed class IsPreRendering : ICondition
 {
-	public IsPreRendering(IsTracking tracking, ConnectionStartTime start)
-		: base(tracking.Get, Time.Default.WithinLast(PreRenderingWindow.Default).Then().Bind(start.Get).Accept()) {}
+	readonly SessionRenderState _state;
+
+	public IsPreRendering(SessionRenderState state) => _state = state;
+
+	public bool Get(None parameter) => _state.Get() is RenderState.Default or RenderState.Ready;
 }

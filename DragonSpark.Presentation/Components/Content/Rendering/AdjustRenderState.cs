@@ -1,8 +1,6 @@
-﻿using DragonSpark.Model;
+﻿namespace DragonSpark.Presentation.Components.Content.Rendering;
 
-namespace DragonSpark.Presentation.Components.Content.Rendering;
-
-sealed class AdjustRenderState : IAdjustRenderState
+/*sealed class AdjustRenderState : IAdjustRenderState
 {
 	readonly ConnectionRenderState _state;
 
@@ -12,4 +10,4 @@ sealed class AdjustRenderState : IAdjustRenderState
 	{
 		_state.Remove();
 	}
-}
+}*/

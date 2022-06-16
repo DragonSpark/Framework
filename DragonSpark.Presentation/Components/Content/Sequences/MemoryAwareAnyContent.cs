@@ -1,12 +1,8 @@
-﻿using DragonSpark.Application.Entities.Queries.Runtime;
-using DragonSpark.Model.Operations;
-using DragonSpark.Presentation.Components.Content.Rendering;
+﻿namespace DragonSpark.Presentation.Components.Content.Sequences;
 
-namespace DragonSpark.Presentation.Components.Content.Sequences;
-
-sealed class MemoryAwareAnyContent<T> : RenderStateContent<IQueries<T>, bool>
+/*sealed class MemoryAwareAnyContent<T> : RenderStateContent<IQueries<T>, bool>
 {
 	public MemoryAwareAnyContent(IDepending<IQueries<T>> previous, CurrentRenderState state,
 	                             RenderAssignment<bool> store)
 		: base(previous, state, store) {}
-}
+}*/

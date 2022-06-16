@@ -1,30 +1,34 @@
-﻿using DragonSpark.Model.Commands;
-using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model.Operations;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content;
 
 public sealed class ActiveContentAdapter<T> : IActiveContent<T>
 {
-	readonly IResulting<T?> _previous;
-	readonly ICommand<T>    _store;
+	readonly IActiveContent<T> _previous;
+	readonly IResulting<T?>    _source;
 
-	public ActiveContentAdapter(IActiveContent<T> source, IResulting<T?> previous)
-		: this(source.Monitor, previous, source) {}
+	public ActiveContentAdapter(IActiveContent<T> previous, IResulting<T?> source)
+		: this(previous, source, previous.Monitor) {}
 
-	public ActiveContentAdapter(IUpdateMonitor refresh, IResulting<T?> previous, ICommand<T> store)
+	public ActiveContentAdapter(IActiveContent<T> previous, IResulting<T?> source, IUpdateMonitor monitor)
 	{
-		Monitor     = refresh;
-		_previous   = previous;
-		_store = store;
+		_previous = previous;
+		_source   = source;
+		Monitor  = monitor;
 	}
 
 	public IUpdateMonitor Monitor { get; }
 
-	public ValueTask<T?> Get() => _previous.Get();
+	public ValueTask<T?> Get() => _source.Get();
 
 	public void Execute(T parameter)
 	{
-		_store.Execute(parameter);
+		_previous.Execute(parameter);
+	}
+
+	public void Dispose()
+	{
+		_previous.Dispose();
 	}
 }

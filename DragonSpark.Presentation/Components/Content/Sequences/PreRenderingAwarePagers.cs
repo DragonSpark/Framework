@@ -1,11 +1,6 @@
-﻿using DragonSpark.Application.Entities.Queries.Runtime.Shape;
-using DragonSpark.Model.Selection;
-using DragonSpark.Presentation.Components.Content.Rendering;
-using Microsoft.Extensions.Caching.Memory;
+﻿namespace DragonSpark.Presentation.Components.Content.Sequences;
 
-namespace DragonSpark.Presentation.Components.Content.Sequences;
-
-sealed class PreRenderingAwarePagers<T> : ISelect<PreRenderingAwarePagersInput<T>, IPaging<T>>
+/*sealed class PreRenderingAwarePagers<T> : ISelect<PreRenderingAwarePagersInput<T>, IPaging<T>>
 {
 	readonly IMemoryCache       _memory;
 	readonly CurrentRenderState _state;
@@ -23,4 +18,4 @@ sealed class PreRenderingAwarePagers<T> : ISelect<PreRenderingAwarePagersInput<T
 		var result  = new MemoryAwarePaging<T>(formatter, content);
 		return result;
 	}
-}
+}*/

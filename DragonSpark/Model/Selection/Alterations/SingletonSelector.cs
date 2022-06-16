@@ -8,5 +8,5 @@ public sealed class SingletonSelector<T> : IAlteration<IResult<T>>
 
 	SingletonSelector() {}
 
-	public IResult<T> Get(IResult<T> parameter) => new DeferredSingleton<T>(parameter.Get);
+	public IResult<T> Get(IResult<T> parameter) => new Deferred<T>(parameter.Get);
 }

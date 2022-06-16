@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Presentation.Components.Content.Rendering;
+using DragonSpark.Runtime.Execution;
 using Microsoft.AspNetCore.Components;
-using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content;
@@ -9,46 +9,50 @@ namespace DragonSpark.Presentation.Components.Content;
 public abstract class OwningContentComponentBase<TService, TContent> : Scoped.OwningComponentBase<TService>
 	where TService : class
 {
-	readonly Func<ValueTask<TContent?>> _content;
+	protected override void OnInitialized()
+	{
+		var start = Start.A.Result<ValueTask<TContent?>>().By.Calling(GetContent).Out();
+		Content = Contents.Get(new(this, start));
 
-	protected OwningContentComponentBase() => _content = GetContent;
+		base.OnInitialized();
+	}
 
-	[Parameter, Inject]
-	public IActiveContents<TContent> Contents { get; set; } = ActiveContents<TContent>.Default;
 
 	[Inject]
-	IResetRenderState Interaction { get; set; } = default!;
+	IActiveContents<TContent> Contents { get; set; } = default!;
 
-	protected IActiveContent<TContent> Content => _current.Verify();
+	[Inject]
+	SessionRenderState Current { get; set; } = default!;
 
-	IActiveContent<TContent>? _current;
+	protected IActiveContent<TContent> Content { get; private set; } = default!;
 
 	protected abstract ValueTask<TContent?> GetContent();
 
-	protected override void OnParametersSet()
+	First? first;
+	protected virtual void RequestNewContent()
 	{
-		base.OnParametersSet();
-		Apply();
-	}
-
-	void Apply()
-	{
-		_current ??= Create(Contents.Get(_content));
-	}
-
-	protected virtual IActiveContent<TContent> Create(IActiveContent<TContent> parameter)
-		=> parameter.Then().Handle(Exceptions, GetType()).Get();
-
-	protected void RequestNewContent()
-	{
-		_current = null;
+		first = new();
 	}
 
 	protected override ValueTask RefreshState()
 	{
-		Interaction.Execute();
-		RequestNewContent();
-		Apply();
-		return base.RefreshState();
+		switch (Current.Get())
+		{
+			case RenderState.Default:
+				break;
+			default:
+				RequestNewContent();
+				return base.RefreshState();
+		}
+		return ValueTask.CompletedTask;
+	}
+
+	protected override Task OnAfterRenderAsync(bool firstRender)
+		=> first?.Get() ?? false ? Content.Monitor.Get(StateChanged).AsTask() : base.OnAfterRenderAsync(firstRender);
+
+	protected override void Dispose(bool disposing)
+	{
+		Content.Dispose();
+		base.Dispose(disposing);
 	}
 }

@@ -1,28 +1,26 @@
-﻿using DragonSpark.Model.Selection;
-using DragonSpark.Presentation.Components.Content.Rendering;
+﻿namespace DragonSpark.Presentation.Components.Content.Sequences;
 
-namespace DragonSpark.Presentation.Components.Content.Sequences;
-
-sealed class IdentifiedPagings<T> : ISelect<object, Pagings<T>>
+/*sealed class IdentifiedPagings<T> : ISelect<object, Pagings<T>>
 {
-	readonly IRenderContentKey                _key;
-	readonly PreRenderingAwarePagerBuilder<T> _builder;
-	readonly PreRenderingAwareAnyBuilder<T>   _any;
+	/*readonly IRenderContentKey _key;
+	/*readonly PreRenderingAwarePagerBuilder<T> _builder;#2#
+	readonly PreRenderingAwareAnyBuilder<T> _any;
 
-	public IdentifiedPagings(IRenderContentKey key, PreRenderingAwarePagerBuilder<T> builder,
+	public IdentifiedPagings(IRenderContentKey key, /*PreRenderingAwarePagerBuilder<T> builder,#2#
 	                         PreRenderingAwareAnyBuilder<T> any)
 	{
-		_key     = key;
-		_builder = builder;
-		_any     = any;
-	}
+		_key = key;
+		/*_builder = builder;#2#
+		_any = any;
+	}#1#
 
 	public Pagings<T> Get(object parameter)
 	{
-		var key       = _key.Get(parameter);
+		/*var key       = _key.Get(parameter);
 		var formatter = new QueryInputKey(key);
 		var pagers    = new PreRenderAwarePagers<T>(_builder, formatter);
 		var any       = _any.Get(key);
-		return new (pagers, any);
+		return new (any, pagers);#1#
+		return null;
 	}
-}
+}*/

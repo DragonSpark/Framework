@@ -1,11 +1,6 @@
-﻿using DragonSpark.Application.Entities.Queries.Runtime.Shape;
-using DragonSpark.Compose;
-using DragonSpark.Model.Selection;
-using DragonSpark.Presentation.Components.Content.Rendering;
+﻿namespace DragonSpark.Presentation.Components.Content.Sequences;
 
-namespace DragonSpark.Presentation.Components.Content.Sequences;
-
-sealed class PreRenderingAwarePagerBuilder<T> : ISelect<PagersInput<T>, IPaging<T>>
+/*sealed class PreRenderingAwarePagerBuilder<T> : ISelect<PagersInput<T>, IPaging<T>>
 {
 	readonly IPagers<T>                 _previous;
 	readonly IsPreRendering             _condition;
@@ -32,4 +27,4 @@ sealed class PreRenderingAwarePagerBuilder<T> : ISelect<PagersInput<T>, IPaging<
 			             : previous;
 		return result;
 	}
-}
+}*/

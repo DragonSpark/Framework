@@ -18,3 +18,17 @@ public class Coalesce<TIn, TOut> : ISelecting<TIn, TOut>
 
 	public async ValueTask<TOut> Get(TIn parameter) => await _first(parameter) ?? await _second(parameter);
 }
+
+public class Coalesce<T> : IResulting<T>
+{
+	readonly IResulting<T?> _first;
+	readonly IResulting<T>  _second;
+
+	protected Coalesce(IResulting<T?> first, IResulting<T> second)
+	{
+		_first  = first;
+		_second = second;
+	}
+
+	public async ValueTask<T> Get() => await _first.Await() ?? await _second.Await();
+}

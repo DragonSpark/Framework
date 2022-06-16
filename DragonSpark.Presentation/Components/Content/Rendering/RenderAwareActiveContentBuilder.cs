@@ -1,9 +1,6 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Selection;
+﻿namespace DragonSpark.Presentation.Components.Content.Rendering;
 
-namespace DragonSpark.Presentation.Components.Content.Rendering;
-
-sealed class RenderAwareActiveContentBuilder<T> : ISelect<RenderAwareActiveContentBuilderInput<T>, IActiveContent<T>>
+/*sealed class RenderAwareActiveContentBuilder<T> : ISelect<RenderAwareActiveContentBuilderInput<T>, IActiveContent<T>>
 {
 	readonly IRenderContentKey                 _key;
 	readonly RenderStateAwareActiveContents<T> _contents;
@@ -22,4 +19,4 @@ sealed class RenderAwareActiveContentBuilder<T> : ISelect<RenderAwareActiveConte
 		var result = _contents.Get(input);
 		return result;
 	}
-}
+}*/

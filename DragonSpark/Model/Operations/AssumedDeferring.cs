@@ -18,7 +18,7 @@ public class AssumedDeferring<T> : IDeferring<T>
 		: this(store, resulting.Start().Then().Allocate()) {}
 
 	public AssumedDeferring(IMutable<IDeferring<T>?> store, Func<Task<T>> resulting)
-		: this(store, new Deferred<IDeferring<T>>(store, () => new Deferring<T>(resulting))) {}
+		: this(store, new Stored<IDeferring<T>>(store, () => new Deferring<T>(resulting))) {}
 
 	public AssumedDeferring(IMutable<IDeferring<T>?> store, IResult<IDeferring<T>> result)
 	{

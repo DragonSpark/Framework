@@ -49,15 +49,11 @@ partial class QueryContentContainer<T>
 
 	IResulting<IPaging<T>?>? Subject { get; set; }
 
-	protected override void OnInitialized()
-	{
-		Paging = Pagings.Get(this);
-		base.OnInitialized();
-	}
+	IPagers<T> Pagers { get; set; } = default!;
 
-	Pagings<T> Paging { get; set; } = default!;
 
-	
+
+
 	protected override void OnParametersSet()
 	{
 		base.OnParametersSet();
@@ -68,7 +64,7 @@ partial class QueryContentContainer<T>
 	{
 		if (Content != null)
 		{
-			var selector = Paging.Then().AccountOut().Bind(new PagingInput<T>(Content, Compose));
+			var selector = Pagers.Then().AccountOut().Bind(new PagingInput<T>(Content, Compose)).Operation();
 			var subject  = ReportedType != null ? selector.Then().Handle(Exceptions, ReportedType) : selector;
 			var result   = subject.Out();
 			return result;
