@@ -17,8 +17,7 @@ public class RuntimeQuery<TIn, TOut> : IRuntimeQuery<TIn, TOut>
 	readonly IScopes                                _scopes;
 	readonly Func<DbContext, TIn, IQueryable<TOut>> _compiled;
 
-	public RuntimeQuery(IScopes scopes, IQuery<TIn, TOut> query)
-		: this(scopes, query.Get().Expand().Compile()) {}
+	protected RuntimeQuery(IScopes scopes, IQuery<TIn, TOut> query) : this(scopes, query.Get().Expand().Compile()) {}
 
 	RuntimeQuery(IScopes scopes, Func<DbContext, TIn, IQueryable<TOut>> compiled)
 	{

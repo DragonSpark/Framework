@@ -13,15 +13,21 @@ public abstract class ContentComponentBase<T> : ComponentBase
 
 	protected ContentComponentBase() => _content = GetContent;
 
-	[Parameter, Inject]
-	public IActiveContents<T> Contents { get; set; } = ActiveContents<T>.Default;
+	[Inject]
+	IActiveContents<T> Contents { get; set; } = default!;
 
 	[Inject]
 	CurrentRenderState Current { get; set; } = default!;
 
+	[Inject]
+	PersistentComponentState ApplicationState { get; set; } = default!;
+
 	protected override void OnInitialized()
 	{
 		_current = Create(Contents.Get(_content));
+
+		ApplicationState.
+
 		base.OnInitialized();
 	}
 
