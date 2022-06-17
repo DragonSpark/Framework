@@ -57,7 +57,6 @@ sealed class WorkerOperation<T> : IOperation
 			var content = await _subject;
 			_source.SetResult(content);
 		}
-		// ReSharper disable once CatchAllClause
 		catch (Exception e)
 		{
 			_source.SetException(e);

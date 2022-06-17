@@ -46,6 +46,12 @@ public abstract class ContentComponentBase<T> : ComponentBase
 		return ValueTask.CompletedTask;
 	}
 
-	protected override Task OnAfterRenderAsync(bool firstRender)
-		=> first?.Get() ?? false ? Content.Get(StateChanged).AsTask() : base.OnAfterRenderAsync(firstRender);
+	protected override void OnAfterRender(bool firstRender)
+	{
+		if (first?.Get() ?? false)
+		{
+			Content.Execute();
+		}
+		base.OnAfterRender(firstRender);
+	}
 }

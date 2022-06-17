@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Model;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection.Conditions;
-using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content;
@@ -25,5 +24,8 @@ public sealed class ActiveContentAdapter<T> : IActiveContent<T>
 
 	public ValueTask<T?> Get() => _source.Get();
 
-	public ValueTask Get(Action parameter) => _previous.Get(parameter);
+	public void Execute(None parameter)
+	{
+		_previous.Execute(parameter);
+	}
 }

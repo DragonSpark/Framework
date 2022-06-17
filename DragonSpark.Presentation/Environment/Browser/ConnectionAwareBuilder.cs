@@ -17,3 +17,15 @@ sealed class ConnectionAwareBuilder : Builder
 		             .Or<TaskCanceledException>()
 		             .Or<InvalidOperationException>(message)) {}
 }
+
+sealed class ConnectionAwareBuilder<T> : Builder<T>
+{
+	public static ConnectionAwareBuilder<T> Default { get; } = new();
+
+	ConnectionAwareBuilder() : this(IsInteropException.Default.Get) {}
+
+	ConnectionAwareBuilder(Func<Exception, bool> message)
+		: base(Polly.Policy<T>.Handle<JSDisconnectedException>()
+		            .Or<TaskCanceledException>()
+		            .Or<InvalidOperationException>(message)) {}
+}

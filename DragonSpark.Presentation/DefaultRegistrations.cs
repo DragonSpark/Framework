@@ -23,7 +23,7 @@ namespace DragonSpark.Presentation;
 
 sealed class DefaultRegistrations : ICommand<IServiceCollection>
 {
-	public static DefaultRegistrations Default { get; } = new DefaultRegistrations();
+	public static DefaultRegistrations Default { get; } = new();
 
 	DefaultRegistrations() {}
 
@@ -63,8 +63,10 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Then.AddScoped(typeof(IPublisher<>), typeof(Publisher<>))
 		         .AddScoped(typeof(IActiveContents<>), typeof(ActiveContents<>))
 		         //
-				 .ForDefinition<RenderingAwareActiveContents<object>>().Include(x => x.Dependencies).Scoped()
-				 //
+		         .ForDefinition<RenderingAwareActiveContents<object>>()
+		         .Include(x => x.Dependencies)
+		         .Scoped()
+		         //
 		         .Then.Start<IRenderContentKey>()
 		         .Forward<RenderContentKey>()
 		         .Include(x => x.Dependencies)
@@ -103,6 +105,9 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Forward<FocusedElement>()
 		         .Include(x => x.Dependencies.Recursive())
 		         .Scoped()
+		         //
+		         .Then.Start<RenderCache>()
+		         .Singleton()
 		         //
 		         .Then.AddJsInteropExtensions()
 		         .AddMediaQueryService()

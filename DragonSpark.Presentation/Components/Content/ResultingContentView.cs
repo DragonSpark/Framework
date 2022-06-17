@@ -56,7 +56,7 @@ partial class ResultingContentView<T>
 
 	void Load()
 	{
-		Subject ??= new WorkingResult<T?>(Content ?? Defaulting<T>.Default, _update, Logger).Get();
+		Subject ??= new WorkingResult<T?>(Content ?? Defaulting<T>.Default, _update).Get();
 	}
 
 	protected override Task OnParametersSetAsync()

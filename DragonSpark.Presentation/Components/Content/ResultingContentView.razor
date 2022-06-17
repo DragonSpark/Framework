@@ -7,8 +7,6 @@
 
 @inherits DragonSpark.Presentation.Components.Content.Templates.ActiveContentTemplateComponentBase<T>
 
-@inject IExceptionLogger Logger
-
 @if (Subject is null)
 {
 	@NotFoundTemplate
@@ -25,5 +23,3 @@ else
 {
 	@LoadingTemplate
 }
-
-@code {}

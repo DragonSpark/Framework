@@ -49,10 +49,7 @@ partial class QueryContentContainer<T>
 
 	IResulting<IPaging<T>?>? Subject { get; set; }
 
-	IPagers<T> Pagers { get; set; } = default!;
-
-
-
+	IPagers<T> Pagers { get; set; } = Pagers<T>.Default; // TODO
 
 	protected override void OnParametersSet()
 	{

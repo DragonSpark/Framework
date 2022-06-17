@@ -1,15 +1,14 @@
 ﻿using DragonSpark.Model;
+using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection.Conditions;
-using System;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content;
 
 sealed class ActiveContent<T> : Resulting<T?>, IActiveContent<T>
 {
-	readonly IOperation<Action> _refresh;
+	readonly ICommand _refresh;
 
 	public ActiveContent(IResulting<T?> content) : this(content, new Variable<T>(), new Variable<int>()) {}
 
@@ -20,11 +19,11 @@ sealed class ActiveContent<T> : Resulting<T?>, IActiveContent<T>
 		: this(new Storing<T?>(store, result), counts) {}
 
 	public ActiveContent(IResulting<T?> result, IMutable<int> counts)
-		: this(result, new UpdateMonitor<T?>(result, counts)) {}
+		: this(result, new UpdateMonitor(counts)) {}
 
-	public ActiveContent(IResulting<T?> result, UpdateMonitor<T?> monitor) : this(result, monitor, monitor) {}
+	public ActiveContent(IResulting<T?> result, UpdateMonitor monitor) : this(result, monitor, monitor) {}
 
-	public ActiveContent(IResulting<T?> result, IOperation<Action> refresh, ICondition monitor) : base(result)
+	public ActiveContent(IResulting<T?> result, ICommand refresh, ICondition monitor) : base(result)
 	{
 		_refresh  = refresh;
 		Condition = monitor;
@@ -32,5 +31,8 @@ sealed class ActiveContent<T> : Resulting<T?>, IActiveContent<T>
 
 	public ICondition<None> Condition { get; }
 
-	public ValueTask Get(Action parameter) => _refresh.Get(parameter);
+	public void Execute(None parameter)
+	{
+		_refresh.Execute(parameter);
+	}
 }
