@@ -6,7 +6,7 @@
 
 <ActivityContainer CssClass="@CssClass" Context="receiver">
 	@{ var content = Contents.Get(receiver); }
-	<ResultingContentView T="TValue" Content="@content" UpdateMonitor="@content.Monitor"
+	<ResultingContentView T="TValue" Content="@content" UpdateMonitor="@content.Condition"
 		ChildContent="@ChildContent"
 		LoadingTemplate="@LoadingTemplate"
 		NotFoundTemplate="@NotFoundTemplate"

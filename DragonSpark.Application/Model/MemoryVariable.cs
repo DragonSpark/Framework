@@ -9,45 +9,37 @@ namespace DragonSpark.Application.Model;
 
 public class MemoryVariable<T> : IMutable<T?>
 {
-	readonly IMemoryCache               _memory;
-	readonly Func<string>               _key;
-	readonly IConfiguredMemoryResult<T> _configured;
+	readonly Func<string>         _key;
+	readonly MemoryAssignment<T?> _assignment;
 
 	protected MemoryVariable(IMemoryCache memory, string key, ICommand<ICacheEntry> configure)
-		: this(memory, key.Start(), new ConfiguredMemoryResult<T>(memory, configure.Execute)) {}
+		: this(memory, key.Start(), configure) {}
 
 	protected MemoryVariable(IMemoryCache memory, Func<string> key, ICommand<ICacheEntry> configure)
-		: this(memory, key, new ConfiguredMemoryResult<T>(memory, configure.Execute)) {}
+		: this(key, new MemoryAssignment<T?>(memory, new ConfiguredMemoryResult<T?>(memory, configure.Execute))) {}
 
-	protected MemoryVariable(IMemoryCache memory, Func<string> key, IConfiguredMemoryResult<T> configured)
+	protected MemoryVariable(Func<string> key, MemoryAssignment<T?> assignment)
 	{
-		_memory     = memory;
 		_key        = key;
-		_configured = configured;
+		_assignment = assignment;
 	}
 
 	public bool Pop(out T? result)
 	{
 		var key = _key();
-		if (_memory.TryGetValue(key, out result))
-		{
-			Remove();
-			return true;
-		}
-
-		return false;
+		return _assignment.Pop(key, out result);
 	}
 
 	public void Remove()
 	{
 		var key = _key();
-		_memory.Remove(key);
+		_assignment.Remove(key);
 	}
 
 	public T? Get()
 	{
 		var key = _key();
-		return _memory.TryGetValue(key, out var stored) ? stored.To<T?>() : default;
+		return _assignment.Get(key);
 	}
 
 	public void Execute(T? parameter)
@@ -55,7 +47,7 @@ public class MemoryVariable<T> : IMutable<T?>
 		if (parameter is not null)
 		{
 			var key = _key();
-			_configured.Get((parameter, key));
+			_assignment.Assign(key, parameter);
 		}
 		else
 		{

@@ -1,9 +1,9 @@
 ﻿using DragonSpark.Application.Compose.Store;
+using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
 using Microsoft.Extensions.Caching.Memory;
-using ExtensionMethods = DragonSpark.Compose.ExtensionMethods;
 
 namespace DragonSpark.Application.Model;
 
@@ -50,5 +50,5 @@ public class MemoryAssignment<T> : IAssign<string, T?>, ISelect<string, T?>
 		_subject.Remove(key);
 	}
 
-	public T? Get(string parameter) => _subject.TryGetValue(parameter, out var stored) ? ExtensionMethods.To<T?>(stored) : default;
+	public T? Get(string parameter) => _subject.TryGetValue(parameter, out var stored) ? stored.To<T?>() : default;
 }

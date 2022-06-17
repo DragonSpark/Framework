@@ -133,7 +133,7 @@ sealed class SetConnectionIdentifier : IResult<Guid>
 
 public interface IConnectionIdentifier : IResult<Guid> {}
 
-sealed class ConnectionIdentifier : Stored<Guid>, IConnectionIdentifier
+sealed class ConnectionIdentifier : StoredStructure<Guid>, IConnectionIdentifier
 {
 	public ConnectionIdentifier(DetermineConnectionIdentifier result) : base(result) {}
 }

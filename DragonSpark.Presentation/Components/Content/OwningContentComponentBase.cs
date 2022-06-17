@@ -48,5 +48,5 @@ public abstract class OwningContentComponentBase<TService, TContent> : Scoped.Ow
 	}
 
 	protected override Task OnAfterRenderAsync(bool firstRender)
-		=> first?.Get() ?? false ? Content.Monitor.Get(StateChanged).AsTask() : base.OnAfterRenderAsync(firstRender);
+		=> first?.Get() ?? false ? Content.Get(StateChanged).AsTask() : base.OnAfterRenderAsync(firstRender);
 }

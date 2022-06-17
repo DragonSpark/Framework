@@ -3,6 +3,7 @@ using DragonSpark.Composition;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Presentation.Components.Content;
+using DragonSpark.Presentation.Components.Content.Rendering;
 using DragonSpark.Presentation.Environment;
 
 namespace DragonSpark.Presentation;
@@ -21,7 +22,7 @@ sealed class Configure : IAlteration<BuildHostContext>
 		                       Diagnostics.Registrations.Default,
 		                       Interaction.Registrations.Default)
 		            .ComposeUsing(Registrations.Default)
-		            .ComposeUsing(x => x/*.Decorate(typeof(IActiveContents<>), typeof(RenderingAwareActiveContents<>)) TODO */
+		            .ComposeUsing(x => x.Decorate(typeof(IActiveContents<>), typeof(RenderingAwareActiveContents<>))
 		                                .Decorate(typeof(IActiveContents<>), typeof(ExceptionAwareActiveContents<>))
 		                                .Decorate<ICurrentContext, StoreAwareCurrentContext>());
 }

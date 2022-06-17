@@ -1,16 +1,24 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Runtime.Execution;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
 using System;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content.Rendering;
 
-partial class RenderStateMonitorComponent
+public sealed class RenderStateMonitorComponent : Microsoft.AspNetCore.Components.ComponentBase, IDisposable
 {
-	readonly First                         _active  = new(), _rendered = new();
-	Func<Task>                             _ready   = default!;
-	EventHandler<LocationChangedEventArgs> _changed = default!;
+	readonly First                         _rendered = new();
+	EventHandler<LocationChangedEventArgs> _changed  = default!;
+
+	[Inject]
+	NavigationManager Navigation { get; set; } = default!;
+
+	[Inject]
+	RenderStateMonitor Monitor { get; set; } = default!;
+
+	[Inject]
+	PersistentComponentState State { get; set; } = default!;
 
 	protected override void OnInitialized()
 	{
@@ -18,21 +26,9 @@ partial class RenderStateMonitorComponent
 
 		_changed                   =  NavigationOnLocationChanged;
 		Navigation.LocationChanged += _changed;
-
-
 	}
 
 	string Key { get; set; } = A.Type<RenderStateMonitorComponent>().FullName.Verify();
-
-	Task OnReady()
-	{
-		if (_active.Get())
-		{
-			Monitor.Execute();
-		}
-
-		return Task.CompletedTask;
-	}
 
 	void NavigationOnLocationChanged(object? sender, LocationChangedEventArgs e)
 	{
@@ -48,14 +44,12 @@ partial class RenderStateMonitorComponent
 		}
 		else if (_rendered.Get())
 		{
-			Debounce(_ready, (int)PreRenderingWindow.Default.Get().TotalMilliseconds);
+			Monitor.Execute();
 		}
 	}
 
-	public override void Dispose()
+	public void Dispose()
 	{
-		_active.Get();
-		base.Dispose();
 		Navigation.LocationChanged -= _changed;
 	}
 }

@@ -2,7 +2,6 @@
 using DragonSpark.Application.Diagnostics;
 using DragonSpark.Application.Navigation.Security.Identity;
 using DragonSpark.Application.Security.Identity;
-using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using DragonSpark.Presentation.Components.Content;
@@ -63,13 +62,10 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         //
 		         .Then.AddScoped(typeof(IPublisher<>), typeof(Publisher<>))
 		         .AddScoped(typeof(IActiveContents<>), typeof(ActiveContents<>))
-		         /*// TODO
-		         .ForDefinition<RenderingAwareActiveContents<object>>()
-		         .Include(x => x.Dependencies.Recursive())
-		         .Scoped()
 		         //
-		         .Then*/
-		         .Start<IRenderContentKey>()
+				 .ForDefinition<RenderingAwareActiveContents<object>>().Include(x => x.Dependencies).Scoped()
+				 //
+		         .Then.Start<IRenderContentKey>()
 		         .Forward<RenderContentKey>()
 		         .Include(x => x.Dependencies)
 		         .Scoped()

@@ -1,10 +1,14 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
+using DragonSpark.Model.Selection.Conditions;
 using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content;
 
+/*
 sealed class UpdateMonitor : IUpdateMonitor
 {
 	public static UpdateMonitor Default { get; } = new();
@@ -29,8 +33,9 @@ sealed class UpdateMonitor : IUpdateMonitor
 		_store.Execute(parameter);
 	}
 }
+*/
 
-sealed class UpdateMonitor<T> : IUpdateMonitor
+sealed class UpdateMonitor<T> : ICondition, IOperation<Action>
 {
 	readonly IResulting<T>  _result;
 	readonly IMutable<bool> _state;
@@ -53,10 +58,5 @@ sealed class UpdateMonitor<T> : IUpdateMonitor
 		parameter();
 	}
 
-	public bool Get() => _state.Get();
-
-	public void Execute(bool parameter)
-	{
-		_state.Execute(parameter);
-	}
+	public bool Get(None _) => _state.Down();
 }

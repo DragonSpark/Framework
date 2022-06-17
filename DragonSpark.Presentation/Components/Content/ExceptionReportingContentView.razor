@@ -1,6 +1,8 @@
 ﻿@using DragonSpark.Compose
 @using DragonSpark.Model.Operations
 @using DragonSpark.Application
+@using DragonSpark.Model
+@using DragonSpark.Model.Selection.Conditions
 @typeparam TValue
 
 @inherits DragonSpark.Presentation.Components.Content.Templates.ActiveContentTemplateComponentBase<TValue>
@@ -33,7 +35,7 @@
 	}	IResulting<TValue?>? _content;
 
     [Parameter]
-    public IUpdateMonitor? UpdateMonitor { get; set; }
+    public ICondition<None>? UpdateMonitor { get; set; }
 
 	[Parameter]
 	public Type? ReportedType { get; set; }

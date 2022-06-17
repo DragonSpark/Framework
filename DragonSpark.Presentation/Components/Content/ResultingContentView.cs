@@ -1,6 +1,8 @@
 ﻿using DragonSpark.Application.Runtime.Operations;
 using DragonSpark.Compose;
+using DragonSpark.Model;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Selection.Conditions;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Threading.Tasks;
@@ -28,7 +30,7 @@ partial class ResultingContentView<T>
 
 
 	[Parameter]
-	public IUpdateMonitor? UpdateMonitor { get; set; }
+	public ICondition<None>? UpdateMonitor { get; set; }
 
 	[Parameter]
 	public EventCallback<T> Rendered { get; set; }
@@ -74,7 +76,7 @@ partial class ResultingContentView<T>
 
 	Task Update()
 	{
-		if (UpdateMonitor?.Down() ?? false)
+		if (UpdateMonitor?.Get() ?? false)
 		{
 			Loaded  = false;
 			Subject = null;

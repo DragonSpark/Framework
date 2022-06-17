@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content.Rendering;
 
+// TODO
 class RenderStateAwareSelection<TIn, TOut> : ISelecting<TIn, TOut>
 {
 	readonly IFormatter<TIn>                         _key;
