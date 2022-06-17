@@ -18,14 +18,4 @@ public sealed class ActivityAwareActiveContent<T> : Resulting<T?>, IActiveConten
 	}
 
 	public IUpdateMonitor Monitor { get; }
-
-	public void Execute(T parameter)
-	{
-		_previous.Execute(parameter);
-	}
-
-	public void Dispose()
-	{
-		_previous.Dispose();
-	}
 }

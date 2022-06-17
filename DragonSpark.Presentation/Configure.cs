@@ -1,14 +1,9 @@
-﻿using DragonSpark.Application.Components;
-using DragonSpark.Application.Security;
-using DragonSpark.Application.Security.Identity.Authentication;
+﻿using DragonSpark.Application.Security;
 using DragonSpark.Composition;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Presentation.Components.Content;
-using DragonSpark.Presentation.Components.Content.Rendering;
-using DragonSpark.Presentation.Connections.Initialization;
 using DragonSpark.Presentation.Environment;
-using DragonSpark.Presentation.Security.Identity;
 
 namespace DragonSpark.Presentation;
 
@@ -26,10 +21,7 @@ sealed class Configure : IAlteration<BuildHostContext>
 		                       Diagnostics.Registrations.Default,
 		                       Interaction.Registrations.Default)
 		            .ComposeUsing(Registrations.Default)
-		            .ComposeUsing(x => x.Decorate(typeof(IActiveContents<>), typeof(RenderingAwareActiveContents<>))
+		            .ComposeUsing(x => x/*.Decorate(typeof(IActiveContents<>), typeof(RenderingAwareActiveContents<>)) TODO */
 		                                .Decorate(typeof(IActiveContents<>), typeof(ExceptionAwareActiveContents<>))
-		                                .Decorate<IClientIdentifier, ClientIdentifier>()
-		                                .Decorate<ICurrentContext, StoreAwareCurrentContext>()
-		                                //
-		                                .Decorate<ISignOut, SignOut>());
+		                                .Decorate<ICurrentContext, StoreAwareCurrentContext>());
 }

@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
-using DragonSpark.Presentation.Connections.Initialization;
 using DragonSpark.Presentation.Environment.Browser.Document;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -20,9 +19,7 @@ sealed class Registrations : ICommand<IServiceCollection>
 		         .Decorate<PolicyAwareEvaluate>()
 		         .Scoped()
 		         //
-		         .Then.Decorate<IIsInitialized, BotAwareIsInitialized>()
-		         //
-		         .Start<CreateDocumentElementHandle>()
+		         .Then.Start<CreateDocumentElementHandle>()
 		         .Include(x => x.Dependencies)
 		         .Scoped();
 	}

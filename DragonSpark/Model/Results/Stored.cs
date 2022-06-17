@@ -8,7 +8,11 @@ public class Stored<T> : IResult<T>
 	readonly IMutationAware<T?> _store;
 	readonly Func<T>            _result;
 
+	public Stored(IResult<T> result) : this(new Variable<T>(), result) {}
+
 	public Stored(IMutable<T?> store, IResult<T> result) : this(new AssignedAwareVariable<T>(store), result.Get) {}
+
+	public Stored(Func<T> result) : this(new Variable<T>(), result) {}
 
 	public Stored(IMutable<T?> store, Func<T> result) : this(new AssignedAwareVariable<T>(store), result) {}
 

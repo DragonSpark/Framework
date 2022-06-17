@@ -12,7 +12,7 @@ using DragonSpark.Presentation.Components.Eventing;
 using DragonSpark.Presentation.Components.Forms.Validation;
 using DragonSpark.Presentation.Components.Navigation;
 using DragonSpark.Presentation.Components.Routing;
-using DragonSpark.Presentation.Connections.Initialization;
+using DragonSpark.Presentation.Connections;
 using DragonSpark.Presentation.Environment;
 using DragonSpark.Presentation.Environment.Browser.Document;
 using DragonSpark.Presentation.Security.Identity;
@@ -50,8 +50,6 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Scoped()
 		         //
 		         .Then.Start<DefaultExternalLogin>()
-		         .And<ClientIdentifier>()
-		         .And<SignOut>()
 		         .Include(x => x.Dependencies)
 		         .Scoped()
 		         //
@@ -65,12 +63,13 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         //
 		         .Then.AddScoped(typeof(IPublisher<>), typeof(Publisher<>))
 		         .AddScoped(typeof(IActiveContents<>), typeof(ActiveContents<>))
-		         //
+		         /*// TODO
 		         .ForDefinition<RenderingAwareActiveContents<object>>()
 		         .Include(x => x.Dependencies.Recursive())
 		         .Scoped()
 		         //
-		         .Then.Start<IRenderContentKey>()
+		         .Then*/
+		         .Start<IRenderContentKey>()
 		         .Forward<RenderContentKey>()
 		         .Include(x => x.Dependencies)
 		         .Scoped()
@@ -88,19 +87,15 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Forward<SetPageExitCheck>()
 		         .Decorate<ConnectionAwareSetPageExitCheck>()
 		         .Scoped()
-		         //
-		         .Then.Start<IIsInitialized>()
-		         .Forward<IsInitialized>()
-		         .Singleton()
-		         //
-		         .Then.Start<IInitialized>()
-		         .Forward<Initialized>()
-		         .Decorate<ContextAwareInitialized>()
+		         .Then.Start<IInitializeConnection>()
+		         .Forward<InitializeConnection>()
+		         .Decorate<ContextAwareInitializeConnection>()
 		         .Include(x => x.Dependencies.Recursive())
 		         .Scoped()
 		         //
-		         .Then.Start<IInitializeConnection>()
-		         .Forward<InitializeConnection>()
+		         .Then.Start<IConnectionIdentifier>()
+		         .Forward<ConnectionIdentifier>()
+		         .Include(x => x.Dependencies.Recursive())
 		         .Scoped()
 		         //
 		         .Then.Start<IResourceQuery>()

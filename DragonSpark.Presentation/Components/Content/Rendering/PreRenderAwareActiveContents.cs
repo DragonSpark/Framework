@@ -2,14 +2,13 @@
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Allocated;
 using DragonSpark.Model.Results;
-using DragonSpark.Model.Selection;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content.Rendering;
 
-public readonly record struct RenderStateAwareActiveContentsInput<T>(IActiveContents<T> Previous, ComponentBase Owner,
-                                                                     IResulting<T?> Source);
+/*public readonly record struct RenderStateAwareActiveContentsInput<T>(IActiveContents<T> Previous, ComponentBase Owner,
+																	 IResulting<T?> Source);
 
 sealed class RenderStateAwareActiveContents<T> : ISelect<RenderStateAwareActiveContentsInput<T>, IActiveContent<T>>
 {
@@ -32,8 +31,9 @@ sealed class RenderStateAwareActiveContents<T> : ISelect<RenderStateAwareActiveC
 		var subscription = _state.RegisterOnPersisting(assignment.Get);
 		return new RenderStateAwareActiveContent<T>(content, subscription);
 	}
-}
+}*/
 
+/*
 sealed class RenderingAwareActiveContents<T> : IActiveContents<T>
 {
 	readonly IsPreRendering                    _condition;
@@ -41,7 +41,7 @@ sealed class RenderingAwareActiveContents<T> : IActiveContents<T>
 	readonly IActiveContents<T>                _previous;
 
 	public RenderingAwareActiveContents(IsPreRendering condition, RenderStateAwareActiveContents<T> contents,
-	                                    IActiveContents<T> previous)
+										IActiveContents<T> previous)
 	{
 		_condition = condition;
 		_contents  = contents;
@@ -55,6 +55,7 @@ sealed class RenderingAwareActiveContents<T> : IActiveContents<T>
 		return result;
 	}
 }
+*/
 
 sealed class StateAssignment<T> : IAllocated
 {
@@ -79,6 +80,7 @@ sealed class StateAssignment<T> : IAllocated
 	}
 }
 
+/*
 sealed class RenderStateAwareActiveContent<T> : IActiveContent<T>
 {
 	readonly IActiveContent<T>                    _previous;
@@ -88,11 +90,6 @@ sealed class RenderStateAwareActiveContent<T> : IActiveContent<T>
 	{
 		_previous     = previous;
 		_subscription = subscription;
-	}
-
-	public void Execute(T parameter)
-	{
-		_previous.Execute(parameter);
 	}
 
 	public ValueTask<T?> Get() => _previous.Get();
@@ -105,6 +102,7 @@ sealed class RenderStateAwareActiveContent<T> : IActiveContent<T>
 		_previous.Dispose();
 	}
 }
+*/
 
 // TODO
 
@@ -127,9 +125,5 @@ public class Persisted<T> : IResult<T?>
 		_state = state;
 	}
 
-	public T? Get()
-	{
-		var success = _state.TryTakeFromJson<T>(_key, out var found);
-		return success ? found : default;
-	}
+	public T? Get() => _state.TryTakeFromJson<T>(_key, out var found) ? found : default;
 }

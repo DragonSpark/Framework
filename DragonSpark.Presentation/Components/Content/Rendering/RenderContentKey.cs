@@ -1,15 +1,15 @@
-﻿using DragonSpark.Application.Components;
-using DragonSpark.Application.Security.Identity;
+﻿using DragonSpark.Application.Security.Identity;
+using DragonSpark.Presentation.Connections;
 
 namespace DragonSpark.Presentation.Components.Content.Rendering;
 
 sealed class RenderContentKey : IRenderContentKey
 {
-	readonly IClientIdentifier     _identifier;
+	readonly IConnectionIdentifier _identifier;
 	readonly ICurrentUserName      _name;
 	readonly ContentIdentification _content;
 
-	public RenderContentKey(IClientIdentifier identifier, ICurrentUserName name, ContentIdentification content)
+	public RenderContentKey(IConnectionIdentifier identifier, ICurrentUserName name, ContentIdentification content)
 	{
 		_identifier = identifier;
 		_name       = name;

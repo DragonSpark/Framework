@@ -25,11 +25,4 @@ sealed class ActiveContent<T> : Resulting<T?>, IActiveContent<T>
 	}
 
 	public IUpdateMonitor Monitor { get; }
-
-	public void Execute(T parameter)
-	{
-		_store.Execute(parameter);
-	}
-
-	public void Dispose() {}
 }

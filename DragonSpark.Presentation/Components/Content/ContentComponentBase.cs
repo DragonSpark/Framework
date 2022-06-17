@@ -2,12 +2,11 @@
 using DragonSpark.Presentation.Components.Content.Rendering;
 using DragonSpark.Runtime.Execution;
 using Microsoft.AspNetCore.Components;
-using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content;
 
-public abstract class ContentComponentBase<T> : ComponentBase, IDisposable
+public abstract class ContentComponentBase<T> : ComponentBase
 {
 	First? first;
 
@@ -49,9 +48,4 @@ public abstract class ContentComponentBase<T> : ComponentBase, IDisposable
 
 	protected override Task OnAfterRenderAsync(bool firstRender)
 		=> first?.Get() ?? false ? Content.Monitor.Get(StateChanged).AsTask() : base.OnAfterRenderAsync(firstRender);
-
-	public void Dispose()
-	{
-		Content.Dispose();
-	}
 }

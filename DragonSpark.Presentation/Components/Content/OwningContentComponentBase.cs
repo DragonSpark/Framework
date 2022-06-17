@@ -49,10 +49,4 @@ public abstract class OwningContentComponentBase<TService, TContent> : Scoped.Ow
 
 	protected override Task OnAfterRenderAsync(bool firstRender)
 		=> first?.Get() ?? false ? Content.Monitor.Get(StateChanged).AsTask() : base.OnAfterRenderAsync(firstRender);
-
-	protected override void Dispose(bool disposing)
-	{
-		Content.Dispose();
-		base.Dispose(disposing);
-	}
 }

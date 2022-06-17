@@ -1,10 +1,8 @@
-﻿using DragonSpark.Model.Commands;
-using DragonSpark.Model.Operations;
-using System;
+﻿using DragonSpark.Model.Operations;
 
 namespace DragonSpark.Presentation.Components.Content;
 
-public interface IActiveContent<T> : ICommand<T>, IResulting<T?>, IDisposable
+public interface IActiveContent<T> : IResulting<T?>
 {
 	IUpdateMonitor Monitor { get; }
 }

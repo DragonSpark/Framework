@@ -21,14 +21,4 @@ public sealed class ActiveContentAdapter<T> : IActiveContent<T>
 	public IUpdateMonitor Monitor { get; }
 
 	public ValueTask<T?> Get() => _source.Get();
-
-	public void Execute(T parameter)
-	{
-		_previous.Execute(parameter);
-	}
-
-	public void Dispose()
-	{
-		_previous.Dispose();
-	}
 }

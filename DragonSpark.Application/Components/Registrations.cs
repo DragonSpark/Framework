@@ -12,14 +12,6 @@ sealed class Registrations : ICommand<IServiceCollection>
 
 	public void Execute(IServiceCollection parameter)
 	{
-		parameter.Start<ConnectionIdentifier>()
-		         .And<ConnectionStartTime>()
-		         .Scoped()
-		         //
-		         .Then.Start<IClientIdentifier>()
-		         .Forward<ClientIdentifier>()
-		         .Scoped()
-			//
-			;
+		parameter.Start<ConnectionStartTime>().Scoped();
 	}
 }

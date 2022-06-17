@@ -1,19 +1,19 @@
-﻿using DragonSpark.Application.Components;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Results;
+using DragonSpark.Presentation.Connections;
 using System;
 
 namespace DragonSpark.Presentation.Components.Content.Rendering;
 
 public class ClientRenderKey : IResult<string>
 {
-	readonly IClientIdentifier _identifier;
-	readonly string            _qualifier;
+	readonly IConnectionIdentifier _identifier;
+	readonly string                          _qualifier;
 
-	protected ClientRenderKey(IClientIdentifier identifier, Type qualifier)
+	protected ClientRenderKey(IConnectionIdentifier identifier, Type qualifier)
 		: this(identifier, qualifier.AssemblyQualifiedName.Verify()) {}
 
-	protected ClientRenderKey(IClientIdentifier identifier, string qualifier)
+	protected ClientRenderKey(IConnectionIdentifier identifier, string qualifier)
 	{
 		_identifier = identifier;
 		_qualifier  = qualifier;
