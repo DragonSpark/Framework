@@ -5,9 +5,9 @@ namespace DragonSpark.Presentation.Components.Content.Rendering;
 
 sealed class RenderStateMonitor : ICommand, ICommand<RenderState>
 {
-	readonly SessionRenderState _session;
+	readonly CurrentRenderState _session;
 
-	public RenderStateMonitor(SessionRenderState session)
+	public RenderStateMonitor(CurrentRenderState session)
 		=> _session = session;
 
 	public void Execute(None parameter)

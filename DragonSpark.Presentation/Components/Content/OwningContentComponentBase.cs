@@ -22,7 +22,7 @@ public abstract class OwningContentComponentBase<TService, TContent> : Scoped.Ow
 	IActiveContents<TContent> Contents { get; set; } = default!;
 
 	[Inject]
-	SessionRenderState Current { get; set; } = default!;
+	CurrentRenderState Current { get; set; } = default!;
 
 	protected IActiveContent<TContent> Content { get; private set; } = default!;
 

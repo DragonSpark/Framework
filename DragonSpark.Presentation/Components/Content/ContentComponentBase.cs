@@ -14,7 +14,7 @@ public abstract class ContentComponentBase<T> : ComponentBase
 	IActiveContents<T> Contents { get; set; } = default!;
 
 	[Inject]
-	SessionRenderState Current { get; set; } = default!;
+	CurrentRenderState Current { get; set; } = default!;
 
 	protected override void OnInitialized()
 	{

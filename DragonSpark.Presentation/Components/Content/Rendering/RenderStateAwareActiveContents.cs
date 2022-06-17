@@ -7,10 +7,10 @@ namespace DragonSpark.Presentation.Components.Content.Rendering;
 sealed class RenderStateAwareActiveContents<T> : ISelect<ActiveContentInput<T>, IResulting<T?>>
 {
 	readonly IMemoryCache       _memory;
-	readonly SessionRenderState _state;
+	readonly CurrentRenderState _state;
 	readonly IRenderContentKey  _key;
 
-	public RenderStateAwareActiveContents(IMemoryCache memory, SessionRenderState state, IRenderContentKey key)
+	public RenderStateAwareActiveContents(IMemoryCache memory, CurrentRenderState state, IRenderContentKey key)
 	{
 		_memory = memory;
 		_state  = state;

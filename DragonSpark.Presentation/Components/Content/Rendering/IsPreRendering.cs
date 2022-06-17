@@ -5,9 +5,9 @@ namespace DragonSpark.Presentation.Components.Content.Rendering;
 
 sealed class IsPreRendering : ICondition
 {
-	readonly SessionRenderState _state;
+	readonly CurrentRenderState _state;
 
-	public IsPreRendering(SessionRenderState state) => _state = state;
+	public IsPreRendering(CurrentRenderState state) => _state = state;
 
 	public bool Get(None parameter) => _state.Get() is RenderState.Default or RenderState.Ready;
 }
