@@ -8,7 +8,7 @@ public class AppendedTransactions : ITransactions
 	readonly ITransactions _first;
 	readonly ITransactions _second;
 
-	public AppendedTransactions(ITransactions first, ITransactions second)
+	protected AppendedTransactions(ITransactions first, ITransactions second)
 	{
 		_first  = first;
 		_second = second;

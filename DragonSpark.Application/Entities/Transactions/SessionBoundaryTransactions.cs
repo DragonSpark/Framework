@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Transactions;
 
-public class SessionInstanceTransactions : ITransactions
+public sealed class SessionBoundaryTransactions : ITransactions
 {
 	readonly IBoundary              _boundary;
 	readonly IMutable<IDisposable?> _store;
 
-	public SessionInstanceTransactions(InstanceBoundary boundary) : this(boundary, AmbientLock.Default) {}
+	public SessionBoundaryTransactions(InstanceBoundary boundary) : this(boundary, AmbientLock.Default) {}
 
-	public SessionInstanceTransactions(IBoundary boundary, IMutable<IDisposable?> store)
+	public SessionBoundaryTransactions(IBoundary boundary, IMutable<IDisposable?> store)
 	{
 		_boundary = boundary;
 		_store    = store;

@@ -5,7 +5,7 @@ public class AmbientAwareScopes : IEnlistedScopes
 	readonly IScopes         _previous;
 	readonly IAmbientContext _context;
 
-	public AmbientAwareScopes(IScopes previous, IAmbientContext context)
+	protected AmbientAwareScopes(IScopes previous, IAmbientContext context)
 	{
 		_previous = previous;
 		_context  = context;

@@ -1,8 +1,8 @@
 ﻿namespace DragonSpark.Application.Entities.Transactions;
 
-public class SessionInstanceDatabaseTransactions : AppendedTransactions
+public sealed class SessionInstanceDatabaseTransactions : AppendedTransactions
 {
-	public SessionInstanceDatabaseTransactions(SessionInstanceTransactions first,
-	                                           SessionDatabaseTransactions second)
+	public SessionInstanceDatabaseTransactions(ScopedEntityContextTransactions first,
+	                                           EstablishSessionTransactions second)
 		: base(first, second) {}
 }
