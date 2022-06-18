@@ -1,4 +1,6 @@
-﻿namespace DragonSpark.Application.Entities.Queries.Runtime.Shape;
+﻿using DragonSpark.Application.Entities.Queries.Runtime.Shape;
+
+namespace DragonSpark.Application.Entities.Queries.Runtime.Pagination;
 
 public class PageInput
 {

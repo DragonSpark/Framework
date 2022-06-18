@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using DragonSpark.Application.Entities.Queries.Runtime.Pagination;
+using System.Linq;
 
 namespace DragonSpark.Application.Entities.Queries.Runtime.Shape;
 

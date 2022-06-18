@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace DragonSpark.Application.Entities.Queries.Runtime.Shape;
+namespace DragonSpark.Application.Entities.Queries.Runtime.Pagination;
 
 public sealed class Page<T> : Collection<T>
 {

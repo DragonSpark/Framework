@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Compose;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Queries.Runtime.Shape;
+namespace DragonSpark.Application.Entities.Queries.Runtime.Pagination;
 
 public sealed class EmptyPages<T> : IPages<T>
 {

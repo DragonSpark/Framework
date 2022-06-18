@@ -1,10 +1,11 @@
 ﻿@using DragonSpark.Application.Entities.Queries.Runtime.Shape
 @using DragonSpark.Compose
 @using DragonSpark.Model.Operations
+@using DragonSpark.Application.Entities.Queries.Runtime.Pagination
 
 @typeparam T
 
-@inherits DragonSpark.Presentation.Components.Content.Templates.ManyActiveContentTemplateComponentBase<Page<T>>
+@inherits DragonSpark.Presentation.Components.Content.Templates.ManyActiveContentTemplateComponentBase<DragonSpark.Application.Entities.Queries.Runtime.Pagination.Page<T>>
 
 <ResultingContentView Content="@Subject"
 					  LoadingTemplate="@LoadingTemplate"

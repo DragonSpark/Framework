@@ -1,5 +1,5 @@
-﻿using DragonSpark.Application;
-using DragonSpark.Application.Entities.Queries.Runtime;
+﻿using DragonSpark.Application.Entities.Queries.Runtime;
+using DragonSpark.Application.Entities.Queries.Runtime.Pagination;
 using DragonSpark.Application.Entities.Queries.Runtime.Shape;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
@@ -8,7 +8,7 @@ using System;
 
 namespace DragonSpark.Presentation.Components.Content.Sequences;
 
-partial class QueryContentContainer<T>
+partial class QueryContentContainer<T> : IReportedTypeAware
 {
 	[Parameter]
 	public IQueries<T>? Content
@@ -47,9 +47,7 @@ partial class QueryContentContainer<T>
 	[Parameter]
 	public RenderFragment<IPages<T>>? FooterTemplate { get; set; }
 
-	IResulting<IPages<T>?>? Subject { get; set; }
-
-	IPaging<T> Paging { get; set; } = Paging<T>.Default; // TODO
+	IResulting<IPages<T>>? Subject { get; set; }
 
 	protected override void OnParametersSet()
 	{
@@ -57,16 +55,10 @@ partial class QueryContentContainer<T>
 		Subject ??= DetermineSubject();
 	}
 
-	IResulting<IPages<T>?> DetermineSubject()
-	{
-		if (Content != null)
-		{
-			var selector = Paging.Then().AccountOut().Bind(new PagingInput<T>(Content, Compose)).Operation();
-			var subject  = ReportedType != null ? selector.Then().Handle(Exceptions, ReportedType) : selector;
-			var result   = subject.Out();
-			return result;
-		}
+	IResulting<IPages<T>> DetermineSubject()
+		=> Content != null
+			   ? Pagination.Then().Bind(new PagingInput<T>(this, Content, Compose)).Out()
+			   : EmptyPaging<T>.Default;
 
-		return Defaulting<IPages<T>>.Default;
-	}
+	public Type Get() => ReportedType ?? GetType();
 }

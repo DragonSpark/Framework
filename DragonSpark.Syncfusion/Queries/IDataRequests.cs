@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Entities.Queries.Runtime.Shape;
+﻿using DragonSpark.Application.Entities.Queries.Runtime.Pagination;
 using DragonSpark.Model.Selection;
 
 namespace DragonSpark.SyncfusionRendering.Queries;

@@ -1,9 +1,11 @@
-﻿using DragonSpark.Application.Security;
+﻿using DragonSpark.Application.Entities.Queries.Runtime.Pagination;
+using DragonSpark.Application.Security;
 using DragonSpark.Composition;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Presentation.Components.Content;
 using DragonSpark.Presentation.Components.Content.Rendering;
+using DragonSpark.Presentation.Components.Content.Rendering.Sequences;
 using DragonSpark.Presentation.Environment;
 
 namespace DragonSpark.Presentation;
@@ -24,5 +26,7 @@ sealed class Configure : IAlteration<BuildHostContext>
 		            .ComposeUsing(Registrations.Default)
 		            .ComposeUsing(x => x.Decorate(typeof(IActiveContents<>), typeof(RenderingAwareActiveContents<>))
 		                                .Decorate(typeof(IActiveContents<>), typeof(ExceptionAwareActiveContents<>))
+		                                .Decorate(typeof(IPaging<>), typeof(RenderAwarePaging<>))
+		                                .Decorate(typeof(IAny<>), typeof(RenderAwareAny<>))
 		                                .Decorate<ICurrentContext, StoreAwareCurrentContext>());
 }

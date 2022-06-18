@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Entities.Queries.Runtime.Shape;
+﻿using DragonSpark.Application.Entities.Queries.Runtime.Pagination;
 using DragonSpark.Application.Runtime.Operations;
 
 namespace DragonSpark.Presentation.Components.Content.Sequences;

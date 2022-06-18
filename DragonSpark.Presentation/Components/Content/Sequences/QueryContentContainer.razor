@@ -6,11 +6,12 @@
 @using DragonSpark.Presentation.Components.Eventing
 @using DragonSpark.Application.Diagnostics
 @using DragonSpark.Application
+@using DragonSpark.Application.Entities.Queries.Runtime.Pagination
 @using DragonSpark.Compose
 
-@inherits DragonSpark.Presentation.Components.Content.Templates.ManyActiveContentTemplateComponentBase<IPages<T>>
+@inherits DragonSpark.Presentation.Components.Content.Templates.ManyActiveContentTemplateComponentBase<DragonSpark.Application.Entities.Queries.Runtime.Pagination.IPages<T>>
 
-@* TODO @inject IdentifiedPagings<T> Pagings*@
+@inject IPagination<T> Pagination
 
 <ResultingContentView T="IPages<T>"
     Content="@Subject"
@@ -36,5 +37,3 @@
         @FooterTemplate(context)
     }
 </ResultingContentView>
-
-@code {}

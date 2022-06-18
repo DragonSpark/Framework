@@ -6,6 +6,7 @@ using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using DragonSpark.Presentation.Components.Content;
 using DragonSpark.Presentation.Components.Content.Rendering;
+using DragonSpark.Presentation.Components.Content.Rendering.Sequences;
 using DragonSpark.Presentation.Components.Diagnostics;
 using DragonSpark.Presentation.Components.Eventing;
 using DragonSpark.Presentation.Components.Forms.Validation;
@@ -67,8 +68,16 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Include(x => x.Dependencies)
 		         .Scoped()
 		         //
+		         .Then.ForDefinition<RenderStateAwarePagingContents<object>>()
+		         .Include(x => x.Dependencies)
+		         .Scoped()
+		         .Then.ForDefinition<RenderStateAwareAnyContents<object>>()
+		         .Include(x => x.Dependencies)
+		         .Scoped()
+		         //
 		         .Then.Start<IRenderContentKey>()
 		         .Forward<RenderContentKey>()
+		         .Decorate<StoreAwareRenderContentKey>()
 		         .Include(x => x.Dependencies)
 		         .Scoped()
 		         //

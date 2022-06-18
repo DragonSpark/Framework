@@ -1,8 +1,9 @@
 ﻿using DragonSpark.Application.Entities.Queries.Runtime.Materialize;
+using DragonSpark.Application.Entities.Queries.Runtime.Shape;
 using DragonSpark.Compose;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Queries.Runtime.Shape;
+namespace DragonSpark.Application.Entities.Queries.Runtime.Pagination;
 
 sealed class Pages<T> : IPages<T>
 {
