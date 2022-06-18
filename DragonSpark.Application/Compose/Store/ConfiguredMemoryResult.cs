@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Caching.Memory;
+﻿using DragonSpark.Model;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 
 namespace DragonSpark.Application.Compose.Store;
@@ -16,9 +17,9 @@ class ConfiguredMemoryResult<TIn, TOut> : IConfiguredMemoryResult<TIn, TOut>
 		_configure = configure;
 	}
 
-	public TOut Get((TIn Parameter, object Key) parameter)
+	public TOut Get(Pair<object, TIn> parameter)
 	{
-		var (@in, key) = parameter;
+		var (key, @in) = parameter;
 		using var entry  = _memory.CreateEntry(key);
 		var       result = _source(@in);
 		entry.Value = result;
@@ -29,6 +30,20 @@ class ConfiguredMemoryResult<TIn, TOut> : IConfiguredMemoryResult<TIn, TOut>
 
 sealed class ConfiguredMemoryResult<T> : ConfiguredMemoryResult<T, T>, IConfiguredMemoryResult<T>
 {
-	public ConfiguredMemoryResult(IMemoryCache memory, Action<ICacheEntry> configure)
-		: base(memory, x => x, configure) {}
+	readonly IMemoryCache        _memory;
+	readonly Action<ICacheEntry> _configure;
+
+	public ConfiguredMemoryResult(IMemoryCache memory, Action<ICacheEntry> configure) : base(memory, x => x, configure)
+	{
+		_memory    = memory;
+		_configure = configure;
+	}
+
+	public void Execute(Pair<object, T?> parameter)
+	{
+		var (key, @in) = parameter;
+		using var entry  = _memory.CreateEntry(key);
+		entry.Value = @in;
+		_configure(entry);
+	}
 }

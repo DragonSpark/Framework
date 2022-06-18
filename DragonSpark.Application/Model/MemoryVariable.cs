@@ -44,14 +44,7 @@ public class MemoryVariable<T> : IMutable<T?>
 
 	public void Execute(T? parameter)
 	{
-		if (parameter is not null)
-		{
-			var key = _key();
-			_assignment.Assign(key, parameter);
-		}
-		else
-		{
-			Remove();
-		}
+		var key = _key();
+		_assignment.Assign(key, parameter);
 	}
 }

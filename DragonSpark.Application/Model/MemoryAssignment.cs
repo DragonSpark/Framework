@@ -24,14 +24,7 @@ public class MemoryAssignment<T> : IAssign<string, T?>, ISelect<string, T?>
 	public void Execute(Pair<string, T?> parameter)
 	{
 		var (key, value) = parameter;
-		if (value is not null)
-		{
-			_configured.Get((value, key));
-		}
-		else
-		{
-			Remove(key);
-		}
+		_configured.Execute((key, value));
 	}
 
 	public bool Pop(string key, out T? result)

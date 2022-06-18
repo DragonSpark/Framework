@@ -1,3 +1,5 @@
-﻿namespace DragonSpark.Application.Compose.Store;
+﻿using DragonSpark.Model;
 
-delegate TOut Get<TIn, out TOut>((TIn Parameter, object Key) parameter);
+namespace DragonSpark.Application.Compose.Store;
+
+delegate TOut Get<TIn, out TOut>(Pair<object, TIn> parameter);
