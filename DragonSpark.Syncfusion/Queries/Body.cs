@@ -18,7 +18,7 @@ sealed class Body<T> : IBody<T>
 	public async ValueTask<IQueryable<T>> Get(ComposeInput<T> parameter)
 	{
 		var (input, current) = parameter;
-		var (_, result, _)   = await _body.Await(new(input.To<SyncfusionQueryInput>().Request, current));
+		var (_, result, _)   = await _body.Await(new(input.To<SyncfusionPageInput>().Request, current));
 		return result;
 	}
 }

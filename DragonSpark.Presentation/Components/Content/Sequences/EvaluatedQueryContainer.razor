@@ -4,7 +4,7 @@
 
 @typeparam T
 
-@inherits DragonSpark.Presentation.Components.Content.Templates.ManyActiveContentTemplateComponentBase<Current<T>>
+@inherits DragonSpark.Presentation.Components.Content.Templates.ManyActiveContentTemplateComponentBase<Page<T>>
 
 <ResultingContentView Content="@Subject"
 					  LoadingTemplate="@LoadingTemplate"
@@ -24,7 +24,7 @@
 @code {
 
 	[Parameter]
-	public IPaging<T> Input
+	public IPages<T> Input
 	{
 		get => _input;
 		set
@@ -93,7 +93,7 @@
 		}
 	}
 
-	IResulting<Current<T>>? Subject { get; set; }
+	IResulting<Page<T>>? Subject { get; set; }
 
 	protected override void OnParametersSet()
 	{
@@ -101,9 +101,9 @@
 		Subject ??= DetermineSubject();
 	}
 
-	IResulting<Current<T>> DetermineSubject()
+	IResulting<Page<T>> DetermineSubject()
 	{
-		var input = new QueryInput
+		var input = new PageInput
 		{
 			Filter = Filter, OrderBy = OrderBy, IncludeTotalCount = IncludeTotalCount, Partition = Partition
 		};
@@ -111,7 +111,7 @@
 		return result;
 	}
 
-	IPaging<T> _input = default!;
+	IPages<T> _input = default!;
 	bool _includeTotalCount;
 	string? _orderBy, _filter;
 	Partition? _partition;

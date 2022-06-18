@@ -59,7 +59,7 @@ sealed class Registrations<T> : ICommand<IServiceCollection> where T : DbContext
 		         .Decorate<ProviderAwareAmbientContext>()
 		         .Singleton()
 				 //
-				 .Then.AddSingleton(typeof(IPagers<>), typeof(Pagers<>))
+				 .Then.AddSingleton(typeof(IPaging<>), typeof(Paging<>))
 			;
 	}
 }

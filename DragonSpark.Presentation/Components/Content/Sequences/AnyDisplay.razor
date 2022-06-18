@@ -11,7 +11,7 @@
     bool _render;
 
     [Parameter]
-    public IPaging<T> Subject
+    public IPages<T> Subject
     {
         get => _subject;
         set
@@ -22,7 +22,7 @@
                 _render |= _subject.HasResults();
             }
         }
-    }	IPaging<T> _subject = default!;
+    }	IPages<T> _subject = default!;
 
     [Parameter]
     public bool Enabled 

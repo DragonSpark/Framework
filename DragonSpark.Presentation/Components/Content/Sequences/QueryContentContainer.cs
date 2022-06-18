@@ -42,14 +42,14 @@ partial class QueryContentContainer<T>
 	public Type? ReportedType { get; set; }
 
 	[Parameter]
-	public RenderFragment<IPaging<T>>? HeaderTemplate { get; set; }
+	public RenderFragment<IPages<T>>? HeaderTemplate { get; set; }
 
 	[Parameter]
-	public RenderFragment<IPaging<T>>? FooterTemplate { get; set; }
+	public RenderFragment<IPages<T>>? FooterTemplate { get; set; }
 
-	IResulting<IPaging<T>?>? Subject { get; set; }
+	IResulting<IPages<T>?>? Subject { get; set; }
 
-	IPagers<T> Pagers { get; set; } = Pagers<T>.Default; // TODO
+	IPaging<T> Paging { get; set; } = Paging<T>.Default; // TODO
 
 	protected override void OnParametersSet()
 	{
@@ -57,16 +57,16 @@ partial class QueryContentContainer<T>
 		Subject ??= DetermineSubject();
 	}
 
-	IResulting<IPaging<T>?> DetermineSubject()
+	IResulting<IPages<T>?> DetermineSubject()
 	{
 		if (Content != null)
 		{
-			var selector = Pagers.Then().AccountOut().Bind(new PagingInput<T>(Content, Compose)).Operation();
+			var selector = Paging.Then().AccountOut().Bind(new PagingInput<T>(Content, Compose)).Operation();
 			var subject  = ReportedType != null ? selector.Then().Handle(Exceptions, ReportedType) : selector;
 			var result   = subject.Out();
 			return result;
 		}
 
-		return Defaulting<IPaging<T>>.Default;
+		return Defaulting<IPages<T>>.Default;
 	}
 }

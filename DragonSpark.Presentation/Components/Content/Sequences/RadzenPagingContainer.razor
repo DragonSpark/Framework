@@ -9,7 +9,7 @@
 @typeparam T
 
 <ReportingContentView
-	TIn="IPaging<T>"
+	TIn="IPages<T>"
 	TOut="IRadzenPaging<T>"
 	Content="@Content"
 	Reporter="@Reporter"
@@ -22,8 +22,8 @@
 @code
 {
 	[Parameter]
-	public IPaging<T>? Content { get; set; }
+	public IPages<T>? Content { get; set; }
 
 	[Parameter]
-	public IReporter<IPaging<T>, IRadzenPaging<T>> Reporter { get; set; } = RadzenReporter<T>.Default;
+	public IReporter<IPages<T>, IRadzenPaging<T>> Reporter { get; set; } = RadzenReporter<T>.Default;
 }

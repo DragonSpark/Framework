@@ -33,7 +33,7 @@
 	public IQueries<T>? Content { get; set; }
 
 	[Parameter]
-	public IReporter<IPaging<T>, IRadzenPaging<T>> Reporter { get; set; } = RadzenReporter<T>.Default;
+	public IReporter<IPages<T>, IRadzenPaging<T>> Reporter { get; set; } = RadzenReporter<T>.Default;
 
 	[Parameter]
 	public ICompose<T> Compose { get; set; } = DefaultCompose<T>.Default;

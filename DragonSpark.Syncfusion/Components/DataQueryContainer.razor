@@ -79,10 +79,10 @@
 	public RenderFragment? BodyFooterTemplate { get; set; }
 
 	[Parameter]
-	public RenderFragment<IPaging<T>>? HeaderTemplate { get; set; }
+	public RenderFragment<IPages<T>>? HeaderTemplate { get; set; }
 
 	[Parameter]
-	public RenderFragment<IPaging<T>>? FooterTemplate { get; set; }
+	public RenderFragment<IPages<T>>? FooterTemplate { get; set; }
 
 	[Parameter]
 	public bool AllowPaging { get; set; } = true;

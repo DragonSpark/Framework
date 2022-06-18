@@ -8,12 +8,12 @@ namespace DragonSpark.Presentation.Components.Content.Sequences;
 
 sealed class RadzenPaging<T> : IRadzenPaging<T>
 {
-	readonly IPaging<T> _paging;
+	readonly IPages<T> _pages;
 	readonly bool       _includeCount;
 
-	public RadzenPaging(IPaging<T> paging, bool includeCount = true)
+	public RadzenPaging(IPages<T> pages, bool includeCount = true)
 	{
-		_paging       = paging;
+		_pages       = pages;
 		_includeCount = includeCount;
 	}
 
@@ -23,7 +23,7 @@ sealed class RadzenPaging<T> : IRadzenPaging<T>
 
 	public async Task Get(LoadDataArgs parameter)
 	{
-		var input = new QueryInput
+		var input = new PageInput
 		{
 			Filter  = parameter.Filter,
 			OrderBy = parameter.OrderBy,
@@ -33,7 +33,7 @@ sealed class RadzenPaging<T> : IRadzenPaging<T>
 			IncludeTotalCount = _includeCount,
 		};
 
-		var current      = _paging.Get(input);
+		var current      = _pages.Get(input);
 		var successfully = current.IsCompletedSuccessfully;
 		var evaluate     = successfully ? current.Result : await current.ConfigureAwait(false);
 		Current = evaluate;

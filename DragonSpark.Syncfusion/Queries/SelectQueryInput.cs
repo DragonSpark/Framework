@@ -4,13 +4,13 @@ using Syncfusion.Blazor;
 
 namespace DragonSpark.SyncfusionRendering.Queries;
 
-sealed class SelectQueryInput : ISelect<DataManagerRequest, SyncfusionQueryInput>
+sealed class SelectQueryInput : ISelect<DataManagerRequest, SyncfusionPageInput>
 {
 	public static SelectQueryInput Default { get; } = new SelectQueryInput();
 
 	SelectQueryInput() {}
 
-	public SyncfusionQueryInput Get(DataManagerRequest parameter)
+	public SyncfusionPageInput Get(DataManagerRequest parameter)
 		=> new()
 		{
 			Request = parameter,

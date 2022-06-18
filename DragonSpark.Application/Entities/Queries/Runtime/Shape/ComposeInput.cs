@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.Entities.Queries.Runtime.Shape;
 
-public readonly record struct ComposeInput<T>(QueryInput Input, IQueryable<T> Current);
+public readonly record struct ComposeInput<T>(PageInput Input, IQueryable<T> Current);

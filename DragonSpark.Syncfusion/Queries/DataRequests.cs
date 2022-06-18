@@ -3,7 +3,7 @@ using DragonSpark.Model.Selection.Stores;
 
 namespace DragonSpark.SyncfusionRendering.Queries;
 
-public sealed class DataRequests<T> : ReferenceValueStore<IPaging<T>, IDataRequest>, IDataRequests<T>
+public sealed class DataRequests<T> : ReferenceValueStore<IPages<T>, IDataRequest>, IDataRequests<T>
 {
 	public static DataRequests<T> Default { get; } = new DataRequests<T>();
 

@@ -150,8 +150,8 @@ partial class Extensions
 	public static Task<int> Save(this DbContext @this) => @this.SaveChangesAsync();
 
 	/**/
-	public static bool HasResults<T>(this IPaging<T> @this) => @this != EmptyPaging<T>.Default;
-	public static bool IsEmpty<T>(this IPaging<T> @this) => @this == EmptyPaging<T>.Default;
+	public static bool HasResults<T>(this IPages<T> @this) => @this != EmptyPages<T>.Default;
+	public static bool IsEmpty<T>(this IPages<T> @this) => @this == EmptyPages<T>.Default;
 
 /**/
 	public static string Ordinalize(this in byte @this) => ((int)@this).Ordinalize();

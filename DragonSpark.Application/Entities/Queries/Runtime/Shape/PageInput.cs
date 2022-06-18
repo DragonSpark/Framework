@@ -1,6 +1,6 @@
 ﻿namespace DragonSpark.Application.Entities.Queries.Runtime.Shape;
 
-public class QueryInput
+public class PageInput
 {
 	public bool IncludeTotalCount { get; set; }
 

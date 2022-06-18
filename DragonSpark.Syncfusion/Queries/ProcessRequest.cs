@@ -9,11 +9,11 @@ namespace DragonSpark.SyncfusionRendering.Queries;
 
 sealed class ProcessRequest<T> : IDataRequest
 {
-	readonly Await<DataManagerRequest, Current<T>> _current;
+	readonly Await<DataManagerRequest, Page<T>> _current;
 
-	public ProcessRequest(IPaging<T> paging) : this(SelectQueryInput.Default.Then().Select(paging).Then()) {}
+	public ProcessRequest(IPages<T> pages) : this(SelectQueryInput.Default.Then().Select(pages).Then()) {}
 
-	public ProcessRequest(Await<DataManagerRequest, Current<T>> current) => _current = current;
+	public ProcessRequest(Await<DataManagerRequest, Page<T>> current) => _current = current;
 
 	public async ValueTask<object> Get(DataManagerRequest parameter)
 	{

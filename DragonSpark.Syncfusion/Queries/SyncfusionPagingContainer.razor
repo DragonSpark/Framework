@@ -21,7 +21,7 @@
 
 @code {
 	[Parameter]
-	public IPaging<T> Content
+	public IPages<T> Content
 	{
 		get => _content;
 		set
@@ -32,7 +32,7 @@
 				Subject = null;
 			}
 		}
-	}	IPaging<T> _content = default!;
+	}	IPages<T> _content = default!;
 
 	[Parameter]
 	public IDataRequests<T> Requests { get; set; } = DataRequests<T>.Default;
