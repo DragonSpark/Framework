@@ -8,13 +8,13 @@ namespace DragonSpark.Presentation.Connections;
 sealed class PersistedConnectionIdentifier : IResult<Guid?>
 {
 	readonly PersistentComponentState _state;
-	readonly CurrentRenderState       _session;
+	readonly AssignRenderState        _session;
 	readonly string                   _key;
 
-	public PersistedConnectionIdentifier(PersistentComponentState state, CurrentRenderState session)
+	public PersistedConnectionIdentifier(PersistentComponentState state, AssignRenderState session)
 		: this(state, session, ConnectionSessionKey.Default) {}
 
-	public PersistedConnectionIdentifier(PersistentComponentState state, CurrentRenderState session, string key)
+	public PersistedConnectionIdentifier(PersistentComponentState state, AssignRenderState session, string key)
 	{
 		_state   = state;
 		_session = session;
