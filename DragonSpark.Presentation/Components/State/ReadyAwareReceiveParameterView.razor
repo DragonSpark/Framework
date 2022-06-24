@@ -1,5 +1,4 @@
-﻿@using DragonSpark.Presentation.Connections
-@using DragonSpark.Compose
+﻿@using DragonSpark.Compose
 @using DragonSpark.Model.Operations
 @using DragonSpark.Application.Connections.Client
 @using DragonSpark.Presentation.Components.Content.Rendering
@@ -10,9 +9,20 @@
 
 @inject CurrentRenderState State
 
+@if (Establishing)
+{
+    <DragonSpark.Presentation.Components.State.TimerComponent
+        AutoStart="true"
+        Interval="@TimeSpan.FromSeconds(1)"
+        Updated="@OnElapsed"
+    />
+}
+
+<ReceiveParameterView T="T" Registration="@Registration" Condition="@Condition" Received="@OnReceive" />
+
 @code
 {
-    IReceiver? connection = default!;
+    IReceiver? connection;
 
     [Parameter]
     public IReceive<T> Registration { get; set; } = default!;
@@ -23,13 +33,23 @@
     [Parameter]
     public EventCallback<T> Received { get; set; }
 
+    [Parameter]
+    public EventCallback Ready { get; set; }
+
+    bool Enabled { get; set; } = true;
+
+    bool Establishing { get; set; }
+
     protected override Task OnInitializedAsync()
     {
-        switch (State.Get())
+        var state = State.Get();
+        switch (state)
         {
             case RenderState.Default:
+                Enabled = false;
                 break;
             default:
+                Establishing = state == RenderState.Ready;
                 return Initialized();
         }
 
@@ -44,11 +64,15 @@
 
     async Task OnReceive(T parameter)
     {
+        Enabled = false;
+
         if (await Condition.Get(parameter))
         {
-            await InvokeAsync(() => Received.InvokeAsync(parameter)).ConfigureAwait(false);
+            await Received.InvokeAsync(parameter);
         }
     }
+
+    Task OnElapsed() => Establishing && Enabled ? Ready.InvokeAsync(this) : Task.CompletedTask;
 
     public ValueTask DisposeAsync() => connection?.DisposeAsync() ?? Task.CompletedTask.ToOperation();
 }

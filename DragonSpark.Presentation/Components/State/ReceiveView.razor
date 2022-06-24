@@ -4,24 +4,14 @@
 @using DragonSpark.Model.Operations
 @using DragonSpark.Application.Connections.Client
 @using DragonSpark.Presentation.Components.Content.Rendering
+@using System.Diagnostics
+
 @implements IAsyncDisposable
 
 @inject CurrentRenderState State
 
-@if (connection is not null)
-{
-	<DragonSpark.Presentation.Components.State.TimerComponent
-		AutoStart="true"
-		Interval="TimeSpan.FromSeconds(1.5)"
-		Updated="@OnElapsed"
-	/>
-}
-
 @code
 {
-	IReceiver? connection;
-    EventCallback _received;
-
 	[Parameter]
 	public IReceive Registration { get; set; } = default!;
 
@@ -31,41 +21,23 @@
 	[Parameter]
 	public EventCallback<None> Received { get; set; }
 
-	[Parameter]
-	public EventCallback Ready { get; set; }
-
-	[Parameter]
-	public TimeSpan Throttle { get; set; } = TimeSpan.FromMilliseconds(250);
-
-	bool Enabled { get; set; } = true;
+	IReceiver? connection;
 
 	protected override Task OnInitializedAsync()
 	{
 		switch (State.Get())
 		{
 			case RenderState.Default:
-			    Enabled = false;
 				break;
 			default:
-			    _received = Start.A.Callback(Invoke).Throttle(Throttle);
 				connection = Registration.Get(OnReceive);
 				return connection.Get().AsTask();
 		}
+
 		return base.OnInitializedAsync();
 	}
 
-    Task Invoke() => Received.InvokeAsync(None.Default);
-
-	async Task OnReceive()
-	{
-		Enabled = false;
-		if (await Condition.Get())
-		{
-			await _received.InvokeAsync();
-		}
-	}
-
-	Task OnElapsed() => Enabled ? Ready.InvokeAsync(this) : Task.CompletedTask;
+	Task OnReceive() => Received.InvokeAsync(None.Default);
 
 	public ValueTask DisposeAsync() => connection?.DisposeAsync() ?? Task.CompletedTask.ToOperation();
 }

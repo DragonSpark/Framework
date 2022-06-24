@@ -11,9 +11,9 @@ public class Receive : IReceive
 	readonly Func<HubConnection> _connection;
 	readonly string              _name;
 
-	public Receive(IResult<HubConnection> connection, string name) : this(connection.Get, name) {}
+	protected Receive(IResult<HubConnection> connection, string name) : this(connection.Get, name) {}
 
-	public Receive(Func<HubConnection> connection, string name)
+	protected Receive(Func<HubConnection> connection, string name)
 	{
 		_connection = connection;
 		_name       = name;
@@ -23,16 +23,16 @@ public class Receive : IReceive
 	{
 		var connection = _connection();
 		var disposable = connection.On(_name, parameter);
-		var result     = new Result(connection, disposable);
+		var result     = new Receiver(connection, disposable);
 		return result;
 	}
 
-	sealed class Result : IReceiver
+	sealed class Receiver : IReceiver
 	{
 		readonly HubConnection _connection;
 		readonly IDisposable   _disposable;
 
-		public Result(HubConnection connection, IDisposable disposable)
+		public Receiver(HubConnection connection, IDisposable disposable)
 		{
 			_connection = connection;
 			_disposable = disposable;
@@ -48,7 +48,7 @@ public class Receive : IReceive
 
 	}
 }
-	
+
 public class Receive<T> : IReceive<T>
 {
 	readonly Func<HubConnection> _connection;
@@ -66,16 +66,16 @@ public class Receive<T> : IReceive<T>
 	{
 		var connection = _connection();
 		var disposable = connection.On(_name, parameter);
-		var result     = new Result(connection, disposable);
+		var result     = new Receiver(connection, disposable);
 		return result;
 	}
 
-	sealed class Result : IReceiver
+	sealed class Receiver : IReceiver
 	{
 		readonly HubConnection _connection;
 		readonly IDisposable   _disposable;
 
-		public Result(HubConnection connection, IDisposable disposable)
+		public Receiver(HubConnection connection, IDisposable disposable)
 		{
 			_connection = connection;
 			_disposable = disposable;

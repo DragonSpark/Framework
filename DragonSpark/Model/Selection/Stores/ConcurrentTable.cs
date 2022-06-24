@@ -9,6 +9,8 @@ public class ConcurrentTable<TIn, TOut> : ITable<TIn, TOut> where TIn : notnull
 	readonly Func<TIn, TOut>                 _select;
 	readonly ConcurrentDictionary<TIn, TOut> _table;
 
+	public ConcurrentTable() : this(new ConcurrentDictionary<TIn, TOut>()) {}
+
 	public ConcurrentTable(Func<TIn, TOut> select) : this(new ConcurrentDictionary<TIn, TOut>(), @select) {}
 
 	public ConcurrentTable(ConcurrentDictionary<TIn, TOut> table)
