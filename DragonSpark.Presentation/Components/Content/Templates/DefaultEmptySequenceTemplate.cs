@@ -6,5 +6,5 @@ public sealed class DefaultEmptySequenceTemplate : DragonSpark.Model.Results.Ins
 {
 	public static DefaultEmptySequenceTemplate Default { get; } = new();
 
-	DefaultEmptySequenceTemplate() : base(x => x.AddContent(0, "No elements found.")) {}
+	DefaultEmptySequenceTemplate() : base(x => x.AddContent(0, "No elements found")) {}
 }
