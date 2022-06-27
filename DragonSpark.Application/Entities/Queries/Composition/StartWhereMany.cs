@@ -19,6 +19,11 @@ public class StartWhereMany<TIn, T, TTo> : WhereMany<TIn, T, TTo> where T : clas
 	                         Expression<Func<TIn, T, bool>> where, Expression<Func<T, IEnumerable<TTo>>> select)
 		: base((context, _) => start.Invoke(context.Set<T>()), where, select) {}
 
+	protected StartWhereMany(Expression<Func<IQueryable<T>, IQueryable<T>>> start,
+	                         Expression<Func<TIn, T, bool>> where,
+	                         Expression<Func<DbContext, TIn, T, IEnumerable<TTo>>> select)
+		: base((context, _) => start.Invoke(context.Set<T>()), where, select) {}
+
 	protected StartWhereMany(Expression<Func<TIn, T, bool>> where, Expression<Func<T, IEnumerable<TTo>>> select)
 		: base(Set<TIn, T>.Default, where, select) {}
 
