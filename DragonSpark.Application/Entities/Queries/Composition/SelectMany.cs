@@ -28,4 +28,10 @@ public class SelectMany<TFrom, TTo> : SelectMany<None, TFrom, TTo>, IQuery<TTo>
 	public SelectMany(Expression<Func<DbContext, IQueryable<TFrom>>> previous,
 	                  Expression<Func<TFrom, IEnumerable<TTo>>> select)
 		: base((context, _) => previous.Invoke(context), select) {}
+
+	public SelectMany(Expression<Func<DbContext, None, IQueryable<TFrom>>> previous, Expression<Func<TFrom, IEnumerable<TTo>>> select) : base(previous, select) {}
+
+	public SelectMany(Expression<Func<DbContext, None, IQueryable<TFrom>>> previous, Expression<Func<None, TFrom, IEnumerable<TTo>>> select) : base(previous, select) {}
+
+	protected SelectMany(Expression<Func<DbContext, None, IQueryable<TFrom>>> previous, Expression<Func<DbContext, None, TFrom, IEnumerable<TTo>>> select) : base(previous, select) {}
 }
