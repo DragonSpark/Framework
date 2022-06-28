@@ -94,10 +94,14 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Forward<SetPageExitCheck>()
 		         .Decorate<ConnectionAwareSetPageExitCheck>()
 		         .Scoped()
+		         //
+		         .Then.Start<IInitializeContext>()
+		         .Forward<InitializeContext>()
+		         .Include(x => x.Dependencies)
+		         .Scoped()
+				 //
 		         .Then.Start<IInitializeConnection>()
 		         .Forward<InitializeConnection>()
-		         .Decorate<ContextAwareInitializeConnection>()
-		         .Include(x => x.Dependencies.Recursive())
 		         .Scoped()
 		         //
 		         .Then.Start<IConnectionIdentifier>()

@@ -3,7 +3,7 @@ using DragonSpark.Model.Selection.Alterations;
 
 namespace DragonSpark.Application.Connections;
 
-public sealed class Configure : IAlteration<BuildHostContext>
+sealed class Configure : IAlteration<BuildHostContext>
 {
 	public static Configure Default { get; } = new Configure();
 

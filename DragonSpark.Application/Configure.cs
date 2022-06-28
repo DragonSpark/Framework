@@ -4,7 +4,7 @@ using DragonSpark.Model.Selection.Alterations;
 
 namespace DragonSpark.Application;
 
-public sealed class Configure : IAlteration<BuildHostContext>
+sealed class Configure : IAlteration<BuildHostContext>
 {
 	public static Configure Default { get; } = new Configure();
 
