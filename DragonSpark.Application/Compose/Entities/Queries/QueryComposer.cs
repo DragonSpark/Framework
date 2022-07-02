@@ -51,8 +51,7 @@ public class QueryComposer<TIn, T> : DragonSpark.Model.Results.Instance<IQuery<T
 		Expression<Func<T, TProperty>> property)
 		=> Next(new OrderByDescending<TIn, T, TProperty>(_subject.Get(), property));
 
-	public QueryComposer<TIn, TOther> OfType<TOther>() where TOther : class, T
-		=> Select(x => x.OfType<TOther>());
+	public QueryComposer<TIn, TOther> OfType<TOther>() where TOther : class => Select(x => x.OfType<TOther>());
 
 	public QueryComposer<TIn, T> One() => Take(1);
 

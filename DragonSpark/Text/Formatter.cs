@@ -5,7 +5,7 @@ namespace DragonSpark.Text;
 
 public class Formatter<T> : Select<T, string>, IFormatter<T>
 {
-	public Formatter(ISelect<T, string> @select) : base(@select) {}
+	protected Formatter(ISelect<T, string> @select) : base(@select) {}
 
-	public Formatter(Func<T, string> @select) : base(@select) {}
+	protected Formatter(Func<T, string> @select) : base(@select) {}
 }

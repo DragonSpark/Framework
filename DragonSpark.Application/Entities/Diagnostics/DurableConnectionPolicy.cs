@@ -12,8 +12,7 @@ public sealed class DurableConnectionPolicy : Deferred<IAsyncPolicy>
 {
 	public static DurableConnectionPolicy Default { get; } = new();
 
-	DurableConnectionPolicy()
-		: this(Start.A.Selection<SqlException>().By.Calling(x => x.Number).Select(RetryCodes.Default)) {}
+	DurableConnectionPolicy() : this(ContainsRetryCode.Default.Then().Or(NetworkRelatedException.Default)) {}
 
 	DurableConnectionPolicy(Func<SqlException, bool> code)
 		: base(Policy.Handle(code)

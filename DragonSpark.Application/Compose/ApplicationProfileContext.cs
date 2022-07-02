@@ -48,8 +48,14 @@ public sealed class ApplicationProfileContext
 	public ApplicationProfileContext Append(ICommand<IServiceCollection> other)
 		=> Get(x => new ApplicationProfile(A.Command<IServiceCollection>(x).Then().Append(other), x.Execute));
 
+	public ApplicationProfileContext Append(params ICommand<IServiceCollection>[] others)
+		=> Append(new Commands<IServiceCollection>(others));
+
 	public ApplicationProfileContext Append(System.Action<IApplicationBuilder> other)
 		=> Append(Start.A.Command(other).Get());
+
+	public ApplicationProfileContext Append(params ICommand<IApplicationBuilder>[] others)
+		=> Append(new Commands<IApplicationBuilder>(others));
 
 	public ApplicationProfileContext Append(ICommand<IApplicationBuilder> other)
 		=> Get(x => new ApplicationProfile(x.Execute, A.Command<IApplicationBuilder>(x).Then().Append(other)));
