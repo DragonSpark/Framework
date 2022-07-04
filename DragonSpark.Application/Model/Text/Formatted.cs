@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Text;
 
-namespace DragonSpark.Application.Model;
+namespace DragonSpark.Application.Model.Text;
 
 public class Formatted<T> : Formatter<T> where T : notnull
 {

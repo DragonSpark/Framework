@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using LinqKit;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -7,8 +8,7 @@ namespace DragonSpark.Application.Entities.Queries.Composition;
 
 public class StartInput<TIn, T> : StartInput<TIn, T, T> where T : class
 {
-	protected StartInput(Expression<Func<DbContext, IQueryable<T>, IQueryable<T>>> instance)
-		: base(instance) {}
+	protected StartInput(Expression<Func<DbContext, IQueryable<T>, IQueryable<T>>> instance) : base(instance) {}
 
 	protected StartInput(Expression<Func<IQueryable<T>, IQueryable<T>>> instance) : base(instance) {}
 
@@ -36,4 +36,8 @@ public class StartInput<TIn, T, TTo> : Combine<TIn, T, TTo> where T : class
 	protected StartInput(Expression<Func<DbContext, TIn, IQueryable<T>>> previous,
 	                     Expression<Func<DbContext, TIn, IQueryable<T>, IQueryable<TTo>>> instance)
 		: base(previous, instance) {}
+
+	protected StartInput(Expression<Func<IQueryable<T>, IQueryable<T>>> previous,
+	                     Expression<Func<DbContext, TIn, IQueryable<TTo>>> instance)
+		: base((context, _) => previous.Invoke(context.Set<T>()), (d, parameter, _) => instance.Invoke(d, parameter)) {}
 }
