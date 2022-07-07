@@ -80,10 +80,6 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Include(x => x.Dependencies.Recursive())
 		         .Scoped()
 		         //
-		         .Then.Start<IClearContentIdentification>()
-		         .Forward<ClearContentIdentification>()
-		         .Scoped()
-		         //
 		         .Then.Start<IApplyQueryStringValues>()
 		         .Forward<ApplyQueryStringValues>()
 		         .Scoped()

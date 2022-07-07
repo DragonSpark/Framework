@@ -1,5 +1,4 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model;
+﻿using DragonSpark.Model;
 using DragonSpark.Model.Commands;
 
 namespace DragonSpark.Presentation.Components.Content.Rendering;
@@ -7,12 +6,10 @@ namespace DragonSpark.Presentation.Components.Content.Rendering;
 sealed class RenderStateMonitor : ICommand, ICommand<RenderState>
 {
 	readonly CurrentRenderState          _session;
-	readonly IClearContentIdentification _clear;
 
-	public RenderStateMonitor(CurrentRenderState session, IClearContentIdentification clear)
+	public RenderStateMonitor(CurrentRenderState session)
 	{
 		_session    = session;
-		_clear = clear;
 	}
 
 	public void Execute(None parameter)
@@ -21,9 +18,6 @@ sealed class RenderStateMonitor : ICommand, ICommand<RenderState>
 		{
 			case RenderState.Ready:
 				_session.Execute(RenderState.Established);
-				break;
-			case RenderState.Established:
-				_clear.Execute();
 				break;
 		}
 	}
