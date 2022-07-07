@@ -7,12 +7,14 @@
 @using DragonSpark.SyncfusionRendering.Queries
 @using Syncfusion.Blazor
 @using Syncfusion.Blazor.Grids
+@using Action = Syncfusion.Blazor.Grids.Action
 
 @typeparam T
 @inherits DataQueryComponent
 
 <AdaptiveGrid T="T"
 	@ref="@_subject"
+	Id="@Id"
 	FilterType="@FilterType"
 	Columns="@Columns"
 	AllowPaging="@AllowPaging"
@@ -24,7 +26,7 @@
 	LoadingTemplate="@LoadingTemplate"
 	@attributes="@AdditionalAttributes">
 
-    <GridTemplates EmptyRecordTemplate="@EmptyTemplate" />
+	<GridTemplates EmptyRecordTemplate="@EmptyTemplate" />
 
 	<GridEvents TValue="T" DataBound="OnDataBound" />
 	<Syncfusion.Blazor.Data.SfDataManager Adaptor="Adaptors.CustomAdaptor">
@@ -51,6 +53,9 @@
 	}
 
 	[Parameter]
+	public string Id { get; set; } = string.Empty;
+
+	[Parameter]
 	public FilterType FilterType { get; set; } = FilterType.Excel;
 
 	[Parameter]
@@ -59,7 +64,7 @@
 	[Parameter]
 	public string Breakpoint { get; set; } = Breakpoints.SmallUp;
 
-    [Parameter]
+	[Parameter]
 	public RenderFragment EmptyElementsTemplate { get; set; } = DefaultEmptyResultTemplate.Default;
 
 	RenderFragment<EmptyRecordTemplateContext>? EmptyTemplate { get; set; }
@@ -79,8 +84,8 @@
 	}
 
 	protected override Await<DataManagerRequest, object> CreateInput()
-	    => Content.Then().Then().UpdateActivity(Receiver)
-                  .Handle(Exceptions, ReportedType ?? GetType(), EmptyDataResult.Default);
+		=> Content.Then().Then().UpdateActivity(Receiver)
+				  .Handle(Exceptions, ReportedType ?? GetType(), EmptyDataResult.Default);
 
 	void OnDataBound()
 	{

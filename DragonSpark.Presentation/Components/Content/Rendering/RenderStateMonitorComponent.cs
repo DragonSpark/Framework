@@ -32,7 +32,7 @@ public sealed class RenderStateMonitorComponent : Microsoft.AspNetCore.Component
 
 	void NavigationOnLocationChanged(object? sender, LocationChangedEventArgs e)
 	{
-		Navigation.LocationChanged -= _changed;
+		//Navigation.LocationChanged -= _changed;
 		Monitor.Execute();
 	}
 

@@ -1,0 +1,16 @@
+﻿@typeparam T
+
+@using DragonSpark.Presentation.Environment.Browser
+@inherits ComponentStateComponentBase
+
+<SessionStateComponent T="T" Owner="Owner" Qualifier="@Qualifier">
+    <ClientValueBindingComponent T="T" DefaultValue="@DefaultValue" Store="context" ChildContent="@ChildContent" />
+</SessionStateComponent>
+
+@code {
+    [Parameter]
+    public T DefaultValue { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment<Binding<T>> ChildContent { get; set; } = default!;
+}

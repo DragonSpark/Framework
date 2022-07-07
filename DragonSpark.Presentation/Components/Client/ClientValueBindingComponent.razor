@@ -42,7 +42,7 @@
     {
         if (UpdateRequested && Rendered)
         {
-            UpdateRequested = true;
+            UpdateRequested = false;
             await Store.Await(Binding.Value);
         }
     }

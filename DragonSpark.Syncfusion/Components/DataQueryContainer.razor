@@ -3,6 +3,8 @@
 @using DragonSpark.Application.Entities.Queries.Runtime.Pagination
 @using DragonSpark.Application.Entities.Queries.Runtime.Shape
 @using DragonSpark.Application.Runtime.Operations
+@using DragonSpark.Compose
+@using DragonSpark.Presentation.Components
 @using DragonSpark.Presentation.Components.Content.Templates
 @using DragonSpark.SyncfusionRendering.Queries
 @using Syncfusion.Blazor.Grids
@@ -26,24 +28,25 @@
 			@BodyHeaderTemplate
 		}
 
-		<DataQueryGrid T="T" Content="context"
-					   FilterType="@FilterType"
-					   ReportedType="@ReportedType"
-					   Columns="@Columns"
-					   AllowPaging="@AllowPaging"
-					   AllowFiltering="@AllowFiltering"
-					   AllowSorting="@AllowSorting"
-					   LoadingTemplate="@LoadingTemplate"
-					   CssClass="@CssClass"
-					   Breakpoint="@Breakpoint"
-					   PageSize="@PageSize"
-					   @attributes="@AdditionalAttributes"
-		>
-			@if (BodyContentTemplate is not null)
-			{
-				@BodyContentTemplate
-			}
-		</DataQueryGrid>
+			<DataQueryGrid T="T" Content="context"
+					       Id="@_identity"
+						   FilterType="@FilterType"
+						   ReportedType="@ReportedType"
+						   Columns="@Columns"
+						   AllowPaging="@AllowPaging"
+						   AllowFiltering="@AllowFiltering"
+						   AllowSorting="@AllowSorting"
+						   LoadingTemplate="@LoadingTemplate"
+						   CssClass="@CssClass"
+						   Breakpoint="@Breakpoint"
+						   PageSize="@PageSize"
+						   @attributes="@AdditionalAttributes">
+				@if (BodyContentTemplate is not null)
+				{
+					@BodyContentTemplate
+				}
+			</DataQueryGrid>
+
 
 		@if (BodyFooterTemplate is not null)
 		{
@@ -53,6 +56,23 @@
 </DragonSpark.Presentation.Components.State.ActivityReceiverContainer>
 
 @code {
+
+	[Parameter]
+	public Guid Id
+	{
+		get => _id;
+		set
+		{
+			if (_id != value)
+			{
+				_id = value;
+				_identity = GenerateElementIdentifier.Default.Get(_id);
+			}
+		}
+	}	Guid _id = Guid.Empty;
+
+	string _identity = string.Empty;
+
 	[Parameter]
 	public IQueries<T> Content {get; set; } = default!;
 

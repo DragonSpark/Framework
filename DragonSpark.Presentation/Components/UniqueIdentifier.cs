@@ -8,12 +8,12 @@ namespace DragonSpark.Presentation.Components;
 /// </summary>
 public sealed class UniqueIdentifier : IFormatter<Guid>
 {
-	public static UniqueIdentifier Default { get; } = new UniqueIdentifier();
+	public static UniqueIdentifier Default { get; } = new();
 
 	UniqueIdentifier() {}
 
 	public string Get(Guid parameter) => Convert.ToBase64String(parameter.ToByteArray())
-	                                            .Replace("/", "-")
-	                                            .Replace("+", "-")
+	                                            .Replace('/', '-')
+	                                            .Replace('+', '-')
 	                                            .Substring(0, 10);
 }

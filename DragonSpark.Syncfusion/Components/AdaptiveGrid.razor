@@ -17,7 +17,9 @@
 else
 {
 	<SfGrid TValue="T"
-			@ref="@_subject" AllowSelection="false"
+		    @ref="@_subject"
+            ID="@Id"
+			AllowSelection="false"
 			AllowFiltering="@AllowFiltering"
 			AllowPaging="@AllowPaging"
 			AllowSorting="@AllowSorting"
@@ -25,9 +27,9 @@ else
 			Toolbar="@(Matches ? null : DefaultToolbar.Default)"
 			EnableAdaptiveUI="@(!Matches)"
 			RowRenderingMode="@(Matches ? RowDirection.Horizontal :  RowDirection.Vertical)"
-			DataSource="@DataSource"
+			DataSource="@DataSource" EnablePersistence="@(!string.IsNullOrEmpty(Id))"
 			class="@Class"
-			@attributes="@AdditionalAttributes">
+			@attributes="@AdditionalAttributes" >
 		<GridPageSettings PageSize="@PageSize" />
 		<GridFilterSettings Type="@FilterType" />
 		<GridColumns ChildContent="@Columns" />
@@ -42,6 +44,9 @@ else
 
 @code {
 	SfGrid<T> _subject = default!;
+
+    [Parameter]
+	public string Id { get; set; } = string.Empty;
 
 	[Parameter]
 	public FilterType FilterType { get; set; } = FilterType.Excel;
@@ -87,7 +92,7 @@ else
 
 	public Task Refresh() => _subject.Refresh();
 
-    bool? State { get; set; }
+	bool? State { get; set; }
 
 	bool Matches
 	{

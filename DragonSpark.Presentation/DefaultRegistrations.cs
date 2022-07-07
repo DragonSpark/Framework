@@ -57,7 +57,6 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .And<NotificationService>()
 		         .And<RouterSession>()
 		         .And<ScrollToFirstValidationMessage>()
-		         .And<ContentIdentification>()
 		         .And<ResourceExistsValidation>()
 		         .Scoped()
 		         //
@@ -78,7 +77,11 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Then.Start<IRenderContentKey>()
 		         .Forward<RenderContentKey>()
 		         .Decorate<StoreAwareRenderContentKey>()
-		         .Include(x => x.Dependencies)
+		         .Include(x => x.Dependencies.Recursive())
+		         .Scoped()
+		         //
+		         .Then.Start<IClearContentIdentification>()
+		         .Forward<ClearContentIdentification>()
 		         .Scoped()
 		         //
 		         .Then.Start<IApplyQueryStringValues>()
@@ -99,7 +102,7 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Forward<InitializeContext>()
 		         .Include(x => x.Dependencies)
 		         .Scoped()
-				 //
+		         //
 		         .Then.Start<IInitializeConnection>()
 		         .Forward<InitializeConnection>()
 		         .Scoped()
