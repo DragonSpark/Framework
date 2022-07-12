@@ -4,11 +4,17 @@
 @using DragonSpark.Presentation
 @using DragonSpark.Presentation.Components.Content.Templates
 @using DragonSpark.Presentation.Components.State
+@using DragonSpark.Presentation.Environment.Browser
 @using Syncfusion.Blazor
 @using Syncfusion.Blazor.Grids
 @using Microsoft.AspNetCore.Components
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
 
 @typeparam T
+
+@implements IResulting<string>
+
+@inject ProtectedSessionStorage Session
 
 @if(State is null)
 {
@@ -26,8 +32,8 @@ else
 			ClipMode="@ClipMode.EllipsisWithTooltip"
 			Toolbar="@(Matches ? null : DefaultToolbar.Default)"
 			EnableAdaptiveUI="@(!Matches)"
-			RowRenderingMode="@(Matches ? RowDirection.Horizontal :  RowDirection.Vertical)"
-			DataSource="@DataSource" EnablePersistence="@(!string.IsNullOrEmpty(Id))"
+			RowRenderingMode="@(Matches ? RowDirection.Horizontal : RowDirection.Vertical)"
+			DataSource="@DataSource"
 			class="@Class"
 			@attributes="@AdditionalAttributes" >
 		<GridPageSettings PageSize="@PageSize" />
@@ -38,6 +44,11 @@ else
 			@ChildContent
 		}
 	</SfGrid>
+	<DragonSpark.Presentation.Components.Client.ClientValueComponent T="string"
+	    Source="@this"
+		Store="@Store"
+		Initialized="@OnClientInitialized"
+	    />
 }
 
 <MediaQuery Media="@Breakpoint" @bind-Matches="@Matches" />
@@ -45,7 +56,7 @@ else
 @code {
 	SfGrid<T> _subject = default!;
 
-    [Parameter]
+	[Parameter]
 	public string Id { get; set; } = string.Empty;
 
 	[Parameter]
@@ -92,6 +103,8 @@ else
 
 	public Task Refresh() => _subject.Refresh();
 
+	IClientVariable<string> Store { get; set; } = default!;
+
 	bool? State { get; set; }
 
 	bool Matches
@@ -108,4 +121,14 @@ else
 			return result;
 		}
 	}
+
+	protected override void OnInitialized()
+	{
+		Store = new GridStateVariable(Id, Session);
+		base.OnInitialized();
+	}
+
+	Task OnClientInitialized(string parameter) => _subject.SetPersistDataAsync(parameter);
+
+	public ValueTask<string> Get() => _subject.GetPersistDataAsync().ToOperation();
 }
