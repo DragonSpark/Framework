@@ -2,7 +2,7 @@
 
 namespace DragonSpark.Application.Security.Data;
 
-sealed class Mask : IAlteration<string>
+public sealed class Mask : IAlteration<string>
 {
 	public static Mask Default { get; } = new();
 

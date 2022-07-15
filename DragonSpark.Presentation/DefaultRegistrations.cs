@@ -74,10 +74,14 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Include(x => x.Dependencies)
 		         .Scoped()
 		         //
+		         .Then.Start<IContentKey>()
+		         .Forward<ContentKey>()
+		         .Decorate<StoreAwareContentKey>()
+		         .Include(x => x.Dependencies.Recursive())
+		         .Scoped()
+		         //
 		         .Then.Start<IRenderContentKey>()
 		         .Forward<RenderContentKey>()
-		         .Decorate<StoreAwareRenderContentKey>()
-		         .Include(x => x.Dependencies.Recursive())
 		         .Scoped()
 		         //
 		         .Then.Start<IApplyQueryStringValues>()
