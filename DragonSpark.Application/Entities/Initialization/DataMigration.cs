@@ -38,4 +38,9 @@ public abstract class DataMigration<T> : Migration
 			Task.Run(initializer.Then().Bind(context).Then().Allocate()).GetAwaiter().GetResult();
 		}
 	}
+
+	protected override void Down(MigrationBuilder migrationBuilder)
+	{
+		//base.Down(migrationBuilder);
+	}
 }
