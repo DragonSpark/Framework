@@ -10,7 +10,7 @@ public class SendMessage<T> : IOperation<T>
 	readonly IEmailSender        _sender;
 	readonly IMessageTemplate<T> _template;
 
-	public SendMessage(IEmailSender sender, IMessageTemplate<T> template)
+	protected SendMessage(IEmailSender sender, IMessageTemplate<T> template)
 	{
 		_sender   = sender;
 		_template = template;
