@@ -26,8 +26,7 @@ public class Hasher : IAlteration<string>
 	public string Get(string parameter)
 	{
 		using var hmac = _hasher();
-		var result = BitConverter.ToString(hmac.ComputeHash(_encoding.GetBytes(parameter)))
-		                         .Replace("-", string.Empty);
+		var result = BitConverter.ToString(hmac.ComputeHash(_encoding.GetBytes(parameter))).Replace("-", string.Empty);
 		return result;
 	}
 }

@@ -1,4 +1,5 @@
-﻿using System.Security;
+﻿using DragonSpark.Runtime;
+using System.Security;
 
 namespace DragonSpark.Application.Security.Data;
 
@@ -9,17 +10,9 @@ public sealed class EncryptionSettings
 	public string PasswordStored
 	{
 		get => string.Empty;
-		set
-		{
-			var secure = new SecureString();
-			foreach (var @char in value)
-			{
-				secure.AppendChar(@char);
-			}
-
-			Password = secure;
-		}
+		set => Password = Secure.Default.Get(value);
 	}
 
 	public SecureString Password { get; private set; } = default!;
 }
+
