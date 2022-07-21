@@ -6,7 +6,7 @@ namespace DragonSpark.Model.Sequences;
 
 public class Instances<T> : Instance<Array<T>>, IArray<T>
 {
-	public Instances(IEnumerable<T> enumerable) : this(enumerable.Open()) {}
+	protected Instances(IEnumerable<T> enumerable) : this(enumerable.Open()) {}
 
 	public Instances(params T[] instance) : base(instance) {}
 }
