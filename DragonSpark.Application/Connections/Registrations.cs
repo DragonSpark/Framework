@@ -15,6 +15,11 @@ sealed class Registrations : ICommand<IServiceCollection>
 		parameter.Start<IHubConnections>()
 		         .Forward<HubConnections>()
 		         .Scoped()
+		         //
+		         .Then.Start<IConfigureConnection>()
+		         .Forward<ConfigureConnection>()
+		         .Include(x => x.Dependencies.Recursive())
+		         .Scoped()
 			;
 	}
 }

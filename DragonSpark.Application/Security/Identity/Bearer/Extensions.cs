@@ -11,5 +11,5 @@ public static class Extensions
 		=> @this.Append(Registrations.Default);
 
 	public static AuthenticationBuilder AddBearer(this AuthenticationBuilder @this)
-		=> @this.AddJwtBearer(new BearerConfiguration(@this.Services.Deferred<BearerSettings>()).Execute);
+		=> @this.AddJwtBearer(new BearerConfiguration(@this.Services.Deferred<TokenValidation>()).Execute);
 }

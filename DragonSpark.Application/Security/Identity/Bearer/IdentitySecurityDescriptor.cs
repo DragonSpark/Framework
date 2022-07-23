@@ -2,29 +2,29 @@
 using DragonSpark.Model.Selection;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace DragonSpark.Application.Security.Identity.Bearer;
 
-sealed class SecurityDescriptor : ISelect<IDictionary<string, object>, SecurityTokenDescriptor>
+sealed class IdentitySecurityDescriptor : ISelect<ClaimsIdentity, SecurityTokenDescriptor>
 {
 	readonly BearerSettings     _settings;
 	readonly SigningCredentials _credentials;
 	readonly IResult<DateTime>  _expires;
 
-	public SecurityDescriptor(BearerSettings settings, BearerSigningCredentials credentials)
+	public IdentitySecurityDescriptor(BearerSettings settings, BearerSigningCredentials credentials)
 		: this(settings, credentials.Get(), ExpiresTomorrow.Default) {}
 
-	public SecurityDescriptor(BearerSettings settings, SigningCredentials credentials, IResult<DateTime> expires)
+	public IdentitySecurityDescriptor(BearerSettings settings, SigningCredentials credentials, IResult<DateTime> expires)
 	{
 		_settings    = settings;
 		_credentials = credentials;
 		_expires     = expires;
 	}
 
-	public SecurityTokenDescriptor Get(IDictionary<string, object> parameter) => new()
+	public SecurityTokenDescriptor Get(ClaimsIdentity parameter) => new()
 	{
-		Claims = parameter,
+		Subject            = parameter,
 		Issuer             = _settings.Issuer,
 		Audience           = _settings.Audience,
 		Expires            = _expires.Get(),

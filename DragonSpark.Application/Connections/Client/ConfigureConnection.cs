@@ -1,24 +1,10 @@
-﻿using DragonSpark.Application.Security;
+﻿using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Http.Connections.Client;
-using System.Net;
 
 namespace DragonSpark.Application.Connections.Client;
 
-sealed class ConfigureConnection : IConfigureConnection
+sealed class ConfigureConnection : AppendedCommand<HttpConnectionOptions>, IConfigureConnection
 {
-	readonly ICurrentContext _accessor;
-	readonly string          _key;
-
-	public ConfigureConnection(ICurrentContext accessor) : this(accessor, HttpRequestHeader.Cookie.ToString()) {}
-
-	public ConfigureConnection(ICurrentContext accessor, string key)
-	{
-		_accessor = accessor;
-		_key      = key;
-	}
-
-	public void Execute(HttpConnectionOptions parameter)
-	{
-		parameter.Headers[_key] = _accessor.Get().Request.Headers[_key];
-	}
+	public ConfigureConnection(IConfigureConnection previous, AssignClientStateHeader header)
+		: base(previous, header) {}
 }

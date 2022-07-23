@@ -13,7 +13,7 @@ sealed class DetermineSecurityDescriptor : ISelect<ClaimsIdentity, SecurityToken
 	readonly ITable<ClaimsIdentity, SecurityTokenDescriptor> _source;
 	readonly IWindow                                         _window;
 
-	public DetermineSecurityDescriptor(SecurityDescriptor descriptor, BearerSettings settings)
+	public DetermineSecurityDescriptor(IdentitySecurityDescriptor descriptor, BearerSettings settings)
 		: this(descriptor.Then().Stores().New(), Time.Default.FromNow(settings.Window)) {}
 
 	public DetermineSecurityDescriptor(ITable<ClaimsIdentity, SecurityTokenDescriptor> source, IWindow window)

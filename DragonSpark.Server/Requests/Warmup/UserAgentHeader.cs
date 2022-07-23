@@ -1,4 +1,6 @@
-﻿namespace DragonSpark.Server.Requests.Warmup;
+﻿using DragonSpark.Application.Communication;
+
+namespace DragonSpark.Server.Requests.Warmup;
 
 sealed class UserAgentHeader : Header
 {

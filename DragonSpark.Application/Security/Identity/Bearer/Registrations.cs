@@ -14,7 +14,10 @@ sealed class Registrations : ICommand<IServiceCollection>
 	{
 		parameter.Register<BearerSettings>()
 		         //
-		         .Start<ISign>()
+		         .Start<TokenValidation>()
+		         .Singleton()
+		         //
+		         .Then.Start<ISign>()
 		         .Forward<Sign>()
 		         .Include(x => x.Dependencies.Recursive())
 		         .Singleton()

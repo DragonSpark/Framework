@@ -12,10 +12,10 @@ sealed class Registrations : ICommand<IServiceCollection>
 
 	public void Execute(IServiceCollection parameter)
 	{
-		parameter.Start<IConfigureConnection>()
-		         .Forward<ConfigureConnection>()
+		parameter.Start<ConfigureConnection>()
+		         .Include(x => x.Dependencies.Recursive())
 		         .Scoped()
-			//
+		         .Then.Decorate<IConfigureConnection, ConfigureConnection>()
 			;
 	}
 }

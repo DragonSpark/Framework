@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace DragonSpark.Server.Requests;
+namespace DragonSpark.Application.Communication;
 
 public class Header : IHeader
 {
