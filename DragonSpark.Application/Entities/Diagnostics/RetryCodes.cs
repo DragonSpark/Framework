@@ -7,5 +7,5 @@ sealed class RetryCodes : Condition<int>
 {
 	public static RetryCodes Default { get; } = new();
 
-	RetryCodes() : base(new[] { 2, 10060 }.Contains) {}
+	RetryCodes() : base(new[] { -2, 10060 }.Contains) {}
 }
