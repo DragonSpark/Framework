@@ -16,7 +16,7 @@ public class ClientVariable<T> : IClientVariable<T>
 		: this(key.AssemblyQualifiedName.Verify(), storage) {}
 
 	protected ClientVariable(string key, ProtectedBrowserStorage storage)
-		: this(key, new ClientVariableAccessor<T>(storage)) {}
+		: this(key, new ConnectionAwareClientVariableAccessor<T>(new ClientVariableAccessor<T>(storage))) {}
 
 	protected ClientVariable(string key, IClientVariableAccessor<T> store)
 		: this(key, store, new Operation(store.Remove.Then().Bind(key))) {}

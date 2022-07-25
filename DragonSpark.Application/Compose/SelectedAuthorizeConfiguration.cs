@@ -13,6 +13,6 @@ sealed class SelectedAuthorizeConfiguration<T> : ICommand<IServiceCollection> wh
 
 	public void Execute(IServiceCollection parameter)
 	{
-		parameter.AddOptions<AuthorizationOptions>().Configure(_command); // TODO
+		parameter.AddOptions<AuthorizationOptions>().Configure(_command);
 	}
 }

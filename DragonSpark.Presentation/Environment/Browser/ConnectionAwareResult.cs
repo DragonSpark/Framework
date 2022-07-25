@@ -5,5 +5,5 @@ namespace DragonSpark.Presentation.Environment.Browser;
 
 public class ConnectionAwareResult<T> : PolicyAwareResulting<T>
 {
-	protected ConnectionAwareResult(IResulting<T> previous) : base(previous, ConnectionAwarePolicy<T>.Default) {}
+	public ConnectionAwareResult(IResulting<T> previous) : base(previous, ConnectionAwarePolicy<T>.Default) {}
 }
