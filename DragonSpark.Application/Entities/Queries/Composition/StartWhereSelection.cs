@@ -13,6 +13,11 @@ public class StartWhereSelection<T, TTo> : StartWhereSelection<None, T, TTo> whe
 	                              Expression<Func<IQueryable<T>, IQueryable<TTo>>> select)
 		: base(where, select) {}
 
+	protected StartWhereSelection(Expression<Func<IQueryable<T>, IQueryable<T>>> query,
+	                              Expression<Func<T, bool>> where,
+	                              Expression<Func<IQueryable<T>, IQueryable<TTo>>> select)
+		: base(query, where, select) {}
+
 	protected StartWhereSelection(Expression<Func<T, bool>> where,
 	                              Expression<Func<None, IQueryable<T>, IQueryable<TTo>>> select)
 		: base(where, select) {}
