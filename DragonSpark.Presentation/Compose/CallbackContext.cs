@@ -5,13 +5,11 @@ using DragonSpark.Model;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection.Conditions;
-using DragonSpark.Model.Selection.Stores;
 using DragonSpark.Presentation.Components.Diagnostics;
 using DragonSpark.Presentation.Components.State;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Threading.Tasks;
-using System.Timers;
 
 namespace DragonSpark.Presentation.Compose;
 
@@ -110,10 +108,7 @@ public class CallbackContext<T> : IResult<EventCallback<T>>
 
 	public OperationCallbackContext<T> Throttle(TimeSpan window)
 	{
-#pragma warning disable CS8714
-		var throttling = new Throttling<T>(new Table<T, Timer>(), window);
-#pragma warning restore CS8714
-		var operation = new ThrottleOperation<T>(throttling, Start.A.Selection(_method).Then().Structure());
+		var operation = new ThrottleOperation<T>(window, Start.A.Selection(_method).Then().Structure());
 		var result    = new OperationCallbackContext<T>(_receiver.Verify(), operation);
 		return result;
 	}

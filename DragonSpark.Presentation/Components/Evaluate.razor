@@ -1,11 +1,19 @@
 ﻿@using DragonSpark.Presentation.Environment.Browser
 @using DragonSpark.Compose
+@using DragonSpark.Model.Operations
 
 @inject IEvaluate Model
 
 @code {
+	IOperation<string> _call = default!;
+	protected override void OnInitialized()
+	{
+		_call = new ThrottleOperation<string>(TimeSpan.FromMilliseconds(250), Invoke);
+		base.OnInitialized();
+	}
+
 	[Parameter]
-	public RenderFragment ChildContent { get; set; } = default!;
+	public RenderFragment? ChildContent { get; set; }
 
 	[Parameter]
 	public string Type { get; set; } = "text/javascript";
@@ -20,9 +28,15 @@
 	{
 		if ((firstRender || Force) && Type == "text/javascript")
 		{
-			var script = ChildContent.Text();
-			return Model.Get(script).AsTask();
+			var script = ChildContent?.Text();
+			if (!string.IsNullOrEmpty(script))
+			{
+				return _call.Get(script).AsTask();
+			}
 		}
 		return Task.CompletedTask;
 	}
+
+	ValueTask Invoke(string parameter) => Model.Get(parameter);
+
 }
