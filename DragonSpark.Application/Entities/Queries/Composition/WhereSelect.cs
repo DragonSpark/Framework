@@ -24,6 +24,10 @@ public class WhereSelect<TIn, T, TTo> : Combine<TIn, T, TTo>
 	protected WhereSelect(IQuery<T> query, Expression<Func<TIn, T, bool>> where, Expression<Func<T, TTo>> select)
 		: this((context, _) => query.Get().Invoke(context, None.Default), @where, @select) {}
 
+	protected WhereSelect(IQuery<T> query, Expression<Func<TIn, T, bool>> where,
+	                      Expression<Func<DbContext, T, TTo>> select)
+		: this((context, _) => query.Get().Invoke(context, None.Default), @where, (d, _, x) => select.Invoke(d, x)) {}
+
 	protected WhereSelect(Expression<Func<DbContext, TIn, IQueryable<T>>> previous,
 	                      Expression<Func<TIn, T, bool>> where, Expression<Func<T, TTo>> select)
 		: this(previous, where, (_, x) => select.Invoke(x)) {}
