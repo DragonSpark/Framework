@@ -11,10 +11,7 @@ public sealed class AuthenticationState<T> : AuthenticationState where T : Ident
 
 	AuthenticationState() : this(new ClaimsPrincipal(new ClaimsIdentity()), default) {}
 
-	public AuthenticationState(ClaimsPrincipal user, T? profile) : base(user)
-	{
-		_profile = profile;
-	}
+	public AuthenticationState(ClaimsPrincipal user, T? profile) : base(user) => _profile = profile;
 
 	public T? Profile => _profile?.Reference().To<T>();
 

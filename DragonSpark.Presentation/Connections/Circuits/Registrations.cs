@@ -13,7 +13,8 @@ public sealed class Registrations : ICommand<IServiceCollection>
 
 	public void Execute(IServiceCollection parameter)
 	{
-		parameter.Start<CreateCircuitRecord>().And<Rendered>().Include(x => x.Dependencies)
+		parameter.Start<CreateCircuitRecord>()
+		         .And<Rendered>()
 		         .Scoped()
 		         //
 		         .Then.Start<ClearCircuit>()
@@ -24,8 +25,8 @@ public sealed class Registrations : ICommand<IServiceCollection>
 		         .Forward<RecordAwareCircuitHandler>()
 		         .Include(x => x.Dependencies.Recursive())
 		         .Scoped()
-				 //
-				 .Then.Start<CircuitHandler>()
+		         //
+		         .Then.Start<CircuitHandler>()
 			;
 	}
 }

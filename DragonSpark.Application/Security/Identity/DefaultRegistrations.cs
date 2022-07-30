@@ -27,7 +27,7 @@ sealed class DefaultRegistrations<TContext, T> : ICommand<IServiceCollection>
 		         .Singleton()
 		         //
 		         .Then.Start<CurrentProviderIdentity>()
-		         .Singleton()
+		         .Scoped()
 			;
 	}
 }

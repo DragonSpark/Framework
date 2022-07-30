@@ -23,6 +23,7 @@
 	<PackageReference Include="LinqKit.Microsoft.EntityFrameworkCore" Version="6.1.2" />
 	<PackageReference Include="Markdig" Version="0.30.2" />
 	<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.7" />
+	<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.22.0" />
 	<PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="6.0.7" />
 	<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.7" />
 	<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.7" />

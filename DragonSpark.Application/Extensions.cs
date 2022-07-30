@@ -71,7 +71,9 @@ partial class Extensions
 	public static string UserName(this ClaimsPrincipal @this) => @this.UserName(Anonymous.Default);
 
 	public static string UserName(this ClaimsPrincipal @this, string anonymous)
-		=> @this.Identity?.Name ?? anonymous;
+		=> @this.Identity?.IsAuthenticated ?? false
+			   ? @this.Identity?.Name ?? @this.FindFirstValue(ClaimTypes.Name)
+			   : anonymous;
 
 	public static string? Get(this IValueProvider @this, string key)
 	{
@@ -149,6 +151,7 @@ partial class Extensions
 		{
 			@this.Execute(default);
 		}
+
 		return result;
 	}
 
@@ -156,10 +159,13 @@ partial class Extensions
 
 	/**/
 	public static bool HasResults<T>(this IPages<T> @this) => @this != EmptyPages<T>.Default;
+
 	public static bool IsEmpty<T>(this IPages<T> @this) => @this == EmptyPages<T>.Default;
 
 /**/
 	public static string Ordinalize(this in byte @this) => ((int)@this).Ordinalize();
+
 	public static string Ordinalize(this in ushort @this) => ((int)@this).Ordinalize();
+
 	public static string Ordinalize(this in uint @this) => ((int)@this).Ordinalize();
 }

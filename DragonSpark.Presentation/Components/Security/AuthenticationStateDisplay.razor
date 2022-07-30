@@ -1,7 +1,12 @@
 ﻿@using DragonSpark.Application.Security.Identity.Authentication
 @using DragonSpark.Compose
+@using DragonSpark.Presentation.Environment
 @using DragonSpark.Presentation.Security.Identity
+@using DragonSpark.Application
 @typeparam T where T : DragonSpark.Application.Security.Identity.IdentityUser
+
+@inject ContextMemory Memory
+@inject ContextStore Store
 
 @if (State != null)
 {

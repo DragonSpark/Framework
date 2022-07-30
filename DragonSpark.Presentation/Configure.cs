@@ -22,8 +22,8 @@ sealed class Configure : IAlteration<BuildHostContext>
 		                       Environment.Browser.Time.Registrations.Default,
 		                       Connections.Circuits.Registrations.Default,
 		                       Diagnostics.Registrations.Default,
-		                       Interaction.Registrations.Default)
-		            .ComposeUsing(Registrations.Default)
+		                       Interaction.Registrations.Default, Registrations.Default)
+		            .ComposeUsing(Composing.Default)
 		            .ComposeUsing(x => x.Decorate(typeof(IActiveContents<>), typeof(RenderingAwareActiveContents<>))
 		                                .Decorate(typeof(IActiveContents<>), typeof(ExceptionAwareActiveContents<>))
 		                                .Decorate(typeof(IPaging<>), typeof(RenderAwarePaging<>))

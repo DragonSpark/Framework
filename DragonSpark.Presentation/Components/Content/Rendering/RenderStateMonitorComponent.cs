@@ -17,9 +17,6 @@ public sealed class RenderStateMonitorComponent : Microsoft.AspNetCore.Component
 	[Inject]
 	RenderStateMonitor Monitor { get; set; } = default!;
 
-	[Inject]
-	PersistentComponentState State { get; set; } = default!;
-
 	protected override void OnInitialized()
 	{
 		base.OnInitialized();

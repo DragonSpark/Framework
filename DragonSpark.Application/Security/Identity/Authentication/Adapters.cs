@@ -33,7 +33,6 @@ sealed class Adapters<T> : IAdapters where T : IdentityUser
 			_exit.Execute(previous.User);
 			return _default;
 		}
-
 		return result;
 	}
 }
