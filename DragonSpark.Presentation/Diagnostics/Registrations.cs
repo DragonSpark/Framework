@@ -18,6 +18,11 @@ sealed class Registrations : ICommand<IServiceCollection>
 		         .Forward<CircuitRecordEnricher>()
 		         .Singleton()
 		         //
+		         .Then.Start<ILogEventEnricher>()
+		         .Forward<ReferrerEnricher>()
+		         .Include(x => x.Dependencies)
+		         .Singleton()
+		         //
 		         .Then.Start<CircuitHandler>()
 		         .Forward<DiagnosticsCircuitHandler>()
 		         .Include(x => x.Dependencies)

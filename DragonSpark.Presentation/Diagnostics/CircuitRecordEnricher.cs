@@ -20,16 +20,10 @@ sealed class CircuitRecordEnricher : ILogEventEnricher
 
 		if (current is not null)
 		{
-			var (_, navigation, user, referrer) = current;
+			var (_, navigation, user) = current;
 			if (user.Identity?.IsAuthenticated ?? false)
 			{
 				var property = propertyFactory.CreateProperty("CircuitUserName", user.Identity.Name);
-				logEvent.AddPropertyIfAbsent(property);
-			}
-
-			if (referrer is not null)
-			{
-				var property = propertyFactory.CreateProperty("CircuitReferrer", referrer);
 				logEvent.AddPropertyIfAbsent(property);
 			}
 
