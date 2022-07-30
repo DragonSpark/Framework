@@ -17,23 +17,29 @@ sealed class CircuitRecordEnricher : ILogEventEnricher
 	public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
 	{
 		var current = _current.Get();
+
 		if (current is not null)
 		{
+			var (_, navigation, user, referrer) = current;
+			if (user.Identity?.IsAuthenticated ?? false)
 			{
-				if (current.User.Identity?.IsAuthenticated ?? false)
-				{
-					var property = propertyFactory.CreateProperty("CircuitUserName", current.User.Identity.Name);
-					logEvent.AddPropertyIfAbsent(property);
-				}
+				var property = propertyFactory.CreateProperty("CircuitUserName", user.Identity.Name);
+				logEvent.AddPropertyIfAbsent(property);
 			}
-			var manager = current.Navigation;
+
+			if (referrer is not null)
 			{
-				var path     = $"/{manager.ToBaseRelativePath(manager.Uri)}";
+				var property = propertyFactory.CreateProperty("CircuitReferrer", referrer);
+				logEvent.AddPropertyIfAbsent(property);
+			}
+
+			{
+				var path     = $"/{navigation.ToBaseRelativePath(navigation.Uri)}";
 				var property = propertyFactory.CreateProperty("CircuitRequestPath", path);
 				logEvent.AddPropertyIfAbsent(property);
 			}
 			{
-				var property = propertyFactory.CreateProperty("CircuitRequestBaseUri", manager.BaseUri);
+				var property = propertyFactory.CreateProperty("CircuitRequestBaseUri", navigation.BaseUri);
 				logEvent.AddPropertyIfAbsent(property);
 			}
 		}
