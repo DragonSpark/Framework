@@ -7,5 +7,5 @@ sealed class ContextStoreConfiguration : RelativeExpiration
 {
 	public static ContextStoreConfiguration Default { get; } = new();
 
-	ContextStoreConfiguration() : base(TimeSpan.FromSeconds(5)) {}
+	ContextStoreConfiguration() : base(TimeSpan.FromSeconds(15)) {}
 }
