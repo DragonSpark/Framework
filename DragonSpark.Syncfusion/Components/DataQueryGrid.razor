@@ -85,7 +85,7 @@
 
 	protected override Await<DataManagerRequest, object> CreateInput()
 		=> Content.Then().Then().UpdateActivity(Receiver)
-				  .Handle(Exceptions, ReportedType ?? GetType(), EmptyDataResult.Default);
+				  .Handle(Exceptions, ReportedType ?? GetType(), EmptyDataResult.Default.Get());
 
 	void OnDataBound()
 	{
