@@ -1,14 +1,16 @@
 ﻿@using DragonSpark.Presentation.Environment.Browser
 @using DragonSpark.Compose
 @using DragonSpark.Model.Operations
+@using DragonSpark.Application.Diagnostics
 
 @inject IEvaluate Model
+@inject IExceptions Exceptions
 
 @code {
 	IOperation<string> _call = default!;
 	protected override void OnInitialized()
 	{
-		_call = new ThrottleOperation<string>(TimeSpan.FromMilliseconds(250), Invoke);
+		_call = new ThrottleOperation<string>(Exceptions, TimeSpan.FromMilliseconds(250), Invoke);
 		base.OnInitialized();
 	}
 

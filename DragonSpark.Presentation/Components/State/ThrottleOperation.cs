@@ -1,4 +1,5 @@
-﻿using DragonSpark.Application.Runtime;
+﻿using DragonSpark.Application.Diagnostics;
+using DragonSpark.Application.Runtime;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection.Stores;
 using System;
@@ -13,8 +14,8 @@ public class ThrottleOperation<T> : IOperation<T>
 	readonly Operate<T>     _operate;
 
 #pragma warning disable CS8714
-	public ThrottleOperation(TimeSpan window, Operate<T> operate)
-		: this(new Throttling<T>(new Table<T, Timer>(), window), operate) {}
+	public ThrottleOperation(IExceptions exceptions, TimeSpan window, Operate<T> operate)
+		: this(new Throttling<T>(new Table<T, Timer>(), exceptions, window), operate) {}
 #pragma warning restore CS8714
 	public ThrottleOperation(IThrottling<T> throttling, Operate<T> operate)
 	{
