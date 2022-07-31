@@ -24,6 +24,6 @@ public class MemoryStoreContext<TIn, TOut>
 	public ConfiguredMemoryStoreContext<TIn, TOut> For(Slide duration)
 		=> new(Subject, Memory, new SlidingExpiration(duration.For));
 
-	public ConfiguredMemoryStoreContext<TIn, TOut> ForProcessLifetime()
+	public ConfiguredMemoryStoreContext<TIn, TOut> UntilRemoved()
 		=> new(Subject, Memory, EmptyCommand<ICacheEntry>.Default);
 }

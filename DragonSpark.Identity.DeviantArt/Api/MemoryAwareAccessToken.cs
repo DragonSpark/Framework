@@ -12,5 +12,5 @@ sealed class MemoryAwareAccessToken : Resulting<AccessToken>, IAccessToken
 		: this(previous, memory, TimeSpan.FromMinutes(59)) {}
 
 	public MemoryAwareAccessToken(IAccessToken previous, IMemoryCache memory, TimeSpan time)
-		: base(previous.Then().Accept().Store().In(memory).For(time).Using<MemoryAwareAccessToken>().Bind()) {}
+		: base(previous.Then().Accept().Then().Store().In(memory).For(time).Using<MemoryAwareAccessToken>().Bind()) {}
 }

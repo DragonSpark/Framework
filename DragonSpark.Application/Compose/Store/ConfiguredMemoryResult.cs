@@ -20,10 +20,17 @@ class ConfiguredMemoryResult<TIn, TOut> : IConfiguredMemoryResult<TIn, TOut>
 	public TOut Get(Pair<object, TIn> parameter)
 	{
 		var (key, @in) = parameter;
-		using var entry  = _memory.CreateEntry(key);
-		var       result = _source(@in);
-		entry.Value = result;
-		_configure(entry);
+		var result = _source(@in);
+		if (result is not null)
+		{
+			using var entry  = _memory.CreateEntry(key);
+			entry.Value = result;
+			_configure(entry);
+		}
+		else
+		{
+			_memory.Remove(key);
+		}
 		return result;
 	}
 }
@@ -42,8 +49,15 @@ sealed class ConfiguredMemoryResult<T> : ConfiguredMemoryResult<T, T>, IConfigur
 	public void Execute(Pair<object, T?> parameter)
 	{
 		var (key, @in) = parameter;
-		using var entry  = _memory.CreateEntry(key);
-		entry.Value = @in;
-		_configure(entry);
+		if (@in is not null)
+		{
+			using var entry = _memory.CreateEntry(key);
+			entry.Value = @in;
+			_configure(entry);
+		}
+		else
+		{
+			_memory.Remove(key);
+		}
 	}
 }

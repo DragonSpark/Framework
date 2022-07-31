@@ -16,10 +16,14 @@ public sealed class ConfiguredMemoryStoreContext<TIn, TOut> : MemoryStoreContext
 		: base(subject, memory)
 		=> _configure = configure;
 
+	public DragonSpark.Compose.Model.Operations.OperationResultSelector<TIn, TOut> Using<T>()
+		=> Using(A.Type<T>().AssemblyQualifiedName.Verify().Accept);
+
 	public DragonSpark.Compose.Model.Operations.OperationResultSelector<TIn, TOut> Using<T>(Func<TIn, string> key)
 		=> Using(new Key<TIn>(A.Type<T>().AssemblyQualifiedName.Verify(), key).Get);
 
-	public DragonSpark.Compose.Model.Operations.OperationResultSelector<TIn, TOut> Using(ISelect<TIn, object> key) => Using(key.Get);
+	public DragonSpark.Compose.Model.Operations.OperationResultSelector<TIn, TOut> Using(ISelect<TIn, object> key)
+		=> Using(key.Get);
 
 	public DragonSpark.Compose.Model.Operations.OperationResultSelector<TIn, TOut> Using(Func<TIn, object> key)
 		=> new Memory<TIn, TOut>(Memory,
