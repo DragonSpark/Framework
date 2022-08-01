@@ -14,6 +14,7 @@ sealed class DefaultServiceConfiguration : ICommand<IServiceCollection>
 	{
 		parameter.AddRazorPages()
 		         .Return(parameter)
-		         .AddServerSideBlazor();
+		         .AddServerSideBlazor()
+		         .Return(parameter);
 	}
 }

@@ -1,10 +1,7 @@
-﻿using DragonSpark.Model.Commands;
-using DragonSpark.Model.Selection.Alterations;
+﻿using DragonSpark.Model.Selection.Alterations;
 using Microsoft.AspNetCore.Http;
 
 namespace DragonSpark.Presentation.Environment;
-
-public interface IInitializeContext : ICommand<HttpContext> {}
 
 sealed class InitializeContext : IInitializeContext
 {

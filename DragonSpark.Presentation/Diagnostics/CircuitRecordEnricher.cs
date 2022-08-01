@@ -1,4 +1,5 @@
-﻿using DragonSpark.Presentation.Connections.Circuits;
+﻿using DragonSpark.Model.Results;
+using DragonSpark.Presentation.Connections.Circuits;
 using Serilog.Core;
 using Serilog.Events;
 
@@ -8,11 +9,11 @@ sealed class CircuitRecordEnricher : ILogEventEnricher
 {
 	public static CircuitRecordEnricher Default { get; } = new();
 
-	CircuitRecordEnricher() : this(CurrentCircuit.Default) {}
+	CircuitRecordEnricher() : this(CurrentCircuitRecord.Default) {}
 
-	readonly CurrentCircuit _current;
+	readonly IMutable<CircuitRecord?> _current;
 
-	public CircuitRecordEnricher(CurrentCircuit current) => _current = current;
+	public CircuitRecordEnricher(IMutable<CircuitRecord?> current) => _current = current;
 
 	public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
 	{

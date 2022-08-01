@@ -5,9 +5,6 @@
 @using DragonSpark.Application
 @typeparam T where T : DragonSpark.Application.Security.Identity.IdentityUser
 
-@inject ContextMemory Memory
-@inject ContextStore Store
-
 @if (State != null)
 {
 	@ChildContent(State)

@@ -34,6 +34,9 @@ public static class Extensions
 	public static BuildHostContext WithPresentationConfigurations(this BuildHostContext @this)
 		=> Configure.Default.Get(@this);
 
+	public static BuildHostContext WithCircuitDiagnostics(this BuildHostContext @this)
+		=> @this.Configure(CircuitDiagnosticRegistrations.Default);
+
 	/**/
 	public static CallbackContext<ValidationContext> Callback<T>(this ModelContext context,
 	                                                             IValidateValue<T> validate)

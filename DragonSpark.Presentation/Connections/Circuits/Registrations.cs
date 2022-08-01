@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Presentation.Connections.Circuits;
 
-public sealed class Registrations : ICommand<IServiceCollection>
+sealed class Registrations : ICommand<IServiceCollection>
 {
 	public static Registrations Default { get; } = new();
 
@@ -14,19 +14,15 @@ public sealed class Registrations : ICommand<IServiceCollection>
 	public void Execute(IServiceCollection parameter)
 	{
 		parameter.Start<CreateCircuitRecord>()
-		         .And<Rendered>()
+		         .And<CurrentCircuitStore>()
 		         .Scoped()
-		         //
-		         .Then.Start<ClearCircuit>()
-		         .Include(x => x.Dependencies.Recursive())
-		         .Singleton()
 		         //
 		         .Then.Start<CircuitHandler>()
 		         .Forward<RecordAwareCircuitHandler>()
 		         .Include(x => x.Dependencies.Recursive())
 		         .Scoped()
 		         //
-		         .Then.Start<CircuitHandler>()
+		         .Then.Decorate<IInitializeConnection, CircuitAwareInitializeConnection>()
 			;
 	}
 }

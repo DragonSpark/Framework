@@ -100,6 +100,7 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         //
 		         .Then.Start<IInitializeContext>()
 		         .Forward<InitializeContext>()
+		         .Decorate<ReferrerAwareInitializeContext>()
 		         .Include(x => x.Dependencies)
 		         .Scoped()
 		         //

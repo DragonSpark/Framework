@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
+using Microsoft.AspNetCore.Components.Server.Circuits;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Presentation.Environment;
@@ -12,11 +13,8 @@ sealed class Registrations : ICommand<IServiceCollection>
 
 	public void Execute(IServiceCollection parameter)
 	{
-		parameter.Start<ContextCache>()
-		         .Singleton()
-		         //
-		         .Then.Start<ContextAwareInitializeConnection>()
-		         .Include(x => x.Dependencies)
+		parameter.Start<CircuitHandler>()
+		         .Forward<ContextAwareCircuitHandler>()
 		         .Scoped()
 			;
 	}
