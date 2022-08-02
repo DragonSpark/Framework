@@ -1,32 +1,27 @@
 ﻿using DragonSpark.Model.Results;
 using DragonSpark.Presentation.Components.Content.Rendering;
-using Microsoft.AspNetCore.Components;
 using System;
 
 namespace DragonSpark.Presentation.Connections;
 
 sealed class PersistedConnectionIdentifier : IResult<Guid?>
 {
-	readonly PersistentComponentState _state;
 	readonly CurrentRenderState        _session;
-	readonly string                   _key;
+	readonly ConnectionIdentifierStore _store;
 
-	public PersistedConnectionIdentifier(PersistentComponentState state, CurrentRenderState session)
-		: this(state, session, ConnectionSessionKey.Default) {}
-
-	public PersistedConnectionIdentifier(PersistentComponentState state, CurrentRenderState session, string key)
+	public PersistedConnectionIdentifier(CurrentRenderState session, ConnectionIdentifierStore store)
 	{
-		_state   = state;
 		_session = session;
-		_key     = key;
+		_store   = store;
 	}
 
 	public Guid? Get()
 	{
-		if (_state.TryTakeFromJson<Guid>(_key, out var restored))
+		var store = _store.Get();
+		if (store.Success)
 		{
 			_session.Execute(RenderState.Ready);
-			return restored;
+			return store.Value;
 		}
 
 		return null;

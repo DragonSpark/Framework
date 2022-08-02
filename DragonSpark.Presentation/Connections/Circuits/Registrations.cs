@@ -15,6 +15,10 @@ sealed class Registrations : ICommand<IServiceCollection>
 	{
 		parameter.Start<CreateCircuitRecord>()
 		         .And<CurrentCircuitStore>()
+		         .And<ApplyState>()
+		         .Scoped()
+		         .Then.Start<ClientStateAwareInitializeConnection>()
+		         .Include(x => x.Dependencies.Recursive())
 		         .Scoped()
 		         //
 		         .Then.Start<CircuitHandler>()
@@ -23,6 +27,7 @@ sealed class Registrations : ICommand<IServiceCollection>
 		         .Scoped()
 		         //
 		         .Then.Decorate<IInitializeConnection, CircuitAwareInitializeConnection>()
+		         .Decorate<IInitializeConnection, ClientStateAwareInitializeConnection>()
 			;
 	}
 }

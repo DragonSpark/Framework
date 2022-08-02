@@ -6,9 +6,9 @@ namespace DragonSpark.Presentation.Connections;
 sealed class SetConnectionIdentifier : IResult<Guid>
 {
 	readonly SessionIdentifier           _identifier;
-	readonly PersistConnectionIdentifier _persist;
+	readonly ConnectionIdentifierStore _persist;
 
-	public SetConnectionIdentifier(SessionIdentifier identifier, PersistConnectionIdentifier persist)
+	public SetConnectionIdentifier(SessionIdentifier identifier, ConnectionIdentifierStore persist)
 	{
 		_identifier = identifier;
 		_persist    = persist;

@@ -1,5 +1,4 @@
-﻿using DragonSpark.Application.Compose.Communication;
-using DragonSpark.Composition;
+﻿using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,9 +18,6 @@ sealed class Registrations : ICommand<IServiceCollection>
 		         //
 		         .Then.Start<IClientStateValues>()
 		         .Forward<ClientStateValues>()
-		         .Scoped()
-		         //
-		         .Then.Start<ApplyState>()
 		         .Scoped()
 			;
 	}
