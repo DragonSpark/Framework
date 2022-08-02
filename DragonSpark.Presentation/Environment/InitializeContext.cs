@@ -8,9 +8,7 @@ sealed class InitializeContext : IInitializeContext
 	readonly ContextStore             _store;
 	readonly IAlteration<HttpContext> _context;
 
-	public InitializeContext(ContextStore store) : this(store, CloneHttpContext.Default) {}
-
-	public InitializeContext(ContextStore store, IAlteration<HttpContext> context)
+	public InitializeContext(ContextStore store, IDetermineContext context)
 	{
 		_store   = store;
 		_context = context;

@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
+using DragonSpark.Presentation.Environment;
 using Microsoft.AspNetCore.Components.Server.Circuits;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -28,6 +29,7 @@ sealed class Registrations : ICommand<IServiceCollection>
 		         //
 		         .Then.Decorate<IInitializeConnection, CircuitAwareInitializeConnection>()
 		         .Decorate<IInitializeConnection, ClientStateAwareInitializeConnection>()
+		         .Decorate<IDetermineContext, ClientStateAwareDetermineContext>()
 			;
 	}
 }

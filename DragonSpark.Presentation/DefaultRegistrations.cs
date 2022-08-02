@@ -98,6 +98,10 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Decorate<ConnectionAwareSetPageExitCheck>()
 		         .Scoped()
 		         //
+		         .Then.Start<IDetermineContext>()
+		         .Forward<DetermineContext>()
+		         .Scoped()
+		         //
 		         .Then.Start<IInitializeContext>()
 		         .Forward<InitializeContext>()
 		         .Decorate<ReferrerAwareInitializeContext>()
