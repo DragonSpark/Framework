@@ -1,5 +1,5 @@
-﻿using DragonSpark.Application.Communication;
-using DragonSpark.Diagnostics.Logging;
+﻿using DragonSpark.Diagnostics.Logging;
+using DragonSpark.Model.Selection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 
@@ -7,14 +7,15 @@ namespace DragonSpark.Presentation.Environment;
 
 sealed class ReferrerAwareInitializeContext : IInitializeContext
 {
-	readonly IInitializeContext _previous;
-	readonly IHeader            _header;
-	readonly Message            _message;
+	readonly IInitializeContext            _previous;
+	readonly ISelect<HttpRequest, string?> _header;
+	readonly Message                       _message;
 
 	public ReferrerAwareInitializeContext(IInitializeContext previous, Message message)
-		: this(previous, RefererHeader.Default, message) {}
+		: this(previous, HostAwareReferrerHeader.Default, message) {}
 
-	public ReferrerAwareInitializeContext(IInitializeContext previous, IHeader header, Message message)
+	public ReferrerAwareInitializeContext(IInitializeContext previous, ISelect<HttpRequest, string?> header,
+	                                      Message message)
 	{
 		_previous = previous;
 		_header   = header;
@@ -24,7 +25,7 @@ sealed class ReferrerAwareInitializeContext : IInitializeContext
 	public void Execute(HttpContext parameter)
 	{
 		_previous.Execute(parameter);
-		var referrer = _header.Get(parameter.Request.Headers);
+		var referrer = _header.Get(parameter.Request);
 		if (referrer is not null)
 		{
 			_message.Execute(referrer);
