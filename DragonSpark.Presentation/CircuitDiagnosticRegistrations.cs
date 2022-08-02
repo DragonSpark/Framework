@@ -14,5 +14,5 @@ sealed class CircuitDiagnosticRegistrations : Commands<IServiceCollection>
 		: base(Start.A.Command<IServiceCollection>()
 		            .By.Calling(x => x.AddSignalR(y => y.AddFilter<ComponentContextFilter>()))
 		            .Get(),
-		       Diagnostics.Registrations.Default, Registrations.Default) {}
+		       Registrations.Default, Diagnostics.Registrations.Default) {}
 }

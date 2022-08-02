@@ -23,15 +23,19 @@ sealed class ClientStateAwareDetermineContext : IDetermineContext
 
 	public HttpContext Get(HttpContext parameter)
 	{
-		var result = _previous.Get(parameter);
-		var (success, state) = _state.Get();
-		if (success && state is not null)
+		var result  = _previous.Get(parameter);
+		var subject = result.Request.Headers;
+		var current = _header.Get(subject);
+		if (current is null)
 		{
-			var subject = result.Request.Headers;
-			var current = _header.Get(subject);
-			var value   = !string.IsNullOrEmpty(current) ? $"{current.TrimEnd(';')};{state}" : state;
-			_header.Assign(subject, value);
+			var (success, state) = _state.Get();
+			if (success && state is not null)
+			{
+				var value = !string.IsNullOrEmpty(current) ? $"{current.TrimEnd(';')};{state}" : state;
+				_header.Assign(subject, value);
+			}
 		}
+
 		return result;
 	}
 }
