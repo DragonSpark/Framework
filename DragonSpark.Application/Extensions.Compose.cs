@@ -1,7 +1,6 @@
 ﻿using AutoBogus;
 using Bogus.Extensions;
 using DragonSpark.Application.Compose;
-using DragonSpark.Application.Compose.Communication;
 using DragonSpark.Application.Compose.Entities;
 using DragonSpark.Application.Compose.Entities.Generation;
 using DragonSpark.Application.Compose.Entities.Queries;
@@ -24,7 +23,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -170,7 +168,4 @@ public static partial class Extensions
 
 	public static IncludeMany<T, TOther> Empty<T, TOther>(this IncludeMany<T, TOther> @this) where TOther : class
 		=> @this.Generate((faker, _) => faker.Generate(0));
-	/**/
-
-	public static StartApiContext<T> Api<T>(this IServiceCollection @this) where T : class => new(@this);
 }
