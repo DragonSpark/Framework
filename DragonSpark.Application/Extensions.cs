@@ -10,6 +10,7 @@ using DragonSpark.Application.Security.Identity.Authentication;
 using DragonSpark.Application.Security.Identity.Bearer;
 using DragonSpark.Application.Security.Identity.Claims.Access;
 using DragonSpark.Compose;
+using DragonSpark.Compose.Model.Operations;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Results;
 using Humanizer;
@@ -168,4 +169,7 @@ partial class Extensions
 	public static string Ordinalize(this in ushort @this) => ((int)@this).Ordinalize();
 
 	public static string Ordinalize(this in uint @this) => ((int)@this).Ordinalize();
+
+/**/
+	public static OperationComposer<T> Then<T>(this OperationContext<T> @this) => new(@this.Get());
 }

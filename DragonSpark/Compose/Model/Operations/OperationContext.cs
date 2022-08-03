@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Compose.Model.Operations;
 
-public sealed class OperationContext<T> : Selector<T, ValueTask>
+public class OperationContext<T> : Selector<T, ValueTask>
 {
 	public static implicit operator Operate<T>(OperationContext<T> instance) => instance.Get().Get;
 

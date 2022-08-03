@@ -1,7 +1,8 @@
 ﻿@using DragonSpark.Presentation.Environment.Browser
-@using DragonSpark.Compose
 @using DragonSpark.Model.Operations
 @using DragonSpark.Application.Diagnostics
+@using DragonSpark.Compose
+@using DragonSpark.Application
 
 @inject IEvaluate Model
 @inject IExceptions Exceptions
@@ -10,7 +11,7 @@
 	IOperation<string> _call = default!;
 	protected override void OnInitialized()
 	{
-		_call = new ThrottleOperation<string>(Exceptions, TimeSpan.FromMilliseconds(250), Invoke);
+		_call = new ThrottleOperation<string>(TimeSpan.FromMilliseconds(250), Model.Then().Then().Catch<Evaluate>(Exceptions));
 		base.OnInitialized();
 	}
 
@@ -38,7 +39,4 @@
 		}
 		return Task.CompletedTask;
 	}
-
-	ValueTask Invoke(string parameter) => Model.Get(parameter);
-
-}
+	}

@@ -1,5 +1,4 @@
-﻿using DragonSpark.Application.Diagnostics;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
@@ -12,16 +11,13 @@ namespace DragonSpark.Application.Runtime;
 public class Throttling<T> : IThrottling<T>
 {
 	readonly ITable<T, Timer> _timers;
-	readonly IExceptions      _logger;
 	readonly TimeSpan         _duration;
 
-	public Throttling(ITable<T, Timer> timers, IExceptions logger)
-		: this(timers, logger, TimeSpan.FromMilliseconds(750)) {}
+	public Throttling(ITable<T, Timer> timers) : this(timers, TimeSpan.FromMilliseconds(750)) {}
 
-	public Throttling(ITable<T, Timer> timers, IExceptions logger, TimeSpan duration)
+	public Throttling(ITable<T, Timer> timers, TimeSpan duration)
 	{
 		_timers   = timers;
-		_logger   = logger;
 		_duration = duration;
 	}
 
@@ -38,10 +34,6 @@ public class Throttling<T> : IThrottling<T>
 				                  try
 				                  {
 					                  await action(input);
-				                  }
-				                  catch (Exception error)
-				                  {
-					                  await _logger.Await(new(GetType(), error));
 				                  }
 				                  finally
 				                  {

@@ -17,6 +17,7 @@ sealed class Registrations : ICommand<IServiceCollection>
 		         .Forward<Evaluate>()
 		         .Decorate<ConnectionAwareEvaluate>()
 		         .Decorate<PolicyAwareEvaluate>()
+		         .Decorate<LogAwareEvaluate>()
 		         .Scoped()
 		         //
 		         .Then.Start<CreateDocumentElementHandle>()

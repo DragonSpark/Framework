@@ -104,12 +104,11 @@ public class CallbackContext<T> : IResult<EventCallback<T>>
 
 	public CallbackContext<T> Using(object receiver) => new CallbackContext<T>(receiver, _method);
 
-	public OperationCallbackContext<T> Throttle(IExceptions exceptions)
-		=> Throttle(exceptions, TimeSpan.FromSeconds(1));
+	public OperationCallbackContext<T> Throttle() => Throttle(TimeSpan.FromSeconds(1));
 
-	public OperationCallbackContext<T> Throttle(IExceptions exceptions, TimeSpan window)
+	public OperationCallbackContext<T> Throttle(TimeSpan window)
 	{
-		var operation = new ThrottleOperation<T>(exceptions, window, Start.A.Selection(_method).Then().Structure());
+		var operation = new ThrottleOperation<T>(window, Start.A.Selection(_method).Then().Structure());
 		var result    = new OperationCallbackContext<T>(_receiver.Verify(), operation);
 		return result;
 	}
