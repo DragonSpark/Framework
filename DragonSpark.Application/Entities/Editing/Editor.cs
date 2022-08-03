@@ -43,6 +43,10 @@ sealed class Editor : DragonSpark.Model.Operations.Allocated.Terminating<int>, I
 			case EntityState.Unchanged:
 				_context.Remove(entity);
 				break;
+			case EntityState.Detached:
+				_context.Attach(entity);
+				_context.Remove(entity);
+				break;
 		}
 	}
 
