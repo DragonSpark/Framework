@@ -46,11 +46,14 @@ public static class Extensions
 	                                                             IValidatingValue<T> validating)
 		=> validating.Callback();
 
-	public static CallbackContext<ValidationContext> Callback<T>(this IValidationMessage<T> validating)
-		=> new ValidationOperationContext(new ValidationMessageOperation<T>(validating)).DenoteExceptions().Get();
+	public static CallbackContext<ValidationContext> Callback<T>(this IValidationMessage<T> @this)
+		=> new ValidationOperationContext(new ValidationMessageOperation<T>(@this)).DenoteExceptions().Get();
 
-	public static CallbackContext<ValidationContext> Callback<T>(this IValidatingValue<T> validating)
-		=> new ValidationOperationContext(new ValidationOperation<T>(validating)).DenoteExceptions().Get();
+	public static CallbackContext<ValidationContext> Callback<T>(this IValidatingValue<T> @this)
+		=> new ValidationOperationContext(new ValidationOperation<T>(@this)).DenoteExceptions().Get();
+
+	public static IValidatingValue<string> AllowUnassigned(this IValidatingValue<string> @this)
+		=> new AllowUnassignedTextAwareValidatingValue(@this);
 
 /**/
 	public static CallbackContext<T> Callback<T>(this ModelContext @this, EventCallback<T> callback)
