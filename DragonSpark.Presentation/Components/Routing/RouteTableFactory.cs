@@ -206,7 +206,7 @@ static class RouteTableFactory
 
 			for (var i = 0; i < Assemblies?.Length; i++)
 			{
-				if (!Assemblies![i].Equals(other.Assemblies![i]))
+				if (!Assemblies[i].Equals(other.Assemblies![i]))
 				{
 					return false;
 				}

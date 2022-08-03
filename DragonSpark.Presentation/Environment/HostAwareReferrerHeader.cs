@@ -9,7 +9,7 @@ sealed class HostAwareReferrerHeader : ISelect<HttpRequest, string?>
 {
 	public static HostAwareReferrerHeader Default { get; } = new();
 
-	HostAwareReferrerHeader() : this(RefererHeader.Default, GetRequestHost.Default) {}
+	HostAwareReferrerHeader() : this(ReferrerHeader.Default, GetRequestHost.Default) {}
 
 	readonly IHeader                 _header;
 	readonly IFormatter<HttpRequest> _host;
