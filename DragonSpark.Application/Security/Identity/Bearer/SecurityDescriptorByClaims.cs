@@ -6,16 +6,16 @@ using System.Collections.Generic;
 
 namespace DragonSpark.Application.Security.Identity.Bearer;
 
-sealed class SecurityDescriptor : ISelect<IDictionary<string, object>, SecurityTokenDescriptor>
+sealed class SecurityDescriptorByClaims : ISelect<IDictionary<string, object>, SecurityTokenDescriptor>
 {
 	readonly BearerSettings     _settings;
 	readonly SigningCredentials _credentials;
 	readonly IResult<DateTime>  _expires;
 
-	public SecurityDescriptor(BearerSettings settings, BearerSigningCredentials credentials)
+	public SecurityDescriptorByClaims(BearerSettings settings, BearerSigningCredentials credentials)
 		: this(settings, credentials.Get(), ExpiresTomorrow.Default) {}
 
-	public SecurityDescriptor(BearerSettings settings, SigningCredentials credentials, IResult<DateTime> expires)
+	public SecurityDescriptorByClaims(BearerSettings settings, SigningCredentials credentials, IResult<DateTime> expires)
 	{
 		_settings    = settings;
 		_credentials = credentials;

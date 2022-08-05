@@ -15,5 +15,5 @@ sealed class SignToken : Formatter<HttpConnectionOptions>
 		}) {}
 
 	public SignToken(SecurityDescriptorFormatter formatter, IDictionary<string, object> claims)
-		: base(formatter.Get(claims).Accept) {}
+		: base(formatter.Then().Bind(claims).Any()) {}
 }

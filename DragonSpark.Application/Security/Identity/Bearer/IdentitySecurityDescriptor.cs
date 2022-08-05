@@ -15,7 +15,8 @@ sealed class IdentitySecurityDescriptor : ISelect<ClaimsIdentity, SecurityTokenD
 	public IdentitySecurityDescriptor(BearerSettings settings, BearerSigningCredentials credentials)
 		: this(settings, credentials.Get(), ExpiresTomorrow.Default) {}
 
-	public IdentitySecurityDescriptor(BearerSettings settings, SigningCredentials credentials, IResult<DateTime> expires)
+	public IdentitySecurityDescriptor(BearerSettings settings, SigningCredentials credentials,
+	                                  IResult<DateTime> expires)
 	{
 		_settings    = settings;
 		_credentials = credentials;

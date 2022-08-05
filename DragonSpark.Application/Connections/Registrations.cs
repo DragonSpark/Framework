@@ -12,14 +12,16 @@ sealed class Registrations : ICommand<IServiceCollection>
 
 	public void Execute(IServiceCollection parameter)
 	{
-		parameter.Start<IHubConnections>()
+		parameter.Start<AssignSignedContent>()
+		         .Include(x => x.Dependencies.Recursive())
+		         .Singleton()
+		         //
+		         .Then.Start<IHubConnections>()
 		         .Forward<HubConnections>()
 		         .Scoped()
 		         //
 		         .Then.Start<IConfigureConnection>()
 		         .Forward<ConfigureConnection>()
-		         .Include(x => x.Dependencies.Recursive())
-		         .Scoped()
-			;
+		         .Scoped();
 	}
 }

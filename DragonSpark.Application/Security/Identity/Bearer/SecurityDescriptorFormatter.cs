@@ -6,6 +6,6 @@ namespace DragonSpark.Application.Security.Identity.Bearer;
 
 sealed class SecurityDescriptorFormatter : Formatter<IDictionary<string, object>>
 {
-	public SecurityDescriptorFormatter(SecurityDescriptor descriptor)
+	public SecurityDescriptorFormatter(ExpirationAwareSecurityDescriptor descriptor)
 		: base(descriptor.Then().Select(IdentityToken.Default)) {}
 }

@@ -90,7 +90,9 @@ public static partial class Extensions
 
 	public static IWindow WithinLast(this ITime @this, TimeSpan within) => new Ago(@this, within);
 
-	public static IWindow FromNow(this ITime @this, TimeSpan window) => new FromNow(@this, window);
+	public static IWindow WithinNext(this ITime @this, TimeSpan window) => new FromNow(@this, window);
+
+	public static IWindow FromThen(this ITime @this, TimeSpan window) => new FromThen(@this, window);
 
 	public static IWindow Outside(this ITime @this, TimeSpan window) => new Outside(@this, window);
 
