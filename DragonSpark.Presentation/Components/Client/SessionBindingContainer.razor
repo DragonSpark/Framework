@@ -18,4 +18,4 @@
     public RenderFragment<Binding<T>> ChildContent { get; set; } = default!;
 
     Task OnChange(T parameter) => ValueChanged.InvokeAsync(Value = parameter);
-}11
+}
