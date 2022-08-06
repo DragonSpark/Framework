@@ -15,6 +15,12 @@
     public T DefaultValue { get; set; } = default!;
 
     [Parameter]
+    public T Value { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback<T> ValueChanged { get; set; }
+
+    [Parameter]
     public IEqualityComparer<T> Comparer { get; set; } = EqualityComparer<T>.Default;
 
     [Parameter]
@@ -30,8 +36,11 @@
 
     void RequestUpdate(T parameter)
     {
-        UpdateRequested = true;
-        StateHasChanged();
+        if (Rendered)
+        {
+            UpdateRequested = true;
+            StateHasChanged();  
+        }
     }
 
     bool UpdateRequested { get; set; }
@@ -40,23 +49,30 @@
 
     protected override async Task OnParametersSetAsync()
     {
-        if (UpdateRequested && Rendered)
+        if (UpdateRequested)
         {
             UpdateRequested = false;
+            await ValueChanged.InvokeAsync(Value = Binding.Value);
             await Store.Await(Binding.Value);
         }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        Rendered = true;
         if (Result is null)
         {
             Result = await Store.Get();
             if (Result?.Success ?? false)
             {
-                Binding.Value = Result.Value.Value ?? DefaultValue;
+                var current = Result.Value.Value ?? DefaultValue;
+                var update = !Comparer.Equals(current, Binding.Value); 
+                Binding.Value = current;
+                if (update)
+                {
+                    await ValueChanged.InvokeAsync(Value = Binding.Value);
+                }
             }
         }
+        Rendered = true;
     }
 }
