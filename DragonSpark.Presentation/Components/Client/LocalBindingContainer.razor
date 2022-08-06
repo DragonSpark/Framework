@@ -4,13 +4,10 @@
 @inherits ComponentStateComponentBase
 
 <LocalStateComponent T="T" Owner="Owner" Qualifier="@Qualifier">
-    <ClientValueBindingComponent T="T" DefaultValue="@DefaultValue" Store="context" ChildContent="@ChildContent" ValueChanged="OnChange" />
+    <ClientValueBindingComponent T="T" Value="@Value" Store="context" ChildContent="@ChildContent" ValueChanged="@OnChange" />
 </LocalStateComponent>
 
 @code {
-    [Parameter]
-    public T DefaultValue { get; set; } = default!;
-
     [Parameter]
     public T Value { get; set; } = default!;
 
@@ -21,5 +18,4 @@
     public RenderFragment<Binding<T>> ChildContent { get; set; } = default!;
 
     Task OnChange(T parameter) => ValueChanged.InvokeAsync(Value = parameter);
-
 }

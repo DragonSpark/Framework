@@ -12,11 +12,8 @@
     public IClientVariable<T> Store { get; set; } = default!;
 
     [Parameter]
-    public T DefaultValue { get; set; } = default!;
-
-    [Parameter]
     public T Value { get; set; } = default!;
-
+    
     [Parameter]
     public EventCallback<T> ValueChanged { get; set; }
 
@@ -30,7 +27,7 @@
 
     protected override void OnInitialized()
     {
-        Binding = new Binding<T>(DefaultValue, RequestUpdate);
+        Binding = new Binding<T>(Value, RequestUpdate);
         base.OnInitialized();
     }
 
@@ -64,7 +61,7 @@
             Result = await Store.Get();
             if (Result?.Success ?? false)
             {
-                var current = Result.Value.Value ?? DefaultValue;
+                var current = Result.Value.Value ?? Value;
                 var update = !Comparer.Equals(current, Binding.Value); 
                 Binding.Value = current;
                 if (update)
