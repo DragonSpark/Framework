@@ -12,8 +12,6 @@ public class UserAwareHub : Hub
 		return name != null ? Groups.AddToGroupAsync(Context.ConnectionId, name) : base.OnConnectedAsync();
 	}
 
-	protected IClientProxy Identifiers(string user) => Clients.Group(user);
-
 	public override Task OnDisconnectedAsync(Exception? exception)
 	{
 		var name = Context.User?.Identity?.Name;
