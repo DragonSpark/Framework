@@ -12,10 +12,10 @@
 
 @code
 {
-    IReceiver? connection = default!;
+    ISubscription? connection = default!;
 
     [Parameter]
-    public IReceive<T> Registration { get; set; } = default!;
+    public ISubscribe<T> Registration { get; set; } = default!;
 
     [Parameter]
     public IDepending<T> Condition { get; set; } = Is.Always<T>().Operation().Out();
@@ -27,19 +27,13 @@
     {
         switch (State.Get())
         {
-            case RenderState.Default:
-                break;
-            default:
-                return Initialized();
+            case RenderState.Ready:
+            case RenderState.Established:
+                connection = Registration.Get(OnReceive);
+                return connection.Get().AsTask();
         }
 
         return base.OnInitializedAsync();
-    }
-
-    Task Initialized()
-    {
-        connection = Registration.Get(OnReceive);
-        return connection.Get().AsTask();
     }
 
     async Task OnReceive(T parameter)

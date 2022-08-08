@@ -13,7 +13,7 @@
 @code
 {
 	[Parameter]
-	public IReceive Registration { get; set; } = default!;
+	public ISubscribe Registration { get; set; } = default!;
 
 	[Parameter]
 	public IDepending<None> Condition { get; set; } = Is.Always<None>().Operation().Out();
@@ -21,17 +21,16 @@
 	[Parameter]
 	public EventCallback<None> Received { get; set; }
 
-	IReceiver? connection;
+	ISubscription? connection;
 
 	protected override Task OnInitializedAsync()
 	{
 		switch (State.Get())
 		{
-			case RenderState.Default:
-				break;
-			default:
+		    case RenderState.Ready:
+			case RenderState.Established:
 				connection = Registration.Get(OnReceive);
-				return connection.Get().AsTask();
+				return connection.Allocate();
 		}
 
 		return base.OnInitializedAsync();
@@ -39,5 +38,5 @@
 
 	Task OnReceive() => Received.InvokeAsync(None.Default);
 
-	public ValueTask DisposeAsync() => connection?.DisposeAsync() ?? Task.CompletedTask.ToOperation();
+	public ValueTask DisposeAsync() => connection?.DisposeAsync() ?? ValueTask.CompletedTask;
 }

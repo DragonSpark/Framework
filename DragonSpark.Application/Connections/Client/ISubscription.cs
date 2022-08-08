@@ -3,4 +3,4 @@ using System;
 
 namespace DragonSpark.Application.Connections.Client;
 
-public interface IReceiver : IOperation, IAsyncDisposable {}
+public interface ISubscription : IOperation, IAsyncDisposable {}

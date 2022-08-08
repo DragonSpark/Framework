@@ -22,8 +22,8 @@ public class Send : IOperation
 	public async ValueTask Get()
 	{
 		await using var connection = _connection();
-		await connection.StartAsync();
-		await connection.SendAsync(_name);
+		await connection.StartAsync().ConfigureAwait(false);
+		await connection.SendAsync(_name).ConfigureAwait(false);
 	}
 }
 
@@ -43,7 +43,7 @@ public class Send<T> : IOperation<T>
 	public async ValueTask Get(T parameter)
 	{
 		await using var connection = _connection();
-		await connection.StartAsync();
-		await connection.SendAsync(_name, parameter);
+		await connection.StartAsync().ConfigureAwait(false);
+		await connection.SendAsync(_name, parameter).ConfigureAwait(false);
 	}
 }

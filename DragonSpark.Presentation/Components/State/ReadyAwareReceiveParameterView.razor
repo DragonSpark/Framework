@@ -22,10 +22,10 @@
 
 @code
 {
-    IReceiver? connection;
+    ISubscription? connection;
 
     [Parameter]
-    public IReceive<T> Registration { get; set; } = default!;
+    public ISubscribe<T> Registration { get; set; } = default!;
 
     [Parameter]
     public IDepending<T> Condition { get; set; } = Is.Always<T>().Operation().Out();
