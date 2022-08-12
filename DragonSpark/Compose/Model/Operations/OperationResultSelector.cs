@@ -76,6 +76,10 @@ public class OperationResultSelector<_, T> : Selector<_, ValueTask<T>>
 	public OperationResultSelector<_, TTo> Select<TTo>(Func<T, TTo> select)
 		=> new(Get().Select(new OperationSelect<T, TTo>(select)));
 
+	public OperationResultSelector<T> Bind(IResult<ValueTask<_>> parameter) => Bind(parameter.Get);
+	public OperationResultSelector<T> Bind(Func<ValueTask<_>> parameter)
+		=> new(new Binding<_, T>(this.Out(), parameter));
+
 	public OperationResultSelector<_, T> Protecting() => Protecting(new AsyncLock());
 
 	public OperationResultSelector<_, T> Protecting(AsyncLock @lock)
