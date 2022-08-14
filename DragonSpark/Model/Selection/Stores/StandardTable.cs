@@ -10,6 +10,8 @@ public class StandardTable<TIn, TOut> : ITable<TIn, TOut>, ICommand where TIn : 
 	readonly Func<TIn, TOut>        _select;
 	readonly IDictionary<TIn, TOut> _table;
 
+	public StandardTable() : this(new Dictionary<TIn, TOut>()) {}
+
 	public StandardTable(IDictionary<TIn, TOut> table) : this(table, _ => default!) {}
 
 	public StandardTable(Func<TIn, TOut> select) : this(new Dictionary<TIn, TOut>(), @select) {}

@@ -5,7 +5,7 @@ namespace DragonSpark.Presentation.Components.State;
 
 sealed class Activities : ReferenceValueStore<object, ConcurrentBag<object>>
 {
-	public static Activities Default { get; } = new Activities();
+	public static Activities Default { get; } = new ();
 
 	Activities() : base(_ => new ConcurrentBag<object>()) {}
 }
