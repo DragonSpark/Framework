@@ -28,9 +28,10 @@ sealed class ConnectionVariable : IMutable<HubConnection?>, IDisposable
 	public void Dispose()
 	{
 		var current = _previous.Get();
+		_previous.Execute(default);
 		if (current is not null)
 		{
-			Task.Run(() => current.DisposeAsync().AsTask());
+			Task.Run(() => current.DisposeAsync());
 		}
 	}
 }

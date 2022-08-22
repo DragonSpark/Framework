@@ -23,7 +23,7 @@ class CallbackBase : ICallback
 		var expected = _store.Get(parameter);
 		if (!ReferenceEquals(_current.Get(), expected))
 		{
-			_current.Execute(_store.Get(parameter));
+			_current.Execute(expected);
 		}
 	}
 

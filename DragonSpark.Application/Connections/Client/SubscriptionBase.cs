@@ -19,10 +19,10 @@ class SubscriptionBase : ISubscription
 	public ValueTask Get()
 	{
 		var connection = _connection.Get();
+		_callback.Execute(connection);
 		switch (connection.State)
 		{
 			case HubConnectionState.Disconnected:
-				_callback.Execute(connection);
 				return connection.StartAsync().ToOperation();
 		}
 

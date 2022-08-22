@@ -31,7 +31,7 @@ sealed class LastConnection : ICondition
 		if (current is null || _window.Get(current.Value))
 		{
 			_store.Execute(_time.Get());
-			return false;
+			return current is null;
 		}
 
 		return true;
