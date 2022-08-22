@@ -2,7 +2,7 @@
 
 namespace DragonSpark.Model.Results;
 
-sealed class IsAssigned<T> : ICondition
+public sealed class IsAssigned<T> : ICondition
 {
 	readonly IResult<T?> _store;
 

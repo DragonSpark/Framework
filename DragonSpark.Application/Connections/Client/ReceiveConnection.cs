@@ -1,20 +1,22 @@
 ﻿using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Connections.Client;
 
-public class ReceiveConnection : Instance<HubConnection>, IDisposable
+public class ReceiveConnection : IResult<HubConnection>, IDisposable
 {
-	readonly HubConnection _instance;
+	readonly ICurrentConnection _result;
 
-	protected ReceiveConnection(IHubConnections connections, Uri location) : this(connections.Get(location)) {}
+	protected ReceiveConnection(IHubConnections connections, Uri location)
+		: this(new CurrentConnection(connections, location)) {}
 
-	protected ReceiveConnection(HubConnection instance) : base(instance) => _instance = instance;
+	protected ReceiveConnection(ICurrentConnection result) => _result = result;
+
+	public HubConnection Get() => _result.Get();
 
 	public void Dispose()
 	{
-		Task.Run(() => _instance.DisposeAsync().AsTask());
+		_result.Dispose();
 	}
 }

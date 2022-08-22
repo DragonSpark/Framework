@@ -15,7 +15,8 @@ sealed class SecurityDescriptorByClaims : ISelect<IDictionary<string, object>, S
 	public SecurityDescriptorByClaims(BearerSettings settings, BearerSigningCredentials credentials)
 		: this(settings, credentials.Get(), ExpiresTomorrow.Default) {}
 
-	public SecurityDescriptorByClaims(BearerSettings settings, SigningCredentials credentials, IResult<DateTime> expires)
+	public SecurityDescriptorByClaims(BearerSettings settings, SigningCredentials credentials,
+	                                  IResult<DateTime> expires)
 	{
 		_settings    = settings;
 		_credentials = credentials;
@@ -24,7 +25,7 @@ sealed class SecurityDescriptorByClaims : ISelect<IDictionary<string, object>, S
 
 	public SecurityTokenDescriptor Get(IDictionary<string, object> parameter) => new()
 	{
-		Claims = parameter,
+		Claims             = parameter,
 		Issuer             = _settings.Issuer,
 		Audience           = _settings.Audience,
 		Expires            = _expires.Get(),

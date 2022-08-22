@@ -15,3 +15,4 @@ sealed class HubConnections : IHubConnections
 	public HubConnection Get(Uri parameter)
 		=> new HubConnectionBuilder().WithUrl(parameter, _configure).WithAutomaticReconnect().Build();
 }
+
