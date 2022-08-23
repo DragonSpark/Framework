@@ -61,7 +61,7 @@ public class Throttling : ICommand
 	{
 		_timer = timer;
 		// Who am I to argue: https://stackoverflow.com/questions/38917818/pass-async-callback-to-timer-constructor#comment91001639_38918443
-		timer.Elapsed += async (_, _) => await operate();
+		timer.Elapsed += (_, _) => operate();
 	}
 
 	public void Execute(None parameter)
