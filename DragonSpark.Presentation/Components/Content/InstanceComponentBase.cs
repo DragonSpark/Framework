@@ -10,6 +10,19 @@ public abstract class InstanceComponentBase<T> : ContentComponentBase<T>
 
 	protected override ValueTask<T?> GetContent() => GetInstance().ToOperation();
 
+	protected override void RequestNewContent()
+	{
+		Content.Execute();
+		Content.Get();
+	}
+
+	protected override ValueTask RefreshState()
+	{
+		RequestNewContent();
+		StateHasChanged();
+		return ValueTask.CompletedTask;
+	}
+
 	protected T? Instance
 	{
 		get
