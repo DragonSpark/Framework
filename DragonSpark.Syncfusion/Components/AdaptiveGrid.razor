@@ -30,7 +30,7 @@ else
 			AllowPaging="@AllowPaging"
 			AllowSorting="@AllowSorting"
 			ClipMode="@ClipMode.EllipsisWithTooltip"
-			Toolbar="@(Matches ? null : DefaultToolbar.Default)"
+		    Toolbar="@(Matches ? Toolbar : Toolbar ?? DefaultToolbar.Default)"
 			EnableAdaptiveUI="@(!Matches)"
 			RowRenderingMode="@(Matches ? RowDirection.Horizontal : RowDirection.Vertical)"
 			DataSource="@DataSource"
@@ -97,6 +97,9 @@ else
 
 	[Parameter]
 	public string CssClass { get; set; } = string.Empty;
+
+    [Parameter]
+    public ICollection<string>? Toolbar { get; set; }
 
 	[Parameter(CaptureUnmatchedValues = true)]
 	public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;

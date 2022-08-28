@@ -6,6 +6,7 @@
 @using DragonSpark.Compose
 @using DragonSpark.Presentation.Components
 @using DragonSpark.Presentation.Components.Content.Templates
+@using DragonSpark.SyncfusionRendering.Entities
 @using DragonSpark.SyncfusionRendering.Queries
 @using Syncfusion.Blazor.Grids
 
@@ -37,9 +38,11 @@
 						   AllowFiltering="@AllowFiltering"
 						   AllowSorting="@AllowSorting"
 						   LoadingTemplate="@LoadingTemplate"
+						   Toolbar="@Toolbar"
 						   CssClass="@CssClass"
 						   Breakpoint="@Breakpoint"
 						   PageSize="@PageSize"
+						   Updated="@Updated"
 						   @attributes="@AdditionalAttributes">
 				@if (BodyContentTemplate is not null)
 				{
@@ -120,8 +123,14 @@
 	[Parameter]
 	public string CssClass { get; set; } = string.Empty;
 
+    [Parameter]
+    public ICollection<string>? Toolbar { get; set; }
+
 	[Parameter]
 	public ushort PageSize { get; set; } = 10;
+
+    [Parameter]
+    public EventCallback<Updated<T>> Updated { get; set; }
 
 	[Parameter(CaptureUnmatchedValues = true)]
 	public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;

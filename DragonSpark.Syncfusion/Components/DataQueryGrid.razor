@@ -4,6 +4,7 @@
 @using DragonSpark.Presentation
 @using DragonSpark.Presentation.Components.Content.Templates
 @using DragonSpark.Presentation.Components.State
+@using DragonSpark.SyncfusionRendering.Entities
 @using DragonSpark.SyncfusionRendering.Queries
 @using Syncfusion.Blazor
 @using Syncfusion.Blazor.Grids
@@ -21,6 +22,7 @@
 	AllowFiltering="@AllowFiltering"
 	AllowSorting="@AllowSorting"
 	Breakpoint="@Breakpoint"
+	Toolbar="@Toolbar"
 	CssClass="@CssClass"
 	PageSize="@PageSize"
 	LoadingTemplate="@LoadingTemplate"
@@ -28,7 +30,7 @@
 
 	<GridTemplates EmptyRecordTemplate="@EmptyTemplate" />
 
-	<GridEvents TValue="T" DataBound="OnDataBound" />
+	<GridEvents TValue="T" DataBound="OnDataBound" OnActionBegin="@OnActionBegin" />
 	<Syncfusion.Blazor.Data.SfDataManager Adaptor="Adaptors.CustomAdaptor">
 		<DataRequestCallbackAdaptor Requested="@OnRequest" />
 	</Syncfusion.Blazor.Data.SfDataManager>
@@ -67,6 +69,12 @@
 	[Parameter]
 	public RenderFragment EmptyElementsTemplate { get; set; } = DefaultEmptyResultTemplate.Default;
 
+	[Parameter]
+	public ICollection<string>? Toolbar { get; set; }
+
+	[Parameter]
+	public EventCallback<Updated<T>> Updated { get; set; }
+
 	RenderFragment<EmptyRecordTemplateContext>? EmptyTemplate { get; set; }
 
 	public Task Refresh() => _subject.Refresh();
@@ -85,10 +93,13 @@
 
 	protected override Await<DataManagerRequest, object> CreateInput()
 		=> Content.Then().Then().UpdateActivity(Receiver)
-				  .Handle(Exceptions, ReportedType ?? GetType(), EmptyDataResult.Default.Get());
+						.Handle(Exceptions, ReportedType ?? GetType(), EmptyDataResult.Default.Get());
 
 	void OnDataBound()
 	{
 		EmptyTemplate = EmptyElementsTemplate.Accept;
 	}
+
+	Task OnActionBegin(ActionEventArgs<T> arg)
+		=> arg.RequestType == Action.Save ? Updated.InvokeAsync(new(arg.Data, arg.Action)) : Task.CompletedTask;
 }
