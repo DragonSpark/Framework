@@ -1,6 +1,7 @@
 ﻿@using DragonSpark.Presentation.Environment.Browser
 @using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
 @using DragonSpark.Compose
+@using DragonSpark.Presentation.Components.Interaction
 
 @typeparam T
 
@@ -27,7 +28,7 @@
 
     protected override void OnInitialized()
     {
-        Binding = new Binding<T>(Value, RequestUpdate);
+        Binding = new Binding<T>(Value, RequestUpdate, Comparer);
         base.OnInitialized();
     }
 

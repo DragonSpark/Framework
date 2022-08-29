@@ -7,15 +7,11 @@ namespace DragonSpark.SyncfusionRendering.Entities;
 
 public class EntityState<T> : IOperation<Updated<T>> where T : class
 {
-	readonly Await<T>  _add;
 	readonly Update<T> _update;
 	readonly Remove<T> _remove;
 
-	protected EntityState(IOperation<T> add, Update<T> update, Remove<T> remove) : this(add.Await, update, remove) {}
-
-	protected EntityState(Await<T> add, Update<T> update, Remove<T> remove)
+	protected EntityState(Update<T> update, Remove<T> remove)
 	{
-		_add    = add;
 		_update = update;
 		_remove = remove;
 	}
@@ -26,9 +22,6 @@ public class EntityState<T> : IOperation<Updated<T>> where T : class
 		switch (action)
 		{
 			case "Add":
-				await _add(subject);
-				await _update.Await(subject);
-				break;
 			case "Edit":
 				await _update.Await(subject);
 				break;

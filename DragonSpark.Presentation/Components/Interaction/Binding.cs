@@ -2,14 +2,12 @@
 using System;
 using System.Collections.Generic;
 
-namespace DragonSpark.Presentation.Environment.Browser;
+namespace DragonSpark.Presentation.Components.Interaction;
 
 public sealed class Binding<T> : ICommand<T>
 {
 	readonly Action<T>            _notify;
 	readonly IEqualityComparer<T> _comparer;
-
-	public Binding(T value, Action<T> notify) : this(value, notify, EqualityComparer<T>.Default) {}
 
 	public Binding(T value, Action<T> notify, IEqualityComparer<T> comparer)
 	{

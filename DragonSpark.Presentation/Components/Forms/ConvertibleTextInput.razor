@@ -1,0 +1,86 @@
+﻿@typeparam T
+
+@inherits TextInputComponent
+
+@using MatBlazor
+@using DragonSpark.Model.Selection
+@using DragonSpark.Application.Components.Validation.Expressions
+
+<MatTextField
+    ValidationDisabled="@ValidationDisabled"
+    RefBack="@RefBack"
+    Id="@Id"
+    InputAttributes="@InputAttributes"
+    Attributes="@Attributes"
+    Class="@Class"
+    Style="@Style"
+    ChildContent="@ChildContent"
+    IconOnClick="@IconOnClick"
+    OnFocus="@OnFocus"
+    OnFocusOut="@OnFocusOut"
+    OnKeyPress="@OnKeyPress"
+    OnKeyDown="@OnKeyDown"
+    OnKeyUp="@OnKeyUp"
+    OnInput="@Input"
+    Label="@Label"
+    Icon="@Icon"
+    IconTrailing="@IconTrailing"
+    Box="@Box"
+    TextArea="@TextArea"
+    Dense="@Dense"
+    Outlined="@Outlined"
+    Disabled="@Disabled"
+    ReadOnly="@ReadOnly"
+    FullWidth="@FullWidth"
+    Required="@Required"
+    HelperText="@HelperText"
+    HelperTextPersistent="@HelperTextPersistent"
+    HelperTextValidation="@HelperTextValidation"
+    PlaceHolder="@PlaceHolder"
+    HideClearButton="@HideClearButton"
+    Type="@Type"
+    InputClass="@InputClass"
+    InputStyle="@InputStyle"
+    Format="@Format"
+    @bind-Value="@CurrentValue"
+/>
+
+
+@code {
+    [Parameter]
+    public ISelect<T, string> Formatter { get; set; } = default!;
+
+    [Parameter]
+    public ISelect<string, T> Parser { get; set; } = default!;
+
+    [Parameter]
+    public IEqualityComparer<T> Comparer { get; set; } = EqualityComparer<T>.Default;
+
+    [Parameter]
+    public IValidateValue<object>? Validator { get; set; } 
+
+    [Parameter]
+    public T? Value 
+    {
+        get => _value;
+        set
+        {
+            if (Comparer.Equals(_value, value))
+            {
+                _value = value;
+                CurrentValue = _value is not null ? Formatter.Get(_value) : null;
+            }
+        }
+    }	T? _value;
+
+    [Parameter]
+    public EventCallback<T> ValueChanged { get; set; }
+
+    string? CurrentValue { get; set; }
+
+    Task Input(ChangeEventArgs parameter)
+    {
+        Value = parameter.Value is string value && (Validator?.Get(value) ?? true) ? Parser.Get(value) : default;
+        return OnInput.InvokeAsync(parameter);
+    }
+}

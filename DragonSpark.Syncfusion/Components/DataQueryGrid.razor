@@ -75,6 +75,9 @@
 	[Parameter]
 	public EventCallback<Updated<T>> Updated { get; set; }
 
+    [Parameter]
+    public EventCallback<T> Created { get; set; }
+
 	RenderFragment<EmptyRecordTemplateContext>? EmptyTemplate { get; set; }
 
 	public Task Refresh() => _subject.Refresh();
@@ -101,5 +104,15 @@
 	}
 
 	Task OnActionBegin(ActionEventArgs<T> arg)
-		=> arg.RequestType == Action.Save ? Updated.InvokeAsync(new(arg.Data, arg.Action)) : Task.CompletedTask;
+	{
+		switch (arg.RequestType)
+		{
+			case Action.Add:
+			    return Created.InvokeAsync(arg.Data);
+			case Action.Save:
+				return Updated.InvokeAsync(new(arg.Data, arg.Action));
+		}
+	    return Task.CompletedTask;
+	}
+
 }

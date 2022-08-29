@@ -42,6 +42,7 @@
 						   CssClass="@CssClass"
 						   Breakpoint="@Breakpoint"
 						   PageSize="@PageSize"
+						   Created="@Created"
 						   Updated="@Updated"
 						   @attributes="@AdditionalAttributes">
 				@if (BodyContentTemplate is not null)
@@ -128,6 +129,9 @@
 
 	[Parameter]
 	public ushort PageSize { get; set; } = 10;
+
+    [Parameter]
+    public EventCallback<T> Created { get; set; }
 
     [Parameter]
     public EventCallback<Updated<T>> Updated { get; set; }

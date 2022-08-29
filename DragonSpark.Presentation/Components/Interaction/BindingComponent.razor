@@ -1,0 +1,56 @@
+﻿@using DragonSpark.Model.Selection
+
+@typeparam T
+
+@ChildContent(Binding)
+
+@code {
+
+    [Parameter]
+    public ISelect<T, string> Formatter { get; set; } = default!;
+
+    [Parameter]
+    public ISelect<string, T> Parser { get; set; } = default!;
+
+    [Parameter]
+    public T? Value { get; set; }
+
+    [Parameter]
+    public EventCallback<T?> ValueChanged { get; set; }
+
+    [Parameter]
+    public IEqualityComparer<string?> Comparer { get; set; } = StringComparer.CurrentCulture;
+
+    [Parameter]
+    public RenderFragment<Binding<string?>> ChildContent { get; set; } = default!;
+
+    string? Content { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Content = Value is not null ? Formatter.Get(Value) : null;
+        Binding = new Binding<string?>(Content, RequestUpdate, Comparer);
+        base.OnInitialized();
+    }
+
+    void RequestUpdate(string? parameter)
+    {
+        Content = parameter;
+        UpdateRequested = true;
+        StateHasChanged();
+    }
+
+    bool UpdateRequested { get; set; }
+    Binding<string?> Binding { get; set; } = default!;
+
+    protected override Task OnParametersSetAsync()
+    {
+        if (UpdateRequested)
+        {
+            UpdateRequested = false;
+
+            return ValueChanged.InvokeAsync(Value = !string.IsNullOrEmpty(Content) ? Parser.Get(Content) : default);
+        }
+        return Task.CompletedTask;
+    }
+}

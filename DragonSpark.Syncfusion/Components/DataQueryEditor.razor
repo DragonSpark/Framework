@@ -1,0 +1,119 @@
+﻿@typeparam T
+
+@using BlazorPro.BlazorSize
+@using DragonSpark.Application.Entities.Queries.Runtime
+@using DragonSpark.Application.Entities.Queries.Runtime.Pagination
+@using DragonSpark.Application.Entities.Queries.Runtime.Shape
+@using DragonSpark.Application.Runtime.Operations
+@using DragonSpark.Compose
+@using DragonSpark.Model.Operations
+@using DragonSpark.Presentation
+@using DragonSpark.SyncfusionRendering.Entities
+@using DragonSpark.SyncfusionRendering.Queries
+@using Syncfusion.Blazor.Grids
+
+@inherits DragonSpark.Presentation.Components.Content.Templates.ManyActiveContentTemplateComponentBase<IDataRequest>
+
+<DragonSpark.Presentation.Components.State.ActivityReceiverContainer Context="receiver">
+        <DragonSpark.SyncfusionRendering.Components.DataQueryContainer
+            T="T" Id="@Id" Content="@Content"
+            Compose="@Compose" Reporter="@Reporter"
+            ReportedType="@ReportedType" FilterType="@FilterType" Columns="@Columns" BodyHeaderTemplate="@BodyHeaderTemplate"
+            BodyFooterTemplate="@BodyFooterTemplate"
+            AllowPaging="@AllowPaging" AllowFiltering="@AllowFiltering" AllowSorting="@AllowSorting" Breakpoint="@Breakpoint"
+            CssClass="@CssClass"
+            Toolbar="@Toolbar"
+            PageSize="@PageSize"
+            Created="@(Start.A.Callback<T>(Add.Allocate).Handle(Exceptions, ReportedType).Using(receiver).UpdateActivity())"
+            Updated="@(Start.A.Callback<Updated<T>>(Update.Allocate).Handle(Exceptions, ReportedType).Using(receiver).UpdateActivity())"
+            EmptyElementsTemplate="@EmptyElementsTemplate"
+            NotFoundTemplate="@NotFoundTemplate"
+            ExceptionTemplate="@ExceptionTemplate"
+            HeaderTemplate="@HeaderTemplate"
+            FooterTemplate="@FooterTemplate"
+            AdditionalAttributes="@AdditionalAttributes"
+    >
+        <BodyContentTemplate>
+            <GridEditSettings AllowAdding="true" AllowDeleting="true" AllowEditing="true" />
+            @if(BodyContentTemplate is not null)
+            {
+                @BodyContentTemplate
+            }
+        </BodyContentTemplate>
+    </DragonSpark.SyncfusionRendering.Components.DataQueryContainer>
+
+</DragonSpark.Presentation.Components.State.ActivityReceiverContainer>
+
+@code {
+    [Parameter]
+    public IOperation<T> Add { get; set; } = default!;
+
+    [Parameter]
+    public IOperation<Updated<T>> Update { get; set; } = default!;
+
+    [Parameter]
+    public Guid Id { get; set; }
+
+    [Parameter]
+    public IQueries<T> Content {get; set; } = default!;
+
+    [Parameter]
+    public ICompose<T> Compose { get; set; } = SyncfusionCompose<T>.Default;
+
+    [Parameter]
+    public IReporter<IDataRequest>? Reporter { get; set; } = Queries.Reporter.Default;
+
+    [Parameter]
+    public Type? ReportedType { get; set; }
+
+    [Parameter]
+    public FilterType FilterType { get; set; } = FilterType.Excel;
+
+    [Parameter]
+    public RenderFragment Columns { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment? BodyHeaderTemplate { get; set; }
+
+    [Parameter]
+    public RenderFragment? BodyContentTemplate { get; set; }
+
+    [Parameter]
+    public RenderFragment? BodyFooterTemplate { get; set; }
+
+    [Parameter]
+    public RenderFragment<IPages<T>>? HeaderTemplate { get; set; }
+
+    [Parameter]
+    public RenderFragment<IPages<T>>? FooterTemplate { get; set; }
+
+    [Parameter]
+    public bool AllowPaging { get; set; } = true;
+
+    [Parameter]
+    public bool AllowFiltering { get; set; } = true;
+
+    [Parameter]
+    public bool AllowSorting { get; set; } = true;
+
+    [Parameter]
+    public string Breakpoint { get; set; } = Breakpoints.SmallUp;
+
+    [Parameter]
+    public string CssClass { get; set; } = string.Empty;
+
+    [Parameter]
+    public ICollection<string>? Toolbar { get; set; } = EditToolbar.Default;
+
+    [Parameter]
+    public ushort PageSize { get; set; } = 10;
+
+    [Parameter]
+    public EventCallback<T> Created { get; set; }
+
+    [Parameter]
+    public EventCallback<Updated<T>> Updated { get; set; }
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
+}
