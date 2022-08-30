@@ -75,8 +75,11 @@
 	[Parameter]
 	public EventCallback<Updated<T>> Updated { get; set; }
 
-    [Parameter]
-    public EventCallback<T> Created { get; set; }
+	[Parameter]
+	public EventCallback<Allow<T>> Editing { get; set; }
+
+	[Parameter]
+	public EventCallback<T> Created { get; set; }
 
 	RenderFragment<EmptyRecordTemplateContext>? EmptyTemplate { get; set; }
 
@@ -103,16 +106,23 @@
 		EmptyTemplate = EmptyElementsTemplate.Accept;
 	}
 
-	Task OnActionBegin(ActionEventArgs<T> arg)
+	async Task OnActionBegin(ActionEventArgs<T> arg)
 	{
 		switch (arg.RequestType)
 		{
+			case Action.BeginEdit:
+				var allow = new Allow<T>(arg.Data);
+				await Editing.InvokeAsync(allow);
+				arg.Cancel = !allow.Get();
+				break;
 			case Action.Add:
-			    return Created.InvokeAsync(arg.Data);
+			    await Created.InvokeAsync(arg.Data);
+			    break;
 			case Action.Save:
-				return Updated.InvokeAsync(new(arg.Data, arg.Action));
+				await Updated.InvokeAsync(new(arg.Data, arg.Action));
+			    break;
 		}
-	    return Task.CompletedTask;
+	    
 	}
 
 }

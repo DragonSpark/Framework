@@ -3,6 +3,7 @@ using DragonSpark.Application.Entities.Queries.Runtime.Pagination;
 using DragonSpark.Application.Entities.Queries.Runtime.Shape;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Selection.Conditions;
 using Microsoft.AspNetCore.Components;
 using System;
 
@@ -37,6 +38,9 @@ partial class QueryContentContainer<T> : IReportedTypeAware
 			}
 		}
 	}	ICompose<T> _compose = DefaultCompose<T>.Default;
+
+	[Parameter]
+	public ICondition<IPages<T>> Results { get; set; } = HasResults<T>.Default;
 
 	[Parameter]
 	public Type? ReportedType { get; set; }

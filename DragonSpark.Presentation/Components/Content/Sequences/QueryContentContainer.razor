@@ -23,7 +23,7 @@
 		@HeaderTemplate(context)
 	}
 
-	@if (context.HasResults())
+	@if (Results.Get(context))
 	{
 		@ChildContent(context)
 	}

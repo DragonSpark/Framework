@@ -4,6 +4,7 @@
 @using DragonSpark.Application.Entities.Queries.Runtime.Shape
 @using DragonSpark.Application.Runtime.Operations
 @using DragonSpark.Compose
+@using DragonSpark.Model.Selection.Conditions
 @using DragonSpark.Presentation.Components
 @using DragonSpark.Presentation.Components.Content.Templates
 @using DragonSpark.SyncfusionRendering.Entities
@@ -15,7 +16,7 @@
 @inherits DragonSpark.Presentation.Components.Content.Templates.ManyActiveContentTemplateComponentBase<DragonSpark.SyncfusionRendering.Queries.IDataRequest>
 
 <DragonSpark.Presentation.Components.State.ActivityReceiverContainer Context="_">
-	<SyncfusionQueryContainer T="T" Content="@Content" Compose="@Compose" Reporter="@Reporter"
+	<SyncfusionQueryContainer T="T" Content="@Content" Compose="@Compose" Results="@Results" Reporter="@Reporter"
 							  LoadingTemplate="@EmptyContentTemplate.Default"
 							  EmptyElementsTemplate="@EmptyElementsTemplate"
 							  NotFoundTemplate="@NotFoundTemplate"
@@ -42,6 +43,7 @@
 						   CssClass="@CssClass"
 						   Breakpoint="@Breakpoint"
 						   PageSize="@PageSize"
+						   Editing="@Editing"
 						   Created="@Created"
 						   Updated="@Updated"
 						   @attributes="@AdditionalAttributes">
@@ -81,6 +83,9 @@
 
 	[Parameter]
 	public ICompose<T> Compose { get; set; } = SyncfusionCompose<T>.Default;
+
+    [Parameter]
+    public ICondition<IPages<T>> Results { get; set; } = HasResults<T>.Default;
 
 	[Parameter]
 	public IReporter<IDataRequest>? Reporter { get; set; } = Queries.Reporter.Default;
@@ -129,6 +134,9 @@
 
 	[Parameter]
 	public ushort PageSize { get; set; } = 10;
+
+    [Parameter]
+    public EventCallback<Allow<T>> Editing { get; set; }
 
     [Parameter]
     public EventCallback<T> Created { get; set; }

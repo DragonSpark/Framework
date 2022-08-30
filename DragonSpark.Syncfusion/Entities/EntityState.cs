@@ -1,5 +1,4 @@
-﻿using DragonSpark.Application.Entities.Editing;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using System.Threading.Tasks;
 
@@ -7,10 +6,10 @@ namespace DragonSpark.SyncfusionRendering.Entities;
 
 public class EntityState<T> : IOperation<Updated<T>> where T : class
 {
-	readonly Update<T> _update;
-	readonly Remove<T> _remove;
+	readonly IOperation<T> _update;
+	readonly IOperation<T> _remove;
 
-	protected EntityState(Update<T> update, Remove<T> remove)
+	protected EntityState(IOperation<T> update, IOperation<T> remove)
 	{
 		_update = update;
 		_remove = remove;

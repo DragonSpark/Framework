@@ -2,6 +2,7 @@
 @using DragonSpark.Application.Entities.Queries.Runtime.Pagination
 @using DragonSpark.Application.Entities.Queries.Runtime.Shape
 @using DragonSpark.Application.Runtime.Operations
+@using DragonSpark.Model.Selection.Conditions
 @using DragonSpark.Model.Selection.Stores
 @using DragonSpark.Presentation.Components.Content
 @using DragonSpark.Presentation.Components.Content.Sequences
@@ -14,6 +15,7 @@
 <QueryContentContainer
 	Content="@Content"
 	Compose="@Compose"
+	Results="@Results"
 	LoadingTemplate="@LoadingTemplate"
 	EmptyElementsTemplate="@EmptyElementsTemplate"
 	HeaderTemplate="@HeaderTemplate"
@@ -39,6 +41,9 @@
 
 	[Parameter]
 	public ICompose<T> Compose { get; set; } = SyncfusionCompose<T>.Default;
+
+    [Parameter]
+    public ICondition<IPages<T>> Results { get; set; } = HasResults<T>.Default;
 
 	[Parameter]
 	public IReporter<IDataRequest>? Reporter { get; set; } = Queries.Reporter.Default;
