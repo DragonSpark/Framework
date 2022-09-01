@@ -6,6 +6,7 @@
 @using Syncfusion.Blazor.DropDowns
 @using System.Buffers
 @using System.Collections.ObjectModel
+@using System.Collections.Specialized
 
 @typeparam TValue
 @typeparam TItem where TItem : class
@@ -16,7 +17,7 @@
 >
     <ListBoxFieldSettings Value="@IdNameField" Text="@DisplayNameField" />
     <ListBoxSelectionSettings Mode="SelectionMode.Single" />
-    <ListBoxEvents TValue="TValue[]" TItem="TItem" ValueChange="@OnSelect" OnActionComplete="@OnActionComplete" />
+    <ListBoxEvents TValue="TValue[]" TItem="TItem" ValueChange="@OnSelect"  OnActionComplete="@OnActionComplete" />
     @if (ChildContent is not null)
     {
         @ChildContent
@@ -52,8 +53,13 @@
         {
             if (_value != value)
             {
+                var assigned = _value.Account() is not null;
                 _value = value;
                 CurrentValue = _value.Account() is not null && SelectValue is not null ? SelectValue.Verify()(_value).Yield().ToArray() : Empty.Array<TValue>();
+                if (assigned && !_selecting)
+                {
+                    _subject.SelectItemsAsync(Value);
+                }
             }
         }
     }	TItem _value = default!;
@@ -72,6 +78,8 @@
 
     TValue[] CurrentValue { get; set; } = Empty.Array<TValue>();
 
+    bool _selecting;
+
     Func<Task> _update = default!;
 
     protected override void OnInitialized()
@@ -81,7 +89,12 @@
     }
 
     Task OnSelect(ListBoxChangeEventArgs<TValue[], TItem> parameter)
-        => ValueChanged.InvokeAsync(Value = _subject.GetDataByValue(parameter.Value).Single());
+    {
+        _selecting = true;
+        var single = Value = _subject.GetDataByValue(parameter.Value).Single();
+        _selecting = false;
+        return ValueChanged.InvokeAsync(single);
+    }
 
     Task Update() => Updated.InvokeAsync(this);
 
