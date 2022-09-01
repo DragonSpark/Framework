@@ -24,12 +24,12 @@ public class Appending : IOperation
 
 public class Appending<T> : IOperation<T>
 {
-	readonly Operate<T> _first;
-	readonly Await<T>   _second;
+	readonly Await<T> _first;
+	readonly Await<T> _second;
 
-	public Appending(IOperation<T> first, IOperation<T> second) : this(first.Get, second.Await) {}
+	public Appending(IOperation<T> first, IOperation<T> second) : this(first.Await, second.Await) {}
 
-	public Appending(Operate<T> first, Await<T> second)
+	public Appending(Await<T> first, Await<T> second)
 	{
 		_first  = first;
 		_second = second;

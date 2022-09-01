@@ -25,7 +25,7 @@ public class OperationContext<T> : Selector<T, ValueTask>
 
 	public OperationContext<T> Append(ICommand<T> command) => Append(command.Execute);
 	public OperationContext<T> Append(Action<T> command) => Append(Start.A.Command(command).Operation());
-	public OperationContext<T> Append(Await<T> command) => new(new Appending<T>(Get().Get, command));
+	public OperationContext<T> Append(Await<T> command) => new(new Appending<T>(Get().Await, command));
 
 	public OperationContext<T> Append(IOperation command) => Append(command.Await);
 	public OperationContext<T> Append(Await command) => new(new Termination<T>(Get().Await, command));

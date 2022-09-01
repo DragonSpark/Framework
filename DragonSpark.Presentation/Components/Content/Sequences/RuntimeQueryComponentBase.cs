@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Application.Entities.Queries.Runtime;
-using DragonSpark.Compose;
 using DragonSpark.Presentation.Components.Eventing;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
@@ -18,7 +17,7 @@ public abstract class RuntimeQueryComponentBase<T> : InstanceComponentBase<IQuer
 		var instance = Instance;
 		if (instance is not null)
 		{
-			await Publisher.Await(new(instance));
+			await Publisher.Get(new(instance));
 		}
 		await base.RefreshState().ConfigureAwait(false);
 	}
