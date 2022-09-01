@@ -16,7 +16,7 @@ sealed class ContentIdentifier : IFormatter<object>
 		var type = parameter.GetType();
 		var set  = _counters.Get(type);
 		set.Add(parameter.GetHashCode());
-		var result = $"{type.AssemblyQualifiedName}+{set.Count}";
+		var result = $"{type.FullName}+{set.Count}";
 		return result;
 	}
 }
