@@ -15,7 +15,8 @@ sealed class GetClientEntry : ISelecting<BlobBaseClient, DefaultStorageEntry>
 		var response = await parameter.GetPropertiesAsync().ConfigureAwait(false);
 		var value    = response.Value;
 		var properties = new StorageEntryProperties(parameter.Uri, parameter.Name, value.ContentType,
-		                                            (ulong)value.ContentLength, value.CreatedOn);
+		                                            (ulong)value.ContentLength, value.CreatedOn, value.LastModified,
+		                                            value.ETag);
 		return new(parameter, properties);
 	}
 }

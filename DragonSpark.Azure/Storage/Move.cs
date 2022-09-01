@@ -18,7 +18,7 @@ sealed class Move : IMove
 	{
 		var (source, _) = parameter;
 		var result = await _copy.Await(parameter);
-		await _delete.Await(source.Properties.Name);
+		await _delete.Await(source.Properties.Path);
 		return result;
 	}
 }
