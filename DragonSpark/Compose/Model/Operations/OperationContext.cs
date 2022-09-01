@@ -25,36 +25,29 @@ public class OperationContext<T> : Selector<T, ValueTask>
 
 	public OperationContext<T> Append(ICommand<T> command) => Append(command.Execute);
 	public OperationContext<T> Append(Action<T> command) => Append(Start.A.Command(command).Operation());
-	public OperationContext<T> Append(Await<T> command)
-		=> new OperationContext<T>(new Appending<T>(Get().Await, command));
+	public OperationContext<T> Append(Await<T> command) => new(new Appending<T>(Get().Get, command));
 
 	public OperationContext<T> Append(IOperation command) => Append(command.Await);
-	public OperationContext<T> Append(Await command)
-		=> new OperationContext<T>(new Termination<T>(Get().Await, command));
+	public OperationContext<T> Append(Await command) => new(new Termination<T>(Get().Await, command));
 
-	public LogOperationContext<T, TParameter> Bind<TParameter>(ILogMessage<TParameter> log)
-		=> new LogOperationContext<T, TParameter>(_subject, log);
+	public LogOperationContext<T, TParameter> Bind<TParameter>(ILogMessage<TParameter> log) => new(_subject, log);
 
 	public OperationSelector Bind(IResult<ValueTask<T>> parameter) => Bind(parameter.Get);
 
-	public OperationSelector Bind(Func<ValueTask<T>> parameter)
-		=> new OperationSelector(new Binding<T>(this.Out(), parameter));
+	public OperationSelector Bind(Func<ValueTask<T>> parameter) => new(new Binding<T>(this.Out(), parameter));
 
 
-	public SelectedLogOperationExceptionContext<T, TOther> Use<TOther>(ILogException<TOther> log)
-		=> new SelectedLogOperationExceptionContext<T, TOther>(_subject, log);
+	public SelectedLogOperationExceptionContext<T, TOther> Use<TOther>(ILogException<TOther> log) => new(_subject, log);
 
-	public PolicyAwareLogOperationExceptionContext<T> Use(ILogException<T> log)
-		=> new PolicyAwareLogOperationExceptionContext<T>(_subject, log);
+	public PolicyAwareLogOperationExceptionContext<T> Use(ILogException<T> log) => new(_subject, log);
 
 	public OperationContext<T> Watching(CancellationToken token) => Watching(Start.A.Result(token));
 
 	public OperationContext<T> Watching(IResult<CancellationToken> token) => Watching(token.Get);
 
-	public OperationContext<T> Watching(Func<CancellationToken> token)
-		=> new OperationContext<T>(new TokenAwareOperation<T>(Get(), token));
+	public OperationContext<T> Watching(Func<CancellationToken> token) => new(new TokenAwareOperation<T>(Get(), token));
 
-	public TaskSelector<T> Allocate() => new TaskSelector<T>(Get().Select(SelectTask.Default));
+	public TaskSelector<T> Allocate() => new(Get().Select(SelectTask.Default));
 
 
 }
