@@ -4,7 +4,7 @@ using System;
 
 namespace DragonSpark.Application.Entities.Configure;
 
-public sealed class SqlServerMigrations : ISqlServerConfiguration
+public class SqlServerMigrations : ISqlServerConfiguration
 {
 	readonly string _name;
 

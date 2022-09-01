@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Application.Entities.Configure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
 
 namespace DragonSpark.Application.Compose.Entities;
@@ -16,11 +17,11 @@ public sealed class IdentityStorageConfiguration<T, TContext> where TContext : D
 		_configure = configure;
 	}
 
-	public ConfiguredIdentityStorage<T, TContext> SqlServer(string name)
-		=> Configuration(new SqlStorageConfiguration<TContext>(name));
-
 	public ConfiguredIdentityStorage<T, TContext> SqlServer()
 		=> Configuration(SqlStorageConfiguration<TContext>.Default);
+
+	public ConfiguredIdentityStorage<T, TContext> SqlServer(Action<SqlServerDbContextOptionsBuilder> configuration)
+		=> Configuration(new SqlStorageConfiguration<TContext>(configuration));
 
 	public ConfiguredIdentityStorage<T, TContext> Configuration(IStorageConfiguration configuration)
 		=> new(_subject, _configure, configuration);
