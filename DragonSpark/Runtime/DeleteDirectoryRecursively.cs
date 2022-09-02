@@ -3,6 +3,9 @@ using System.IO;
 
 namespace DragonSpark.Runtime;
 
+/// <summary>
+///  ATTRIBUTION: https://github.com/libgit2/libgit2sharp/issues/1354#issuecomment-277936895
+/// </summary>
 public sealed class DeleteDirectoryRecursively : ICommand<DirectoryInfo>
 {
 	public static DeleteDirectoryRecursively Default { get; } = new();
