@@ -35,6 +35,7 @@
 						   FilterType="@FilterType"
 						   ReportedType="@ReportedType"
 						   Columns="@Columns"
+						   AllowSelection="@AllowSelection"
 						   AllowPaging="@AllowPaging"
 						   AllowFiltering="@AllowFiltering"
 						   AllowSorting="@AllowSorting"
@@ -113,6 +114,9 @@
 
 	[Parameter]
 	public RenderFragment<IPages<T>>? FooterTemplate { get; set; }
+
+    [Parameter]
+    public bool AllowSelection { get; set; }
 
 	[Parameter]
 	public bool AllowPaging { get; set; } = true;

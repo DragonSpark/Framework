@@ -6,10 +6,13 @@
 @using DragonSpark.Application.Entities.Queries.Runtime.Shape
 @using DragonSpark.Application.Runtime.Operations
 @using DragonSpark.Compose
+@using DragonSpark.Model
 @using DragonSpark.Model.Operations
 @using DragonSpark.Presentation
+@using DragonSpark.Presentation.Components.Dialogs
 @using DragonSpark.SyncfusionRendering.Entities
 @using DragonSpark.SyncfusionRendering.Queries
+@using Humanizer
 @using Syncfusion.Blazor.Grids
 
 @inherits DragonSpark.Presentation.Components.Content.Templates.ManyActiveContentTemplateComponentBase<IDataRequest>
@@ -20,13 +23,14 @@
             Compose="@Compose" Reporter="@Reporter" Results="@(Is.Always<IPages<T>>().Out())"
             ReportedType="@ReportedType" FilterType="@FilterType" Columns="@Columns" BodyHeaderTemplate="@BodyHeaderTemplate"
             BodyFooterTemplate="@BodyFooterTemplate"
+            AllowSelection="true"
             AllowPaging="@AllowPaging" AllowFiltering="@AllowFiltering" AllowSorting="@AllowSorting" Breakpoint="@Breakpoint"
             CssClass="@CssClass"
             Toolbar="@Toolbar"
             PageSize="@PageSize"
             Editing="@Editing"
-            Created="@(Start.A.Callback<T>(Add.Allocate).Handle(Exceptions, ReportedType).Using(receiver).UpdateActivity())"
-            Updated="@(Start.A.Callback<Updated<T>>(Update.Allocate).Handle(Exceptions, ReportedType).Using(receiver).UpdateActivity())"
+            Created="@(Start.A.Callback<T>(OnCreate).Handle(Exceptions, ReportedType).Using(receiver).UpdateActivity())"
+            Updated="@(Start.A.Callback<Updated<T>>(OnUpdate).Handle(Exceptions, ReportedType).Using(receiver).UpdateActivity())"
             EmptyElementsTemplate="@EmptyElementsTemplate"
             NotFoundTemplate="@NotFoundTemplate"
             ExceptionTemplate="@ExceptionTemplate"
@@ -42,10 +46,16 @@
             }
         </BodyContentTemplate>
     </DragonSpark.SyncfusionRendering.Components.DataQueryContainer>
-
 </DragonSpark.Presentation.Components.State.ActivityReceiverContainer>
 
+<DragonSpark.Presentation.Components.Dialogs.ConfirmResultContext
+    T="T" @ref="_prompt" Title="@ConfirmTitle" PrimaryClass="@ConfirmPrimary" SecondaryClass="@ConfirmSecondary">
+    @ConfirmContent(context.Context)
+</DragonSpark.Presentation.Components.Dialogs.ConfirmResultContext>
+
 @code {
+    ConfirmResultContext<T> _prompt = default!;
+
     [Parameter]
     public IOperation<T> Add { get; set; } = default!;
 
@@ -120,4 +130,44 @@
 
     [Parameter(CaptureUnmatchedValues = true)]
     public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
+
+    [Parameter]
+    public string ConfirmTitle { get; set; } = "Confirm Delete?";
+
+    [Parameter]
+    public string ConfirmPrimary { get; set; } = "btn btn-primary";
+
+    [Parameter]
+    public string ConfirmSecondary { get; set; } = "btn btn-secondary";
+
+    [Parameter]
+    public RenderFragment<T> ConfirmContent { get; set; }
+        = _ => y => y.AddContent(0, $"Are you sure you want to delete this {typeof(T).Name.Humanize()}?");
+
+    async Task OnCreate(T parameter)
+    {
+        await Add.Get(parameter);
+        await Created.InvokeAsync(parameter).ConfigureAwait(false);
+    }
+
+    async Task OnUpdate(Updated<T> parameter)
+    {
+        var (subject, action) = parameter;
+        switch (action)
+        {
+            case "Delete":
+                switch (await _prompt.Confirm(subject))
+                {
+                    case DialogResult.Ok:
+                        await Update.Get(parameter);
+                        await Updated.InvokeAsync(parameter).ConfigureAwait(false);
+                        break;
+                }
+                break;
+            default:
+                await Update.Get(parameter);
+                await Updated.InvokeAsync(parameter).ConfigureAwait(false);
+                break;
+        }
+    }
 }

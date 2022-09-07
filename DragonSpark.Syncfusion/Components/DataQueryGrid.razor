@@ -18,6 +18,7 @@
 	Id="@Id"
 	FilterType="@FilterType"
 	Columns="@Columns"
+	AllowSelection="@AllowSelection"
 	AllowPaging="@AllowPaging"
 	AllowFiltering="@AllowFiltering"
 	AllowSorting="@AllowSorting"
@@ -59,6 +60,9 @@
 
 	[Parameter]
 	public FilterType FilterType { get; set; } = FilterType.Excel;
+
+    [Parameter]
+    public bool AllowSelection { get; set; }
 
 	[Parameter]
 	public RenderFragment Columns { get; set; } = default!;
@@ -119,10 +123,11 @@
 			    await Created.InvokeAsync(arg.Data);
 			    break;
 			case Action.Save:
+			case Action.Delete:
 				await Updated.InvokeAsync(new(arg.Data, arg.Action));
 			    break;
 		}
-	    
+
 	}
 
 }

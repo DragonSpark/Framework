@@ -25,7 +25,7 @@ else
 	<SfGrid TValue="T"
 		    @ref="@_subject"
             ID="@Id"
-			AllowSelection="false"
+			AllowSelection="@AllowSelection"
 			AllowFiltering="@AllowFiltering"
 			AllowPaging="@AllowPaging"
 			AllowSorting="@AllowSorting"
@@ -61,6 +61,9 @@ else
 
 	[Parameter]
 	public FilterType FilterType { get; set; } = FilterType.Excel;
+
+    [Parameter]
+    public bool AllowSelection { get; set; }
 
 	[Parameter]
 	public RenderFragment Columns { get; set; } = default!;
