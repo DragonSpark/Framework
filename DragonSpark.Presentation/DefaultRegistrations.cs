@@ -33,6 +33,7 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		parameter.Start<IExceptionNotification>()
 		         .Forward<ExceptionNotification>()
 		         .Decorate<ClientExceptionAwareExceptionNotification>()
+		         .Decorate<SpecificationAwareExceptionNotification>()
 		         .Scoped()
 		         //
 		         .Then.Decorate<IExceptions, CompensationAwareExceptions>()

@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Model;
-using DragonSpark.Model.Selection;
-using System;
+using DragonSpark.Model.Results;
 using System.Runtime.CompilerServices;
 
 namespace DragonSpark.Compose;
@@ -16,9 +15,15 @@ public static partial class ExtensionMethods
 	public static T Or<T>(this Assigned<T> @this, in T defaultValue) where T : struct
 		=> @this.IsAssigned ? @this.Instance : defaultValue;
 
-	public static TOut Get<T, TOut>(this ISelect<Assigned<T>, TOut> @this) where T : struct
+	/*public static TOut Get<T, TOut>(this ISelect<Assigned<T>, TOut> @this) where T : struct
 		=> @this.Get(Assigned<T>.Unassigned);
 
 	public static TOut Invoke<T, TOut>(this Func<Assigned<T>, TOut> @this) where T : struct
-		=> @this(Assigned<T>.Unassigned);
+		=> @this(Assigned<T>.Unassigned);*/
+
+	public static Assignment<T> Assigned<T>(this IMutable<T?> @this, T value)
+	{
+		@this.Pass(value);
+		return new(@this);
+	}
 }

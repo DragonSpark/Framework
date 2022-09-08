@@ -9,7 +9,7 @@ sealed class ClientExceptionAwareExceptionNotification : IExceptionNotification
 
 	public ClientExceptionAwareExceptionNotification(IExceptionNotification previous) => _previous = previous;
 
-	public NotificationMessage Get(Exception parameter)
+	public NotificationMessage? Get(Exception parameter)
 		=> parameter is ClientException client
 			   ? new NotificationMessage
 			   {

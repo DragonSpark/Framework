@@ -9,11 +9,11 @@ sealed class CircuitRecordEnricher : ILogEventEnricher
 {
 	public static CircuitRecordEnricher Default { get; } = new();
 
-	CircuitRecordEnricher() : this(CurrentCircuitRecord.Default) {}
+	CircuitRecordEnricher() : this(DetermineCircuitRecord.Default) {}
 
-	readonly IMutable<CircuitRecord?> _current;
+	readonly IResult<CircuitRecord?> _current;
 
-	public CircuitRecordEnricher(IMutable<CircuitRecord?> current) => _current = current;
+	public CircuitRecordEnricher(IResult<CircuitRecord?> current) => _current = current;
 
 	public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)
 	{
@@ -39,4 +39,11 @@ sealed class CircuitRecordEnricher : ILogEventEnricher
 			}
 		}
 	}
+}
+
+sealed class DetermineCircuitRecord : Maybe<CircuitRecord>
+{
+	public static DetermineCircuitRecord Default { get; } = new();
+
+	DetermineCircuitRecord() : base(AmbientCircuit.Default, CurrentCircuitRecord.Default) {}
 }

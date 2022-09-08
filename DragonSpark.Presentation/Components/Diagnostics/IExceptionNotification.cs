@@ -4,4 +4,4 @@ using System;
 
 namespace DragonSpark.Presentation.Components.Diagnostics;
 
-public interface IExceptionNotification : ISelect<Exception, NotificationMessage> {}
+public interface IExceptionNotification : ISelect<Exception, NotificationMessage?> {}

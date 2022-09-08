@@ -22,7 +22,11 @@ sealed class NotificationAwareExceptions : IExceptions
 	{
 		var result = _exceptions.Get(parameter);
 
-		_notifications.Notify(_message.Get(parameter.Exception));
+		var message = _message.Get(parameter.Exception);
+		if (message is not null)
+		{
+			_notifications.Notify(message);
+		}
 
 		return result;
 	}

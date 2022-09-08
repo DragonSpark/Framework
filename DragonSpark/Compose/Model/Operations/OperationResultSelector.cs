@@ -76,6 +76,9 @@ public class OperationResultSelector<_, T> : Selector<_, ValueTask<T>>
 	public OperationResultSelector<_, TTo> Select<TTo>(Func<T, TTo> select)
 		=> new(Get().Select(new OperationSelect<T, TTo>(select)));
 
+	public OperationResultSelector<_, T> Using(CancellationToken parameter)
+		=> new(new TokenAware<_, T>(Get(), parameter));
+
 	public OperationResultSelector<T> Bind(IResult<ValueTask<_>> parameter) => Bind(parameter.Get);
 	public OperationResultSelector<T> Bind(Func<ValueTask<_>> parameter)
 		=> new(new Binding<_, T>(this.Out(), parameter));

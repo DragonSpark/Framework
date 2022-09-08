@@ -3,7 +3,7 @@ using DragonSpark.Model.Operations;
 using System;
 using System.Threading;
 
-namespace DragonSpark.Application;
+namespace DragonSpark.Application.Runtime.Operations;
 
 sealed class Token : IToken, IDisposable
 {

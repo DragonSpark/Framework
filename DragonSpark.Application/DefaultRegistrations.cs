@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Application.Diagnostics;
 using DragonSpark.Application.Navigation;
+using DragonSpark.Application.Runtime.Operations;
 using DragonSpark.Application.Security;
 using DragonSpark.Application.Security.Identity;
 using DragonSpark.Application.Security.Identity.Model;
@@ -20,6 +21,7 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 	{
 		parameter.Start<IToken>()
 		         .Forward<Token>()
+		         .Decorate<AmbientAwareToken>()
 		         .Scoped()
 		         //
 		         .Then.Start<INavigateToSignOut>()
@@ -50,6 +52,7 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         //
 		         .Then.Start<IExceptions>()
 		         .Forward<Exceptions>()
+		         .Decorate<ContextAwareExceptions>()
 		         .Include(x => x.Dependencies)
 		         .Scoped()
 		         //

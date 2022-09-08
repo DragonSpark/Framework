@@ -135,12 +135,6 @@ partial class Extensions
 
 	/**/
 
-	public static Assignment<T> Assigned<T>(this IMutable<T?> @this, T value)
-	{
-		@this.Pass(value);
-		return new(@this);
-	}
-
 	public static bool TryPop<T>(this IMutable<T?> @this, out T? element)
 	{
 		element = @this.Get();
