@@ -118,6 +118,9 @@ partial class Extensions
 	public static string Format(this IResult<string> @this, params object[] arguments)
 		=> @this.Get().FormatWith(arguments);
 
+	public static string Smart<T>(this IResult<string> @this, T parameter) where T : notnull
+		=> SmartFormat.Smart.Format(@this.Get(), parameter);
+
 	/**/
 
 	public static (Type Owner, string Name) Key(this FieldIdentifier @this)

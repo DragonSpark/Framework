@@ -9,13 +9,16 @@ public class MessageTemplate<T> : IMessageTemplate<T>
 {
 	readonly Func<T, string> _to, _title, _template;
 
-	public MessageTemplate(string title, Func<T, string> to, ISelect<T, string> template)
-		: this(title, to, template.Get) {}
+	protected MessageTemplate(string address, string title, ISelect<T, string> template)
+		: this(address.Accept, title, template) {}
 
-	public MessageTemplate(string title, Func<T, string> to, Func<T, string> template)
+	protected MessageTemplate(Func<T, string> to, string title, ISelect<T, string> template)
+		: this(to, title, template.Get) {}
+
+	protected MessageTemplate(Func<T, string> to, string title, Func<T, string> template)
 		: this(to, title.Accept, template) {}
 
-	public MessageTemplate(Func<T, string> to, Func<T, string> title, Func<T, string> template)
+	protected MessageTemplate(Func<T, string> to, Func<T, string> title, Func<T, string> template)
 	{
 		_to       = to;
 		_title    = title;

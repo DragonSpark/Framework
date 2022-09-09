@@ -25,7 +25,7 @@ else
 	<SfGrid TValue="T"
 		    @ref="@_subject"
             ID="@Id"
-			AllowSelection="@AllowSelection"
+            AllowSelection="@AllowSelection"
 			AllowFiltering="@AllowFiltering"
 			AllowPaging="@AllowPaging"
 			AllowSorting="@AllowSorting"
@@ -62,8 +62,8 @@ else
 	[Parameter]
 	public FilterType FilterType { get; set; } = FilterType.Excel;
 
-    [Parameter]
-    public bool AllowSelection { get; set; }
+	[Parameter]
+	public bool AllowSelection { get; set; }
 
 	[Parameter]
 	public RenderFragment Columns { get; set; } = default!;
@@ -101,8 +101,8 @@ else
 	[Parameter]
 	public string CssClass { get; set; } = string.Empty;
 
-    [Parameter]
-    public ICollection<string>? Toolbar { get; set; }
+	[Parameter]
+	public ICollection<string>? Toolbar { get; set; }
 
 	[Parameter(CaptureUnmatchedValues = true)]
 	public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
@@ -134,7 +134,11 @@ else
 		base.OnInitialized();
 	}
 
-	Task OnClientInitialized(string parameter) => _subject.SetPersistDataAsync(parameter);
+	Task OnClientInitialized(string parameter)
+	{
+		//return _subject.SetPersistDataAsync(parameter);
+		return Task.CompletedTask;
+	}
 
-	public ValueTask<string> Get() => _subject.GetPersistDataAsync().ToOperation();
+    public ValueTask<string> Get() => _subject.GetPersistDataAsync().ToOperation();
 }
