@@ -12,10 +12,11 @@ sealed class OnlyOnceAlteration<TIn, TOut> : IAlteration<ISelect<TIn, TOut>>
 	OnlyOnceAlteration() {}
 
 	public ISelect<TIn, TOut> Get(ISelect<TIn, TOut> parameter)
-		=> new ThreadAwareFirst().Then()
-		              .Bind()
-		              .Accept<TIn>()
-		              .Return()
-		              .To(parameter.Then().OrDefault)
-		              .Get();
+		=> A.Condition(new ThreadAwareFirst())
+		    .Then()
+		    .Bind()
+		    .Accept<TIn>()
+		    .Return()
+		    .To(parameter.Then().OrDefault)
+		    .Get();
 }
