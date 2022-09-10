@@ -14,9 +14,12 @@
 
     [Parameter]
     public T Value { get; set; } = default!;
-    
+
     [Parameter]
     public EventCallback<T> ValueChanged { get; set; }
+
+    [Parameter]
+    public EventCallback<Binding<T>> Loaded { get; set; }
 
     [Parameter]
     public IEqualityComparer<T> Comparer { get; set; } = EqualityComparer<T>.Default;
@@ -37,7 +40,7 @@
         if (Rendered)
         {
             UpdateRequested = true;
-            StateHasChanged();  
+            StateHasChanged();
         }
     }
 
@@ -63,11 +66,12 @@
             if (Result?.Success ?? false)
             {
                 var current = Result.Value.Value ?? Value;
-                var update = !Comparer.Equals(current, Binding.Value); 
                 Binding.Value = current;
+                await Loaded.InvokeAsync(Binding);
+                var update = !Comparer.Equals(current, Binding.Value);
                 if (update)
                 {
-                    await ValueChanged.InvokeAsync(Value = Binding.Value);
+                    await ValueChanged.InvokeAsync(Value = Binding.Value).ConfigureAwait(false);
                 }
             }
         }
