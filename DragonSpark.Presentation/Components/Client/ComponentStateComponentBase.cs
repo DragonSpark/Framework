@@ -9,6 +9,9 @@ public class ComponentStateComponentBase : Microsoft.AspNetCore.Components.Compo
 	public Microsoft.AspNetCore.Components.ComponentBase Owner { get; set; } = default!;
 
 	[Parameter]
+	public string? ProvidedKey { get; set; }
+
+	[Parameter]
 	public string Qualifier { get; set; } = default!;
 }
 

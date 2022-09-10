@@ -4,7 +4,7 @@
 @using DragonSpark.Presentation.Components.Interaction
 @inherits ComponentStateComponentBase
 
-<LocalStateComponent T="T" Owner="Owner" Qualifier="@Qualifier">
+<LocalStateComponent T="T" Owner="Owner" ProvidedKey="@ProvidedKey" Qualifier="@Qualifier">
     <ClientValueBindingComponent T="T" Value="@Value" Store="context" ChildContent="@ChildContent" ValueChanged="@OnChange" />
 </LocalStateComponent>
 

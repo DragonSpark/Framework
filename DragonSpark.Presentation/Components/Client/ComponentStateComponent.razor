@@ -19,7 +19,7 @@
 
     protected override void OnInitialized()
     {
-        Store = new ComponentStateVariable<T>($"{Key.Get(Owner)}/{Qualifier}", Storage);
+        Store = new ComponentStateVariable<T>($"{ProvidedKey ?? Key.Get(Owner)}/{Qualifier}", Storage);
         base.OnInitialized();
     }
 }
