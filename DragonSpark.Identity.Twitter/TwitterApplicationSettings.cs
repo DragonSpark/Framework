@@ -1,6 +1,6 @@
 ﻿namespace DragonSpark.Identity.Twitter;
 
-public sealed class TwitterApplicationSettings
+public class TwitterApplicationSettings
 {
 	public string Key { get; set; } = null!;
 
