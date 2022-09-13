@@ -18,4 +18,6 @@ public class StorageEntry : IStorageEntry
 	public StorageEntryProperties Properties { get; }
 
 	public ValueTask<Stream> Get() => _previous.Get();
+
+	public ValueTask<Stream> Get(Stream parameter) => _previous.Get(parameter);
 }

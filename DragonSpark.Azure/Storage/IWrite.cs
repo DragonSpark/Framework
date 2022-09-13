@@ -3,4 +3,4 @@ using DragonSpark.Model.Operations;
 
 namespace DragonSpark.Azure.Storage;
 
-public interface IWrite : ISelecting<NewStorageEntryInput, BlobClient> {}
+public interface IWrite : ISelecting<WriteInput, BlobClient> {}

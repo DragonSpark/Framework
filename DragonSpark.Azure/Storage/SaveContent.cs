@@ -18,7 +18,7 @@ sealed class SaveContent : ISaveContent
 		_entry = entry;
 	}
 
-	public async ValueTask<IStorageEntry> Get(NewStorageEntryInput parameter)
+	public async ValueTask<IStorageEntry> Get(WriteInput parameter)
 	{
 		var client = await _write.Await(parameter);
 		var result = await _entry.Await(client);

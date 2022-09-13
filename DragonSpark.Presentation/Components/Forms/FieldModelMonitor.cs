@@ -29,7 +29,7 @@ public class FieldModelMonitor : ComponentBase
 				if ((_editContext = value) != null)
 				{
 					_editContext.OnFieldChanged += FieldChanged;
-				}	
+				}
 			}
 		}
 	}

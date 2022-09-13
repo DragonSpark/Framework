@@ -18,4 +18,10 @@ sealed class DefaultStorageEntry : IStorageEntry
 	public StorageEntryProperties Properties { get; }
 
 	public ValueTask<Stream> Get() => _client.OpenReadAsync().ToOperation();
+
+	public async ValueTask<Stream> Get(Stream parameter)
+	{
+		await _client.DownloadToAsync(parameter).ConfigureAwait(false);
+		return parameter;
+	}
 }

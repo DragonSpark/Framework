@@ -10,9 +10,9 @@ sealed class Write : IWrite
 
 	public Write(BlobContainerClient client) => _client = client;
 
-	public async ValueTask<BlobClient> Get(NewStorageEntryInput parameter)
+	public async ValueTask<BlobClient> Get(WriteInput parameter)
 	{
-		var (name, contentType, _, _, write) = parameter;
+		var (name, contentType, write) = parameter;
 		var             result  = _client.GetBlobClient(name);
 		var             header  = new BlobHttpHeaders { ContentType      = contentType };
 		var             options = new BlobOpenWriteOptions { HttpHeaders = header };
