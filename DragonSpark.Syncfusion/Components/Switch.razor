@@ -1,0 +1,31 @@
+﻿@using DragonSpark.Compose
+@using DragonSpark.Presentation.Components
+@using Syncfusion.Blazor.Buttons
+
+<div class="d-flex">
+    <SfSwitch TChecked="bool" id="@Identifier" Checked="@Value" CheckedChanged="@OnChanged" CssClass="mr-3" />
+    <h3><label for="@Identifier" style="cursor: pointer">@Label</label></h3>
+</div>
+
+@code {
+    [Parameter]
+    public string Label { get; set; } = "Enable";
+
+    [Parameter]
+    public bool Value { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> ValueChanged { get; set; }
+
+    [Parameter]
+    public EventCallback Updated { get; set; }
+
+    async Task OnChanged(bool parameter)
+    {
+        await ValueChanged.InvokeAsync(Value = parameter);
+        await Updated.InvokeAsync(this).ConfigureAwait(false);
+    }
+
+    string Identifier { get; set; } = UniqueIdentifiers.Default.Get();
+
+}
