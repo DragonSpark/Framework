@@ -14,7 +14,7 @@ public class Editors<T> : ISelecting<T, IEditor>
 {
 	readonly IScopes _scopes;
 
-	public Editors(IScopes scopes) => _scopes = scopes;
+	protected Editors(IScopes scopes) => _scopes = scopes;
 
 	public async ValueTask<IEditor> Get(T parameter)
 	{
