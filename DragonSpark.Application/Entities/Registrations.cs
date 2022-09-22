@@ -45,6 +45,10 @@ sealed class Registrations<T> : ICommand<IServiceCollection> where T : DbContext
 		         .Then.Start<Save>()
 		         .Singleton()
 		         //
+		         .Then.Start<SaveAndCommit<object>>()
+		         .Generic()
+		         .Singleton()
+		         //
 		         .Then.Start<Save<object>>()
 		         .Generic()
 		         .Singleton()

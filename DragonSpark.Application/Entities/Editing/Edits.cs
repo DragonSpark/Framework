@@ -4,12 +4,12 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Editing;
 
-public class SelectForEdit<TIn, T> : IEdit<TIn, T>
+public sealed class Edits<TIn, T> : IEdit<TIn, T>
 {
 	readonly IScopes            _scopes;
 	readonly ISelecting<TIn, T> _select;
 
-	public SelectForEdit(IScopes scopes, ISelecting<TIn, T> select)
+	public Edits(IScopes scopes, ISelecting<TIn, T> select)
 	{
 		_scopes = scopes;
 		_select = select;
