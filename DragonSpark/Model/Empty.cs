@@ -9,6 +9,8 @@ namespace DragonSpark.Model;
 public static class Empty
 {
 	public static Array<T> Result<T>() => Empty<T>.Array;
+
+	public static List<T> List<T>() => Empty<T>.List;
 		
 	public static IEnumerable<T> Enumerable<T>() => Empty<T>.Enumerable;
 
@@ -22,7 +24,9 @@ public static class Empty<T>
 {
 	public static T[] Array { get; } = System.Array.Empty<T>();
 
-	public static ArraySegment<T> Segment { get; } = new ArraySegment<T>(Array);
+	public static List<T> List { get; } = new();
+
+	public static ArraySegment<T> Segment { get; } = new(Array);
 
 	public static IEnumerable<T> Enumerable { get; } = System.Linq.Enumerable.Empty<T>();
 
