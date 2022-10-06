@@ -39,6 +39,7 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Then.Decorate<IExceptions, CompensationAwareExceptions>()
 		         .Decorate<IExceptions, NotificationAwareExceptions>()
 		         .Decorate<IExceptions, NavigationAwareExceptions>()
+				 .Decorate<IExceptions, CommonUserInterfaceExceptionsAwareExceptions>()
 		         //
 		         .Decorate<ILogException, NavigationAwareLogException>()
 		         //
