@@ -16,7 +16,8 @@ public class Subscribe : ISubscribe
 		_name       = name;
 	}
 
-	public ISubscription Get(Func<Task> parameter) => new Subscription(_connection, _name, parameter);
+	public ISubscription Get(Func<Task> parameter)
+		=> new PolicyAwareSubscription(new Subscription(_connection, _name, parameter));
 }
 
 public class Subscribe<T> : ISubscribe<T>
@@ -30,5 +31,6 @@ public class Subscribe<T> : ISubscribe<T>
 		_name       = name;
 	}
 
-	public ISubscription Get(Func<T, Task> parameter) => new Subscription<T>(_connection, _name, parameter);
+	public ISubscription Get(Func<T, Task> parameter)
+		=> new PolicyAwareSubscription(new Subscription<T>(_connection, _name, parameter));
 }
