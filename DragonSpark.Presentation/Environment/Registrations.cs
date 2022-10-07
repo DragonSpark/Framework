@@ -15,7 +15,6 @@ sealed class Registrations : ICommand<IServiceCollection>
 	{
 		parameter.Start<CircuitHandler>()
 		         .Forward<ContextAwareCircuitHandler>()
-		         .Scoped()
-			;
+		         .Scoped();
 	}
 }

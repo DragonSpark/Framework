@@ -8,6 +8,12 @@
 	opacity: 0.4;
 }
 
+.dragonspark-activity-active-alternate {
+    pointer-events: none;
+    opacity: 0.75;
+}
+
+
 .dragonspark-input-hidden {
 	position: absolute;
 	left: -999px;
