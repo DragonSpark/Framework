@@ -1,10 +1,10 @@
 ﻿using DragonSpark.Application.Connections;
 using DragonSpark.Model.Commands;
-using System.Net.Http;
+using System.Net.Http.Headers;
 
 namespace DragonSpark.Presentation.Connections.Circuits;
 
-public sealed class ApplyState : ICommand<HttpClient>
+public sealed class ApplyState : ICommand<HttpRequestHeaders>
 {
 	readonly ClientState _state;
 	readonly string      _name;
@@ -19,12 +19,12 @@ public sealed class ApplyState : ICommand<HttpClient>
 		_name  = name;
 	}
 
-	public void Execute(HttpClient parameter)
+	public void Execute(HttpRequestHeaders parameter)
 	{
 		var state = _state.Get();
 		if (state.Success && state.Value is not null)
 		{
-			parameter.DefaultRequestHeaders.Add(_name, state.Value);
+			parameter.Add(_name, state.Value);
 		}
 	}
 }

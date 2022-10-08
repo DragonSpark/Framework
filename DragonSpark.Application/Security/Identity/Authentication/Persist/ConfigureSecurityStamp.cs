@@ -12,11 +12,8 @@ sealed class ConfigureSecurityStamp : ICommand<SecurityStampValidatorOptions>
 {
 	readonly Func<SecurityStampRefreshingPrincipalContext, Task> _refresh;
 
-	public ConfigureSecurityStamp(IServiceCollection services) : this(services.Deferred<RefreshPrincipal>()
-	                                                                          .Start()
-	                                                                          .Select(y => y.ToDelegate())
-	                                                                          .Then()
-	                                                                          .Assume()) {}
+	public ConfigureSecurityStamp(IServiceCollection services)
+		: this(services.Deferred<RefreshPrincipal>().Start().Select(y => y.ToDelegate()).Then().Assume()) {}
 
 	public ConfigureSecurityStamp(Func<SecurityStampRefreshingPrincipalContext, Task> refresh) => _refresh = refresh;
 
