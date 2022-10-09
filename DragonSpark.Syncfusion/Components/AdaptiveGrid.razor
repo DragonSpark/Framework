@@ -119,11 +119,11 @@ else
 		set => State = value;
 	}
 
-	string? Class
+	string Class
 	{
 		get {
 			var start = Matches ? string.Empty : MinimalClass;
-			var result = $"{start} {CssClass}".Trim().NullIfEmpty();
+			var result = $"{start} {CssClass}".Trim();
 			return result;
 		}
 	}
