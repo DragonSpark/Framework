@@ -32,16 +32,6 @@ sealed class ServiceScopeFactory : IServiceScopeFactory
 			_scope.Dispose();
 		}
 
-		public async ValueTask DisposeAsync()
-		{
-			try
-			{
-				await _scope.DisposeAsync();
-			}
-			catch (InvalidOperationException) // ISSUE: LightInject: https://github.com/seesharper/LightInject/issues/577
-			{
-				//Dispose();
-			}
-		}
+		public ValueTask DisposeAsync() => _scope.DisposeAsync();
 	}
 }
