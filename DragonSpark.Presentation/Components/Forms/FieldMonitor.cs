@@ -6,6 +6,9 @@ namespace DragonSpark.Presentation.Components.Forms;
 public class FieldMonitor<T> : ComponentBase
 {
 	[Parameter]
+	public object? Model { get; set; }
+
+	[Parameter]
 	public string FieldName { get; set; } = default!;
 
 	/// <summary>Gets or sets a callback that updates the bound value.</summary>
@@ -37,7 +40,8 @@ public class FieldMonitor<T> : ComponentBase
 
 	void FieldChanged(object? sender, FieldChangedEventArgs args)
 	{
-		if (args.FieldIdentifier.FieldName == FieldName)
+		var model = Model is null || Model == args.FieldIdentifier.Model;
+		if (model && args.FieldIdentifier.FieldName == FieldName)
 		{
 			Changed.InvokeAsync(args.FieldIdentifier.GetValue<T>());
 		}
