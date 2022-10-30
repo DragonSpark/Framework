@@ -3,14 +3,14 @@ using System;
 
 namespace DragonSpark.Application.Diagnostics.Time;
 
-sealed class Ago : IWindow
+sealed class WithinLast : IWindow
 {
 	readonly ITime    _time;
 	readonly TimeSpan _window;
 
-	public Ago(TimeSpan window) : this(DragonSpark.Runtime.Time.Default, window) {}
+	public WithinLast(TimeSpan window) : this(DragonSpark.Runtime.Time.Default, window) {}
 
-	public Ago(ITime time, TimeSpan window)
+	public WithinLast(ITime time, TimeSpan window)
 	{
 		_time   = time;
 		_window = window;

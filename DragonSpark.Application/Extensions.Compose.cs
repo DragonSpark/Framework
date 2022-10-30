@@ -88,7 +88,7 @@ public static partial class Extensions
 
 	public static Slide Slide(this TimeSpan @this) => new(@this);
 
-	public static IWindow WithinLast(this ITime @this, TimeSpan within) => new Ago(@this, within);
+	public static IWindow WithinLast(this ITime @this, TimeSpan within) => new WithinLast(@this, within);
 
 	public static IWindow IsPast(this ITime @this, TimeSpan window) => new FromNow(@this, window);
 
