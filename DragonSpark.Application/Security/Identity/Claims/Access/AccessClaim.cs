@@ -16,8 +16,7 @@ public class AccessClaim<T> : IAccessClaim<T>
 	readonly Func<string, T> _select;
 	readonly Claim<T>        _default;
 
-	public AccessClaim(string claim, Func<string, T> select)
-		: this(new ReadClaim(claim), select, Claim<T>.Default) {}
+	public AccessClaim(string claim, Func<string, T> select) : this(new ReadClaim(claim), select, Claim<T>.Default) {}
 
 	public AccessClaim(IReadClaim read, Func<string, T> select, Claim<T> @default)
 	{
