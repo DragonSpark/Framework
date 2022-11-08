@@ -134,11 +134,7 @@ else
 		base.OnInitialized();
 	}
 
-	Task OnClientInitialized(string parameter)
-	{
-		//return _subject.SetPersistDataAsync(parameter);
-		return Task.CompletedTask;
-	}
+	Task OnClientInitialized(string parameter) => _subject.SetPersistDataAsync(parameter);
 
     public ValueTask<string> Get() => _subject.GetPersistDataAsync().ToOperation();
 }
