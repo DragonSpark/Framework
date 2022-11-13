@@ -63,21 +63,19 @@
 
 @code {
 
-	[Parameter]
-	public Guid Id
+	protected override void OnInitialized()
 	{
-		get => _id;
-		set
-		{
-			if (_id != value)
-			{
-				_id = value;
-				_identity = GenerateElementIdentifier.Default.Get(_id);
-			}
-		}
-	}	Guid _id = Guid.Empty;
+		base.OnInitialized();
+		_identity = $"{GenerateElementIdentifier.Default.Get(Id)}{Qualifier}";
+	}
+
+	[Parameter]
+	public Guid Id { get; set; }
 
 	string _identity = string.Empty;
+
+    [Parameter]
+	public string Qualifier { get; set; } = string.Empty;
 
 	[Parameter]
 	public IQueries<T> Content {get; set; } = default!;
