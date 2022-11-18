@@ -16,6 +16,7 @@ using DragonSpark.Presentation.Components.State;
 using DragonSpark.Presentation.Compose;
 using DragonSpark.Presentation.Interaction;
 using DragonSpark.Presentation.Model;
+using DragonSpark.Presentation.Text;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using NetFabric.Hyperlinq;
@@ -124,6 +125,8 @@ public static class Extensions
 			   : SelectValue<T>.Default.Get(@this);
 
 	public static string Text(this RenderFragment @this) => FragmentText.Default.Get(@this);
+
+	public static MarkupString AsMarkdown(this string @this) => MarkDownify.Default.Get(@this);
 
 	/**/
 
