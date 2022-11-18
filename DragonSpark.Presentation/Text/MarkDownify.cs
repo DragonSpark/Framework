@@ -11,7 +11,7 @@ sealed class MarkDownify : ISelect<string, MarkupString>
 	readonly string _replace;
 	public static MarkDownify Default { get; } = new();
 
-	MarkDownify() : this(new Regex(@"\w\n\w"), "<br />") {}
+	MarkDownify() : this(new Regex(@"[^\s]\r?\n\b"), "<br />") {}
 
 	public MarkDownify(Regex expression, string replace)
 	{
