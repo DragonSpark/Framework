@@ -7,7 +7,7 @@ sealed class PolicyAwareSubscription : PolicyAwareOperation, ISubscription
 {
 	readonly ISubscription _previous;
 
-	public PolicyAwareSubscription(ISubscription previous) : base(previous, DurableEvaluatePolicy.Default)
+	public PolicyAwareSubscription(ISubscription previous) : base(previous, DurableConnectionPolicy.Default)
 		=> _previous = previous;
 
 	public ValueTask DisposeAsync() => _previous.DisposeAsync();
