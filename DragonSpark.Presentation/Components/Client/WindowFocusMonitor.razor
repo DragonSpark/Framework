@@ -1,0 +1,26 @@
+﻿@using DragonSpark.Presentation.Environment.Browser.Window
+
+@implements IAsyncDisposable
+
+@inject CreateWindowFocusElement Create
+
+@code {
+    WindowFocusElement? _element;
+
+    [Parameter]
+    public EventCallback Focused { get; set; }
+
+    [JSInvokable]
+    public Task OnFocus() => Focused.InvokeAsync();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _element = await Create.Get(new (this));
+            await _element.Start().ConfigureAwait(false);
+        }
+    }
+
+    public ValueTask DisposeAsync() => _element?.DisposeAsync() ?? ValueTask.CompletedTask;
+}

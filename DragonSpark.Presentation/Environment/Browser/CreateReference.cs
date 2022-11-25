@@ -9,7 +9,7 @@ public class CreateReference<T> : ISelecting<CreateReferenceInput<T>, IJSObjectR
 {
 	readonly string _name;
 
-	public CreateReference(string name) => _name = name;
+	protected CreateReference(string name) => _name = name;
 
 	public ValueTask<IJSObjectReference> Get(CreateReferenceInput<T> parameter)
 	{
