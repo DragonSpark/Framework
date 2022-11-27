@@ -8,12 +8,10 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
 
 public class EvaluateToSingleOrDefault<T> : EvaluateToSingleOrDefault<None, T>
 {
-	public EvaluateToSingleOrDefault(IScopes scopes,
-	                                 Expression<Func<DbContext, IQueryable<T>>> expression)
+	public EvaluateToSingleOrDefault(IScopes scopes, Expression<Func<DbContext, IQueryable<T>>> expression)
 		: base(scopes, expression.Then()) {}
 
-	public EvaluateToSingleOrDefault(IScopes scopes,
-	                                 Expression<Func<DbContext, None, IQueryable<T>>> expression)
+	public EvaluateToSingleOrDefault(IScopes scopes, Expression<Func<DbContext, None, IQueryable<T>>> expression)
 		: base(scopes, expression) {}
 
 	public EvaluateToSingleOrDefault(IReading<None, T> reading) : base(reading) {}
@@ -21,8 +19,7 @@ public class EvaluateToSingleOrDefault<T> : EvaluateToSingleOrDefault<None, T>
 
 public class EvaluateToSingleOrDefault<TIn, T> : Evaluate<TIn, T, T?>
 {
-	protected EvaluateToSingleOrDefault(IScopes scopes,
-	                                    Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
+	protected EvaluateToSingleOrDefault(IScopes scopes, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
 		: this(new Reading<TIn, T>(scopes, expression)) {}
 
 	protected EvaluateToSingleOrDefault(IReading<TIn, T> reading) : base(reading, ToSingleOrDefault<T>.Default) {}
