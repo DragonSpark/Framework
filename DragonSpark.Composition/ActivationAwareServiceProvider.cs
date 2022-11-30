@@ -14,8 +14,7 @@ sealed class ActivationAwareServiceProvider : IServiceProvider, IDisposable
 	public ActivationAwareServiceProvider(IServiceProvider provider)
 		: this(provider, CanActivate.Default, Runtime.Activation.Activator.Default) {}
 
-	public ActivationAwareServiceProvider(IServiceProvider provider, ICondition<Type> condition,
-	                                      IActivator activator)
+	public ActivationAwareServiceProvider(IServiceProvider provider, ICondition<Type> condition, IActivator activator)
 	{
 		_provider  = provider;
 		_condition = condition;
