@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 
 namespace DragonSpark.Application.Entities.Queries.Composition;
 
-public class WhereSelect<TIn, T, TTo> : Combine<TIn, T, TTo>
+public class WhereSelect<TIn, T, TTo> : Combine<TIn, T, TTo> where T : class
 {
 	protected WhereSelect(IQuery<T> previous, Expression<Func<T, bool>> where, Expression<Func<T, TTo>> select)
 		: this((context, _) => previous.Get().Invoke(context, None.Default), (_, x) => where.Invoke(x),
@@ -32,6 +32,10 @@ public class WhereSelect<TIn, T, TTo> : Combine<TIn, T, TTo>
 	                      Expression<Func<TIn, T, bool>> where, Expression<Func<T, TTo>> select)
 		: this(previous, where, (_, x) => select.Invoke(x)) {}
 
+	protected WhereSelect(Expression<Func<DbContext, TIn, IQueryable<T>>> previous,
+	                      Expression<Func<DbContext, TIn, T, bool>> where, Expression<Func<T, TTo>> select)
+		: this(previous, where, (_, _, x) => select.Invoke(x)) {}
+
 	protected WhereSelect(IQuery<T> previous, Expression<Func<TIn, T, bool>> where,
 	                      Expression<Func<TIn, T, TTo>> select)
 		: this((context, _) => previous.Get().Invoke(context, None.Default), @where, @select) {}
@@ -40,15 +44,25 @@ public class WhereSelect<TIn, T, TTo> : Combine<TIn, T, TTo>
 	                      Expression<Func<TIn, T, bool>> where, Expression<Func<TIn, T, TTo>> select)
 		: base(previous, (@in, q) => q.Where(x => where.Invoke(@in, x)).Select(x => select.Invoke(@in, x))) {}
 
+	protected WhereSelect(Expression<Func<IQueryable<T>, IQueryable<T>>> previous,
+	                      Expression<Func<DbContext, TIn, T, bool>> where,
+	                      Expression<Func<T, TTo>> select)
+		: this((d, @in) => previous.Invoke(d.Set<T>()), where, select) {}
+
 	protected WhereSelect(Expression<Func<DbContext, TIn, IQueryable<T>>> previous,
 	                      Expression<Func<TIn, T, bool>> where,
 	                      Expression<Func<DbContext, TIn, T, TTo>> select)
+		: this(previous, (_, @in, x) => where.Invoke(@in, x), select) {}
+
+	protected WhereSelect(Expression<Func<DbContext, TIn, IQueryable<T>>> previous,
+	                      Expression<Func<DbContext, TIn, T, bool>> where,
+	                      Expression<Func<DbContext, TIn, T, TTo>> select)
 		: base(previous,
 		       (context, @in, q)
-			       => q.Where(x => where.Invoke(@in, x)).Select(x => select.Invoke(context, @in, x))) {}
+			       => q.Where(x => where.Invoke(context, @in, x)).Select(x => select.Invoke(context, @in, x))) {}
 }
 
-public class WhereSelect<T, TTo> : WhereSelect<None, T, TTo>, IQuery<TTo>
+public class WhereSelect<T, TTo> : WhereSelect<None, T, TTo>, IQuery<TTo> where T : class
 {
 	protected WhereSelect(IQuery<T> previous, Expression<Func<T, bool>> where, Expression<Func<T, TTo>> select)
 		: this(previous.Then(), where, select) {}

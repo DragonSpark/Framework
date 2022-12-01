@@ -21,7 +21,11 @@ public class StartWhereSelect<TIn, T, TTo> : WhereSelect<TIn, T, TTo> where T : 
 {
 	protected StartWhereSelect(Expression<Func<IQueryable<T>, IQueryable<T>>> query,
 	                           Expression<Func<T, bool>> where, Expression<Func<T, TTo>> select)
-		: base((context, @in) => query.Invoke(Set<TIn, T>.Default.Get().Invoke(context, @in)), where, select) {}
+		: base((d, @in) => query.Invoke(Set<TIn, T>.Default.Get().Invoke(d, @in)), where, select) {}
+
+	protected StartWhereSelect(Expression<Func<IQueryable<T>, IQueryable<T>>> query,
+	                           Expression<Func<DbContext, TIn, T, bool>> where, Expression<Func<T, TTo>> select)
+		: base(query, where, select) {}
 
 	protected StartWhereSelect(Expression<Func<T, bool>> where, Expression<Func<T, TTo>> select)
 		: base(Set<TIn, T>.Default, where, select) {}
@@ -39,6 +43,9 @@ public class StartWhereSelect<TIn, T, TTo> : WhereSelect<TIn, T, TTo> where T : 
 		: base((context, @in) => query.Invoke(Set<TIn, T>.Default.Get().Invoke(context, @in)), where, select) {}
 
 	protected StartWhereSelect(Expression<Func<TIn, T, bool>> where, Expression<Func<T, TTo>> select)
+		: base(Set<TIn, T>.Default, where, select) {}
+
+	protected StartWhereSelect(Expression<Func<DbContext, TIn, T, bool>> where, Expression<Func<T, TTo>> select)
 		: base(Set<TIn, T>.Default, where, select) {}
 
 	protected StartWhereSelect(Expression<Func<TIn, T, bool>> where, Expression<Func<TIn, T, TTo>> select)
