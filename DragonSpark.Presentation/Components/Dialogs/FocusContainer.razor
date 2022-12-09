@@ -1,0 +1,23 @@
+﻿@inject IJSRuntime Runtime
+
+<div @attributes="@AdditionalAttributes" @onclick="@OnClick">
+    @ChildContent(Identifier)
+</div>
+
+@code {
+    [Parameter]
+    public string Identifier { get; set; } = UniqueIdentifiers.Default.Get();
+
+    [Parameter]
+    public RenderFragment<string> ChildContent { get; set; } = default!;
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
+
+    async Task OnClick()
+    {
+        var element = await Runtime.InvokeAsync<IJSObjectReference>("document.getElementById", Identifier);
+        await element.InvokeVoidAsync("focus").ConfigureAwait(false);
+    }
+
+}
