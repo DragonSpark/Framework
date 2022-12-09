@@ -50,9 +50,9 @@ public sealed class OperationCallbackContext<T> : IResult<EventCallback<T>>
 	public OperationCallbackContext<T> Using(object receiver)
 		=> new OperationCallbackContext<T>(receiver, _operation);
 
-	public OperationCallbackContext<T> Throttle() => Throttle(TimeSpan.FromSeconds(1));
+	public OperationCallbackContext<T> Block() => Block(TimeSpan.FromSeconds(1));
 
-	public OperationCallbackContext<T> Throttle(TimeSpan duration)
+	public OperationCallbackContext<T> Block(TimeSpan duration)
 		=> new OperationCallbackContext<T>(_receiver, new BlockingEntryOperation<T>(_operation, duration));
 
 	public OperationCallbackContext<T> UpdateActivity()
