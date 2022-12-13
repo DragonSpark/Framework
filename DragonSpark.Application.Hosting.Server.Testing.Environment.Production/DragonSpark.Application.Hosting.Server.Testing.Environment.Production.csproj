@@ -1,11 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <LangVersion>preview</LangVersion>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference
       Include="..\DragonSpark.Application.Hosting.Server.Testing.Environment\DragonSpark.Application.Hosting.Server.Testing.Environment.csproj" />
