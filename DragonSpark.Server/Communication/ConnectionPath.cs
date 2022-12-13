@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Results;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using Flurl;
 using Microsoft.Extensions.Configuration;
@@ -9,7 +10,7 @@ namespace DragonSpark.Server.Communication;
 public class ConnectionPath : Instance<Uri>, ISelect<string, Uri>
 {
 	protected ConnectionPath(IConfiguration configuration, string name)
-		: this(new Uri(configuration.GetConnectionString(name))) {}
+		: this(new Uri(configuration.GetConnectionString(name).Verify())) {}
 
 	protected ConnectionPath(Uri root) : base(root) {}
 

@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection.Conditions;
 using NetFabric.Hyperlinq;
 using System.Security.Claims;
@@ -37,7 +38,7 @@ public class HasClaim<T> : IDepending<T> where T : IdentityUser
 	{
 		using var users  = _users.Get();
 		var       user   = await users.Subject.FindByIdAsync(parameter.Id.ToString()).ConfigureAwait(false);
-		var       claims = await users.Subject.GetClaimsAsync(user).ConfigureAwait(false);
+		var       claims = await users.Subject.GetClaimsAsync(user.Verify()).ConfigureAwait(false);
 		var       result = claims.AsValueEnumerable().Select(x => x.Type).Contains(_claim);
 		return result;
 	}

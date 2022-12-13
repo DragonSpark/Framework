@@ -4,4 +4,4 @@ using System.Reflection;
 
 namespace DragonSpark.Reflection.Members;
 
-public interface IPropertyAssignmentDelegate : ISelect<PropertyInfo, Action<object, object>> {}
+public interface IPropertyAssignmentDelegate : ISelect<PropertyInfo, Action<object, object?>> {}

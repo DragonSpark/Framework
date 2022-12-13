@@ -18,5 +18,5 @@ sealed class CurrentClientState : IFormatter<HttpConnectionOptions>
 		_key      = key;
 	}
 
-	public string Get(HttpConnectionOptions parameter) => _accessor.Get().Request.Headers[_key];
+	public string Get(HttpConnectionOptions parameter) => _accessor.Get().Request.Headers[_key]!;
 }

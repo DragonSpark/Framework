@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.MultiFactor;
@@ -12,6 +13,8 @@ sealed class Key<T> : ISelecting<UserInput<T>, string> where T : IdentityUser
 	public async ValueTask<string> Get(UserInput<T> parameter)
 	{
 		var (manager, user) = parameter;
-		return await manager.GetAuthenticatorKeyAsync(user).ConfigureAwait(false);
+		var key    = await manager.GetAuthenticatorKeyAsync(user).ConfigureAwait(false);
+		var result = key.Verify();
+		return result;
 	}
 }

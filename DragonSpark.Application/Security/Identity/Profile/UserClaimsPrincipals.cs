@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using DragonSpark.Compose;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -21,7 +22,7 @@ public class UserClaimsPrincipals<T> : UserClaimsPrincipalFactory<T> where T : c
 		var result = new ClaimsIdentity(_applicationName, Options.ClaimsIdentity.UserNameClaimType,
 		                                Options.ClaimsIdentity.RoleClaimType);
 		result.AddClaim(new Claim(ClaimTypes.NameIdentifier, userId));
-		result.AddClaim(new Claim(ClaimTypes.Name, userName));
+		result.AddClaim(new Claim(ClaimTypes.Name, userName.Verify()));
 		if (UserManager.SupportsUserSecurityStamp)
 		{
 			result.AddClaim(new Claim(Options.ClaimsIdentity.SecurityStampClaimType,

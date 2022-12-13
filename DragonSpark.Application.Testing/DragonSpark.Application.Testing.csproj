@@ -5,7 +5,7 @@
     <IsPackable>false</IsPackable>
     <startupobject>DragonSpark.Application.Testing.Program</startupobject>
     <GenerateProgramFile>false</GenerateProgramFile>
-    <NoWarn>IDE0051</NoWarn>    
+    <NoWarn>IDE0051</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>

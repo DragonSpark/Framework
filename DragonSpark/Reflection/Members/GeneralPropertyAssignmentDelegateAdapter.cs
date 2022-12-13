@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace DragonSpark.Reflection.Members;
 
-sealed class GeneralPropertyAssignmentDelegateAdapter<T, TValue> : Select<PropertyInfo, Action<object, object>>,
+sealed class GeneralPropertyAssignmentDelegateAdapter<T, TValue> : Select<PropertyInfo, Action<object, object?>>,
                                                                    IPropertyAssignmentDelegate
 {
 	public static GeneralPropertyAssignmentDelegateAdapter<T, TValue> Default { get; } = new();
@@ -16,16 +16,19 @@ sealed class GeneralPropertyAssignmentDelegateAdapter<T, TValue> : Select<Proper
 		: base(Start.An.Instance(PropertyAssignmentDelegate<T, TValue>.Default)
 		            .Select(x => new Adapter(x).ToAssignmentDelegate())) {}
 
-	sealed class Adapter : IAssign<object, object>
+	sealed class Adapter : IAssign<object, object?>
 	{
 		readonly Action<T, TValue> _assign;
 
 		public Adapter(Action<T, TValue> assign) => _assign = assign;
 
-		public void Execute(Pair<object, object> parameter)
+		public void Execute(Pair<object, object?> parameter)
 		{
 			var (key, value) = parameter;
-			_assign(key.To<T>(), value.To<TValue>());
+			if (value is TValue v)
+			{
+				_assign(key.To<T>(), v);
+			}
 		}
 	}
 

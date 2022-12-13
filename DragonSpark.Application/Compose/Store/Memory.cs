@@ -22,7 +22,7 @@ sealed class Memory<TIn, TOut> : ISelect<TIn, TOut>
 	{
 		var key    = _key(parameter);
 		var value  = _memory.TryGetValue(key, out var stored);
-		var result = value ? stored.To<TOut>() : _get((key, parameter));
+		var result = value ? stored!.To<TOut>() : _get((key, parameter));
 		return result;
 	}
 }

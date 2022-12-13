@@ -1,4 +1,5 @@
-﻿using DragonSpark.Runtime;
+﻿using DragonSpark.Compose;
+using DragonSpark.Runtime;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity;
@@ -20,7 +21,8 @@ sealed class MarkModified<T> : IMarkModified<T> where T : IdentityUser
 	{
 		using var users   = _users.Get();
 		var       subject = await users.Subject.FindByIdAsync(parameter.Id.ToString()).ConfigureAwait(false);
-		subject.Modified = _time.Get();
-		await users.Subject.UpdateAsync(subject).ConfigureAwait(false);
+		var       user    = subject.Verify();
+		user.Modified = _time.Get();
+		await users.Subject.UpdateAsync(user).ConfigureAwait(false);
 	}
 }

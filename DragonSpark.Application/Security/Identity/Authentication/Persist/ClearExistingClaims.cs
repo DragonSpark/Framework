@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using NetFabric.Hyperlinq;
 using System.Buffers;
 using System.Collections.Generic;
@@ -21,10 +22,11 @@ sealed class ClearExistingClaims<T> : IOperation<PersistInput<T>> where T : Iden
 		var       claims  = array.Open();
 		using var users   = _users.Get();
 		var       subject = await users.Subject.FindByIdAsync(user.Id.ToString());
-
-		using var types  = claims.AsValueEnumerable().Select(x => x.Type).ToArray(ArrayPool<string>.Shared);
-		var       remove = new List<Claim>();
-		foreach (var claim in (await users.Subject.GetClaimsAsync(subject).ConfigureAwait(false)).AsValueEnumerable())
+		var       verify  = subject.Verify();
+		using var types   = claims.AsValueEnumerable().Select(x => x.Type).ToArray(ArrayPool<string>.Shared);
+		var       remove  = new List<Claim>();
+		var list = await users.Subject.GetClaimsAsync(verify).ConfigureAwait(false);
+		foreach (var claim in list.AsValueEnumerable())
 		{
 			if (types.Contains(claim.Type))
 			{
@@ -32,6 +34,6 @@ sealed class ClearExistingClaims<T> : IOperation<PersistInput<T>> where T : Iden
 			}
 		}
 
-		await users.Subject.RemoveClaimsAsync(subject, remove).ConfigureAwait(false);
+		await users.Subject.RemoveClaimsAsync(verify, remove).ConfigureAwait(false);
 	}
 }

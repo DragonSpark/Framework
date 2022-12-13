@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace DragonSpark.Reflection.Members;
 
-public sealed class PropertyAssignmentDelegates : ReferenceValueTable<PropertyInfo, Action<object, object>>,
+public sealed class PropertyAssignmentDelegates : ReferenceValueTable<PropertyInfo, Action<object, object?>>,
                                                   IPropertyAssignmentDelegate
 {
 	public static PropertyAssignmentDelegates Default { get; } = new ();

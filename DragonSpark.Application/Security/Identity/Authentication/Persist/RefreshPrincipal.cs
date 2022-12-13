@@ -14,7 +14,7 @@ sealed class RefreshPrincipal : IAllocated<SecurityStampRefreshingPrincipalConte
 
 	public Task Get(SecurityStampRefreshingPrincipalContext parameter)
 	{
-		_copy.Execute(new(parameter.CurrentPrincipal, parameter.NewPrincipal));
+		_copy.Execute(new(parameter.CurrentPrincipal!, parameter.NewPrincipal!));
 		return Task.CompletedTask;
 	}
 }

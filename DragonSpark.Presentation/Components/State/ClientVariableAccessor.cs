@@ -18,7 +18,8 @@ public class ClientVariableAccessor<T> : ISelect<HttpContext, T?>
 	public T? Get(HttpContext parameter)
 	{
 		var store  = parameter.Request.Cookies;
-		var result = store.TryGetValue(_key, out var accessed) && accessed is not null ? _parse(accessed) : default;
+		// ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+		var result = store.TryGetValue(_key, out var accessed) && accessed is not null ? _parse(accessed) : default; // ISSUE
 		return result;
 	}
 }

@@ -2,13 +2,6 @@
 	<PropertyGroup>
 		<AddRazorSupportForMvc>true</AddRazorSupportForMvc>
 	</PropertyGroup>
-
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-		<NoWarn>1701;1702;CS8669</NoWarn>
-	</PropertyGroup>
-	<PropertyGroup Condition="'$(Configuration)|$(Platform)'!='Debug|AnyCPU'">
-		<NoWarn>CS8669</NoWarn>
-	</PropertyGroup>
 	<ItemGroup>
 		<Content Remove="tsconfig.json" />
 		<None Include="tsconfig.json">

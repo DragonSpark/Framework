@@ -46,7 +46,7 @@ public sealed class ExternalLoginModelActions<T> : ISelect<Challenging, IActionR
 		{
 			foreach (var error in call.Errors.AsValueEnumerable())
 			{
-				state.AddModelError(string.Empty, error!.Description);
+				state.AddModelError(string.Empty, error.Description);
 			}
 		}
 

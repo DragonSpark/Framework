@@ -17,7 +17,7 @@ sealed class PropertyAssignmentDelegate : IPropertyAssignmentDelegate
 
 	public PropertyAssignmentDelegate(IGeneric<IPropertyAssignmentDelegate> generic) => _generic = generic;
 
-	public Action<object, object> Get(PropertyInfo parameter)
+	public Action<object, object?> Get(PropertyInfo parameter)
 		=> _generic.Get(parameter.DeclaringType ?? parameter.ReflectedType.Verify(), parameter.PropertyType)
 		           .Get(parameter);
 }
