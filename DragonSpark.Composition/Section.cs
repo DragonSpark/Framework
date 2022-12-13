@@ -14,5 +14,5 @@ sealed class Section<T> : ISelect<IConfiguration, T> where T : class
 
 	public Section(string name) => _name = name;
 
-	public T Get(IConfiguration parameter) => parameter.GetSection(_name).Get<T>();
+	public T Get(IConfiguration parameter) => parameter.GetSection(_name).Get<T>().Verify();
 }
