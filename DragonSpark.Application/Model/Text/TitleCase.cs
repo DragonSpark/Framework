@@ -13,5 +13,6 @@ public sealed class TitleCase : IFormatter<string>
 
 	public TitleCase(TextInfo text) => _text = text;
 
-	public string Get(string parameter) => _text.ToTitleCase(parameter.Replace('‘', '\'').Replace('`', '\''));
+	public string Get(string parameter)
+		=> _text.ToTitleCase(parameter.Replace('‘', '\'').Replace('`', '\'').Replace('’', '\''));
 }
