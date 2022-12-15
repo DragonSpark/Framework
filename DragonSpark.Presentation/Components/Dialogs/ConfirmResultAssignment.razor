@@ -3,13 +3,17 @@
 @inherits ConfirmResultComponent
 
 <ConfirmResult @ref="_result"
-               PrimaryClass="@PrimaryClass" SecondaryClass="@SecondaryClass"
-               PrimaryText="@PrimaryText" SecondaryText="@SecondaryText"
-               ContentClass="@ContentClass" Confirmation="@Confirmation" ChildContent="@ChildContent" 
-               />
+    EnableFocus="@EnableFocus"
+    PrimaryClass="@PrimaryClass" SecondaryClass="@SecondaryClass"
+    PrimaryText="@PrimaryText" SecondaryText="@SecondaryText"
+    ContentClass="@ContentClass" Confirmation="@Confirmation" ChildContent="@ChildContent" 
+/>
 
 @code {
     ConfirmResult _result = default!;
+
+    [Parameter]
+    public bool EnableFocus { get; set; } = true;
 
     [Parameter]
     public ICommand<ConfirmResult?> Assignment { get; set; } = default!;

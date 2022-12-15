@@ -2,12 +2,14 @@
 
 @inherits ConfirmResultComponent
 
-<Confirm PrimaryClass="@PrimaryClass" SecondaryClass="@SecondaryClass" ContentClass="@ContentClass"
+<Confirm EnableFocus="@EnableFocus" PrimaryClass="@PrimaryClass" SecondaryClass="@SecondaryClass" ContentClass="@ContentClass"
          Confirmation="@Confirmation" ChildContent="@ChildContent" PrimaryText="@PrimaryText" SecondaryText="@SecondaryText"
          Accept="() => Result = DialogResult.Ok" Cancel="() => Result = DialogResult.Cancel"
          />
 
 @code {
+    [Parameter]
+    public bool EnableFocus { get; set; } = true;
 
     protected override void OnParametersSet()
     {

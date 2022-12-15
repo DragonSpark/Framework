@@ -1,11 +1,21 @@
 ﻿<div @onkeyup="LogKeyPressed" @attributes="@AdditionalAttributes">
-    <input id="@Identifier" class="@FocusClass" inputmode="none" />
+    @if (EnableFocus)
+    {
+        <input id="@Identifier" class="@FocusClass" inputmode="none" />
+    }
+
     @ChildContent
+
+    @*@if (EnableFocus)
+    {
+        <Evaluate>document.getElementById("@Identifier").focus();</Evaluate>
+    }*@
 </div>
 
-<Evaluate>document.getElementById("@Identifier").focus();</Evaluate>
-
 @code {
+    [Parameter]
+    public bool EnableFocus { get; set; } = true;
+
     [Parameter]
     public string Identifier { get; set; } = UniqueIdentifiers.Default.Get();
 
@@ -23,11 +33,10 @@
 
     Task LogKeyPressed(KeyboardEventArgs eventArgs)
     {
-        switch (eventArgs.Code)
-        {
-            case "Escape":
-                return Escaped.InvokeAsync();
-        }
-        return Task.CompletedTask;
+        return eventArgs.Code switch
+               {
+               "Escape" => Escaped.InvokeAsync(),
+               _ => Task.CompletedTask
+               };
     }
 }

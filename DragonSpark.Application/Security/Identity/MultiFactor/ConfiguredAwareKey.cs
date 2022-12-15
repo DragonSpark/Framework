@@ -10,9 +10,9 @@ sealed class ConfiguredAwareKey<T> : ISelecting<UserInput<T>, string> where T : 
 
 	ConfiguredAwareKey() : this(Key<T>.Default) {}
 
-	readonly ISelecting<UserInput<T>, string> _previous;
+	readonly ISelecting<UserInput<T>, string?> _previous;
 
-	public ConfiguredAwareKey(ISelecting<UserInput<T>, string> previous) => _previous = previous;
+	public ConfiguredAwareKey(ISelecting<UserInput<T>, string?> previous) => _previous = previous;
 
 	public async ValueTask<string> Get(UserInput<T> parameter)
 	{
@@ -23,7 +23,8 @@ sealed class ConfiguredAwareKey<T> : ISelecting<UserInput<T>, string> where T : 
 			var updated = await manager.FindByIdAsync(await manager.GetUserIdAsync(user).ConfigureAwait(false))
 			                           .ConfigureAwait(false);
 			await manager.ResetAuthenticatorKeyAsync(updated.Verify()).ConfigureAwait(false);
-			return await _previous.Await(parameter);
+			var result = await _previous.Await(parameter);
+			return result.Verify();
 		}
 
 		return previous;
