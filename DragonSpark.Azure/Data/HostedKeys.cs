@@ -1,4 +1,5 @@
 ﻿using Azure.Core;
+using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Model.Selection.Alterations;
 using Microsoft.AspNetCore.DataProtection;
@@ -18,7 +19,7 @@ public sealed class HostedKeys : IAlteration<IDataProtectionBuilder>
 
 	public IDataProtectionBuilder Get(IDataProtectionBuilder parameter)
 	{
-		var configuration = parameter.Services.Section<HostedKeysConfiguration>();
+		var configuration = parameter.Services.Section<HostedKeysConfiguration>().Verify();
 		return parameter.ProtectKeysWithAzureKeyVault(new Uri(configuration.Vault), _credential)
 		                .PersistKeysToAzureBlobStorage(new Uri(configuration.Location), _credential);
 	}

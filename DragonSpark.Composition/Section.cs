@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace DragonSpark.Composition;
 
-sealed class Section<T> : ISelect<IConfiguration, T> where T : class
+sealed class Section<T> : ISelect<IConfiguration, T?> where T : class
 {
 	public static Section<T> Default { get; } = new ();
 
@@ -14,5 +14,5 @@ sealed class Section<T> : ISelect<IConfiguration, T> where T : class
 
 	public Section(string name) => _name = name;
 
-	public T Get(IConfiguration parameter) => parameter.GetSection(_name).Get<T>().Verify();
+	public T? Get(IConfiguration parameter) => parameter.GetSection(_name).Get<T>();
 }
