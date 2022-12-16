@@ -12,6 +12,7 @@
 
 @code
 {
+    IOperation<T> _operation = default!;
     ISubscription? connection = default!;
 
     [Parameter]
@@ -30,7 +31,8 @@
             case RenderState.Ready:
             case RenderState.Established:
                 connection = Registration.Get(OnReceive);
-                return connection.Get().AsTask();
+                _operation = new ImmediateOrThrottle<T>(OnProcess, TimeSpan.FromMilliseconds(250));
+                return connection.Allocate();
         }
 
         return base.OnInitializedAsync();
@@ -40,9 +42,11 @@
     {
         if (await Condition.Get(parameter))
         {
-            await InvokeAsync(() => Received.InvokeAsync(parameter)).ConfigureAwait(false);
+            await InvokeAsync(() => _operation.Get(parameter).AsTask()).ConfigureAwait(false);
         }
     }
+
+    ValueTask OnProcess(T parameter) => Received.InvokeAsync(parameter).ToOperation();
 
     public ValueTask DisposeAsync() => connection?.DisposeAsync() ?? Task.CompletedTask.ToOperation();
 }
