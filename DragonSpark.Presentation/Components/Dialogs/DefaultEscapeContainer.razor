@@ -1,8 +1,11 @@
 ﻿@inject DialogService Dialogs
 
-<EscapeContainer ChildContent="ChildContent" AdditionalAttributes="AdditionalAttributes" Escaped="@OnEscape" />
+<EscapeContainer EnableFocus="@EnableFocus" ChildContent="ChildContent" AdditionalAttributes="AdditionalAttributes" Escaped="@OnEscape" />
 
 @code {
+    [Parameter]
+    public bool EnableFocus { get; set; } = true;
+
     [Parameter]
     public RenderFragment ChildContent { get; set; } = default!;
 

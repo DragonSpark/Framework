@@ -1,14 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <LangVersion>preview</LangVersion>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="Coinbase" Version="6.0.1" />
-    <PackageReference Include="AspNet.Security.OAuth.Coinbase" Version="6.0.12" />
+    <PackageReference Include="AspNet.Security.OAuth.Coinbase" Version="7.0.0" />
   </ItemGroup>
 
   <ItemGroup>

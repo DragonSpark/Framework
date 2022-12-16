@@ -13,6 +13,6 @@ sealed class ClientStateValues : IClientStateValues
 
 	public Array<string> Get() => _context.Get()
 	                                      .Request.Cookies.AsValueEnumerable()
-	                                      .Select(x => (string)new StringValues($"{x.Key}={x.Value}"))
+	                                      .Select(x => (string)new StringValues($"{x.Key}={x.Value}")!)
 	                                      .ToArray();
 }

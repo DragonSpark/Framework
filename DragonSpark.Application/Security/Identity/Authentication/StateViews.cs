@@ -28,8 +28,7 @@ sealed class StateViews<T> : IStateViews<T> where T : IdentityUser
 		var result = user != null
 			             ? new StateView<T>(new(parameter, user),
 			                                manager.SupportsUserSecurityStamp
-				                                ? await manager.GetSecurityStampAsync(user).ConfigureAwait(false) ??
-				                                  string.Empty
+				                                ? await manager.GetSecurityStampAsync(user).ConfigureAwait(false)
 				                                : null)
 			             : _default;
 		return result;

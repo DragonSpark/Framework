@@ -13,5 +13,5 @@ sealed class ConnectionString<T> : IFormatter<IConfiguration>
 
 	public ConnectionString(string name) => _name = name;
 
-	public string Get(IConfiguration parameter) => parameter.GetConnectionString(_name);
+	public string Get(IConfiguration parameter) => parameter.GetConnectionString(_name)!;
 }

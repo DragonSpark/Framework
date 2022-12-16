@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Application.Configuration;
+using DragonSpark.Compose;
 using DragonSpark.Runtime.Environment;
 using FluentAssertions;
 using Microsoft.Extensions.FileProviders;
@@ -55,7 +56,7 @@ public sealed class AmbientConfigurationTests
 		};
 
 		lease.AsValueEnumerable()
-		     .Select(x => x.Path.Replace($@"{root}\.configuration\", string.Empty))
+		     .Select(x => x.Path.Verify().Replace($@"{root}\.configuration\", string.Empty))
 		     .ToArray()
 		     .Should()
 		     .BeEquivalentTo(expected);

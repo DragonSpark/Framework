@@ -1,5 +1,4 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Selection;
+﻿using DragonSpark.Model.Selection;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;

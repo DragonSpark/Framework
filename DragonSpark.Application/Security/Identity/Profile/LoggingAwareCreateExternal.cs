@@ -26,7 +26,7 @@ sealed class LoggingAwareCreateExternal<T> : ICreateExternal<T> where T : Identi
 		if (result.Result.Succeeded)
 		{
 			var (user, _) = result;
-			_created.Execute(user.UserName, parameter.LoginProvider, parameter.ProviderKey);
+			_created.Execute(user.UserName.Verify(), parameter.LoginProvider, parameter.ProviderKey);
 		}
 
 		return result;

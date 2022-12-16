@@ -56,9 +56,9 @@ public static partial class ExtensionMethods
 		where TKey : notnull
 		=> @this.ToOrderedDictionary(x => x.Key, x => x.Value, comparer);
 
-	public static IReadOnlyDictionary<TKey, TValue> AsReadOnly<TKey, TValue>(this IDictionary<TKey, TValue> @this)
+	/*public static IReadOnlyDictionary<TKey, TValue> AsReadOnly<TKey, TValue>(this IDictionary<TKey, TValue> @this)
 		where TKey : notnull
-		=> new ReadOnlyDictionary<TKey, TValue>(@this);
+		=> new ReadOnlyDictionary<TKey, TValue>(@this);*/
 
 	public static IReadOnlyDictionary<TKey, TValue> AsReadOnly<TKey, TValue>(
 		this IEnumerable<Pair<TKey, TValue>> @this)

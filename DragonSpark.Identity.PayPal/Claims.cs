@@ -2,6 +2,7 @@
 using DragonSpark.Application;
 using DragonSpark.Application.Security.Identity.Authentication;
 using DragonSpark.Application.Security.Identity.Claims.Compile;
+using DragonSpark.Compose;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -26,7 +27,7 @@ sealed class Claims : IClaims
 		var (principal, provider, _) = parameter;
 		var previous = _previous.Get(parameter);
 		var result = provider == PaypalAuthenticationDefaults.AuthenticationScheme && principal.HasClaim(_name)
-			             ? previous.Append(new Claim(_name, principal.FindFirstValue(_name)))
+			             ? previous.Append(new Claim(_name, principal.FindFirstValue(_name).Verify()))
 			             : previous;
 		return result;
 	}

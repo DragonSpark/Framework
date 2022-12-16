@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using DragonSpark.Compose;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.MultiFactor;
 
@@ -12,6 +13,6 @@ sealed class Disable<T> : IDisable<T> where T : IdentityUser
 	{
 		using var users = _users.Get();
 		var       user  = await users.Subject.FindByIdAsync(parameter.Id.ToString()).ConfigureAwait(false);
-		await users.Subject.SetTwoFactorEnabledAsync(user, false);
+		await users.Subject.SetTwoFactorEnabledAsync(user.Verify(), false);
 	}
 }

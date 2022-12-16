@@ -1,4 +1,5 @@
-﻿using DragonSpark.Composition;
+﻿using DragonSpark.Compose;
+using DragonSpark.Composition;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Configuration;
@@ -16,7 +17,7 @@ sealed class SqlStorageConfiguration<T> : IStorageConfiguration where T : DbCont
 	readonly string                                   _name;
 	readonly Action<SqlServerDbContextOptionsBuilder> _configuration;
 
-	public SqlStorageConfiguration(Action<SqlServerDbContextOptionsBuilder> configuration) 
+	public SqlStorageConfiguration(Action<SqlServerDbContextOptionsBuilder> configuration)
 		: this(ConnectionName<T>.Default, configuration) {}
 
 	public SqlStorageConfiguration(string name, Action<SqlServerDbContextOptionsBuilder> configuration)
@@ -26,5 +27,5 @@ sealed class SqlStorageConfiguration<T> : IStorageConfiguration where T : DbCont
 	}
 
 	public Action<DbContextOptionsBuilder> Get(IServiceCollection parameter)
-		=> new ConfigureSqlServer(parameter.Configuration().GetConnectionString(_name), _configuration).Execute;
+		=> new ConfigureSqlServer(parameter.Configuration().GetConnectionString(_name).Verify(), _configuration).Execute;
 }

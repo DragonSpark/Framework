@@ -66,7 +66,8 @@ partial class Extensions
 
 	public static uint User(this ClaimsPrincipal @this) => uint.Parse(@this.Identifier());
 
-	public static string Identifier(this ClaimsPrincipal @this) => @this.FindFirstValue(ClaimTypes.NameIdentifier);
+	public static string Identifier(this ClaimsPrincipal @this)
+		=> @this.FindFirstValue(ClaimTypes.NameIdentifier).Verify();
 
 	public static string DisplayName(this ClaimsPrincipal @this) => @this.DisplayName(Anonymous.Default);
 
@@ -77,7 +78,7 @@ partial class Extensions
 
 	public static string UserName(this ClaimsPrincipal @this, string anonymous)
 		=> @this.Identity?.IsAuthenticated ?? false
-			   ? @this.Identity?.Name ?? @this.FindFirstValue(ClaimTypes.Name)
+			   ? @this.Identity?.Name ?? @this.FindFirstValue(ClaimTypes.Name).Verify()
 			   : anonymous;
 
 	public static string? Get(this IValueProvider @this, string key)

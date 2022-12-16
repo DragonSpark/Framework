@@ -42,10 +42,12 @@ sealed class InitializedAwareHostBuilder : IHostBuilder
 
 #pragma warning disable 8714
 	public IHostBuilder UseServiceProviderFactory<TContainerBuilder>(
-		IServiceProviderFactory<TContainerBuilder> factory) => _previous.UseServiceProviderFactory(factory);
+		IServiceProviderFactory<TContainerBuilder> factory)where TContainerBuilder : notnull
+		=> _previous.UseServiceProviderFactory(factory);
 
 	public IHostBuilder UseServiceProviderFactory<TContainerBuilder>(
 		Func<HostBuilderContext, IServiceProviderFactory<TContainerBuilder>> factory)
+		where TContainerBuilder : notnull
 		=> _previous.UseServiceProviderFactory(factory);
 #pragma warning restore 8714
 

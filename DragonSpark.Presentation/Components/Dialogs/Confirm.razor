@@ -9,7 +9,7 @@
 @inject DialogService Dialogs
 @inject IExceptions Exceptions
 
-<DragonSpark.Presentation.Components.Dialogs.DefaultEscapeContainer Escaped="@(() => Cancel.InvokeAsync(default!))">
+<DragonSpark.Presentation.Components.Dialogs.DefaultEscapeContainer Escaped="@(() => Cancel.InvokeAsync(default!))" EnableFocus="@EnableFocus">
 	<ActivityReceiverContainer Context="receiver">
         <div class="card">
             <div class="@ContentClass">@ChildContent</div>
@@ -44,6 +44,9 @@
 		await Cancel.InvokeAsync(parameter);
 		Dialogs.Close();
 	}
+
+    [Parameter]
+    public bool EnableFocus { get; set; } = true;
 
 	[Parameter]
 	public string PrimaryText { get; set; } = "OK";

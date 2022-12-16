@@ -1,6 +1,8 @@
 ﻿@using DragonSpark.Presentation.Compose
 @using System.Diagnostics
 @using DragonSpark.Compose
+@using DragonSpark.Model
+@using DragonSpark.Model.Operations
 @using DragonSpark.Presentation.Environment.Browser
 @using DragonSpark.Presentation.Environment.Browser.Document
 
@@ -12,7 +14,7 @@
 @inject IFocusedElement Focus
 
 <div class="@Class">
-	<fieldset disabled="@Active">
+	<fieldset disabled="@_active">
 		<CascadingValue TValue="IActivityReceiver" Value="@this" IsFixed="true">
 			@ChildContent(ActualReceiver)
 		</CascadingValue>
@@ -21,7 +23,7 @@
 
 @code
 {
-	bool Active { get; set; }
+	bool _active;
 
 	[Parameter]
 	public string CssClass { get; set; } = string.Empty;
@@ -38,7 +40,7 @@
 	string? Class
 	{
 		get {
-			var start = Active ? ActiveStyle : null;
+			var start = _active ? ActiveStyle : null;
 			var result = $"{start} {CssClass}".Trim().NullIfEmpty();
 			return result;
 		}
@@ -63,8 +65,8 @@
 	bool Update()
 	{
 		var active = IsActive.Default.Get(ActualReceiver);
-		var result = active != Active;
-		Active = active;
+		var result = active != _active;
+	    _active = active;
 		return result;
 	}
 
@@ -80,13 +82,10 @@
 		}
 	}
 
-	public async ValueTask Complete()
+	public ValueTask Complete()
 	{
 		Restore = Update();
-		if (Restore)
-		{
-			await RefreshState().ConfigureAwait(false);
-		}
+		return RefreshState();
 	}
 
 	public ValueTask DisposeAsync() => Focus.DisposeAsync();

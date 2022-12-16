@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Application.Compose.Store;
-using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
@@ -43,5 +42,5 @@ public class MemoryAssignment<T> : IAssign<string, T?>, ISelect<string, T?>
 		_subject.Remove(key);
 	}
 
-	public T? Get(string parameter) => _subject.TryGetValue(parameter, out var stored) ? stored.To<T?>() : default;
+	public T? Get(string parameter) => _subject.TryGetValue(parameter, out var stored) ? (T?)stored : default;
 }
