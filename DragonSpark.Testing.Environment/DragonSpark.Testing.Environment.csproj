@@ -1,8 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <AssemblyName>DragonSpark.Testing.Environment</AssemblyName>
-    <RootNamespace>DragonSpark.Testing.Environment</RootNamespace>    
-  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\DragonSpark.Testing.Objects\DragonSpark.Testing.Objects.csproj" />
     <ProjectReference Include="..\DragonSpark\DragonSpark.csproj" />

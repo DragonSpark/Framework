@@ -1,7 +1,7 @@
 ﻿using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
-namespace DragonSpark.Application.Environment;
+namespace DragonSpark.Application.Environment.Development;
 
 public sealed class StorageConfiguration : Entities.Configure.StorageConfiguration
 {

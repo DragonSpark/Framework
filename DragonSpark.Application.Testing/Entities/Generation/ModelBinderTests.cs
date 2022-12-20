@@ -1,7 +1,8 @@
 ﻿using AutoBogus;
 using AutoBogus.Conventions;
-using DragonSpark.Application.Entities.Generation;
 using DragonSpark.Compose;
+using DragonSpark.Testing.Objects;
+using DragonSpark.Testing.Objects.Entities.Generation;
 using FluentAssertions;
 using JetBrains.Annotations;
 using System;

@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Composition.Compose;
 using JetBrains.Annotations;
 
-namespace DragonSpark.Application.Environment;
+namespace DragonSpark.Application.Environment.Development;
 
 public sealed class DefaultHostConfiguration : IHostConfiguration
 {

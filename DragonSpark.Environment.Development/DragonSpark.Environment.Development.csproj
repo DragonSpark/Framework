@@ -1,10 +1,5 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <AssemblyName>DragonSpark.Environment</AssemblyName>
-    <RootNamespace>DragonSpark.Environment</RootNamespace>    
-  </PropertyGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\DragonSpark\DragonSpark.csproj" />
   </ItemGroup>

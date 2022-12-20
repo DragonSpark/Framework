@@ -1,8 +1,5 @@
-﻿using AutoBogus;
-using Bogus.Extensions;
-using DragonSpark.Application.Compose;
+﻿using DragonSpark.Application.Compose;
 using DragonSpark.Application.Compose.Entities;
-using DragonSpark.Application.Compose.Entities.Generation;
 using DragonSpark.Application.Compose.Entities.Queries;
 using DragonSpark.Application.Compose.Entities.Queries.Composition.Runtime;
 using DragonSpark.Application.Compose.Store;
@@ -153,21 +150,4 @@ public static partial class Extensions
 		=> new(new ExceptionAwareResult<T>(@this, exceptions, reportedType));
 
 	/**/
-
-	public static GeneratorContext<T> Generator<T>(this ModelContext _, in uint? seed = null)
-		where T : class => _.Generator<T>(new Entities.Generation.Configuration(seed));
-
-	public static GeneratorContext<T> Generator<T>(this ModelContext _,
-	                                               Action<IAutoGenerateConfigBuilder> configure)
-		where T : class => _.Generator<T>(new Entities.Generation.Configuration(null, configure));
-
-	public static GeneratorContext<T> Generator<T>(this ModelContext _, Entities.Generation.Configuration configuration)
-		where T : class => new(configuration);
-
-	public static IncludeMany<T, TOther> Between<T, TOther>(this IncludeMany<T, TOther> @this, Range range)
-		where TOther : class
-		=> @this.Generate((faker, _) => faker.GenerateBetween(range.Start.Value, range.End.Value));
-
-	public static IncludeMany<T, TOther> Empty<T, TOther>(this IncludeMany<T, TOther> @this) where TOther : class
-		=> @this.Generate((faker, _) => faker.Generate(0));
 }
