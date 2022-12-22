@@ -9,8 +9,7 @@ public class LogVerboseException : ILogException<Array<object>>
 	readonly Exception _action;
 	readonly string    _messageTemplate;
 
-	public LogVerboseException(ILogger logger, string messageTemplate) : this(logger.LogTrace<object[]>,
-	                                                                          messageTemplate) {}
+	public LogVerboseException(ILogger logger, string messageTemplate) : this(logger.LogTrace, messageTemplate) {}
 
 	public LogVerboseException(Exception action, string messageTemplate)
 	{
@@ -20,7 +19,7 @@ public class LogVerboseException : ILogException<Array<object>>
 
 	public void Execute(ExceptionParameter<Array<object>> parameter)
 	{
-		_action(parameter.Exception, _messageTemplate, parameter.Argument);
+		_action(parameter.Exception, _messageTemplate, parameter.Argument.Open());
 	}
 }
 

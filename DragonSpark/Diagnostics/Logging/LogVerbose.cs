@@ -9,7 +9,7 @@ public class LogVerbose : ILogMessage<Array<object>>
 	readonly Message _action;
 	readonly string  _messageTemplate;
 
-	public LogVerbose(ILogger logger, string messageTemplate) : this(logger.LogTrace<object[]>, messageTemplate) {}
+	public LogVerbose(ILogger logger, string messageTemplate) : this(logger.LogTrace, messageTemplate) {}
 
 	public LogVerbose(Message action, string messageTemplate)
 	{
@@ -19,7 +19,7 @@ public class LogVerbose : ILogMessage<Array<object>>
 
 	public void Execute(Array<object> parameter)
 	{
-		_action(_messageTemplate, parameter);
+		_action(_messageTemplate, parameter.Open());
 	}
 }
 

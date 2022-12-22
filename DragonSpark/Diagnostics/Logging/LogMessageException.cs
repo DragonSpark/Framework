@@ -9,8 +9,7 @@ public class LogMessageException : ILogException<Array<object>>
 	readonly Exception _action;
 	readonly string    _messageTemplate;
 
-	public LogMessageException(ILogger logger, string messageTemplate) : this(logger.LogInformation<object[]>,
-	                                                                          messageTemplate) {}
+	public LogMessageException(ILogger logger, string messageTemplate) : this(logger.LogInformation, messageTemplate) {}
 
 	public LogMessageException(Exception action, string messageTemplate)
 	{
@@ -20,7 +19,7 @@ public class LogMessageException : ILogException<Array<object>>
 
 	public void Execute(ExceptionParameter<Array<object>> parameter)
 	{
-		_action(parameter.Exception, _messageTemplate, parameter.Argument);
+		_action(parameter.Exception, _messageTemplate, parameter.Argument.Open());
 	}
 }
 
@@ -29,8 +28,7 @@ public class LogMessageException<T> : ILogException<T>
 	readonly Exception<T> _action;
 	readonly string       _messageTemplate;
 
-	public LogMessageException(ILogger logger, string messageTemplate) : this(logger.LogInformation,
-	                                                                          messageTemplate) {}
+	public LogMessageException(ILogger logger, string messageTemplate) : this(logger.LogInformation, messageTemplate) {}
 
 	public LogMessageException(Exception<T> action, string messageTemplate)
 	{

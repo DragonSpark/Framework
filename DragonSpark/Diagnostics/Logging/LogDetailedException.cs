@@ -9,8 +9,7 @@ public class LogDetailedException : ILogException<Array<object>>
 	readonly Exception _action;
 	readonly string    _messageTemplate;
 
-	public LogDetailedException(ILogger logger, string messageTemplate) : this(logger.LogDebug<object[]>,
-	                                                                           messageTemplate) {}
+	public LogDetailedException(ILogger logger, string messageTemplate) : this(logger.LogDebug, messageTemplate) {}
 
 	public LogDetailedException(Exception action, string messageTemplate)
 	{
@@ -20,7 +19,7 @@ public class LogDetailedException : ILogException<Array<object>>
 
 	public void Execute(ExceptionParameter<Array<object>> parameter)
 	{
-		_action(parameter.Exception, _messageTemplate, parameter.Argument);
+		_action(parameter.Exception, _messageTemplate, parameter.Argument.Open());
 	}
 }
 

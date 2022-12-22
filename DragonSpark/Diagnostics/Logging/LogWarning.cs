@@ -9,8 +9,7 @@ public class LogWarning : ILogMessage<Array<object>>
 	readonly Message _action;
 	readonly string  _messageTemplate;
 
-	public LogWarning(ILogger logger, string messageTemplate) :
-		this(logger.LogWarning<object[]>, messageTemplate) {}
+	public LogWarning(ILogger logger, string messageTemplate) : this(logger.LogWarning, messageTemplate) {}
 
 	public LogWarning(Message action, string messageTemplate)
 	{
@@ -20,7 +19,7 @@ public class LogWarning : ILogMessage<Array<object>>
 
 	public void Execute(Array<object> parameter)
 	{
-		_action(_messageTemplate, parameter);
+		_action(_messageTemplate, parameter.Open());
 	}
 }
 
