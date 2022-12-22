@@ -12,7 +12,7 @@ public class DelayedDisperse : DelayedDisperse<None>
 
 public class DelayedDisperse<T> : Disperse<T>
 {
-	protected DelayedDisperse(IOperation<T> previous) : this(previous, TimeSpan.FromSeconds(1)) {}
+	public DelayedDisperse(IOperation<T> previous) : this(previous, TimeSpan.FromSeconds(1)) {}
 
-	protected DelayedDisperse(IOperation<T> previous, TimeSpan delay) : base(new Delay<T>(previous, delay)) {}
+	public DelayedDisperse(IOperation<T> previous, TimeSpan delay) : base(new Delay<T>(previous, delay)) {}
 }
