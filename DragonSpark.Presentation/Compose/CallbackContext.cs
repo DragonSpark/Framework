@@ -1,10 +1,7 @@
 ﻿using DragonSpark.Application.Diagnostics;
-using DragonSpark.Application.Runtime;
 using DragonSpark.Compose;
-using DragonSpark.Model;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
-using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Presentation.Components.Diagnostics;
 using DragonSpark.Presentation.Components.State;
 using Microsoft.AspNetCore.Components;
@@ -40,7 +37,7 @@ public sealed class CallbackContext : IResult<EventCallback>
 		return result;
 	}
 
-	public OperationCallbackContext Throttle() => Throttle(TimeSpan.FromSeconds(1));
+	/*public OperationCallbackContext Throttle() => Throttle(TimeSpan.FromSeconds(1));
 
 	public OperationCallbackContext Throttle(TimeSpan window)
 	{
@@ -59,7 +56,7 @@ public sealed class CallbackContext : IResult<EventCallback>
 		var operation = new Throttling(operate, @for).Then().Operation();
 		var result = new OperationCallbackContext(_receiver.Verify(), new Validating(when.Await, operation, operate));
 		return result;
-	}
+	}*/
 
 	public OperationCallbackContext Block() => BlockFor(TimeSpan.FromSeconds(1));
 

@@ -23,9 +23,9 @@ public sealed class OperationCallbackContext : IResult<EventCallback>
 
 	public OperationCallbackContext Using(object receiver) => new OperationCallbackContext(receiver, _operation);
 
-	public OperationCallbackContext Throttle() => Throttle(TimeSpan.FromSeconds(1));
+	public OperationCallbackContext Block() => Block(TimeSpan.FromSeconds(1));
 
-	public OperationCallbackContext Throttle(TimeSpan duration)
+	public OperationCallbackContext Block(TimeSpan duration)
 		=> new OperationCallbackContext(_receiver, new BlockingEntryOperation(_operation, duration));
 
 	public OperationCallbackContext UpdateActivity()

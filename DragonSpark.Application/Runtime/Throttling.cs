@@ -2,57 +2,106 @@
 using DragonSpark.Model;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Stores;
+using NetFabric.Hyperlinq;
 using System;
+using System.Buffers;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Timers;
 
 namespace DragonSpark.Application.Runtime;
 
 public class Throttling<T> : IThrottling<T>
 {
-	readonly ITable<T, Timer> _timers;
-	readonly TimeSpan         _duration;
+	readonly ITable<Delegate, ThrottleContext>     _timers;
+	readonly ISelect<Throttle<T>, ThrottleContext> _create;
 
-	public Throttling(ITable<T, Timer> timers) : this(timers, TimeSpan.FromMilliseconds(750)) {}
+	public Throttling() : this(TimeSpan.FromMilliseconds(750)) {}
 
-	public Throttling(ITable<T, Timer> timers, TimeSpan duration)
+	public Throttling(TimeSpan duration) : this(new Table<Delegate, ThrottleContext>(), duration) {}
+
+	public Throttling(ITable<Delegate, ThrottleContext> timers, TimeSpan interval)
+		: this(timers, new CreateThrottleContext<T>(timers, interval.TotalMilliseconds)) {}
+
+	public Throttling(ITable<Delegate, ThrottleContext> timers, ISelect<Throttle<T>, ThrottleContext> create)
 	{
-		_timers   = timers;
-		_duration = duration;
+		_timers = timers;
+		_create = create;
 	}
 
 	public void Execute(Throttle<T> parameter)
 	{
-		var (input, action) = parameter;
-		var result = _timers.Get(input).Account();
-		if (result == null)
-		{
-			result = new Timer { Enabled = false, AutoReset = false, Interval = _duration.TotalMilliseconds };
-			// Who am I to argue: https://stackoverflow.com/questions/38917818/pass-async-callback-to-timer-constructor#comment91001639_38918443
-			result.Elapsed += async (_, _) =>
-			                  {
-				                  try
-				                  {
-					                  await action(input);
-				                  }
-				                  finally
-				                  {
-					                  _timers.Remove(input);
-				                  }
-			                  };
-			_timers.Assign(input, result);
-		}
-
-		result.Stop();
-		result.Start();
+		var (_, key, source) = parameter;
+		var context = _timers.Get(key).Account() ?? _create.Get(parameter);
+		var (subject, task) = context;
+		task.Add(source);
+		subject.Stop();
+		subject.Start();
 	}
 }
+
+// TODO
+
+sealed class CreateThrottleContext<T> : ISelect<Throttle<T>, ThrottleContext>
+{
+	readonly ITable<Delegate, ThrottleContext> _timers;
+	readonly double                            _interval;
+
+	public CreateThrottleContext(ITable<Delegate, ThrottleContext> timers, double interval)
+	{
+		_timers   = timers;
+		_interval = interval;
+	}
+
+	public ThrottleContext Get(Throttle<T> parameter)
+	{
+		var (input, key, _) = parameter;
+		var sources = new HashSet<TaskCompletionSource>();
+		var timer   = new Timer { Enabled = false, AutoReset = false, Interval = _interval };
+		// Who am I to argue: https://stackoverflow.com/questions/38917818/pass-async-callback-to-timer-constructor#comment91001639_38918443
+		timer.Elapsed += async (_, _) =>
+		                 {
+			                 using var items = sources.AsValueEnumerable()
+			                                          .ToArray(ArrayPool<TaskCompletionSource>.Shared);
+			                 try
+			                 {
+				                 await key(input);
+				                 foreach (var s in items)
+				                 {
+					                 s.TrySetResult();
+				                 }
+			                 }
+			                 catch (Exception e)
+			                 {
+				                 foreach (var s in items)
+				                 {
+					                 s.TrySetException(e);
+				                 }
+			                 }
+			                 finally
+			                 {
+				                 foreach (var s in items)
+				                 {
+					                 sources.Remove(s);
+				                 }
+								 _timers.Remove(key);
+			                 }
+		                 };
+		var result = new ThrottleContext(timer, sources);
+		_timers.Assign(key, result);
+		return result;
+	}
+}
+
+public sealed record ThrottleContext(Timer Subject, HashSet<TaskCompletionSource> Sources);
 
 public class Throttling : ICommand
 {
 	readonly Timer _timer;
 
-	public Throttling(Operate operate) : this(operate, TimeSpan.FromMilliseconds(750)) {}
+	//public Throttling(Operate operate) : this(operate, TimeSpan.FromMilliseconds(750)) {}
 
 	public Throttling(Operate operate, TimeSpan window)
 		: this(operate, new Timer { Enabled = false, AutoReset = false, Interval = window.TotalMilliseconds }) {}

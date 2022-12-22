@@ -11,11 +11,13 @@ public class Operation<T> : Select<T, ValueTask>, IOperation<T>
 	public Operation(Func<T, ValueTask> select) : base(select) {}
 }
 
-public class Operation : IOperation
+public class Operation : IOperation, IOperation<None>
 {
 	readonly Func<ValueTask> _select;
 
 	public Operation(Func<ValueTask> select) => _select = select;
 
 	public ValueTask Get() => _select();
+
+	public ValueTask Get(None parameter) => _select();
 }
