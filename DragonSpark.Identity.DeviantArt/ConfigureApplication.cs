@@ -91,6 +91,7 @@ sealed class DeviantArtAuthenticationHandler : AspNet.Security.OAuth.DeviantArt.
 
 	OAuthTokenResponse Success(string body)
 	{
+		Logger.LogInformation("Parsing: {Body}", body);
 		try
 		{
 			return OAuthTokenResponse.Success(JsonDocument.Parse(body));
