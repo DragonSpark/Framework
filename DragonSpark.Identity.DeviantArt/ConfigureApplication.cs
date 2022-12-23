@@ -84,36 +84,30 @@ sealed class DeviantArtAuthenticationHandler : AspNet.Security.OAuth.DeviantArt.
 
 		return response.IsSuccessStatusCode switch
 		{
-			true => Success(body),
+			true => OAuthTokenResponse.Success(JsonDocument.Parse(body)),
 			false => PrepareFailedOAuthTokenReponse(response, body)
 		};
 	}
 
-	OAuthTokenResponse Success(string body)
+	OAuthTokenResponse PrepareFailedOAuthTokenReponse(HttpResponseMessage response, string body)
 	{
-		Logger.LogInformation("Parsing: {Body}", body);
 		try
 		{
-			return OAuthTokenResponse.Success(JsonDocument.Parse(body));
+			var exception = GetStandardErrorException(JsonDocument.Parse(body));
+
+			if (exception is null)
+			{
+				var errorMessage = $"OAuth token endpoint failure: Status: {response.StatusCode};Headers: {response.Headers};Body: {body};";
+				return OAuthTokenResponse.Failed(new Exception(errorMessage));
+			}
+
+			return OAuthTokenResponse.Failed(exception);
 		}
-		catch (Exception e)
+		catch (JsonException e)
 		{
 			Logger.LogWarning(e, "Could not parse {Body}", body);
 			throw;
 		}
-	}
-
-	private static OAuthTokenResponse PrepareFailedOAuthTokenReponse(HttpResponseMessage response, string body)
-	{
-		var exception = GetStandardErrorException(JsonDocument.Parse(body));
-
-		if (exception is null)
-		{
-			var errorMessage = $"OAuth token endpoint failure: Status: {response.StatusCode};Headers: {response.Headers};Body: {body};";
-			return OAuthTokenResponse.Failed(new Exception(errorMessage));
-		}
-
-		return OAuthTokenResponse.Failed(exception);
 	}
 
 	static Exception? GetStandardErrorException(JsonDocument response)
