@@ -95,10 +95,10 @@ sealed class DeviantArtAuthenticationHandler : AspNet.Security.OAuth.DeviantArt.
 		{
 			return OAuthTokenResponse.Success(JsonDocument.Parse(body));
 		}
-		catch (System.Text.Json.JsonException e)
+		catch (Exception e)
 		{
 			Logger.LogWarning(e, "Could not parse {Body}", body);
-			throw e;
+			throw;
 		}
 	}
 
@@ -115,37 +115,40 @@ sealed class DeviantArtAuthenticationHandler : AspNet.Security.OAuth.DeviantArt.
 		return OAuthTokenResponse.Failed(exception);
 	}
 
-	internal static Exception? GetStandardErrorException(JsonDocument response)
+	static Exception? GetStandardErrorException(JsonDocument response)
 	{
 		var root  = response.RootElement;
 		var error = root.GetString("error");
 
-		if (error is null)
+		if (error is not null)
 		{
-			return null;
+			var result = new StringBuilder("OAuth token endpoint failure: ");
+			result.Append(error);
+
+			if (root.TryGetProperty("error_description", out var errorDescription))
+			{
+				result.Append(";Description=");
+				result.Append(errorDescription);
+			}
+
+			if (root.TryGetProperty("error_uri", out var errorUri))
+			{
+				result.Append(";Uri=");
+				result.Append(errorUri);
+			}
+
+			return new(result.ToString())
+			{
+				Data =
+				{
+					["error"]             = error,
+					["error_description"] = errorDescription.ToString(),
+					["error_uri"]         = errorUri.ToString()
+				}
+			};
 		}
 
-		var result = new StringBuilder("OAuth token endpoint failure: ");
-		result.Append(error);
-
-		if (root.TryGetProperty("error_description", out var errorDescription))
-		{
-			result.Append(";Description=");
-			result.Append(errorDescription);
-		}
-
-		if (root.TryGetProperty("error_uri", out var errorUri))
-		{
-			result.Append(";Uri=");
-			result.Append(errorUri);
-		}
-
-		var exception = new Exception(result.ToString());
-		exception.Data["error"]             = error.ToString();
-		exception.Data["error_description"] = errorDescription.ToString();
-		exception.Data["error_uri"]         = errorUri.ToString();
-
-		return exception;
+		return null;
 	}
 
 
