@@ -12,7 +12,11 @@ public class EntityInitializer<T> : IInitializer where T : class
 
 	public async ValueTask Get(DbContext parameter)
 	{
-		parameter.Set<T>().AddRange(_entities);
-		await parameter.SaveChangesAsync().ConfigureAwait(false);
+		var set = parameter.Set<T>();
+		foreach (var entity in _entities.Open())
+		{
+			set.Add(entity);
+			await parameter.SaveChangesAsync().ConfigureAwait(false);
+		}
 	}
 }
