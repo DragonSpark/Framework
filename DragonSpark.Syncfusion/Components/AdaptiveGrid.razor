@@ -54,7 +54,7 @@ else
 <MediaQuery Media="@Breakpoint" @bind-Matches="@Matches" />
 
 @code {
-	SfGrid<T> _subject = default!;
+	SfGrid<T>? _subject = default!;
 
 	[Parameter]
 	public string Id { get; set; } = string.Empty;
@@ -107,7 +107,7 @@ else
 	[Parameter(CaptureUnmatchedValues = true)]
 	public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
 
-	public Task Refresh() => _subject.Refresh();
+	public Task Refresh() => _subject?.Refresh() ?? Task.CompletedTask;
 
 	IClientVariable<string> Store { get; set; } = default!;
 
@@ -134,7 +134,7 @@ else
 		base.OnInitialized();
 	}
 
-	Task OnClientInitialized(string parameter) => _subject.SetPersistDataAsync(parameter);
+	Task OnClientInitialized(string parameter) => _subject?.SetPersistDataAsync(parameter) ?? Task.CompletedTask;
 
-    public ValueTask<string> Get() => _subject.GetPersistDataAsync().ToOperation();
+    public ValueTask<string> Get() => _subject is not null ? _subject.GetPersistDataAsync().ToOperation() : ValueTask.FromResult(string.Empty);
 }
