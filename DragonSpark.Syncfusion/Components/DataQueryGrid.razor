@@ -31,6 +31,7 @@
 
 	<GridTemplates EmptyRecordTemplate="@EmptyTemplate" />
 
+
 	<GridEvents TValue="T" DataBound="OnDataBound" OnActionBegin="@OnActionBegin" />
 	<Syncfusion.Blazor.Data.SfDataManager Adaptor="Adaptors.CustomAdaptor">
 		<DataRequestCallbackAdaptor Requested="@OnRequest" />
@@ -96,7 +97,7 @@
 		if (_subject is not null && RefreshRequested)
 		{
 			RefreshRequested = false;
-			return _subject.Refresh();
+			return Refresh();
 		}
 		return base.OnParametersSetAsync();
 	}
