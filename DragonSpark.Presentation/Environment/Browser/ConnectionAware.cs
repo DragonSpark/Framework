@@ -1,11 +1,14 @@
 ﻿using DragonSpark.Diagnostics;
 using DragonSpark.Model.Operations;
+using Polly;
 
 namespace DragonSpark.Presentation.Environment.Browser;
 
 public class ConnectionAware : PolicyAwareOperation
 {
-	protected ConnectionAware(IOperation previous) : base(previous, ConnectionAwarePolicy.Default) {}
+	protected ConnectionAware(IOperation previous) : this(previous, ConnectionAwarePolicy.Default.Get()) {}
+
+	protected ConnectionAware(IOperation previous, IAsyncPolicy policy) : base(previous, policy) {}
 }
 
 public class ConnectionAware<T> : PolicyAwareOperation<T>

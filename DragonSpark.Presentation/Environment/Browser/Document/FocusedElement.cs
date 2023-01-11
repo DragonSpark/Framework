@@ -8,11 +8,11 @@ sealed class FocusedElement : IFocusedElement
 {
 	readonly IFocusHandler _previous;
 
-	public FocusedElement(IFocusHandler previous, ConnectionAwareStoreFocusedElement store,
-	                      RestoreFocusedElement restore)
+	public FocusedElement(IFocusHandler previous, PolicyAwareFocusedElement focus,
+	                      PolicyAwareRestoreFocusedElement restore)
 	{
 		_previous = previous;
-		Store     = store;
+		Store     = focus;
 		Restore   = restore;
 	}
 

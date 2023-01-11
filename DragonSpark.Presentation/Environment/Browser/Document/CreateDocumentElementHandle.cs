@@ -8,5 +8,8 @@ sealed class CreateDocumentElementHandle : Resulting<DocumentElement>
 	public CreateDocumentElementHandle(LoadModule<DocumentElement> load) : this(load, NewDocumentElement.Default) {}
 
 	public CreateDocumentElementHandle(LoadModule<DocumentElement> load, NewDocumentElement @new)
-		: base(load.Then().Select(@new).Select(x => new DocumentElement(x))) {}
+		: base(load.Then()
+		           .Select(@new)
+		           .Select(x => new PolicyAwareJSObjectReference(x))
+		           .Select(x => new DocumentElement(x))) {}
 }
