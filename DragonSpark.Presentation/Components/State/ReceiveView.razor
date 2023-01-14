@@ -36,7 +36,7 @@
 		return base.OnInitializedAsync();
 	}
 
-	Task OnReceive() => Received.InvokeAsync(None.Default);
+	Task OnReceive() => InvokeAsync(() => Received.InvokeAsync(None.Default));
 
 	public ValueTask DisposeAsync() => connection?.DisposeAsync() ?? ValueTask.CompletedTask;
 }
