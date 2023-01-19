@@ -1,5 +1,6 @@
 ﻿@typeparam T
 @using Syncfusion.Blazor.Grids
+@using System.Text.Json.Serialization
 
 <GridColumn
 	AutoFit="@AutoFit"
@@ -11,6 +12,10 @@
 	Width="@Width"
 	Template="@ActualTemplate"
     ClipMode="@ClipMode"
+	Type="@Type"
+	HeaderTextAlign="@HeaderTextAlign"
+	TextAlign="@TextAlign"
+	FilterSettings="@FilterSettings"
 />
 
 @code {
@@ -46,6 +51,18 @@
 
 	[Parameter]
 	public string Field { get; set; } = string.Empty;
+
+	[Parameter]
+	public ColumnType Type { get; set; }
+
+	[Parameter]
+	public FilterSettings? FilterSettings { get; set; }
+
+    [Parameter]
+    public TextAlign HeaderTextAlign { get; set; } = TextAlign.Left;
+
+	[Parameter]
+	public TextAlign TextAlign { get; set; } = TextAlign.Left;
 
 	[Parameter]
 	public ClipMode ClipMode { get; set; } = ClipMode.Ellipsis;
