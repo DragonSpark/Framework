@@ -37,29 +37,6 @@ public sealed class CallbackContext : IResult<EventCallback>
 		return result;
 	}
 
-	/*public OperationCallbackContext Throttle() => Throttle(TimeSpan.FromSeconds(1));
-
-	public OperationCallbackContext Throttle(TimeSpan window)
-	{
-		var throttling = new Throttling(Start.A.Result(_method).Then().Structure(), window);
-		var operation  = throttling.Then().Operation().Out();
-		var result     = new OperationCallbackContext(_receiver.Verify(), operation);
-		return result;
-	}
-
-	public OperationCallbackContext Throttle(ICondition<None> when, TimeSpan @for)
-		=> Throttle(when.Then().Operation().Out(), @for);
-
-	public OperationCallbackContext Throttle(IDepending<None> when, TimeSpan @for)
-	{
-		var operate = Start.A.Result(_method).Then().Structure();
-		var operation = new Throttling(operate, @for).Then().Operation();
-		var result = new OperationCallbackContext(_receiver.Verify(), new Validating(when.Await, operation, operate));
-		return result;
-	}*/
-
-	public OperationCallbackContext Block() => BlockFor(TimeSpan.FromSeconds(1));
-
 	public OperationCallbackContext BlockFor(TimeSpan duration)
 		=> new(_receiver.Verify(),
 		       new BlockingEntryOperation(Start.A.Result(_method).Then().Structure().Out(), duration));

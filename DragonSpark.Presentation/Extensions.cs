@@ -57,9 +57,6 @@ public static class Extensions
 		=> new AllowUnassignedTextAwareValidatingValue(@this);
 
 /**/
-	public static CallbackContext<T> Callback<T>(this ModelContext @this, EventCallback<T> callback)
-		=> @this.Callback<T>(callback.InvokeAsync);
-
 	public static CallbackContext Callback(this ModelContext @this, EventCallback callback)
 		=> @this.Callback(new Func<Task>(callback.InvokeAsync));
 
