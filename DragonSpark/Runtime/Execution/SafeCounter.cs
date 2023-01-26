@@ -15,12 +15,18 @@ public sealed class SafeCounter : ICounter
 	{
 		Interlocked.Increment(ref _count);
 	}
+
+	public void Execute(Clear parameter)
+	{
+		Interlocked.Exchange(ref _count, 0);
+	}
 }
+
 public sealed class SafeCounter<T> : Select<T, int> where T : notnull
 {
 	public SafeCounter() : base(Start.A.Selection<T>()
-	                             .AndOf<SafeCounter>()
-	                             .By.Instantiation.Get()
-	                             .ToTable()
-	                             .Select(x => x.Count())) {}
+	                                 .AndOf<SafeCounter>()
+	                                 .By.Instantiation.Get()
+	                                 .ToTable()
+	                                 .Select(x => x.Count())) {}
 }

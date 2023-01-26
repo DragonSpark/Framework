@@ -17,5 +17,10 @@ public sealed class Counter : ICounter
 	{
 		_store.Execute(_store.Get() + 1);
 	}
+
+	public void Execute(Clear parameter)
+	{
+		_store.Execute(0);
+	}
 }
 

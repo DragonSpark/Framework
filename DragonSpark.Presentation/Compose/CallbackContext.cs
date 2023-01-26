@@ -25,7 +25,7 @@ public sealed class CallbackContext : IResult<EventCallback>
 		_method   = method;
 	}
 
-	public CallbackContext Using(object receiver) => new CallbackContext(receiver, _method);
+	public CallbackContext Using(object receiver) => new (receiver, _method);
 
 	public OperationCallbackContext Handle<T>(IExceptions exceptions) => Handle(exceptions, A.Type<T>());
 
@@ -36,10 +36,6 @@ public sealed class CallbackContext : IResult<EventCallback>
 		var result    = new OperationCallbackContext(receiver, operation);
 		return result;
 	}
-
-	public OperationCallbackContext BlockFor(TimeSpan duration)
-		=> new(_receiver.Verify(),
-		       new BlockingEntryOperation(Start.A.Result(_method).Then().Structure().Out(), duration));
 
 	public OperationCallbackContext UpdateActivity()
 	{
