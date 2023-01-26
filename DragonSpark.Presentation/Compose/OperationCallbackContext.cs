@@ -21,15 +21,15 @@ public sealed class OperationCallbackContext : IResult<EventCallback>
 		_operation = operation;
 	}
 
-	public OperationCallbackContext Using(object receiver) => new OperationCallbackContext(receiver, _operation);
+	public OperationCallbackContext Using(object receiver) => new(receiver, _operation);
 
-	/*public OperationCallbackContext Block() => Block(TimeSpan.FromSeconds(1));
+	public OperationCallbackContext Block() => Block(TimeSpan.FromSeconds(1));
 
 	public OperationCallbackContext Block(TimeSpan duration)
-		=> new OperationCallbackContext(_receiver, new BlockingEntryOperation(_operation, duration));*/
+		=> new(_receiver, new BlockingEntryOperation(_operation, duration));
 
 	public OperationCallbackContext UpdateActivity()
-		=> new OperationCallbackContext(_receiver, new ActivityAwareOperation(_operation, _receiver));
+		=> new(_receiver, new ActivityAwareOperation(_operation, _receiver));
 
 	public EventCallback Get() => EventCallback.Factory.Create(_receiver, _operation.Allocate);
 }
@@ -47,16 +47,15 @@ public sealed class OperationCallbackContext<T> : IResult<EventCallback<T>>
 		_operation = operation;
 	}
 
-	public OperationCallbackContext<T> Using(object receiver)
-		=> new OperationCallbackContext<T>(receiver, _operation);
+	public OperationCallbackContext<T> Using(object receiver) => new(receiver, _operation);
 
-	/*public OperationCallbackContext<T> Block() => Block(TimeSpan.FromSeconds(1));
+	public OperationCallbackContext<T> Block() => Block(TimeSpan.FromSeconds(1));
 
 	public OperationCallbackContext<T> Block(TimeSpan duration)
-		=> new OperationCallbackContext<T>(_receiver, new BlockingEntryOperation<T>(_operation, duration));*/
+		=> new(_receiver, new BlockingEntryOperation<T>(_operation, duration));
 
 	public OperationCallbackContext<T> UpdateActivity()
-		=> new OperationCallbackContext<T>(_receiver, new ActivityAwareOperation<T>(_operation, _receiver));
+		=> new(_receiver, new ActivityAwareOperation<T>(_operation, _receiver));
 
 	public EventCallback<T> Get() => EventCallback.Factory.Create(_receiver, new Func<T, Task>(_operation.Allocate));
 

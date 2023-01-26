@@ -46,6 +46,10 @@ public sealed class CallbackContext : IResult<EventCallback>
 		return result;
 	}
 
+	public OperationCallbackContext BlockFor(TimeSpan duration)
+		=> new(_receiver.Verify(),
+			new BlockingEntryOperation(Start.A.Result(_method).Then().Structure().Out(), duration));
+
 	public CallbackContext Append(Action next) => Append(Start.A.Command(next).Operation().Allocate());
 
 	public CallbackContext Append(Func<Task> next)

@@ -20,7 +20,7 @@ public sealed class EditContextCallbackContext
 	public CallbackContext Field<T>(Expression<Func<T>> expression) => Field(FieldIdentifier.Create(expression));
 
 	public CallbackContext Field(in FieldIdentifier field)
-		=> new(new NotifyField(_context, in field).Then().Operation().Allocate().Get().ToDelegate().Block());
+		=> new(new NotifyField(_context, in field).Then().Operation().Allocate());
 
 	sealed class NotifyField : ICommand
 	{
