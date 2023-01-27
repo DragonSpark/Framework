@@ -27,14 +27,15 @@ else
             ID="@Id"
             AllowSelection="@AllowSelection"
 			AllowFiltering="@AllowFiltering"
+			AllowExcelExport="@AllowExport"
 			AllowPaging="@AllowPaging"
 			AllowSorting="@AllowSorting"
 			ClipMode="@ClipMode.EllipsisWithTooltip"
-		    Toolbar="@(Matches ? Toolbar : Toolbar ?? DefaultToolbar.Default)"
+		    Toolbar="@(Matches ? DesktopToolbar : MobileToolbar)"
 			EnableAdaptiveUI="@(!Matches)"
 			RowRenderingMode="@(Matches ? RowDirection.Horizontal : RowDirection.Vertical)"
 			DataSource="@DataSource"
-			class="@Class"
+            class="@Class"
 			@attributes="@AdditionalAttributes" >
 		<GridPageSettings PageSize="@PageSize" />
 		<GridFilterSettings Type="@FilterType" />
@@ -81,6 +82,9 @@ else
 	public IEnumerable<T>? DataSource { get; set; }
 
 	[Parameter]
+	public bool AllowExport { get; set; }
+
+	[Parameter]
 	public bool AllowPaging { get; set; } = true;
 
 	[Parameter]
@@ -102,12 +106,17 @@ else
 	public string CssClass { get; set; } = string.Empty;
 
 	[Parameter]
-	public ICollection<string>? Toolbar { get; set; }
+	public ICollection<string>? DesktopToolbar { get; set; }
+
+	[Parameter]
+	public ICollection<string>? MobileToolbar { get; set; } = DefaultToolbar.Default;
 
 	[Parameter(CaptureUnmatchedValues = true)]
 	public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
 
 	public Task Refresh() => _subject?.Refresh() ?? Task.CompletedTask;
+
+    public Task Export() => _subject?.ExportToExcelAsync(new(){IncludeTemplateColumn = true}) ?? Task.CompletedTask;
 
 	IClientVariable<string> Store { get; set; } = default!;
 

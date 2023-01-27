@@ -4,6 +4,7 @@
 @using DragonSpark.Application.Entities.Queries.Runtime.Shape
 @using DragonSpark.Application.Runtime.Operations
 @using DragonSpark.Compose
+@using DragonSpark.Model
 @using DragonSpark.Model.Selection.Conditions
 @using DragonSpark.Presentation.Components
 @using DragonSpark.Presentation.Components.Content.Templates
@@ -39,8 +40,10 @@
 						   AllowPaging="@AllowPaging"
 						   AllowFiltering="@AllowFiltering"
 						   AllowSorting="@AllowSorting"
+                           AllowExport="@AllowExport"
 						   LoadingTemplate="@LoadingTemplate"
-						   Toolbar="@Toolbar"
+                           DesktopToolbar="@DesktopToolbar"
+                           MobileToolbar="@MobileToolbar"
 						   CssClass="@CssClass"
 						   Breakpoint="@Breakpoint"
 						   PageSize="@PageSize"
@@ -67,6 +70,11 @@
 	{
 		base.OnInitialized();
 		_identity = $"{GenerateElementIdentifier.Default.Get(Id)}{Qualifier}";
+		if (AllowExport)
+		{
+			DesktopToolbar = new List<string>(DesktopToolbar ?? Empty.Array<string>()).With(x => x.Add("ExcelExport"));
+			MobileToolbar = new List<string>(MobileToolbar ?? Empty.Array<string>()).With(x => x.Add("ExcelExport"));
+		}
 	}
 
 	[Parameter]
@@ -116,6 +124,9 @@
     [Parameter]
     public bool AllowSelection { get; set; }
 
+    [Parameter]
+    public bool AllowExport { get; set; }
+
 	[Parameter]
 	public bool AllowPaging { get; set; } = true;
 
@@ -132,7 +143,10 @@
 	public string CssClass { get; set; } = string.Empty;
 
     [Parameter]
-    public ICollection<string>? Toolbar { get; set; }
+    public ICollection<string>? DesktopToolbar { get; set; }
+
+    [Parameter]
+    public ICollection<string>? MobileToolbar { get; set; } = DefaultToolbar.Default;
 
 	[Parameter]
 	public ushort PageSize { get; set; } = 10;

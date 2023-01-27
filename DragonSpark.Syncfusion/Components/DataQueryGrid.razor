@@ -22,8 +22,10 @@
 	AllowPaging="@AllowPaging"
 	AllowFiltering="@AllowFiltering"
 	AllowSorting="@AllowSorting"
+	AllowExport="@AllowExport"
 	Breakpoint="@Breakpoint"
-	Toolbar="@Toolbar"
+	DesktopToolbar="@DesktopToolbar"
+	MobileToolbar="@MobileToolbar"
 	CssClass="@CssClass"
 	PageSize="@PageSize"
 	LoadingTemplate="@LoadingTemplate"
@@ -32,7 +34,7 @@
 	<GridTemplates EmptyRecordTemplate="@EmptyTemplate" />
 
 
-	<GridEvents TValue="T" DataBound="OnDataBound" OnActionBegin="@OnActionBegin" />
+	<GridEvents TValue="T" DataBound="OnDataBound" OnActionBegin="@OnActionBegin" OnToolbarClick="@_export" />
 	<Syncfusion.Blazor.Data.SfDataManager Adaptor="Adaptors.CustomAdaptor">
 		<DataRequestCallbackAdaptor Requested="@OnRequest" />
 	</Syncfusion.Blazor.Data.SfDataManager>
@@ -43,11 +45,13 @@
 </AdaptiveGrid>
 
 @code {
+	EventCallback<Syncfusion.Blazor.Navigations.ClickEventArgs> _export;
 	AdaptiveGrid<T>? _subject = default!;
 
 	protected override void OnInitialized()
 	{
 		EmptyTemplate = LoadingTemplate.Accept;
+		_export = Start.A.Callback<Syncfusion.Blazor.Navigations.ClickEventArgs>(ToolbarClickHandler).Handle(Exceptions).UpdateActivity().Get();
 		base.OnInitialized();
 	}
 
@@ -56,14 +60,20 @@
 		RefreshRequested = parameter != null;
 	}
 
+	Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
+		=> (args.Item.Id == $"{Id}_excelexport" ? _subject?.Export() : null) ?? Task.CompletedTask;
+
 	[Parameter]
 	public string Id { get; set; } = string.Empty;
 
 	[Parameter]
 	public FilterType FilterType { get; set; } = FilterType.Excel;
 
-    [Parameter]
-    public bool AllowSelection { get; set; }
+	[Parameter]
+	public bool AllowExport { get; set; }
+
+	[Parameter]
+	public bool AllowSelection { get; set; }
 
 	[Parameter]
 	public RenderFragment Columns { get; set; } = default!;
@@ -75,7 +85,10 @@
 	public RenderFragment EmptyElementsTemplate { get; set; } = DefaultEmptyResultTemplate.Default;
 
 	[Parameter]
-	public ICollection<string>? Toolbar { get; set; }
+	public ICollection<string>? DesktopToolbar { get; set; }
+
+	[Parameter]
+	public ICollection<string>? MobileToolbar { get; set; } = DefaultToolbar.Default;
 
 	[Parameter]
 	public EventCallback<Updated<T>> Updated { get; set; }
