@@ -34,7 +34,7 @@
 	<GridTemplates EmptyRecordTemplate="@EmptyTemplate" />
 
 
-	<GridEvents TValue="T" DataBound="OnDataBound" OnActionBegin="@OnActionBegin" OnToolbarClick="@_export" />
+	<GridEvents TValue="T" DataBound="OnDataBound" OnActionBegin="@OnActionBegin" />
 	<Syncfusion.Blazor.Data.SfDataManager Adaptor="Adaptors.CustomAdaptor">
 		<DataRequestCallbackAdaptor Requested="@OnRequest" />
 	</Syncfusion.Blazor.Data.SfDataManager>
@@ -51,7 +51,6 @@
 	protected override void OnInitialized()
 	{
 		EmptyTemplate = LoadingTemplate.Accept;
-		_export = Start.A.Callback<Syncfusion.Blazor.Navigations.ClickEventArgs>(ToolbarClickHandler).Handle(Exceptions).UpdateActivity().Get();
 		base.OnInitialized();
 	}
 
@@ -60,8 +59,7 @@
 		RefreshRequested = parameter != null;
 	}
 
-	Task ToolbarClickHandler(Syncfusion.Blazor.Navigations.ClickEventArgs args)
-		=> (args.Item.Id == $"{Id}_excelexport" ? _subject?.Export() : null) ?? Task.CompletedTask;
+    public Task Export() => _subject?.Export() ?? Task.CompletedTask;
 
 	[Parameter]
 	public string Id { get; set; } = string.Empty;

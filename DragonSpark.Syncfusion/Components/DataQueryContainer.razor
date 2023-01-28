@@ -31,7 +31,7 @@
 			@BodyHeaderTemplate
 		}
 
-			<DataQueryGrid T="T" Content="context"
+			<DataQueryGrid T="T" @ref="_subject" Content="context"
 					       Id="@_identity"
 						   FilterType="@FilterType"
 						   ReportedType="@ReportedType"
@@ -66,15 +66,12 @@
 
 @code {
 
+	DataQueryGrid<T>? _subject = default!;
+
 	protected override void OnInitialized()
 	{
 		base.OnInitialized();
 		_identity = $"{GenerateElementIdentifier.Default.Get(Id)}{Qualifier}";
-		if (AllowExport)
-		{
-			DesktopToolbar = new List<string>(DesktopToolbar ?? Empty.Array<string>()).With(x => x.Add("ExcelExport"));
-			MobileToolbar = new List<string>(MobileToolbar ?? Empty.Array<string>()).With(x => x.Add("ExcelExport"));
-		}
 	}
 
 	[Parameter]
@@ -162,4 +159,6 @@
 
 	[Parameter(CaptureUnmatchedValues = true)]
 	public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
+
+    public Task Export() => _subject?.Export() ?? Task.CompletedTask;
 }
