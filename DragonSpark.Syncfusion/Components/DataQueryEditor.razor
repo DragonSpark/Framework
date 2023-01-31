@@ -26,7 +26,8 @@
             AllowSelection="true"
             AllowPaging="@AllowPaging" AllowFiltering="@AllowFiltering" AllowSorting="@AllowSorting" Breakpoint="@Breakpoint"
             CssClass="@CssClass"
-            Toolbar="@Toolbar"
+            DesktopToolbar="@DesktopToolbar"
+            MobileToolbar="@MobileToolbar"
             PageSize="@PageSize"
             Editing="@Editing"
             Created="@(Start.A.Callback<T>(OnCreate).Handle(Exceptions, ReportedType).Using(receiver).UpdateActivity())"
@@ -114,7 +115,10 @@
     public string CssClass { get; set; } = string.Empty;
 
     [Parameter]
-    public ICollection<string>? Toolbar { get; set; } = EditToolbar.Default;
+    public ICollection<string>? DesktopToolbar { get; set; } = EditToolbar.Default;
+
+    [Parameter]
+    public ICollection<string>? MobileToolbar { get; set; } = EditToolbar.Default;
 
     [Parameter]
     public ushort PageSize { get; set; } = 10;
