@@ -11,7 +11,7 @@
 	IOperation<string> _call = default!;
 	protected override void OnInitialized()
 	{
-		_call = new ThrottleOperation<string>(TimeSpan.FromMilliseconds(250), Model.Then().Then().Catch<Evaluate>(Exceptions));
+		_call = new ThrottleOperation<string>(TimeSpan.FromMilliseconds(250), Model.Get).Then().Then().Catch<Evaluate>(Exceptions).Out();
 		base.OnInitialized();
 	}
 
@@ -39,4 +39,4 @@
 		}
 		return Task.CompletedTask;
 	}
-	}
+}

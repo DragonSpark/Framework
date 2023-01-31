@@ -1,27 +1,24 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Model;
-using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Stores;
 using System;
-using System.Timers;
 
 namespace DragonSpark.Application.Runtime;
 
 public class Throttling<T> : IThrottling<T>
 {
-	readonly ITable<Delegate, ThrottleContext>     _timers;
-	readonly ISelect<Throttle<T>, ThrottleContext> _create;
+	readonly ITable<DelegateKey<T>, ThrottleContext>  _timers;
+	readonly ISelect<DelegateKey<T>, ThrottleContext> _create;
 
 	public Throttling() : this(TimeSpan.FromMilliseconds(750)) {}
 
-	public Throttling(TimeSpan duration) : this(new Table<Delegate, ThrottleContext>(), duration) {}
+	public Throttling(TimeSpan duration) : this(Delegates<T>.Default, duration) {}
 
-	public Throttling(ITable<Delegate, ThrottleContext> timers, TimeSpan interval)
+	public Throttling(ITable<DelegateKey<T>, ThrottleContext> timers, TimeSpan interval)
 		: this(timers, new CreateThrottleContext<T>(timers, interval.TotalMilliseconds)) {}
 
-	public Throttling(ITable<Delegate, ThrottleContext> timers, ISelect<Throttle<T>, ThrottleContext> create)
+	public Throttling(ITable<DelegateKey<T>, ThrottleContext> timers, ISelect<DelegateKey<T>, ThrottleContext> create)
 	{
 		_timers = timers;
 		_create = create;
@@ -29,8 +26,9 @@ public class Throttling<T> : IThrottling<T>
 
 	public void Execute(Throttle<T> parameter)
 	{
-		var (_, key, source) = parameter;
-		var context = _timers.Get(key).Account() ?? _create.Get(parameter);
+		var (p, operate, source) = parameter;
+		var key     = new DelegateKey<T>(operate, p);
+		var context = _timers.Get(key).Account() ?? _create.Get(key);
 		var (subject, task) = context;
 		task.Add(source);
 		subject.Stop();
@@ -38,7 +36,16 @@ public class Throttling<T> : IThrottling<T>
 	}
 }
 
-public class Throttling : ICommand
+sealed class Delegates<T> : ConcurrentTable<DelegateKey<T>, ThrottleContext>
+{
+	public static Delegates<T> Default { get; } = new();
+
+	Delegates() {}
+}
+
+public readonly record struct DelegateKey<T>(Operate<T> Reference, T Parameter);
+
+/*public class Throttling : ICommand
 {
 	readonly Timer _timer;
 
@@ -59,4 +66,4 @@ public class Throttling : ICommand
 		_timer.Stop();
 		_timer.Start();
 	}
-}
+}*/
