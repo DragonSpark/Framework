@@ -5,115 +5,104 @@
 
 @typeparam T
 
-@inherits DragonSpark.Presentation.Components.Content.Templates.ManyActiveContentTemplateComponentBase<DragonSpark.Application.Entities.Queries.Runtime.Pagination.Page<T>>
+@inherits DragonSpark.Presentation.Components.Content.Templates.ManyActiveContentTemplateComponentBase<Page<T>>
 
 <ResultingContentView Content="@Subject"
-					  LoadingTemplate="@LoadingTemplate"
-					  NotFoundTemplate="@NotFoundTemplate"
-					  ExceptionTemplate="@ExceptionTemplate"
->
-	@if (context.Count > 0)
-	{
-		@ChildContent(context)
-	}
-	else
-	{
-		@EmptyElementsTemplate
-	}
+                      LoadingTemplate="@LoadingTemplate"
+                      NotFoundTemplate="@NotFoundTemplate"
+                      ExceptionTemplate="@ExceptionTemplate">
+    @if (context.Count > 0)
+    {
+        @ChildContent(context)
+    }
+    else
+    {
+        @EmptyElementsTemplate
+    }
 </ResultingContentView>
 
 @code {
 
-	[Parameter]
-	public IPages<T> Input
-	{
-		get => _input;
-		set
-		{
-			if (_input != value)
-			{
-				_input = value;
-				Subject = null;
-			}
-		}
-	}
+    [Parameter]
+    public IPages<T> Input
+    {
+        get => _input;
+        set
+        {
+            if (_input != value)
+            {
+                _input = value;
+                Subject = null;
+            }
+        }
+    }
 
-	[Parameter]
-	public bool IncludeTotalCount
-	{
-		get => _includeTotalCount;
-		set
-		{
-			if (_includeTotalCount != value)
-			{
-				_includeTotalCount = value;
-				Subject = null;
-			}
-		}
-	}
+    [Parameter]
+    public bool IncludeTotalCount
+    {
+        get => _includeTotalCount;
+        set
+        {
+            if (_includeTotalCount != value)
+            {
+                _includeTotalCount = value;
+                Subject = null;
+            }
+        }
+    }
 
-	[Parameter]
-	public string? OrderBy
-	{
-		get => _orderBy;
-		set
-		{
-			if (_orderBy != value)
-			{
-				_orderBy = value;
-				Subject = null;
-			}
-		}
-	}
+    [Parameter]
+    public string? OrderBy
+    {
+        get => _orderBy;
+        set
+        {
+            if (_orderBy != value)
+            {
+                _orderBy = value;
+                Subject = null;
+            }
+        }
+    }
 
-	[Parameter]
-	public string? Filter
-	{
-		get => _filter;
-		set
-		{
-			if (_filter != value)
-			{
-				_filter = value;
-				Subject = null;
-			}
-		}
-	}
+    [Parameter]
+    public string? Filter
+    {
+        get => _filter;
+        set
+        {
+            if (_filter != value)
+            {
+                _filter = value;
+                Subject = null;
+            }
+        }
+    }
 
-	[Parameter]
-	public Partition? Partition
-	{
-		get => _partition;
-		set
-		{
-			if (_partition != value)
-			{
-				_partition = value;
-				Subject = null;
-			}
-		}
-	}
+    [Parameter]
+    public Partition? Partition
+    {
+        get => _partition;
+        set
+        {
+            if (_partition != value)
+            {
+                _partition = value;
+                Subject = null;
+            }
+        }
+    }
 
-	IResulting<Page<T>>? Subject { get; set; }
+    IResulting<Page<T>>? Subject { get; set; }
 
-	protected override void OnParametersSet()
-	{
-		base.OnParametersSet();
-		Subject ??= DetermineSubject();
-	}
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        Subject ??= Input.Then().Bind(new PageInput(IncludeTotalCount, OrderBy, Filter, Partition)).Out();
+    }
 
-	IResulting<Page<T>> DetermineSubject()
-	{
-		var input = new PageInput
-		{
-			Filter = Filter, OrderBy = OrderBy, IncludeTotalCount = IncludeTotalCount, Partition = Partition
-		};
-		var result = Input.Then().Bind(input).Out();
-		return result;
-	}
-
-	IPages<T> _input = default!;
-	bool _includeTotalCount;
-	string? _orderBy, _filter;
-	Partition? _partition;
+    IPages<T> _input = default!;
+    bool _includeTotalCount;
+    string? _orderBy, _filter;
+    Partition? _partition;
 }
