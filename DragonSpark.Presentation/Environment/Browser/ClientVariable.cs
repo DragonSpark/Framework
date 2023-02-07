@@ -9,14 +9,14 @@ namespace DragonSpark.Presentation.Environment.Browser;
 
 public class ClientVariable<T> : IClientVariable<T>
 {
-	readonly string             _key;
+	readonly string                     _key;
 	readonly IClientVariableAccessor<T> _store;
+
+	public ClientVariable(string key, ProtectedBrowserStorage storage)
+		: this(key, new ConnectionAwareClientVariableAccessor<T>(new ClientVariableAccessor<T>(storage))) {}
 
 	protected ClientVariable(Type key, ProtectedBrowserStorage storage)
 		: this(key.AssemblyQualifiedName.Verify(), storage) {}
-
-	protected ClientVariable(string key, ProtectedBrowserStorage storage)
-		: this(key, new ConnectionAwareClientVariableAccessor<T>(new ClientVariableAccessor<T>(storage))) {}
 
 	protected ClientVariable(string key, IClientVariableAccessor<T> store)
 		: this(key, store, new Operation(store.Remove.Then().Bind(key))) {}

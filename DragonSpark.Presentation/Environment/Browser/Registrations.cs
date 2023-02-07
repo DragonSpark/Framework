@@ -28,6 +28,9 @@ sealed class Registrations : ICommand<IServiceCollection>
 		         .Then.Start<CreateWindowFocusElement>()
 		         .Include(x => x.Dependencies)
 		         .Scoped()
-				 ;
+		         //
+		         .Then.ForDefinition<SessionClientVariables<object>>()
+		         .Scoped()
+			;
 	}
 }
