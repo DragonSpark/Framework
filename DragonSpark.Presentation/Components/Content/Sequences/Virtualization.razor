@@ -51,7 +51,7 @@
     public string? Filter { get; set; }
 
     [Parameter]
-    public ushort PageSize { get; set; } = 10;
+    public ushort PageSize { get; set; } = DefaultPageSize.Default;
 
     [Parameter]
     public RenderDirection Direction { get; set; }
