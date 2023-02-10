@@ -1,0 +1,133 @@
+﻿@*
+    // ATTRIBUTION: https://github.com/meziantou/Meziantou.Framework/blob/5cc4602de6ca4a7cf0caf23c57259cc60e46cf83/src/Meziantou.AspNetCore.Components/InfiniteScrolling/InfiniteScrolling.razor
+*@
+@using DragonSpark.Compose
+@using DragonSpark.Application.Entities.Queries.Runtime.Pagination
+@using System.Threading
+@inject IJSRuntime JSRuntime
+@implements IAsyncDisposable
+
+@typeparam T
+
+@inherits DragonSpark.Presentation.Components.Content.Templates.ActiveContentTemplateComponentBase<T>
+
+@foreach (var item in _items)
+{
+    @ChildContent(item)
+}
+
+@if (_loading)
+{
+    @LoadingTemplate
+}
+
+@switch (Direction)
+{
+    case RenderDirection.Vertical:
+        <div @ref="_vertical" style="height: 1px"></div>
+        break;
+    case RenderDirection.Horizontal:
+        <div @ref="_horizontal" style="width: 1px"></div>
+        break;
+}
+
+
+@code {
+    readonly List<T> _items = new();
+    ElementReference _vertical, _horizontal;
+    DotNetObjectReference<Virtualization<T>>? _reference;
+    IJSObjectReference? _module;
+    IJSObjectReference? _instance;
+    bool _loading;
+    CancellationTokenSource? _loadItemsCts;
+
+    [Parameter]
+    public IPages<T> Input { get; set; } = default!;
+
+    [Parameter]
+    public string? OrderBy { get; set; }
+
+    [Parameter]
+    public string? Filter { get; set; }
+
+    [Parameter]
+    public ushort PageSize { get; set; } = 10;
+
+    [Parameter]
+    public RenderDirection Direction { get; set; }
+
+    [JSInvokable]
+    public async Task LoadMoreItems()
+    {
+        if (!_loading)
+        {
+            _loading = true;
+            try
+            {
+                _loadItemsCts ??= new CancellationTokenSource();
+
+                StateHasChanged();
+                try
+                {
+                    var page = await Input.Get(new(true, OrderBy, Filter, new(_items.Count, PageSize)));
+                    if (page.Count > 0)
+                    {
+                        _items.AddRange(page);
+                    }
+
+                    if (_items.Count < (int)page.Total.Value())
+                    {
+                        await _instance.Verify().InvokeVoidAsync("onNewItems");
+                    }
+                    else
+                    {
+                        await DisposeAsync();
+                    }
+
+                }
+                catch (OperationCanceledException oce) when (oce.CancellationToken == _loadItemsCts.Token) {}
+            }
+            finally
+            {
+                _loading = false;
+            }
+
+            StateHasChanged();
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        // Initialize the IntersectionObserver
+        if (firstRender)
+        {
+            _module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/DragonSpark.Presentation/Components/Content/Sequences/Virtualization.js");
+            _reference = DotNetObjectReference.Create(this);
+            var element = Direction == RenderDirection.Horizontal ? _horizontal : _vertical;
+            _instance = await _module.InvokeAsync<IJSObjectReference>("initialize", element, _reference, (byte)Direction);
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_loadItemsCts != null)
+        {
+            _loadItemsCts.Dispose();
+            _loadItemsCts = null;
+        }
+
+        if (_instance != null)
+        {
+            await _instance.InvokeVoidAsync("dispose");
+            await _instance.DisposeAsync();
+            _instance = null;
+        }
+
+        if (_module != null)
+        {
+            await _module.DisposeAsync();
+        }
+
+        _reference?.Dispose();
+    }
+}
