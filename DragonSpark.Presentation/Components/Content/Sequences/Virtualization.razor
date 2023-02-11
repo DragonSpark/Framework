@@ -21,20 +21,12 @@
     @LoadingTemplate
 }
 
-@switch (Direction)
-{
-    case RenderDirection.Vertical:
-        <div @ref="_vertical" style="height: 1px"></div>
-        break;
-    case RenderDirection.Horizontal:
-        <div @ref="_horizontal" style="width: 1px"></div>
-        break;
-}
+<div @ref="_element" style="width: 1px;height: 1px"></div>
 
 
 @code {
     readonly List<T> _items = new();
-    ElementReference _vertical, _horizontal;
+    ElementReference _element;
     DotNetObjectReference<Virtualization<T>>? _reference;
     IJSObjectReference? _module;
     IJSObjectReference? _instance;
@@ -103,8 +95,7 @@
         {
             _module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/DragonSpark.Presentation/Components/Content/Sequences/Virtualization.js");
             _reference = DotNetObjectReference.Create(this);
-            var element = Direction == RenderDirection.Horizontal ? _horizontal : _vertical;
-            _instance = await _module.InvokeAsync<IJSObjectReference>("initialize", element, _reference, (byte)Direction);
+            _instance = await _module.InvokeAsync<IJSObjectReference>("initialize", _element, _reference, (byte)Direction);
         }
     }
 
