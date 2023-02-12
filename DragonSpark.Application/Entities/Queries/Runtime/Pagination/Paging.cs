@@ -13,7 +13,7 @@ sealed class Paging<T> : IPaging<T>
 
 	Paging() {}
 
-	public IPages<T> Get(PagingInput<T> parameter) => new Pages<T>(parameter.Queries, parameter.Compose);
+	public IPages<T> Get(PagingInput<T> parameter) => new DefaultPages<T>(parameter.Queries, parameter.Compose);
 }
 
 
