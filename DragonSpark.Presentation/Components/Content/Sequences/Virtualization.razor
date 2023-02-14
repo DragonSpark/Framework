@@ -26,7 +26,7 @@
 
 @code {
     readonly List<T> _items = new();
-    ElementReference _element;
+    ElementReference? _element;
     DotNetObjectReference<Virtualization<T>>? _reference;
     IJSObjectReference? _module;
     IJSObjectReference? _instance;
@@ -91,11 +91,11 @@
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         // Initialize the IntersectionObserver
-        if (firstRender)
+        if (firstRender && _element is not null)
         {
             _module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/DragonSpark.Presentation/Components/Content/Sequences/Virtualization.js");
             _reference = DotNetObjectReference.Create(this);
-            _instance = await _module.InvokeAsync<IJSObjectReference>("initialize", _element, _reference, (byte)Direction);
+            _instance = await _module.InvokeAsync<IJSObjectReference>("initialize", _element.Value, _reference, (byte)Direction);
         }
     }
 
