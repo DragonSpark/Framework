@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" Version="7.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Twitter" Version="7.0.3" />
     <PackageReference Include="TweetinviAPI" Version="5.0.4" />
   </ItemGroup>
 

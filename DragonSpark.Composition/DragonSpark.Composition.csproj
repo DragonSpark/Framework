@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <PackageReference Include="LightInject.Microsoft.Hosting" Version="1.5.0" />
-    <PackageReference Include="Scrutor" Version="4.2.0" />
+    <PackageReference Include="LightInject.Microsoft.Hosting" Version="1.5.3" />
+    <PackageReference Include="Scrutor" Version="4.2.1" />
   </ItemGroup>
 
   <ItemGroup>
