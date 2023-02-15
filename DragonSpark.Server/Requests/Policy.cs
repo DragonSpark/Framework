@@ -26,5 +26,5 @@ public class Policy<T> : IPolicy<T>
 	}
 
 	public ValueTask<bool?> Get(Request<T> parameter)
-		=> _policy.Get(new Unique(parameter.Parameter.UserName, _select(parameter)));
+		=> _policy.Get(new (parameter.Parameter.UserName, _select(parameter)));
 }
