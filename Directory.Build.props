@@ -12,10 +12,10 @@
 	 <Trademark>DragonSpark Technologies Incorporated</Trademark>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <NoWarn>$(NoWarn);NU1603;NU1608;CS8669;BL0007</NoWarn>
+    <NoWarn>$(NoWarn);NU1603;NU1608;CS8669;BL0007;EF1001</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'!='Debug|AnyCPU'">
-    <NoWarn>$(NoWarn);CS8669;BL0007</NoWarn>
+    <NoWarn>$(NoWarn);CS8669;BL0007;EF1001</NoWarn>
   </PropertyGroup>
 	<ItemGroup Condition="'$(Configuration)'=='Release'">
 		<PackageReference Include="Nerdbank.GitVersioning"

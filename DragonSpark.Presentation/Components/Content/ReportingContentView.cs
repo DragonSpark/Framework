@@ -47,7 +47,7 @@ partial class ReportingContentView<TIn, TOut> where TIn : class
 
 	protected override void OnParametersSet()
 	{
-		Subject ??= Content != null ? Reporter.Get(new(Content, _report)) : default;
+		Subject ??= Content is not null ? Reporter.Get(new(Content, _report)) : default;
 	}
 
 	protected override Task OnParametersSetAsync() => Current?.AsTask() ?? base.OnParametersSetAsync();

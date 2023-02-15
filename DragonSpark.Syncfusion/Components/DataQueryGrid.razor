@@ -2,10 +2,12 @@
 @using DragonSpark.Compose
 @using DragonSpark.Model.Operations
 @using DragonSpark.Presentation
+@using DragonSpark.Presentation.Components.Content.Rendering
 @using DragonSpark.Presentation.Components.Content.Templates
 @using DragonSpark.Presentation.Components.State
 @using DragonSpark.SyncfusionRendering.Entities
 @using DragonSpark.SyncfusionRendering.Queries
+@using Microsoft.Extensions.Caching.Memory
 @using Syncfusion.Blazor
 @using Syncfusion.Blazor.Grids
 @using Action = Syncfusion.Blazor.Grids.Action
@@ -13,132 +15,140 @@
 @typeparam T
 @inherits DataQueryComponent
 
+@inject IMemoryCache Memory
+@inject IContentKey Key
+
 <AdaptiveGrid T="T"
-	@ref="@_subject"
-	Id="@Id"
-	FilterType="@FilterType"
-	Columns="@Columns"
-	AllowSelection="@AllowSelection"
-	AllowPaging="@AllowPaging"
-	AllowFiltering="@AllowFiltering"
-	AllowSorting="@AllowSorting"
-	AllowExport="@AllowExport"
-	Breakpoint="@Breakpoint"
-	DesktopToolbar="@DesktopToolbar"
-	MobileToolbar="@MobileToolbar"
-	CssClass="@CssClass"
-	PageSize="@PageSize"
-	LoadingTemplate="@LoadingTemplate"
-	@attributes="@AdditionalAttributes">
+              @ref="@_subject"
+              Id="@Id"
+              FilterType="@FilterType"
+              Columns="@Columns"
+              AllowSelection="@AllowSelection"
+              AllowPaging="@AllowPaging"
+              AllowFiltering="@AllowFiltering"
+              AllowSorting="@AllowSorting"
+              AllowExport="@AllowExport"
+              Breakpoint="@Breakpoint"
+              DesktopToolbar="@DesktopToolbar"
+              MobileToolbar="@MobileToolbar"
+              CssClass="@CssClass"
+              PageSize="@PageSize"
+              LoadingTemplate="@LoadingTemplate"
+              @attributes="@AdditionalAttributes">
 
-	<GridTemplates EmptyRecordTemplate="@EmptyTemplate" />
+    <GridTemplates EmptyRecordTemplate="@EmptyTemplate"/>
 
 
-	<GridEvents TValue="T" DataBound="OnDataBound" OnActionBegin="@OnActionBegin" />
-	<Syncfusion.Blazor.Data.SfDataManager Adaptor="Adaptors.CustomAdaptor">
-		<DataRequestCallbackAdaptor Requested="@OnRequest" />
-	</Syncfusion.Blazor.Data.SfDataManager>
-	@if (ChildContent is not null)
-	{
-		@ChildContent
-	}
+    <GridEvents TValue="T" DataBound="OnDataBound" OnActionBegin="@OnActionBegin"/>
+    <Syncfusion.Blazor.Data.SfDataManager Adaptor="Adaptors.CustomAdaptor">
+        <DataRequestCallbackAdaptor Requested="@OnRequest"/>
+    </Syncfusion.Blazor.Data.SfDataManager>
+    @if (ChildContent is not null)
+    {
+        @ChildContent
+    }
 </AdaptiveGrid>
 
 @code {
-	AdaptiveGrid<T>? _subject = default!;
+    AdaptiveGrid<T>? _subject = default!;
 
-	protected override void OnInitialized()
-	{
-		EmptyTemplate = LoadingTemplate.Accept;
-		base.OnInitialized();
-	}
+    protected override void OnInitialized()
+    {
+        EmptyTemplate = LoadingTemplate.Accept;
+        base.OnInitialized();
+    }
 
-	protected override void OnContentChanged(Await<DataManagerRequest, object>? parameter)
-	{
-		RefreshRequested = parameter != null;
-	}
+    protected override void OnContentChanged(Await<DataManagerRequest, object>? parameter)
+    {
+        RefreshRequested = parameter != null;
+    }
 
     public Task Export() => _subject?.Export() ?? Task.CompletedTask;
 
-	[Parameter]
-	public string Id { get; set; } = string.Empty;
+    [Parameter]
+    public string Id { get; set; } = string.Empty;
 
-	[Parameter]
-	public FilterType FilterType { get; set; } = FilterType.Excel;
+    [Parameter]
+    public FilterType FilterType { get; set; } = FilterType.Excel;
 
-	[Parameter]
-	public bool AllowExport { get; set; }
+    [Parameter]
+    public bool AllowExport { get; set; }
 
-	[Parameter]
-	public bool AllowSelection { get; set; }
+    [Parameter]
+    public bool AllowSelection { get; set; }
 
-	[Parameter]
-	public RenderFragment Columns { get; set; } = default!;
+    [Parameter]
+    public RenderFragment Columns { get; set; } = default!;
 
-	[Parameter]
-	public string Breakpoint { get; set; } = Breakpoints.SmallUp;
+    [Parameter]
+    public string Breakpoint { get; set; } = Breakpoints.SmallUp;
 
-	[Parameter]
-	public RenderFragment EmptyElementsTemplate { get; set; } = DefaultEmptyResultTemplate.Default;
+    [Parameter]
+    public RenderFragment EmptyElementsTemplate { get; set; } = DefaultEmptyResultTemplate.Default;
 
-	[Parameter]
-	public ICollection<string>? DesktopToolbar { get; set; }
+    [Parameter]
+    public ICollection<string>? DesktopToolbar { get; set; }
 
-	[Parameter]
-	public ICollection<string>? MobileToolbar { get; set; } = DefaultToolbar.Default;
+    [Parameter]
+    public ICollection<string>? MobileToolbar { get; set; } = DefaultToolbar.Default;
 
-	[Parameter]
-	public EventCallback<Updated<T>> Updated { get; set; }
+    [Parameter]
+    public EventCallback<Updated<T>> Updated { get; set; }
 
-	[Parameter]
-	public EventCallback<Allow<T>> Editing { get; set; }
+    [Parameter]
+    public EventCallback<Allow<T>> Editing { get; set; }
 
-	[Parameter]
-	public EventCallback<T> Created { get; set; }
+    [Parameter]
+    public EventCallback<T> Created { get; set; }
 
-	RenderFragment<EmptyRecordTemplateContext>? EmptyTemplate { get; set; }
+    RenderFragment<EmptyRecordTemplateContext>? EmptyTemplate { get; set; }
 
-	public Task Refresh() => _subject?.Refresh() ?? Task.CompletedTask;
+    public Task Refresh() => _subject?.Refresh() ?? Task.CompletedTask;
 
-	bool RefreshRequested { get; set; }
+    bool RefreshRequested { get; set; }
 
-	protected override Task OnParametersSetAsync()
-	{
-		if (_subject is not null && RefreshRequested)
-		{
-			RefreshRequested = false;
-			return Refresh();
-		}
-		return base.OnParametersSetAsync();
-	}
+    protected override Task OnParametersSetAsync()
+    {
+        if (_subject is not null && RefreshRequested)
+        {
+            RefreshRequested = false;
+            return Refresh();
+        }
+        return base.OnParametersSetAsync();
+    }
 
-	protected override Await<DataManagerRequest, object> CreateInput()
-		=> Content.Then().Then().UpdateActivity(Receiver)
-						.Handle(Exceptions, ReportedType ?? GetType(), EmptyDataResult.Default.Get());
+    protected override Await<DataManagerRequest, object> CreateInput()
+    {
+        var body = new MemoryAwareDataRequest(Content, Memory, Key.Get(this));
 
-	void OnDataBound()
-	{
-		EmptyTemplate = EmptyElementsTemplate.Accept;
-	}
+        return body.Then()
+                   .Then()
+                   .UpdateActivity(Receiver)
+                   .Handle(Exceptions, ReportedType ?? GetType(), EmptyDataResult.Default.Get());
+    }
 
-	async Task OnActionBegin(ActionEventArgs<T> arg)
-	{
-		switch (arg.RequestType)
-		{
-			case Action.BeginEdit:
-				var allow = new Allow<T>(arg.Data);
-				await Editing.InvokeAsync(allow);
-				arg.Cancel = !allow.Get();
-				break;
-			case Action.Add:
-			    await Created.InvokeAsync(arg.Data);
-			    break;
-			case Action.Save:
-			case Action.Delete:
-				await Updated.InvokeAsync(new(arg.Data, arg.Action));
-			    break;
-		}
+    void OnDataBound()
+    {
+        EmptyTemplate = EmptyElementsTemplate.Accept;
+    }
 
-	}
+    async Task OnActionBegin(ActionEventArgs<T> arg)
+    {
+        switch (arg.RequestType)
+        {
+            case Action.BeginEdit:
+                var allow = new Allow<T>(arg.Data);
+                await Editing.InvokeAsync(allow);
+                arg.Cancel = !allow.Get();
+                break;
+            case Action.Add:
+                await Created.InvokeAsync(arg.Data);
+                break;
+            case Action.Save:
+            case Action.Delete:
+                await Updated.InvokeAsync(new(arg.Data, arg.Action));
+                break;
+        }
+    }
 
 }
