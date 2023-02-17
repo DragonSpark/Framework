@@ -3,13 +3,16 @@
 *@
 @using DragonSpark.Compose
 @using DragonSpark.Application.Entities.Queries.Runtime.Pagination
+@using DragonSpark.Model.Operations
+@using DragonSpark.Presentation.Environment.Browser
 @using System.Threading
-@inject IJSRuntime JSRuntime
-@implements IAsyncDisposable
 
 @typeparam T
-
 @inherits DragonSpark.Presentation.Components.Content.Templates.ActiveContentTemplateComponentBase<T>
+@implements IAsyncDisposable
+@implements DragonSpark.Model.Operations.IOperation
+
+@inject IJSRuntime JSRuntime
 
 @foreach (var item in _items)
 {
@@ -32,6 +35,13 @@
     IJSObjectReference? _instance;
     bool _loading;
     CancellationTokenSource? _loadItemsCts;
+    IOperation _dispose = null!;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _dispose = new ConnectionAware(this);
+    }
 
     [Parameter]
     public IPages<T> Input { get; set; } = default!;
@@ -98,7 +108,9 @@
         }
     }
 
-    public async ValueTask DisposeAsync()
+    public ValueTask DisposeAsync() => _dispose?.Get() ?? ValueTask.CompletedTask;
+
+    public async ValueTask Get()
     {
         if (_loadItemsCts != null)
         {
@@ -120,4 +132,5 @@
 
         _reference?.Dispose();
     }
+
 }

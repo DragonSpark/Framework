@@ -10,8 +10,7 @@ sealed class NewWindowFocusElement : CreateReference<NewWindowFocusElementInput>
 	NewWindowFocusElement() : base(nameof(NewWindowFocusElement)) {}
 }
 
-public readonly record struct NewWindowFocusElementInput(object Reference)
-	: IArray<object>
+public readonly record struct NewWindowFocusElementInput(object Reference) : IArray<object>
 {
 	public Array<object> Get() => new object[] { DotNetObjectReference.Create(Reference) };
 }
