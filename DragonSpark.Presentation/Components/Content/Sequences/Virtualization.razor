@@ -90,7 +90,6 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        // Initialize the IntersectionObserver
         if (firstRender && _reference is null && _element?.Context is not null)
         {
             _module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/DragonSpark.Presentation/Components/Content/Sequences/Virtualization.js");
