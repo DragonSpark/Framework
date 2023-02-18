@@ -35,7 +35,7 @@
     IJSObjectReference? _instance;
     bool _loading;
     CancellationTokenSource? _loadItemsCts;
-    IOperation _dispose = null!;
+    IOperation? _dispose;
 
     protected override void OnInitialized()
     {
