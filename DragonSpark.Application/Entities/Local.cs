@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities;
 
-public sealed class Local<TKey, T> : ISelecting<T, T?> where T : class
+public sealed class Local<TKey, T> : ISelecting<TKey, T?> where T : class
 {
 	readonly IScopes                 _context;
 	readonly Func<T, TKey>           _key;
@@ -22,15 +22,14 @@ public sealed class Local<TKey, T> : ISelecting<T, T?> where T : class
 		_equality = equality;
 	}
 
-	public async ValueTask<T?> Get(T parameter)
+	public async ValueTask<T?> Get(TKey parameter)
 	{
-		var key = _key(parameter);
 		var (subject, boundary) = _context.Get();
 		using var _ = await boundary.Await();
 		foreach (var local in subject.Set<T>().Local.AsValueEnumerable())
 		{
 			var entity = _key(local);
-			if (_equality.Equals(entity, key))
+			if (_equality.Equals(entity, parameter))
 			{
 				return local;
 			}
