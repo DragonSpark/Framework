@@ -1,0 +1,36 @@
+﻿@using DragonSpark.Compose
+@if (Enabled && !_confirmed)
+{
+    @ConfirmContent(_parameter)
+}
+else
+{
+    @ChildContent
+}
+
+@code {
+
+    bool _confirmed;
+    EventCallback _parameter;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _parameter = Start.A.Callback(OnPress);
+    }
+
+    [Parameter]
+    public bool Enabled { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment<EventCallback> ConfirmContent { get; set; } = default!;
+
+    void OnPress()
+    {
+        _confirmed = true;
+        StateHasChanged();
+    }
+}
