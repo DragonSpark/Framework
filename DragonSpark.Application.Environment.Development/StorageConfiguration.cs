@@ -6,10 +6,11 @@ namespace DragonSpark.Application.Environment.Development;
 public sealed class StorageConfiguration : Entities.Configure.StorageConfiguration
 {
 	[UsedImplicitly]
-	public static StorageConfiguration Default { get; } = new StorageConfiguration();
+	public static StorageConfiguration Default { get; } = new();
 
 	StorageConfiguration()
-		: base(x => x.EnableSensitiveDataLogging()
+		: base(x => x.AddInterceptors(AzureAdAuthenticationDbConnectionInterceptor.Default)
+		             .EnableSensitiveDataLogging()
 		             .EnableDetailedErrors()
 		             .ConfigureWarnings(y => y.Throw(RelationalEventId.MultipleCollectionIncludeWarning))) {}
 }
