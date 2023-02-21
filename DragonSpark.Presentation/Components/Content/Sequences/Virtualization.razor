@@ -4,7 +4,9 @@
 @using DragonSpark.Compose
 @using DragonSpark.Application.Entities.Queries.Runtime.Pagination
 @using DragonSpark.Model.Operations
+@using DragonSpark.Model.Results
 @using DragonSpark.Presentation.Environment.Browser
+@using DragonSpark.Runtime.Execution
 @using System.Threading
 
 @typeparam T
@@ -33,8 +35,8 @@
     DotNetObjectReference<Virtualization<T>>? _reference;
     IJSObjectReference? _module;
     IJSObjectReference? _instance;
-    bool _loading;
-    CancellationTokenSource? _loadItemsCts;
+    bool _loading, _complete;
+    CancellationTokenSource? _source;
     IOperation? _dispose;
 
     protected override void OnInitialized()
@@ -44,7 +46,24 @@
     }
 
     [Parameter]
-    public IPages<T> Input { get; set; } = default!;
+    public IPages<T> Input 
+    {
+        get => _input;
+        set
+        {
+            if (_input != value)
+            {
+                _input = value;
+                _items.Clear();
+                _source?.Cancel();
+                _source = null;
+                _complete = _loading = false;
+            }
+        }
+    }	IPages<T> _input = default!;
+
+    /*[Parameter]
+    public IPages<T> Input { get; set; } = default!;*/
 
     [Parameter]
     public string? OrderBy { get; set; }
@@ -61,12 +80,12 @@
     [JSInvokable]
     public async Task LoadMoreItems()
     {
-        if (!_loading)
+        if (!_complete && !_loading)
         {
             _loading = true;
             try
             {
-                _loadItemsCts ??= new CancellationTokenSource();
+                _source ??= new CancellationTokenSource();
 
                 StateHasChanged();
                 try
@@ -83,11 +102,11 @@
                     }
                     else
                     {
-                        await DisposeAsync();
+                        _complete = true; 
                     }
 
                 }
-                catch (OperationCanceledException oce) when (oce.CancellationToken == _loadItemsCts.Token) {}
+                catch (OperationCanceledException oce) when (oce.CancellationToken == _source.Token) {}
             }
             finally
             {
@@ -112,10 +131,10 @@
 
     public async ValueTask Get()
     {
-        if (_loadItemsCts != null)
+        if (_source != null)
         {
-            _loadItemsCts.Dispose();
-            _loadItemsCts = null;
+            _source.Dispose();
+            _source = null;
         }
 
         if (_instance != null)
@@ -131,6 +150,7 @@
         }
 
         _reference?.Dispose();
+        _reference = null;
     }
 
 }
