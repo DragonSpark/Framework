@@ -6,7 +6,7 @@ namespace DragonSpark.SyncfusionRendering.Queries;
 
 sealed class Sort<T> : IQuery<T>
 {
-	public static Sort<T> Default { get; } = new Sort<T>();
+	public static Sort<T> Default { get; } = new();
 
 	Sort() {}
 

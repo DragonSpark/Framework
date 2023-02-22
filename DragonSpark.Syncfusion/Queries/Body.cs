@@ -7,7 +7,7 @@ namespace DragonSpark.SyncfusionRendering.Queries;
 
 sealed class Body<T> : IBody<T>
 {
-	public static Body<T> Default { get; } = new Body<T>();
+	public static Body<T> Default { get; } = new();
 
 	Body() : this(BodyQuery<T>.Default) {}
 

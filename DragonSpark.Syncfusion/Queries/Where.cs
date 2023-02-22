@@ -6,7 +6,7 @@ namespace DragonSpark.SyncfusionRendering.Queries;
 
 sealed class Where<T> : IQuery<T>
 {
-	public static Where<T> Default { get; } = new Where<T>();
+	public static Where<T> Default { get; } = new();
 
 	Where() {}
 

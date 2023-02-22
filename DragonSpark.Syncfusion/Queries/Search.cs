@@ -6,7 +6,7 @@ namespace DragonSpark.SyncfusionRendering.Queries;
 
 sealed class Search<T> : IQuery<T>
 {
-	public static Search<T> Default { get; } = new Search<T>();
+	public static Search<T> Default { get; } = new();
 
 	Search() {}
 
