@@ -46,7 +46,7 @@
     }
 
     [Parameter]
-    public IPages<T> Input 
+    public IPages<T> Input
     {
         get => _input;
         set
@@ -60,7 +60,9 @@
                 _complete = _loading = false;
             }
         }
-    }	IPages<T> _input = default!;
+    }
+
+    IPages<T> _input = default!;
 
     /*[Parameter]
     public IPages<T> Input { get; set; } = default!;*/
@@ -102,9 +104,8 @@
                     }
                     else
                     {
-                        _complete = true; 
+                        _complete = true;
                     }
-
                 }
                 catch (OperationCanceledException oce) when (oce.CancellationToken == _source.Token) {}
             }
@@ -123,7 +124,11 @@
         {
             _module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/DragonSpark.Presentation/Components/Content/Sequences/Virtualization.js");
             _reference = DotNetObjectReference.Create(this);
-            _instance = await _module.InvokeAsync<IJSObjectReference>("initialize", _element.Value, _reference, (byte)Direction);
+            try
+            {
+                _instance = await _module.InvokeAsync<IJSObjectReference>("initialize", _element.Value, _reference, (byte)Direction);
+            }
+            catch (JSException e) when (e.Message.StartsWith("Failed to execute 'observe' on 'IntersectionObserver': parameter 1 is not of type 'Element'.")) {}
         }
     }
 
