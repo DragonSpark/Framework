@@ -128,7 +128,10 @@
             {
                 _instance = await _module.InvokeAsync<IJSObjectReference>("initialize", _element.Value, _reference, (byte)Direction);
             }
-            catch (JSException e) when (e.Message.StartsWith("Failed to execute 'observe' on 'IntersectionObserver': parameter 1 is not of type 'Element'.")) {}
+            catch (JSException e)
+                when (e.Message.StartsWith("Failed to execute 'observe' on 'IntersectionObserver': parameter 1 is not of type 'Element'.")
+                      ||
+                      e.Message.StartsWith("IntersectionObserver.observe: Argument 1 is not an object")) {}
         }
     }
 
