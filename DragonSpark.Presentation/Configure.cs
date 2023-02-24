@@ -7,6 +7,7 @@ using DragonSpark.Presentation.Components.Content;
 using DragonSpark.Presentation.Components.Content.Rendering;
 using DragonSpark.Presentation.Components.Content.Rendering.Sequences;
 using DragonSpark.Presentation.Environment;
+using Registrations = DragonSpark.Presentation.Components.Content.Sequences.Virtualization.Registrations;
 
 namespace DragonSpark.Presentation;
 
@@ -21,7 +22,8 @@ sealed class Configure : IAlteration<BuildHostContext>
 		                       Environment.Browser.Registrations.Default,
 		                       Environment.Browser.Time.Registrations.Default,
 		                       Connections.Circuits.Registrations.Default,
-		                       Interaction.Registrations.Default)
+		                       Interaction.Registrations.Default,
+		                       Registrations.Default)
 		            .ComposeUsing(Composing.Default)
 		            .ComposeUsing(x => x.Decorate(typeof(IActiveContents<>), typeof(RenderingAwareActiveContents<>))
 		                                .Decorate(typeof(IActiveContents<>), typeof(ExceptionAwareActiveContents<>))

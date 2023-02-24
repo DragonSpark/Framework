@@ -13,5 +13,5 @@ public class ConnectionAwareDisposing : PolicyAwareOperation, IAsyncDisposable
 	protected ConnectionAwareDisposing(IAsyncDisposable previous, IResult<IAsyncPolicy> policy)
 		: base(previous.DisposeAsync, policy) {}
 
-	public ValueTask DisposeAsync() => Get();
+	public virtual ValueTask DisposeAsync() => Get();
 }

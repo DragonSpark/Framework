@@ -1,41 +1,46 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
+using DragonSpark.Runtime;
 using Microsoft.JSInterop;
 using Polly;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Environment.Browser.Document;
 
-sealed class PolicyAwareJSObjectReference : IJSObjectReference
+public class PolicyAwareJSObjectReference : Disposing, IJSObjectReference
 {
 	readonly IJSObjectReference _previous;
-	readonly IAsyncPolicy       _policy;
-	readonly IOperation         _dispose;
+	readonly object             _policy;
 
 	public PolicyAwareJSObjectReference(IJSObjectReference previous)
 		: this(previous, DurableEvaluatePolicy.Default.Get()) {}
 
-	public PolicyAwareJSObjectReference(IJSObjectReference previous, IAsyncPolicy policy)
-		: this(previous, policy, new DisposeReference(previous, policy)) {}
+	public PolicyAwareJSObjectReference(IJSObjectReference previous, object policy)
+		: this(previous, policy, new DisposeReference(previous)) {}
 
-	public PolicyAwareJSObjectReference(IJSObjectReference previous, IAsyncPolicy policy, IOperation dispose)
+	public PolicyAwareJSObjectReference(IJSObjectReference previous, object policy, IOperation dispose)
+		: base(dispose.Get)
 	{
 		_previous = previous;
 		_policy   = policy;
-		_dispose  = dispose;
 	}
 
 	public ValueTask<TValue> InvokeAsync<TValue>(string identifier, object?[]? args)
-		=> _policy.AsAsyncPolicy<TValue>()
-		          .ExecuteAsync(() => _previous.InvokeAsync<TValue>(identifier, args).AsTask())
-		          .ToOperation();
+	{
+		var policy = _policy as IAsyncPolicy<TValue> ??
+		             (_policy is IAsyncPolicy p ? p.AsAsyncPolicy<TValue>() : throw new InvalidOperationException());
+		return policy.ExecuteAsync(() => _previous.InvokeAsync<TValue>(identifier, args).AsTask())
+		             .ToOperation();
+	}
 
 	public ValueTask<TValue> InvokeAsync<TValue>(string identifier, CancellationToken cancellationToken,
 	                                             object?[]? args)
-		=> _policy.AsAsyncPolicy<TValue>()
-		          .ExecuteAsync(() => _previous.InvokeAsync<TValue>(identifier, cancellationToken, args).AsTask())
-		          .ToOperation();
-
-	public ValueTask DisposeAsync() => _dispose.Get();
+	{
+		var policy = _policy as IAsyncPolicy<TValue> ??
+		             (_policy is IAsyncPolicy p ? p.AsAsyncPolicy<TValue>() : throw new InvalidOperationException());
+		return policy.ExecuteAsync(() => _previous.InvokeAsync<TValue>(identifier, cancellationToken, args).AsTask())
+		             .ToOperation();
+	}
 }

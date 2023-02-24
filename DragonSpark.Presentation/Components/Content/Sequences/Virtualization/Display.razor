@@ -4,9 +4,7 @@
 @using DragonSpark.Compose
 @using DragonSpark.Application.Entities.Queries.Runtime.Pagination
 @using DragonSpark.Model.Operations
-@using DragonSpark.Model.Results
 @using DragonSpark.Presentation.Environment.Browser
-@using DragonSpark.Runtime.Execution
 @using System.Threading
 
 @typeparam T
@@ -14,7 +12,7 @@
 @implements IAsyncDisposable
 @implements DragonSpark.Model.Operations.IOperation
 
-@inject IJSRuntime JSRuntime
+@inject Virtualization Model
 
 @foreach (var item in _items)
 {
@@ -32,10 +30,8 @@
 @code {
     readonly List<T> _items = new();
     ElementReference? _element;
-    DotNetObjectReference<Virtualization<T>>? _reference;
-    IJSObjectReference? _module;
     IJSObjectReference? _instance;
-    bool _loading, _complete;
+    bool _loading, _complete, _active = true;
     CancellationTokenSource? _source;
     IOperation? _dispose;
 
@@ -60,12 +56,7 @@
                 _complete = _loading = false;
             }
         }
-    }
-
-    IPages<T> _input = default!;
-
-    /*[Parameter]
-    public IPages<T> Input { get; set; } = default!;*/
+    }   IPages<T> _input = default!;
 
     [Parameter]
     public string? OrderBy { get; set; }
@@ -120,25 +111,24 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender && _reference is null && _element?.Context is not null)
-        {
-            _module = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "./_content/DragonSpark.Presentation/Components/Content/Sequences/Virtualization.js");
-            _reference = DotNetObjectReference.Create(this);
-            try
-            {
-                _instance = await _module.InvokeAsync<IJSObjectReference>("initialize", _element.Value, _reference, (byte)Direction);
-            }
-            catch (JSException e)
-                when (e.Message.StartsWith("Failed to execute 'observe' on 'IntersectionObserver': parameter 1 is not of type 'Element'.")
-                      ||
-                      e.Message.StartsWith("IntersectionObserver.observe: Argument 1 is not an object")) {}
-        }
+        _instance = _active && firstRender && _instance is null && _element is not null ? 
+            await Instance(_element.Value)
+            : null;
+        
+    }
+
+    async Task<IJSObjectReference?> Instance(ElementReference parameter)
+    {
+        var result = await Model.Await(new(parameter, DotNetObjectReference.Create(this), (byte)Direction));
+        _active &= result is not null;
+        return result;
     }
 
     public ValueTask DisposeAsync() => _dispose?.Get() ?? ValueTask.CompletedTask;
 
     public async ValueTask Get()
     {
+        _active = false;
         if (_source != null)
         {
             _source.Dispose();
@@ -147,18 +137,9 @@
 
         if (_instance != null)
         {
-            await _instance.InvokeVoidAsync("dispose");
             await _instance.DisposeAsync();
             _instance = null;
         }
-
-        if (_module != null)
-        {
-            await _module.DisposeAsync();
-        }
-
-        _reference?.Dispose();
-        _reference = null;
     }
 
 }
