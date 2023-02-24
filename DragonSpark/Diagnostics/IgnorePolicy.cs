@@ -18,5 +18,5 @@ public sealed class IgnorePolicy<T> : IPolicy<T>
 
 	IgnorePolicy() {}
 
-	public IAsyncPolicy<T> Get(PolicyBuilder<T> parameter) => parameter.FallbackAsync(_ => default);
+	public IAsyncPolicy<T> Get(PolicyBuilder<T> parameter) => parameter.FallbackAsync(_ => Task.FromResult<T>(default!));
 }
