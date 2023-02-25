@@ -111,10 +111,7 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        _instance = _active && firstRender && _instance is null && _element is not null ? 
-            await Instance(_element.Value)
-            : null;
-        
+        _instance ??= _active && _element is not null ? await Instance(_element.Value) : null;
     }
 
     async Task<IJSObjectReference?> Instance(ElementReference parameter)
