@@ -3,15 +3,17 @@
 @using DragonSpark.Application.Diagnostics
 @using DragonSpark.Compose
 @using DragonSpark.Application
+@using DragonSpark.Application.Runtime
 
 @inject IEvaluate Model
 @inject IExceptions Exceptions
 
 @code {
 	IOperation<string> _call = default!;
+
 	protected override void OnInitialized()
 	{
-		_call = new ThrottleOperation<string>(TimeSpan.FromMilliseconds(250), Model.Get).Then().Then().Catch<Evaluate>(Exceptions).Out();
+		_call = new ThrottleOperation<string>(Model.Get, TimeSpan.FromMilliseconds(250)).Then().Then().Catch<Evaluate>(Exceptions).Out();
 		base.OnInitialized();
 	}
 

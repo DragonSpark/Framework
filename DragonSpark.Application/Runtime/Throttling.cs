@@ -1,50 +1,33 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Stores;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Timers;
 
 namespace DragonSpark.Application.Runtime;
 
-public class Throttling<T> : IThrottling<T>
+public class ThrottleOperation<T> : IOperation<T> where T : notnull
 {
-	readonly ITable<DelegateKey<T>, ThrottleContext>  _timers;
-	readonly ISelect<DelegateKey<T>, ThrottleContext> _create;
+	readonly ISelect<T, Timer> _timers;
 
-	public Throttling() : this(TimeSpan.FromMilliseconds(750)) {}
+	public ThrottleOperation(Operate<T> subject, TimeSpan interval)
+		: this(subject, interval, new Dictionary<T, Timer>()) {}
 
-	public Throttling(TimeSpan duration) : this(Delegates<T>.Default, duration) {}
+	public ThrottleOperation(Operate<T> subject, TimeSpan interval, IDictionary<T, Timer> store)
+		: this(new StandardTable<T, Timer>(store, new CreateTimer<T>(store, subject, interval.TotalMilliseconds).Get)) {}
 
-	public Throttling(ITable<DelegateKey<T>, ThrottleContext> timers, TimeSpan interval)
-		: this(timers, new CreateThrottleContext<T>(timers, interval.TotalMilliseconds)) {}
+	public ThrottleOperation(ISelect<T, Timer> timers) => _timers = timers;
 
-	public Throttling(ITable<DelegateKey<T>, ThrottleContext> timers, ISelect<DelegateKey<T>, ThrottleContext> create)
+	public ValueTask Get(T parameter)
 	{
-		_timers = timers;
-		_create = create;
-	}
-
-	public void Execute(Throttle<T> parameter)
-	{
-		var (p, operate, source) = parameter;
-		var key     = new DelegateKey<T>(operate, p);
-		var context = _timers.Get(key).Account() ?? _create.Get(key);
-		var (subject, task) = context;
-		task.Add(source);
+		var subject = _timers.Get(parameter);
 		subject.Stop();
 		subject.Start();
+		return ValueTask.CompletedTask;
 	}
 }
-
-sealed class Delegates<T> : ConcurrentTable<DelegateKey<T>, ThrottleContext>
-{
-	public static Delegates<T> Default { get; } = new();
-
-	Delegates() {}
-}
-
-public readonly record struct DelegateKey<T>(Operate<T> Reference, T Parameter);
-
 /*public class Throttling : ICommand
 {
 	readonly Timer _timer;

@@ -64,10 +64,14 @@ partial class Extensions
 
 	public static Claim Claim(this Text.Text @this, string value) => new(@this, value);
 
-	public static uint User(this ClaimsPrincipal @this) => uint.Parse(@this.Identifier());
+	public static uint? User(this ClaimsPrincipal @this)
+	{
+		var identifier = @this.Identifier();
+		return identifier is not null ? uint.Parse(identifier) : null;
+	}
 
-	public static string Identifier(this ClaimsPrincipal @this)
-		=> @this.FindFirstValue(ClaimTypes.NameIdentifier).Verify();
+	public static string? Identifier(this ClaimsPrincipal @this)
+		=> @this.FindFirstValue(ClaimTypes.NameIdentifier);
 
 	public static string DisplayName(this ClaimsPrincipal @this) => @this.DisplayName(Anonymous.Default);
 
