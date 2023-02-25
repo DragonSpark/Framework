@@ -48,8 +48,11 @@ else
 
     void Update()
     {
-        Subject ??= Offset.Get(When);
-        StateHasChanged();
+        if (_when != DateTimeOffset.MinValue)
+        {
+            Subject ??= Offset.Get(When);
+            StateHasChanged();
+        }
     }
 
     void OnUpdate(ClientOffsetAssignedMessage parameter)
