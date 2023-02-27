@@ -6,5 +6,5 @@ sealed class BodyQuery<T> : Alterings<Parameter<T>>, IQuery<T>
 {
 	public static BodyQuery<T> Default { get; } = new();
 
-	BodyQuery() : base(Search<T>.Default, Where<T>.Default, Filter<T>.Default, Sort<T>.Default) {}
+	BodyQuery() : base(Search<T>.Default, Where<T>.Default, Sort<T>.Default, Filter<T>.Default) {}
 }
