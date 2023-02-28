@@ -5,12 +5,15 @@
 @inherits ComponentStateComponentBase
 
 <SessionStateComponent T="T" Owner="Owner" Qualifier="@Qualifier">
-    <ClientValueBindingComponent T="T" Value="@Value" Store="context" ChildContent="@ChildContent" ValueChanged="@OnChange" />
+    <ClientValueBindingComponent T="T" Value="@Value" AssignedValue="@AssignedValue" Store="context" ChildContent="@ChildContent" ValueChanged="@OnChange" />
 </SessionStateComponent>
 
 @code {
     [Parameter]
     public T Value { get; set; } = default!;
+
+    [Parameter]
+    public T? AssignedValue { get; set; }
 
     [Parameter]
     public EventCallback<T> ValueChanged { get; set; }

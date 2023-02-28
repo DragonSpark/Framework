@@ -16,6 +16,9 @@
     public T Value { get; set; } = default!;
 
     [Parameter]
+    public T? AssignedValue { get; set; }
+
+    [Parameter]
     public EventCallback<T> ValueChanged { get; set; }
 
     [Parameter]
@@ -65,9 +68,13 @@
             Result = await Store.Get();
             if (Result?.Success ?? false)
             {
-                Binding.Value = Result.Value.Value ?? Value;
+                Binding.Value = Result.Value.Value ?? AssignedValue ?? Value;
                 await Loaded.InvokeAsync(Binding);
                 await ValueChanged.InvokeAsync(Value = Binding.Value).ConfigureAwait(false);
+            }
+            else if (AssignedValue is not null)
+            {
+                await ValueChanged.InvokeAsync(Value = Binding.Value = AssignedValue).ConfigureAwait(false);
             }
         }
         Rendered = true;
