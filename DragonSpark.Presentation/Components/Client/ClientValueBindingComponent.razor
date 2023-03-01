@@ -9,6 +9,8 @@
 
 @code
 {
+    bool _assigned;
+
     [Parameter]
     public IClientVariable<T> Store { get; set; } = default!;
 
@@ -16,7 +18,15 @@
     public T Value { get; set; } = default!;
 
     [Parameter]
-    public T? AssignedValue { get; set; }
+    public T AssignedValue 
+    {
+        get => _assignedValue;
+        set
+        {
+            _assignedValue = value;
+            _assigned = true;
+        }
+    }	T _assignedValue = default!;
 
     [Parameter]
     public EventCallback<T> ValueChanged { get; set; }
@@ -72,7 +82,7 @@
                 await Loaded.InvokeAsync(Binding);
                 await ValueChanged.InvokeAsync(Value = Binding.Value).ConfigureAwait(false);
             }
-            else if (AssignedValue is not null)
+            else if (_assigned)
             {
                 await ValueChanged.InvokeAsync(Value = Binding.Value = AssignedValue).ConfigureAwait(false);
             }
