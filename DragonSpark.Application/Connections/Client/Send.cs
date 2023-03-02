@@ -23,7 +23,7 @@ public class Send : IOperation
 	{
 		await using var connection = _connection();
 		await connection.StartAsync().ConfigureAwait(false);
-		await connection.SendAsync(_name).ConfigureAwait(false);
+		await connection.InvokeAsync(_name).ConfigureAwait(false);
 	}
 }
 
@@ -44,6 +44,6 @@ public class Send<T> : IOperation<T>
 	{
 		await using var connection = _connection();
 		await connection.StartAsync().ConfigureAwait(false);
-		await connection.SendAsync(_name, parameter).ConfigureAwait(false);
+		await connection.InvokeAsync(_name, parameter).ConfigureAwait(false);
 	}
 }
