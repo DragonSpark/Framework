@@ -1,5 +1,4 @@
-﻿using DragonSpark.Model.Results;
-using Microsoft.AspNetCore.SignalR.Client;
+﻿using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Threading.Tasks;
 
@@ -7,10 +6,10 @@ namespace DragonSpark.Application.Connections.Client;
 
 public class Subscribe : ISubscribe
 {
-	readonly IResult<HubConnection> _connection;
-	readonly string    _name;
+	readonly HubConnection _connection;
+	readonly string        _name;
 
-	protected Subscribe(IResult<HubConnection> connection, string name)
+	protected Subscribe(HubConnection connection, string name)
 	{
 		_connection = connection;
 		_name       = name;
@@ -22,10 +21,10 @@ public class Subscribe : ISubscribe
 
 public class Subscribe<T> : ISubscribe<T>
 {
-	readonly IResult<HubConnection> _connection;
+	readonly HubConnection _connection;
 	readonly string        _name;
 
-	protected Subscribe(IResult<HubConnection> connection, string name)
+	protected Subscribe(HubConnection connection, string name)
 	{
 		_connection = connection;
 		_name       = name;

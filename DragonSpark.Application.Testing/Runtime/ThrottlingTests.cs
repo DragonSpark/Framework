@@ -56,6 +56,7 @@ public sealed class ThrottlingTests
 		table.Get(second).Should().BeSameAs(reference);
 	}
 
+	
 	readonly record struct Key([UsedImplicitly] string Name, [UsedImplicitly] object Reference);
 
 	readonly record struct DelegateKey([UsedImplicitly] string Name, [UsedImplicitly] Delegate Reference);

@@ -2,7 +2,7 @@
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Stores;
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Threading.Tasks;
 using System.Timers;
 
@@ -13,10 +13,10 @@ public class ThrottleOperation<T> : IOperation<T> where T : notnull
 	readonly ISelect<T, Timer> _timers;
 
 	public ThrottleOperation(Operate<T> subject, TimeSpan interval)
-		: this(subject, interval, new Dictionary<T, Timer>()) {}
+		: this(subject, interval, new ConcurrentDictionary<T, Timer>()) {}
 
-	public ThrottleOperation(Operate<T> subject, TimeSpan interval, IDictionary<T, Timer> store)
-		: this(new StandardTable<T, Timer>(store, new CreateTimer<T>(store, subject, interval.TotalMilliseconds).Get)) {}
+	public ThrottleOperation(Operate<T> subject, TimeSpan interval, ConcurrentDictionary<T, Timer> store)
+		: this(new ConcurrentTable<T, Timer>(store, new CreateTimer<T>(store, subject, interval.TotalMilliseconds).Get)) {}
 
 	public ThrottleOperation(ISelect<T, Timer> timers) => _timers = timers;
 

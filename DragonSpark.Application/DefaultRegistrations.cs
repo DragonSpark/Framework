@@ -66,6 +66,10 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         //
 		         .Then.Start<ICurrentUserIdentity>()
 		         .Forward<CurrentUserIdentity>()
+		         .Scoped()
+				 //
+		         .Then.Start<ICurrentUserNumber>()
+		         .Forward<CurrentUserNumber>()
 		         .Scoped();
 	}
 }

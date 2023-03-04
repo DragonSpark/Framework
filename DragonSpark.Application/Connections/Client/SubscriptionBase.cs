@@ -1,29 +1,27 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.SignalR.Client;
+using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Connections.Client;
 
 class SubscriptionBase : ISubscription
 {
-	readonly IResult<HubConnection> _connection;
-	readonly ICallback              _callback;
+	readonly IDisposable   _disposable;
+	readonly HubConnection _connection;
 
-	protected SubscriptionBase(IResult<HubConnection> connection, ICallback callback)
+	protected SubscriptionBase(HubConnection connection, IDisposable disposable)
 	{
 		_connection = connection;
-		_callback   = callback;
+		_disposable = disposable;
 	}
 
 	public ValueTask Get()
 	{
-		var connection = _connection.Get();
-		_callback.Execute(connection);
-		switch (connection.State)
+		switch (_connection.State)
 		{
 			case HubConnectionState.Disconnected:
-				return connection.StartAsync().ToOperation();
+				return _connection.StartAsync().ToOperation();
 		}
 
 		return ValueTask.CompletedTask;
@@ -31,7 +29,7 @@ class SubscriptionBase : ISubscription
 
 	public ValueTask DisposeAsync()
 	{
-		_callback.Dispose();
+		_disposable.Dispose();
 		return ValueTask.CompletedTask;
 	}
 }
