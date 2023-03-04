@@ -16,6 +16,7 @@ public class Navigation : Command
 
 public class Navigation<T> : Command<T>
 {
-	protected Navigation(NavigationManager navigation, Func<T, string> path, bool force = false)
-		: base(path.Start().Terminate(new Navigate(navigation, force))) {}
+	// ReSharper disable once TooManyDependencies
+	protected Navigation(NavigationManager navigation, Func<T, string> path, bool force = false, bool replace = false)
+		: base(path.Start().Terminate(new Navigate(navigation, force, replace))) {}
 }
