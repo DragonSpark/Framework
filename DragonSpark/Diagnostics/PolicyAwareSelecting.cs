@@ -6,20 +6,26 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Diagnostics;
 
-public class PolicyAwareSelecting<TIn, TResult> : ISelecting<TIn, TResult>
+public class PolicyAwareSelecting<TIn, TOut> : ISelecting<TIn, TOut>
 {
-	readonly OperationResultSelector<TIn, TResult> _previous;
-	readonly IAsyncPolicy                          _policy;
+	readonly OperationResultSelector<TIn, TOut> _previous;
+	readonly IAsyncPolicy<TOut>                 _policy;
 
-	public PolicyAwareSelecting(ISelecting<TIn, TResult> previous, IAsyncPolicy policy)
+	protected PolicyAwareSelecting(ISelecting<TIn, TOut> previous, IAsyncPolicy policy)
 		: this(previous.Then(), policy) {}
 
-	public PolicyAwareSelecting(OperationResultSelector<TIn, TResult> previous, IAsyncPolicy policy)
+	protected PolicyAwareSelecting(OperationResultSelector<TIn, TOut> previous, IAsyncPolicy policy)
+		: this(previous, policy.AsAsyncPolicy<TOut>()) {}
+
+	protected PolicyAwareSelecting(ISelecting<TIn, TOut> previous, IAsyncPolicy<TOut> policy)
+		: this(previous.Then(), policy) {}
+
+	protected PolicyAwareSelecting(OperationResultSelector<TIn, TOut> previous, IAsyncPolicy<TOut> policy)
 	{
 		_previous = previous;
 		_policy   = policy;
 	}
 
-	public ValueTask<TResult> Get(TIn parameter)
+	public ValueTask<TOut> Get(TIn parameter)
 		=> _policy.ExecuteAsync(_previous.Bind(parameter).Select(x => x.AsTask()).Get().Get).ToOperation();
 }

@@ -18,7 +18,7 @@ public static class Extensions
 
 	public static IEntry Entry(this IContainer @this) => new Entry(@this.Get());
 
-	public static IWrite Write(this IContainer @this) => new Write(@this.Get());
+	public static IWrite Write(this IContainer @this) => new PolicyAwareWrite(new Write(@this.Get()));
 
 	public static IAppend Append(this IContainer @this) => new Append(@this.Get());
 
