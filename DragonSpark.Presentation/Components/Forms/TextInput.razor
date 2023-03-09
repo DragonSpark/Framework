@@ -76,9 +76,14 @@
     Task KeyUp(KeyboardEventArgs parameter)
     {
         _timer.Stop();
-        _timer.Start();
-
-        return OnKeyUp.InvokeAsync(parameter);
+        switch (parameter.Key)
+        {
+            case "Enter":
+                return Update();
+            default:
+                _timer.Start();
+                return OnKeyUp.InvokeAsync(parameter);
+        }
     }
 
     async Task Update()
