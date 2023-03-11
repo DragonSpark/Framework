@@ -28,4 +28,3 @@ public sealed class DeleteDirectoryRecursively : ICommand<DirectoryInfo>
 		parameter.Delete(true);
 	}
 }
-
