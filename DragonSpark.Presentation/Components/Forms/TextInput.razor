@@ -22,7 +22,7 @@
     ChildContent="@ChildContent"
     IconOnClick="@IconOnClick"
     OnFocus="@OnFocus"
-    OnFocusOut="@OnFocusOut"
+    OnFocusOut="@OnUpdate"
     OnKeyPress="@OnKeyPress"
     OnKeyDown="@OnKeyDown"
     OnKeyUp="@KeyUp"
@@ -140,5 +140,12 @@
     {
         CurrentValue = parameter;
         return Task.CompletedTask;
+    }
+
+    async Task OnUpdate(FocusEventArgs parameter) {
+
+        _timer.Stop();
+        await Update();
+        await OnFocusOut.InvokeAsync(parameter).ConfigureAwait(false);
     }
 }
