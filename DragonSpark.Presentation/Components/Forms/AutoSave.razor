@@ -1,0 +1,121 @@
+﻿@using DragonSpark.Presentation.Environment.Browser
+@using DragonSpark.Model.Results
+@using DragonSpark.Compose
+@using DragonSpark.Diagnostics.Logging
+@using DragonSpark.Model.Sequences
+@using DragonSpark.Text
+@using Microsoft.Extensions.Logging
+@using Exception = System.Exception
+
+@typeparam T
+
+@code {
+    Array<string> _skip = Array<string>.Empty;
+    readonly ISwitch _save = new Switch();
+
+    [Parameter]
+    public T Model { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback<T> ModelChanging { get; set; }
+
+    [Parameter]
+    public EventCallback<T> ModelChanged { get; set; }
+
+    [Parameter]
+    public IClientVariable<string> Store { get; set; } = default!;
+
+    [Parameter]
+    public IFormatter<T> Formatter { get; set; } = default!;
+
+    [Parameter]
+    public ITarget<T> Target { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback ErrorOccurred { get; set; }
+
+    [Inject]
+    ProblemLoadingAutoSaveState Loading { get; set; } = default!;
+
+    [Inject]
+    ProblemSavingAutoSaveState Saving { get; set; } = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var current = await Store.Get();
+            if (current.Success)
+            {
+                var content = current.Value.Verify();
+                try
+                {
+                    await ModelChanging.InvokeAsync(Model);
+                    Target.Execute(new(Model, content));
+                    await ModelChanged.InvokeAsync(Model);
+                }
+                catch (Exception e)
+                {
+                    Loading.Execute(new (e, content));
+                    await ErrorOccurred.InvokeAsync().ConfigureAwait(false);
+                }
+            }
+        }
+        else if (_save.Down())
+        {
+            try
+            {
+                var content = Formatter.Get(Model);
+                await Store.Await(content);
+            }
+            catch (Exception e)
+            {
+                Saving.Execute(e);
+                await ErrorOccurred.InvokeAsync().ConfigureAwait(false);
+            }
+        }
+    }
+
+    [Parameter]
+    public string FieldsToSkip
+    {
+        get => _fieldsToSkip;
+        set
+        {
+            if (_fieldsToSkip != value)
+            {
+                _fieldsToSkip = value;
+                _skip = _fieldsToSkip.Split(',');
+            }
+        }
+    }	string _fieldsToSkip = default!;
+
+    [CascadingParameter]
+    EditContext? EditContext
+    {
+        get => _editContext;
+        set
+        {
+            if (_editContext != value)
+            {
+                if (_editContext != null)
+                {
+                    _editContext.OnFieldChanged -= FieldChanged;
+                }
+
+                if ((_editContext = value) != null)
+                {
+                    _editContext.OnFieldChanged += FieldChanged;
+                }
+            }
+        }
+    }   EditContext? _editContext;
+
+    void FieldChanged(object? sender, FieldChangedEventArgs args)
+    {
+        if (!_skip.Open().Contains(args.FieldIdentifier.FieldName)) {
+            _save.Execute(true);
+            StateHasChanged();
+        }
+    }
+}

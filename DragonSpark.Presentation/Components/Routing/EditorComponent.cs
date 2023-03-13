@@ -34,7 +34,7 @@ public class EditorComponent : ChangeAwareComponent
 	{
 		if (EditContext.IsModified(e.FieldIdentifier))
 		{
-			InvokeAsync(Session.UpdateExitState().AsTask);
+			InvokeAsync(() => Session.UpdateExitState().AsTask());
 		}
 	}
 

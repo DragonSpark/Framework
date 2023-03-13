@@ -89,12 +89,21 @@ public static partial class ExtensionMethods
 
 	public static bool Down(this IMutable<bool> @this)
 	{
-		if (@this.Get())
+		var result = @this.Get();
+		if (result)
 		{
 			@this.Execute(false);
-			return true;
 		}
+		return result;
+	}
 
-		return false;
+	public static bool Up(this IMutable<bool> @this)
+	{
+		var result = !@this.Get();
+		if (result)
+		{
+			@this.Execute(true);
+		}
+		return result;
 	}
 }

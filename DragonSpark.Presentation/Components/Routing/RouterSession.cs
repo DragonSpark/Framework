@@ -58,7 +58,12 @@ public class RouterSession
 	/// <summary>
 	/// Method to trigger the IntraPageNavigation Event
 	/// </summary>
-	public void TriggerIntraPageNavigation() => IntraPageNavigation?.Invoke(this, EventArgs.Empty);
+	public void TriggerSamePageNavigation() => SamePageNavigation?.Invoke(this, EventArgs.Empty);
+
+	/// <summary>
+	/// Method to trigger the IntraPageNavigation Event
+	/// </summary>
+	public void TriggerNavigation() => Navigation?.Invoke(this, EventArgs.Empty);
 
 	public ValueTask Register(IRoutingComponent instance)
 	{
@@ -85,7 +90,7 @@ public class RouterSession
 		return UpdateExitState();
 	}
 
-	public ValueTask UpdateExitState() => SetPageExitCheck(_active.Any(x => x.HasChanges));
+	public ValueTask UpdateExitState() => SetPageExitCheck(_active.Any(x => x.EnablePrompt && x.HasChanges));
 
 	ValueTask SetPageExitCheck(bool show)
 	{
@@ -114,5 +119,10 @@ public class RouterSession
 	/// Event to notify that Intra Page Navigation has taken place
 	/// useful when using Querystring controlled pages
 	/// </summary>
-	public event EventHandler IntraPageNavigation;
+	public event EventHandler SamePageNavigation;
+
+	/// <summary>
+	/// Called when navigation occurs that is not same page
+	/// </summary>
+	public event EventHandler Navigation;
 }

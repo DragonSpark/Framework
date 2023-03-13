@@ -13,7 +13,7 @@ namespace DragonSpark.Presentation;
 
 sealed class Configure : IAlteration<BuildHostContext>
 {
-	public static Configure Default { get; } = new Configure();
+	public static Configure Default { get; } = new ();
 
 	Configure() {}
 
@@ -23,6 +23,7 @@ sealed class Configure : IAlteration<BuildHostContext>
 		                       Environment.Browser.Time.Registrations.Default,
 		                       Connections.Circuits.Registrations.Default,
 		                       Interaction.Registrations.Default,
+		                       Components.Forms.Registrations.Default,
 		                       Registrations.Default)
 		            .ComposeUsing(Composing.Default)
 		            .ComposeUsing(x => x.Decorate(typeof(IActiveContents<>), typeof(RenderingAwareActiveContents<>))

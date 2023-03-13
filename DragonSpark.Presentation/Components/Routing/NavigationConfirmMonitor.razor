@@ -3,16 +3,20 @@
 @inherits ConfirmComponent
 
 <DialogContext T="DragonSpark.Model.None" @ref="_confirm" Title="@Title" Context="_">
-    <Confirm Accept="@(Start.A.Callback(Exit).Using(ActualReceiver).Handle<NavigateMonitor>(Exceptions).UpdateActivity())"
-             PrimaryClass="primary button fit"
-             SecondaryClass="button fit"
-             ChildContent="@ConfirmContent"
-    />
+    <Confirm Accept="@_refresh" PrimaryClass="primary button fit" SecondaryClass="button fit" ChildContent="@ConfirmContent" />
 </DialogContext>
 
-@ChildContent?.Invoke(EventCallback.Factory.Create(this, Confirm))
+@ChildContent?.Invoke(_confirming)
 
 @code {
+    EventCallback _refresh, _confirming;
+    protected override void OnInitialized()
+    {
+        _refresh = Start.A.Callback(Exit).Using(ActualReceiver).Handle<NavigationConfirmMonitor>(Exceptions).UpdateActivity();
+        _confirming = EventCallback.Factory.Create(this, Confirm);
+        base.OnInitialized();
+    }
+
     [UsedImplicitly]
     DialogContext<DragonSpark.Model.None> _confirm = default!;
 

@@ -1,12 +1,11 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
-using NetFabric.Hyperlinq;
-using System.Collections.Generic;
+using DragonSpark.Model.Sequences;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Editing;
 
-public class ModifyMany<T> : IOperation<ICollection<T>> where T : class
+public class ModifyMany<T> : IOperation<Array<T>> where T : class
 {
 	readonly SessionEditors _editors;
 	readonly IModify<T>     _modify;
@@ -17,22 +16,12 @@ public class ModifyMany<T> : IOperation<ICollection<T>> where T : class
 		_modify  = modify;
 	}
 
-	public async ValueTask Get(ICollection<T> parameter)
+	public async ValueTask Get(Array<T> parameter)
 	{
 		using var editor = await _editors.Await();
-		foreach (var item in parameter.AsValueEnumerable())
+		foreach (var item in parameter.Open())
 		{
-			_modify.Execute(new Edit<T>(editor, item));
+			_modify.Execute(new(editor, item));
 		}
 	}
-}
-
-public class AttachMany : AttachMany<object>
-{
-	public AttachMany(SessionEditors editors) : base(editors) {}
-}
-
-public class AttachMany<T> : ModifyMany<T> where T : class
-{
-	public AttachMany(SessionEditors editors) : base(editors, AttachLocal<T>.Default) {}
 }

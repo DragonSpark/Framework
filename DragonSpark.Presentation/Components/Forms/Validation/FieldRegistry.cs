@@ -8,7 +8,7 @@ namespace DragonSpark.Presentation.Components.Forms.Validation;
 
 public sealed class FieldRegistry
 {
-	readonly EditContext                             _context;
+	readonly EditContext                         _context;
 	readonly Dictionary<string, FieldIdentifier> _identifiers;
 
 	public FieldRegistry(EditContext context) : this(context, new Dictionary<string, FieldIdentifier>()) {}
@@ -19,11 +19,15 @@ public sealed class FieldRegistry
 		_identifiers = identifiers;
 	}
 
+	public void Clear(Expression<Func<object?>> identifier)
+	{
+		_identifiers.Remove(identifier.ToString());
+	}
+
 	public FieldIdentifier Register(Expression<Func<object?>> identifier)
 	{
-		var key         = identifier.ToString();
-		var tryGetValue = _identifiers.TryGetValue(key, out var existing);
-		return tryGetValue ? existing : Add(key, identifier);
+		var key = identifier.ToString();
+		return _identifiers.TryGetValue(key, out var existing) ? existing : Add(key, identifier);
 	}
 
 	FieldIdentifier Add(string key, Expression<Func<object?>> identifier)
