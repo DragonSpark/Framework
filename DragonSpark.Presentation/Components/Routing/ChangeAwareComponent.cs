@@ -27,6 +27,9 @@ public abstract class ChangeAwareComponent : ComponentBase, IRoutingComponent, I
 
 	public abstract bool HasChanges { get; }
 
+	[Parameter]
+	public virtual bool EnablePrompt { get; set; } = true;
+
 	protected override Task OnInitializedAsync()
 	{
 		PageUrl                    =  Navigation.Uri;

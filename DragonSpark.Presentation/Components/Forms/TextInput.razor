@@ -5,9 +5,13 @@
 @using MatBlazor
 @using System.Linq.Expressions
 @using System.Timers
+@using DragonSpark.Model.Results
+@using DragonSpark.Compose
 
-<MatTextField
-    @bind-Value="@CurrentValue"
+<MatTextField TValue="string"
+    Value="@CurrentValue"
+    ValueChanged="@OnChanged"
+    ValueExpression="@ValueExpression"
     ValidationDisabled="@ValidationDisabled"
     RefBack="@RefBack"
     Id="@Id"
@@ -47,8 +51,21 @@
 
 @code
 {
+    readonly ISwitch _updated = new Switch();
+
     [Parameter]
-    public string Value { get; set; } = default!;
+    public string Value
+    {
+        get => _value;
+        set
+        {
+            if (!_updating && _value != value)
+            {
+                _value = value;
+                _updated.Execute(true);
+            }
+        }
+    }	string _value = default!;
 
     [Parameter]
     public EventCallback<string> ValueChanged { get; set; }
@@ -56,6 +73,7 @@
     [Parameter]
     public Expression<Func<string>> ValueExpression { get; set; } = default!;
 
+    bool _updating;
     Timer _timer = default!;
     Func<Task> _update = default!;
 
@@ -66,11 +84,19 @@
 
     protected override void OnInitialized()
     {
-        _timer = new Timer(500) { AutoReset = false };
+        _timer = new Timer(750) { AutoReset = false };
         _timer.Elapsed += OnTick;
         _update = Update;
-        CurrentValue = Value;
         base.OnInitialized();
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (_updated.Down())
+        {
+            CurrentValue = Value;
+        }
+        base.OnParametersSet();
     }
 
     Task KeyUp(KeyboardEventArgs parameter)
@@ -88,6 +114,7 @@
 
     async Task Update()
     {
+        _updating = true;
         await ValueChanged.InvokeAsync(Value = CurrentValue);
         var context = EditContext;
         if (context is not null)
@@ -95,6 +122,7 @@
             var identifier = FieldIdentifier.Create(ValueExpression);
             context.NotifyFieldChanged(in identifier);
         }
+        _updating = false;
     }
 
     void OnTick(object? _, ElapsedEventArgs __)
@@ -106,5 +134,11 @@
     {
         CurrentValue = parameter.Value?.ToString() ?? string.Empty;
         return OnInput.InvokeAsync(parameter);
+    }
+
+    Task OnChanged(string parameter)
+    {
+        CurrentValue = parameter;
+        return Task.CompletedTask;
     }
 }

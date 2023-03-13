@@ -26,7 +26,9 @@ public interface IRoutingComponent
 	/// Property to hold the current page Url
 	/// We need this as the name of the component probably won't match the route
 	/// </summary>
-	public string? PageUrl { get; set; }
+	public string? PageUrl { get; }
 
 	public bool HasChanges { get; }
+
+	public bool EnablePrompt { get; }
 }

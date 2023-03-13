@@ -1,9 +1,10 @@
 ﻿@using DragonSpark.Compose
 @using DragonSpark.Presentation.Components
 @using Syncfusion.Blazor.Buttons
+@using System.Linq.Expressions
 
 <div class="d-flex">
-    <SfSwitch TChecked="bool" id="@Identifier" Checked="@Value" CheckedChanged="@OnChanged" CssClass="mr-3" />
+    <SfSwitch TChecked="bool" id="@Identifier" Checked="@Value" CheckedChanged="@OnChanged" CheckedExpression="@ValueExpression" CssClass="mr-3" />
     <h3><label for="@Identifier" style="cursor: pointer">@Label</label></h3>
 </div>
 
@@ -18,8 +19,11 @@
     public EventCallback<bool> ValueChanged { get; set; }
 
     [Parameter]
-    public EventCallback Updated { get; set; }
+    public Expression<Func<bool>> ValueExpression { get; set; } = default!;
 
+    [Parameter]
+    public EventCallback Updated { get; set; }
+    
     async Task OnChanged(bool parameter)
     {
         await ValueChanged.InvokeAsync(Value = parameter);

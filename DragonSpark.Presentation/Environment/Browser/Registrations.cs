@@ -29,7 +29,7 @@ sealed class Registrations : ICommand<IServiceCollection>
 		         .Include(x => x.Dependencies)
 		         .Scoped()
 		         //
-		         .Then.ForDefinition<SessionClientVariables<object>>()
+		         .Then.ForDefinition<SessionKeyedClientVariables<object>>()
 		         .Scoped()
 			;
 	}

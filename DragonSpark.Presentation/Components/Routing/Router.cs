@@ -131,6 +131,7 @@ public class Router : IComponent, IHandleAfterRender, IDisposable
 			Session.Clear();
 			Session.NavigationCancelledUrl = null;
 			Refresh(args.IsNavigationIntercepted);
+			Session.TriggerNavigation();
 		}
 		// SCC ADDED - Trigger a Navigation Cancelled Event on the SessionStateService
 		else if (Session.PageUrl.Equals(_locationAbsolute, StringComparison.CurrentCultureIgnoreCase))
@@ -154,7 +155,7 @@ public class Router : IComponent, IHandleAfterRender, IDisposable
 
 		if (Session.LastPageUrl?.Equals(pageurl, StringComparison.CurrentCultureIgnoreCase) ?? false)
 		{
-			Session.TriggerIntraPageNavigation();
+			Session.TriggerSamePageNavigation();
 		}
 
 		Session.LastPageUrl = pageurl;
