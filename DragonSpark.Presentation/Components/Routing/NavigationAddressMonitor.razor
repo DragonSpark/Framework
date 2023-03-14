@@ -1,0 +1,36 @@
+﻿
+@implements IDisposable
+
+@inject NavigationManager Navigation
+
+@code {
+	string _filter = default!;
+	readonly EventHandler<LocationChangedEventArgs> _changed;
+
+	public NavigationAddressMonitor() => _changed = SessionOnNavigation;
+
+	[Parameter]
+	public EventCallback Navigated { get; set; }
+
+	[Parameter]
+	public string Address { get; set; } = default!;
+
+	protected override void OnInitialized()
+	{
+		Navigation.LocationChanged += _changed;
+		_filter = Navigation.ToAbsoluteUri(Address).ToString();
+		base.OnInitialized();
+	}
+
+	void SessionOnNavigation(object? sender, EventArgs e)
+	{
+		if (Navigation.Uri == _filter) {
+			InvokeAsync(() => Navigated.InvokeAsync());
+		}
+	}
+
+	public void Dispose() {
+	    Navigation.LocationChanged -= _changed;
+	}
+
+}
