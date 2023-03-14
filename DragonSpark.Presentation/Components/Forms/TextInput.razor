@@ -92,7 +92,7 @@
 
     protected override void OnParametersSet()
     {
-        if (_updated.Down())
+        if (_updated.Down() && !_updating)
         {
             CurrentValue = Value;
         }
@@ -122,6 +122,7 @@
             var identifier = FieldIdentifier.Create(ValueExpression);
             context.NotifyFieldChanged(in identifier);
         }
+        CurrentValue = Value;
         _updating = false;
     }
 
@@ -145,7 +146,10 @@
     async Task OnUpdate(FocusEventArgs parameter) {
 
         _timer.Stop();
-        await Update();
+        if (CurrentValue != Value)
+        {
+            await Update();
+        }
         await OnFocusOut.InvokeAsync(parameter).ConfigureAwait(false);
     }
 }
