@@ -52,11 +52,26 @@
     Func<Task> _update = default!;
     Timer _timer = default!;
     FieldIdentifier _identifier;
+    bool _active;
 
     string _current = string.Empty;
 
     [Parameter]
-    public string Value { get; set; } = default!;
+    public string Value
+    {
+        get => _value;
+        set
+        {
+            if (_value != value)
+            {
+                _value = value;
+                if (!_active)
+                {
+                    _current = value;
+                }
+            }
+        }
+    }	string _value = default!;
 
     [Parameter]
     public EventCallback<string> ValueChanged { get; set; }
@@ -73,25 +88,30 @@
         _timer.Elapsed += OnTick;
         _identifier = FieldIdentifier.Create(ValueExpression);
         _update = Complete;
-        _current = Value;
         base.OnInitialized();
     }
 
     Task KeyUp(KeyboardEventArgs parameter)
     {
+        _active = false;
         _timer.Stop();
         switch (parameter.Key)
         {
             case "Enter":
                 return Complete();
             default:
-                _timer.Start();
+                if (parameter.Key != "Tab" && parameter is { CtrlKey: false, AltKey: false })
+                {
+                    _active = true;
+                    _timer.Start();
+                }
                 return OnKeyUp.InvokeAsync(parameter);
         }
     }
 
     async Task Complete()
     {
+        _active = false;
         await ValueChanged.InvokeAsync(Value = _current);
         EditContext?.NotifyFieldChanged(in _identifier);
     }
