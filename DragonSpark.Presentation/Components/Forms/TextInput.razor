@@ -9,8 +9,7 @@
 @using DragonSpark.Compose
 
 <MatTextField TValue="string"
-    Value="@CurrentValue"
-    ValueChanged="@OnChanged"
+    Value="@Value"
     ValueExpression="@ValueExpression"
     ValidationDisabled="@ValidationDisabled"
     RefBack="@RefBack"
@@ -22,7 +21,7 @@
     ChildContent="@ChildContent"
     IconOnClick="@IconOnClick"
     OnFocus="@OnFocus"
-    OnFocusOut="@OnUpdate"
+    OnFocusOut="@OnFocusOut"
     OnKeyPress="@OnKeyPress"
     OnKeyDown="@OnKeyDown"
     OnKeyUp="@KeyUp"
@@ -51,33 +50,18 @@
 
 @code
 {
-    readonly ISwitch _updated = new Switch();
+    Action _update = default!;
+    Timer _timer = default!;
+    FieldIdentifier _identifier;
 
     [Parameter]
-    public string Value
-    {
-        get => _value;
-        set
-        {
-            if (!_updating && _value != value)
-            {
-                _value = value;
-                _updated.Execute(true);
-            }
-        }
-    }	string _value = default!;
+    public string Value { get; set; } = default!;
 
     [Parameter]
     public EventCallback<string> ValueChanged { get; set; }
 
     [Parameter]
     public Expression<Func<string>> ValueExpression { get; set; } = default!;
-
-    bool _updating;
-    Timer _timer = default!;
-    Func<Task> _update = default!;
-
-    string CurrentValue { get; set; } = default!;
 
     [CascadingParameter]
     EditContext? EditContext { get; set; }
@@ -86,17 +70,10 @@
     {
         _timer = new Timer(750) { AutoReset = false };
         _timer.Elapsed += OnTick;
+        _identifier = FieldIdentifier.Create(ValueExpression);
         _update = Update;
-        base.OnInitialized();
-    }
 
-    protected override void OnParametersSet()
-    {
-        if (_updated.Down() && !_updating)
-        {
-            CurrentValue = Value;
-        }
-        base.OnParametersSet();
+        base.OnInitialized();
     }
 
     Task KeyUp(KeyboardEventArgs parameter)
@@ -105,25 +82,17 @@
         switch (parameter.Key)
         {
             case "Enter":
-                return Update();
+                Update();
+                return Task.CompletedTask;
             default:
                 _timer.Start();
                 return OnKeyUp.InvokeAsync(parameter);
         }
     }
 
-    async Task Update()
+    void Update()
     {
-        _updating = true;
-        await ValueChanged.InvokeAsync(Value = CurrentValue);
-        var context = EditContext;
-        if (context is not null)
-        {
-            var identifier = FieldIdentifier.Create(ValueExpression);
-            context.NotifyFieldChanged(in identifier);
-        }
-        CurrentValue = Value;
-        _updating = false;
+        EditContext?.NotifyFieldChanged(in _identifier);
     }
 
     void OnTick(object? _, ElapsedEventArgs __)
@@ -131,18 +100,19 @@
         InvokeAsync(_update);
     }
 
-    Task Input(ChangeEventArgs parameter)
+    async Task Input(ChangeEventArgs parameter)
     {
-        CurrentValue = parameter.Value?.ToString() ?? string.Empty;
-        return OnInput.InvokeAsync(parameter);
+        await ValueChanged.InvokeAsync(Value = parameter.Value?.ToString() ?? string.Empty);
+        await OnInput.InvokeAsync(parameter).ConfigureAwait(false);
     }
 
-    Task OnChanged(string parameter)
+    /*Task OnChanged(string parameter)
     {
         CurrentValue = parameter;
         return Task.CompletedTask;
-    }
+    }*/
 
+    /*
     async Task OnUpdate(FocusEventArgs parameter) {
 
         _timer.Stop();
@@ -152,4 +122,5 @@
         }
         await OnFocusOut.InvokeAsync(parameter).ConfigureAwait(false);
     }
+*/
 }
