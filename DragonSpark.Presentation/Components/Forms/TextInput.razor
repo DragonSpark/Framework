@@ -10,8 +10,7 @@
 
 <MatTextField TValue="string"
     Value="@Value"
-    ValueExpression="@ValueExpression"
-    ValidationDisabled="@ValidationDisabled"
+    ValidationDisabled="true"
     RefBack="@RefBack"
     Id="@Id"
     InputAttributes="@InputAttributes"
@@ -50,9 +49,11 @@
 
 @code
 {
-    Action _update = default!;
+    Func<Task> _update = default!;
     Timer _timer = default!;
     FieldIdentifier _identifier;
+
+    string _current = string.Empty;
 
     [Parameter]
     public string Value { get; set; } = default!;
@@ -71,8 +72,7 @@
         _timer = new Timer(750) { AutoReset = false };
         _timer.Elapsed += OnTick;
         _identifier = FieldIdentifier.Create(ValueExpression);
-        _update = Update;
-
+        _update = Complete;
         base.OnInitialized();
     }
 
@@ -82,16 +82,16 @@
         switch (parameter.Key)
         {
             case "Enter":
-                Update();
-                return Task.CompletedTask;
+                return Complete();
             default:
                 _timer.Start();
                 return OnKeyUp.InvokeAsync(parameter);
         }
     }
 
-    void Update()
+    async Task Complete()
     {
+        await ValueChanged.InvokeAsync(Value = _current).ConfigureAwait(false);
         EditContext?.NotifyFieldChanged(in _identifier);
     }
 
@@ -100,27 +100,9 @@
         InvokeAsync(_update);
     }
 
-    async Task Input(ChangeEventArgs parameter)
+    Task Input(ChangeEventArgs parameter)
     {
-        await ValueChanged.InvokeAsync(Value = parameter.Value?.ToString() ?? string.Empty);
-        await OnInput.InvokeAsync(parameter).ConfigureAwait(false);
+        _current = parameter.Value?.ToString() ?? string.Empty;
+        return OnInput.InvokeAsync(parameter);
     }
-
-    /*Task OnChanged(string parameter)
-    {
-        CurrentValue = parameter;
-        return Task.CompletedTask;
-    }*/
-
-    /*
-    async Task OnUpdate(FocusEventArgs parameter) {
-
-        _timer.Stop();
-        if (CurrentValue != Value)
-        {
-            await Update();
-        }
-        await OnFocusOut.InvokeAsync(parameter).ConfigureAwait(false);
-    }
-*/
 }
