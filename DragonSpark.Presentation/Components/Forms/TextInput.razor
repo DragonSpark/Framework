@@ -73,6 +73,7 @@
         _timer.Elapsed += OnTick;
         _identifier = FieldIdentifier.Create(ValueExpression);
         _update = Complete;
+        _current = Value;
         base.OnInitialized();
     }
 
@@ -91,7 +92,7 @@
 
     async Task Complete()
     {
-        await ValueChanged.InvokeAsync(Value = _current).ConfigureAwait(false);
+        await ValueChanged.InvokeAsync(Value = _current);
         EditContext?.NotifyFieldChanged(in _identifier);
     }
 
