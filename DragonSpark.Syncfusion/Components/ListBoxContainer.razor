@@ -90,10 +90,14 @@
 
     Task OnSelect(ListBoxChangeEventArgs<TValue[], TItem> parameter)
     {
-        _selecting = true;
-        var single = Value = _subject.GetDataByValue(parameter.Value).Single();
-        _selecting = false;
-        return ValueChanged.InvokeAsync(single);
+        if (parameter.Value.Length > 0)
+        {
+            _selecting = true;
+            var single = Value = _subject.GetDataByValue(parameter.Value).Single();
+            _selecting = false;
+            return ValueChanged.InvokeAsync(single);
+        }
+        return Task.CompletedTask;
     }
 
     Task Update() => Updated.InvokeAsync(this);
