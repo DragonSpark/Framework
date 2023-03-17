@@ -1,0 +1,46 @@
+﻿@using Microsoft.AspNetCore.SignalR.Client
+@using DragonSpark.Compose
+
+@inherits DragonSpark.Presentation.Components.ComponentBase
+
+<TimerComponent Interval="@Interval" Updated="@_refresh" Repeat="true" />
+
+@code
+{
+    bool _enabled = true;
+    EventCallback _refresh;
+    protected override void OnInitialized()
+    {
+        _refresh = Start.A.Callback(OnUpdate).Handle(Exceptions).Get();
+        base.OnInitialized();
+    }
+
+    [Parameter]
+    public HubConnection Subject { get; set; } = default!;
+
+    [Parameter]
+    public TimeSpan Interval { get; set; } = TimeSpan.FromSeconds(30);
+
+    async Task OnUpdate()
+    {
+        switch (Subject.State)
+        {
+            case HubConnectionState.Disconnected:
+                try
+                {
+                    await Subject.StartAsync();
+                }
+                catch (Exception)
+                {
+                    Interval = TimeSpan.FromSeconds(90);
+                    StateHasChanged();
+                    throw;
+                }
+                await Updated.InvokeAsync().ConfigureAwait(false);
+                break;
+        }
+    }
+
+    [Parameter]
+    public EventCallback Updated { get; set; }
+}

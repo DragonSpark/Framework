@@ -40,11 +40,25 @@ public class TimerComponent : Microsoft.AspNetCore.Components.ComponentBase, IDi
 		{
 			if (_autoStart != value)
 			{
-				_autoStart      = value;
+				_autoStart      =  value;
 				UpdateRequested |= _autoStart;
 			}
 		}
 	}	bool _autoStart;
+
+	[Parameter]
+	public bool Enabled
+	{
+		get => _enabled;
+		set
+		{
+			if (_enabled != value)
+			{
+				_enabled        =  value;
+				UpdateRequested |= _enabled;
+			}
+		}
+	}	bool _enabled = true;
 
 	[Parameter]
 	public bool Repeat { get; set; }
@@ -60,18 +74,21 @@ public class TimerComponent : Microsoft.AspNetCore.Components.ComponentBase, IDi
 	protected override void OnInitialized()
 	{
 		base.OnInitialized();
+		_refresh = () => Updated.InvokeAsync();
 		Timer    = new Timer();
-		_refresh = Updated.InvokeAsync;
 	}
 
 	protected override void OnParametersSet()
 	{
 		if (UpdateRequested && !(UpdateRequested = false) && _timer is not null)
 		{
-			_timer.AutoReset = Repeat;
-			_timer.Interval  = Interval.TotalMilliseconds;
 			_timer.Stop();
-			_timer.Start();
+			if (Enabled)
+			{
+				_timer.AutoReset = Repeat;
+				_timer.Interval  = Interval.TotalMilliseconds;
+				_timer.Start();
+			}
 		}
 
 		base.OnParametersSet();
