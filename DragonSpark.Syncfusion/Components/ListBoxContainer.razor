@@ -53,10 +53,10 @@
         {
             if (_value != value)
             {
-                var assigned = _value.Account() is not null;
+                var was = _value.Account() is not null;
                 _value = value;
                 CurrentValue = _value.Account() is not null && SelectValue is not null ? SelectValue.Verify()(_value).Yield().ToArray() : Empty.Array<TValue>();
-                if (assigned && !_selecting)
+                if (was && !_selecting)
                 {
                     _subject.SelectItemsAsync(Value);
                 }
@@ -75,6 +75,14 @@
 
     [Parameter]
     public Func<TItem, TValue>? SelectValue { get; set; }
+
+    public void Refresh()
+    {
+        var items = Items;
+        Items = new ObservedList<TItem>(Empty.List<TItem>());
+        StateHasChanged();
+        Items = items;
+    }
 
     TValue[] CurrentValue { get; set; } = Empty.Array<TValue>();
 
