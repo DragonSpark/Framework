@@ -20,7 +20,7 @@
     ChildContent="@ChildContent"
     IconOnClick="@IconOnClick"
     OnFocus="@OnFocus"
-    OnFocusOut="@OnFocusOut"
+    OnFocusOut="@HandleOnFocusOut"
     OnKeyPress="@OnKeyPress"
     OnKeyDown="@OnKeyDown"
     OnKeyUp="@KeyUp"
@@ -89,6 +89,14 @@
         _identifier = FieldIdentifier.Create(ValueExpression);
         _update = Complete;
         base.OnInitialized();
+    }
+
+    async Task HandleOnFocusOut(FocusEventArgs parameter)
+    {
+        _active = false;
+        _timer.Stop();
+        await Complete();
+        await OnFocusOut.InvokeAsync(parameter).ConfigureAwait(false);
     }
 
     Task KeyUp(KeyboardEventArgs parameter)
