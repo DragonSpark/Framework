@@ -7,19 +7,21 @@
 @using System.Timers
 @using DragonSpark.Model.Results
 @using DragonSpark.Compose
+@using DragonSpark.Presentation.Components.Forms.Validation
+@using LinqKit
 
 <MatTextField TValue="string"
-    Value="@Value"
-    ValidationDisabled="true"
-    RefBack="@RefBack"
     Id="@Id"
+    RefBack="@RefBack"
+    Value="@Current"
+    ValidationDisabled="true"
     InputAttributes="@InputAttributes"
     Attributes="@Attributes"
     Class="@Class"
     Style="@Style"
     ChildContent="@ChildContent"
     IconOnClick="@IconOnClick"
-    OnFocus="@OnFocus"
+    OnFocus="@HandleOnFocus"
     OnFocusOut="@HandleOnFocusOut"
     OnKeyPress="@OnKeyPress"
     OnKeyDown="@OnKeyDown"
@@ -51,76 +53,77 @@
 {
     Func<Task> _update = default!;
     Timer _timer = default!;
-    FieldIdentifier _identifier;
     bool _active;
-
-    string _current = string.Empty;
+    FieldIdentifier _identifier;
+    string _stored = string.Empty;
 
     [Parameter]
-    public string Value
-    {
-        get => _value;
-        set
-        {
-            if (_value != value)
-            {
-                _value = value;
-                if (!_active)
-                {
-                    _current = value;
-                }
-            }
-        }
-    }	string _value = default!;
+    public string Value { get; set; } = default!;
 
     [Parameter]
     public EventCallback<string> ValueChanged { get; set; }
 
     [Parameter]
-    public Expression<Func<string>> ValueExpression { get; set; } = default!;
+    public Expression<Func<string>> ValueExpression
+    {
+        get => _valueExpression;
+        set
+        {
+            if (_valueExpression != value)
+            {
+                _valueExpression = value;
+                _identifier = FieldIdentifier.Create(ValueExpression);
+            }
+        }
+    }	Expression<Func<string>> _valueExpression = default!;
 
     [CascadingParameter]
     EditContext? EditContext { get; set; }
+
+    string Current => _active ? _stored : Value;
 
     protected override void OnInitialized()
     {
         _timer = new Timer(750) { AutoReset = false };
         _timer.Elapsed += OnTick;
-        _identifier = FieldIdentifier.Create(ValueExpression);
-        _update = Complete;
+        _update = Update;
         base.OnInitialized();
+    }
+
+    Task HandleOnFocus(FocusEventArgs parameter)
+    {
+        _stored = Value;
+        _active = true;
+        return OnFocus.InvokeAsync(parameter);
     }
 
     async Task HandleOnFocusOut(FocusEventArgs parameter)
     {
         _active = false;
         _timer.Stop();
-        await Complete();
+        await Update();
         await OnFocusOut.InvokeAsync(parameter).ConfigureAwait(false);
     }
 
     Task KeyUp(KeyboardEventArgs parameter)
     {
-        _active = false;
         _timer.Stop();
         switch (parameter.Key)
         {
             case "Enter":
-                return Complete();
+                return Update();
             default:
                 if (parameter.Key != "Tab" && parameter is { CtrlKey: false, AltKey: false })
                 {
-                    _active = true;
                     _timer.Start();
                 }
                 return OnKeyUp.InvokeAsync(parameter);
         }
     }
 
-    async Task Complete()
+    async Task Update()
     {
-        _active = false;
-        await ValueChanged.InvokeAsync(Value = _current);
+        await ValueChanged.InvokeAsync(Value);
         EditContext?.NotifyFieldChanged(in _identifier);
     }
 
@@ -131,7 +134,7 @@
 
     Task Input(ChangeEventArgs parameter)
     {
-        _current = parameter.Value?.ToString() ?? string.Empty;
+        Value = parameter.Value?.ToString() ?? string.Empty;
         return OnInput.InvokeAsync(parameter);
     }
 }
