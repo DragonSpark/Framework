@@ -27,19 +27,30 @@
             case HubConnectionState.Disconnected:
                 try
                 {
+                    await Subject.StopAsync();
                     await Subject.StartAsync();
+                    await Updated.InvokeAsync().ConfigureAwait(false);
                 }
-                catch (Exception)
+                catch (Exception error)
                 {
-                    Interval = TimeSpan.FromSeconds(90);
-                    StateHasChanged();
-                    throw;
+                    if (Error.HasDelegate)
+                    {
+                        await Error.InvokeAsync(error).ConfigureAwait(false);
+                    }
+                    else
+                    {
+                        Interval = TimeSpan.FromSeconds(90);
+                        StateHasChanged();
+                        throw;
+                    }
                 }
-                await Updated.InvokeAsync().ConfigureAwait(false);
                 break;
         }
     }
 
     [Parameter]
     public EventCallback Updated { get; set; }
+
+    [Parameter]
+    public EventCallback<Exception> Error { get; set; }
 }
