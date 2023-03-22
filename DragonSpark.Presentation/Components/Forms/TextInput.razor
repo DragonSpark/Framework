@@ -14,6 +14,7 @@
     Id="@Id"
     RefBack="@RefBack"
     Value="@Current"
+    ValueChanged="OnValueChanged"
     ValueExpression="@ValueExpression"
     InputAttributes="@InputAttributes"
     Attributes="@Attributes"
@@ -22,7 +23,7 @@
     ChildContent="@ChildContent"
     IconOnClick="@IconOnClick"
     OnFocus="@HandleOnFocus"
-    OnFocusOut="@HandleOnFocusOut"
+    OnFocusOut="@OnFocusOut"
     OnKeyPress="@OnKeyPress"
     OnKeyDown="@OnKeyDown"
     OnKeyUp="@KeyUp"
@@ -97,14 +98,6 @@
         return OnFocus.InvokeAsync(parameter);
     }
 
-    async Task HandleOnFocusOut(FocusEventArgs parameter)
-    {
-        _active = false;
-        _timer.Stop();
-        await Update();
-        await OnFocusOut.InvokeAsync(parameter).ConfigureAwait(false);
-    }
-
     Task KeyUp(KeyboardEventArgs parameter)
     {
         _timer.Stop();
@@ -136,5 +129,13 @@
     {
         Value = parameter.Value?.ToString() ?? string.Empty;
         return OnInput.InvokeAsync(parameter);
+    }
+
+    async Task OnValueChanged(string parameter)
+    {
+        _active = false;
+        _timer.Stop();
+        Value = _stored = parameter;
+        await Update();
     }
 }
