@@ -7,7 +7,7 @@ public class ClaimValuePolicy : ICommand<AuthorizationOptions>
 {
 	readonly string _name, _type, _value;
 
-	public ClaimValuePolicy(string name, string type, string value)
+	protected ClaimValuePolicy(string name, string type, string value)
 	{
 		_name  = name;
 		_type  = type;
@@ -16,6 +16,6 @@ public class ClaimValuePolicy : ICommand<AuthorizationOptions>
 
 	public void Execute(AuthorizationOptions parameter)
 	{
-		parameter.AddPolicy(_name, policy => policy.RequireClaim(_type, _value));
+		parameter.AddPolicy(_name, x => x.RequireClaim(_type, _value));
 	}
 }
