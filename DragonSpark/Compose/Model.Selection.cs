@@ -43,6 +43,7 @@ public static partial class ExtensionMethods
 		=> @this.Get(parameter);
 
 	public static T Get<T>(this ISelect<uint, T> @this, int parameter) => @this.Get((uint)parameter);
+	public static T Get<T>(this ISelect<uint, T> @this, ulong parameter) => @this.Get((uint)parameter);
 
 	public static TOut Get<TItem, TOut>(this ISelect<Array<TItem>, TOut> @this, TItem parameter)
 		=> @this.Get(DragonSpark.Model.Sequences.Query.Yield<TItem>.Default.Get(parameter));
