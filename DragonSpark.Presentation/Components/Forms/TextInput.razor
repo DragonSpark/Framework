@@ -1,6 +1,7 @@
 ﻿@*ATTRIBUTION: https://github.com/SamProf/MatBlazor/issues/189#issuecomment-572954519 *@
 
 @inherits TextInputComponent
+@implements IDisposable
 
 @using MatBlazor
 @using System.Linq.Expressions
@@ -137,5 +138,11 @@
         _timer.Stop();
         Value = _stored = parameter;
         await Update();
+    }
+
+    public void Dispose()
+    {
+        _timer.Stop();
+        _timer.Dispose();
     }
 }

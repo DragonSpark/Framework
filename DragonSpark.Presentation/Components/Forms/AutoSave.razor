@@ -2,19 +2,44 @@
 @using DragonSpark.Model.Results
 @using DragonSpark.Compose
 @using DragonSpark.Diagnostics.Logging
+@using DragonSpark.Model
+@using DragonSpark.Model.Operations
 @using DragonSpark.Model.Sequences
 @using DragonSpark.Text
 @using Microsoft.Extensions.Logging
 @using Exception = System.Exception
+@using DragonSpark.Application.Runtime
+@using DragonSpark.Application.Entities.Queries.Compiled.Evaluation
 
-@typeparam T
+@typeparam T where T : class
 
 @code {
     Array<string> _skip = Array<string>.Empty;
-    readonly ISwitch _save = new Switch();
+    readonly ISwitch _save = new Switch(), _active = new Switch();
+    Action _update = default!;
+    IOperation<None> _call = default!;
+
+    protected override void OnInitialized()
+    {
+        _update = OnUpdate;
+        _call = new ThrottleOperation<None>(OnUpdate, TimeSpan.FromMilliseconds(100)).Then().Then().Out();
+        base.OnInitialized();
+    }
 
     [Parameter]
-    public T Model { get; set; } = default!;
+    public T Model
+    {
+        get => _model;
+        set
+        {
+            if (_model != value)
+            {
+                _model = value;
+                _save.Down();
+            }
+        }
+    }	T _model = default!;
+
 
     [Parameter]
     public EventCallback<T> ModelChanging { get; set; }
@@ -48,11 +73,12 @@
             if (current.Success)
             {
                 var content = current.Value.Verify();
+                using var active = _active.Start();
                 try
                 {
                     await ModelChanging.InvokeAsync(Model);
                     Target.Execute(new(Model, content));
-                    await ModelChanged.InvokeAsync(Model);
+                    await ModelChanged.InvokeAsync(Model).ConfigureAwait(false);
                 }
                 catch (Exception e)
                 {
@@ -113,9 +139,17 @@
 
     void FieldChanged(object? sender, FieldChangedEventArgs args)
     {
-        if (!_skip.Open().Contains(args.FieldIdentifier.FieldName)) {
-            _save.Execute(true);
-            StateHasChanged();
+        if (!_active.Get() && !_skip.Open().Contains(args.FieldIdentifier.FieldName))
+        {
+            _call.Get();
         }
+    }
+
+    ValueTask OnUpdate(None _) => InvokeAsync(_update).ToOperation();
+
+    void OnUpdate()
+    {
+        _save.Execute(true);
+        StateHasChanged();
     }
 }
