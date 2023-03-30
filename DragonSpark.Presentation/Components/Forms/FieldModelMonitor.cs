@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using DragonSpark.Compose;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 
 namespace DragonSpark.Presentation.Components.Forms;
@@ -36,7 +37,8 @@ public class FieldModelMonitor : ComponentBase
 
 	void FieldChanged(object? sender, FieldChangedEventArgs args)
 	{
-		if (args.FieldIdentifier.Model == Model)
+		var model = Model.Account() ?? EditContext?.Model;
+		if (args.FieldIdentifier.Model == model)
 		{
 			Changed.InvokeAsync(Model);
 		}
