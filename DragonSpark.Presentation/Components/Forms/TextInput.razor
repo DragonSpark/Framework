@@ -24,7 +24,7 @@
     ChildContent="@ChildContent"
     IconOnClick="@IconOnClick"
     OnFocus="@HandleOnFocus"
-    OnFocusOut="@OnFocusOut"
+    OnFocusOut="@HandleFocusOut"
     OnKeyPress="@OnKeyPress"
     OnKeyDown="@OnKeyDown"
     OnKeyUp="@KeyUp"
@@ -144,5 +144,16 @@
     {
         _timer.Stop();
         _timer.Dispose();
+    }
+
+    async Task HandleFocusOut(FocusEventArgs parameter)
+    {
+        if (_active)
+        {
+            _active = false;
+            _timer.Stop();
+            await Update();
+        }
+        await OnFocusOut.InvokeAsync(parameter).ConfigureAwait(false);
     }
 }
