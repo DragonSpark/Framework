@@ -7,7 +7,7 @@ public class Disperse<T> : IOperation<T>
 {
 	readonly IOperation<T> _previous;
 
-	public Disperse(IOperation<T> previous) => _previous = previous;
+	protected Disperse(IOperation<T> previous) => _previous = previous;
 
 	public ValueTask Get(T parameter)
 	{
