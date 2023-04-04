@@ -3,6 +3,8 @@
 @inherits TextInputComponent
 @implements IDisposable
 
+@inject IFocusHandler Focus
+
 @using MatBlazor
 @using System.Linq.Expressions
 @using System.Timers
@@ -10,13 +12,14 @@
 @using DragonSpark.Compose
 @using DragonSpark.Presentation.Components.Forms.Validation
 @using LinqKit
+@using Majorsoft.Blazor.Components.Common.JsInterop.Focus
 
 <MatTextField TValue="string"
     Id="@Id"
     RefBack="@RefBack"
     Value="@Current"
     ValueChanged="OnValueChanged"
-    ValueExpression="@ValueExpression"
+    ValidationDisabled="true"
     InputAttributes="@InputAttributes"
     Attributes="@Attributes"
     Class="@Class"
@@ -53,7 +56,8 @@
 
 @code
 {
-    Func<Task> _update = default!;
+    readonly Switch _focus = new();
+    Func<Task> _tick = default!;
     Timer _timer = default!;
     bool _active;
     FieldIdentifier _identifier;
@@ -82,13 +86,16 @@
     [CascadingParameter]
     EditContext? EditContext { get; set; }
 
+    [CascadingParameter]
+    IActivityReceiver? Receiver { get; set; }
+
     string Current => _active ? _stored : Value;
 
     protected override void OnInitialized()
     {
         _timer = new Timer(750) { AutoReset = false };
         _timer.Elapsed += OnTick;
-        _update = Update;
+        _tick = Tick;
         base.OnInitialized();
     }
 
@@ -121,9 +128,19 @@
         EditContext?.NotifyFieldChanged(in _identifier);
     }
 
+    async Task Tick()
+    {
+        await Update();
+        await Task.Delay(175);
+        if (_focus.Down())
+        {
+            await Focus.FocusElementAsync(RefBack.Current).ConfigureAwait(false);
+        }
+    }
+
     void OnTick(object? _, ElapsedEventArgs __)
     {
-        InvokeAsync(_update);
+        InvokeAsync(_tick);
     }
 
     Task Input(ChangeEventArgs parameter)
@@ -153,6 +170,10 @@
             _active = false;
             _timer.Stop();
             await Update();
+        }
+        else if (Receiver is not null && IsActive.Default.Get(Receiver))
+        {
+            _focus.Up();
         }
         await OnFocusOut.InvokeAsync(parameter).ConfigureAwait(false);
     }

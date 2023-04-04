@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using NetFabric.Hyperlinq;
@@ -9,6 +10,7 @@ namespace DragonSpark.Presentation.Components.Forms.Validation;
 
 public class Validating : ComponentBase, IDisposable
 {
+	readonly Switch           _active = new();
 	readonly IOperationsStore _store;
 	readonly Func<Task>       _update;
 
@@ -48,7 +50,9 @@ public class Validating : ComponentBase, IDisposable
 				}
 			}
 		}
-	}	bool _enabled = true;
+	}
+
+	bool _enabled = true;
 
 	[CascadingParameter]
 	EditContext? Context
@@ -83,9 +87,13 @@ public class Validating : ComponentBase, IDisposable
 		Request();
 	}
 
+	bool IsEmpty() => !_messages[Identifier].AsValueEnumerable().Any();
+
+	bool IsValid() => !_context.Verify().GetValidationMessages(Identifier).AsValueEnumerable().Any();
+
 	void Request()
 	{
-		if (Enabled && !_messages[Identifier].AsValueEnumerable().Any())
+		if (Enabled && IsEmpty() && _active.Up())
 		{
 			_list.Execute(InvokeAsync(_update));
 		}
@@ -93,7 +101,7 @@ public class Validating : ComponentBase, IDisposable
 
 	void FieldChanged(object? sender, FieldChangedEventArgs e)
 	{
-		if (Enabled && e.FieldIdentifier.Equals(Identifier))
+		if (Enabled && e.FieldIdentifier.Equals(Identifier) && _active.Up())
 		{
 			InvokeAsync(_update);
 		}
@@ -102,13 +110,17 @@ public class Validating : ComponentBase, IDisposable
 	async Task Update()
 	{
 		_messages.Clear(Identifier);
-
-		var edit = _context.Verify();
-		if (!edit.GetValidationMessages(Identifier).AsValueEnumerable().Any())
+		try
 		{
-			var context = new ValidationContext(new (Context.Verify(), Identifier), _messages, Message);
-			await Validate.InvokeAsync(context);
-			edit.NotifyValidationStateChanged();
+			if (IsValid())
+			{
+				await Validate.InvokeAsync(new(new(Context.Verify(), Identifier), _messages, Message));
+				_context.Verify().NotifyValidationStateChanged();
+			}
+		}
+		finally
+		{
+			_active.Down();
 		}
 	}
 

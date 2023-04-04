@@ -54,7 +54,7 @@
 		if (Restore)
 		{
 			Restore = false;
-			await Focus.Restore.Await();
+		    await Focus.Restore.Await();
 		}
 	}
 
@@ -66,18 +66,18 @@
 	{
 		var active = IsActive.Default.Get(ActualReceiver);
 		var result = active != _active;
-	    _active = active;
+		_active = active;
 		return result;
 	}
 
 	public async ValueTask Start()
 	{
-		if (Allowed)
-		{
-			await Focus.Store.Await();
-		}
 		if (Update())
 		{
+			if (Allowed)
+			{
+				await Focus.Store.Get();
+			}
 			await RefreshState().ConfigureAwait(false);
 		}
 	}

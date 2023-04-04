@@ -11,7 +11,7 @@ public class TextInputComponent : ComponentBase
     public bool ValidationDisabled { get; set; }
 
     [Parameter]
-    public ForwardRef RefBack { get; set; } = default!;
+    public ForwardRef RefBack { get; set; } = new();
 
     [Parameter]
     public string Id { get; set; } = IdGeneratorHelper.Generate("matBlazor_id_");
