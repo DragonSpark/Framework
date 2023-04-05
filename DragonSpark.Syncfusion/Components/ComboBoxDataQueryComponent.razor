@@ -1,9 +1,9 @@
 ﻿@using DragonSpark.Compose
 @using DragonSpark.Model.Operations
 @using DragonSpark.Presentation
+@using DragonSpark.Presentation.Components.Content.Sequences
 @using Syncfusion.Blazor.DropDowns
 @using Syncfusion.Blazor.Data
-
 @using DragonSpark.SyncfusionRendering.Queries
 @using Syncfusion.Blazor
 @using FilterType = Syncfusion.Blazor.DropDowns.FilterType
@@ -14,8 +14,7 @@
 @typeparam TValue
 
 <SfComboBox TItem="TItem" TValue="TValue" Value="@Value" Placeholder="@Placeholder" AllowFiltering="@AllowFiltering"
-    CssClass="@CssClass" ShowClearButton="true"
-    FilterType="FilterType.Contains" >
+    CssClass="@CssClass" ShowClearButton="true" FilterType="FilterType.Contains" EnableVirtualization="@Virtualization.HasValue" Query="@_display">
     <ComboBoxTemplates TItem="TItem" HeaderTemplate="@HeaderTemplate" ItemTemplate="@ItemTemplate"  />
     <SfDataManager Adaptor="Adaptors.CustomAdaptor">
         <DataRequestCallbackAdaptor Requested="@OnRequest" />
@@ -41,6 +40,22 @@
 
     [Parameter]
     public EventCallback<DataRequestResult> Requested { get; set; }
+
+    [Parameter]
+    public byte? Virtualization
+    {
+        get => _virtualization;
+        set
+        {
+            if (_virtualization != value)
+            {
+                _virtualization = value;
+                _display = _virtualization.HasValue ? new Query().Take(_virtualization.Value) : null;
+            }
+        }
+    }   byte? _virtualization = DefaultPageSize.Default;
+
+    Query? _display = new Query().Take(DefaultPageSize.Default);
 
     protected override async Task OnRequest(DataRequestResult parameter)
     {
