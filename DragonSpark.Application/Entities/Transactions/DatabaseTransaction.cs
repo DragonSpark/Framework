@@ -1,19 +1,21 @@
 ﻿using DragonSpark.Model;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Transactions;
 
 sealed class DatabaseTransaction : ITransaction
 {
-	readonly DbContext             _context;
-	readonly IDbContextTransaction _transaction;
+	readonly DbContext      _context;
+	readonly DatabaseFacade _facade;
 
-	public DatabaseTransaction(DbContext context, IDbContextTransaction transaction)
+	public DatabaseTransaction(DbContext context) : this(context, context.Database) {}
+
+	public DatabaseTransaction(DbContext context, DatabaseFacade facade)
 	{
 		_context     = context;
-		_transaction = transaction;
+		_facade = facade;
 	}
 
 	public void Execute(None parameter) {}
@@ -21,8 +23,12 @@ sealed class DatabaseTransaction : ITransaction
 	public async ValueTask Get()
 	{
 		await _context.SaveChangesAsync().ConfigureAwait(false);
-		await _transaction.CommitAsync().ConfigureAwait(false);
+		var transaction = _facade.CurrentTransaction;
+		if (transaction is not null)
+		{
+			await transaction.CommitAsync().ConfigureAwait(false);
+		}
 	}
 
-	public ValueTask DisposeAsync() => _transaction.DisposeAsync();
+	public ValueTask DisposeAsync() => _facade.CurrentTransaction?.DisposeAsync() ?? ValueTask.CompletedTask;
 }

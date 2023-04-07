@@ -19,7 +19,7 @@ public class SessionDatabaseTransactions : ITransactions
 
 	public async ValueTask<ITransaction> Get()
 	{
-		var transaction = await _facade.BeginTransactionAsync().ConfigureAwait(false);
-		return new DatabaseTransaction(_context, transaction);
+		await _facade.BeginTransactionAsync().ConfigureAwait(false);
+		return new DatabaseTransaction(_context);
 	}
 }

@@ -3,8 +3,10 @@ using DragonSpark.Application.Compose;
 using DragonSpark.Application.Compose.Runtime;
 using DragonSpark.Application.Connections;
 using DragonSpark.Application.Entities.Queries.Runtime.Pagination;
+using DragonSpark.Application.Entities.Transactions;
 using DragonSpark.Application.Model.Sequences;
 using DragonSpark.Application.Runtime;
+using DragonSpark.Application.Runtime.Operations.Execution;
 using DragonSpark.Application.Security.Identity;
 using DragonSpark.Application.Security.Identity.Authentication;
 using DragonSpark.Application.Security.Identity.Bearer;
@@ -12,6 +14,7 @@ using DragonSpark.Application.Security.Identity.Claims.Access;
 using DragonSpark.Compose;
 using DragonSpark.Compose.Model.Operations;
 using DragonSpark.Composition.Compose;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
 using Humanizer;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -178,4 +181,8 @@ partial class Extensions
 
 /**/
 	public static OperationComposer<T> Then<T>(this OperationContext<T> @this) => new(@this.Get());
+
+/**/
+	public static ITransactions Ambient(this ITransactions @this) => new AmbientAwareTransactions(@this);
+	public static IOperation<T> Ambient<T>(this IOperation<T> @this) => new DeferredOperation<T>(@this);
 }
