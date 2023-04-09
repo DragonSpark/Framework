@@ -17,7 +17,7 @@ public class ValidatingValue<TFrom, TTo> : IValidatingValue<TFrom>
 	readonly IDepending<TTo>  _existing;
 	readonly Func<TFrom, TTo> _select;
 
-	public ValidatingValue(IDepending<TTo> existing, Func<TFrom, TTo> select)
+	protected ValidatingValue(IDepending<TTo> existing, Func<TFrom, TTo> select)
 	{
 		_existing = existing;
 		_select   = @select;

@@ -149,12 +149,12 @@
         return OnInput.InvokeAsync(parameter);
     }
 
-    async Task OnValueChanged(string parameter)
+    Task OnValueChanged(string parameter)
     {
         _active = false;
         _timer.Stop();
         Value = _stored = parameter;
-        await Update();
+        return Update();
     }
 
     public void Dispose()
