@@ -22,7 +22,8 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		var state = Operation.IsCompletedSuccessfully ? Operation.Result : await Operation;
+        // ReSharper disable once AsyncApostle.AsyncWait
+	    var state = Operation.IsCompletedSuccessfully ? Operation.Result : await Operation;
 		State = state.To<AuthenticationState<T>>();
 	}
 }
