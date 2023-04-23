@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Application.Entities.Transactions;
 
-public sealed class ScopedTransactions : IScopedTransactions
+sealed class ScopedTransactions : IScopedTransactions
 {
 	readonly IScoping                     _scoping;
 	readonly IMutable<AsyncServiceScope?> _store;

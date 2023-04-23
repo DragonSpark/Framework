@@ -2,28 +2,27 @@
 using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace DragonSpark.Application.Security.Identity.Authentication;
 
 sealed class AmbientAwareAuthentications<T> : IAuthentications<T> where T : class
 {
-	readonly IAuthentications<T>         _previous;
-	readonly IResult<AsyncServiceScope?> _established;
+	readonly IAuthentications<T>        _previous;
+	readonly IResult<IServiceProvider?> _provider;
 
-	public AmbientAwareAuthentications(IAuthentications<T> previous) : this(previous, LogicalScope.Default) {}
+	public AmbientAwareAuthentications(IAuthentications<T> previous) : this(previous, AmbientProvider.Default) {}
 
-	public AmbientAwareAuthentications(IAuthentications<T> previous, IResult<AsyncServiceScope?> established)
+	public AmbientAwareAuthentications(IAuthentications<T> previous, IResult<IServiceProvider?> provider)
 	{
-		_previous    = previous;
-		_established = established;
+		_previous = previous;
+		_provider = provider;
 	}
 
 	public AuthenticationSession<T> Get()
 	{
-		var current = _established.Get();
-		var result = current != null
-			             ? new(current.Value.ServiceProvider.GetRequiredService<SignInManager<T>>())
-			             : _previous.Get();
+		var current = _provider.Get();
+		var result  = current != null ? new(current.GetRequiredService<SignInManager<T>>()) : _previous.Get();
 		return result;
 	}
 }

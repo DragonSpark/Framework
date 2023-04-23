@@ -1,15 +1,20 @@
 ﻿using DragonSpark.Compose;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Transactions;
 
 public sealed class ScopedEntityContextTransactions : ITransactions
 {
-	readonly DbContext _scoped;
+	readonly IServiceProvider _first;
+	readonly DbContext        _second;
 
-	public ScopedEntityContextTransactions(DbContext scoped) => _scoped = scoped;
+	public ScopedEntityContextTransactions(IServiceProvider first, DbContext second)
+	{
+		_first  = first;
+		_second = second;
+	}
 
-	public ValueTask<ITransaction> Get()
-		=> new SessionEntityContextTransaction(_scoped).ToOperation<ITransaction>();
+	public ValueTask<ITransaction> Get() => new SessionTransaction(_first, _second).ToOperation<ITransaction>();
 }

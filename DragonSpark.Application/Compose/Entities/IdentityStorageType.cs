@@ -31,6 +31,8 @@ public sealed class IdentityStorageType<T, TContext> where TContext : DbContext 
 
 	public IdentityStorageUsing<T, TContext> Is
 		=> new(_subject.Append(CommonRegistrations<TContext, T>.Default)
+		               .Configure(x => x.ComposeUsing(Security.Identity.Compose.Default)
+		                                .ComposeUsing(Security.Identity.Authentication.Compose.Default))
 		               .Append(DragonSpark.Application.Entities.Registrations<TContext>.Default)
 		               .Append(DragonSpark.Application.Entities.Transactions.Registrations.Default),
 		       _configure);

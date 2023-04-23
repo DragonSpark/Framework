@@ -13,7 +13,8 @@ public class SessionCurrentDatabaseTransactions : ITransactions
 	public SessionCurrentDatabaseTransactions(DbContext owner, CurrentDatabaseTransaction.TransactionNotFound log)
 		: this(owner, owner.Database, log) {}
 
-	public SessionCurrentDatabaseTransactions(DbContext context, DatabaseFacade facade, CurrentDatabaseTransaction.TransactionNotFound log)
+	public SessionCurrentDatabaseTransactions(DbContext context, DatabaseFacade facade,
+	                                          CurrentDatabaseTransaction.TransactionNotFound log)
 	{
 		_context = context;
 		_facade  = facade;

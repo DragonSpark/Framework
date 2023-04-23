@@ -16,10 +16,6 @@ sealed class Registrations : ICommand<IServiceCollection>
 		         .Forward<ScopedTransactions>()
 		         .Singleton()
 		         //
-		         .Then.Start<ITransactions>()
-		         .Forward<Transactions>()
-		         .Singleton()
-		         //
 		         .Then.Start<EntityContextTransactions>()
 		         .And<ServiceScopedDatabaseTransactions>()
 		         .Singleton()
