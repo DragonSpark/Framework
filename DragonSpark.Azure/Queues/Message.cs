@@ -11,7 +11,7 @@ sealed class Message : IMessage
 
 	public async ValueTask Get(MessageInput parameter)
 	{
-		var (message, life, visibility) = parameter;
+		var (message, visibility, life) = parameter;
 		await _client.SendMessageAsync(message, visibility, life).ConfigureAwait(false);
 	}
 }
