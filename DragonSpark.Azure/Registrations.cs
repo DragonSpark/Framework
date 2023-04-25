@@ -9,7 +9,7 @@ namespace DragonSpark.Azure;
 
 sealed class Registrations : ICommand<IServiceCollection>
 {
-	public static Registrations Default { get; } = new Registrations();
+	public static Registrations Default { get; } = new();
 
 	Registrations() {}
 

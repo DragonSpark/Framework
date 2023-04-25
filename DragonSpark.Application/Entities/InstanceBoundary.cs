@@ -1,7 +1,6 @@
 ﻿using AsyncUtilities;
 using DragonSpark.Model.Operations;
 using DragonSpark.Runtime;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 
@@ -12,7 +11,7 @@ public sealed class InstanceBoundary : IBoundary
 	readonly AsyncLock _lock;
 	readonly IToken    _token;
 
-	public InstanceBoundary(DbContext context, IToken token) : this(Locks.Default.Get(context), token) {}
+	public InstanceBoundary(IToken token) : this(Locks.Default.Get(token), token) {}
 
 	public InstanceBoundary(AsyncLock @lock, IToken token)
 	{

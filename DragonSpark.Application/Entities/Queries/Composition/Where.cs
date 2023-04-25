@@ -31,4 +31,8 @@ public class Where<TIn, T> : Combine<TIn, T, T>
 
 	public Where(Expression<Func<DbContext, TIn, IQueryable<T>>> previous, Expression<Func<TIn, T, bool>> where)
 		: base(previous, (@in, q) => q.Where(x => where.Invoke(@in, x))) {}
+
+	public Where(Expression<Func<DbContext, TIn, IQueryable<T>>> previous,
+	             Expression<Func<DbContext, TIn, T, bool>> where)
+		: base(previous, (d, @in, q) => q.Where(x => where.Invoke(d, @in, x))) {}
 }

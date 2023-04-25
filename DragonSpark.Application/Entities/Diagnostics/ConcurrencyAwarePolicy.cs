@@ -8,7 +8,7 @@ namespace DragonSpark.Application.Entities.Diagnostics;
 
 public sealed class ConcurrencyAwarePolicy : Deferred<IAsyncPolicy>
 {
-	public static ConcurrencyAwarePolicy Default { get; } = new ConcurrencyAwarePolicy();
+	public static ConcurrencyAwarePolicy Default { get; } = new ();
 
 	ConcurrencyAwarePolicy() : base(Policy.Handle<DbUpdateConcurrencyException>()
 	                                      .Start()

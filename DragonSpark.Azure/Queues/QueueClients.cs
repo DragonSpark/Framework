@@ -10,5 +10,5 @@ sealed class QueueClients : IQueueClients
 
 	public QueueClients(string connection) => _connection = connection;
 
-	public QueueClient Get(string parameter) => new QueueClient(_connection, parameter);
+	public QueueClient Get(string parameter) => new(_connection, parameter);
 }
