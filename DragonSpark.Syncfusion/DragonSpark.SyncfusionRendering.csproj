@@ -17,7 +17,7 @@
 	<FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
   <ItemGroup>
-	  <PackageReference Include="Syncfusion.Blazor" Version="20.4.0.50" />
+	  <PackageReference Include="Syncfusion.Blazor" Version="21.1.41" />
   </ItemGroup>
   <ItemGroup>
 	<ProjectReference Include="..\DragonSpark.Presentation\DragonSpark.Presentation.csproj" />
