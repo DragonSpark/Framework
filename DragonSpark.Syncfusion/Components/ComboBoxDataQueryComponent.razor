@@ -5,6 +5,7 @@
 @using Syncfusion.Blazor.DropDowns
 @using Syncfusion.Blazor.Data
 @using DragonSpark.SyncfusionRendering.Queries
+@using Microsoft.AspNetCore.Components.Web
 @using Syncfusion.Blazor
 @using FilterType = Syncfusion.Blazor.DropDowns.FilterType
 
@@ -13,8 +14,8 @@
 @typeparam TItem
 @typeparam TValue
 
-<SfComboBox TItem="TItem" TValue="TValue" Value="@Value" Placeholder="@Placeholder" AllowFiltering="@AllowFiltering"
-    CssClass="@CssClass" ShowClearButton="true" FilterType="FilterType.Contains" EnableVirtualization="@Virtualization.HasValue" Query="@_display">
+<SfComboBox TItem="TItem" TValue="TValue" @ref="_subject" Value="@Value" Placeholder="@Placeholder" AllowFiltering="@AllowFiltering"
+    CssClass="@CssClass"  ShowClearButton="true" FilterType="FilterType.Contains" EnableVirtualization="@Virtualization.HasValue" Query="@_display">
     <ComboBoxTemplates TItem="TItem" HeaderTemplate="@HeaderTemplate" ItemTemplate="@ItemTemplate"  />
     <SfDataManager Adaptor="Adaptors.CustomAdaptor">
         <DataRequestCallbackAdaptor Requested="@OnRequest" />
@@ -26,6 +27,8 @@
 </SfComboBox>
 
 @code {
+    SfComboBox<TValue, TItem> _subject = default!;
+
     [Parameter]
     public TValue? Value { get; set; }
 
@@ -67,5 +70,7 @@
         => Content.Then()
                   .Then()
                   .Handle(Exceptions, ReportedType ?? GetType(), EmptyDataResult.Default);
+
+    public Task Display() => _subject.ShowPopupAsync();
 
 }
