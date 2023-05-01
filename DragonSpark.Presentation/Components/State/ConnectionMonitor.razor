@@ -1,5 +1,8 @@
 ﻿@using Microsoft.AspNetCore.SignalR.Client
 @using DragonSpark.Compose
+@using DragonSpark.Application.Connections.Client
+
+@inject IRestartConnection Restart
 
 @inherits DragonSpark.Presentation.Components.ComponentBase
 
@@ -27,8 +30,7 @@
             case HubConnectionState.Disconnected:
                 try
                 {
-                    await Subject.StopAsync();
-                    await Subject.StartAsync();
+                    await Restart.Get(Subject);
                     await Updated.InvokeAsync().ConfigureAwait(false);
                 }
                 catch (Exception error)

@@ -16,6 +16,11 @@ sealed class Registrations : ICommand<IServiceCollection>
 		         .Include(x => x.Dependencies.Recursive())
 		         .Scoped()
 		         .Then.Decorate<IConfigureConnection, ConfigureConnection>()
+		         //
+		         .Start<IRestartConnection>()
+		         .Forward<RestartConnection>()
+		         .Decorate<PolicyAwareRestartConnection>()
+		         .Singleton()
 			;
 	}
 }
