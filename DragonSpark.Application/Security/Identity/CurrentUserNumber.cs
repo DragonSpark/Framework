@@ -2,9 +2,9 @@
 
 sealed class CurrentUserNumber : ICurrentUserNumber
 {
-	readonly ICurrentUserIdentity _identity;
+	readonly ICurrentPrincipal    _current;
 
-	public CurrentUserNumber(ICurrentUserIdentity identity) => _identity = identity;
+	public CurrentUserNumber(ICurrentPrincipal current) => _current = current;
 
-	public uint Get() => uint.Parse(_identity.Get());
+	public uint Get() => _current.Get().Number() ?? 0;
 }

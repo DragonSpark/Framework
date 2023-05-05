@@ -35,7 +35,7 @@ public static class Extensions
 	public static Request<None> New(this ControllerBase @this, Guid identity) => @this.New(identity, None.Default);
 
 	public static Request<T> New<T>(this ControllerBase @this, Guid identity, T subject)
-		=> new(@this, new(@this.User.UserName(), identity, subject));
+		=> new(@this, new(@this.User.Number(), identity, subject));
 
 	public static Query Query(this ControllerBase @this, Guid subject) => new(@this, subject);
 	public static Query<T> Query<T>(this ControllerBase @this, T subject) => new(@this, subject);

@@ -8,12 +8,12 @@ namespace DragonSpark.Server.Requests;
 
 public class IsOwner : IIsOwner
 {
-	readonly ISelecting<Guid, string?> _owner;
-	readonly IEqualityComparer<string> _equals;
+	readonly ISelecting<Guid, uint?> _owner;
+	readonly IEqualityComparer<uint?> _equals;
 
-	public IsOwner(ISelecting<Guid, string?> owner) : this(owner, StringComparer.InvariantCultureIgnoreCase) {}
+	public IsOwner(ISelecting<Guid, uint?> owner) : this(owner, EqualityComparer<uint?>.Default) {}
 
-	public IsOwner(ISelecting<Guid, string?> owner, IEqualityComparer<string> equals)
+	public IsOwner(ISelecting<Guid, uint?> owner, IEqualityComparer<uint?> equals)
 	{
 		_owner  = owner;
 		_equals = @equals;

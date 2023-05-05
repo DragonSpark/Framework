@@ -26,7 +26,7 @@ sealed class Authentication : IAuthentication
 		if (result.Succeeded)
 		{
 			_log.LogInformation("[{Id}] {LoginProvider} user with key {Key} logged in.",
-			                    parameter.Principal.UserName(), parameter.LoginProvider, parameter.ProviderKey);
+			                    parameter.Principal.Number(), parameter.LoginProvider, parameter.ProviderKey);
 
 			await _synchronization.Await(parameter);
 		}

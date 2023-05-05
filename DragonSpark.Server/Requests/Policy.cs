@@ -7,7 +7,7 @@ namespace DragonSpark.Server.Requests;
 
 public class Policy : Selecting<Unique, bool?>, IPolicy
 {
-	public Policy(ISelecting<Guid, string?> owner) : base(new IsOwner(owner)) {}
+	public Policy(ISelecting<Guid, uint?> owner) : base(new IsOwner(owner)) {}
 
 	public Policy(ISelect<Unique, ValueTask<bool?>> select) : base(select) {}
 }
@@ -25,6 +25,5 @@ public class Policy<T> : IPolicy<T>
 		_select = @select;
 	}
 
-	public ValueTask<bool?> Get(Request<T> parameter)
-		=> _policy.Get(new (parameter.Parameter.UserName, _select(parameter)));
+	public ValueTask<bool?> Get(Request<T> parameter) => _policy.Get(new(parameter.Parameter.User, _select(parameter)));
 }

@@ -4,14 +4,14 @@ namespace DragonSpark.Presentation.Components.Content.Rendering;
 
 sealed class ContentKey : IContentKey
 {
-	readonly ICurrentUserName      _name;
+	readonly ICurrentUserNumber    _number;
 	readonly ContentIdentification _content;
 
-	public ContentKey(ICurrentUserName name, ContentIdentification content)
+	public ContentKey(ICurrentUserNumber number, ContentIdentification content)
 	{
-		_name    = name;
+		_number  = number;
 		_content = content;
 	}
 
-	public string Get(object parameter) => $"{_name.Get()}/{_content.Get(parameter)}";
+	public string Get(object parameter) => $"{_number.Get()}/{_content.Get(parameter)}";
 }

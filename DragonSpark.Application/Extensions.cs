@@ -67,26 +67,13 @@ partial class Extensions
 
 	public static Claim Claim(this Text.Text @this, string value) => new(@this, value);
 
-	public static uint? User(this ClaimsPrincipal @this)
-	{
-		var identifier = @this.Identifier();
-		return identifier is not null ? uint.Parse(identifier) : null;
-	}
+	public static uint? Number(this ClaimsPrincipal @this) => UserNumber.Default.Get(@this);
 
-	public static string? Identifier(this ClaimsPrincipal @this)
-		=> @this.FindFirstValue(ClaimTypes.NameIdentifier);
+	public static string? Identifier(this ClaimsPrincipal @this) => UserIdentifier.Default.Get(@this);
 
-	public static string DisplayName(this ClaimsPrincipal @this) => @this.DisplayName(Anonymous.Default);
+	public static string DisplayName(this ClaimsPrincipal @this) => UserDisplayName.Default.Get(@this);
 
-	public static string DisplayName(this ClaimsPrincipal @this, string anonymous)
-		=> @this.FindFirstValue(Security.Identity.DisplayName.Default) ?? @this.UserName(anonymous);
-
-	public static string UserName(this ClaimsPrincipal @this) => @this.UserName(Anonymous.Default);
-
-	public static string UserName(this ClaimsPrincipal @this, string anonymous)
-		=> @this.Identity?.IsAuthenticated ?? false
-			   ? @this.Identity?.Name ?? @this.FindFirstValue(ClaimTypes.Name).Verify()
-			   : anonymous;
+	public static string UserName(this ClaimsPrincipal @this) => Security.Identity.UserName.Default.Get(@this);
 
 	public static string? Get(this IValueProvider @this, string key)
 	{

@@ -5,7 +5,7 @@ namespace DragonSpark.Server.Requests;
 
 public sealed class PolicyKey<T> : Key<Unique>
 {
-	public static PolicyKey<T> Default { get; } = new PolicyKey<T>();
+	public static PolicyKey<T> Default { get; } = new ();
 
-	PolicyKey() : base(A.Type<T>(), query => $"{query.UserName}+{query.Identity}") {}
+	PolicyKey() : base(A.Type<T>(), x => $"{x.User}+{x.Identity}") {}
 }
