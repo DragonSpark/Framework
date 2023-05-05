@@ -2,7 +2,10 @@
 using DragonSpark.Model.Operations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
+using NetFabric.Hyperlinq;
+using System.Buffers;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Authentication;
@@ -29,9 +32,13 @@ sealed class Compositions : IResulting<Composition?>
 		                                    .AuthenticateAsync(IdentityConstants.ApplicationScheme)
 		                                    .ConfigureAwait(false);
 		var identity = authentication.Principal;
-		var result = identity != null
+		var result = identity is not null
 			             ? new(authentication.Properties,
-			                   _claims.Get().Open().Union(_state.Get(identity).Open()).ToArray())
+			                   _claims.Get()
+			                          .Open()
+			                          .Union(_state.Get(identity).Open())
+			                          .AsValueEnumerable()
+			                          .ToArray(ArrayPool<Claim>.Shared))
 			             : default(Composition?);
 		return result;
 	}
