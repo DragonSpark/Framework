@@ -10,6 +10,7 @@
 	 <Company>DragonSpark Technologies Incorporated</Company>
 	 <Copyright>Copyright &#169; 2022 DragonSpark Technologies Incorporated</Copyright>
 	 <Trademark>DragonSpark Technologies Incorporated</Trademark>
+	  <AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <NoWarn>$(NoWarn);NU1603;NU1608;CS8669;BL0007;EF1001</NoWarn>
