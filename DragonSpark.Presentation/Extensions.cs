@@ -143,4 +143,11 @@ public static class Extensions
 	public static Compose.OperationResultSelector<_, T> Then<_, T>(
 		this DragonSpark.Compose.Model.Operations.OperationResultSelector<_, T> @this)
 		=> new(@this.Out());
+
+/**/
+
+	public static Task Invoke<T>(this EventCallback<T> @this, T parameter)
+		=> @this.HasDelegate ? @this.InvokeAsync(parameter) : Task.CompletedTask;
+
+	public static Task Invoke(this EventCallback @this) => @this.HasDelegate ? @this.InvokeAsync() : Task.CompletedTask;
 }

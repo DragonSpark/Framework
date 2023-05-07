@@ -127,9 +127,9 @@
 
     async Task Update()
     {
-        await ValueChanged.InvokeAsync(Value);
+        await ValueChanged.Invoke(Value);
         EditContext?.NotifyFieldChanged(in _identifier);
-        await Updated.InvokeAsync();
+        await Updated.Invoke();
     }
 
     async Task Tick()
