@@ -4,6 +4,7 @@
 @using DragonSpark.Compose
 @using DragonSpark.Application.Entities.Queries.Runtime.Pagination
 @using DragonSpark.Model.Operations
+@using DragonSpark.Model.Results
 @using DragonSpark.Presentation.Environment.Browser
 @using System.Threading
 
@@ -28,6 +29,7 @@
 
 
 @code {
+    readonly Switch _reload = new();
     readonly List<T> _items = new();
     ElementReference? _element;
     IJSObjectReference? _instance;
@@ -50,6 +52,10 @@
             if (_input != value)
             {
                 _input = value;
+                if (_items.Count > 0)
+                {
+                    _reload.Up();
+                }
                 _items.Clear();
                 _source?.Cancel();
                 _source = null;
@@ -112,6 +118,10 @@
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         _instance ??= _active && _element is not null ? await Instance(_element.Value) : null;
+        if (_reload.Down())
+        {
+            await LoadMoreItems().ConfigureAwait(false);
+        }
     }
 
     async Task<IJSObjectReference?> Instance(ElementReference parameter)
@@ -138,5 +148,4 @@
             _instance = null;
         }
     }
-
 }
