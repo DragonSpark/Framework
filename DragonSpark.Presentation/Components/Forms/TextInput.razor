@@ -70,6 +70,9 @@
     public EventCallback<string> ValueChanged { get; set; }
 
     [Parameter]
+    public EventCallback Updated { get; set; }
+
+    [Parameter]
     public Expression<Func<string>> ValueExpression
     {
         get => _valueExpression;
@@ -126,6 +129,7 @@
     {
         await ValueChanged.InvokeAsync(Value);
         EditContext?.NotifyFieldChanged(in _identifier);
+        await Updated.InvokeAsync();
     }
 
     async Task Tick()
