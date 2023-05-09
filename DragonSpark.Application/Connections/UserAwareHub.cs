@@ -8,15 +8,17 @@ public class UserAwareHub : Hub
 {
 	public override Task OnConnectedAsync()
 	{
-		var name = Context.User?.Number().ToString();
-		return name != null ? Groups.AddToGroupAsync(Context.ConnectionId, name) : base.OnConnectedAsync();
+		var number = Context.User?.Number();
+		return number is not null
+			       ? Groups.AddToGroupAsync(Context.ConnectionId, number.Value.ToString())
+			       : base.OnConnectedAsync();
 	}
 
 	public override Task OnDisconnectedAsync(Exception? exception)
 	{
-		var name = Context.User?.Number().ToString();
-		return name != null
-			       ? Groups.RemoveFromGroupAsync(Context.ConnectionId, name)
+		var number = Context.User?.Number();
+		return number != null
+			       ? Groups.RemoveFromGroupAsync(Context.ConnectionId, number.Value.ToString())
 			       : base.OnDisconnectedAsync(exception);
 	}
 }
