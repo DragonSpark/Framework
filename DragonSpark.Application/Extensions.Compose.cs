@@ -150,4 +150,7 @@ public static partial class Extensions
 		=> new(new ExceptionAwareResult<T>(@this, exceptions, reportedType));
 
 	/**/
+
+	public static ApplicationProfileContext WithEnvironmentalConfiguredSender(this ApplicationProfileContext @this)
+		=> @this.Append(Messaging.Registrations.Default);
 }
