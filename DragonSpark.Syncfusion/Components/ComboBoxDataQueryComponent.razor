@@ -1,11 +1,13 @@
 ﻿@using DragonSpark.Compose
 @using DragonSpark.Model.Operations
 @using DragonSpark.Presentation
+@using DragonSpark.Presentation.Components.Content.Rendering
 @using DragonSpark.Presentation.Components.Content.Sequences
 @using Syncfusion.Blazor.DropDowns
 @using Syncfusion.Blazor.Data
 @using DragonSpark.SyncfusionRendering.Queries
 @using Microsoft.AspNetCore.Components.Web
+@using Microsoft.Extensions.Caching.Memory
 @using Syncfusion.Blazor
 @using FilterType = Syncfusion.Blazor.DropDowns.FilterType
 
@@ -15,10 +17,10 @@
 @typeparam TValue
 
 <SfComboBox TItem="TItem" TValue="TValue" @ref="_subject" Value="@Value" Placeholder="@Placeholder" AllowFiltering="@AllowFiltering"
-    CssClass="@CssClass"  ShowClearButton="true" FilterType="FilterType.Contains" EnableVirtualization="@Virtualization.HasValue" Query="@_display">
-    <ComboBoxTemplates TItem="TItem" HeaderTemplate="@HeaderTemplate" ItemTemplate="@ItemTemplate"  />
+            CssClass="@CssClass" ShowClearButton="true" FilterType="FilterType.Contains" EnableVirtualization="@Virtualization.HasValue" Query="@_display">
+    <ComboBoxTemplates TItem="TItem" HeaderTemplate="@HeaderTemplate" ItemTemplate="@ItemTemplate"/>
     <SfDataManager Adaptor="Adaptors.CustomAdaptor">
-        <DataRequestCallbackAdaptor Requested="@OnRequest" />
+        <DataRequestCallbackAdaptor Requested="@OnRequest"/>
     </SfDataManager>
     @if (ChildContent is not null)
     {
@@ -60,6 +62,9 @@
 
     Query? _display = new Query().Take(DefaultPageSize.Default);
 
+    [Parameter]
+    public IRequests Requests { get; set; } = Components.Requests.Default;
+
     protected override async Task OnRequest(DataRequestResult parameter)
     {
         await base.OnRequest(parameter);
@@ -67,10 +72,10 @@
     }
 
     protected override Await<DataManagerRequest, object> CreateInput()
-        => Content.Then()
-                  .Then()
-                  .Handle(Exceptions, ReportedType ?? GetType(), EmptyDataResult.Default);
+        => Requests.Get(Content)
+                   .Then()
+                   .Then()
+                   .Handle(Exceptions, ReportedType ?? GetType(), EmptyDataResult.Default);
 
     public Task Display() => _subject.ShowPopupAsync();
-
 }

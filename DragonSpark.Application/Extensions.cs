@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Application.Components.Validation.Expressions;
 using DragonSpark.Application.Compose;
 using DragonSpark.Application.Compose.Runtime;
+using DragonSpark.Application.Compose.Store.Operations;
 using DragonSpark.Application.Connections;
 using DragonSpark.Application.Entities.Queries.Runtime.Pagination;
 using DragonSpark.Application.Entities.Transactions;
@@ -172,4 +173,9 @@ partial class Extensions
 /**/
 	public static ITransactions Ambient(this ITransactions @this) => new AmbientAwareTransactions(@this);
 	public static IOperation<T> Ambient<T>(this IOperation<T> @this) => new DeferredOperation<T>(@this);
+/**/
+	public static DragonSpark.Compose.Model.Operations.OperationResultSelector<TIn, TOut> Using<TIn, TOut>(
+		this StoreContext<TIn, TOut> @this, MemoryStoreProfile<TIn> profile)
+		=> @this.In(profile.Memory).For(profile.For).Using(profile.Key);
+
 }

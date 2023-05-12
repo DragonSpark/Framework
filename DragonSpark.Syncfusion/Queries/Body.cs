@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.SyncfusionRendering.Queries;
 
-sealed class Body<T> : IBody<T>
+public sealed class Body<T> : IBody<T>
 {
 	public static Body<T> Default { get; } = new();
 
