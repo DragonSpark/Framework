@@ -10,6 +10,7 @@
 
 @code
 {
+    readonly Switch _initialized = new();
     [Parameter]
     public IClientVariable<T> Store { get; set; } = default!;
 
@@ -24,22 +25,9 @@
 
     ProtectedBrowserStorageResult<T>? Result { get; set; }
 
-    bool UpdateRequested { get; set; }
-    bool Rendered { get; set; }
-
-    protected override Task OnParametersSetAsync()
-    {
-        if (UpdateRequested && Rendered)
-        {
-            UpdateRequested = false;
-        }
-        return Task.CompletedTask;
-    }
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        Rendered = true;
-        if (Result is null)
+        if (_initialized.Up())
         {
             Result = await Store.Get();
             if (Result?.Success ?? false)
@@ -51,7 +39,7 @@
 
     public async ValueTask DisposeAsync()
     {
-        if (Rendered)
+        if (_initialized)
         {
             await Store.Await(await Source.Get());
         }

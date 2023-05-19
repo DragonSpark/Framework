@@ -50,6 +50,8 @@
 </AdaptiveGrid>
 
 @code {
+    readonly Model.Results.Switch _refresh = new();
+
     AdaptiveGrid<T>? _subject = default!;
 
     protected override void OnInitialized()
@@ -60,7 +62,7 @@
 
     protected override void OnContentChanged(Await<DataManagerRequest, object>? parameter)
     {
-        RefreshRequested = parameter != null;
+        _refresh.Execute(parameter is not null);
     }
 
     public Task Export() => _subject?.Export() ?? Task.CompletedTask;
@@ -105,17 +107,8 @@
 
     public Task Refresh() => _subject?.Refresh() ?? Task.CompletedTask;
 
-    bool RefreshRequested { get; set; }
-
     protected override Task OnParametersSetAsync()
-    {
-        if (_subject is not null && RefreshRequested)
-        {
-            RefreshRequested = false;
-            return Refresh();
-        }
-        return base.OnParametersSetAsync();
-    }
+        => _subject is not null && _refresh.Down() ? Refresh() : base.OnParametersSetAsync();
 
     protected override Await<DataManagerRequest, object> CreateInput()
     {
@@ -149,6 +142,12 @@
                 await Updated.InvokeAsync(new(arg.Data, arg.Action));
                 break;
         }
+    }
+
+    protected override Task OnRequest(DataRequestResult parameter)
+    {
+        _refresh.Down();
+        return base.OnRequest(parameter);
     }
 
 }

@@ -28,5 +28,5 @@ public sealed class ConfiguredMemoryStoreContext<TIn, TOut> : MemoryStoreContext
 	public DragonSpark.Compose.Model.Operations.OperationResultSelector<TIn, TOut> Using(Func<TIn, object> key)
 		=> new Memory<TIn, TOut>(Memory,
 		                         new Source<TIn, TOut>(Memory, Subject.Await, _configure.Execute).Await,
-		                         key).Then();
+		                         key).Then().Protecting();
 }
