@@ -54,4 +54,9 @@ public class StartWhereSelect<TIn, T, TTo> : WhereSelect<TIn, T, TTo> where T : 
 	protected StartWhereSelect(Expression<Func<TIn, T, bool>> where,
 	                           Expression<Func<DbContext, TIn, T, TTo>> select)
 		: base(Set<TIn, T>.Default, where, select) {}
+
+	protected StartWhereSelect(Expression<Func<IQueryable<T>, IQueryable<T>>> query,
+	                           Expression<Func<TIn, T, bool>> where,
+	                           Expression<Func<DbContext, TIn, T, TTo>> select)
+		: base((context, @in) => query.Invoke(Set<TIn, T>.Default.Get().Invoke(context, @in)), where, select) {}
 }
