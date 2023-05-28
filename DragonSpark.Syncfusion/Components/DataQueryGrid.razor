@@ -116,7 +116,7 @@
 
         return body.Then()
                    .Then()
-                   .UpdateActivity(Receiver)
+                   // .UpdateActivity(Receiver)
                    .Handle(Exceptions, ReportedType ?? GetType(), EmptyDataResult.Default.Get());
     }
 
