@@ -11,10 +11,11 @@ namespace DragonSpark.Presentation.Components.Security;
 /// </summary>
 public sealed class RedirectToLogin : ComponentBase
 {
-	/*public RedirectToLogin() => Forced = true;*/
-
 	[Parameter]
 	public string FormatPath { get; set; } = LoginPathTemplate.Default;
+
+	[Parameter]
+	public bool Force { get; set; } = true;
 
 	[Inject]
 	ILogger<RedirectToLogin> Logger { get; set; } = default!;
@@ -32,7 +33,11 @@ public sealed class RedirectToLogin : ComponentBase
 	{
 		var path = new TemplatedPath(FormatPath).Get(CurrentPath.Get());
 
-		Logger.LogDebug("Unauthorized resource '{Uri}' detected.  Redirecting to: {Redirect}", Navigation.Uri, path);
-		return firstRender ? Runtime.InvokeVoidAsync("location.replace", path).AsTask() : base.OnAfterRenderAsync(firstRender);
+		if (firstRender)
+		{
+			Logger.LogDebug("Unauthorized resource '{Uri}' detected.  Redirecting to: {Redirect}", Navigation.Uri, path);
+			Navigation.NavigateTo(path, Force, true);
+		}
+		return base.OnAfterRenderAsync(firstRender);
 	}
 }
