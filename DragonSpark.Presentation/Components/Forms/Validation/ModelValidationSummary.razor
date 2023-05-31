@@ -13,7 +13,7 @@
 		get => _message;
 		set
 		{
-			if (_message != value)
+			if (!ReferenceEquals(_message, value))
 			{
 				_message = value;
 				Messages = value.Account() == null ? Empty.Array<ValidationFieldMessage>() : value.Yield().ToArray();
@@ -27,11 +27,8 @@
 		get => _messages;
 		set
 		{
-			var @equals = Equals(_messages, value);
-			if (!@equals)
+			if (!Equals(_messages, value))
 			{
-
-
 				_messages = value;
 				_store?.Clear();
 
