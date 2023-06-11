@@ -49,7 +49,7 @@ public sealed class OperationCallbackContext<T> : IResult<EventCallback<T>>
 
 	public OperationCallbackContext<T> Using(object receiver) => new(receiver, _operation);
 
-	public OperationCallbackContext<T> Block() => Block(TimeSpan.FromSeconds(1));
+	public OperationCallbackContext<T> Block() => Block(TimeSpan.FromSeconds(1.5));
 
 	public OperationCallbackContext<T> Block(TimeSpan duration)
 		=> new(_receiver, new BlockingEntryOperation<T>(_operation, duration));
