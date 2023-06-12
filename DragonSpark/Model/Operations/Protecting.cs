@@ -46,7 +46,7 @@ public class Protecting<TIn, TOut> : ISelecting<TIn, TOut>
 	public async ValueTask<TOut> Get(TIn parameter)
 	{
 		var @lock = _lock.Get(parameter);
-		using (await @lock.LockAsync().ConfigureAwait(false))
+		using (await @lock.LockAsync().ConfigureAwait(true))
 		{
 			return await _previous(parameter);
 		}

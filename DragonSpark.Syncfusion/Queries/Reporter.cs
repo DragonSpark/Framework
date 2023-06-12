@@ -11,7 +11,6 @@ public sealed class Reporter : IReporter<IDataRequest>
 	public IDataRequest Get(Report<IDataRequest> parameter)
 	{
 		var (previous, reporter) = parameter;
-		var result = new ReportedDataRequest(previous, reporter);
-		return result;
+		return new ReportedDataRequest(previous, reporter);
 	}
 }

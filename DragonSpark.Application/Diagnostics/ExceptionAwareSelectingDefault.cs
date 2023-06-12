@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Diagnostics;
 
-public class ExceptionAwareSelectingDefault<TIn, TOut> : ISelecting<TIn, TOut>
+public sealed class ExceptionAwareSelectingDefault<TIn, TOut> : ISelecting<TIn, TOut>
 {
 	readonly ExceptionAwareSelecting<TIn, TOut> _previous;
 	readonly TOut                               _default;
