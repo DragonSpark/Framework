@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Compose;
 using Syncfusion.Blazor;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace DragonSpark.SyncfusionRendering.Queries;
@@ -19,11 +18,9 @@ sealed class Where<T> : IQuery<T>
 	{
 		var (request, query, _) = parameter;
 		var data = request.Where?.Count > 0
-			           ? new(request, PerformFiltering(query, request))
+			           ? new(request, DataOperations.PerformFiltering(query, request.Where, _condition))
 			           : parameter;
 		var result = data.ToOperation();
 		return result;
 	}
-
-	IQueryable<T> PerformFiltering(IQueryable<T> query, DataManagerRequest request) => DataOperations.PerformFiltering(query, request.Where, _condition);
 }

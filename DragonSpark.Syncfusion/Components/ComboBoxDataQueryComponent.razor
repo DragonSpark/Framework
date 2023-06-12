@@ -75,7 +75,7 @@
         => Requests.Get(Content)
                    .Then()
                    .Then()
-                   .Handle(Exceptions, ReportedType ?? GetType(), EmptyDataResult.Default);
+                   .Handle(EmptyDataResult.Default);
 
     public Task Display() => _subject.ShowPopupAsync();
 }

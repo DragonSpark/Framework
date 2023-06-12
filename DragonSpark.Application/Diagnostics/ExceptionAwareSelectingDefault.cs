@@ -1,16 +1,15 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
-using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Diagnostics;
 
 public sealed class ExceptionAwareSelectingDefault<TIn, TOut> : ISelecting<TIn, TOut>
 {
-	readonly ExceptionAwareSelecting<TIn, TOut> _previous;
-	readonly TOut                               _default;
+	readonly ISelecting<TIn, TOut> _previous;
+	readonly TOut                  _default;
 
-	public ExceptionAwareSelectingDefault(ExceptionAwareSelecting<TIn, TOut> previous, TOut @default)
+	public ExceptionAwareSelectingDefault(ISelecting<TIn, TOut> previous, TOut @default)
 	{
 		_previous = previous;
 		_default  = @default;
@@ -23,7 +22,7 @@ public sealed class ExceptionAwareSelectingDefault<TIn, TOut> : ISelecting<TIn, 
 			return await _previous.Await(parameter);
 		}
 		// ReSharper disable once CatchAllClause
-		catch (Exception)
+		catch
 		{
 			return _default;
 		}

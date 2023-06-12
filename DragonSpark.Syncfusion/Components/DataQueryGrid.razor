@@ -7,6 +7,7 @@
 @using DragonSpark.Presentation.Components.State
 @using DragonSpark.SyncfusionRendering.Entities
 @using DragonSpark.SyncfusionRendering.Queries
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
 @using Microsoft.Extensions.Caching.Memory
 @using Syncfusion.Blazor
 @using Syncfusion.Blazor.Grids
@@ -17,6 +18,7 @@
 
 @inject IMemoryCache Memory
 @inject IContentKey Key
+@inject ProtectedSessionStorage Session
 
 <AdaptiveGrid T="T"
               @ref="@_subject"
@@ -112,12 +114,9 @@
 
     protected override Await<DataManagerRequest, object> CreateInput()
     {
-        var body = new MemoryAwareDataRequest(Content, Memory, Key.Get(this));
-
-        return body.Then()
-                   .Then()
-                   // .UpdateActivity(Receiver)
-                   .Handle(Exceptions, ReportedType ?? GetType(), EmptyDataResult.Default.Get());
+        var body = new StateAwareDataRequest(Content, new GridStateVariable(Id, Session));
+        var next = new MemoryAwareDataRequest(body, Memory, Key.Get(this));
+        return next.Then().Then().Handle(EmptyDataResult.Default.Get());
     }
 
     void OnDataBound()
