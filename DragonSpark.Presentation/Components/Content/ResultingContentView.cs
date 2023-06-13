@@ -3,6 +3,7 @@ using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection.Conditions;
+using DragonSpark.Presentation.Components.Content.Rendering;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Threading.Tasks;
@@ -64,7 +65,7 @@ partial class ResultingContentView<T>
 		if (Subject != null)
 		{
 			var task = Subject.Value.AsTask();
-			return task.IsCompletedSuccessfully ? Update() : task;
+			return task.IsCompletedSuccessfully ? Update() : Render.Get() > RenderState.Default ? task : base.OnParametersSetAsync();
 		}
 
 		return base.OnParametersSetAsync();
