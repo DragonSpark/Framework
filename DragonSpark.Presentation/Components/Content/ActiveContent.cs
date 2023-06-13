@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
@@ -16,7 +17,7 @@ sealed class ActiveContent<T> : Resulting<T?>, IActiveContent<T>
 		: this(content, new VisitedAwareVariable<T?>(store, counts), counts) {}
 
 	public ActiveContent(IResulting<T?> result, IMutationAware<T?> store, IMutable<int> counts)
-		: this(new Storing<T?>(store, result), counts) {}
+		: this(new Storing<T?>(store, result).Then().Protecting().Out(), counts) {}
 
 	public ActiveContent(IResulting<T?> result, IMutable<int> counts)
 		: this(result, new UpdateMonitor(counts)) {}

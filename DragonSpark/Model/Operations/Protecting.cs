@@ -1,5 +1,6 @@
 ﻿using AsyncUtilities;
 using DragonSpark.Compose;
+using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using System.Threading.Tasks;
 
@@ -7,12 +8,12 @@ namespace DragonSpark.Model.Operations;
 
 public class Protecting<T> : IResulting<T>
 {
-	readonly IResulting<T> _previous;
-	readonly AsyncLock     _lock;
+	readonly IResult<ValueTask<T>> _previous;
+	readonly AsyncLock             _lock;
 
-	public Protecting(IResulting<T> previous) : this(previous, new AsyncLock()) {}
+	public Protecting(IResult<ValueTask<T>> previous) : this(previous, new AsyncLock()) {}
 
-	public Protecting(IResulting<T> previous, AsyncLock @lock)
+	public Protecting(IResult<ValueTask<T>> previous, AsyncLock @lock)
 	{
 		_previous = previous;
 		_lock     = @lock;
@@ -20,7 +21,7 @@ public class Protecting<T> : IResulting<T>
 
 	public async ValueTask<T> Get()
 	{
-		using var @lock  = await _lock.LockAsync().ConfigureAwait(false);
+		using var @lock  = await _lock.LockAsync().ConfigureAwait(true);
 		var       result = await _previous.Await();
 		return result;
 	}

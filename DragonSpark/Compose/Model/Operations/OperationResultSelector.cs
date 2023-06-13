@@ -45,6 +45,10 @@ public class OperationResultSelector<T> : ResultContext<ValueTask<T>>
 		=> new(new OperationResulting<T, TTo>(Get().Get, select));
 
 	public AllocatedResultComposer<T> Allocate() => new(Get().Then().Select(x => x.AsTask()).Get());
+
+	public OperationResultSelector<T> Protecting() => Protecting(new AsyncLock());
+
+	public OperationResultSelector<T> Protecting(AsyncLock @lock) => new(new Protecting<T>(Get(), @lock));
 }
 
 public class OperationResultSelector<_, T> : Selector<_, ValueTask<T>>
