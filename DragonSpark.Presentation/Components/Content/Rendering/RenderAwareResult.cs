@@ -29,8 +29,7 @@ sealed class RenderAwareResult<T> : IResulting<T?>
 			}
 			case RenderState.Ready:
 			{
-				var pop = _variable.Pop(out var stored);
-				return pop ? stored : await _previous.Await();
+				return _variable.Pop(out var stored) ? stored : await _previous.Await();
 			}
 			default:
 			{
