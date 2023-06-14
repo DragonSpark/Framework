@@ -8,6 +8,7 @@
 	@{
 		var content = Contents.Get(receiver); 
 	    <ResultingContentView T="TValue" Content="@content" UpdateMonitor="@content.Condition"
+		                      ForceRender="@ForceRender"
                               ChildContent="@ChildContent"
                               LoadingTemplate="@LoadingTemplate"
                               NotFoundTemplate="@NotFoundTemplate"
@@ -35,6 +36,9 @@
 			}
 		}
 	}   IActiveContent<TValue> _content = default!;
+
+    [Parameter]
+    public bool ForceRender { get; set; }
 
 	[Parameter]
 	public string CssClass { get; set; } = string.Empty;

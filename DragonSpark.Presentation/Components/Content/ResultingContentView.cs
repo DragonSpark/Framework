@@ -39,6 +39,9 @@ partial class ResultingContentView<T>
 	[Parameter]
 	public EventCallback<T> Refreshed { get; set; }
 
+	[Parameter]
+	public bool ForceRender { get; set; }
+
 	RenderFragment? Fragment { get; set; }
 
 	bool Loaded { get; set; }
@@ -65,7 +68,7 @@ partial class ResultingContentView<T>
 		if (Subject != null)
 		{
 			var task = Subject.Value.AsTask();
-			return task.IsCompletedSuccessfully ? Update() : Render.Get() > RenderState.Default ? task : base.OnParametersSetAsync();
+			return task.IsCompletedSuccessfully ? Update() : ForceRender || Render.Get() > RenderState.Default ? task : base.OnParametersSetAsync();
 		}
 
 		return base.OnParametersSetAsync();
