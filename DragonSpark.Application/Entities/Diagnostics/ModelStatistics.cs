@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace DragonSpark.Application.Entities.Diagnostics;
 
-sealed class ModelStatistics : ICommand<IModel>
+public sealed class ModelStatistics : ICommand<IModel>
 {
 	public static ModelStatistics Default { get; } = new();
 
