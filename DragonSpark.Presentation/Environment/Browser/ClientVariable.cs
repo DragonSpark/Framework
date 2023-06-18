@@ -13,7 +13,7 @@ public class ClientVariable<T> : IClientVariable<T>
 	readonly IClientVariableAccessor<T> _store;
 
 	public ClientVariable(string key, ProtectedBrowserStorage storage)
-		: this(key, new ConnectionAwareClientVariableAccessor<T>(new ClientVariableAccessor<T>(storage))) {}
+		: this(key, ClientAccessors<T>.Default.Get(storage)) {}
 
 	protected ClientVariable(Type key, ProtectedBrowserStorage storage)
 		: this(key.AssemblyQualifiedName.Verify(), storage) {}
