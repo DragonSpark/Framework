@@ -3,6 +3,7 @@ using DragonSpark.Application.Compose;
 using DragonSpark.Application.Compose.Runtime;
 using DragonSpark.Application.Compose.Store.Operations;
 using DragonSpark.Application.Connections;
+using DragonSpark.Application.Entities.Editing;
 using DragonSpark.Application.Entities.Queries.Runtime.Pagination;
 using DragonSpark.Application.Entities.Transactions;
 using DragonSpark.Application.Model.Sequences;
@@ -154,6 +155,12 @@ partial class Extensions
 	}
 
 	public static Task<int> Save(this DbContext @this) => @this.SaveChangesAsync();
+
+	public static T Attached<T>(this IEditor @this, T parameter) where T : class
+	{
+		@this.Attach(parameter);
+		return parameter;
+	}
 
 	/**/
 	public static bool HasResults<T>(this IPages<T> @this) => @this != EmptyPages<T>.Default;
