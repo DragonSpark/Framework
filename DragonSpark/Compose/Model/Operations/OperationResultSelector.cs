@@ -19,7 +19,8 @@ public class OperationResultSelector<T> : ResultContext<ValueTask<T>>
 {
 	public static implicit operator OperateOf<T>(OperationResultSelector<T> instance) => instance.Get().Get;
 
-	public static implicit operator DragonSpark.Model.Operations.AwaitOf<T>(OperationResultSelector<T> instance) => instance.Get().Await;
+	public static implicit operator DragonSpark.Model.Operations.AwaitOf<T>(OperationResultSelector<T> instance)
+		=> instance.Get().Await;
 
 	public OperationResultSelector(IResult<ValueTask<T>> instance) : base(instance) {}
 
@@ -51,7 +52,8 @@ public class OperationResultSelector<T> : ResultContext<ValueTask<T>>
 
 	public OperationResultSelector<T> Protecting() => Protecting(new AsyncLock());
 
-	public OperationResultSelector<T> Protecting(AsyncLock @lock) => new(new Protecting<T>(Get(), @lock));
+	public OperationResultSelector<T> Protecting(AsyncLock @lock)
+		=> new(new DragonSpark.Model.Operations.Results.Protecting<T>(Get(), @lock));
 }
 
 public class OperationResultSelector<_, T> : Selector<_, ValueTask<T>>
@@ -87,6 +89,7 @@ public class OperationResultSelector<_, T> : Selector<_, ValueTask<T>>
 		=> new(new TokenAware<_, T>(Get(), parameter));
 
 	public OperationResultSelector<T> Bind(IResult<ValueTask<_>> parameter) => Bind(parameter.Get);
+
 	public OperationResultSelector<T> Bind(Func<ValueTask<_>> parameter)
 		=> new(new Binding<_, T>(this.Out(), parameter));
 
