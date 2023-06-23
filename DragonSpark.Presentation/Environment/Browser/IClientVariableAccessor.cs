@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Model;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Selection;
 using DragonSpark.Presentation.Components.State;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 

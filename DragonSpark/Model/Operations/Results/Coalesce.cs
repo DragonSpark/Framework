@@ -1,0 +1,18 @@
+﻿using DragonSpark.Compose;
+using System.Threading.Tasks;
+
+namespace DragonSpark.Model.Operations.Results;
+
+public class Coalesce<T> : IResulting<T>
+{
+	readonly IResulting<T?> _first;
+	readonly IResulting<T>  _second;
+
+	protected Coalesce(IResulting<T?> first, IResulting<T> second)
+	{
+		_first  = first;
+		_second = second;
+	}
+
+	public async ValueTask<T> Get() => await _first.Await() ?? await _second.Await();
+}

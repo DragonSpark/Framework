@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Application.Security.Identity.Claims.Compile;
-using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Results;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using NetFabric.Hyperlinq;

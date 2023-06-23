@@ -1,5 +1,5 @@
 ﻿using AspNet.Security.OAuth.Mixcloud;
-using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Selection;
 using Flurl;
 using System;
 using System.Net.Http;

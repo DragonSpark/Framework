@@ -1,4 +1,4 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model.Operations.Selection.Conditions;
 
 namespace DragonSpark.Application.Components.Validation.Expressions;
 

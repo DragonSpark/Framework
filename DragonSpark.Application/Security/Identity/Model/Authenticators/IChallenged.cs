@@ -1,4 +1,4 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model.Operations.Selection;
 using System.Security.Claims;
 
 namespace DragonSpark.Application.Security.Identity.Model.Authenticators;

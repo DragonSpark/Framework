@@ -1,4 +1,4 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model.Operations.Selection;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.Circuits;

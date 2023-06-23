@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Application.Entities.Queries.Composition;
-using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Selection;
 using System;
 
 namespace DragonSpark.Application.Entities;

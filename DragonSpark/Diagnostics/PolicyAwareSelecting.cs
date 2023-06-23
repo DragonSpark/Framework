@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Compose.Model.Operations;
-using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Selection;
 using Polly;
 using System.Threading.Tasks;
 

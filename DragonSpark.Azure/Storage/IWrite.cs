@@ -1,5 +1,5 @@
 ﻿using Azure.Storage.Blobs;
-using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Selection;
 
 namespace DragonSpark.Azure.Storage;
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DragonSpark.Model.Operations.Results;
+using Microsoft.EntityFrameworkCore;
 using System;
 
 namespace DragonSpark.Application.Entities;
@@ -15,7 +16,7 @@ public class StandardScopes<T> : IStandardScopes where T : DbContext
 		return new(context, new Boundary(context));
 	}
 
-	sealed class Boundary : DragonSpark.Model.Operations.Instance<IDisposable>, IBoundary
+	sealed class Boundary : Instance<IDisposable>, IBoundary
 	{
 		public Boundary(IDisposable instance) : base(instance) {}
 	}

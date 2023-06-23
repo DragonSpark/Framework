@@ -2,7 +2,7 @@
 using DragonSpark.Application.Entities;
 using DragonSpark.Compose;
 using DragonSpark.Model;
-using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Selection;
 using DragonSpark.Testing.Objects.Entities;
 using FluentAssertions;
 using JetBrains.Annotations;

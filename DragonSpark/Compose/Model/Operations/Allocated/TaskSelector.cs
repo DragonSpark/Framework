@@ -1,5 +1,7 @@
 ﻿using DragonSpark.Compose.Model.Selection;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Allocated;
+using DragonSpark.Model.Operations.Results;
 using DragonSpark.Model.Selection;
 using System;
 using System.Threading.Tasks;

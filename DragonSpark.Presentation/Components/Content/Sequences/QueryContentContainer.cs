@@ -3,6 +3,7 @@ using DragonSpark.Application.Entities.Queries.Runtime.Pagination;
 using DragonSpark.Application.Entities.Queries.Runtime.Shape;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Results;
 using DragonSpark.Model.Selection.Conditions;
 using Microsoft.AspNetCore.Components;
 using System;

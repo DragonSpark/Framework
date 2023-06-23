@@ -1,4 +1,4 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model.Operations.Results;
 
 namespace DragonSpark.Application.Entities.Transactions;
 

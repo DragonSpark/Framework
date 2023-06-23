@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Diagnostics.Logging;
-using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Selection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Diagnostics;

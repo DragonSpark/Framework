@@ -1,4 +1,4 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model.Operations.Results;
 using Microsoft.AspNetCore.Components.Forms;
 using NetFabric.Hyperlinq;
 using System;

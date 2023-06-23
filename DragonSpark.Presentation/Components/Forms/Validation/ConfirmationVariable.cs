@@ -1,4 +1,4 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model.Operations.Results;
 using DragonSpark.Model.Results;
 using System.Threading.Tasks;
 

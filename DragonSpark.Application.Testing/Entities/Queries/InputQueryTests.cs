@@ -3,7 +3,7 @@ using DragonSpark.Application.Entities;
 using DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
 using DragonSpark.Application.Entities.Queries.Composition;
 using DragonSpark.Compose;
-using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Selection;
 using DragonSpark.Runtime.Execution;
 using DragonSpark.Testing.Objects.Entities;
 using FluentAssertions;

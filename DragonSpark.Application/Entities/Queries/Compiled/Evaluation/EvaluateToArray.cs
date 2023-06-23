@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Model;
-using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Results;
 using DragonSpark.Model.Sequences;
 using Microsoft.EntityFrameworkCore;
 using System;

@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Results;
 using Microsoft.JSInterop;
 using System;
 

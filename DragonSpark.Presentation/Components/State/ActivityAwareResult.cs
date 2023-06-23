@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model;
-using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Results;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.State;

@@ -1,4 +1,4 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model.Operations.Results;
 using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Presentation.Components.Content.Rendering;

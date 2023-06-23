@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Application;
 using DragonSpark.Application.Compose.Store.Operations;
 using DragonSpark.Compose;
-using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Selection;
 using DragonSpark.SyncfusionRendering.Components;
 using Microsoft.Extensions.Caching.Memory;
 using Syncfusion.Blazor;

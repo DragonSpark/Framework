@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
-using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Selection;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Runtime.Activation;
 using Microsoft.Extensions.DependencyInjection;

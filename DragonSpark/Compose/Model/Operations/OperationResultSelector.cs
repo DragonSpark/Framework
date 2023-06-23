@@ -3,6 +3,9 @@ using DragonSpark.Compose.Model.Operations.Allocated;
 using DragonSpark.Compose.Model.Results;
 using DragonSpark.Compose.Model.Selection;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Allocated;
+using DragonSpark.Model.Operations.Results;
+using DragonSpark.Model.Operations.Selection;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using System;
@@ -16,7 +19,7 @@ public class OperationResultSelector<T> : ResultContext<ValueTask<T>>
 {
 	public static implicit operator OperateOf<T>(OperationResultSelector<T> instance) => instance.Get().Get;
 
-	public static implicit operator AwaitOf<T>(OperationResultSelector<T> instance) => instance.Get().Await;
+	public static implicit operator DragonSpark.Model.Operations.AwaitOf<T>(OperationResultSelector<T> instance) => instance.Get().Await;
 
 	public OperationResultSelector(IResult<ValueTask<T>> instance) : base(instance) {}
 
@@ -75,7 +78,7 @@ public class OperationResultSelector<_, T> : Selector<_, ValueTask<T>>
 	}
 
 	public new OperationResultSelector<_, (_ In, T Out)> Introduce()
-		=> new DragonSpark.Model.Operations.Introduce<_, T>(Get()).Then();
+		=> new DragonSpark.Model.Operations.Selection.Introduce<_, T>(Get()).Then();
 
 	public OperationResultSelector<_, TTo> Select<TTo>(Func<T, TTo> select)
 		=> new(Get().Select(new OperationSelect<T, TTo>(select)));

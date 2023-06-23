@@ -1,4 +1,4 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model.Operations.Selection.Conditions;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
 using System.Threading.Tasks;

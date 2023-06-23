@@ -3,6 +3,7 @@ using DragonSpark.Compose.Model.Selection;
 using DragonSpark.Diagnostics.Logging;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Allocated;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using System;

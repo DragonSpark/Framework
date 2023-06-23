@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Selection.Conditions;
 using DragonSpark.Model.Selection.Conditions;
 using NetFabric.Hyperlinq;
 using System.Security.Claims;

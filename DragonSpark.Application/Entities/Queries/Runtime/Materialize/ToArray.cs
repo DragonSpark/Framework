@@ -1,4 +1,4 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model.Operations.Selection;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
 using System;

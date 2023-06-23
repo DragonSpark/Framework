@@ -5,7 +5,7 @@ namespace DragonSpark.Model.Operations;
 
 public sealed class Locks : ReferenceValueStore<object, AsyncLock>
 {
-	public static Locks Default { get; } = new Locks();
+	public static Locks Default { get; } = new();
 
-	Locks() : base(_ => new AsyncLock()) {}
+	Locks() : base(_ => new ()) {}
 }

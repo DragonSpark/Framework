@@ -1,4 +1,4 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model.Operations.Selection;
 using Microsoft.JSInterop;
 using System.Threading.Tasks;
 

@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Application.Entities.Queries.Compiled;
 using DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
 using DragonSpark.Compose;
-using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Selection;
 using DragonSpark.Model.Selection;
 using System;
 using System.Threading.Tasks;

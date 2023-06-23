@@ -1,4 +1,4 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model.Operations.Selection;
 using Syncfusion.Blazor;
 using System;
 using System.Threading.Tasks;
