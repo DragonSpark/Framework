@@ -18,6 +18,7 @@ sealed class Compose : ICommand<IServiceContainer>
 
 		parameter.RegisterScoped(typeof(IAny<>), typeof(Any<>))
 		         .Decorate(typeof(IAny<>), typeof(PolicyAwareAny<>))
+				 .Decorate(typeof(IAny<>), typeof(ComposerAwareAny<>))
 		         .Decorate(typeof(IAny<>), typeof(ExceptionAwareAny<>))
 				 ;
 

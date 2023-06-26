@@ -9,9 +9,9 @@ sealed class Pagination<T> : IPagination<T>
 	readonly IAny<T>    _any;
 	readonly IPages<T>  _default;
 
-	public Pagination(IPaging<T> previous, IAny<T> any) : this(previous, any, EmptyPages<T>.Default) {}
+	public Pagination(IAny<T> any, IPaging<T> previous) : this(any, previous, EmptyPages<T>.Default) {}
 
-	public Pagination(IPaging<T> paging, IAny<T> any, IPages<T> @default)
+	public Pagination(IAny<T> any, IPaging<T> paging, IPages<T> @default)
 	{
 		_paging  = paging;
 		_any     = any;
