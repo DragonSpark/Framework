@@ -18,8 +18,7 @@
                     <ButtonComponent Text="@SecondaryText" Click="OnCancel" ButtonStyle="ButtonStyle.Secondary"
                                      class="@SecondaryClass" />
 
-                    <ButtonComponent Text="@PrimaryText" Click="@(Start.A.Callback<MouseEventArgs>(OnAccept).Handle(Exceptions, ReportedType ?? GetType()).Using(receiver).UpdateActivity().Block())"
-                                     class="@PrimaryClass" />
+                    <ButtonComponent Text="@PrimaryText" Click="@_click(receiver)" class="@PrimaryClass" />
                 </div>
             </div>
         </div>
@@ -28,9 +27,17 @@
 
 @code
 {
-	protected override Task OnInitializedAsync() => Opened.InvokeAsync();
+    Func<object, EventCallback<MouseEventArgs>> _click = default!;
 
-	async Task OnAccept(MouseEventArgs parameter)
+    protected override Task OnInitializedAsync()
+    {
+        _click = Start.A.Selection<object>().By.Calling(Create).Stores().New().Get;
+        return Opened.InvokeAsync();
+    }
+
+    EventCallback<MouseEventArgs> Create(object parameter) => Start.A.Callback<MouseEventArgs>(OnAccept).Handle(Exceptions, ReportedType ?? GetType()).Using(parameter).UpdateActivity().Block();
+
+    async Task OnAccept(MouseEventArgs parameter)
 	{
 		if (await Confirmation())
 		{
