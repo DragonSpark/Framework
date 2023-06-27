@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
 	<PackageReference Include="Flurl" Version="3.0.7" />
@@ -18,7 +18,7 @@
 	<PackageReference Include="SluggyUnidecode" Version="2.0.1" />
 	<PackageReference Include="SmartFormat.NET" Version="3.2.0" />
 	<PackageReference Include="System.Linq.Async" Version="6.0.1" />
-	<PackageReference Include="System.Linq.Dynamic.Core" Version="1.2.25" />
+	<PackageReference Include="System.Linq.Dynamic.Core" Version="1.3.0" />
 
   </ItemGroup>
 
