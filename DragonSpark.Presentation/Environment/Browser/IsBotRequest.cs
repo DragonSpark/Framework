@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace DragonSpark.Presentation.Environment.Browser;
 
-sealed class IsBotRequest : ICondition<HttpRequest>
+public sealed class IsBotRequest : ICondition<HttpRequest>
 {
 	public static IsBotRequest Default { get; } = new();
 
