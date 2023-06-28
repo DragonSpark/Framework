@@ -40,7 +40,7 @@ sealed class ThreadAwareModel : IRuntimeModel
 
 	public bool IsShared(Type type) => _previous.IsShared(type);
 
-	public IEntityType? FindRuntimeEntityType(Type type) => _model.FindRuntimeEntityType(type);
+	public IEntityType? FindRuntimeEntityType(Type? type) => _model.FindRuntimeEntityType(type);
 
 	public IEnumerable<IEntityType> GetEntityTypes() => _previous.GetEntityTypes();
 
