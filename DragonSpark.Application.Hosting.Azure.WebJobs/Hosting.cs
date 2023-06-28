@@ -13,8 +13,7 @@ sealed class Hosting : ICommand<IHostBuilder>
 
 	public void Execute(IHostBuilder parameter)
 	{
-		parameter.ConfigureWebJobs(x => x.AddAzureStorageCoreServices()
-		                                 .AddAzureStorageBlobs()
+		parameter.ConfigureWebJobs(x => x.AddAzureStorageBlobs()
 		                                 .AddAzureStorageQueues(_queues));
 	}
 }

@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
     <PackageReference Include="Coinbase" Version="6.0.1" />
-    <PackageReference Include="AspNet.Security.OAuth.Coinbase" Version="7.0.0" />
+    <PackageReference Include="AspNet.Security.OAuth.Coinbase" Version="7.0.2" />
   </ItemGroup>
 
   <ItemGroup>

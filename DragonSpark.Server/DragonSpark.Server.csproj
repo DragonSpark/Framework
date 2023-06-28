@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <OutputType>Library</OutputType>    
+    <OutputType>Library</OutputType>
   </PropertyGroup>
 
   <ItemGroup>
@@ -9,6 +9,6 @@
 
   <ItemGroup>
     <PackageReference Include="LightInject.Microsoft.AspNetCore.Hosting" Version="2.3.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />
+    <!--<PackageReference Include="Microsoft.AspNetCore.Http.Extensions" Version="2.2.0" />-->
   </ItemGroup>
 </Project>
