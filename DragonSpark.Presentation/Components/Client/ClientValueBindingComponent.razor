@@ -1,6 +1,8 @@
 ﻿@using DragonSpark.Presentation.Environment.Browser
 @using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
 @using DragonSpark.Compose
+@using DragonSpark.Model.Results
+@using DragonSpark.Model.Selection.Conditions
 @using DragonSpark.Presentation.Components.Interaction
 
 @typeparam T
@@ -9,6 +11,7 @@
 
 @code
 {
+    Switch _rendered = new(), _requested = new(), _initialize = new();
     bool _assigned;
 
     [Parameter]
@@ -18,7 +21,7 @@
     public T Value { get; set; } = default!;
 
     [Parameter]
-    public T AssignedValue 
+    public T AssignedValue
     {
         get => _assignedValue;
         set
@@ -38,6 +41,9 @@
     public IEqualityComparer<T> Comparer { get; set; } = EqualityComparer<T>.Default;
 
     [Parameter]
+    public ICondition<T> Allowed { get; set; } = Is.Always<T>().Out();
+
+    [Parameter]
     public RenderFragment<Binding<T>> ChildContent { get; set; } = default!;
 
     ProtectedBrowserStorageResult<T>? Result { get; set; }
@@ -50,35 +56,35 @@
 
     void RequestUpdate(T parameter)
     {
-        if (Rendered)
+        if (_rendered && _requested.Up())
         {
-            UpdateRequested = true;
             StateHasChanged();
         }
     }
 
-    bool UpdateRequested { get; set; }
-    bool Rendered { get; set; }
     Binding<T> Binding { get; set; } = default!;
 
     protected override async Task OnParametersSetAsync()
     {
-        if (UpdateRequested)
+        if (_requested.Down())
         {
-            UpdateRequested = false;
             await ValueChanged.InvokeAsync(Value = Binding.Value);
-            await Store.Await(Binding.Value);
+            if (Allowed.Get(Binding.Value))
+            {
+                await Store.Await(Binding.Value);
+            }
         }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (Result is null)
+        if (Result is null && _initialize.Up())
         {
             Result = await Store.Get();
             if (Result?.Success ?? false)
             {
-                Binding.Value = Result.Value.Value ?? AssignedValue ?? Value;
+                var value = Result.Value.Value ?? AssignedValue ?? Value;
+                Binding.Value = value;
                 await Loaded.InvokeAsync(Binding);
                 await ValueChanged.InvokeAsync(Value = Binding.Value).ConfigureAwait(false);
             }
@@ -86,7 +92,7 @@
             {
                 await ValueChanged.InvokeAsync(Value = Binding.Value = AssignedValue).ConfigureAwait(false);
             }
+            _rendered.Up();
         }
-        Rendered = true;
     }
 }

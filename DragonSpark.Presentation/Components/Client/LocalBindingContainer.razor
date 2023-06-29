@@ -2,10 +2,12 @@
 
 @using DragonSpark.Presentation.Environment.Browser
 @using DragonSpark.Presentation.Components.Interaction
+@using DragonSpark.Model.Selection.Conditions
+@using DragonSpark.Compose
 @inherits ComponentStateComponentBase
 
 <LocalStateComponent T="T" Owner="Owner" ProvidedKey="@ProvidedKey" Qualifier="@Qualifier">
-    <ClientValueBindingComponent T="T" Value="@Value" Store="context" ChildContent="@ChildContent" Loaded="@Loaded" ValueChanged="@OnChange" />
+    <ClientValueBindingComponent T="T" Value="@Value" Store="context" ChildContent="@ChildContent" Loaded="@Loaded" Allowed="@Allowed" ValueChanged="@OnChange" />
 </LocalStateComponent>
 
 @code {
@@ -20,6 +22,9 @@
 
     [Parameter]
     public RenderFragment<Binding<T>> ChildContent { get; set; } = default!;
+
+    [Parameter]
+    public ICondition<T> Allowed { get; set; } = Is.Always<T>().Out();
 
     Task OnChange(T parameter) => ValueChanged.InvokeAsync(Value = parameter);
 }
