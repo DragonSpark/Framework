@@ -10,6 +10,5 @@ sealed class ToDecimal : IEvaluate<decimal, decimal>
 
 	ToDecimal() {}
 
-	public ValueTask<decimal> Get(IAsyncEnumerable<decimal> parameter)
-		=> parameter.AsAsyncValueEnumerable().SumAsync();
+	public ValueTask<decimal> Get(IAsyncEnumerable<decimal> parameter) => parameter.AsAsyncValueEnumerable().SumAsync();
 }
