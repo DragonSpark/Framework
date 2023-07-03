@@ -1,8 +1,10 @@
-﻿namespace DragonSpark.Identity.Twitter.Claims;
+﻿using System.Security.Claims;
 
-public sealed class ScreenName : TwitterClaim
+namespace DragonSpark.Identity.Twitter.Claims;
+
+public sealed class ScreenName : Text.Text
 {
-	public static ScreenName Default { get; } = new ScreenName();
+	public static ScreenName Default { get; } = new();
 
-	ScreenName() : base(nameof(ScreenName).ToLower()) {}
+	ScreenName() : base(ClaimTypes.Name) {}
 }

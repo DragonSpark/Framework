@@ -1,8 +1,10 @@
-﻿namespace DragonSpark.Identity.Twitter.Claims;
+﻿using AspNet.Security.OAuth.Twitter;
 
-public sealed class DisplayName : TwitterClaim
+namespace DragonSpark.Identity.Twitter.Claims;
+
+public sealed class DisplayName : Text.Text
 {
-	public static DisplayName Default { get; } = new DisplayName();
+	public static DisplayName Default { get; } = new();
 
-	DisplayName() : base(nameof(DisplayName).ToLower()) {}
+	DisplayName() : base(TwitterAuthenticationConstants.Claims.Name) {}
 }

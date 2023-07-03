@@ -1,31 +1,29 @@
-﻿using DragonSpark.Application.Security.Identity.Claims.Actions;
+﻿using AspNet.Security.OAuth.Twitter;
+using DragonSpark.Application.Security.Identity.Claims.Actions;
 using DragonSpark.Model.Commands;
-using Microsoft.AspNetCore.Authentication.Twitter;
 using System;
 
 namespace DragonSpark.Identity.Twitter;
 
-sealed class ConfigureTwitterAuthentication : ICommand<TwitterOptions>
+sealed class ConfigureTwitterAuthentication : ICommand<TwitterAuthenticationOptions>
 {
-	readonly Func<TwitterApplicationSettings> _settings;
-	readonly IClaimAction                     _action;
-	readonly Action<TwitterOptions>           _configure;
+	readonly Func<TwitterApplicationSettings>     _settings;
+	readonly IClaimAction                         _action;
+	readonly Action<TwitterAuthenticationOptions> _configure;
 
 	public ConfigureTwitterAuthentication(Func<TwitterApplicationSettings> settings, IClaimAction action,
-	                                      Action<TwitterOptions> configure)
+	                                      Action<TwitterAuthenticationOptions> configure)
 	{
 		_settings  = settings;
 		_action    = action;
 		_configure = configure;
 	}
 
-	public void Execute(TwitterOptions parameter)
+	public void Execute(TwitterAuthenticationOptions parameter)
 	{
 		var settings = _settings();
-
-		parameter.ConsumerKey         = settings.Key;
-		parameter.ConsumerSecret      = settings.Secret;
-		parameter.RetrieveUserDetails = true;
+		parameter.ClientId     = settings.Key;
+		parameter.ClientSecret = settings.Secret;
 
 		_action.Execute(parameter.ClaimActions);
 		_configure(parameter);

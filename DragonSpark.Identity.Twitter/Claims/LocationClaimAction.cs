@@ -2,9 +2,9 @@
 
 namespace DragonSpark.Identity.Twitter.Claims;
 
-public sealed class LocationClaimAction : ClaimAction
+public sealed class LocationClaimAction : SubKeyClaimAction
 {
-	public static LocationClaimAction Default { get; } = new LocationClaimAction();
+	public static LocationClaimAction Default { get; } = new();
 
-	LocationClaimAction() : base(Location.Default, "location") {}
+	LocationClaimAction() : base(Location.Default, "data", "location") {}
 }

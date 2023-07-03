@@ -8,8 +8,7 @@ public class SubKeyClaimAction : IClaimAction
 	readonly string _claim, _type;
 	readonly SubKey _key;
 
-	protected SubKeyClaimAction(string claim, string key, string element)
-		: this(claim, new SubKey(key, element), "string") {}
+	protected SubKeyClaimAction(string claim, string key, string element) : this(claim, new SubKey(key, element), "string") {}
 
 	protected SubKeyClaimAction(string claim, SubKey key, string type)
 	{

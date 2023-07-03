@@ -7,9 +7,9 @@ namespace DragonSpark.Identity.Twitter.Claims;
 
 public sealed class WebsiteClaimAction : CustomClaimAction
 {
-	public static WebsiteClaimAction Default { get; } = new WebsiteClaimAction();
+	public static WebsiteClaimAction Default { get; } = new();
 
-	WebsiteClaimAction() : base(Website.Default, "url", GetUrl.Instance.Get!) {}
+	WebsiteClaimAction() : base(Website.Default, "data", GetUrl.Instance.Get!) {}
 
 	sealed class GetUrl : ISelect<JsonElement, string?>
 	{
@@ -19,7 +19,8 @@ public sealed class WebsiteClaimAction : CustomClaimAction
 
 		public string? Get(JsonElement parameter)
 		{
-			var entities = parameter.GetProperty("entities");
+			var root     = parameter.GetProperty("data");
+			var entities = root.GetProperty("entities");
 			if (entities.TryGetProperty("url", out entities) && entities.TryGetProperty("urls", out var urls))
 			{
 				return urls[0].GetString("expanded_url");
@@ -27,5 +28,4 @@ public sealed class WebsiteClaimAction : CustomClaimAction
 			return null;
 		}
 	}
-
 }

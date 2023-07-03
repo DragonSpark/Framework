@@ -7,7 +7,7 @@ public class ClaimAction : IClaimAction
 {
 	readonly string _element, _claim, _type;
 
-	public ClaimAction(string claim, string element, string type = "string")
+	protected ClaimAction(string claim, string element, string type = "string")
 	{
 		_element = element;
 		_claim   = claim;

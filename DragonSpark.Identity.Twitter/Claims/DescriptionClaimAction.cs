@@ -2,9 +2,9 @@
 
 namespace DragonSpark.Identity.Twitter.Claims;
 
-public sealed class DescriptionClaimAction : ClaimAction
+public sealed class DescriptionClaimAction : SubKeyClaimAction
 {
-	public static DescriptionClaimAction Default { get; } = new DescriptionClaimAction();
+	public static DescriptionClaimAction Default { get; } = new();
 
-	DescriptionClaimAction() : base(Description.Default, "description") {}
+	DescriptionClaimAction() : base(Description.Default, "data", "description") {}
 }

@@ -2,7 +2,7 @@
 
 public sealed class Location : TwitterClaim
 {
-	public static Location Default { get; } = new Location();
+	public static Location Default { get; } = new();
 
 	Location() : base(nameof(Location).ToLower()) {}
 }

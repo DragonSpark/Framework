@@ -1,9 +1,9 @@
-﻿using DragonSpark.Application.Security.Identity.Claims.Actions;
+﻿using AspNet.Security.OAuth.Twitter;
+using DragonSpark.Application.Security.Identity.Claims.Actions;
 using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Twitter;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -11,12 +11,12 @@ namespace DragonSpark.Identity.Twitter;
 
 sealed class ConfigureTwitterApplication : ICommand<AuthenticationBuilder>
 {
-	readonly IClaimAction           _action;
-	readonly Action<TwitterOptions> _configure;
+	readonly IClaimAction                         _action;
+	readonly Action<TwitterAuthenticationOptions> _configure;
 
-	public ConfigureTwitterApplication(IClaimAction action, Action<TwitterOptions> configure)
+	public ConfigureTwitterApplication(IClaimAction action, Action<TwitterAuthenticationOptions> configure)
 	{
-		_action         = action;
+		_action    = action;
 		_configure = configure;
 	}
 
