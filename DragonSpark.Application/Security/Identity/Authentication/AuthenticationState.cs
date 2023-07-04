@@ -6,6 +6,9 @@ namespace DragonSpark.Application.Security.Identity.Authentication;
 
 public sealed class AuthenticationState<T> : AuthenticationState where T : IdentityUser
 {
+	public static implicit operator int(AuthenticationState<T> instance) => instance._profile.Verify().Id;
+	public static implicit operator uint(AuthenticationState<T> instance) => instance._profile.Verify().Id.Grade();
+
 	readonly T? _profile;
 	public static AuthenticationState<T> Default { get; } = new();
 
