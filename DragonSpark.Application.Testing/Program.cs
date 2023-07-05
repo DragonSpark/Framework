@@ -11,3 +11,8 @@ public class Program
 		Hosting.BenchmarkDotNet.Configuration.Default.Get(arguments).To(Run.A<SaveTests.DisposeBenchmarks>);
 	}
 }
+
+public class SomeOperation : SomeOperation
+{
+	
+}
