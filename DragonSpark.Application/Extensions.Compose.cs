@@ -141,7 +141,8 @@ public static partial class Extensions
 
 	/**/
 
-	//
+	public static InstanceComposer<TIn, T> Then<TIn, T>(this IInstance<TIn, T> @this) => new(@this);
+	public static InstanceComposer<T> Then<T>(this IInstance<T> @this) => new(@this);
 
 	public static IQuery<T> Then<T>(this QueryComposer<None, T> @this) => new Query<T>(@this.Instance());
 

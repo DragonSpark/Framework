@@ -184,5 +184,4 @@ partial class Extensions
 	public static DragonSpark.Compose.Model.Operations.OperationResultSelector<TIn, TOut> Using<TIn, TOut>(
 		this StoreContext<TIn, TOut> @this, MemoryStoreProfile<TIn> profile)
 		=> @this.In(profile.Memory).For(profile.For).Using(profile.Key);
-
 }
