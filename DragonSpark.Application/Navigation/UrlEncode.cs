@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model.Selection.Alterations;
 using System.Net;
 
-namespace DragonSpark.Presentation.Text;
+namespace DragonSpark.Application.Navigation;
 
 public sealed class UrlEncode : Alteration<string>
 {

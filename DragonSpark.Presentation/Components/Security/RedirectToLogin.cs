@@ -31,10 +31,9 @@ public sealed class RedirectToLogin : ComponentBase
 
 	protected override Task OnAfterRenderAsync(bool firstRender)
 	{
-		var path = new TemplatedPath(FormatPath).Get(CurrentPath.Get());
-
 		if (firstRender)
 		{
+			var path = new TemplatedPath(FormatPath).Get(CurrentPath.Get());
 			Logger.LogDebug("Unauthorized resource '{Uri}' detected.  Redirecting to: {Redirect}", Navigation.Uri, path);
 			Navigation.NavigateTo(path, Force, true);
 		}

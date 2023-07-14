@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model.Selection.Alterations;
 using Microsoft.AspNetCore.Components;
 
-namespace DragonSpark.Application.Navigation.Security.Identity;
+namespace DragonSpark.Application.Navigation.Security;
 
 public class NavigateToExternalLogin : Navigation<string>
 {
