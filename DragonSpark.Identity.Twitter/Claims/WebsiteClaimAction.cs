@@ -19,13 +19,12 @@ public sealed class WebsiteClaimAction : CustomClaimAction
 
 		public string? Get(JsonElement parameter)
 		{
-			var root     = parameter.GetProperty("data");
-			var entities = root.GetProperty("entities");
-			if (entities.TryGetProperty("url", out entities) && entities.TryGetProperty("urls", out var urls))
-			{
-				return urls[0].GetString("expanded_url");
-			}
-			return null;
+			var root = parameter.GetProperty("data");
+			return root.TryGetProperty("entities", out var entities) &&
+			       entities.TryGetProperty("url", out var url) &&
+			       url.TryGetProperty("urls", out var urls)
+				       ? urls[0].GetString("expanded_url")
+				       : null;
 		}
 	}
 }
