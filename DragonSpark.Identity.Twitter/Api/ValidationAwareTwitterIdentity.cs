@@ -1,9 +1,8 @@
 ﻿using DragonSpark.Application.Components.Validation.Expressions;
 using DragonSpark.Compose;
-using DragonSpark.Identity.Twitter.Api;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Identity.Twitter;
+namespace DragonSpark.Identity.Twitter.Api;
 
 sealed class ValidationAwareTwitterIdentity : ITwitterIdentity
 {

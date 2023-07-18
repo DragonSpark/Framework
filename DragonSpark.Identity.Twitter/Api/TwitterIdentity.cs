@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Tweetinvi;
 using Tweetinvi.Parameters.V2;
 
-namespace DragonSpark.Identity.Twitter;
+namespace DragonSpark.Identity.Twitter.Api;
 
 sealed class TwitterIdentity : ITwitterIdentity
 {

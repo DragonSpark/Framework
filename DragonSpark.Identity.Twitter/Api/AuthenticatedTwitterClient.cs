@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using Tweetinvi;
 
-namespace DragonSpark.Identity.Twitter;
+namespace DragonSpark.Identity.Twitter.Api;
 
 sealed class AuthenticatedTwitterClient : IResulting<TwitterClient>
 {

@@ -1,7 +1,7 @@
 ﻿using Tweetinvi;
 using Tweetinvi.Models;
 
-namespace DragonSpark.Identity.Twitter;
+namespace DragonSpark.Identity.Twitter.Api;
 
 sealed class TwitterClients : Model.Results.Instance<TwitterClient>
 {

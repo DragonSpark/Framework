@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace DragonSpark.Identity.Twitter;
+namespace DragonSpark.Identity.Twitter.Api;
 
 /// <summary>
 /// Attribution: https://github.com/linvi/tweetinvi/issues/1147#issuecomment-1173174302

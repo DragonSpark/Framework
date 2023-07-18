@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Composition;
+using DragonSpark.Identity.Twitter.Api;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 using Tweetinvi;
