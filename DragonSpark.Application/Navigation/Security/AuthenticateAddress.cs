@@ -8,8 +8,7 @@ public sealed class AuthenticateAddress : IFormatter<AuthenticateAddressInput>
 {
 	public static AuthenticateAddress Default { get; } = new();
 
-	AuthenticateAddress()
-		: this($"{ExternalLoginPath.Default.Get().ToLower()}?provider={{0}}&returnUrl={{1}}", UrlEncode.Default) {}
+	AuthenticateAddress() : this($"{ExternalLoginPath.Default}?provider={{0}}&returnUrl={{1}}", UrlEncode.Default) {}
 
 	readonly string              _template;
 	readonly IAlteration<string> _encode;
