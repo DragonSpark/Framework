@@ -17,7 +17,6 @@ else
     <DragonSpark.Presentation.Components.Eventing.HandlerView T="ClientOffsetAssignedMessage" Received="@OnUpdate" />
 }
 
-
 @code
 {
     [Parameter]
@@ -40,9 +39,6 @@ else
 
     [Parameter]
     public RenderFragment LoadingTemplate { get; set; } = MinimalLoadingTemplate.Default;
-
-    [Parameter(CaptureUnmatchedValues = true)]
-    public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
 
     DateTimeOffset? Subject { get; set; }
 
