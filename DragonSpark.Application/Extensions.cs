@@ -161,6 +161,9 @@ partial class Extensions
 		@this.Attach(parameter);
 		return parameter;
 	}
+/**/
+	public static string? Read(this IReadClaim @this, ClaimsPrincipal parameter)
+		=> @this.Get(parameter).To<Accessed, string?>(x => x.Exists ? x.Value : null);
 
 	/**/
 	public static bool HasResults<T>(this IPages<T> @this) => @this != EmptyPages<T>.Default;
