@@ -45,6 +45,6 @@ public class Properties<TAttribute, T> : ISelect<Type, Array<T>> where TAttribut
 			}
 		}
 
-		return builder;
+		return builder.AsSpan().ToArray();
 	}
 }
