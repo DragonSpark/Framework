@@ -1,10 +1,9 @@
 ﻿using DragonSpark.Composition;
-using DragonSpark.Identity.Twitter.Api;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 using Tweetinvi;
 
-namespace DragonSpark.Identity.Twitter;
+namespace DragonSpark.Identity.Twitter.Api;
 
 sealed class Registrations : ICommand<IServiceCollection>
 {
@@ -14,13 +13,15 @@ sealed class Registrations : ICommand<IServiceCollection>
 
 	public void Execute(IServiceCollection parameter)
 	{
-		parameter.Start<TwitterClient>()
+		parameter.Register<TwitterApiSettings>()
+		         //
+		         .Start<TwitterClient>()
 		         .Use<TwitterClients>()
 		         .Singleton()
 		         //
 		         .Then.Start<ITwitterIdentity>()
 		         .Forward<TwitterIdentity>()
-		         .Decorate<ValidationAwareTwitterIdentity>()
+		         .Decorate<Twitter.ValidationAwareTwitterIdentity>()
 		         .Include(x => x.Dependencies.Recursive())
 		         .Singleton();
 	}

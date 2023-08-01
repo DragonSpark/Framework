@@ -5,10 +5,9 @@ namespace DragonSpark.Identity.Twitter.Api;
 
 sealed class TwitterClients : Model.Results.Instance<TwitterClient>
 {
-	public TwitterClients(TwitterApplicationSettings settings)
-		: this(new ConsumerOnlyCredentials(settings.Key, settings.Secret)) {}
+	public TwitterClients(TwitterApiSettings settings)
+		: this(new ReadOnlyConsumerCredentials(settings.Key, settings.Secret, settings.Bearer)) {}
 
-	public TwitterClients(ConsumerOnlyCredentials credentials) : this(new TwitterClient(credentials)) {}
+	public TwitterClients(ReadOnlyConsumerCredentials credentials) : base(new TwitterClient(credentials)) {}
 
-	public TwitterClients(TwitterClient instance) : base(instance) {}
 }

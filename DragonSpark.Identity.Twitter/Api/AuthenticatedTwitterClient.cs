@@ -1,10 +1,6 @@
-﻿using DragonSpark.Model.Operations.Results;
-using System.Threading.Tasks;
-using Tweetinvi;
+﻿namespace DragonSpark.Identity.Twitter.Api;
 
-namespace DragonSpark.Identity.Twitter.Api;
-
-sealed class AuthenticatedTwitterClient : IResulting<TwitterClient>
+/*sealed class AuthenticatedTwitterClient : IResulting<TwitterClient>
 {
 	readonly TwitterClient _client;
 
@@ -16,4 +12,4 @@ sealed class AuthenticatedTwitterClient : IResulting<TwitterClient>
 		await result.Auth.InitializeClientBearerTokenAsync().ConfigureAwait(false);
 		return result;
 	}
-}
+}*/
