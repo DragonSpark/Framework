@@ -9,8 +9,3 @@ public sealed class Time : Result<DateTimeOffset>, ITime
 
 	Time() : base(() => DateTimeOffset.UtcNow) {}
 }
-
-public class FixedTime : Instance<DateTimeOffset>, ITime
-{
-	public FixedTime(DateTimeOffset instance) : base(instance) {}
-}

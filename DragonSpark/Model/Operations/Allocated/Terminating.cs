@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Compose;
 using System;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations.Allocated;
@@ -32,5 +31,3 @@ public class Terminating<T> : IOperation
 		await _await();
 	}
 }
-
-public delegate ConfiguredTaskAwaitable<T> AwaitOf<T>();

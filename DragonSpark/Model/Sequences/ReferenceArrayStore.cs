@@ -6,11 +6,6 @@ using System.Collections.Generic;
 
 namespace DragonSpark.Model.Sequences;
 
-public class ArrayStore<T> : OpenArray<T>
-{
-	protected ArrayStore(Func<T[]> source) : base(Start.A.Result<T[]>().By.Calling(source).Singleton()) {}
-}
-
 public class ArrayStore<TIn, T> : OpenArray<TIn, T>
 {
 	protected ArrayStore(ISelect<TIn, IEnumerable<T>> source) : this(source.Then().Open()) {}

@@ -10,12 +10,3 @@ public class ContainsText : ICondition<string>
 
 	public bool Get(string parameter) => parameter.Contains(_text);
 }
-
-public class StartsWithText : ICondition<string>
-{
-	readonly string _text;
-
-	public StartsWithText(string text) => _text = text;
-
-	public bool Get(string parameter) => parameter.StartsWith(_text);
-}
