@@ -35,7 +35,7 @@ public sealed class IdentityTests
 	}
 
 	[Fact]
-	public async ValueTask Verify()
+	public async Task Verify()
 	{
 		using var host = await Start.A.Host()
 		                            .WithTestServer()

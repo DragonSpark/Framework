@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-	  <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.8" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="7.0.9" />
     <PackageReference Include="AutoBogus.Conventions" Version="2.13.1" />
   </ItemGroup>
   <ItemGroup>
