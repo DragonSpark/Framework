@@ -1,6 +1,6 @@
 ﻿namespace DragonSpark.Presentation.Interaction;
 
-public sealed record InvalidResult : IInteractionResult
+public sealed class InvalidResult : UnsuccessfulResultBase
 {
 	public static InvalidResult Default { get; } = new();
 
