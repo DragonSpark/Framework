@@ -14,7 +14,12 @@ sealed class InitializedAwareHostBuilder : IHostBuilder
 	readonly ICommand     _initialized;
 
 	public InitializedAwareHostBuilder(IHostBuilder previous, ICommand initialized)
+		: this(previous, initialized, previous.Properties) {}
+
+	public InitializedAwareHostBuilder(IHostBuilder previous, ICommand initialized,
+	                                   IDictionary<object, object> properties)
 	{
+		Properties   = properties;
 		_previous    = previous;
 		_initialized = initialized;
 	}
@@ -26,8 +31,7 @@ sealed class InitializedAwareHostBuilder : IHostBuilder
 		return result;
 	}
 
-	public IHostBuilder ConfigureAppConfiguration(
-		Action<HostBuilderContext, IConfigurationBuilder> configureDelegate)
+	public IHostBuilder ConfigureAppConfiguration(Action<HostBuilderContext, IConfigurationBuilder> configureDelegate)
 		=> _previous.ConfigureAppConfiguration(configureDelegate);
 
 	public IHostBuilder ConfigureContainer<TContainerBuilder>(
@@ -40,16 +44,14 @@ sealed class InitializedAwareHostBuilder : IHostBuilder
 	public IHostBuilder ConfigureServices(Action<HostBuilderContext, IServiceCollection> configureDelegate)
 		=> _previous.ConfigureServices(configureDelegate);
 
-#pragma warning disable 8714
 	public IHostBuilder UseServiceProviderFactory<TContainerBuilder>(
-		IServiceProviderFactory<TContainerBuilder> factory)where TContainerBuilder : notnull
+		IServiceProviderFactory<TContainerBuilder> factory) where TContainerBuilder : notnull
 		=> _previous.UseServiceProviderFactory(factory);
 
 	public IHostBuilder UseServiceProviderFactory<TContainerBuilder>(
 		Func<HostBuilderContext, IServiceProviderFactory<TContainerBuilder>> factory)
 		where TContainerBuilder : notnull
 		=> _previous.UseServiceProviderFactory(factory);
-#pragma warning restore 8714
 
-	public IDictionary<object, object> Properties => _previous.Properties;
+	public IDictionary<object, object> Properties { get; }
 }

@@ -10,9 +10,7 @@ class EmitProgramLog : Command
 {
 	protected EmitProgramLog(ILogMessage<string> message) : this(message, PrimaryAssemblyDetails.Default) {}
 
-	protected EmitProgramLog(ILogMessage<string> message, AssemblyDetails details)
-		: this(message, details.Title) {}
+	protected EmitProgramLog(ILogMessage<string> message, AssemblyDetails details) : this(message, details.Title) {}
 
-	protected EmitProgramLog(ILogMessage<string> message, string parameter)
-		: base(message.Then().Bind(parameter)) {}
+	protected EmitProgramLog(ILogMessage<string> message, string parameter) : base(message.Then().Bind(parameter)) {}
 }

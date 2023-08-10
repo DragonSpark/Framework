@@ -18,8 +18,8 @@ class InitializationAwareHostBuilder : IAlteration<IHostBuilder>
 	readonly Func<IHostBuilder, IHostBuilder> _previous;
 	readonly ICommand                         _initializing, _initialized;
 
-	public InitializationAwareHostBuilder(Func<IHostBuilder, IHostBuilder> previous, ICommand initializing,
-	                                      ICommand initialized)
+	protected InitializationAwareHostBuilder(Func<IHostBuilder, IHostBuilder> previous, ICommand initializing,
+	                                         ICommand initialized)
 	{
 		_previous     = previous;
 		_initializing = initializing;
