@@ -10,6 +10,9 @@
 @using Exception = System.Exception
 @using DragonSpark.Application.Runtime
 @using DragonSpark.Application.Entities.Queries.Compiled.Evaluation
+@using DragonSpark.Application.Diagnostics
+
+@inject IExceptions Exceptions
 
 @typeparam T where T : class
 
@@ -22,7 +25,8 @@
     protected override void OnInitialized()
     {
         _update = OnUpdate;
-        _call = new ThrottleOperation<None>(OnUpdate, TimeSpan.FromMilliseconds(100)).Then().Then().Out();
+        var operate = new ExceptionAware<None>(OnUpdate, Exceptions, GetType()).Then();
+        _call = new ThrottleOperation<None>(operate, TimeSpan.FromMilliseconds(100)).Then().Then().Out();
         base.OnInitialized();
     }
 

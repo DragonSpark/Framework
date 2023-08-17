@@ -13,7 +13,8 @@
 
 	protected override void OnInitialized()
 	{
-		_call = new ThrottleOperation<string>(Model.Get, TimeSpan.FromMilliseconds(250)).Then().Then().Catch<Evaluate>(Exceptions).Out();
+	    var operate = new ExceptionAware<string>(Model, Exceptions, GetType()).Then();
+	    _call = new ThrottleOperation<string>(operate, TimeSpan.FromMilliseconds(250)).Then().Then().Out();
 		base.OnInitialized();
 	}
 

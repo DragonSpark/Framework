@@ -8,11 +8,14 @@ namespace DragonSpark.Application.Diagnostics;
 
 public class ExceptionAware<T> : IOperation<T>
 {
-	readonly ISelect<T, ValueTask> _previous;
-	readonly IExceptions           _exceptions;
-	readonly Type?                 _reportedType;
+	readonly Func<T, ValueTask> _previous;
+	readonly IExceptions        _exceptions;
+	readonly Type?              _reportedType;
 
 	public ExceptionAware(ISelect<T, ValueTask> previous, IExceptions exceptions, Type? reportedType = null)
+		: this(previous.Get, exceptions, reportedType) {}
+
+	public ExceptionAware(Func<T, ValueTask> previous, IExceptions exceptions, Type? reportedType = null)
 	{
 		_previous     = previous;
 		_exceptions   = exceptions;
@@ -23,7 +26,7 @@ public class ExceptionAware<T> : IOperation<T>
 	{
 		try
 		{
-			await _previous.Await(parameter);
+			await _previous(parameter).ConfigureAwait(false);
 		}
 		catch (Exception e)
 		{
