@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Application.Diagnostics;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Allocated;
 using DragonSpark.Model.Results;
 using DragonSpark.Presentation.Components.Diagnostics;
 using DragonSpark.Presentation.Components.State;
@@ -25,7 +26,7 @@ public sealed class CallbackContext : IResult<EventCallback>
 		_method   = method;
 	}
 
-	public CallbackContext Using(object receiver) => new (receiver, _method);
+	public CallbackContext Using(object receiver) => new(receiver, _method);
 
 	public OperationCallbackContext Handle<T>(IExceptions exceptions) => Handle(exceptions, A.Type<T>());
 
@@ -48,7 +49,7 @@ public sealed class CallbackContext : IResult<EventCallback>
 
 	public OperationCallbackContext BlockFor(TimeSpan duration)
 		=> new(_receiver.Verify(),
-			new BlockingEntryOperation(Start.A.Result(_method).Then().Structure().Out(), duration));
+		       new BlockingEntryOperation(new Allocated(_method).Then().Structure().Out(), duration));
 
 	public CallbackContext Append(Action next) => Append(Start.A.Command(next).Operation().Allocate());
 

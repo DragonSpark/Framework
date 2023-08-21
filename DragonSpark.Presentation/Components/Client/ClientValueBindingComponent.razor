@@ -3,16 +3,22 @@
 @using DragonSpark.Compose
 @using DragonSpark.Model.Results
 @using DragonSpark.Model.Selection.Conditions
+@using DragonSpark.Presentation.Components.Content.Templates
 @using DragonSpark.Presentation.Components.Interaction
 
 @typeparam T
 
-@ChildContent(Binding)
+@if (Binding is not null)
+{
+    @ChildContent(Binding)
+}
+
 
 @code
 {
+    ProtectedBrowserStorageResult<T>? _result;
+
     Switch _rendered = new(), _requested = new(), _initialize = new();
-    bool _assigned;
 
     [Parameter]
     public IClientVariable<T> Store { get; set; } = default!;
@@ -21,15 +27,7 @@
     public T Value { get; set; } = default!;
 
     [Parameter]
-    public T AssignedValue
-    {
-        get => _assignedValue;
-        set
-        {
-            _assignedValue = value;
-            _assigned = true;
-        }
-    }	T _assignedValue = default!;
+    public Func<T>? AssignedValue { get; set; }
 
     [Parameter]
     public EventCallback<T> ValueChanged { get; set; }
@@ -46,13 +44,8 @@
     [Parameter]
     public RenderFragment<Binding<T>> ChildContent { get; set; } = default!;
 
-    ProtectedBrowserStorageResult<T>? Result { get; set; }
-
-    protected override void OnInitialized()
-    {
-        Binding = new Binding<T>(Value, RequestUpdate, Comparer);
-        base.OnInitialized();
-    }
+    [Parameter]
+    public RenderFragment LoadingTemplate { get; set; } = MinimalLoadingTemplate.Default;
 
     void RequestUpdate(T parameter)
     {
@@ -62,11 +55,11 @@
         }
     }
 
-    Binding<T> Binding { get; set; } = default!;
+    Binding<T>? Binding { get; set; } = default!;
 
     protected override async Task OnParametersSetAsync()
     {
-        if (_requested.Down())
+        if (_requested.Down() && Binding is not null)
         {
             await ValueChanged.InvokeAsync(Value = Binding.Value);
             if (Allowed.Get(Binding.Value))
@@ -78,21 +71,29 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (Result is null && _initialize.Up())
+        if (_result is null && _initialize.Up())
         {
-            Result = await Store.Get();
-            if (Result?.Success ?? false)
+            _result = await Store.Get();
+
+            if (_result?.Success ?? false)
             {
-                var value = Result.Value.Value ?? AssignedValue ?? Value;
-                Binding.Value = value;
+                var value = _result.Value.Value ?? (AssignedValue is not null ? AssignedValue.Invoke() : Value);
+                Binding = new Binding<T>(value, RequestUpdate, Comparer);
                 await Loaded.InvokeAsync(Binding);
                 await ValueChanged.InvokeAsync(Value = Binding.Value).ConfigureAwait(false);
             }
-            else if (_assigned)
+            else if (AssignedValue is not null)
             {
-                await ValueChanged.InvokeAsync(Value = Binding.Value = AssignedValue).ConfigureAwait(false);
+                var value = AssignedValue();
+                Binding = new Binding<T>(value, RequestUpdate, Comparer);
+                await ValueChanged.InvokeAsync(Value = value).ConfigureAwait(false);
+            }
+            else
+            {
+                Binding = new Binding<T>(Value, RequestUpdate, Comparer);
             }
             _rendered.Up();
+            StateHasChanged();
         }
     }
 }

@@ -1,33 +1,37 @@
-﻿using DragonSpark.Presentation.Components.State;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
+using DragonSpark.Model.Results;
+using DragonSpark.Presentation.Components.State;
 using Microsoft.AspNetCore.Components;
 using Radzen.Blazor;
+using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components;
 
 public class DataList<T> : RadzenDataList<T>, IRefreshAware
 {
-	bool _update, _assigned;
+	Switch? _ready;
+	Switch  _update = new (true);
+
+	IOperation _reload = null!;
+
+	protected override void OnInitialized()
+	{
+		Visible = !LoadData.HasDelegate;
+		_reload = new IgnoreEntryOperation(new Operation(ReloadBody), TimeSpan.FromSeconds(1));
+		base.OnInitialized();
+	}
 
 	[Parameter]
-	public int? PageIndex
+	public int PageIndex
 	{
 		get => CurrentPage;
-		set
-		{
-			_assigned  = true;
-			if (_pageIndex != value)
-			{
-				_update    = true;
-				_pageIndex = value;
-			}
-			
-			
-		}
-	} int? _pageIndex;
+		set => _pageIndex = _update ? value : _pageIndex;
+	}	int _pageIndex;
 
 	[Parameter]
-	public EventCallback<int?> PageIndexChanged { get; set; }
+	public EventCallback<int> PageIndexChanged { get; set; }
 
 	[CascadingParameter]
 	IRefreshContainer? Container
@@ -46,40 +50,50 @@ public class DataList<T> : RadzenDataList<T>, IRefreshAware
 		}
 	}	IRefreshContainer? _container;
 
-	public override async Task Reload()
+	public override Task Reload() => _reload.Get().AsTask();
+
+	async ValueTask ReloadBody()
 	{
-		if (_assigned)
+		if ((_ready ?? false) && _pageIndex != CurrentPage)
 		{
-			if (_pageIndex is not null)
-			{
-				await PageIndexChanged.InvokeAsync((int)(_pageIndex = CurrentPage));	
-			}
-			else
-			{
-				return;
-			}
+			await PageIndexChanged.InvokeAsync(_pageIndex = CurrentPage);
 		}
+
 		await base.Reload().ConfigureAwait(false);
 	}
 
 	protected override async Task OnParametersSetAsync()
 	{
-		if (Visible && !_assigned && LoadData.HasDelegate && Data == null)
+		if (_ready is not null && Loaded)
 		{
-			Visible = false;
-			await base.Reload().ConfigureAwait(false);
+			var index = _pageIndex;
+			await OnPageChanged(new() { PageIndex = index, Skip = PageSize * index }).ConfigureAwait(false);
+			_update.Up();
 		}
-		else
-		{
-			if (_update && !(_update = false) && _pageIndex is not null)
-			{
-				await GoToPage(_pageIndex.Value, true).ConfigureAwait(false);
-			}
-			Visible |= Data != null;
-		}
+		Visible |= Data != null;
 	}
 
+	bool Loaded => LoadData.HasDelegate && Data == null && (_ready?.Up() ?? false);
 
+	[Parameter]
+	public object Tag
+	{
+		get => _tag;
+		set
+		{
+			if (_tag != value)
+			{
+				_tag   = value;
+				_ready = new();
+
+				if (_pageIndex != 0)
+				{
+					_update.Down();
+					_pageIndex = 0;
+				}
+			}
+		}
+	}	object _tag = default!;
 
 	public Task Get() => Reload();
 

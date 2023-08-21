@@ -9,23 +9,26 @@
 
 <RefreshQueriesMonitor T="T" Topic="@Topic" Updated="@OnUpdate" />
 
-<CascadingValue Value="@Subject" IsFixed="true">
+<CascadingValue Value="@Subject" IsFixed="@Fixed">
 	@ChildContent
 </CascadingValue>
 
 @code {
-	readonly ICollection<IRefreshAware> _children = new List<IRefreshAware>();
+    readonly ICollection<IRefreshAware> _children = new List<IRefreshAware>();
 
-	IRefreshContainer Subject { get; set; } = default!;
+    IRefreshContainer Subject { get; set; } = default!;
 
-	protected override void OnInitialized()
-	{
-		base.OnInitialized();
-		Subject = new RefreshContainer(_children);
-	}
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Subject = new RefreshContainer(_children);
+    }
 
-	[Parameter]
-	public IQueries<T> Topic { get; set; } = default!;
+    [Parameter]
+    public IQueries<T> Topic { get; set; } = default!;
+
+    [Parameter]
+    public bool Fixed { get; set; } = true;
 
 	[Parameter]
 	public RenderFragment ChildContent { get; set; } = default!;

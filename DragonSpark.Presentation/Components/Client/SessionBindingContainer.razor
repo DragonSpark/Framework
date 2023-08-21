@@ -4,6 +4,7 @@
 @using DragonSpark.Presentation.Components.Interaction
 @using DragonSpark.Model.Selection.Conditions
 @using DragonSpark.Compose
+@using DragonSpark.Presentation.Components.Content.Templates
 @inherits ComponentStateComponentBase
 
 <SessionStateComponent T="T" Owner="Owner" Qualifier="@Qualifier">
@@ -15,13 +16,16 @@
     public T Value { get; set; } = default!;
 
     [Parameter]
-    public T? AssignedValue { get; set; }
+    public Func<T>? AssignedValue { get; set; }
 
     [Parameter]
     public EventCallback<T> ValueChanged { get; set; }
 
     [Parameter]
     public RenderFragment<Binding<T>> ChildContent { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment LoadingTemplate { get; set; } = MinimalLoadingTemplate.Default;
 
     [Parameter]
     public ICondition<T> Allowed { get; set; } = Is.Always<T>().Out();

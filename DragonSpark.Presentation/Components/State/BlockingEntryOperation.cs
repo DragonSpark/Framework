@@ -9,14 +9,15 @@ namespace DragonSpark.Presentation.Components.State;
 sealed class BlockingEntryOperation : IOperation
 {
 	readonly IOperation _operation;
-	readonly ThreadAwareFirst      _active;
+	readonly FirstBase  _active;
 	readonly TimeSpan   _duration;
 
 	public BlockingEntryOperation(IOperation operation) : this(operation, TimeSpan.FromSeconds(1)) {}
 
-	public BlockingEntryOperation(IOperation operation, TimeSpan duration) : this(operation, new (), duration) {}
+	public BlockingEntryOperation(IOperation operation, TimeSpan duration)
+		: this(operation, new ThreadAwareFirst(), duration) {}
 
-	public BlockingEntryOperation(IOperation operation, ThreadAwareFirst active, TimeSpan duration)
+	public BlockingEntryOperation(IOperation operation, FirstBase active, TimeSpan duration)
 	{
 		_operation = operation;
 		_active    = active;
@@ -48,13 +49,13 @@ sealed class BlockingEntryOperation : IOperation
 
 sealed class BlockingEntryOperation<T> : IOperation<T>
 {
-	readonly IOperation<T>  _operation;
+	readonly IOperation<T>    _operation;
 	readonly ThreadAwareFirst _active;
-	readonly TimeSpan       _duration;
+	readonly TimeSpan         _duration;
 
 	public BlockingEntryOperation(IOperation<T> operation) : this(operation, TimeSpan.FromSeconds(1)) {}
 
-	public BlockingEntryOperation(IOperation<T> operation, TimeSpan duration) : this(operation, new (), duration) {}
+	public BlockingEntryOperation(IOperation<T> operation, TimeSpan duration) : this(operation, new(), duration) {}
 
 	public BlockingEntryOperation(IOperation<T> operation, ThreadAwareFirst active, TimeSpan duration)
 	{

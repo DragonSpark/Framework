@@ -12,6 +12,11 @@ public abstract class InstanceComponentBase<T> : ContentComponentBase<T>
 
 	protected override void RequestNewContent()
 	{
+		RefreshContent();
+	}
+
+	protected void RefreshContent()
+	{
 		Content.Execute();
 		Content.Get();
 	}

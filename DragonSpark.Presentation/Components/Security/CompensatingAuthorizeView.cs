@@ -11,7 +11,7 @@ public sealed class CompensatingAuthorizeView : AuthorizeView
 	protected override async Task OnParametersSetAsync()
 	{
 		Ready = false;
-		await base.OnParametersSetAsync();
+		await base.OnParametersSetAsync().ConfigureAwait(false);
 		Ready = true;
 	}
 
