@@ -5,6 +5,5 @@ namespace DragonSpark.Runtime.Invocation.Expressions;
 
 public static class Objects
 {
-	public static MemberInfo GetMemberInfo(this LambdaExpression expression)
-		=> ExpressionMemberName.Default.Get(expression);
+	public static MemberInfo GetMemberInfo(this LambdaExpression @this) => ExpressionMemberName.Default.Get(@this);
 }
