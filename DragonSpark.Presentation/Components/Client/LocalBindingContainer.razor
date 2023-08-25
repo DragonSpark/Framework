@@ -7,12 +7,15 @@
 @inherits ComponentStateComponentBase
 
 <LocalStateComponent T="T" Owner="Owner" ProvidedKey="@ProvidedKey" Qualifier="@Qualifier">
-    <ClientValueBindingComponent T="T" Value="@Value" Store="context" ChildContent="@ChildContent" Loaded="@Loaded" Allowed="@Allowed" ValueChanged="@OnChange" />
+    <ClientValueBindingComponent T="T" Value="@Value" AssignedValue="@AssignedValue" Store="context" ChildContent="@ChildContent" Loaded="@Loaded" Allowed="@Allowed" ValueChanged="@OnChange" Comparer="@Comparer" />
 </LocalStateComponent>
 
 @code {
     [Parameter]
     public T Value { get; set; } = default!;
+
+    [Parameter]
+    public Func<T>? AssignedValue { get; set; }
 
     [Parameter]
     public EventCallback<T> ValueChanged { get; set; }
@@ -25,6 +28,9 @@
 
     [Parameter]
     public ICondition<T> Allowed { get; set; } = Is.Always<T>().Out();
+
+    [Parameter]
+    public IEqualityComparer<T> Comparer { get; set; } = EqualityComparer<T>.Default;
 
     Task OnChange(T parameter) => ValueChanged.InvokeAsync(Value = parameter);
 }

@@ -8,7 +8,7 @@
 @inherits ComponentStateComponentBase
 
 <SessionStateComponent T="T" Owner="Owner" Qualifier="@Qualifier">
-    <ClientValueBindingComponent T="T" Value="@Value" AssignedValue="@AssignedValue" Store="context" ChildContent="@ChildContent" Allowed="@Allowed" ValueChanged="@OnChange" />
+    <ClientValueBindingComponent T="T" Value="@Value" AssignedValue="@AssignedValue" Store="context" ChildContent="@ChildContent" Allowed="@Allowed" ValueChanged="@OnChange" Comparer="@Comparer" />
 </SessionStateComponent>
 
 @code {
@@ -29,6 +29,9 @@
 
     [Parameter]
     public ICondition<T> Allowed { get; set; } = Is.Always<T>().Out();
+
+    [Parameter]
+    public IEqualityComparer<T> Comparer { get; set; } = EqualityComparer<T>.Default;
 
     Task OnChange(T parameter) => ValueChanged.InvokeAsync(Value = parameter);
 }

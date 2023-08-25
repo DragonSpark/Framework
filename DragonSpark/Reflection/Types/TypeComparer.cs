@@ -13,3 +13,16 @@ public class TypeComparer<T> : IEqualityComparer<T>
 
 	public int GetHashCode(T obj) => 0;
 }
+
+// TODO
+
+public sealed class NeverEqualityComparer<T> : IEqualityComparer<T>
+{
+	public static NeverEqualityComparer<T> Default { get; } = new();
+
+	NeverEqualityComparer() {}
+
+	public bool Equals(T? x, T? y) => false;
+
+	public int GetHashCode(T obj) => obj!.GetHashCode();
+}
