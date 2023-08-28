@@ -18,7 +18,6 @@ public class DataList<T> : RadzenDataList<T>, IRefreshAware
 
 	protected override void OnInitialized()
 	{
-		Visible = !LoadData.HasDelegate;
 		_reload = new IgnoreEntryOperation(new Operation(ReloadBody), TimeSpan.FromSeconds(1));
 		base.OnInitialized();
 	}
@@ -64,16 +63,13 @@ public class DataList<T> : RadzenDataList<T>, IRefreshAware
 
 	protected override async Task OnParametersSetAsync()
 	{
-		if (_ready is not null && Loaded)
+		if (LoadData.HasDelegate && Data is null && (_ready?.Up() ?? false))
 		{
 			var index = _pageIndex;
 			await OnPageChanged(new() { PageIndex = index, Skip = PageSize * index }).ConfigureAwait(false);
 			_update.Up();
 		}
-		Visible |= Data != null;
 	}
-
-	bool Loaded => LoadData.HasDelegate && Data == null && (_ready?.Up() ?? false);
 
 	[Parameter]
 	public object Tag

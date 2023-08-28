@@ -1,0 +1,62 @@
+﻿@inherits DragonSpark.Presentation.Components.Content.Templates.ActiveContentTemplateComponentBase<TValue>
+
+@using DragonSpark.Model.Selection
+@using DragonSpark.Model.Results
+@using DragonSpark.Compose
+
+@typeparam TValue
+
+<ResultingContentView T="TValue" Content="@_content" UpdateMonitor="@_content.Condition"
+                      ForceRender="@ForceRender"
+                      ChildContent="@ChildContent"
+                      LoadingTemplate="@LoadingTemplate"
+                      NotFoundTemplate="@NotFoundTemplate"
+                      ExceptionTemplate="@ExceptionTemplate"
+                      Rendered="@Rendered"
+                      Refreshed="@Refreshed"
+/>
+
+@code {
+    Switch _assign = new();
+
+    IActiveContent<TValue> _content = default!;
+
+    [Parameter]
+    public ISelect<object, IActiveContent<TValue>> Input
+    {
+        get => _input;
+        set
+        {
+            if (_input != value)
+            {
+                _input = value;
+                _assign.Up();
+            }
+        }
+    }	ISelect<object, IActiveContent<TValue>> _input = default!;
+
+    [Parameter]
+    public bool ForceRender { get; set; }
+
+    [Parameter]
+    public string CssClass { get; set; } = string.Empty;
+
+    [Parameter]
+    public EventCallback<TValue> Rendered { get; set; }
+
+    [Parameter]
+    public EventCallback<TValue> Refreshed { get; set; }
+
+    [CascadingParameter]
+    IActivityReceiver Receiver { get; set; } = default!;
+
+    protected override void OnParametersSet()
+    {
+        if (_assign.Down())
+        {
+            _content = _input.Get(Receiver);
+        }
+        base.OnParametersSet();
+    }
+
+}
