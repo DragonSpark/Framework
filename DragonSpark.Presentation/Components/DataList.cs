@@ -63,7 +63,7 @@ public class DataList<T> : RadzenDataList<T>, IRefreshAware
 
 	protected override async Task OnParametersSetAsync()
 	{
-		if (LoadData.HasDelegate && Data is null && (_ready?.Up() ?? false))
+		if (LoadData.HasDelegate && (_ready?.Up() ?? false))
 		{
 			var index = _pageIndex;
 			await OnPageChanged(new() { PageIndex = index, Skip = PageSize * index }).ConfigureAwait(false);
