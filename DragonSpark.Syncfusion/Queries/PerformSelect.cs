@@ -26,7 +26,7 @@ sealed class PerformSelect<T> : ISelect<PerformSelectInput<T>, IQueryable<T>>
 			}
 		}
 
-		using var lease = columns.AsValueEnumerable().Where(x => x != null!).ToArray(ArrayPool<string>.Shared);
+		using var lease = columns.AsValueEnumerable().Where(x => x != null!).ToArray(ArrayPool<string>.Shared, true);
 		var       names = string.Join(",", lease);
 		return source.Select<T>(names).Cast<T>().Distinct();
 	}

@@ -23,7 +23,7 @@ sealed class ClearExistingClaims<T> : IOperation<PersistInput<T>> where T : Iden
 		using var users   = _users.Get();
 		var       subject = await users.Subject.FindByIdAsync(user.Id.ToString());
 		var       verify  = subject.Verify();
-		using var types   = claims.AsValueEnumerable().Select(x => x.Type).ToArray(ArrayPool<string>.Shared);
+		using var types   = claims.AsValueEnumerable().Select(x => x.Type).ToArray(ArrayPool<string>.Shared, true);
 		var       remove  = new List<Claim>();
 		var list = await users.Subject.GetClaimsAsync(verify).ConfigureAwait(false);
 		foreach (var claim in list.AsValueEnumerable())

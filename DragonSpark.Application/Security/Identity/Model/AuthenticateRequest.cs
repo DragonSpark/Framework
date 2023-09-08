@@ -1,12 +1,13 @@
 ﻿using DragonSpark.Application.Security.Identity.Authentication;
 using DragonSpark.Compose;
-using JetBrains.Annotations;
+using DragonSpark.Model.Selection.Stores;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Model;
 
-[UsedImplicitly]
 sealed class AuthenticateRequest : IAuthenticateRequest
 {
 	readonly IAuthentication _authentication;
@@ -25,4 +26,15 @@ sealed class AuthenticateRequest : IAuthenticateRequest
 				             : default(IActionResult?);
 		return result;
 	}
+}
+
+// TODO
+
+public sealed class ReturnUrlStore : TableVariable<string, string>
+{
+	public ReturnUrlStore(ExternalLoginInfo store) : this(store.AuthenticationProperties.Verify().Items) {}
+
+	public ReturnUrlStore(IDictionary<string, string?> items) : this(items.ToTable()) {}
+
+	public ReturnUrlStore(ITable<string, string?> store) : base(nameof(ReturnUrlStore), store) {}
 }

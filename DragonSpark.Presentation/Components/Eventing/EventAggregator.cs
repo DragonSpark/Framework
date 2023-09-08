@@ -42,7 +42,9 @@ public class EventAggregator : IEventAggregator, IDisposable
 
 		lock (_handlers)
 		{
-			using var lease = _handlers.AsValueEnumerable().Where(x => x.Matches(subscriber)).ToArray(ArrayPool<Handler>.Shared);
+			using var lease = _handlers.AsValueEnumerable()
+			                           .Where(x => x.Matches(subscriber))
+			                           .ToArray(ArrayPool<Handler>.Shared, true);
 			foreach (var handler in lease)
 			{
 				_handlers.Remove(handler);
@@ -71,7 +73,6 @@ public class EventAggregator : IEventAggregator, IDisposable
 		var result = Task.WhenAll(tasks);
 		return result;
 	}
-
 
 	sealed class Handler
 	{

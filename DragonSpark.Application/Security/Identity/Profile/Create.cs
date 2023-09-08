@@ -11,8 +11,9 @@ sealed class Create<T> : ICreate<T> where T : class
 
 	public async ValueTask<IdentityResult> Get(Login<T> parameter)
 	{
+		var (_, user) = parameter;
 		using var users  = _users.Get();
-		var       result = await users.Subject.CreateAsync(parameter.User).ConfigureAwait(false);
+		var       result = await users.Subject.CreateAsync(user).ConfigureAwait(false);
 		return result;
 	}
 }

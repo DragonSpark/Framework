@@ -38,7 +38,7 @@ sealed class Compositions : IResulting<Composition?>
 			                          .Open()
 			                          .Union(_state.Get(identity).Open())
 			                          .AsValueEnumerable()
-			                          .ToArray(ArrayPool<Claim>.Shared))
+			                          .ToArray(ArrayPool<Claim>.Shared, true))
 			             : default(Composition?);
 		return result;
 	}

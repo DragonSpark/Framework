@@ -24,7 +24,7 @@ public sealed class Registrations<T> : ICommand<IServiceCollection> where T : Id
 		         .Singleton()
 		         .Then.Start<IExternalSignin>()
 		         .Forward<ExternalSignin<T>>()
-		         .Include(x => x.Dependencies)
+		         .Include(x => x.Dependencies.Recursive())
 		         .Scoped()
 		         //
 		         .Then.Start<ISignOut>()

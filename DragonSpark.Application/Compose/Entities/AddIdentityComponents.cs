@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Application.Security.Identity.Authentication;
-using DragonSpark.Application.Security.Identity.Model;
 using DragonSpark.Application.Security.Identity.Profile;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
@@ -24,11 +23,11 @@ sealed class AddIdentityComponents<T> : ICommand<IServiceCollection> where T : I
 		         .Decorate<MemoryAwareStateViews<T>>()
 		         .Decorate<AnonymousAwareState<T>>()
 		         .Scoped()
-//
+				 //
 		         .Then.Start<IAdapters>()
-		         .Forward<Adapters<T>>()
+		         .Forward<Adapters<T>>().Include(x => x.Dependencies)
 		         .Scoped()
-//
+				 //
 		         .Then.Start<IAuthenticationValidation>()
 		         .Forward<AuthenticationValidation<T>>()
 		         .Scoped()
@@ -38,11 +37,9 @@ sealed class AddIdentityComponents<T> : ICommand<IServiceCollection> where T : I
 		         .Then.Start<AuthenticationStateProvider>()
 		         .Forward<Revalidation>()
 		         .Scoped()
-//
+				 //
 		         .Then.Start<IUserClaimsPrincipalFactory<T>>()
 		         .Forward<UserClaimsPrincipals<T>>()
-		         .Scoped()
-//
-		         .Then.Decorate<INavigateToSignOut, AuthenticationStateAwareNavigateToSignOut>();
+		         .Scoped();
 	}
 }

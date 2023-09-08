@@ -118,8 +118,8 @@
             case "MoveTo":
             case "MoveUp":
                 {
-                    using var source = _subject.GetDataList().AsValueEnumerable().ToArray(ArrayPool<TItem>.Shared);
-                    using var items = parameter.Result.AsValueEnumerable().ToArray(ArrayPool<TItem>.Shared);
+                    using var source = _subject.GetDataList().AsValueEnumerable().ToArray(ArrayPool<TItem>.Shared, true);
+                    using var items = parameter.Result.AsValueEnumerable().ToArray(ArrayPool<TItem>.Shared, true);
                     var       span = items.Memory.Span;
                     for (ushort i = 0; i < items.Length; i++)
                     {

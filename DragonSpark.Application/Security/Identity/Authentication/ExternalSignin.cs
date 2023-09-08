@@ -7,27 +7,26 @@ namespace DragonSpark.Application.Security.Identity.Authentication;
 
 sealed class ExternalSignin<T> : IExternalSignin where T : IdentityUser
 {
-	readonly ILocateUser<T>             _locate;
-	readonly IAuthenticate<T>           _authenticate;
-	readonly ClearCurrentAuthentication _clear;
+	readonly ILocateUser<T>          _locate;
+	readonly AuthenticateUser<T>     _authenticate;
+	readonly AuthenticateExternal _external;
 
-	public ExternalSignin(ILocateUser<T> locate, IAuthenticate<T> authenticate, ClearCurrentAuthentication clear)
+	public ExternalSignin(ILocateUser<T> locate, AuthenticateUser<T> authenticate, AuthenticateExternal external)
 	{
 		_locate       = locate;
 		_authenticate = authenticate;
-		_clear        = clear;
+		_external     = external;
 	}
 
 	public async ValueTask<SignInResult> Get(ExternalLoginInfo parameter)
 	{
 		var user = await _locate.Await(parameter);
-		if (user != null)
+		if (user is not null)
 		{
 			await _authenticate.Await(new(parameter, user));
-			_clear.Execute(parameter.Principal);
 			return SignInResult.Success;
 		}
-
+		await _external.Await(parameter);
 		return SignInResult.Failed;
 	}
 }

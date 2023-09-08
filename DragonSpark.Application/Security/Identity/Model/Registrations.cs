@@ -17,8 +17,7 @@ public sealed class Registrations<T> : ICommand<IServiceCollection> where T : Id
 		         .Forward<AuthenticateRequest>()
 		         .Scoped()
 		         //
-		         .Then.Start<ExternalLoginModelActions<T>>()
-		         .And<ChallengedModelBinder>()
+		         .Then.Start<ChallengedModelBinder>()
 		         .Include(x => x.Dependencies)
 		         .Scoped()
 		         //

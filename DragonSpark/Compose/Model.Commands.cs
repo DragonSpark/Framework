@@ -5,6 +5,7 @@ using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Model.Sequences.Collections;
 using System;
+using System.Threading.Tasks;
 
 // ReSharper disable TooManyArguments
 
@@ -36,6 +37,14 @@ public static partial class ExtensionMethods
 	public static void Execute(this ICommand<None> @this)
 	{
 		@this.Execute(None.Default);
+	}
+
+	public static ValueTask Executing(this ICommand<None> @this) => @this.Executing(None.Default);
+
+	public static ValueTask Executing<T>(this ICommand<T> @this, T parameter)
+	{
+		@this.Execute(parameter);
+		return ValueTask.CompletedTask;
 	}
 
 	public static ICommand<T> Pass<T>(this ICommand<T> @this, T parameter)

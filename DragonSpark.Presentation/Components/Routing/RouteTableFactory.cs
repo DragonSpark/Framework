@@ -60,7 +60,7 @@ static class RouteTableFactory
 			using var all = parsedTemplates.SelectMany(GetParameterNames)
 			                               .AsValueEnumerable()
 			                               .Distinct(comparer)
-			                               .ToArray(ArrayPool<string>.Shared);
+			                               .ToArray(ArrayPool<string>.Shared, true);
 
 			foreach (var parsedTemplate in parsedTemplates)
 			{

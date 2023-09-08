@@ -14,6 +14,6 @@ sealed class MemoryAwareStateViews<T> : Selecting<ClaimsPrincipal, StateView<T>>
 		: base(previous.Then()
 		               .Store()
 		               .In(memory)
-		               .For(TimeSpan.FromMinutes(10).Slide())
+		               .For(TimeSpan.FromMinutes(10))
 		               .Using(StateViewKey.Default)) {}
 }

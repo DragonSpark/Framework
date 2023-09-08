@@ -73,9 +73,14 @@ partial class Extensions
 
 	public static string? Identifier(this ClaimsPrincipal @this) => UserIdentifier.Default.Get(@this);
 
+	public static ProviderIdentity ProviderIdentity(this ClaimsPrincipal @this)
+		=> PrincipalProviderIdentity.Default.Get(@this);
+
 	public static string DisplayName(this ClaimsPrincipal @this) => UserDisplayName.Default.Get(@this);
 
 	public static string UserName(this ClaimsPrincipal @this) => Security.Identity.UserName.Default.Get(@this);
+
+	public static bool IsAuthenticated(this ClaimsPrincipal @this) => @this.Identity?.IsAuthenticated ?? false;
 
 	public static string? Get(this IValueProvider @this, string key)
 	{

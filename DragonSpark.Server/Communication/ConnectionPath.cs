@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
-using Flurl;
 using Microsoft.Extensions.Configuration;
 using System;
 
@@ -14,5 +13,5 @@ public class ConnectionPath : Instance<Uri>, ISelect<string, Uri>
 
 	protected ConnectionPath(Uri root) : base(root) {}
 
-	public Uri Get(string parameter) => Get().AppendPathSegment(parameter).ToUri();
+	public Uri Get(string parameter) => new (Get(), parameter);
 }

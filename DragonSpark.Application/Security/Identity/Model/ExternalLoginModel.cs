@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+﻿using DragonSpark.Application.Security.Identity.Authentication;
+using DragonSpark.Compose;
+using DragonSpark.Model.Selection;
+using DragonSpark.Text;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Model;
@@ -9,29 +13,63 @@ namespace DragonSpark.Application.Security.Identity.Model;
 [AllowAnonymous, RedirectErrors]
 public class ExternalLoginModel<T> : PageModel where T : class
 {
-	readonly ExternalLoginModelActions<T> _actions;
+	readonly IAuthentications<T>  _authentications;
+	readonly IAuthenticateRequest _request;
+	readonly IFormatter<string>   _path;
 
-	public ExternalLoginModel(ExternalLoginModelActions<T> actions) => _actions = actions;
+	public ExternalLoginModel(IAuthentications<T> authentications, IAuthenticateRequest request,
+	                          IFormatter<string> path)
+	{
+		_authentications = authentications;
+		_request         = request;
+		_path            = path;
+	}
 
 	public string? LoginProvider { get; private set; }
 
-	public IActionResult OnGet([ModelBinder(typeof(ExternalLoginChallengingModelBinder))] Challenging context)
-		=> ModelState.IsValid ? _actions.Get(context) : BadRequest();
+	public IActionResult OnGet([ModelBinder(typeof(ExternalLoginChallengingModelBinder))] Challenging parameter)
+	{
+		if (ModelState.IsValid)
+		{
+			var (provider, origin) = parameter;
+			using var authentication = _authentications.Get();
+			var       properties = authentication.Subject.ConfigureExternalAuthenticationProperties(provider, origin);
+			return new ChallengeResult(provider, properties);
+		}
+
+		return BadRequest();
+	}
 
 	public IActionResult OnPost([ModelBinder(typeof(ExternalLoginChallengingModelBinder))] Challenging context)
 		=> OnGet(context);
 
 	public async Task<IActionResult> OnGetCallback([ModelBinder(typeof(ChallengedModelBinder))] Challenged context)
-		=> ModelState.IsValid
-			   ? await _actions.Get(context) ?? (await _actions.Get((context.Login, ModelState))
-				                                     ? LocalRedirect(context.Origin)
-				                                     : Bind(context.Login))
-			   : BadRequest();
+		=> ModelState.IsValid ? await _request.Await(context) ?? Bind(context) : BadRequest();
 
-	IActionResult Bind(UserLoginInfo login)
+	IActionResult Bind(Challenged parameter)
 	{
-		LoginProvider = login.LoginProvider;
+		var (login, origin) = parameter;
+		LoginProvider       = login.LoginProvider;
+		var result = ModelState.ErrorCount > 0 ? (IActionResult)Page() : new LocalRedirectResult(_path.Get(origin));
+		return result;
+	}
+}
 
-		return Page();
+// TODO
+
+public sealed record CreateModelView(ProviderIdentity Identity, string Name, string Address);
+
+public readonly record struct CreateModelInput(ClaimsPrincipal Principal, string Address);
+
+public sealed class CreateModel : ISelect<CreateModelInput, CreateModelView>
+{
+	public static CreateModel Default { get; } = new();
+	
+	CreateModel() {}
+
+	public CreateModelView Get(CreateModelInput parameter)
+	{
+		var (principal, address) = parameter;
+		return new (principal.ProviderIdentity(), principal.UserName(), address);
 	}
 }
