@@ -24,6 +24,8 @@ sealed class AddIdentityComponents<T> : ICommand<IServiceCollection> where T : I
 		         .Decorate<AnonymousAwareState<T>>()
 		         .Scoped()
 				 //
+				 .Then.Start<CurrentProfileStatus>().Scoped()
+				 //
 		         .Then.Start<IAdapters>()
 		         .Forward<Adapters<T>>().Include(x => x.Dependencies)
 		         .Scoped()

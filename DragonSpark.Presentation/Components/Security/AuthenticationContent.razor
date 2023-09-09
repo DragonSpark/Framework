@@ -4,14 +4,13 @@
 @typeparam T where T : DragonSpark.Application.Security.Identity.IdentityUser
 <DragonSpark.Presentation.Components.Security.CascadingAuthenticationState>
 	<DragonSpark.Presentation.Components.Security.AuthenticationStateDisplay T="T">
-		<CascadingValue TValue="AuthenticationState<T>" Value="@context">
+		<CascadingValue TValue="AuthenticationState<T>" Value="@context" IsFixed="true">
 			@ChildContent(context)
 		</CascadingValue>
 	</DragonSpark.Presentation.Components.Security.AuthenticationStateDisplay>
 </DragonSpark.Presentation.Components.Security.CascadingAuthenticationState>
 
 @code {
-	[Parameter]
+    [Parameter]
 	public RenderFragment<AuthenticationState<T>> ChildContent { get; set; } = default!;
-
 }

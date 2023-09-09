@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Application.Security.Identity.Model;
 using DragonSpark.Compose;
+using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -32,11 +33,11 @@ sealed class Adapters<T> : IAdapters where T : IdentityUser
 sealed class ExitAwareState<T> : ISelect<AuthenticationState<T>, AuthenticationState> where T : IdentityUser
 {
 	readonly ISelect<CurrentProfileStateInput, ProfileStatus> _state;
-	readonly INavigateToSignOut                              _exit;
-	readonly AuthenticationState                             _default;
+	readonly INavigateToSignOut                               _exit;
+	readonly AuthenticationState                              _default;
 
 	public ExitAwareState(INavigateToSignOut exit)
-		: this(CurrentProfileStatus.Default, exit, AuthenticationState<T>.Default) {}
+		: this(GetProfileStatus.Default, exit, AuthenticationState<T>.Default) {}
 
 	public ExitAwareState(ISelect<CurrentProfileStateInput, ProfileStatus> state, INavigateToSignOut exit,
 	                      AuthenticationState @default)
@@ -62,21 +63,23 @@ sealed class ExitAwareState<T> : ISelect<AuthenticationState<T>, AuthenticationS
 public static class Extensions
 {
 	public static ProfileStatus Get<T>(this ISelect<CurrentProfileStateInput, ProfileStatus> @this,
-	                                  AuthenticationState<T> parameter) where T : IdentityUser
+	                                   AuthenticationState<T> parameter) where T : IdentityUser
 		=> @this.Get(new(parameter.User, parameter.Profile));
 }
 
 public readonly record struct CurrentProfileStateInput(ClaimsPrincipal Principal, IdentityUser? User);
 
-public sealed class CurrentProfileStatus : ISelect<CurrentProfileStateInput, ProfileStatus>
-{
-	public static CurrentProfileStatus Default { get; } = new();
+public sealed class CurrentProfileStatus : Variable<ProfileStatus> {}
 
-	CurrentProfileStatus() : this(IdentityConstants.ApplicationScheme) {}
+public sealed class GetProfileStatus : ISelect<CurrentProfileStateInput, ProfileStatus>
+{
+	public static GetProfileStatus Default { get; } = new();
+
+	GetProfileStatus() : this(IdentityConstants.ApplicationScheme) {}
 
 	readonly string _scheme;
 
-	public CurrentProfileStatus(string scheme) => _scheme = scheme;
+	public GetProfileStatus(string scheme) => _scheme = scheme;
 
 	public ProfileStatus Get(CurrentProfileStateInput parameter)
 	{
@@ -98,5 +101,4 @@ public enum ProfileStatus
 	Authenticated,
 	Confirming,
 	Confirmed,
-
 }

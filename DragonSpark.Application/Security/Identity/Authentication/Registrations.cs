@@ -34,6 +34,11 @@ public sealed class Registrations<T> : ICommand<IServiceCollection> where T : Id
 		         .Then.Start<IRefreshAuthentication<T>>()
 		         .Forward<RefreshAuthentication<T>>()
 		         .Include(x => x.Dependencies)
-		         .Scoped();
+		         .Scoped()
+		         //
+		         .Then.Start<IRefreshUser>()
+		         .Forward<RefreshUser<T>>()
+		         .Scoped()
+			;
 	}
 }
