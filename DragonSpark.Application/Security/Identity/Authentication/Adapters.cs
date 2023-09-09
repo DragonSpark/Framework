@@ -36,7 +36,7 @@ sealed class ExitAwareState<T> : ISelect<AuthenticationState<T>, AuthenticationS
 	readonly AuthenticationState                             _default;
 
 	public ExitAwareState(INavigateToSignOut exit)
-		: this(CurrentProfileState.Default, exit, AuthenticationState<T>.Default) {}
+		: this(CurrentProfileStatus.Default, exit, AuthenticationState<T>.Default) {}
 
 	public ExitAwareState(ISelect<CurrentProfileStateInput, ProfileStatus> state, INavigateToSignOut exit,
 	                      AuthenticationState @default)
@@ -68,15 +68,15 @@ public static class Extensions
 
 public readonly record struct CurrentProfileStateInput(ClaimsPrincipal Principal, IdentityUser? User);
 
-public sealed class CurrentProfileState : ISelect<CurrentProfileStateInput, ProfileStatus>
+public sealed class CurrentProfileStatus : ISelect<CurrentProfileStateInput, ProfileStatus>
 {
-	public static CurrentProfileState Default { get; } = new();
+	public static CurrentProfileStatus Default { get; } = new();
 
-	CurrentProfileState() : this(IdentityConstants.ApplicationScheme) {}
+	CurrentProfileStatus() : this(IdentityConstants.ApplicationScheme) {}
 
 	readonly string _scheme;
 
-	public CurrentProfileState(string scheme) => _scheme = scheme;
+	public CurrentProfileStatus(string scheme) => _scheme = scheme;
 
 	public ProfileStatus Get(CurrentProfileStateInput parameter)
 	{
