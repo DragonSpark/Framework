@@ -18,10 +18,7 @@ public sealed class SignOut<T> : ISignOut where T : class
 	public async ValueTask Get(ClaimsPrincipal parameter)
 	{
 		using var authentication = _authentications.Get();
-		if (authentication.Subject.IsSignedIn(parameter))
-		{
-			_state.Execute(parameter);
-			await authentication.Subject.SignOutAsync().ConfigureAwait(false);
-		}
+		_state.Execute(parameter);
+		await authentication.Subject.SignOutAsync().ConfigureAwait(false);
 	}
 }
