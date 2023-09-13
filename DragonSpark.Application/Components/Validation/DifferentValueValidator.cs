@@ -3,8 +3,6 @@ using System;
 
 namespace DragonSpark.Application.Components.Validation;
 
-class Class1 {}
-
 public sealed class DifferentValueValidator : IValidateValue<string>
 {
 	readonly string           _other;
