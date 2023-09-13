@@ -1,11 +1,9 @@
 ﻿using DragonSpark.Application.Security.Identity.Authentication;
 using DragonSpark.Compose;
-using DragonSpark.Model.Selection;
 using DragonSpark.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Model;
@@ -52,24 +50,5 @@ public class ExternalLoginModel<T> : PageModel where T : class
 		LoginProvider       = login.LoginProvider;
 		var result = ModelState.ErrorCount > 0 ? (IActionResult)Page() : new LocalRedirectResult(_path.Get(origin));
 		return result;
-	}
-}
-
-// TODO
-
-public sealed record CreateModelView(ProviderIdentity Identity, string Name, string Address);
-
-public readonly record struct CreateModelInput(ClaimsPrincipal Principal, string Address);
-
-public sealed class CreateModel : ISelect<CreateModelInput, CreateModelView>
-{
-	public static CreateModel Default { get; } = new();
-	
-	CreateModel() {}
-
-	public CreateModelView Get(CreateModelInput parameter)
-	{
-		var (principal, address) = parameter;
-		return new (principal.ProviderIdentity(), principal.UserName(), address);
 	}
 }
