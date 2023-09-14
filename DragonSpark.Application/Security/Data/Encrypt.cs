@@ -1,8 +1,9 @@
 ﻿using DragonSpark.Model.Selection.Alterations;
+using Microsoft.AspNetCore.DataProtection;
 
 namespace DragonSpark.Application.Security.Data;
 
 sealed class Encrypt : Alteration<byte[]>, IEncrypt
 {
-	public Encrypt(CertificateBasedDataProtector protector) : base(protector.Protect) {}
+	public Encrypt(IDataProtector protector) : base(protector.Protect) {}
 }

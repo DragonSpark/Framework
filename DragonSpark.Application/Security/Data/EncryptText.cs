@@ -5,5 +5,5 @@ namespace DragonSpark.Application.Security.Data;
 
 sealed class EncryptText : Alteration<string>, IEncryptText
 {
-	public EncryptText(CertificateBasedDataProtector protector) : base(protector.Protect) {}
+	public EncryptText(IDataProtector protector) : base(protector.Protect) {}
 }
