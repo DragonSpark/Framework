@@ -13,8 +13,8 @@ public class UserSessions<T> : IResult<UsersSession<T>> where T : class
 
 	public UsersSession<T> Get()
 	{
-		var scope   = _scopes.Get();
-		var subject = scope.ServiceProvider.GetRequiredService<UserManager<T>>();
-		return new(subject, scope);
+		var scope = _scopes.Get();
+		return new(scope.ServiceProvider.GetRequiredService<UserManager<T>>(),
+		           scope.ServiceProvider.GetRequiredService<IUserStore<T>>(), scope);
 	}
 }
