@@ -22,24 +22,27 @@ sealed class AddIdentityComponents<T> : ICommand<IServiceCollection> where T : I
 		         .Decorate<PolicyAwareStateViews<T>>()
 		         .Decorate<MemoryAwareStateViews<T>>()
 		         .Decorate<AnonymousAwareState<T>>()
+		         .Singleton()
+		         //
+		         .Then.Start<CurrentProfileStatus>()
+		         .And<RefreshAuthenticationDisplayState>()
 		         .Scoped()
-				 //
-				 .Then.Start<CurrentProfileStatus>().Scoped()
-				 //
+		         //
 		         .Then.Start<IAdapters>()
-		         .Forward<Adapters<T>>().Include(x => x.Dependencies)
+		         .Forward<Adapters<T>>()
+		         .Include(x => x.Dependencies)
 		         .Scoped()
-				 //
+		         //
 		         .Then.Start<IAuthenticationValidation>()
 		         .Forward<AuthenticationValidation<T>>()
-		         .Scoped()
+		         .Singleton()
 		         .Then.Start<IValidationServices>()
 		         .Forward<ValidationServices>()
 		         .Scoped()
 		         .Then.Start<AuthenticationStateProvider>()
 		         .Forward<Revalidation>()
 		         .Scoped()
-				 //
+		         //
 		         .Then.Start<IUserClaimsPrincipalFactory<T>>()
 		         .Forward<UserClaimsPrincipals<T>>()
 		         .Scoped();

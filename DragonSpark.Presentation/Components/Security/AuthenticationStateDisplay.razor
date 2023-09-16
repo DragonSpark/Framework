@@ -8,31 +8,43 @@
 
 @inject CurrentProfileStatus Store
 
-@if (State != null)
+@if (_state is not null)
 {
     <CascadingValue TValue="ProfileStatus" Value="@_status" IsFixed="true">
-        @ChildContent(State)
+        @ChildContent(_state)
     </CascadingValue>
 }
 
 @code
 {
+    AuthenticationState<T>? _state;
     ProfileStatus _status;
 
     [Parameter]
     public RenderFragment<AuthenticationState<T>> ChildContent { get; set; } = default!;
 
     [CascadingParameter]
-    Task<AuthenticationState> Operation { get; set; } = default!;
-
-    AuthenticationState<T>? State { get; set; } = default!;
-
-    protected override async Task OnInitializedAsync()
+    Task<AuthenticationState> Operation 
     {
-        // ReSharper disable once AsyncApostle.AsyncWait
-        var state = Operation.IsCompletedSuccessfully ? Operation.Result : await Operation;
-        State = state.To<AuthenticationState<T>>();
-        _status = GetProfileStatus.Default.Get(State);
-        Store.Execute(_status);
+        get => _operation;
+        set
+        {
+            if (_operation != value)
+            {
+                _operation = value;
+                _state = null;
+            }
+        }
+    }	Task<AuthenticationState> _operation = default!;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (_operation.Account() is not null && _state is null)
+        {
+            var state = Operation.IsCompletedSuccessfully ? Operation.Result : await Operation;
+            _state = state.To<AuthenticationState<T>>();
+            _status = GetProfileStatus.Default.Get(_state);
+            Store.Execute(_status);
+        }
     }
 }

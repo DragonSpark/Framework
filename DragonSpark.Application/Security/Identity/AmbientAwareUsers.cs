@@ -22,10 +22,7 @@ sealed class AmbientAwareUsers<T> : IUsers<T> where T : class
 	public UsersSession<T> Get()
 	{
 		var current = _provider.Get();
-		var result = current != null
-			             ? new(current.GetRequiredService<UserManager<T>>(),
-			                   current.GetRequiredService<IUserStore<T>>())
-			             : _previous.Get();
+		var result  = current is not null ? new(current.GetRequiredService<UserManager<T>>()) : _previous.Get();
 		return result;
 	}
 }
