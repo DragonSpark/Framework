@@ -19,7 +19,8 @@ public sealed class GetProfileStatus : ISelect<CurrentProfileStateInput, Profile
 		return principal.IsAuthenticated()
 			       ? principal.Identity?.AuthenticationType == _scheme
 				         ? user is not null
-					           ? user.EmailConfirmed ? ProfileStatus.Confirmed : ProfileStatus.Confirming
+					           ? user.Email is null  ? ProfileStatus.InputRequired :
+					             user.EmailConfirmed ? ProfileStatus.Confirmed : ProfileStatus.Confirming
 					           : ProfileStatus.Invalid
 				         : ProfileStatus.Authenticated
 			       : ProfileStatus.Anonymous;

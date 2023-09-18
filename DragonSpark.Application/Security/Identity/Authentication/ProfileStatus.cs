@@ -7,4 +7,5 @@ public enum ProfileStatus
 	Authenticated,
 	Confirming,
 	Confirmed,
+	InputRequired
 }
