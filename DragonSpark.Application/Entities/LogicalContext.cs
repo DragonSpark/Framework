@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Application.Entities;
 
-sealed class LogicalContext : Logical<DbContext>
+public sealed class LogicalContext : Logical<DbContext>
 {
 	public static LogicalContext Default { get; } = new();
 

@@ -2,7 +2,6 @@
 using DragonSpark.Model.Results;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 
@@ -29,13 +28,9 @@ public abstract class DataMigration<T> : Migration
 	protected override void Up(MigrationBuilder migrationBuilder)
 	{
 		var services = _services.Get();
-		if (services != null)
+		if (services is not null)
 		{
-			var       factory     = services.GetRequiredService<IDbContextFactory<T>>();
-			var       initializer = services.GetRequiredService(_initializer).To<IInitializer>();
-			using var context     = factory.CreateDbContext();
-
-			Task.Run(initializer.Then().Bind(context).Then().Allocate()).GetAwaiter().GetResult();
+			Task.Run(new Transaction<T>(services, _initializer).Then().Allocate()).GetAwaiter().GetResult();
 		}
 	}
 

@@ -15,7 +15,7 @@ public sealed class ServiceScopedDatabaseTransactions : ITransactions
 		var previous = _boundaries.Get();
 		var context  = previous.Provider.GetRequiredService<DbContext>();
 		await context.Database.BeginTransactionAsync().ConfigureAwait(false);
-		var result = new AppendedTransaction(previous, new DatabaseTransaction(context));
+		var result = new ServiceScopedDatabaseTransaction(previous, new DatabaseTransaction(context));
 		return result;
 	}
 }

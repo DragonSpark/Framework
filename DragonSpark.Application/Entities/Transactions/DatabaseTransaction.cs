@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Transactions;
 
-sealed class DatabaseTransaction : ITransaction
+public sealed class DatabaseTransaction : ITransaction
 {
 	readonly DbContext      _context;
 	readonly DatabaseFacade _facade;
