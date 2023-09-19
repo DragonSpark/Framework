@@ -12,5 +12,5 @@ public class RequiredClaim : IRequiredClaim
 	public string Get(ClaimsPrincipal parameter)
 		=> parameter.FindFirstValue(_claim) ??
 		   throw new
-			   InvalidOperationException($"Content not found for claim '{_claim}' in user '{parameter.Number()}'.");
+			   InvalidOperationException($"Content not found for claim '{_claim}' in user #'{parameter.Number()}' {parameter.Identity?.AuthenticationType}-{parameter.Identity?.Name}.");
 }

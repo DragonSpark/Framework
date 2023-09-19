@@ -36,6 +36,12 @@ public class Validating : ComponentBase, IDisposable
 	public EventCallback<ValidationContext> Validate { get; set; }
 
 	[Parameter]
+	public EventCallback Valid { get; set; }
+
+	[Parameter]
+	public EventCallback Invalid { get; set; }
+
+	[Parameter]
 	public bool Enabled
 	{
 		get => _enabled;
@@ -116,6 +122,9 @@ public class Validating : ComponentBase, IDisposable
 			{
 				await Validate.InvokeAsync(new(new(Context.Verify(), Identifier), _messages, Message));
 				_context.Verify().NotifyValidationStateChanged();
+
+				var callback = IsEmpty() ? Valid : Invalid;
+				await callback.InvokeAsync().ConfigureAwait(false);
 			}
 		}
 		finally
