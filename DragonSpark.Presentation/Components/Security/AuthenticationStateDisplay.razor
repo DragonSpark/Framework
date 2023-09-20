@@ -24,7 +24,7 @@
     public RenderFragment<AuthenticationState<T>> ChildContent { get; set; } = default!;
 
     [CascadingParameter]
-    Task<AuthenticationState> Operation 
+    Task<AuthenticationState> Operation
     {
         get => _operation;
         set
@@ -41,6 +41,7 @@
     {
         if (_operation.Account() is not null && _state is null)
         {
+            // ReSharper disable once AsyncApostle.AsyncWait
             var state = Operation.IsCompletedSuccessfully ? Operation.Result : await Operation;
             _state = state.To<AuthenticationState<T>>();
             _status = GetProfileStatus.Default.Get(_state);

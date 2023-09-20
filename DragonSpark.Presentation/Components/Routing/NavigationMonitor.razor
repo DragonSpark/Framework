@@ -1,26 +1,29 @@
-﻿
-@inherits DragonSpark.Presentation.Components.ComponentBase
-@using Humanizer
-
-@inject RouterSession Session
+﻿@inherits DragonSpark.Presentation.Components.ComponentBase
+@implements IDisposable
+@inject NavigationManager Manager
 
 @code {
 	[Parameter]
 	public EventCallback Changed { get; set; }
 
-	readonly EventHandler _changed;
+	readonly EventHandler<LocationChangedEventArgs> _changed;
 
-	public NavigationMonitor() => _changed = SessionOnNavigation;
+	public NavigationMonitor() => _changed = OnChanged;
 
 	protected override Task OnInitializedAsync()
 	{
-		Session.Navigation += _changed;
+	    Manager.LocationChanged += _changed;
 		return base.OnInitializedAsync();
 	}
 
-	void SessionOnNavigation(object? sender, EventArgs e)
+	void OnChanged(object? sender, EventArgs e)
 	{
-	    Session.Navigation -= _changed;
 	    InvokeAsync(() => Changed.InvokeAsync());
 	}
+
+    public void Dispose()
+    {
+        Manager.LocationChanged -= _changed;
+    }
+
 }

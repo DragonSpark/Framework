@@ -1,0 +1,26 @@
+﻿
+@inherits DragonSpark.Presentation.Components.ComponentBase
+@using Humanizer
+
+@inject RouterSession Session
+
+@code {
+	[Parameter]
+	public EventCallback Changed { get; set; }
+
+	readonly EventHandler _changed;
+
+	public NavigatedMonitor() => _changed = SessionOnNavigation;
+
+	protected override Task OnInitializedAsync()
+	{
+		Session.Navigation += _changed;
+		return base.OnInitializedAsync();
+	}
+
+	void SessionOnNavigation(object? sender, EventArgs e)
+	{
+	    Session.Navigation -= _changed;
+	    InvokeAsync(() => Changed.InvokeAsync());
+	}
+}
