@@ -53,12 +53,15 @@ public class DataList<T> : RadzenDataList<T>, IRefreshAware
 
 	async ValueTask ReloadBody()
 	{
-		if ((_ready ?? false) && _pageIndex != CurrentPage)
+		await base.Reload();
+		if (_ready ?? false)
 		{
-			await PageIndexChanged.InvokeAsync(_pageIndex = CurrentPage);
+			var page = Math.Min(CurrentPage, Math.Max(0, (int)(Math.Ceiling((double)Count / PageSize) - 1)));
+			if (_pageIndex != page)
+			{
+				await PageIndexChanged.InvokeAsync(_pageIndex = page).ConfigureAwait(false);
+			}
 		}
-
-		await base.Reload().ConfigureAwait(false);
 	}
 
 	protected override async Task OnParametersSetAsync()

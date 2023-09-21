@@ -55,7 +55,7 @@ sealed class IgnoreEntryOperation : IOperation, ICommand
 				var elapsed = DateTimeOffset.Now - captured;
 				if (elapsed < _duration)
 				{
-					_timer.Interval = elapsed.TotalMilliseconds;
+					_timer.Interval = (_duration - elapsed).TotalMilliseconds;
 					_timer.Start();
 				}
 				else
