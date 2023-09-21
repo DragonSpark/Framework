@@ -21,11 +21,12 @@ sealed class Transaction<T> : IOperation where T : DbContext
 
 	public async ValueTask Get()
 	{
-		var             transactions = _services.GetRequiredService<ServiceScopedDatabaseTransactions>().Ambient();
+		var             transactions = _services.GetRequiredService<ServiceScopedDatabaseTransactions>();
 		await using var session      = await transactions.Get();
-		await using var transaction  = session.To<IScopedTransaction>();
-		var             initializer  = transaction.Provider.GetRequiredService(_initializer).To<IInitializer>();
-		await using var context      = transaction.Provider.GetRequiredService<T>();
+		await using var scoped       = session.To<IScopedTransaction>();
+		var             initializer  = scoped.Provider.GetRequiredService(_initializer).To<IInitializer>();
+		await using var context      = scoped.Provider.GetRequiredService<T>();
+		var             transaction  = new AmbientAwareTransaction(scoped);
 		transaction.Execute();
 		await initializer.Await(context);
 		await transaction.Await();
