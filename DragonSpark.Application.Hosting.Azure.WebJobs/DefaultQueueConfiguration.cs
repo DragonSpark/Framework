@@ -17,7 +17,7 @@ sealed class DefaultQueueConfiguration : ICommand<QueuesOptions>
 
 	public void Execute(QueuesOptions parameter)
 	{
-		parameter.NewBatchThreshold  = 16;
+		parameter.NewBatchThreshold  = 8;
 		parameter.MaxPollingInterval = _poll;
 		parameter.MessageEncoding    = QueueMessageEncoding.None;
 	}
