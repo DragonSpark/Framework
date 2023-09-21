@@ -14,7 +14,7 @@ public class DataList<T> : RadzenDataList<T>, IRefreshAware
 	Switch? _ready;
 	Switch  _update = new (true);
 
-	IOperation _reload = null!;
+	IgnoreEntryOperation _reload = null!;
 
 	protected override void OnInitialized()
 	{
@@ -87,6 +87,7 @@ public class DataList<T> : RadzenDataList<T>, IRefreshAware
 					_update.Down();
 					_pageIndex = 0;
 				}
+				_reload?.Execute();
 			}
 		}
 	}	object _tag = default!;

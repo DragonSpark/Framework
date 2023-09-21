@@ -1,4 +1,6 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model;
+using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
 using DragonSpark.Runtime.Execution;
 using System;
@@ -7,7 +9,7 @@ using System.Timers;
 
 namespace DragonSpark.Presentation.Components.State;
 
-sealed class IgnoreEntryOperation : IOperation
+sealed class IgnoreEntryOperation : IOperation, ICommand
 {
 	readonly IOperation _operation;
 	readonly FirstBase  _active;
@@ -62,5 +64,11 @@ sealed class IgnoreEntryOperation : IOperation
 				}
 			}
 		}
+	}
+
+	public void Execute(None parameter)
+	{
+		_timer.Stop();
+		_active.Execute();
 	}
 }

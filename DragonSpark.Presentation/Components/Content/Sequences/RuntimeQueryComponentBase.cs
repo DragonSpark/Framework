@@ -8,7 +8,7 @@ namespace DragonSpark.Presentation.Components.Content.Sequences;
 public abstract class RuntimeQueryComponentBase<T> : InstanceComponentBase<IQueries<T>>
 {
 	[Inject]
-	IPublisher<RefreshQueriesMessage<T>> Publisher { get; set; } = default!;
+	IPublisher<RefreshObjectMessage> Publisher { get; set; } = default!;
 
 	protected override void RequestNewContent() {}
 

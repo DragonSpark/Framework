@@ -1,0 +1,27 @@
+﻿@using DragonSpark.Model.Results
+@using DragonSpark.Compose
+@typeparam T where T : class
+
+@code {
+    readonly Switch _update = new();
+
+    [Parameter]
+    public T Value 
+    {
+        get => _value;
+        set
+        {
+            if (_value != value)
+            {
+                _value = value;
+                _update.Up();
+            }
+        }
+    }	T _value = default!;
+
+    [Parameter]
+    public EventCallback<T> Updated { get; set; }
+
+    protected override Task OnParametersSetAsync()
+        => _update.Down() ? Updated.InvokeAsync(Value) : base.OnParametersSetAsync();
+}

@@ -2,12 +2,11 @@
 @using DragonSpark.Application.Entities.Queries.Runtime
 @using DragonSpark.Compose
 @using NetFabric.Hyperlinq
-
-@typeparam T
+@using System.Buffers
 
 @implements IDisposable
 
-<RefreshQueriesMonitor T="T" Topic="@Topic" Updated="@OnUpdate" />
+<RefreshObjectMonitor Topic="@Topic" Updated="@OnUpdate" />
 
 <CascadingValue Value="@Subject" IsFixed="@Fixed">
 	@ChildContent
@@ -21,11 +20,22 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        Subject = new RefreshContainer(_children);
+        Subject = new State.RefreshContainer(_children);
     }
 
     [Parameter]
-    public IQueries<T> Topic { get; set; } = default!;
+    public object Topic 
+    {
+        get => _topic;
+        set
+        {
+            if (_topic != value)
+            {
+                _topic = value;
+                _children.Clear();
+            }
+        }
+    }	object _topic = default!;
 
     [Parameter]
     public bool Fixed { get; set; } = true;
@@ -33,9 +43,10 @@
 	[Parameter]
 	public RenderFragment ChildContent { get; set; } = default!;
 
-	async Task OnUpdate()
+	async Task OnUpdate(object _)
 	{
-		foreach (var item in _children.AsValueEnumerable())
+	    using var lease = _children.AsValueEnumerable().ToArray(ArrayPool<IRefreshAware>.Shared);
+	    foreach (var item in lease)
 		{
 			await item.Await();
 		}

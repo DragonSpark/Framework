@@ -1,0 +1,28 @@
+﻿@using DragonSpark.Presentation.Components.Eventing
+
+@implements DragonSpark.Presentation.Components.Eventing.IHandle<RefreshObjectMessage>
+@implements IDisposable
+
+@inject IEventAggregator Events
+
+@code {
+	[Parameter]
+	public object Topic { get; set; } = default!;
+
+	[Parameter]
+	public EventCallback<object> Updated { get; set; }
+
+	protected override void OnInitialized()
+	{
+		base.OnInitialized();
+		Events.Subscribe(this);
+	}
+
+	public Task HandleAsync(RefreshObjectMessage message)
+		=> message.Subject == Topic ? Updated.InvokeAsync(Topic) : Task.CompletedTask;
+
+	public void Dispose()
+	{
+		Events.Unsubscribe(this);
+	}
+}
