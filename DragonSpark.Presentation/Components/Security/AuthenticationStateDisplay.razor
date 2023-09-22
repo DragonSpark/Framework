@@ -3,22 +3,25 @@
 @using DragonSpark.Presentation.Environment
 @using DragonSpark.Presentation.Security.Identity
 @using DragonSpark.Application
+@using DragonSpark.Model.Results
 
 @typeparam T where T : DragonSpark.Application.Security.Identity.IdentityUser
 
 @inject CurrentProfileStatus Store
 
-@if (_state is not null)
+@if (_scene is not null)
 {
-    <CascadingValue TValue="ProfileStatus" Value="@_status" IsFixed="true">
-        @ChildContent(_state)
+    <CascadingValue TValue="ProfileStatus" Value="@_status">
+        @_scene
     </CascadingValue>
 }
 
 @code
 {
+    readonly Switch _update = new();
     AuthenticationState<T>? _state;
     ProfileStatus _status;
+    RenderFragment? _scene;
 
     [Parameter]
     public RenderFragment<AuthenticationState<T>> ChildContent { get; set; } = default!;
@@ -32,20 +35,21 @@
             if (_operation != value)
             {
                 _operation = value;
-                _state = null;
+                _update.Up();
             }
         }
     }	Task<AuthenticationState> _operation = default!;
 
     protected override async Task OnParametersSetAsync()
     {
-        if (_operation.Account() is not null && _state is null)
+        if (_operation.Account() is not null && _update.Down())
         {
             // ReSharper disable once AsyncApostle.AsyncWait
             var state = Operation.IsCompletedSuccessfully ? Operation.Result : await Operation;
             _state = state.To<AuthenticationState<T>>();
             _status = GetProfileStatus.Default.Get(_state);
             Store.Execute(_status);
+            _scene = ChildContent(_state);
         }
     }
 }
