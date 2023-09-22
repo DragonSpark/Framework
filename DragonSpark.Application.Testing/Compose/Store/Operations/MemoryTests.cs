@@ -5,6 +5,7 @@ using FluentAssertions;
 using Microsoft.Extensions.Caching.Memory;
 using System.Threading.Tasks;
 using Xunit;
+
 // ReSharper disable AsyncApostle.AsyncWait
 
 namespace DragonSpark.Application.Testing.Compose.Store.Operations;
@@ -32,12 +33,13 @@ public sealed class MemoryTests
 
 		await Task.WhenAll(first, second, third);
 
-		first.Result.Should()
-		     .Be(second.Result)
-		     .And.Subject.Should()
-		     .Be(third.Result)
-		     .And.Subject.Should()
-		     .Be(1);
+		var result = await first;
+		result.Should()
+		      .Be(await second)
+		      .And.Subject.Should()
+		      .Be(await third)
+		      .And.Subject.Should()
+		      .Be(1);
 	}
 
 	sealed class Count : IResulting<int>

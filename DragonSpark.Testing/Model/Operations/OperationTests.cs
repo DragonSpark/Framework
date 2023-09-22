@@ -22,5 +22,5 @@ public class OperationTests
 	                       .Allocate()
 	                       .Get()
 	                       .Get("Hello World!")
-	                       .ContinueWith(x => x.Result.Should().Be(24));
+	                       .ContinueWith(async x => (await x).Should().Be(24));
 }
