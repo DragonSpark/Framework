@@ -1,6 +1,6 @@
 ﻿@using DragonSpark.Model.Results
 @using DragonSpark.Compose
-@typeparam T where T : class
+@typeparam T
 
 @code {
     readonly Switch _update = new();
@@ -11,13 +11,16 @@
         get => _value;
         set
         {
-            if (_value != value)
+            if (!Comparer.Equals(_value, value))
             {
                 _value = value;
                 _update.Up();
             }
         }
     }	T _value = default!;
+
+    [Parameter]
+    public IEqualityComparer<T> Comparer { get; set; } = EqualityComparer<T>.Default;
 
     [Parameter]
     public EventCallback<T> Updated { get; set; }
