@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.CookiePolicy;
+using Microsoft.AspNetCore.Http;
 using System;
 
 namespace DragonSpark.Application.Communication;
@@ -22,6 +23,7 @@ public sealed class ApplySameSiteCookiePolicy : ICommand<CookiePolicyOptions>
 
 	public void Execute(CookiePolicyOptions parameter)
 	{
+		parameter.Secure         = CookieSecurePolicy.Always;
 		parameter.OnAppendCookie = _configure;
 		parameter.OnDeleteCookie = _delete;
 	}
