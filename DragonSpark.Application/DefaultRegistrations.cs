@@ -41,6 +41,10 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Forward<CurrentContext>()
 		         .Scoped()
 		         //
+		         .Then.Start<Base64UrlEncrypt>()
+		         .And<Base64UrlDecrypt>()
+		         .Singleton()
+		         //
 		         .Then.Start<ILogException>()
 		         .Forward<LogException>()
 		         .Decorate<TemplateAwareLogException>()
