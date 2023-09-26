@@ -1,6 +1,6 @@
 ﻿namespace DragonSpark.Application.Security.Identity.Model;
 
-public sealed class LoginErrorRedirect : ErrorRedirect
+public sealed record LoginErrorRedirect : ErrorRedirect
 {
-	public LoginErrorRedirect(string message, string origin) : base("./Login", message, origin) {}
+	public LoginErrorRedirect(string message, string origin) : base("./Error", message, origin) {}
 }

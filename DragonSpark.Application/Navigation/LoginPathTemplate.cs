@@ -4,5 +4,5 @@ public sealed class LoginPathTemplate : Text.Text
 {
 	public static LoginPathTemplate Default { get; } = new LoginPathTemplate();
 
-	LoginPathTemplate() : base("Identity/Account/Login?ReturnUrl={0}") {}
+	LoginPathTemplate() : base($"{LoginPathRoot.Default}?ReturnUrl={{0}}") {}
 }

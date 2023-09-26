@@ -1,12 +1,10 @@
-﻿using JetBrains.Annotations;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 
 namespace DragonSpark.Application.Hosting.Server.Blazor.Environment;
 
 public sealed class ApplicationConfiguration : IApplicationConfiguration
 {
-	[UsedImplicitly]
-	public static ApplicationConfiguration Default { get; } = new ApplicationConfiguration();
+	public static ApplicationConfiguration Default { get; } = new();
 
 	ApplicationConfiguration() : this("/Error") {}
 

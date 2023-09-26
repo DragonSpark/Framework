@@ -11,10 +11,10 @@ public sealed class RedirectErrorsAttribute : Attribute, IPageFilter
 	public void OnPageHandlerExecuting(PageHandlerExecutingContext context)
 	{
 		if (context.HandlerInstance is PageModel page &&
-		    context.HandlerArguments.Only().Value is ErrorRedirect error)
+		    context.HandlerArguments.Only().Value is ErrorRedirect(var location, var (key, value), var origin))
 		{
-			page.TempData[error.Message.Key] = error.Message.Value;
-			context.Result                   = page.RedirectToPage(error.Location, new {returnUrl = error.Origin});
+			page.TempData[key] = value;
+			context.Result     = page.RedirectToPage(location, new { ReturnUrl = origin });
 		}
 	}
 
