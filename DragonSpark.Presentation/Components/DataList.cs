@@ -14,7 +14,7 @@ public class DataList<T> : RadzenDataList<T>, IRefreshAware
 	Switch? _ready;
 	Switch  _update = new (true);
 
-	IgnoreEntryOperation _reload = null!;
+	IgnoreEntryOperation? _reload = null!;
 
 	protected override void OnInitialized()
 	{
@@ -49,7 +49,7 @@ public class DataList<T> : RadzenDataList<T>, IRefreshAware
 		}
 	}	IRefreshContainer? _container;
 
-	public override Task Reload() => _reload.Get().AsTask();
+	public override Task Reload() => _reload?.Get().AsTask() ?? Task.CompletedTask;
 
 	async ValueTask ReloadBody()
 	{

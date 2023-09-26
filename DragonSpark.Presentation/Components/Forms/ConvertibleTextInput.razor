@@ -76,6 +76,7 @@
     [Parameter]
     public EventCallback<T> ValueChanged { get; set; }
 
+    // ReSharper disable once UnusedAutoPropertyAccessor.Local ISSUE
     string? CurrentValue { get; set; }
 
     Task Input(ChangeEventArgs parameter)
