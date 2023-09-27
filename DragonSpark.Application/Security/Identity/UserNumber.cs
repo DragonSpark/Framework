@@ -1,4 +1,6 @@
-﻿using DragonSpark.Model.Selection;
+﻿using DragonSpark.Application.Security.Identity.Authentication;
+using DragonSpark.Model.Selection;
+using DragonSpark.Model.Selection.Conditions;
 using System.Security.Claims;
 
 namespace DragonSpark.Application.Security.Identity;
@@ -7,15 +9,28 @@ sealed class UserNumber : ISelect<ClaimsPrincipal, uint?>
 {
 	public static UserNumber Default { get; } = new();
 
-	UserNumber() : this(ClaimTypes.NameIdentifier) {}
+	UserNumber() : this(IsApplicationPrincipal.Default, ClaimTypes.NameIdentifier) {}
 
-	readonly string _claim;
+	readonly ICondition<ClaimsPrincipal> _application;
+	readonly string                      _claim;
 
-	public UserNumber(string claim) => _claim = claim;
+	public UserNumber(ICondition<ClaimsPrincipal> application, string claim)
+	{
+		_application = application;
+		_claim       = claim;
+	}
 
 	public uint? Get(ClaimsPrincipal parameter)
 	{
-		var name = parameter.FindFirstValue(_claim);
-		return name is not null && uint.TryParse(name, out var result) ? result : null;
+		if (_application.Get(parameter))
+		{
+			var name = parameter.FindFirstValue(_claim);
+			if (name is not null && uint.TryParse(name, out var result))
+			{
+				return result;
+			}
+		}
+
+		return null;
 	}
 }

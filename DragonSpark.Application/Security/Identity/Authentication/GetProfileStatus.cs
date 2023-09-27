@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Model.Selection;
-using Microsoft.AspNetCore.Identity;
+using DragonSpark.Model.Selection.Conditions;
+using System.Security.Claims;
 
 namespace DragonSpark.Application.Security.Identity.Authentication;
 
@@ -7,17 +8,17 @@ public sealed class GetProfileStatus : ISelect<CurrentProfileStateInput, Profile
 {
 	public static GetProfileStatus Default { get; } = new();
 
-	GetProfileStatus() : this(IdentityConstants.ApplicationScheme) {}
+	GetProfileStatus() : this(IsApplicationPrincipal.Default) {}
 
-	readonly string _scheme;
+	readonly ICondition<ClaimsPrincipal> _application;
 
-	public GetProfileStatus(string scheme) => _scheme = scheme;
+	public GetProfileStatus(ICondition<ClaimsPrincipal> application) => _application = application;
 
 	public ProfileStatus Get(CurrentProfileStateInput parameter)
 	{
 		var (principal, user) = parameter;
 		return principal.IsAuthenticated()
-			       ? principal.Identity?.AuthenticationType == _scheme
+			       ? _application.Get(principal)
 				         ? user is not null
 					           ? user.Email is null  ? ProfileStatus.InputRequired :
 					             user.EmailConfirmed ? ProfileStatus.Confirmed : ProfileStatus.Confirming
