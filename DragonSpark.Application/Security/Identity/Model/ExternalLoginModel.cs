@@ -4,6 +4,7 @@ using DragonSpark.Text;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Model;
@@ -32,6 +33,7 @@ public class ExternalLoginModel<T> : PageModel where T : class
 			var (provider, origin) = parameter;
 			using var authentication = _authentications.Get();
 			var       properties = authentication.Subject.ConfigureExternalAuthenticationProperties(provider, origin);
+			properties.ExpiresUtc = DateTimeOffset.UtcNow.AddDays(1);
 			return new ChallengeResult(provider, properties);
 		}
 
