@@ -31,6 +31,7 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Then.Start<NavigateToSignIn>()
 		         .And<CurrentRootPath>()
 		         .And<RedirectLoginPath>()
+		         .And<SignOutCurrentPath>()
 		         .Scoped()
 		         //
 		         .Then.Start<RefreshCurrentPath>()

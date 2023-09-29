@@ -3,6 +3,8 @@
 @using DragonSpark.Presentation.Environment
 @using DragonSpark.Presentation.Security.Identity
 @using DragonSpark.Application
+@using DragonSpark.Application.Navigation
+@using DragonSpark.Application.Security.Identity.Model
 @using DragonSpark.Model.Results
 
 @typeparam T where T : DragonSpark.Application.Security.Identity.IdentityUser
@@ -38,7 +40,7 @@
                 _update.Up();
             }
         }
-    }	Task<AuthenticationState> _operation = default!;
+    }   Task<AuthenticationState> _operation = default!;
 
     protected override async Task OnParametersSetAsync()
     {
@@ -46,10 +48,13 @@
         {
             // ReSharper disable once AsyncApostle.AsyncWait
             var state = Operation.IsCompletedSuccessfully ? Operation.Result : await Operation;
-            _state = state.To<AuthenticationState<T>>();
-            _status = GetProfileStatus.Default.Get(_state);
-            Store.Execute(_status);
-            _scene = ChildContent(_state);
+            if (state != _state)
+            {
+                _state = state.To<AuthenticationState<T>>();
+                _status = GetProfileStatus.Default.Get(_state);
+                Store.Execute(_status);
+                _scene = ChildContent(_state);   
+            }            
         }
     }
 }

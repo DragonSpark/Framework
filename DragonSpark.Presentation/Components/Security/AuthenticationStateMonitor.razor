@@ -1,0 +1,43 @@
+﻿@using DragonSpark.Compose
+@using DragonSpark.Application.Security.Identity.Model
+@using DragonSpark.Model.Results
+@using DragonSpark.Application
+
+@inject SignOutCurrentPath Refresh
+
+@code
+{
+    readonly Switch _update = new();
+
+    [CascadingParameter]
+    AuthenticationState State
+    {
+        get => _state;
+        set
+        {
+            if (_state != value)
+            {
+                if (_state.Account() is not null)
+                {
+                    var authenticated = value.User.IsAuthenticated();
+                    var current = _state.Account()?.User.IsAuthenticated() ?? authenticated;
+                    if (authenticated != current)
+                    {
+                        _update.Up();
+                    }
+                }
+
+                _state = value;
+            }
+        }
+    }   AuthenticationState _state = default!;
+
+    protected override void OnParametersSet()
+    {
+        if (_update.Down())
+        {
+            Refresh.Execute();
+        }
+        base.OnParametersSet();
+    }
+}
