@@ -12,6 +12,10 @@
 @code
 {
     readonly Switch _initialized = new();
+
+    [Parameter]
+    public Switch? Enabled { get; set; }
+
     [Parameter]
     public IClientVariable<T> Store { get; set; } = default!;
 
@@ -40,7 +44,7 @@
 
     public async ValueTask DisposeAsync()
     {
-        if (_initialized)
+        if (_initialized && (Enabled?.Get() ?? true))
         {
             await Store.Await(await Source.Get());
         }

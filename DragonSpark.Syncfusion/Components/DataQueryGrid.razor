@@ -23,6 +23,7 @@
 <AdaptiveGrid T="T"
               @ref="@_subject"
               Id="@Id"
+              Enabled="@_active"
               FilterType="@FilterType"
               Columns="@Columns"
               AllowSelection="@AllowSelection"
@@ -52,12 +53,14 @@
 </AdaptiveGrid>
 
 @code {
-    readonly Model.Results.Switch _refresh = new();
+    readonly Model.Results.Switch _refresh = new(), _active = new(true);
 
+    GridStateVariable _store = null!;
     AdaptiveGrid<T>? _subject = default!;
 
     protected override void OnInitialized()
     {
+        _store = new GridStateVariable(Id, Session);
         EmptyTemplate = LoadingTemplate.Accept;
         base.OnInitialized();
     }
@@ -114,7 +117,7 @@
 
     protected override Await<DataManagerRequest, object> CreateInput()
     {
-        var body = new StateAwareDataRequest(Content, new GridStateVariable(Id, Session));
+        var body = new StateAwareDataRequest(Content, _store, _active);
         var next = new MemoryAwareDataRequest(body, Memory, Key.Get(this));
         return next.Then().Then().Handle(EmptyDataResult.Default.Get());
     }

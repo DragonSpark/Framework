@@ -45,7 +45,7 @@ else
 			@ChildContent
 		}
 	</SfGrid>
-	<DragonSpark.Presentation.Components.Client.ClientValueComponent T="string"
+	<DragonSpark.Presentation.Components.Client.ClientValueComponent T="string" Enabled="@Enabled"
 	    Source="@this"
 		Store="@Store"
 		Initialized="@OnClientInitialized"
@@ -55,61 +55,64 @@ else
 <MediaQuery Media="@Breakpoint" @bind-Matches="@Matches" />
 
 @code {
-	SfGrid<T>? _subject = default!;
+    SfGrid<T>? _subject = default!;
 
-	[Parameter]
-	public string Id { get; set; } = string.Empty;
+    [Parameter]
+    public string Id { get; set; } = string.Empty;
 
-	[Parameter]
-	public FilterType FilterType { get; set; } = FilterType.Excel;
+    [Parameter]
+    public FilterType FilterType { get; set; } = FilterType.Excel;
 
-	[Parameter]
-	public bool AllowSelection { get; set; }
+    [Parameter]
+    public bool AllowSelection { get; set; }
 
-	[Parameter]
-	public RenderFragment Columns { get; set; } = default!;
+    [Parameter]
+    public RenderFragment Columns { get; set; } = default!;
 
-	[Parameter]
-	public RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
+    [Parameter]
+    public RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
 
-	[Parameter]
-	public RenderFragment EmptyElementsTemplate { get; set; } = DefaultEmptySequenceTemplate.Default;
+    [Parameter]
+    public RenderFragment EmptyElementsTemplate { get; set; } = DefaultEmptySequenceTemplate.Default;
 
-	[Parameter]
-	public RenderFragment? ChildContent { get; set; }
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
 
-	[Parameter]
-	public IEnumerable<T>? DataSource { get; set; }
+    [Parameter]
+    public IEnumerable<T>? DataSource { get; set; }
 
-	[Parameter]
-	public bool AllowExport { get; set; }
+    [Parameter]
+    public bool AllowExport { get; set; }
 
-	[Parameter]
-	public bool AllowPaging { get; set; } = true;
+    [Parameter]
+    public bool AllowPaging { get; set; } = true;
 
-	[Parameter]
-	public bool AllowFiltering { get; set; } = true;
+    [Parameter]
+    public bool AllowFiltering { get; set; } = true;
 
-	[Parameter]
-	public bool AllowSorting { get; set; } = true;
+    [Parameter]
+    public bool AllowSorting { get; set; } = true;
 
-	[Parameter]
-	public ushort PageSize { get; set; } = 10;
+    [Parameter]
+    public ushort PageSize { get; set; } = 10;
 
-	[Parameter]
-	public string Breakpoint { get; set; } = Breakpoints.SmallUp;
+    [Parameter]
+    public string Breakpoint { get; set; } = Breakpoints.SmallUp;
 
-	[Parameter]
-	public string MinimalClass { get; set; } = "dragonspark-minimal";
+    [Parameter]
+    public string MinimalClass { get; set; } = "dragonspark-minimal";
 
-	[Parameter]
-	public string CssClass { get; set; } = string.Empty;
+    [Parameter]
+    public string CssClass { get; set; } = string.Empty;
 
-	[Parameter]
-	public ICollection<string>? DesktopToolbar { get; set; }
+    [Parameter]
+    public ICollection<string>? DesktopToolbar { get; set; }
 
-	[Parameter]
-	public ICollection<string>? MobileToolbar { get; set; } = DefaultToolbar.Default;
+    [Parameter]
+    public ICollection<string>? MobileToolbar { get; set; } = DefaultToolbar.Default;
+
+    [Parameter]
+    public Model.Results.Switch? Enabled { get; set; }
 
 	[Parameter(CaptureUnmatchedValues = true)]
 	public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
