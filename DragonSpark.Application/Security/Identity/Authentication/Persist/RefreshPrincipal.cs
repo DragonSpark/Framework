@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Authentication.Persist;
 
-sealed class RefreshPrincipal : IAllocated<SecurityStampRefreshingPrincipalContext> // TODO: Move to ITransformClaims
+sealed class RefreshPrincipal : IAllocated<SecurityStampRefreshingPrincipalContext>
 {
 	readonly ICommand<Transfer> _copy;
 

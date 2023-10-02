@@ -65,6 +65,8 @@ partial class Extensions
 	public static string Value(this Accessed @this)
 		=> @this.Exists ? @this.Value.Verify() : throw new InvalidOperationException($"{@this.Claim} not found.");
 
+	public static Claim? Claim(this Accessed @this) => @this.Exists ? new(@this.Claim, @this.Value.Verify()) : null;
+
 	public static bool HasClaim(this ClaimsPrincipal @this, string claim) => @this.HasClaim(x => x.Type == claim);
 
 	public static Claim Claim(this Text.Text @this, string value) => new(@this, value);

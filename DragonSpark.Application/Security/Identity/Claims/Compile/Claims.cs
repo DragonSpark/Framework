@@ -23,8 +23,8 @@ sealed class Claims : IClaims
 	{
 		var (principal, provider, key) = parameter;
 
-		yield return new Claim(ExternalIdentity.Default, _formatter.Get(new(provider, key)));
-		yield return new Claim(ClaimTypes.AuthenticationMethod, provider);
-		yield return new Claim(DisplayName.Default, _display.Get(principal, provider));
+		yield return new(ExternalIdentity.Default, _formatter.Get(new(provider, key)));
+		yield return new(ClaimTypes.AuthenticationMethod, provider);
+		yield return new(DisplayName.Default, _display.Get(principal, provider));
 	}
 }
