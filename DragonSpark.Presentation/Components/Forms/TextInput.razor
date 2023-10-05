@@ -116,13 +116,20 @@
         {
             case "Enter":
                 return Update();
+            case "Tab":
+            case "Control":
+            case "Alt":
+            case "Shift":
+                break;
             default:
-                if (parameter.Key != "Tab" && parameter is { CtrlKey: false, AltKey: false })
+                if (parameter is { CtrlKey: false, AltKey: false })
                 {
                     _timer.Start();
+                    return OnKeyUp.InvokeAsync(parameter);
                 }
-                return OnKeyUp.InvokeAsync(parameter);
+                break;
         }
+        return Task.CompletedTask;
     }
 
     async Task Update()
