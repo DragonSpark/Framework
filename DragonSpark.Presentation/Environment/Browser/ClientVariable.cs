@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Model;
 using DragonSpark.Model.Operations;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using System;
@@ -19,7 +18,7 @@ public class ClientVariable<T> : IClientVariable<T>
 		: this(key.AssemblyQualifiedName.Verify(), storage) {}
 
 	protected ClientVariable(string key, IClientVariableAccessor<T> store)
-		: this(key, store, new Operation(store.Remove.Then().Bind(key))) {}
+		: this(key, store, store.Remove.Then().Bind(key).Out()) {}
 
 	protected ClientVariable(string key, IClientVariableAccessor<T> store, IOperation remove)
 	{
@@ -30,7 +29,7 @@ public class ClientVariable<T> : IClientVariable<T>
 
 	public ValueTask<ProtectedBrowserStorageResult<T>> Get() => _store.Get(_key);
 
-	public ValueTask Get(T parameter) => _store.Get(Pairs.Create(_key, parameter));
+	public ValueTask Get(T parameter) => _store.Get((_key, parameter));
 
 	public IOperation Remove { get; }
 }

@@ -228,6 +228,9 @@ public static partial class ExtensionMethods
 	public static IAllocatedResult<T> Out<T>(this ResultContext<Task<T>> @this) => @this.Get().Out();
 	public static IAllocatedResult<T> Out<T>(this IResult<Task<T>> @this) => new AllocatedResult<T>(@this);
 
+	public static IOperation Out(this ResultContext<ValueTask> @this) => @this.Get().Out();
+	public static IOperation Out(this IResult<ValueTask> @this) => new Operation(@this.Get);
+
 	public static IResulting<T> Out<T>(this ResultContext<ValueTask<T>> @this) => @this.Get().Out();
 	public static IResulting<T> Out<T>(this IResult<ValueTask<T>> @this) => new Resulting<T>(@this);
 	

@@ -18,9 +18,9 @@ sealed class StateAwareDataRequest : IDataRequest
 
 	public StateAwareDataRequest(IDataRequest previous, IOperation remove, Switch active)
 	{
-		_previous    = previous;
-		_remove      = remove;
-		_active = active;
+		_previous = previous;
+		_remove   = remove;
+		_active   = active;
 	}
 
 	public async ValueTask<object> Get(DataManagerRequest parameter)
