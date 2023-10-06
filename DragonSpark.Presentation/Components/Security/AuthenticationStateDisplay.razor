@@ -50,10 +50,16 @@
             var state = Operation.IsCompletedSuccessfully ? Operation.Result : await Operation;
             if (state != _state)
             {
-                _state = state.To<AuthenticationState<T>>();
-                _status = GetProfileStatus.Default.Get(_state);
-                Store.Execute(_status);
-                _scene = ChildContent(_state);   
+                var next = state.To<AuthenticationState<T>>();
+                if (_state is null 
+                    || _state?.User.IsAuthenticated() != state.User.IsAuthenticated()
+                    || _state.Profile?.SecurityStamp != next.Profile?.SecurityStamp)
+                {
+                    _state = next;
+                    _status = GetProfileStatus.Default.Get(_state);
+                    Store.Execute(_status);
+                    _scene = ChildContent(_state);      
+                }
             }            
         }
     }
