@@ -5,6 +5,7 @@ using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using System;
 
 namespace DragonSpark.Identity.Twitter;
@@ -27,6 +28,10 @@ sealed class ConfigureTwitterApplication : ICommand<AuthenticationBuilder>
 		parameter.Services.Register<TwitterApplicationSettings>()
 		         .Return(parameter)
 		         .AddTwitter(authentication.Execute)
+		         //
+		         .Services
+		         .AddSingleton<IPostConfigureOptions<TwitterAuthenticationOptions>,
+			         PostConfigureAuthenticationOptions>()
 			;
 	}
 }
