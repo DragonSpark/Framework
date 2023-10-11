@@ -14,7 +14,7 @@ public class DataList<T> : RadzenDataList<T>, IRefreshAware
 	Switch? _ready;
 	Switch  _update = new (true);
 
-	IgnoreEntryOperation? _reload = null!;
+	IgnoreEntryOperation? _reload;
 
 	protected override void OnInitialized()
 	{
