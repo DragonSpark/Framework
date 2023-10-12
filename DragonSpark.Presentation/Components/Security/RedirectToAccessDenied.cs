@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Application.Navigation;
+using DragonSpark.Application.Navigation.Security;
 using DragonSpark.Presentation.Components.Navigation;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Components;

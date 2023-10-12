@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Application.Navigation;
+using DragonSpark.Application.Navigation.Security;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using Microsoft.JSInterop;

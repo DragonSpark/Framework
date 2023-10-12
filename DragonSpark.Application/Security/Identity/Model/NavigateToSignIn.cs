@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Application.Navigation;
+using DragonSpark.Application.Navigation.Security;
 using DragonSpark.Compose;
 using DragonSpark.Model;
 using Microsoft.AspNetCore.Components;

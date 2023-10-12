@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Application.Navigation;
+﻿namespace DragonSpark.Application.Navigation.Security;
 
 public sealed class AccessDeniedPathTemplate : Text.Text
 {

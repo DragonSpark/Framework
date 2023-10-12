@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Application.Diagnostics;
 using DragonSpark.Application.Navigation;
+using DragonSpark.Application.Navigation.Security;
 using DragonSpark.Application.Runtime.Operations;
 using DragonSpark.Application.Security;
 using DragonSpark.Application.Security.Identity;
