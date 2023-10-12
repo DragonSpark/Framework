@@ -1,11 +1,11 @@
 ﻿using DragonSpark.Application.Security.Identity.Model;
-using DragonSpark.Text;
+using DragonSpark.Model.Selection;
 using System.Linq;
 using System.Web;
 
 namespace DragonSpark.Application.Navigation;
 
-public sealed class ExtractReturnAddress : IFormatter<string>
+public sealed class ExtractReturnAddress : ISelect<string, string?>
 {
 	public static ExtractReturnAddress Default { get; } = new();
 
@@ -19,10 +19,10 @@ public sealed class ExtractReturnAddress : IFormatter<string>
 		_second = second;
 	}
 
-	public string Get(string parameter)
+	public string? Get(string parameter)
 	{
 		var query  = HttpUtility.ParseQueryString(parameter.Split('?').Last());
-		var result = query.Get(_first) ?? query.Get(_second) ?? parameter;
+		var result = query.Get(_first) ?? query.Get(_second) ?? null;
 		return result;
 	}
 }

@@ -13,9 +13,7 @@
 
 @if (_scene is not null)
 {
-    <CascadingValue TValue="ProfileStatus" Value="@_status">
-        @_scene
-    </CascadingValue>
+    <CascadingValue TValue="ProfileStatus" Value="@_status" ChildContent="@_scene" />
 }
 
 @code
