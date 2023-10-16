@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
+using Xunit;
 using Xunit.Abstractions;
 
 namespace DragonSpark.Application.Hosting.xUnit;
 
 // ReSharper disable LocalSuppression
-sealed class Decorated : IMethodInfo
+sealed class Decorated : LongLivedMarshalByRefObject, IMethodInfo
 {
 	static Exception Unwrap(Exception ex)
 	{

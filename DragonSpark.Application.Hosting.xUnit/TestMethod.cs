@@ -1,8 +1,9 @@
-﻿using Xunit.Abstractions;
+﻿using Xunit;
+using Xunit.Abstractions;
 
 namespace DragonSpark.Application.Hosting.xUnit;
 
-sealed class TestMethod : ITestMethod
+sealed class TestMethod : LongLivedMarshalByRefObject, ITestMethod
 {
 	readonly ITestMethod _method = default!;
 
