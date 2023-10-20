@@ -8,5 +8,4 @@ public class ServerNavigateTo : NavigateTo
 	{
 		Navigate();
 	}
-
 }
