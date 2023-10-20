@@ -2,7 +2,6 @@
 using NetFabric.Hyperlinq;
 using Syncfusion.Blazor.Data;
 using System.Buffers;
-using System.Collections;
 using System.Linq;
 
 namespace DragonSpark.SyncfusionRendering.Queries;
@@ -18,7 +17,7 @@ sealed class PerformSelect<T> : ISelect<PerformSelectInput<T>, IQueryable<T>>
 		var (source, columns) = parameter;
 		if (source.GetObjectType() == typeof(object))
 		{
-			IEnumerator enumerator = source.GetEnumerator();
+			using var enumerator = source.GetEnumerator();
 			if (enumerator.MoveNext())
 			{
 				// ReSharper disable once ReturnValueOfPureMethodIsNotUsed
