@@ -18,7 +18,7 @@
     Id="@Id"
     RefBack="@RefBack"
     Value="@Current"
-    ValueChanged="OnValueChanged"
+    ValueChanged="OnCommit"
     ValidationDisabled="true"
     InputAttributes="@InputAttributes"
     Attributes="@Attributes"
@@ -29,7 +29,7 @@
     OnFocus="@HandleOnFocus"
     OnFocusOut="@HandleFocusOut"
     OnKeyPress="@OnKeyPress"
-    OnKeyDown="@OnKeyDown"
+    OnKeyDown="@KeyDown"
     OnKeyUp="@KeyUp"
     OnInput="@Input"
     Label="@Label"
@@ -56,10 +56,9 @@
 
 @code
 {
-    readonly Switch _focus = new();
+    readonly Switch _focus = new(), _enter = new(), _active = new();
+    readonly Timer _timer = new (750) { AutoReset = false };
     Func<Task> _tick = default!;
-    Timer _timer = default!;
-    bool _active;
     FieldIdentifier _identifier;
     string _stored = string.Empty;
 
@@ -96,7 +95,6 @@
 
     protected override void OnInitialized()
     {
-        _timer = new Timer(750) { AutoReset = false };
         _timer.Elapsed += OnTick;
         _tick = Tick;
         base.OnInitialized();
@@ -105,26 +103,39 @@
     Task HandleOnFocus(FocusEventArgs parameter)
     {
         _stored = Value;
-        _active = true;
+        _active.Up();
         return OnFocus.InvokeAsync(parameter);
     }
 
     Task KeyUp(KeyboardEventArgs parameter)
     {
-        _timer.Stop();
         switch (parameter.Key)
         {
-            case "Enter":
-                return Update();
             case "Tab":
             case "Control":
             case "Alt":
             case "Shift":
+            case "ArrowUp":
+            case "ArrowDown":
+            case "ArrowLeft":
+            case "ArrowRight":
+            case "Home":
+            case "End":
+            case "PageUp":
+            case "PageDown":
+            case "Insert":
+                break;
+            case "Enter":
+                _timer.Stop();
+                _active.Up();
+                _enter.Down();
                 break;
             default:
-                if (parameter is { CtrlKey: false, AltKey: false })
+                if (parameter is { AltKey: false })
                 {
+                    _timer.Stop();
                     _timer.Start();
+                    _active.Up();
                     return OnKeyUp.InvokeAsync(parameter);
                 }
                 break;
@@ -132,17 +143,32 @@
         return Task.CompletedTask;
     }
 
+    Task KeyDown(KeyboardEventArgs parameter)
+    {
+        switch (parameter.Key)
+        {
+            case "Enter":
+                _timer.Stop();
+                _enter.Up();
+                break;
+        }
+        return OnKeyDown.InvokeAsync(parameter);
+    }
+
     async Task Update()
     {
         await ValueChanged.Invoke(Value);
-        EditContext?.NotifyFieldChanged(in _identifier);
+        if (!_enter && _active)
+        {
+            EditContext?.NotifyFieldChanged(in _identifier);
+        }
         await Updated.Invoke();
     }
 
     async Task Tick()
     {
         await Update();
-        await Task.Delay(175);
+        await Task.Delay(250);
         if (_focus.Down())
         {
             await Focus.FocusElementAsync(RefBack.Current).ConfigureAwait(false);
@@ -160,9 +186,8 @@
         return OnInput.InvokeAsync(parameter);
     }
 
-    Task OnValueChanged(string parameter)
+    Task OnCommit(string parameter)
     {
-        _active = false;
         _timer.Stop();
         Value = _stored = parameter;
         return Update();
@@ -176,16 +201,18 @@
 
     async Task HandleFocusOut(FocusEventArgs parameter)
     {
-        if (_active)
+        if (Receiver is not null && IsActive.Default.Get(Receiver))
         {
-            _active = false;
+            _active.Up();
+            _focus.Up();
+            await Update();
+        }
+        else if (_active.Down())
+        {
             _timer.Stop();
             await Update();
         }
-        else if (Receiver is not null && IsActive.Default.Get(Receiver))
-        {
-            _focus.Up();
-        }
+
         await OnFocusOut.InvokeAsync(parameter).ConfigureAwait(false);
     }
 }

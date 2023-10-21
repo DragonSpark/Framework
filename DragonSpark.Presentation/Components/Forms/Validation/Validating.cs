@@ -99,7 +99,7 @@ public class Validating : ComponentBase, IDisposable
 
 	void Request()
 	{
-		if (Enabled && IsEmpty() && _active.Up())
+		if (Enabled && _active.Up())
 		{
 			_list.Execute(InvokeAsync(_update));
 		}
