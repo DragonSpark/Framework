@@ -1,13 +1,14 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using NetFabric.Hyperlinq;
 using System;
 
 namespace DragonSpark.Presentation.Components.Forms.Validation;
 
 public abstract class ValidationComponent : ComponentBase, IDisposable
 {
+	readonly Switch        _update   = new();
 	ValidationMessageStore _messages = default!;
 	EditContext?           _context;
 	bool                   _enabled = true;
@@ -20,8 +21,8 @@ public abstract class ValidationComponent : ComponentBase, IDisposable
 		{
 			if (_enabled != value)
 			{
-				_enabled        = value;
-				UpdateRequested = true;
+				_enabled = value;
+				_update.Up();
 			}
 		}
 	}
@@ -58,14 +59,9 @@ public abstract class ValidationComponent : ComponentBase, IDisposable
 		}
 	}
 
-	bool UpdateRequested { get; set; }
-
 	void ValidationRequested(object? sender, ValidationRequestedEventArgs e)
 	{
-		if (!_messages[Identifier].AsValueEnumerable().Any())
-		{
-			Update();
-		}
+		Update();
 	}
 
 	void FieldChanged(object? sender, FieldChangedEventArgs e)
@@ -80,7 +76,7 @@ public abstract class ValidationComponent : ComponentBase, IDisposable
 
 	protected override void OnParametersSet()
 	{
-		if (UpdateRequested && !(UpdateRequested = false))
+		if (_update.Down())
 		{
 			Update();
 		}

@@ -43,7 +43,8 @@ public class FieldMonitor<T> : ComponentBase
 		var model = Model is null || Model == args.FieldIdentifier.Model;
 		if (model && args.FieldIdentifier.FieldName == FieldName)
 		{
-			Changed.InvokeAsync(args.FieldIdentifier.GetValue<T>());
+			var value = args.FieldIdentifier.GetValue<T>();
+			Changed.InvokeAsync(value);
 		}
 	}
 }

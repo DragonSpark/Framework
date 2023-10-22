@@ -56,11 +56,11 @@
 
 @code
 {
-    readonly Switch _focus = new(), _enter = new(), _active = new();
+    readonly Switch _focus = new(), _active = new();
     readonly Timer _timer = new (750) { AutoReset = false };
     Func<Task> _tick = default!;
     FieldIdentifier _identifier;
-    string _stored = string.Empty;
+    string _stored = string.Empty, _current = string.Empty;
 
     [Parameter]
     public string Value { get; set; } = default!;
@@ -127,8 +127,6 @@
                 break;
             case "Enter":
                 _timer.Stop();
-                _active.Up();
-                _enter.Down();
                 break;
             default:
                 if (parameter is { AltKey: false })
@@ -145,33 +143,47 @@
 
     Task KeyDown(KeyboardEventArgs parameter)
     {
+        _timer.Stop();
         switch (parameter.Key)
         {
             case "Enter":
-                _timer.Stop();
-                _enter.Up();
-                break;
+                _focus.Up();
+                return OnCommit(_current);
         }
         return OnKeyDown.InvokeAsync(parameter);
     }
 
-    async Task Update()
+    Task Input(ChangeEventArgs parameter)
     {
-        await ValueChanged.Invoke(Value);
-        if (!_enter && _active)
-        {
-            EditContext?.NotifyFieldChanged(in _identifier);
-        }
-        await Updated.Invoke();
+        _current = parameter.Value?.ToString() ?? string.Empty;
+        return OnInput.InvokeAsync(parameter);
     }
 
-    async Task Tick()
+    Task OnCommit(string parameter)
     {
-        await Update();
+        _timer.Stop();
+        _current = _stored = parameter;
+        return EndEdit();
+    }
+
+    async Task EndEdit()
+    {
+        await Commit();
         await Task.Delay(250);
         if (_focus.Down())
         {
             await Focus.FocusElementAsync(RefBack.Current).ConfigureAwait(false);
+        }
+    }
+
+    async Task Commit()
+    {
+        if (Value != _current)
+        {
+            Value = _current;
+            await ValueChanged.Invoke(Value);
+            EditContext?.NotifyFieldChanged(in _identifier);
+            await Updated.Invoke();
         }
     }
 
@@ -180,24 +192,7 @@
         InvokeAsync(_tick);
     }
 
-    Task Input(ChangeEventArgs parameter)
-    {
-        Value = parameter.Value?.ToString() ?? string.Empty;
-        return OnInput.InvokeAsync(parameter);
-    }
-
-    Task OnCommit(string parameter)
-    {
-        _timer.Stop();
-        Value = _stored = parameter;
-        return Update();
-    }
-
-    public void Dispose()
-    {
-        _timer.Stop();
-        _timer.Dispose();
-    }
+    Task Tick() => EndEdit();
 
     async Task HandleFocusOut(FocusEventArgs parameter)
     {
@@ -205,14 +200,20 @@
         {
             _active.Up();
             _focus.Up();
-            await Update();
+            await Commit();
         }
         else if (_active.Down())
         {
             _timer.Stop();
-            await Update();
+            // await Commit();
         }
 
         await OnFocusOut.InvokeAsync(parameter).ConfigureAwait(false);
+    }
+
+    public void Dispose()
+    {
+        _timer.Stop();
+        _timer.Dispose();
     }
 }

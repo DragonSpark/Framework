@@ -10,7 +10,7 @@ namespace DragonSpark.Presentation.Components.Forms.Validation;
 
 public class Validating : ComponentBase, IDisposable
 {
-	readonly Switch           _active = new();
+	readonly Switch           _requested = new();
 	readonly IOperationsStore _store;
 	readonly Func<Task>       _update;
 
@@ -99,37 +99,42 @@ public class Validating : ComponentBase, IDisposable
 
 	void Request()
 	{
-		if (Enabled && _active.Up())
+		if (Enabled)
 		{
-			_list.Execute(InvokeAsync(_update));
+			_requested.Up();
+			_list.Execute(StartUpdate());
 		}
 	}
 
 	void FieldChanged(object? sender, FieldChangedEventArgs e)
 	{
-		if (Enabled && e.FieldIdentifier.Equals(Identifier) && _active.Up())
+		if (Enabled && e.FieldIdentifier.Equals(Identifier))
 		{
-			InvokeAsync(_update);
+			Task.Run(FieldChanged(e).Self);
 		}
 	}
+
+	async Task FieldChanged(FieldChangedEventArgs e)
+	{
+		await Task.Delay(100);
+		if (!_requested.Down())
+		{
+			await StartUpdate().ConfigureAwait(false);
+		}
+	}
+
+	Task StartUpdate() => InvokeAsync(_update);
 
 	async Task Update()
 	{
 		_messages.Clear(Identifier);
-		try
+		if (IsValid())
 		{
-			if (IsValid())
-			{
-				await Validate.InvokeAsync(new(new(Context.Verify(), Identifier), _messages, Message));
-				_context.Verify().NotifyValidationStateChanged();
+			await Validate.InvokeAsync(new(new(Context.Verify(), Identifier), _messages, Message));
+			_context.Verify().NotifyValidationStateChanged();
 
-				var callback = IsEmpty() ? Valid : Invalid;
-				await callback.InvokeAsync().ConfigureAwait(false);
-			}
-		}
-		finally
-		{
-			_active.Down();
+			var callback = IsEmpty() ? Valid : Invalid;
+			await callback.InvokeAsync().ConfigureAwait(false);
 		}
 	}
 
