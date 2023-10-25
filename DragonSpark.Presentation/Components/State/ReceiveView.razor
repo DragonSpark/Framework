@@ -9,35 +9,48 @@
 
 @implements IAsyncDisposable
 
-@inject CurrentRenderState State
+@inject RenderStateStore State
 
 @code
 {
-	[Parameter]
-	public ISubscribe Registration { get; set; } = default!;
+    Func<Task> _receive = null!;
 
-	[Parameter]
-	public IDepending<None> Condition { get; set; } = Is.Always<None>().Operation().Out();
+    [Parameter]
+    public ISubscribe Registration { get; set; } = default!;
 
-	[Parameter]
-	public EventCallback<None> Received { get; set; }
+    [Parameter]
+    public IDepending<None> Condition { get; set; } = Is.Always<None>().Operation().Out();
 
-	ISubscription? connection;
+    [Parameter]
+    public EventCallback<None> Received { get; set; }
 
-	protected override Task OnInitializedAsync()
-	{
-		switch (State.Get())
-		{
-		    case RenderState.Ready:
-			case RenderState.Established:
-				connection = Registration.Get(OnReceive);
-				return connection.Allocate();
-		}
+    ISubscription? connection;
 
-		return base.OnInitializedAsync();
-	}
+    protected override Task OnInitializedAsync()
+    {
+        switch (State.Get())
+        {
+            case RenderState.Ready:
+            case RenderState.Established:
+                _receive = OnReceive;
+                connection = Registration.Get(OnReceiveStart);
+                return connection.Allocate();
+        }
 
-	Task OnReceive() => InvokeAsync(() => Received.InvokeAsync(None.Default));
+        return base.OnInitializedAsync();
+    }
 
-	public ValueTask DisposeAsync() => connection?.DisposeAsync() ?? ValueTask.CompletedTask;
+    Task OnReceiveStart() => InvokeAsync(_receive);
+
+    Task OnReceive()
+    {
+        switch (State.Get())
+        {
+            case RenderState.Destroyed:
+                return Task.CompletedTask;
+        }
+        return Received.InvokeAsync(None.Default);
+    }
+
+    public ValueTask DisposeAsync() => connection?.DisposeAsync() ?? ValueTask.CompletedTask;
 }

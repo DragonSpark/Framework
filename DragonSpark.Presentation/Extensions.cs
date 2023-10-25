@@ -144,6 +144,9 @@ public static class Extensions
 		this DragonSpark.Compose.Model.Operations.OperationResultSelector<_, T> @this)
 		=> new(@this.Out());
 
+	public static Compose.OperationComposer<T> Then<T>(this Application.Compose.OperationComposer<T> @this)
+		=> new(@this.Get());
+
 /**/
 
 	public static Task Invoke<T>(this EventCallback<T> @this, T parameter)

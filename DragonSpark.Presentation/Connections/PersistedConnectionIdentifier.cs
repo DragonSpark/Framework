@@ -6,10 +6,10 @@ namespace DragonSpark.Presentation.Connections;
 
 sealed class PersistedConnectionIdentifier : IResult<Guid?>
 {
-	readonly CurrentRenderState        _session;
+	readonly RenderStateStore        _session;
 	readonly ConnectionIdentifierStore _store;
 
-	public PersistedConnectionIdentifier(CurrentRenderState session, ConnectionIdentifierStore store)
+	public PersistedConnectionIdentifier(RenderStateStore session, ConnectionIdentifierStore store)
 	{
 		_session = session;
 		_store   = store;

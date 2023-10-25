@@ -39,8 +39,8 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Then.Decorate<IExceptions, CompensationAwareExceptions>()
 		         .Decorate<IExceptions, NotificationAwareExceptions>()
 		         .Decorate<IExceptions, NavigationAwareExceptions>()
-				 .Decorate<IExceptions, CommonUserInterfaceExceptionsAwareExceptions>()
-				 .Decorate<IExceptionLogger, CommonUserInterfaceExceptionsAwareExceptionLogger>()
+		         .Decorate<IExceptions, CommonUserInterfaceExceptionsAwareExceptions>()
+		         .Decorate<IExceptionLogger, CommonUserInterfaceExceptionsAwareExceptionLogger>()
 		         //
 		         .Decorate<ILogException, NavigationAwareLogException>()
 		         //
@@ -85,6 +85,10 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         //
 		         .Then.Start<IRenderContentKey>()
 		         .Forward<RenderContentKey>()
+		         .Scoped()
+		         //
+		         .Then.Start<IRenderState>()
+		         .Forward<CurrentRenderState>()
 		         .Scoped()
 		         //
 		         .Then.Start<IApplyQueryStringValues>()

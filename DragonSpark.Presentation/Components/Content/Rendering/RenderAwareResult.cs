@@ -6,11 +6,11 @@ namespace DragonSpark.Presentation.Components.Content.Rendering;
 
 sealed class RenderAwareResult<T> : IResulting<T?>
 {
-	readonly CurrentRenderState _state;
+	readonly RenderStateStore _state;
 	readonly RenderVariable<T>  _variable;
 	readonly IResulting<T?>     _previous;
 
-	public RenderAwareResult(CurrentRenderState state, RenderVariable<T> variable, IResulting<T?> previous)
+	public RenderAwareResult(RenderStateStore state, RenderVariable<T> variable, IResulting<T?> previous)
 	{
 		_state    = state;
 		_variable = variable;

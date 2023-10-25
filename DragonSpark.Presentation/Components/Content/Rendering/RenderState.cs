@@ -5,4 +5,5 @@ public enum RenderState
 	Default,
 	Ready,
 	Established,
+	Destroyed
 }

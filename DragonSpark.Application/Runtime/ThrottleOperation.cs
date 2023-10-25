@@ -1,4 +1,6 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Allocated;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Stores;
 using System;
@@ -11,6 +13,9 @@ namespace DragonSpark.Application.Runtime;
 public class ThrottleOperation<T> : IOperation<T> where T : notnull
 {
 	readonly ISelect<T, Timer> _timers;
+
+	public ThrottleOperation(Func<T, Task> subject, TimeSpan interval)
+		: this(new Allocated<T>(subject).Then().Structure(), interval) {}
 
 	public ThrottleOperation(Operate<T> subject, TimeSpan interval)
 		: this(subject, interval, new ConcurrentDictionary<T, Timer>()) {}

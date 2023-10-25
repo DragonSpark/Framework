@@ -6,10 +6,10 @@ namespace DragonSpark.Presentation.Components.Content.Rendering.Sequences;
 sealed class RenderStateAwareAnyContents<T> : ISelect<RenderStateAwareAnyInput<T>, IAny<T>>
 {
 	readonly RenderCache        _memory;
-	readonly CurrentRenderState _state;
+	readonly RenderStateStore _state;
 	readonly AnyKey             _key;
 
-	public RenderStateAwareAnyContents(RenderCache memory, CurrentRenderState state, AnyKey key)
+	public RenderStateAwareAnyContents(RenderCache memory, RenderStateStore state, AnyKey key)
 	{
 		_memory = memory;
 		_state  = state;
@@ -25,7 +25,7 @@ sealed class RenderStateAwareAnyContents<T> : ISelect<RenderStateAwareAnyInput<T
 
 	sealed class Selection : RenderAwareSelection<AnyInput<T>, bool>, IAny<T>
 	{
-		public Selection(IAny<T> previous, CurrentRenderState state, RenderVariable<bool> variable)
+		public Selection(IAny<T> previous, RenderStateStore state, RenderVariable<bool> variable)
 			: base(previous, state, variable) {}
 	}
 }

@@ -3,6 +3,7 @@ using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Allocated;
 using DragonSpark.Model.Results;
+using DragonSpark.Presentation.Components.Content.Rendering;
 using DragonSpark.Presentation.Components.Diagnostics;
 using DragonSpark.Presentation.Components.State;
 using Microsoft.AspNetCore.Components;
@@ -54,10 +55,13 @@ public sealed class CallbackContext : IResult<EventCallback>
 	public CallbackContext Append(Action next) => Append(Start.A.Command(next).Operation().Allocate());
 
 	public CallbackContext Append(Func<Task> next)
-		=> new CallbackContext(_receiver ?? next.Target, _method.Start().Then().Append(next));
+		=> new (_receiver ?? next.Target, _method.Start().Then().Append(next));
 
 	public CallbackContext Append(Operate next)
-		=> new CallbackContext(_receiver ?? next.Target, _method.Start().Then().Structure().Append(next).Allocate());
+		=> new (_receiver ?? next.Target, _method.Start().Then().Structure().Append(next).Allocate());
+
+	public CallbackContext Watching(IRenderState parameter)
+		=> new (new ActiveRenderAwareOperation(_method.Start().Then().Structure().Out(), parameter).Allocate);
 
 	public EventCallback Get() => EventCallback.Factory.Create(_receiver!, _method);
 }

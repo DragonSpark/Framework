@@ -6,11 +6,11 @@ namespace DragonSpark.Presentation.Components.Content.Rendering;
 
 class RenderAwareSelection<TIn, TOut> : ISelecting<TIn, TOut>
 {
-	readonly CurrentRenderState    _state;
+	readonly RenderStateStore    _state;
 	readonly RenderVariable<TOut>  _variable;
 	readonly ISelecting<TIn, TOut> _previous;
 
-	protected RenderAwareSelection(ISelecting<TIn, TOut> previous, CurrentRenderState state,
+	protected RenderAwareSelection(ISelecting<TIn, TOut> previous, RenderStateStore state,
 	                               RenderVariable<TOut> variable)
 	{
 		_state    = state;

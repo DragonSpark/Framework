@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
+using DragonSpark.Presentation.Components.Content.Rendering;
 using DragonSpark.Presentation.Components.State;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -30,6 +31,9 @@ public sealed class OperationCallbackContext : IResult<EventCallback>
 
 	public OperationCallbackContext UpdateActivity()
 		=> new(_receiver, new ActivityAwareOperation(_operation, _receiver));
+
+	public OperationCallbackContext Watching(IRenderState parameter)
+		=> new (_receiver, new ActiveRenderAwareOperation(_operation, parameter));
 
 	public EventCallback Get() => EventCallback.Factory.Create(_receiver, _operation.Allocate);
 }

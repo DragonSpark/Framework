@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Application.Diagnostics;
+using DragonSpark.Application.Runtime;
 using DragonSpark.Compose;
 using DragonSpark.Compose.Model.Operations;
 using DragonSpark.Model.Selection;
@@ -30,4 +31,9 @@ public class OperationComposer<T> : OperationContext<T>
 
 	public OperationComposer<T> Handle(IExceptions exceptions, Type reportedType)
 		=> new(new ThrowingAware<T>(_subject, exceptions, reportedType));
+
+#pragma warning disable CS8714 // The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn't match 'notnull' constraint.
+	public OperationComposer<T> Throttle(TimeSpan @for)
+		=> new(new ThrottleOperation<T>(_subject.Get, @for));
+#pragma warning restore CS8714 // The type cannot be used as type parameter in the generic type or method. Nullability of type argument doesn't match 'notnull' constraint.
 }

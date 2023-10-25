@@ -6,10 +6,10 @@ namespace DragonSpark.Presentation.Components.Content.Rendering.Sequences;
 sealed class RenderStateAwarePagingContents<T> : ISelect<RenderStateAwarePagingContentsInput<T>, IPages<T>>
 {
 	readonly RenderCache        _memory;
-	readonly CurrentRenderState _state;
+	readonly RenderStateStore _state;
 	readonly IRenderContentKey  _key;
 
-	public RenderStateAwarePagingContents(RenderCache memory, CurrentRenderState state, IRenderContentKey key)
+	public RenderStateAwarePagingContents(RenderCache memory, RenderStateStore state, IRenderContentKey key)
 	{
 		_memory = memory;
 		_state  = state;
@@ -25,7 +25,7 @@ sealed class RenderStateAwarePagingContents<T> : ISelect<RenderStateAwarePagingC
 
 	sealed class Selection : RenderAwareSelection<PageInput, Page<T>>, IPages<T>
 	{
-		public Selection(IPages<T> previous, CurrentRenderState state, RenderVariable<Page<T>> variable)
+		public Selection(IPages<T> previous, RenderStateStore state, RenderVariable<Page<T>> variable)
 			: base(previous, state, variable) {}
 	}
 }

@@ -29,7 +29,6 @@ public sealed class RenderStateMonitorComponent : Microsoft.AspNetCore.Component
 
 	void NavigationOnLocationChanged(object? sender, LocationChangedEventArgs e)
 	{
-		// Navigation.LocationChanged -= _changed;
 		Monitor.Execute();
 	}
 
@@ -44,6 +43,9 @@ public sealed class RenderStateMonitorComponent : Microsoft.AspNetCore.Component
 			Monitor.Execute();
 		}
 	}
+
+	[Inject]
+	IRenderState Render { get; set; } = default!;
 
 	public void Dispose()
 	{

@@ -11,6 +11,6 @@ public sealed class CreateModel : ISelect<CreateModelInput, CreateModelView>
 	public CreateModelView Get(CreateModelInput parameter)
 	{
 		var (principal, address) = parameter;
-		return new (principal.ProviderIdentity(), principal.UserName(), address);
+		return new (principal.AuthenticatedIdentity(), principal.UserName(), address);
 	}
 }
