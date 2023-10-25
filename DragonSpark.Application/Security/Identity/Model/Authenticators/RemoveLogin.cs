@@ -17,11 +17,6 @@ sealed class RemoveLogin<T> : IRemoveLogin<T> where T : IdentityUser
 		var found  = await users.Subject.FindByIdAsync(user.Id.ToString());
 		var verify = found.Verify();
 		var result = await users.Subject.RemoveLoginAsync(verify, provider, identity);
-		if (result.Succeeded)
-		{
-			await users.Subject.UpdateSecurityStampAsync(verify).ConfigureAwait(false);
-		}
-
 		return result;
 	}
 }
