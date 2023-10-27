@@ -2,7 +2,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Azure.Core" Version="1.35.0" />
-		<PackageReference Include="Azure.Identity" Version="1.10.2" />
+		<PackageReference Include="Azure.Identity" Version="1.10.3" />
 		<PackageReference Include="Azure.Storage.Blobs" Version="12.18.0" />
 		<PackageReference Include="Azure.Storage.Queues" Version="12.16.0" />
 		<PackageReference Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.2.2" />
