@@ -1,5 +1,8 @@
 ﻿using DragonSpark.Application.Entities;
+using DragonSpark.Compose;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Threading.Tasks;
 
@@ -18,8 +21,11 @@ public sealed class SqlContexts<T> : IContexts<T>, IAsyncDisposable where T : Db
 	public async ValueTask<SqlContexts<T>> Initialize()
 	{
 		await using var context = _contexts.Get();
-		await context.Database.EnsureDeletedAsync();
-		await context.Database.EnsureCreatedAsync();
+		if (!await context.Database.GetService<IDatabaseCreator>().To<RelationalDatabaseCreator>().ExistsAsync().ConfigureAwait(false))
+		{
+			await context.Database.EnsureDeletedAsync().ConfigureAwait(false);
+		}
+		await context.Database.EnsureCreatedAsync().ConfigureAwait(false);
 		return this;
 	}
 

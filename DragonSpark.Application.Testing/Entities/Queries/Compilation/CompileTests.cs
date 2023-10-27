@@ -20,11 +20,6 @@ public class CompileTests
 		await using var contexts = await new SqlContexts<ContextWithData>().Initialize();
 		{
 			await using var context = contexts.Get();
-			await context.Database.EnsureCreatedAsync();
-		}
-
-		{
-			await using var context = contexts.Get();
 
 			Expression<Func<DbContext, Input, IQueryable<string>>> expression
 				= (c, i) => c.Set<Subject>().Where(x => x.Name == i.Name).Select(x => x.Name);
@@ -40,10 +35,6 @@ public class CompileTests
 	public async Task VerifyNone()
 	{
 		await using var contexts = await new SqlContexts<ContextWithData>().Initialize();
-		{
-			await using var context = contexts.Get();
-			await context.Database.EnsureCreatedAsync();
-		}
 
 		{
 			await using var context = contexts.Get();
