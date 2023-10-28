@@ -7,9 +7,9 @@ public class Mutable<T> : IMutable<T>
 	readonly Func<T>   _get;
 	readonly Action<T> _set;
 
-	public Mutable(IMutable<T> mutable) : this(mutable.Execute, mutable.Get) {}
+	protected Mutable(IMutable<T> mutable) : this(mutable.Execute, mutable.Get) {}
 
-	public Mutable(Action<T> set, Func<T> get)
+	protected Mutable(Action<T> set, Func<T> get)
 	{
 		_set = set;
 		_get = get;

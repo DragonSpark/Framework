@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.SignalR.Client
 @using DragonSpark.Compose
 @using DragonSpark.Application.Connections.Client
+@using DragonSpark.Model.Results
 
 @inject IRestartConnection Restart
 
@@ -18,31 +19,31 @@
     }
 
     [Parameter]
-    public HubConnection Subject { get; set; } = default!;
+    public IReceiveConnection Subject { get; set; } = default!;
 
     [Parameter]
-    public TimeSpan Interval { get; set; } = TimeSpan.FromSeconds(30);
+    public TimeSpan Interval { get; set; } = TimeSpan.FromMinutes(5);
 
     async Task OnUpdate()
     {
-        switch (Subject.State)
+        var subject = Subject.Get();
+        switch (subject.State)
         {
             case HubConnectionState.Disconnected:
                 try
                 {
-                    await Restart.Get(Subject);
+                    await Restart.Get(subject);
                     await Updated.InvokeAsync().ConfigureAwait(false);
                 }
                 catch (Exception error)
                 {
+                    Subject.Execute();
                     if (Error.HasDelegate)
                     {
                         await Error.InvokeAsync(error).ConfigureAwait(false);
                     }
                     else
                     {
-                        Interval = TimeSpan.FromSeconds(90);
-                        StateHasChanged();
                         throw;
                     }
                 }

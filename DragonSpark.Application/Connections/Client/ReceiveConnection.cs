@@ -1,27 +1,27 @@
-﻿using DragonSpark.Model.Results;
+﻿using DragonSpark.Model;
+using DragonSpark.Model.Commands;
+using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Connections.Client;
 
-public class ReceiveConnection : Instance<HubConnection>, IAsyncDisposable
+public class ReceiveConnection : Result<HubConnection>, IReceiveConnection, IAsyncDisposable
 {
-	readonly HubConnection   _connection;
+	readonly ICurrentConnection _current;
 
-	protected ReceiveConnection(IHubConnections hubs, Uri address) : this(hubs.Get(address)) {}
+	protected ReceiveConnection(IHubConnections connections, Uri location)
+		: this(new CurrentConnection(connections, location)) {}
 
-	protected ReceiveConnection(HubConnection connection) : base(connection) => _connection = connection;
+	protected ReceiveConnection(ICurrentConnection current) : base(current) => _current = current;
 
-	public async ValueTask DisposeAsync()
+	public void Execute(None parameter)
 	{
-		try
-		{
-			await _connection.StopAsync().ConfigureAwait(false);
-		}
-		finally
-		{
-			await _connection.DisposeAsync().ConfigureAwait(false);
-		}
+		_current.Execute(parameter);
 	}
+
+	public ValueTask DisposeAsync() => _current.DisposeAsync();
 }
+
+public interface IReceiveConnection : IResult<HubConnection>, ICommand {}
