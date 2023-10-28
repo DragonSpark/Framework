@@ -32,12 +32,11 @@
             case HubConnectionState.Disconnected:
                 try
                 {
-                    await Restart.Get(subject);
+                    await Restart.Get(Subject);
                     await Updated.InvokeAsync().ConfigureAwait(false);
                 }
                 catch (Exception error)
                 {
-                    Subject.Execute();
                     if (Error.HasDelegate)
                     {
                         await Error.InvokeAsync(error).ConfigureAwait(false);

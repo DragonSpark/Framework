@@ -34,9 +34,5 @@ sealed class ConnectionVariable : Result<HubConnection?>, IMutable<HubConnection
 	}
 
 	public ValueTask DisposeAsync()
-	{
-		var current = _previous.Get();
-		_previous.Execute(default);
-		return current?.DisposeAsync() ?? ValueTask.CompletedTask;
-	}
+		=> (_previous.TryPop(out var current) ? current?.DisposeAsync() : null) ?? ValueTask.CompletedTask;
 }
