@@ -6,13 +6,17 @@ namespace DragonSpark.Application.Connections;
 
 sealed class Registrations : ICommand<IServiceCollection>
 {
-	public static Registrations Default { get; } = new Registrations();
+	public static Registrations Default { get; } = new();
 
 	Registrations() {}
 
 	public void Execute(IServiceCollection parameter)
 	{
-		parameter.Start<AssignSignedContent>()
+		parameter.Start<SignedHubConnections>()
+		         .Singleton()
+		         //
+		         .Then.Start<IAssignSignedContent>()
+		         .Forward<AssignSignedContent>()
 		         .Include(x => x.Dependencies.Recursive())
 		         .Singleton()
 		         //

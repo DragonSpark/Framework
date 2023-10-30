@@ -5,5 +5,5 @@ namespace DragonSpark.Application.Connections;
 
 sealed class ConfigureConnection : Command<HttpConnectionOptions>, IConfigureConnection
 {
-	public ConfigureConnection(AssignSignedContent command) : base(command) {}
+	public ConfigureConnection(IAssignSignedContent command) : base(command) {}
 }

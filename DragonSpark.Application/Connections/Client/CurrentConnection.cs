@@ -15,8 +15,7 @@ sealed class CurrentConnection : Result<HubConnection>, ICurrentConnection
 	public CurrentConnection(ConnectionVariable store, IHubConnections connections, Uri location)
 		: this(store, new ConnectionStore(store, connections, location)) {}
 
-	public CurrentConnection(IAsyncDisposable store, ConnectionStore connection)
-		: base(connection)
+	public CurrentConnection(IAsyncDisposable store, ConnectionStore connection) : base(connection)
 		=> _store = store;
 
 	public ValueTask DisposeAsync() => _store.DisposeAsync();
