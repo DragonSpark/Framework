@@ -26,8 +26,12 @@ public sealed class RefreshAuthenticationDisplayState<T> : IDepending<ClaimsPrin
 
 	public async ValueTask<bool> Get(ClaimsPrincipal parameter)
 	{
+		var number = parameter.Number();
+		if (number is not null)
+		{
+			_clear.Execute(number.Value);
+		}
 		var previous = await _service.GetAuthenticationStateAsync();
-		_clear.Execute(parameter);
 		var next = await _service.GetAuthenticationStateAsync();
 		var result = previous.User.IsAuthenticated() != next.User.IsAuthenticated()
 		             || previous.To<AuthenticationState<T>>().Profile?.SecurityStamp !=

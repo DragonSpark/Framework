@@ -17,11 +17,21 @@ sealed class ClearCurrentAuthentication : ICommand<ClaimsPrincipal>
 
 	public void Execute(ClaimsPrincipal parameter)
 	{
-		_clear.Execute(parameter);
+		{
+			var number = parameter.Number();
+			if (number is not null)
+			{
+				_clear.Execute(number.Value);
+			}
+		}
 		var current = _current.Get();
 		if (current != parameter)
 		{
-			_clear.Execute(current);
+			var number = current.Number();
+			if (number is not null)
+			{
+				_clear.Execute(number.Value);
+			}
 		}
 	}
 }

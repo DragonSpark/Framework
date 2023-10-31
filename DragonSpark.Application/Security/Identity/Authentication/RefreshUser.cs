@@ -24,7 +24,11 @@ sealed class RefreshUser<T> : IRefreshUser where T : IdentityUser
 		using var authentication = _authentications.Get();
 		if (authentication.Subject.IsSignedIn(parameter))
 		{
-			_clear.Execute(parameter);
+			var number = parameter.Number();
+			if (number is not null)
+			{
+				_clear.Execute(number.Value);
+			}
 			var user = await authentication.Users.FindByIdAsync(authentication.Users.GetUserId(parameter).Verify())
 			                               .ConfigureAwait(false);
 			await _refresh.Await(user.Verify());

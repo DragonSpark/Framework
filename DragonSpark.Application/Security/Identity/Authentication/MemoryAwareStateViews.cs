@@ -15,5 +15,8 @@ sealed class MemoryAwareStateViews<T> : Selecting<ClaimsPrincipal, StateView<T>>
 		               .Store()
 		               .In(memory)
 		               .For(TimeSpan.FromMinutes(10))
-		               .Using(StateViewKey.Default)) {}
+		               .Using(Start.A.Selection<ClaimsPrincipal>()
+		                           .By.Calling(x => x.Number())
+		                           .Select(x => x.HasValue ? StateViewKey.Default.Get(x.Value) : string.Empty)
+		                           .Get())) {}
 }

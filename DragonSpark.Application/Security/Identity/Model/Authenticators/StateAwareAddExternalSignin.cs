@@ -21,7 +21,11 @@ sealed class StateAwareAddExternalSignin : IAddExternalSignin
 		var result = await _previous.Await(parameter);
 		if (result?.Succeeded ?? false)
 		{
-			_clear.Execute(parameter);
+			var number = parameter.Number();
+			if (number is not null)
+			{
+				_clear.Execute(number.Value);
+			}
 		}
 
 		return result;

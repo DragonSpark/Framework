@@ -74,7 +74,7 @@ partial class Extensions
 
 	public static uint? Number(this ClaimsPrincipal @this) => UserNumber.Default.Get(@this);
 
-	public static string? Identifier(this ClaimsPrincipal @this) => UserIdentifier.Default.Get(@this);
+	/*public static string? Identifier(this ClaimsPrincipal @this) => UserIdentifier.Default.Get(@this);*/
 
 	public static ProviderIdentity AuthenticatedIdentity(this ClaimsPrincipal @this)
 		=> PrincipalProviderIdentity.Default.Get(@this);
