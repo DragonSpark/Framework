@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.Security.Identity.Authentication;
 
-public interface IAuthenticate<T> : IOperation<Login<T>> {}
+public interface IAuthenticate<T> : IOperation<Login<T>>;

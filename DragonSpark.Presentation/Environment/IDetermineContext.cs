@@ -3,4 +3,4 @@ using Microsoft.AspNetCore.Http;
 
 namespace DragonSpark.Presentation.Environment;
 
-public interface IDetermineContext : IAlteration<HttpContext> {}
+public interface IDetermineContext : IAlteration<HttpContext>;

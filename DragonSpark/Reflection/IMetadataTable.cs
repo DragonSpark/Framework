@@ -3,4 +3,4 @@ using System.Reflection;
 
 namespace DragonSpark.Reflection;
 
-public interface IMetadataTable<TMetadata, TValue> : ITable<TMetadata, TValue> where TMetadata : MemberInfo {}
+public interface IMetadataTable<TMetadata, TValue> : ITable<TMetadata, TValue> where TMetadata : MemberInfo;

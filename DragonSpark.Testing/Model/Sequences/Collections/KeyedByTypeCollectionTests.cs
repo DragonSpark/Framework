@@ -6,11 +6,11 @@ namespace DragonSpark.Testing.Model.Sequences.Collections;
 
 public sealed class KeyedByTypeCollectionTests
 {
-	public interface ISubject {}
+	public interface ISubject;
 
-	sealed class Subject : ISubject {}
+	sealed class Subject : ISubject;
 
-	sealed class Other : ISubject {}
+	sealed class Other : ISubject;
 
 	[Fact]
 	public void Verify()

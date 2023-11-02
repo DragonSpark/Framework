@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.Communication;
 
-public interface IClientStateValues : IArray<string> {}
+public interface IClientStateValues : IArray<string>;

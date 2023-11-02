@@ -20,7 +20,7 @@ public sealed class DependencyRegistrationContextTests
 		public Other Other { get; }
 	}
 
-	sealed class Other {}
+	sealed class Other;
 
 	sealed class CustomList<T> : List<T>
 	{

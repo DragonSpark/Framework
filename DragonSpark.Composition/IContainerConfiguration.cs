@@ -3,4 +3,4 @@ using LightInject;
 
 namespace DragonSpark.Composition;
 
-public interface IContainerConfiguration : ICommand<IServiceContainer> {}
+public interface IContainerConfiguration : ICommand<IServiceContainer>;

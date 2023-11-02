@@ -10,14 +10,14 @@ namespace DragonSpark.Testing.Runtime.Environment;
 
 public sealed class ComponentTypeLocatorsTests
 {
-	public interface IComponent {}
+	public interface IComponent;
 
-	sealed class Subject : IComponent {}
+	sealed class Subject : IComponent;
 
-	sealed class AnotherSubject : IComponent {}
+	sealed class AnotherSubject : IComponent;
 
 	[Sort(-10)]
-	sealed class First : IComponent {}
+	sealed class First : IComponent;
 
 	sealed class Last : IComponent, ISortAware
 	{

@@ -7,7 +7,7 @@ namespace DragonSpark.Testing.Compose.Extents.Results;
 
 public sealed class ResultContextTests
 {
-	sealed class Subject {}
+	sealed class Subject;
 
 	sealed class SubjectSingleton
 	{

@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.Model.Sequences;
 
-public interface ITransactional<T> : ISelect<TransactionInput<T>, Transactions<T>> { }
+public interface ITransactional<T> : ISelect<TransactionInput<T>, Transactions<T>>;

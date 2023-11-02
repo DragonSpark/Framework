@@ -7,7 +7,7 @@ namespace DragonSpark.Testing.Reflection.Types;
 public sealed class IsGenericTypeDefinitionTests
 {
 	// ReSharper disable once UnusedTypeParameter
-	sealed class Subject<T> {}
+	sealed class Subject<T>;
 
 	[Fact]
 	public void Verify()

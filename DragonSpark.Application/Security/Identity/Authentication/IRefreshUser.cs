@@ -3,4 +3,4 @@ using System.Security.Claims;
 
 namespace DragonSpark.Application.Security.Identity.Authentication;
 
-public interface IRefreshUser : IOperation<ClaimsPrincipal> {}
+public interface IRefreshUser : IOperation<ClaimsPrincipal>;

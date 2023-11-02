@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Composition.Scopes.Hierarchy;
 
-public interface IParentServiceProvider : IServiceProvider {}
+public interface IParentServiceProvider : IServiceProvider;

@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Presentation.Environment.Browser;
 
-public interface IEvaluate : IOperation<string> {}
+public interface IEvaluate : IOperation<string>;

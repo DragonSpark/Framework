@@ -3,4 +3,4 @@ using System;
 
 namespace DragonSpark.Text.Formatting;
 
-public interface IFormatEntry<T> : IPair<string, Func<T, string>> {}
+public interface IFormatEntry<T> : IPair<string, Func<T, string>>;

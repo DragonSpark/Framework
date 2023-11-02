@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Reflection.Types;
 
-public interface ITypedTable<T> : IMetadataTable<TypeInfo, T> {}
+public interface ITypedTable<T> : IMetadataTable<TypeInfo, T>;

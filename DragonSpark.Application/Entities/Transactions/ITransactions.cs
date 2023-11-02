@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.Entities.Transactions;
 
-public interface ITransactions : IResulting<ITransaction> {}
+public interface ITransactions : IResulting<ITransaction>;

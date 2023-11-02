@@ -1,3 +1,3 @@
 ﻿namespace DragonSpark.Runtime.Activation;
 
-public interface ISingletons : IActivator {}
+public interface ISingletons : IActivator;

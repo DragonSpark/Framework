@@ -3,4 +3,4 @@ using Microsoft.AspNetCore.Http;
 
 namespace DragonSpark.Presentation.Environment;
 
-public interface IInitializeContext : ICommand<HttpContext> {}
+public interface IInitializeContext : ICommand<HttpContext>;

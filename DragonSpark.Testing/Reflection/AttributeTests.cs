@@ -7,13 +7,13 @@ namespace DragonSpark.Testing.Reflection;
 
 public sealed class AttributeTests
 {
-	sealed class Extend : Root {}
+	sealed class Extend : Root;
 
 	[Subject]
-	class Root {}
+	class Root;
 
 	[AttributeUsage(AttributeTargets.Class)]
-	sealed class SubjectAttribute : Attribute {}
+	sealed class SubjectAttribute : Attribute;
 
 	[Fact]
 	public void Verify()

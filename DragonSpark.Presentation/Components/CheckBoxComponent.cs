@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Presentation.Components;
 
-public sealed class CheckBoxComponent : RadzenCheckBox<bool> {}
+public sealed class CheckBoxComponent : RadzenCheckBox<bool>;

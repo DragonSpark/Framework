@@ -4,4 +4,4 @@ using System.Reflection;
 
 namespace DragonSpark.Testing.Objects.Entities.Generation;
 
-public interface IPrincipalProperty : ISelect<Memory<PropertyInfo>, PropertyInfo?> {}
+public interface IPrincipalProperty : ISelect<Memory<PropertyInfo>, PropertyInfo?>;

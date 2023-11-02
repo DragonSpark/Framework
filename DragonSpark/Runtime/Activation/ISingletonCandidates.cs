@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Runtime.Activation;
 
-public interface ISingletonCandidates : IArray<string> {}
+public interface ISingletonCandidates : IArray<string>;

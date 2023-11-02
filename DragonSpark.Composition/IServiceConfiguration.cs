@@ -3,4 +3,4 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Composition;
 
-public interface IServiceConfiguration : ICommand<IServiceCollection> {}
+public interface IServiceConfiguration : ICommand<IServiceCollection>;

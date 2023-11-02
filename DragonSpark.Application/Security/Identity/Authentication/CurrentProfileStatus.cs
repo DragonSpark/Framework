@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.Security.Identity.Authentication;
 
-public sealed class CurrentProfileStatus : Variable<ProfileStatus> {}
+public sealed class CurrentProfileStatus : Variable<ProfileStatus>;

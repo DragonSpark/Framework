@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.Security.Identity;
 
-public interface IMarkModified<in T> : IOperation<T> where T : IdentityUser {}
+public interface IMarkModified<in T> : IOperation<T> where T : IdentityUser;

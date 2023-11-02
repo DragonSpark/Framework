@@ -4,4 +4,4 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Diagnostics;
 
-public interface IExecuteOperation : ISelecting<(Type Owner, ValueTask Operation), Exception?> {}
+public interface IExecuteOperation : ISelecting<(Type Owner, ValueTask Operation), Exception?>;

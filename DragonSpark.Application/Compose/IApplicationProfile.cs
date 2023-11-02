@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.Compose;
 
-public interface IApplicationProfile : IServiceConfiguration, IApplicationConfiguration {}
+public interface IApplicationProfile : IServiceConfiguration, IApplicationConfiguration;

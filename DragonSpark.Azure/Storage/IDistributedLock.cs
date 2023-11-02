@@ -3,7 +3,4 @@ using Medallion.Threading;
 
 namespace DragonSpark.Azure.Storage;
 
-public interface IDistributedLock : IResulting<IDistributedSynchronizationHandle>
-{
-
-}
+public interface IDistributedLock : IResulting<IDistributedSynchronizationHandle>;

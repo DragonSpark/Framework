@@ -3,4 +3,4 @@ using Microsoft.AspNetCore.Builder;
 
 namespace DragonSpark.Application;
 
-public interface IApplicationConfiguration : ICommand<IApplicationBuilder> {}
+public interface IApplicationConfiguration : ICommand<IApplicationBuilder>;

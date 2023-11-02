@@ -3,4 +3,4 @@ using Microsoft.AspNetCore.Http;
 
 namespace DragonSpark.Application.Security;
 
-public interface ICurrentContext : IResult<HttpContext> {}
+public interface ICurrentContext : IResult<HttpContext>;

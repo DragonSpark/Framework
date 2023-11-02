@@ -3,4 +3,4 @@ using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Azure.Queues;
 
-public interface IQueueClients : ISelect<string, QueueClient> {}
+public interface IQueueClients : ISelect<string, QueueClient>;

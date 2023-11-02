@@ -1,3 +1,3 @@
 ﻿namespace DragonSpark.Diagnostics.Logging;
 
-public interface ILogException<T> : ILogMessage<ExceptionParameter<T>> {}
+public interface ILogException<T> : ILogMessage<ExceptionParameter<T>>;

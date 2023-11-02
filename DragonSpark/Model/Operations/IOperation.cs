@@ -4,6 +4,6 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations;
 
-public interface IOperation<in T> : ISelect<T, ValueTask> {}
+public interface IOperation<in T> : ISelect<T, ValueTask>;
 
-public interface IOperation : IResult<ValueTask> {}
+public interface IOperation : IResult<ValueTask>;

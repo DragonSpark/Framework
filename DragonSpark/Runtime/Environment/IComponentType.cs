@@ -3,4 +3,4 @@ using System;
 
 namespace DragonSpark.Runtime.Environment;
 
-public interface IComponentType : IAlteration<Type> {}
+public interface IComponentType : IAlteration<Type>;

@@ -1,3 +1,3 @@
 ﻿namespace DragonSpark.Presentation.Interaction;
 
-public interface IUnsuccessfulResult : IInteractionResult {}
+public interface IUnsuccessfulResult : IInteractionResult;

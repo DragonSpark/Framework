@@ -3,4 +3,4 @@ using System.Security.Claims;
 
 namespace DragonSpark.Application.Security.Identity.Claims.Compile;
 
-public interface IExtractClaims : IArray<ClaimsPrincipal, Claim> {}
+public interface IExtractClaims : IArray<ClaimsPrincipal, Claim>;

@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Server.Requests;
 
-public interface IIsOwner : ISelecting<Unique, bool?> {}
+public interface IIsOwner : ISelecting<Unique, bool?>;

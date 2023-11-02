@@ -157,9 +157,9 @@ public sealed class StartRegistrationTests
 		public MessageResult() : base(() => "Hello World!") {}
 	}
 
-	interface ISubject {}
+	interface ISubject;
 
-	class Subject : ISubject {}
+	class Subject : ISubject;
 
 	class DecoratedSubject : ISubject
 	{
@@ -228,11 +228,11 @@ public sealed class StartRegistrationTests
 		public Other Other { get; }
 	}
 
-	sealed class Other {}
+	sealed class Other;
 
-	sealed class First {}
+	sealed class First;
 
-	sealed class Second {}
+	sealed class Second;
 
 	sealed class Third
 	{

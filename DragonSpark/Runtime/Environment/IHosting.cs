@@ -3,4 +3,4 @@ using System.Reflection;
 
 namespace DragonSpark.Runtime.Environment;
 
-public interface IHosting : IResult<Assembly> {}
+public interface IHosting : IResult<Assembly>;

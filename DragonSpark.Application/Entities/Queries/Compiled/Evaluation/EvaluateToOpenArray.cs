@@ -8,9 +8,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
 
-internal class EvaluateToOpenArray
-{
-}
+internal class EvaluateToOpenArray;
 
 public class EvaluateToOpenArray<T> : EvaluateToOpenArray<None, T>, IResulting<T[]>
 {

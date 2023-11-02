@@ -4,4 +4,4 @@ using DragonSpark.Model.Selection.Conditions;
 
 namespace DragonSpark.Presentation.Components.Content;
 
-public interface IActiveContent<T> : IResulting<T?>, ICommand, IConditionAware {}
+public interface IActiveContent<T> : IResulting<T?>, ICommand, IConditionAware;

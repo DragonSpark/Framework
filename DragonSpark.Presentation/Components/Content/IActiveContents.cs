@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Presentation.Components.Content;
 
-public interface IActiveContents<T> : ISelect<ActiveContentInput<T>, IActiveContent<T>> {}
+public interface IActiveContents<T> : ISelect<ActiveContentInput<T>, IActiveContent<T>>;

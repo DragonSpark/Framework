@@ -3,4 +3,4 @@ using Microsoft.AspNetCore.Http;
 
 namespace DragonSpark.Presentation.Environment;
 
-public sealed class ContextStore : Variable<HttpContext?> {}
+public sealed class ContextStore : Variable<HttpContext?>;

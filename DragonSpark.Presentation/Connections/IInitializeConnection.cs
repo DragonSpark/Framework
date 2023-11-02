@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Presentation.Connections;
 
-public interface IInitializeConnection : ICommand {}
+public interface IInitializeConnection : ICommand;

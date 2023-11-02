@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Presentation.Components.State;
 
-public interface IRefreshContainer : IMembership<IRefreshAware> {}
+public interface IRefreshContainer : IMembership<IRefreshAware>;

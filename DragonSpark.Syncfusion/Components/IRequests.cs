@@ -3,4 +3,4 @@ using DragonSpark.SyncfusionRendering.Queries;
 
 namespace DragonSpark.SyncfusionRendering.Components;
 
-public interface IRequests : IAlteration<IDataRequest> {}
+public interface IRequests : IAlteration<IDataRequest>;

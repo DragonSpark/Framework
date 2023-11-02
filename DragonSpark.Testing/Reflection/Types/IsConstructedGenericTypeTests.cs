@@ -8,9 +8,9 @@ namespace DragonSpark.Testing.Reflection.Types;
 
 public sealed class IsConstructedGenericTypeTests
 {
-	sealed class Subject<T> {}
+	sealed class Subject<T>;
 
-	interface ISubject<T> {}
+	interface ISubject<T>;
 
 	[Fact]
 	public void Verify()

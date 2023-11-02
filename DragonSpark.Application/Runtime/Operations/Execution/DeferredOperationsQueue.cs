@@ -4,4 +4,4 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Runtime.Operations.Execution;
 
-sealed class DeferredOperationsQueue : Queue<Func<ValueTask>> {}
+sealed class DeferredOperationsQueue : Queue<Func<ValueTask>>;

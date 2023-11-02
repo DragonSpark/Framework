@@ -3,4 +3,4 @@ using System.Security.Claims;
 
 namespace DragonSpark.Application.Security.Identity.Authentication;
 
-public interface IAuthenticationValidation : IDepending<ClaimsPrincipal> {}
+public interface IAuthenticationValidation : IDepending<ClaimsPrincipal>;

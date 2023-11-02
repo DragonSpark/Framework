@@ -4,4 +4,4 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application;
 
-public interface IProgram : ISelect<IHostBuilder, Task> {}
+public interface IProgram : ISelect<IHostBuilder, Task>;

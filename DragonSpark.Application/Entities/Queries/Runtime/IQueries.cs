@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.Entities.Queries.Runtime;
 
-public interface IQueries<T> : IResulting<Query<T>> {}
+public interface IQueries<T> : IResulting<Query<T>>;

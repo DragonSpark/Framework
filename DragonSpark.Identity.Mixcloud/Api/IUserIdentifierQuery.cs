@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Identity.Mixcloud.Api;
 
-public interface IUserIdentifierQuery : ISelecting<string, string?> {}
+public interface IUserIdentifierQuery : ISelecting<string, string?>;

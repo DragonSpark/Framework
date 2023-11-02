@@ -8,4 +8,4 @@ namespace DragonSpark.Application.Communication;
 public interface IHeader : ISelect<IHeaderDictionary, string?>,
                            IAssign<IHeaderDictionary, string>,
                            ISelect<HttpHeaders, string?>,
-                           IAssign<HttpHeaders, string> {}
+                           IAssign<HttpHeaders, string>;

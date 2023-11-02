@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.Entities.Editing;
 
-public interface IModifying<T> : IOperation<Edit<T>> {}
+public interface IModifying<T> : IOperation<Edit<T>>;

@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Azure.Storage;
 
-public interface ICopy : ISelecting<DestinationInput, IStorageEntry> {}
+public interface ICopy : ISelecting<DestinationInput, IStorageEntry>;

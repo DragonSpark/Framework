@@ -4,4 +4,4 @@ using System.Collections.Generic;
 
 namespace DragonSpark.Composition.Compose.Deferred;
 
-sealed class DeferredRegistrations : List<ICommand<IServiceCollection>> { }
+sealed class DeferredRegistrations : List<ICommand<IServiceCollection>>;

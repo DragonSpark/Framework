@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Diagnostics.Logging;
 
-public interface ITemplate<T> : ISelect<ExceptionParameter<T>, TemplateException> {}
+public interface ITemplate<T> : ISelect<ExceptionParameter<T>, TemplateException>;

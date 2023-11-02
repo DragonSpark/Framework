@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Presentation.Components.Routing;
 
-public interface ISetPageExitCheck : IOperation<bool> {}
+public interface ISetPageExitCheck : IOperation<bool>;

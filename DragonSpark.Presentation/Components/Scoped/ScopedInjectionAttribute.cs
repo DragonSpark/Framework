@@ -3,4 +3,4 @@
 namespace DragonSpark.Presentation.Components.Scoped;
 
 [AttributeUsage(AttributeTargets.Property)]
-public sealed class ScopedInjectionAttribute : Attribute {}
+public sealed class ScopedInjectionAttribute : Attribute;

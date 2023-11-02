@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Runtime;
 
-public interface ICopyToFile : IOperation<CopyInput> {}
+public interface ICopyToFile : IOperation<CopyInput>;

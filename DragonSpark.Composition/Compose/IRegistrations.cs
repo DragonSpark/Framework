@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Composition.Compose;
 
-public interface IRegistrations : ISelect<IRelatedTypes, IRegistration> {}
+public interface IRegistrations : ISelect<IRelatedTypes, IRegistration>;

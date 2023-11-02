@@ -9,7 +9,7 @@ namespace DragonSpark.Testing.Model.Sequences.Collections;
 public class SortMetadataTests
 {
 	[Sort(200)]
-	sealed class Subject {}
+	sealed class Subject;
 
 	[Fact]
 	public void Verify()

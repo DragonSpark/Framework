@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.Entities.Initialization;
 
-public interface ISchemaModification : ICommand<ModelCreating> {}
+public interface ISchemaModification : ICommand<ModelCreating>;

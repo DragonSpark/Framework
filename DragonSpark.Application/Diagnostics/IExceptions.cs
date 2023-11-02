@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.Diagnostics;
 
-public interface IExceptions : IOperation<ExceptionInput> {}
+public interface IExceptions : IOperation<ExceptionInput>;

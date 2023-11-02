@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Composition.Compose;
 
-public interface IHostConfiguration : ICommand<HostingInput> {}
+public interface IHostConfiguration : ICommand<HostingInput>;

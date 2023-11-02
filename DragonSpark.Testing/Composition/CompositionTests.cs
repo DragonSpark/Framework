@@ -19,7 +19,7 @@ namespace DragonSpark.Testing.Composition;
 // ReSharper disable once TestFileNameWarning
 public sealed class CompositionTests
 {
-	public interface IDoesNotExist {}
+	public interface IDoesNotExist;
 
 	sealed class Singleton
 	{
@@ -28,7 +28,7 @@ public sealed class CompositionTests
 		Singleton() {}
 	}
 
-	sealed class Activated {}
+	sealed class Activated;
 
 	sealed class Decorate : ICompositionRoot
 	{

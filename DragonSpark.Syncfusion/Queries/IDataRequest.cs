@@ -3,4 +3,4 @@ using Syncfusion.Blazor;
 
 namespace DragonSpark.SyncfusionRendering.Queries;
 
-public interface IDataRequest : ISelecting<DataManagerRequest, object> {}
+public interface IDataRequest : ISelecting<DataManagerRequest, object>;

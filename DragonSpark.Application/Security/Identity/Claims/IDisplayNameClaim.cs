@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.Security.Identity.Claims;
 
-public interface IDisplayNameClaim : ISelect<string, string> {}
+public interface IDisplayNameClaim : ISelect<string, string>;

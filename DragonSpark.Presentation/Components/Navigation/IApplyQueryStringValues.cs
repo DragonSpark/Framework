@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Presentation.Components.Navigation;
 
-public interface IApplyQueryStringValues : ICommand<Microsoft.AspNetCore.Components.ComponentBase> {}
+public interface IApplyQueryStringValues : ICommand<Microsoft.AspNetCore.Components.ComponentBase>;

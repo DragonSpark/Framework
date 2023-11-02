@@ -5,4 +5,4 @@ using System.Reflection;
 
 namespace DragonSpark.Reflection.Members;
 
-interface IConstructors : ISelect<Type, ICollection<ConstructorInfo>> {}
+interface IConstructors : ISelect<Type, ICollection<ConstructorInfo>>;

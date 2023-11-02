@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Composition.Scopes.Hierarchy;
 
-public interface IScopedServices : IResult<IScopedServiceProvider> {}
+public interface IScopedServices : IResult<IScopedServiceProvider>;

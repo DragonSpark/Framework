@@ -1,3 +1,3 @@
 ﻿namespace DragonSpark.Testing.Reflection;
 
-public class IsGenericOfSpecificationTests {}
+public class IsGenericOfSpecificationTests;

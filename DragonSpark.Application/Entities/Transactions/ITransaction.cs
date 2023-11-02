@@ -4,4 +4,4 @@ using System;
 
 namespace DragonSpark.Application.Entities.Transactions;
 
-public interface ITransaction : ICommand, IOperation, IAsyncDisposable {}
+public interface ITransaction : ICommand, IOperation, IAsyncDisposable;

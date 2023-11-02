@@ -3,4 +3,4 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DragonSpark.Server.Requests;
 
-public interface IRequesting<T> : ISelecting<Request<T>, IActionResult> {}
+public interface IRequesting<T> : ISelecting<Request<T>, IActionResult>;

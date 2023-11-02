@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.Security.Data;
 
-public interface IEncrypt : IAlteration<byte[]> {}
+public interface IEncrypt : IAlteration<byte[]>;

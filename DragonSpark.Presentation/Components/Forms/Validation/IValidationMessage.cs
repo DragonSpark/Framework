@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Presentation.Components.Forms.Validation;
 
-public interface IValidationMessage<in T> : ISelect<T?, string?> {}
+public interface IValidationMessage<in T> : ISelect<T?, string?>;

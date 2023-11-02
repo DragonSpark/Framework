@@ -4,4 +4,4 @@ using System;
 
 namespace DragonSpark.Application.Connections;
 
-public interface IHubConnections : ISelect<Uri, HubConnection> {}
+public interface IHubConnections : ISelect<Uri, HubConnection>;

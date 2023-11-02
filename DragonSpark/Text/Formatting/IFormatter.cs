@@ -3,4 +3,4 @@ using System;
 
 namespace DragonSpark.Text.Formatting;
 
-public interface IFormatter : IConditional<object, IFormattable> {}
+public interface IFormatter : IConditional<object, IFormattable>;

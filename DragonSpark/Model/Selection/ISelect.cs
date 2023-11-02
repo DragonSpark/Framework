@@ -7,4 +7,4 @@ public interface ISelect<in TIn, out TOut>
 	TOut Get(TIn parameter);
 }
 
-public interface ISelect<in T, in TIn, out TOut> : ISelect<T, Func<TIn, TOut>?> {}
+public interface ISelect<in T, in TIn, out TOut> : ISelect<T, Func<TIn, TOut>?>;

@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.Components.Validation.Expressions;
 
-public interface IValidateValue<in T> : ICondition<T> {}
+public interface IValidateValue<in T> : ICondition<T>;

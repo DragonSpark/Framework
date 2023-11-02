@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Text;
 
-public interface IText : IResult<string> {}
+public interface IText : IResult<string>;

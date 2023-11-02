@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.Messaging;
 
-public interface IMessageTemplate<in T> : ISelecting<T, Message> {}
+public interface IMessageTemplate<in T> : ISelecting<T, Message>;

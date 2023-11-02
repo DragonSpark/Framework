@@ -3,4 +3,4 @@ using DragonSpark.Model.Selection.Alterations;
 
 namespace DragonSpark.Application.Entities.Queries.Runtime.Pagination;
 
-public interface IPaginationComposer<T> : IAlteration<IResulting<IPages<T>>> {}
+public interface IPaginationComposer<T> : IAlteration<IResulting<IPages<T>>>;

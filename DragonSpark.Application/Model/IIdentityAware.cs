@@ -3,4 +3,4 @@ using System;
 
 namespace DragonSpark.Application.Model;
 
-public interface IIdentityAware : IResult<Guid> {}
+public interface IIdentityAware : IResult<Guid>;

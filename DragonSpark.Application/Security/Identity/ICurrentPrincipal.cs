@@ -3,4 +3,4 @@ using System.Security.Claims;
 
 namespace DragonSpark.Application.Security.Identity;
 
-public interface ICurrentPrincipal : IResult<ClaimsPrincipal> {}
+public interface ICurrentPrincipal : IResult<ClaimsPrincipal>;

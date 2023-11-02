@@ -31,7 +31,7 @@ public sealed class WithCompositionTests
 		public Selection(Func<int, object> select) : base(select) {}
 	}
 
-	interface IWaves : ISelect<None, uint> {}
+	interface IWaves : ISelect<None, uint>;
 
 	sealed class Waves : IWaves
 	{

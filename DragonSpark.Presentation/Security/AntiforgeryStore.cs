@@ -3,4 +3,4 @@ using Microsoft.AspNetCore.Antiforgery;
 
 namespace DragonSpark.Presentation.Security;
 
-public sealed class AntiforgeryStore : Variable<AntiforgeryTokenSet> {}
+public sealed class AntiforgeryStore : Variable<AntiforgeryTokenSet>;

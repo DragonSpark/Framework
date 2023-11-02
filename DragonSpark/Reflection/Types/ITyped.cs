@@ -3,4 +3,4 @@ using System;
 
 namespace DragonSpark.Reflection.Types;
 
-public interface ITyped<out T> : ISelect<Type, T> {}
+public interface ITyped<out T> : ISelect<Type, T>;

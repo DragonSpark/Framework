@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Presentation.Components.Forms.Validation;
 
-public interface IResourceQuery : ISelecting<string, ResourceQueryRecord?> {}
+public interface IResourceQuery : ISelecting<string, ResourceQueryRecord?>;

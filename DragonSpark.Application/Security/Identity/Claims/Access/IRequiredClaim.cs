@@ -3,4 +3,4 @@ using System.Security.Claims;
 
 namespace DragonSpark.Application.Security.Identity.Claims.Access;
 
-public interface IRequiredClaim : ISelect<ClaimsPrincipal, string> {}
+public interface IRequiredClaim : ISelect<ClaimsPrincipal, string>;

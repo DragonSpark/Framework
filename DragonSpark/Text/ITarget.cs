@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Text;
 
-public interface ITarget<T> : ICommand<TargetInput<T>> {}
+public interface ITarget<T> : ICommand<TargetInput<T>>;

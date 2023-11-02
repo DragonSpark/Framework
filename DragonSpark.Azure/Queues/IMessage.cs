@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Azure.Queues;
 
-public interface IMessage : IOperation<MessageInput> {}
+public interface IMessage : IOperation<MessageInput>;

@@ -3,4 +3,4 @@ using Microsoft.AspNetCore.Authentication.OAuth.Claims;
 
 namespace DragonSpark.Application.Security.Identity.Claims.Actions;
 
-public interface IClaimAction : ICommand<ClaimActionCollection> {}
+public interface IClaimAction : ICommand<ClaimActionCollection>;

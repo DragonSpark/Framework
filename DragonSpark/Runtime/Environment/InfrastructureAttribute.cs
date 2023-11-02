@@ -3,4 +3,4 @@
 namespace DragonSpark.Runtime.Environment;
 
 [AttributeUsage(AttributeTargets.Class)]
-public sealed class InfrastructureAttribute : Attribute {}
+public sealed class InfrastructureAttribute : Attribute;

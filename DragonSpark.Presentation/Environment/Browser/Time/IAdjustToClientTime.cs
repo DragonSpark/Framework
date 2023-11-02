@@ -4,4 +4,4 @@ using System;
 
 namespace DragonSpark.Presentation.Environment.Browser.Time;
 
-public interface IAdjustToClientTime : ISelect<DateTimeOffset, DateTimeOffset?>, ICondition {}
+public interface IAdjustToClientTime : ISelect<DateTimeOffset, DateTimeOffset?>, ICondition;

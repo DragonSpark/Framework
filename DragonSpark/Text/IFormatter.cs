@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Text;
 
-public interface IFormatter<in T> : ISelect<T, string> {}
+public interface IFormatter<in T> : ISelect<T, string>;

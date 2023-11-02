@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Presentation.Components.Content.Rendering;
 
-public interface IRenderContentKey : IFormatter<object> {}
+public interface IRenderContentKey : IFormatter<object>;

@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.Security.Identity.Model;
 
-public interface INavigateToSignOut : ICommand {}
+public interface INavigateToSignOut : ICommand;

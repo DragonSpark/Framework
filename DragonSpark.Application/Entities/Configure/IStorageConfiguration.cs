@@ -5,4 +5,4 @@ using System;
 
 namespace DragonSpark.Application.Entities.Configure;
 
-public interface IStorageConfiguration : ISelect<IServiceCollection, Action<DbContextOptionsBuilder>> {}
+public interface IStorageConfiguration : ISelect<IServiceCollection, Action<DbContextOptionsBuilder>>;

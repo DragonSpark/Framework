@@ -1,6 +1,6 @@
 ﻿namespace DragonSpark.Presentation.Model;
 
-public class SelectionListing : SelectionListing<string> {}
+public class SelectionListing : SelectionListing<string>;
 
 public class SelectionListing<T>
 {

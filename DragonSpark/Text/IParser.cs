@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Text;
 
-public interface IParser<out T> : ISelect<string, T> {}
+public interface IParser<out T> : ISelect<string, T>;

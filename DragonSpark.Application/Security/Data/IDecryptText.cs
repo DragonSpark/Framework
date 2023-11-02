@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.Security.Data;
 
-public interface IDecryptText : IAlteration<string> {}
+public interface IDecryptText : IAlteration<string>;

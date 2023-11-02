@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.Communication;
 
-public interface IClientStateValue : IText {}
+public interface IClientStateValue : IText;

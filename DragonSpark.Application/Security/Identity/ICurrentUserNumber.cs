@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.Security.Identity;
 
-public interface ICurrentUserNumber : IResult<uint> {}
+public interface ICurrentUserNumber : IResult<uint>;

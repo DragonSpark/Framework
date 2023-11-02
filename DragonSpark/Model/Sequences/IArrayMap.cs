@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Model.Sequences;
 
-public interface IArrayMap<in TIn, T> : IConditional<TIn, Array<T>> {}
+public interface IArrayMap<in TIn, T> : IConditional<TIn, Array<T>>;

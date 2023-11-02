@@ -3,4 +3,4 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Application.Entities;
 
-public interface IAmbientContext : IResult<DbContext?> {}
+public interface IAmbientContext : IResult<DbContext?>;

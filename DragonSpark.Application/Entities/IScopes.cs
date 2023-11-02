@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.Entities;
 
-public interface IScopes : IResult<Scope> {}
+public interface IScopes : IResult<Scope>;

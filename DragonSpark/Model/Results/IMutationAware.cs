@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Model.Results;
 
-public interface IMutationAware<T> : IMutable<T>, IConditionAware {}
+public interface IMutationAware<T> : IMutable<T>, IConditionAware;

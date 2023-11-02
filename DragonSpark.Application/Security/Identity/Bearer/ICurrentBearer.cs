@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.Security.Identity.Bearer;
 
-public interface ICurrentBearer : IText {}
+public interface ICurrentBearer : IText;

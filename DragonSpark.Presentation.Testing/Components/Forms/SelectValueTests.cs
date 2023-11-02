@@ -44,6 +44,6 @@ public sealed class SelectValueTests
 		public string Message { get; set; } = default!;
 	}
 
-	sealed class ExtendedSubject : BaseSubject {}
+	sealed class ExtendedSubject : BaseSubject;
 
 }

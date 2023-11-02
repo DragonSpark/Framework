@@ -6,7 +6,7 @@ namespace DragonSpark.Testing.Model.Sequences.Collections;
 
 public sealed class SortSelectorTests
 {
-	sealed class Subject {}
+	sealed class Subject;
 
 	sealed class Aware : ISortAware
 	{
@@ -14,7 +14,7 @@ public sealed class SortSelectorTests
 	}
 
 	[Sort(123)]
-	sealed class Declared {}
+	sealed class Declared;
 
 	[Fact]
 	public void Verify()

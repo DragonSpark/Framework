@@ -7,7 +7,7 @@ namespace DragonSpark.Testing.Compose;
 
 public sealed class StartTests
 {
-	sealed class Instance {}
+	sealed class Instance;
 
 	sealed class Singleton
 	{
@@ -84,7 +84,7 @@ public sealed class StartTests
 		     .BeSameAs(instance);
 	}
 
-	sealed class Subject {}
+	sealed class Subject;
 
 	sealed class SingletonSubject
 	{

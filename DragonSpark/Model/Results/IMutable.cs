@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Model.Results;
 
-public interface IMutable<T> : IResult<T>, ICommand<T> {}
+public interface IMutable<T> : IResult<T>, ICommand<T>;

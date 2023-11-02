@@ -3,4 +3,4 @@ using DragonSpark.Model.Results;
 
 namespace DragonSpark.Runtime.Execution;
 
-public interface ICounter : IResult<int>, ICommand, ICommand<Clear> {}
+public interface ICounter : IResult<int>, ICommand, ICommand<Clear>;

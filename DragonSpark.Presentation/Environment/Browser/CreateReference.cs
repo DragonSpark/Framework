@@ -5,10 +5,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Environment.Browser;
 
-public interface ICreateReference<T> : ISelecting<CreateReferenceInput<T>, IJSObjectReference> where T : IArray<object>
-{
-	
-}
+public interface ICreateReference<T> : ISelecting<CreateReferenceInput<T>, IJSObjectReference> where T : IArray<object>;
 
 public class CreateReference<T> : ICreateReference<T> where T : IArray<object>
 {

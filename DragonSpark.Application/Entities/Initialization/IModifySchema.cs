@@ -5,4 +5,4 @@ using System;
 
 namespace DragonSpark.Application.Entities.Initialization;
 
-public interface IModifySchema : ISelect<Type, ICommand<ModelBuilder>?> {}
+public interface IModifySchema : ISelect<Type, ICommand<ModelBuilder>?>;

@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Presentation.Connections.Circuits;
 
-sealed class CurrentCircuitStore : Variable<CircuitRecord?> {}
+sealed class CurrentCircuitStore : Variable<CircuitRecord?>;

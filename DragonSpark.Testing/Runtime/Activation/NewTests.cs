@@ -37,7 +37,7 @@ public class NewTests
 		public int Number { get; }
 	}
 
-	sealed class SubjectWithoutConstructor {}
+	sealed class SubjectWithoutConstructor;
 
 	sealed class SubjectWithMultipleParameters
 	{

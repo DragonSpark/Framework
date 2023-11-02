@@ -4,4 +4,4 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Authentication;
 
-public interface IAdapters : IAlteration<Task<AuthenticationState>> {}
+public interface IAdapters : IAlteration<Task<AuthenticationState>>;

@@ -3,4 +3,4 @@ using Microsoft.AspNetCore.Http.Connections.Client;
 
 namespace DragonSpark.Application.Connections;
 
-public interface IAssignSignedContent : ICommand<HttpConnectionOptions> {}
+public interface IAssignSignedContent : ICommand<HttpConnectionOptions>;

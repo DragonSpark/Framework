@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.Entities.Queries.Runtime.Pagination;
 
-public interface IAnyComposer<T> : ISelect<IAny<T>, IAny<T>?> {}
+public interface IAnyComposer<T> : ISelect<IAny<T>, IAny<T>?>;

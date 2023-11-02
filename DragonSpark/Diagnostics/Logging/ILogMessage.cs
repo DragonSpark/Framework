@@ -4,4 +4,4 @@ using Microsoft.Extensions.Logging;
 
 namespace DragonSpark.Diagnostics.Logging;
 
-public interface ILogMessage<in T> : ICommand<T>, IActivateUsing<ILogger> {}
+public interface ILogMessage<in T> : ICommand<T>, IActivateUsing<ILogger>;

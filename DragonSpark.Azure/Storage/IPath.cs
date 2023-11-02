@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Azure.Storage;
 
-public interface IPath : IFormatter<string> {}
+public interface IPath : IFormatter<string>;

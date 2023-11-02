@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Azure.Queues;
 
-public interface ISend : IOperation<string> {}
+public interface ISend : IOperation<string>;

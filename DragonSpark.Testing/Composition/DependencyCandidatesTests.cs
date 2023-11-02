@@ -19,7 +19,7 @@ public sealed class DependencyCandidatesTests
 		public Other Other { get; }
 	}
 
-	sealed class Other {}
+	sealed class Other;
 
 	sealed class Multiple
 	{

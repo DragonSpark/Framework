@@ -5,4 +5,4 @@ using System.Reflection;
 
 namespace DragonSpark.Reflection;
 
-public interface IAttributes<T> : IConditional<ICustomAttributeProvider, Array<T>> where T : Attribute {}
+public interface IAttributes<T> : IConditional<ICustomAttributeProvider, Array<T>> where T : Attribute;

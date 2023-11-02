@@ -3,4 +3,4 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Runtime.Invocation.Operations;
 
-public interface IObserve<T> : ISelect<Task<T>, T> {}
+public interface IObserve<T> : ISelect<Task<T>, T>;

@@ -6,7 +6,7 @@ namespace DragonSpark.Testing.Compose.Extents.Selections;
 
 public sealed class SelectionContextTests
 {
-	sealed class Subject {}
+	sealed class Subject;
 
 	[Fact]
 	public void VerifyFull()

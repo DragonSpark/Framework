@@ -3,4 +3,4 @@ using Microsoft.AspNetCore.Identity;
 
 namespace DragonSpark.Application.Security.Identity.Profile;
 
-public interface ICreateExternal<T> : ISelecting<ExternalLoginInfo, CreateUserResult<T>> {}
+public interface ICreateExternal<T> : ISelecting<ExternalLoginInfo, CreateUserResult<T>>;

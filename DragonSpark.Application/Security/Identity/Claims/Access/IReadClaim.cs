@@ -3,4 +3,4 @@ using System.Security.Claims;
 
 namespace DragonSpark.Application.Security.Identity.Claims.Access;
 
-public interface IReadClaim : ISelect<ClaimsPrincipal, Accessed> {}
+public interface IReadClaim : ISelect<ClaimsPrincipal, Accessed>;

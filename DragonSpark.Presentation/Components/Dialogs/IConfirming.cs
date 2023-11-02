@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Presentation.Components.Dialogs;
 
-public interface IConfirming<in T> : ISelecting<T, DialogResult> {}
+public interface IConfirming<in T> : ISelecting<T, DialogResult>;

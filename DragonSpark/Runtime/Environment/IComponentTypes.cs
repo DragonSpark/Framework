@@ -3,4 +3,4 @@ using System;
 
 namespace DragonSpark.Runtime.Environment;
 
-public interface IComponentTypes : IArray<Type, Type> {}
+public interface IComponentTypes : IArray<Type, Type>;

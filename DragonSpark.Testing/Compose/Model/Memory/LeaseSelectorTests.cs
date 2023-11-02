@@ -26,9 +26,9 @@ public sealed class LeaseSelectorTests
 		sut.Should().Equal(instances.OfType<Extended>());
 	}
 
-	class BaseType {}
+	class BaseType;
 
-	sealed class Extended : BaseType {}
+	sealed class Extended : BaseType;
 
 	[Fact]
 	public void VerifyConcat()

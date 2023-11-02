@@ -4,4 +4,4 @@ using System;
 
 namespace DragonSpark.Application.Connections.Client;
 
-public interface ICallback : ICommand<HubConnection>, IDisposable {}
+public interface ICallback : ICommand<HubConnection>, IDisposable;

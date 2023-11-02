@@ -3,4 +3,4 @@
 namespace DragonSpark.Presentation.Components.Interaction;
 
 public sealed class NavigationResultHandlerComponent
-	: InjectedInteractionHandlerComponentBase<NavigationResultHandler, NavigationResult> {}
+	: InjectedInteractionHandlerComponentBase<NavigationResultHandler, NavigationResult>;

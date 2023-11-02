@@ -3,4 +3,4 @@ using System;
 
 namespace DragonSpark.Runtime;
 
-public interface ISize : ISelect<Type, uint> {}
+public interface ISize : ISelect<Type, uint>;

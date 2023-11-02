@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Presentation.Components.State;
 
-public interface IRefreshAware : IAllocated {}
+public interface IRefreshAware : IAllocated;

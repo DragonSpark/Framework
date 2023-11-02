@@ -3,4 +3,4 @@ using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Azure.Storage;
 
-public interface IStorageContainers : ISelect<string, BlobContainerClient> {}
+public interface IStorageContainers : ISelect<string, BlobContainerClient>;

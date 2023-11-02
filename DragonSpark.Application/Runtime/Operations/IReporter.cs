@@ -2,6 +2,6 @@
 
 namespace DragonSpark.Application.Runtime.Operations;
 
-public interface IReporter<T> : IReporter<T, T> {}
+public interface IReporter<T> : IReporter<T, T>;
 
-public interface IReporter<TIn, out TOut> : ISelect<Report<TIn>, TOut> {}
+public interface IReporter<TIn, out TOut> : ISelect<Report<TIn>, TOut>;

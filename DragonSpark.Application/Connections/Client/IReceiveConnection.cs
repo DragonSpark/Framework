@@ -4,4 +4,4 @@ using System;
 
 namespace DragonSpark.Application.Connections.Client;
 
-public interface IReceiveConnection : IResult<HubConnection>, IAsyncDisposable {}
+public interface IReceiveConnection : IResult<HubConnection>, IAsyncDisposable;

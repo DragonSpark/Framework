@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.Security.Identity.Model;
 
-public interface IClearAuthenticationState : ICommand<uint> {}
+public interface IClearAuthenticationState : ICommand<uint>;

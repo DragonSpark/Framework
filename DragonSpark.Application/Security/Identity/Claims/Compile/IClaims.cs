@@ -5,4 +5,4 @@ using System.Security.Claims;
 
 namespace DragonSpark.Application.Security.Identity.Claims.Compile;
 
-public interface IClaims : ISelect<Login, IEnumerable<Claim>> {}
+public interface IClaims : ISelect<Login, IEnumerable<Claim>>;

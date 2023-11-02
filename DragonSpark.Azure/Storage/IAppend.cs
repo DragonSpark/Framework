@@ -3,4 +3,4 @@ using DragonSpark.Model.Operations.Selection;
 
 namespace DragonSpark.Azure.Storage;
 
-public interface IAppend : ISelecting<AppendInput, BlobBaseClient> {}
+public interface IAppend : ISelecting<AppendInput, BlobBaseClient>;

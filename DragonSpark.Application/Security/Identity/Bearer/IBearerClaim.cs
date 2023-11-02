@@ -3,4 +3,4 @@ using System.Security.Claims;
 
 namespace DragonSpark.Application.Security.Identity.Bearer;
 
-public interface IBearerClaim : ISelect<ClaimsIdentity, Claim> {}
+public interface IBearerClaim : ISelect<ClaimsIdentity, Claim>;

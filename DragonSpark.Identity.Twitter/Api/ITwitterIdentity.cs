@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Identity.Twitter.Api;
 
-public interface ITwitterIdentity : ISelecting<string, string?> {}
+public interface ITwitterIdentity : ISelecting<string, string?>;

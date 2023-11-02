@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Testing.Objects;
 
-public interface IService<T> : ISelect<T, T> {}
+public interface IService<T> : ISelect<T, T>;

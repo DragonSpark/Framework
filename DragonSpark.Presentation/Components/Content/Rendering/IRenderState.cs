@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Presentation.Components.Content.Rendering;
 
-public interface IRenderState : IResult<RenderState> {}
+public interface IRenderState : IResult<RenderState>;

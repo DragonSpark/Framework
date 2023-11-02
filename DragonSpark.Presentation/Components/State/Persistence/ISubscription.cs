@@ -4,4 +4,4 @@ using Microsoft.AspNetCore.Components;
 
 namespace DragonSpark.Presentation.Components.State.Persistence;
 
-public interface ISubscription<T> : ISelect<T, PersistingComponentStateSubscription>, IResult<Pop<T>> {}
+public interface ISubscription<T> : ISelect<T, PersistingComponentStateSubscription>, IResult<Pop<T>>;

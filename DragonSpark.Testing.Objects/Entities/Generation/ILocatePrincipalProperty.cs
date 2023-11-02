@@ -4,4 +4,4 @@ using System.Reflection;
 
 namespace DragonSpark.Testing.Objects.Entities.Generation;
 
-public interface ILocatePrincipalProperty : ISelect<Type, PropertyInfo?> {}
+public interface ILocatePrincipalProperty : ISelect<Type, PropertyInfo?>;

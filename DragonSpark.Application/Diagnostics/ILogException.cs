@@ -3,4 +3,4 @@ using System;
 
 namespace DragonSpark.Application.Diagnostics;
 
-public interface ILogException : ISelecting<LogExceptionInput, Exception> {}
+public interface ILogException : ISelecting<LogExceptionInput, Exception>;

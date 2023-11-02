@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.Connections.Client;
 
-public interface IRestartConnection : IOperation<IReceiveConnection> {}
+public interface IRestartConnection : IOperation<IReceiveConnection>;

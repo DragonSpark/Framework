@@ -3,4 +3,4 @@ using System;
 
 namespace DragonSpark.Presentation.Connections;
 
-public interface IConnectionIdentifier : IResult<Guid> {}
+public interface IConnectionIdentifier : IResult<Guid>;

@@ -4,4 +4,4 @@ using System.Reflection;
 
 namespace DragonSpark.Reflection;
 
-public interface IMetadata<T> : IConditional<ICustomAttributeProvider, Array<T>> {}
+public interface IMetadata<T> : IConditional<ICustomAttributeProvider, Array<T>>;
