@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -21,6 +22,7 @@ public sealed class IdentityTests
 
 	sealed class User : IdentityUser
 	{
+		[MaxLength(64)]
 		// ReSharper disable once UnusedMember.Local
 		public string DisplayName { get; set; } = default!;
 	}

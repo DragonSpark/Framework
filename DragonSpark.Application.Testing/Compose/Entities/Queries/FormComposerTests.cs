@@ -8,6 +8,7 @@ using FluentAssertions;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -254,6 +255,7 @@ public sealed class FormComposerTests
 		[UsedImplicitly]
 		public Guid Id { get; set; }
 
+		[MaxLength(64)]
 		public string Name { get; set; } = default!;
 	}
 

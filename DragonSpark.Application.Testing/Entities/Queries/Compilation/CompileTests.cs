@@ -5,6 +5,7 @@ using FluentAssertions;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -81,6 +82,7 @@ public class CompileTests
 		public Guid Id { get; set; }
 
 		[UsedImplicitly]
+		[MaxLength(64)]
 		public string Name { get; set; } = default!;
 
 		[UsedImplicitly]

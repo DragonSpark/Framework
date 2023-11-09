@@ -11,6 +11,7 @@ using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Xunit;
@@ -256,6 +257,7 @@ public sealed class InputQueryTests
 		[UsedImplicitly]
 		public Guid Id { get; set; }
 
+		[MaxLength(64)]
 		public string Name { [UsedImplicitly] get; set; } = default!;
 	}
 

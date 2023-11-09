@@ -6,6 +6,7 @@ using FluentAssertions;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -295,6 +296,7 @@ public sealed class IntroduceTests
 		[UsedImplicitly]
 		public Guid Id { get; set; }
 
+		[MaxLength(64)]
 		public string Name { get; set; } = default!;
 
 		public uint Amount { get; set; }
@@ -307,6 +309,7 @@ public sealed class IntroduceTests
 		[UsedImplicitly]
 		public Guid Id { get; set; }
 
+		[MaxLength(64)]
 		public string Name { get; set; } = default!;
 	}
 
