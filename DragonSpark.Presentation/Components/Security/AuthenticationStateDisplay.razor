@@ -9,6 +9,9 @@
 
 @typeparam T where T : DragonSpark.Application.Security.Identity.IdentityUser
 
+@inject IValidationServices Validation
+@inject AuthenticationStateProvider Set
+@inject SignOutCurrentPath SignOut
 @inject CurrentProfileStatus Store
 
 @if (_scene is not null)
@@ -22,6 +25,17 @@
     AuthenticationState<T>? _state;
     ProfileStatus _status;
     RenderFragment? _scene;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var current = await Operation;
+        if (!await Validation.Get(current.User))
+        {
+            var operation = Task.FromResult<AuthenticationState>(AuthenticationState<T>.Default);
+            Set.To<IHostEnvironmentAuthenticationStateProvider>().SetAuthenticationState(operation);
+            SignOut.Execute();
+        }
+    }
 
     [Parameter]
     public RenderFragment<AuthenticationState<T>> ChildContent { get; set; } = default!;
@@ -50,7 +64,7 @@
             {
                 var next = state.To<AuthenticationState<T>>();
                 if (_state is null 
-                    || _state?.User.IsAuthenticated() != state.User.IsAuthenticated()
+                    || _state.User.IsAuthenticated() != state.User.IsAuthenticated()
                     || _state.Profile?.SecurityStamp != next.Profile?.SecurityStamp)
                 {
                     _state = next;

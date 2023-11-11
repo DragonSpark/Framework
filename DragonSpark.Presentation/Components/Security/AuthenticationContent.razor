@@ -3,7 +3,6 @@
 @using DragonSpark.Model.Selection.Alterations
 @typeparam T where T : DragonSpark.Application.Security.Identity.IdentityUser
 <DragonSpark.Presentation.Components.Security.CascadingAuthenticationState>
-    @*<DragonSpark.Presentation.Components.Security.AuthenticationStateMonitor />*@
 	<DragonSpark.Presentation.Components.Security.AuthenticationStateDisplay T="T">
 		<CascadingValue TValue="AuthenticationState<T>" Value="@context">
 			@ChildContent(context)
