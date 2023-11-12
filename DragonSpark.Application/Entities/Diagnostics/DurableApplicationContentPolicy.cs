@@ -9,5 +9,5 @@ public sealed class DurableApplicationContentPolicy : Deferred<IAsyncPolicy>
 	public static DurableApplicationContentPolicy Default { get; } = new DurableApplicationContentPolicy();
 
 	DurableApplicationContentPolicy()
-		: base(ApplicationContentBuilder.Default.Then().Select(ApplicationContentRetryPolicy.Default)) {}
+		: base(ApplicationContentBuilder.Default.Then().Select(ApplicationContentRetryPolicyBuilder.Default)) {}
 }

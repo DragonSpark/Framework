@@ -7,9 +7,9 @@ public sealed class DefaultRetryPolicy<T> : RetryPolicy<T>
 	DefaultRetryPolicy() {}
 }
 
-public sealed class DefaultRetryPolicy : RetryPolicy
+public sealed class DefaultRetryPolicyBuilder : RetryPolicyBuilder
 {
-	public static DefaultRetryPolicy Default { get; } = new DefaultRetryPolicy();
+	public static DefaultRetryPolicyBuilder Default { get; } = new DefaultRetryPolicyBuilder();
 
-	DefaultRetryPolicy() {}
+	DefaultRetryPolicyBuilder() {}
 }

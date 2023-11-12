@@ -9,5 +9,5 @@ public sealed class DurableConnectionPolicy : Deferred<IAsyncPolicy>
 {
 	public static DurableConnectionPolicy Default { get; } = new();
 
-	DurableConnectionPolicy() : base(SubscriptionBuilder.Default.Then().Select(DefaultRetryPolicy.Default)) {}
+	DurableConnectionPolicy() : base(SubscriptionBuilder.Default.Then().Select(DefaultRetryPolicyBuilder.Default)) {}
 }

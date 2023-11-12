@@ -17,5 +17,5 @@ public sealed class DurableConnectionPolicy : Deferred<IAsyncPolicy>
 	DurableConnectionPolicy(Func<SqlException, bool> code)
 		: base(Policy.Handle(code)
 		             .Start()
-		             .Select(DefaultRetryPolicy.Default)) {}
+		             .Select(DefaultRetryPolicyBuilder.Default)) {}
 }
