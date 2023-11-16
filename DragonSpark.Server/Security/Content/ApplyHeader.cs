@@ -19,7 +19,7 @@ public class ApplyHeader : IAllocated<HttpContext>
 
 	public Task Get(HttpContext parameter)
 	{
-		parameter.Response.Headers.Add(_name, _value);
+		parameter.Response.Headers[_name] = _value;
 		return _next(parameter);
 	}
 }

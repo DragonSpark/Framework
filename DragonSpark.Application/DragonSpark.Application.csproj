@@ -5,15 +5,15 @@
 	<PackageReference Include="Humanizer" Version="2.14.1" />
 	<PackageReference Include="LinqKit.Microsoft.EntityFrameworkCore" Version="7.1.4" />
 	<PackageReference Include="Markdig" Version="0.33.0" />
-	<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="7.0.13" />
+	<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.0" />
 	<PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.0.3" />
-	<PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="7.0.13" />
-	<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="7.0.13" />
-	<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="7.0.13" />
-	<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="7.0.13" />
-	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.13" />
-	<PackageReference Include="Microsoft.Extensions.Http.Polly" Version="7.0.13" />
-	<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="7.0.13" />
+	<PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="8.0.0" />
+	<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="8.0.0" />
+	<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.0" />
+	<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.0" />
+	<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.0" />
+	<PackageReference Include="Microsoft.Extensions.Http.Polly" Version="8.0.0" />
+	<PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.0" />
 	<PackageReference Include="SluggyUnidecode" Version="2.0.1" />
 	<PackageReference Include="SmartFormat.NET" Version="3.3.0" />
 	<PackageReference Include="System.Linq.Async" Version="6.0.1" />

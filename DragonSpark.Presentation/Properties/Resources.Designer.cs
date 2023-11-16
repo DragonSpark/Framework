@@ -61,7 +61,7 @@ namespace DragonSpark.Presentation.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to GetAuthenticationStateAsync was called before SetAuthenticationState..
+        ///   Looks up a localized string similar to Do not call GetAuthenticationStateAsync outside of the DI scope for a Razor component. Typically, this means you can call it only within a Razor component or inside another DI service that is resolved for a Razor component..
         /// </summary>
         internal static string AuthenticationStatePrincipalMessage {
             get {

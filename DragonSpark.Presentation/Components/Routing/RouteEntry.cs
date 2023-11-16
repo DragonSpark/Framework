@@ -14,7 +14,7 @@ namespace DragonSpark.Presentation.Components.Routing;
 [DebuggerDisplay("Handler = {Handler}, Template = {Template}")]
 class RouteEntry : ISelect<RouteContext, RouteData?>
 {
-	readonly static IReadOnlyDictionary<string, object> Empty = new Dictionary<string, object>().AsReadOnly();
+	readonly static IReadOnlyDictionary<string, object?> Empty = new Dictionary<string, object?>().AsReadOnly();
 
 	public RouteEntry(RouteTemplate template, Type handler, string[] unusedRouteParameterNames)
 	{
@@ -39,7 +39,7 @@ class RouteEntry : ISelect<RouteContext, RouteData?>
 		var optional = Template.OptionalSegmentsCount;
 		if (optional != 0 || total == length)
 		{
-			Dictionary<string, object> parameters = null!;
+			Dictionary<string, object?>? parameters = null;
 			var                        matching   = 0;
 			for (var i = 0; i < total; i++)
 			{
@@ -64,7 +64,7 @@ class RouteEntry : ISelect<RouteContext, RouteData?>
 					matching++;
 					if (segment.IsParameter)
 					{
-						parameters                ??= new Dictionary<string, object>(StringComparer.Ordinal);
+						parameters                ??= new Dictionary<string, object?>(StringComparer.Ordinal);
 						parameters[segment.Value] =   matched;
 					}
 				}
@@ -80,7 +80,7 @@ class RouteEntry : ISelect<RouteContext, RouteData?>
 			var unused = UnusedRouteParameterNames.Length;
 			if (unused > 0)
 			{
-				parameters ??= new Dictionary<string, object>(StringComparer.Ordinal);
+				parameters ??= new Dictionary<string, object?>(StringComparer.Ordinal);
 				for (var i = 0; i < unused; i++)
 				{
 					parameters[UnusedRouteParameterNames[i]] = null!;

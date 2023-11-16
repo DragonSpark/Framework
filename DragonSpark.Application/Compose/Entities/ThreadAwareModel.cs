@@ -72,6 +72,8 @@ sealed class ThreadAwareModel : IRuntimeModel
 
 	public string ToDebugString(MetadataDebugStringOptions options = MetadataDebugStringOptions.ShortDefault, int indent = 0) => _model.ToDebugString(options, indent);
 
+	public Guid ModelId => _previous.ModelId;
+
 	public bool IsIndexerMethod(MethodInfo methodInfo) => _previous.IsIndexerMethod(methodInfo);
 
 	public IEnumerable<ITypeMappingConfiguration> GetTypeMappingConfigurations() => _previous.GetTypeMappingConfigurations();
