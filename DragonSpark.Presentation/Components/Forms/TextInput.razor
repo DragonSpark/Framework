@@ -102,7 +102,7 @@
 
     Task HandleOnFocus(FocusEventArgs parameter)
     {
-        _stored = Value;
+        _stored = _current = Value;
         _active.Up();
         return OnFocus.InvokeAsync(parameter);
     }
