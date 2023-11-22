@@ -2,7 +2,7 @@
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Presentation.Interaction;
+namespace DragonSpark.Application.Model.Interaction;
 
 sealed class Registrations : ICommand<IServiceCollection>
 {

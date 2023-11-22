@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Model.Operations;
 
-namespace DragonSpark.Presentation.Interaction;
+namespace DragonSpark.Application.Model.Interaction;
 
 public interface IInteractionResultHandler : IOperation<IInteractionResult>;

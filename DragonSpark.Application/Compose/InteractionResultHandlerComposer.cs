@@ -1,7 +1,7 @@
-﻿using DragonSpark.Model.Operations;
-using DragonSpark.Presentation.Interaction;
+﻿using DragonSpark.Application.Model.Interaction;
+using DragonSpark.Model.Operations;
 
-namespace DragonSpark.Presentation.Compose;
+namespace DragonSpark.Application.Compose;
 
 public sealed class InteractionResultHandlerComposer<T> where T : IInteractionResult
 {

@@ -2,7 +2,7 @@
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Selection.Conditions;
 
-namespace DragonSpark.Presentation.Interaction;
+namespace DragonSpark.Application.Model.Interaction;
 
 sealed class ValidatingAwareResultHandler<T> : Validating<IInteractionResult>, IInteractionResultHandler
 {

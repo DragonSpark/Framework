@@ -1,4 +1,4 @@
-﻿using DragonSpark.Presentation.Interaction;
+﻿using DragonSpark.Application.Model.Interaction;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 

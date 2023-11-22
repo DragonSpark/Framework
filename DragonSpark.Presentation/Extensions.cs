@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Application;
 using DragonSpark.Application.Components.Validation.Expressions;
 using DragonSpark.Application.Compose;
+using DragonSpark.Application.Model.Interaction;
 using DragonSpark.Compose;
 using DragonSpark.Compose.Model.Operations;
 using DragonSpark.Compose.Model.Operations.Allocated;
@@ -14,7 +15,6 @@ using DragonSpark.Presentation.Components.Forms;
 using DragonSpark.Presentation.Components.Forms.Validation;
 using DragonSpark.Presentation.Components.State;
 using DragonSpark.Presentation.Compose;
-using DragonSpark.Presentation.Interaction;
 using DragonSpark.Presentation.Model;
 using DragonSpark.Presentation.Text;
 using Microsoft.AspNetCore.Components;

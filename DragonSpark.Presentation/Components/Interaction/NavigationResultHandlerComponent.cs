@@ -1,4 +1,4 @@
-﻿using DragonSpark.Presentation.Interaction;
+﻿using DragonSpark.Application.Model.Interaction;
 
 namespace DragonSpark.Presentation.Components.Interaction;
 

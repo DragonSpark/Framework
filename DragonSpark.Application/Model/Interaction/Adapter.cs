@@ -2,7 +2,7 @@
 using DragonSpark.Model.Operations;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Presentation.Interaction;
+namespace DragonSpark.Application.Model.Interaction;
 
 sealed class Adapter<T> : IInteractionResultHandler where T : IInteractionResult
 {

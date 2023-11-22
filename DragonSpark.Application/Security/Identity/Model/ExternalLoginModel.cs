@@ -16,8 +16,8 @@ public class ExternalLoginModel<T> : PageModel where T : class
 	readonly IAuthenticateRequest _request;
 	readonly IFormatter<string>   _path;
 
-	public ExternalLoginModel(IAuthentications<T> authentications, IAuthenticateRequest request,
-	                          IFormatter<string> path)
+	protected ExternalLoginModel(IAuthentications<T> authentications, IAuthenticateRequest request,
+	                             IFormatter<string> path)
 	{
 		_authentications = authentications;
 		_request         = request;

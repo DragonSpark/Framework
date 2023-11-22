@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Presentation.Interaction;
+﻿namespace DragonSpark.Application.Model.Interaction;
 
 public sealed class NoActionResult : SuccessResultBase
 {

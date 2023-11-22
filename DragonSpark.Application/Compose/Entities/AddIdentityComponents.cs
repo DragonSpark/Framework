@@ -21,6 +21,7 @@ sealed class AddIdentityComponents<T> : ICommand<IServiceCollection> where T : I
 		         .Forward<StateViews<T>>()
 		         .Decorate<PolicyAwareStateViews<T>>()
 		         .Decorate<MemoryAwareStateViews<T>>()
+		         .Decorate<ApplicationAwareStateViews<T>>()
 		         .Decorate<AnonymousAwareState<T>>()
 		         .Singleton()
 		         //

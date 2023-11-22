@@ -1,5 +1,5 @@
-﻿using DragonSpark.Model.Operations;
-using DragonSpark.Presentation.Interaction;
+﻿using DragonSpark.Application.Model.Interaction;
+using DragonSpark.Model.Operations;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 

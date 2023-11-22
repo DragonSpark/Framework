@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Components;
 
-namespace DragonSpark.Presentation.Interaction;
+namespace DragonSpark.Application.Model.Interaction;
 
 public class NavigationResult : InteractionResult, ICommand<NavigationManager>
 {

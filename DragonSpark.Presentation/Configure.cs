@@ -22,7 +22,6 @@ sealed class Configure : IAlteration<BuildHostContext>
 		                       Environment.Browser.Registrations.Default,
 		                       Environment.Browser.Time.Registrations.Default,
 		                       Connections.Circuits.Registrations.Default,
-		                       Interaction.Registrations.Default,
 		                       Components.Forms.Registrations.Default,
 		                       Registrations.Default)
 		            .ComposeUsing(Composing.Default)
