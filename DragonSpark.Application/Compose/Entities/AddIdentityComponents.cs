@@ -27,6 +27,7 @@ sealed class AddIdentityComponents<T> : ICommand<IServiceCollection> where T : I
 		         //
 		         .Then.Start<CurrentProfileStatus>()
 		         .And<RefreshAuthenticationDisplayState<T>>()
+		         .And<AuthenticationStore>()
 		         .Scoped()
 		         //
 		         .Then.Start<IAdapters>()

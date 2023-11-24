@@ -10,7 +10,7 @@
 @typeparam T where T : DragonSpark.Application.Security.Identity.IdentityUser
 
 @inject IValidationServices Validation
-@inject AuthenticationStateProvider Set
+@inject AuthenticationStore Set
 @inject SignOutCurrentPath SignOut
 @inject CurrentProfileStatus Store
 
@@ -31,8 +31,7 @@
         var current = await Operation;
         if (!await Validation.Get(current.User))
         {
-            var operation = Task.FromResult<AuthenticationState>(AuthenticationState<T>.Default);
-            Set.To<IHostEnvironmentAuthenticationStateProvider>().SetAuthenticationState(operation);
+            Set.Execute(AuthenticationState<T>.Default);
             SignOut.Execute();
         }
     }
@@ -63,16 +62,16 @@
             if (state != _state)
             {
                 var next = state.To<AuthenticationState<T>>();
-                if (_state is null 
+                if (_state is null
                     || _state.User.IsAuthenticated() != state.User.IsAuthenticated()
                     || _state.Profile?.SecurityStamp != next.Profile?.SecurityStamp)
                 {
                     _state = next;
                     _status = GetProfileStatus.Default.Get(_state);
                     Store.Execute(_status);
-                    _scene = ChildContent(_state);      
+                    _scene = ChildContent(_state);
                 }
-            }            
+            }
         }
     }
 }
