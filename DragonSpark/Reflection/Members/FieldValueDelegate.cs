@@ -10,7 +10,7 @@ sealed class FieldValueDelegate : IFieldValueDelegate
 {
 	readonly IGeneric<IFieldValueDelegate> _generic;
 
-	public static FieldValueDelegate Default { get; } = new FieldValueDelegate();
+	public static FieldValueDelegate Default { get; } = new();
 
 	FieldValueDelegate()
 		: this(new Generic<IFieldValueDelegate>(typeof(FieldValueDelegateAdapter<,>))) {}
@@ -26,7 +26,7 @@ sealed class FieldValueDelegate<T> : IFieldValueDelegate<T>
 {
 	readonly IGeneric<IFieldValueDelegate<T>> _generic;
 
-	public static FieldValueDelegate<T> Default { get; } = new FieldValueDelegate<T>();
+	public static FieldValueDelegate<T> Default { get; } = new();
 
 	FieldValueDelegate()
 		: this(new Generic<IFieldValueDelegate<T>>(typeof(FieldDelegateAdapter<,>))) {}
@@ -39,7 +39,7 @@ sealed class FieldValueDelegate<T> : IFieldValueDelegate<T>
 }
 sealed class FieldValueDelegate<T, TValue> : IFieldValueDelegate<T, TValue>
 {
-	public static FieldValueDelegate<T, TValue> Default { get; } = new FieldValueDelegate<T, TValue>();
+	public static FieldValueDelegate<T, TValue> Default { get; } = new();
 
 	FieldValueDelegate() : this(Expression.Parameter(typeof(T), "parameter")) {}
 

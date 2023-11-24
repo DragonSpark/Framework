@@ -10,5 +10,5 @@ public class OtherwiseThrowInputContext<TIn, TOut> : InputOtherwiseContext<TIn, 
 		: base(subject, condition) {}
 
 	public InputOtherwiseThrowContext<TIn, TOut> Throw<TException>() where TException : Exception
-		=> new InputOtherwiseThrowContext<TIn, TOut>(this, x => new Guard<TIn, TException>(Is.Always<TIn>(), x));
+		=> new(this, x => new Guard<TIn, TException>(Is.Always<TIn>(), x));
 }

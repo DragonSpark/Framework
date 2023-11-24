@@ -6,7 +6,7 @@ namespace DragonSpark.Application.Communication;
 
 sealed class ConnectionBuilder : Builder<HttpResponseMessage>
 {
-	public static ConnectionBuilder Default { get; } = new ConnectionBuilder();
+	public static ConnectionBuilder Default { get; } = new();
 
 	ConnectionBuilder() : base(HttpPolicyExtensions.HandleTransientHttpError()) {}
 }

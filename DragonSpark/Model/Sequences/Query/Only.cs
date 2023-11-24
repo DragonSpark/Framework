@@ -5,7 +5,7 @@ namespace DragonSpark.Model.Sequences.Query;
 
 sealed class Only<T> : ISelect<IEnumerable<T>, T>
 {
-	public static Only<T> Default { get; } = new Only<T>();
+	public static Only<T> Default { get; } = new();
 
 	Only() {}
 

@@ -5,7 +5,7 @@ namespace DragonSpark.Application.Hosting.xUnit;
 
 public class Fixtures : IResult<IFixture>
 {
-	public static Fixtures Default { get; } = new Fixtures();
+	public static Fixtures Default { get; } = new();
 
 	Fixtures() : this(EngineParts.Default, DefaultCustomizations.Default) {}
 

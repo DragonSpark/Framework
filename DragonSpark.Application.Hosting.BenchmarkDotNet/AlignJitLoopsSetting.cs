@@ -2,7 +2,7 @@
 
 sealed class AlignJitLoopsSetting : EnvironmentVariable<int>
 {
-	public static AlignJitLoopsSetting Default { get; } = new AlignJitLoopsSetting();
+	public static AlignJitLoopsSetting Default { get; } = new();
 
 	AlignJitLoopsSetting() : base("COMPlus_JitAlignLoops", 1) {}
 }

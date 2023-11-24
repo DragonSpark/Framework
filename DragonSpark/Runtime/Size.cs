@@ -9,7 +9,7 @@ namespace DragonSpark.Runtime;
 
 public sealed class Size : ISize
 {
-	public static Size Default { get; } = new Size();
+	public static Size Default { get; } = new();
 
 	Size() : this(new Generic<uint>(typeof(SizeOf<>))) {}
 
@@ -22,7 +22,7 @@ public sealed class Size : ISize
 	sealed class SizeOf<T> : IResult<uint>
 	{
 		[UsedImplicitly]
-		public static SizeOf<T> Instance { get; } = new SizeOf<T>();
+		public static SizeOf<T> Instance { get; } = new();
 
 		SizeOf() {}
 

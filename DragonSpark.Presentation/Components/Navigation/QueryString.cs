@@ -8,7 +8,7 @@ namespace DragonSpark.Presentation.Components.Navigation;
 
 sealed class QueryString : Select<NavigationManager, Dictionary<string, StringValues>>
 {
-	public static QueryString Default { get; } = new QueryString();
+	public static QueryString Default { get; } = new();
 
 	QueryString() : base(x => QueryHelpers.ParseQuery(x.ToAbsoluteUri(x.Uri).Query)) {}
 }

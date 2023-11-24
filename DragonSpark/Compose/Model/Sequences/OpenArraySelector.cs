@@ -11,11 +11,9 @@ public class OpenArraySelector<_, T> : CollectionSelector<_, T>
 
 	public OpenArraySelector(ISelect<_, T[]> subject) : base(subject) => _subject = subject;
 
-	public new Selector<_, T[]> Subject => new Selector<_, T[]>(_subject);
+	public new Selector<_, T[]> Subject => new(_subject);
 
-	public ConditionSelector<_> AllAre(Func<T, bool> condition)
-		=> new ConditionSelector<_>(_subject.Select(new AllItemsAre<T>(condition)));
+	public ConditionSelector<_> AllAre(Func<T, bool> condition) => new(_subject.Select(new AllItemsAre<T>(condition)));
 
-	public OpenArraySelector<_, T> Sort()
-		=> new OpenArraySelector<_, T>(_subject.Select(SortAlteration<T>.Default));
+	public OpenArraySelector<_, T> Sort() => new(_subject.Select(SortAlteration<T>.Default));
 }

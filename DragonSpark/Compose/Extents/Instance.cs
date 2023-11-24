@@ -4,7 +4,7 @@ namespace DragonSpark.Compose.Extents;
 
 public sealed class Instance<T>
 {
-	public static Instance<T> Implementation { get; } = new Instance<T>();
+	public static Instance<T> Implementation { get; } = new();
 
 	Instance() {}
 

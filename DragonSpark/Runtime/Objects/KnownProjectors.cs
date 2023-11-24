@@ -7,7 +7,7 @@ namespace DragonSpark.Runtime.Objects;
 
 sealed class KnownProjectors : Instances<Pair<Type, Func<string, Func<object, IProjection>>>>
 {
-	public static KnownProjectors Default { get; } = new KnownProjectors();
+	public static KnownProjectors Default { get; } = new();
 
 	KnownProjectors() : base(ApplicationDomainProjection.Default.Entry()) {}
 }

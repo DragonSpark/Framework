@@ -4,7 +4,7 @@ namespace DragonSpark.Application.Environment;
 
 public sealed class StorageConfiguration : Entities.Configure.StorageConfiguration
 {
-	public static StorageConfiguration Default { get; } = new StorageConfiguration();
+	public static StorageConfiguration Default { get; } = new();
 
 	StorageConfiguration() : base(EmptyStorageConfiguration.Default.Get) {}
 }

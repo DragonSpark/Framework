@@ -13,9 +13,9 @@ public sealed class SelectManyTests
 {
 	readonly static Numbers[] Data =
 	{
-		new Numbers(1, 2, 3, 4),
-		new Numbers(5, 6, 7, 8),
-		new Numbers(9, 10)
+		new(1, 2, 3, 4),
+		new(5, 6, 7, 8),
+		new(9, 10)
 	};
 
 	public sealed class Numbers

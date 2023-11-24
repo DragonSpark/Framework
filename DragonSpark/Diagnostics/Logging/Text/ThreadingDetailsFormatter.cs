@@ -7,7 +7,7 @@ namespace DragonSpark.Diagnostics.Logging.Text;
 
 sealed class ThreadingDetailsFormatter : IFormatter<ThreadingDetails>
 {
-	public static ThreadingDetailsFormatter Default { get; } = new ThreadingDetailsFormatter();
+	public static ThreadingDetailsFormatter Default { get; } = new();
 
 	ThreadingDetailsFormatter() : this(ThreadFormatter.Default) {}
 

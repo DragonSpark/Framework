@@ -4,7 +4,7 @@ namespace DragonSpark.Compose.Extents;
 
 public sealed class Location<T>
 {
-	public static Location<T> Default { get; } = new Location<T>();
+	public static Location<T> Default { get; } = new();
 
 	Location() {}
 

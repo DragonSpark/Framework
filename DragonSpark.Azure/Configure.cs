@@ -5,7 +5,7 @@ namespace DragonSpark.Azure;
 
 sealed class Configure : IAlteration<BuildHostContext>
 {
-	public static Configure Default { get; } = new Configure();
+	public static Configure Default { get; } = new();
 
 	Configure() {}
 

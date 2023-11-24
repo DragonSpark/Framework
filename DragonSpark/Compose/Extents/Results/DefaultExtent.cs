@@ -2,7 +2,7 @@
 
 public sealed class DefaultExtent<T> : ResultExtent<T>
 {
-	public static DefaultExtent<T> Default { get; } = new DefaultExtent<T>();
+	public static DefaultExtent<T> Default { get; } = new();
 
 	DefaultExtent() {}
 }

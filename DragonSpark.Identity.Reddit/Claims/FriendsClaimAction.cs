@@ -4,7 +4,7 @@ namespace DragonSpark.Identity.Reddit.Claims;
 
 public sealed class FriendsClaimAction : ClaimAction
 {
-	public static FriendsClaimAction Default { get; } = new FriendsClaimAction();
+	public static FriendsClaimAction Default { get; } = new();
 
 	FriendsClaimAction() : base(Friends.Default, "num_friends", "integer") {}
 }

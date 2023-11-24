@@ -11,7 +11,7 @@ namespace DragonSpark.Runtime.Activation;
 
 sealed class SingletonProperty : ReferenceValueStore<Type, PropertyInfo>
 {
-	public static SingletonProperty Default { get; } = new SingletonProperty();
+	public static SingletonProperty Default { get; } = new();
 
 	SingletonProperty() : this(SingletonCandidates.Default) {}
 
@@ -24,7 +24,7 @@ sealed class SingletonProperty : ReferenceValueStore<Type, PropertyInfo>
 
 	sealed class Query : IReduce<PropertyInfo?, PropertyInfo>
 	{
-		public static Query Instance { get; } = new Query();
+		public static Query Instance { get; } = new();
 
 		Query() : this(IsSingletonProperty.Default.Get, Is.Assigned()) {}
 

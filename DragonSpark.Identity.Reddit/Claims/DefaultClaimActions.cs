@@ -4,7 +4,7 @@ namespace DragonSpark.Identity.Reddit.Claims;
 
 public sealed class DefaultClaimActions : CompositeClaimAction
 {
-	public static DefaultClaimActions Default { get; } = new DefaultClaimActions();
+	public static DefaultClaimActions Default { get; } = new();
 
 	DefaultClaimActions() : base(DisplayNameClaimAction.Default,
 	                             ImageClaimAction.Default, DescriptionClaimAction.Default,

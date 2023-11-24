@@ -14,7 +14,7 @@ namespace DragonSpark.Application;
 
 sealed class DefaultRegistrations : ICommand<IServiceCollection>
 {
-	public static DefaultRegistrations Default { get; } = new DefaultRegistrations();
+	public static DefaultRegistrations Default { get; } = new();
 
 	DefaultRegistrations() {}
 

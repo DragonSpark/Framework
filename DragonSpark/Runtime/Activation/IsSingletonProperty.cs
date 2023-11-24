@@ -6,7 +6,7 @@ namespace DragonSpark.Runtime.Activation;
 
 sealed class IsSingletonProperty : AllCondition<PropertyInfo>
 {
-	public static IsSingletonProperty Default { get; } = new IsSingletonProperty();
+	public static IsSingletonProperty Default { get; } = new();
 
 	IsSingletonProperty() : base(Start.A.Condition.Of.Any.By.Assigned,
 	                             Start.A.Condition<PropertyInfo>()

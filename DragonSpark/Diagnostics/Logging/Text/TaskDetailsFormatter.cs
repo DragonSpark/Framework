@@ -6,7 +6,7 @@ namespace DragonSpark.Diagnostics.Logging.Text;
 
 sealed class TaskDetailsFormatter : IFormatter<TaskDetails>
 {
-	public static TaskDetailsFormatter Default { get; } = new TaskDetailsFormatter();
+	public static TaskDetailsFormatter Default { get; } = new();
 
 	TaskDetailsFormatter() {}
 

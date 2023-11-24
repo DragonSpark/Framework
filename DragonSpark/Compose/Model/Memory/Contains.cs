@@ -6,7 +6,7 @@ namespace DragonSpark.Compose.Model.Memory;
 
 sealed class Contains<T> : ICondition<(Memory<T> Subject, T Candidate, IEqualityComparer<T> Comparer)>
 {
-	public static Contains<T> Default { get; } = new Contains<T>();
+	public static Contains<T> Default { get; } = new();
 
 	Contains() {}
 

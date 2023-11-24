@@ -4,7 +4,7 @@ namespace DragonSpark.Compose.Model.Memory;
 
 sealed class OfType<T, TTo> : ILease<Leasing<T>, TTo>
 {
-	public static OfType<T, TTo> Default { get; } = new OfType<T, TTo>();
+	public static OfType<T, TTo> Default { get; } = new();
 
 	OfType() : this(NewLeasing<TTo>.Default) {}
 

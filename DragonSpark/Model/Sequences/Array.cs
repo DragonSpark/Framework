@@ -15,11 +15,11 @@ public readonly struct Array<T> : IResult<ImmutableArray<T>>
 {
 	public static implicit operator ImmutableArray<T>(Array<T> source) => source.Get();
 
-	public static implicit operator Array<T>(T[] source) => new Array<T>(source);
+	public static implicit operator Array<T>(T[] source) => new(source);
 
 	public static implicit operator T[](Array<T> source) => source.Open();
 
-	public static Array<T> Empty { get; } = new Array<T>(Empty<T>.Array);
+	public static Array<T> Empty { get; } = new(Empty<T>.Array);
 
 	readonly T[] _reference;
 

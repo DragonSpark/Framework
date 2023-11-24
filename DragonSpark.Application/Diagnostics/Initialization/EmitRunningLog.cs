@@ -11,7 +11,7 @@ namespace DragonSpark.Application.Diagnostics.Initialization;
 
 public sealed class EmitRunningLog<T> : EmitRunningLog
 {
-	public static EmitRunningLog<T> Default { get; } = new EmitRunningLog<T>();
+	public static EmitRunningLog<T> Default { get; } = new();
 
 	EmitRunningLog() : base(LogRunningMessage<T>.Default) {}
 }

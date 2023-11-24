@@ -7,7 +7,7 @@ namespace DragonSpark.Runtime.Environment;
 
 sealed class IsComponentType : AllCondition<Type>
 {
-	public static IsComponentType Default { get; } = new IsComponentType();
+	public static IsComponentType Default { get; } = new();
 
 	IsComponentType() : base(CanConstruct.Default, CanActivate.Default,
 	                         Is.DecoratedWith<InfrastructureAttribute>()

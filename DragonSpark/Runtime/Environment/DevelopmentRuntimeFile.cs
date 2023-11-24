@@ -2,7 +2,7 @@
 
 sealed class DevelopmentRuntimeFile : RuntimeFile
 {
-	public static DevelopmentRuntimeFile Default { get; } = new DevelopmentRuntimeFile();
+	public static DevelopmentRuntimeFile Default { get; } = new();
 
 	DevelopmentRuntimeFile() : base(".runtimeconfig.dev.json") {}
 }

@@ -2,7 +2,7 @@
 
 public sealed class DefaultCommandExtent<T> : CommandExtent<T>
 {
-	public static DefaultCommandExtent<T> Default { get; } = new DefaultCommandExtent<T>();
+	public static DefaultCommandExtent<T> Default { get; } = new();
 
 	DefaultCommandExtent() {}
 }

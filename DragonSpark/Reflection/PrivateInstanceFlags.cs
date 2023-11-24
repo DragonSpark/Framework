@@ -5,7 +5,7 @@ namespace DragonSpark.Reflection;
 
 public sealed class PrivateInstanceFlags : Instance<BindingFlags>
 {
-	public static PrivateInstanceFlags Default { get; } = new PrivateInstanceFlags();
+	public static PrivateInstanceFlags Default { get; } = new();
 
 	PrivateInstanceFlags() : base(BindingFlags.NonPublic | BindingFlags.Instance) {}
 }

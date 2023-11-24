@@ -7,7 +7,7 @@ namespace DragonSpark.Application.Entities.Queries.Runtime.Materialize;
 
 sealed class DefaultToList<T> : IToList<T>
 {
-	public static DefaultToList<T> Default { get; } = new DefaultToList<T>();
+	public static DefaultToList<T> Default { get; } = new();
 
 	DefaultToList() {}
 

@@ -6,7 +6,7 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
 
 sealed class ToFirstOrDefault<T> : IEvaluate<T, T?>
 {
-	public static ToFirstOrDefault<T> Default { get; } = new ToFirstOrDefault<T>();
+	public static ToFirstOrDefault<T> Default { get; } = new();
 
 	ToFirstOrDefault() {}
 

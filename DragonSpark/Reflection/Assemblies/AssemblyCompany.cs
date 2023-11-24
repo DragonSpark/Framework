@@ -4,7 +4,7 @@ namespace DragonSpark.Reflection.Assemblies;
 
 sealed class AssemblyCompany : Declared<AssemblyCompanyAttribute, string>
 {
-	public static AssemblyCompany Default { get; } = new AssemblyCompany();
+	public static AssemblyCompany Default { get; } = new();
 
 	AssemblyCompany() : base(x => x.Company) {}
 }

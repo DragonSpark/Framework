@@ -8,8 +8,7 @@ namespace DragonSpark.Runtime.Activation;
 
 sealed class ParameterConstructors<TIn, TOut> : Invocation.Expressions.Delegates<ConstructorInfo, Func<TIn, TOut>>
 {
-	public static ParameterConstructors<TIn, TOut> Default { get; }
-		= new ParameterConstructors<TIn, TOut>();
+	public static ParameterConstructors<TIn, TOut> Default { get; } = new();
 
 	ParameterConstructors() : this(ConstructorExpressions<TIn>.Default) {}
 

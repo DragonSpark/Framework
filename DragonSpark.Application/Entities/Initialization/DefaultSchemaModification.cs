@@ -2,7 +2,7 @@
 
 public sealed class DefaultSchemaModification : SchemaModification
 {
-	public static DefaultSchemaModification Default { get; } = new DefaultSchemaModification();
+	public static DefaultSchemaModification Default { get; } = new();
 
 	DefaultSchemaModification() {}
 }

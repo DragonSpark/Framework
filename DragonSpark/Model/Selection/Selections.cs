@@ -5,7 +5,7 @@ namespace DragonSpark.Model.Selection;
 
 sealed class Selections<TIn, TOut> : ReferenceValueStore<Func<TIn, TOut>, ISelect<TIn, TOut>>
 {
-	public static Selections<TIn, TOut> Default { get; } = new Selections<TIn, TOut>();
+	public static Selections<TIn, TOut> Default { get; } = new();
 
 	Selections() : base(x => x.Target as ISelect<TIn, TOut> ?? new Select<TIn, TOut>(x)) {}
 }

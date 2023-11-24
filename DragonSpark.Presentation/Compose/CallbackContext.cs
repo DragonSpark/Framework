@@ -81,7 +81,7 @@ public class CallbackContext<T> : IResult<EventCallback<T>>
 		_method   = method;
 	}
 
-	public CallbackContext<T> Using(object receiver) => new CallbackContext<T>(receiver, _method);
+	public CallbackContext<T> Using(object receiver) => new(receiver, _method);
 
 	/*public OperationCallbackContext<T> Throttle() => Throttle(TimeSpan.FromSeconds(1));
 

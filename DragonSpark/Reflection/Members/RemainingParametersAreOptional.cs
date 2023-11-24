@@ -9,8 +9,7 @@ namespace DragonSpark.Reflection.Members;
 
 sealed class RemainingParametersAreOptional : ICondition<Array<ParameterInfo>>
 {
-	public static RemainingParametersAreOptional Default { get; } =
-		new RemainingParametersAreOptional();
+	public static RemainingParametersAreOptional Default { get; } = new();
 
 	RemainingParametersAreOptional() {}
 

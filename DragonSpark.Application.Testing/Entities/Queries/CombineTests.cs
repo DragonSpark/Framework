@@ -73,14 +73,14 @@ public sealed class CombineTests
 
 	sealed class Start : Start<Subject>
 	{
-		public static Start Default { get; } = new Start();
+		public static Start Default { get; } = new();
 
 		Start() : base(q => q.Where(x => x.Name != "Two")) {}
 	}
 
 	sealed class Combined : Combine<Subject, string>
 	{
-		public static Combined Default { get; } = new Combined();
+		public static Combined Default { get; } = new();
 
 		Combined() : base(Start.Default, subjects => subjects.Select(x => x.Name)) {}
 	}

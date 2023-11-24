@@ -263,7 +263,7 @@ public sealed class InputQueryTests
 
 	sealed class Selected : StartInput<string, Subject, string>
 	{
-		public static Selected Default { get; } = new Selected();
+		public static Selected Default { get; } = new();
 
 		Selected() : base((s, queryable) => queryable.Where(y => y.Name != s).Select(y => y.Name)) {}
 	}

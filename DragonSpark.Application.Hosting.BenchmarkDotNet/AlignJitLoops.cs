@@ -2,7 +2,7 @@
 
 sealed class AlignJitLoops : ConfigureJob
 {
-	public static AlignJitLoops Default { get; } = new AlignJitLoops();
+	public static AlignJitLoops Default { get; } = new();
 
 	AlignJitLoops() : base(AlignJitLoopsSetting.Default) {}
 }

@@ -7,7 +7,7 @@ namespace DragonSpark.Runtime.Environment;
 
 public sealed class IsDeployed : DelegatedResultCondition
 {
-	public static IsDeployed Default { get; } = new IsDeployed();
+	public static IsDeployed Default { get; } = new();
 
 	IsDeployed() : this(IsAssemblyDeployed.Default, PrimaryAssembly.Default) {}
 

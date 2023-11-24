@@ -8,7 +8,7 @@ namespace DragonSpark.Compose.Extents.Results;
 
 public sealed class ResultContext
 {
-	public static ResultContext Default { get; } = new ResultContext();
+	public static ResultContext Default { get; } = new();
 
 	ResultContext() : this(ResultExtent.Default) {}
 
@@ -19,7 +19,7 @@ public sealed class ResultContext
 
 public sealed class ResultContext<T>
 {
-	public static ResultContext<T> Instance { get; } = new ResultContext<T>();
+	public static ResultContext<T> Instance { get; } = new();
 
 	ResultContext() {}
 
@@ -41,5 +41,5 @@ public sealed class ResultContext<T>
 		=> Activator<TResult>.Default.Get().To(Using);
 
 	public Model.Results.ResultContext<T> Calling(Func<T> select)
-		=> new Model.Results.ResultContext<T>(select.Target as IResult<T> ?? new Result<T>(select));
+		=> new(select.Target as IResult<T> ?? new Result<T>(select));
 }

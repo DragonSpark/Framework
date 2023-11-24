@@ -7,9 +7,9 @@ namespace DragonSpark.Reflection;
 
 sealed class IsDefined<T> : Condition<ICustomAttributeProvider>
 {
-	public static IsDefined<T> Default { get; } = new IsDefined<T>();
+	public static IsDefined<T> Default { get; } = new();
 
-	public static IsDefined<T> Inherited { get; } = new IsDefined<T>(true);
+	public static IsDefined<T> Inherited { get; } = new(true);
 
 	IsDefined() : this(false) {}
 

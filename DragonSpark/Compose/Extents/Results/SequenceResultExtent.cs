@@ -5,7 +5,7 @@ namespace DragonSpark.Compose.Extents.Results;
 
 public sealed class SequenceResultExtent<T> : ResultExtent<IEnumerable<T>>
 {
-	public static SequenceResultExtent<T> Default { get; } = new SequenceResultExtent<T>();
+	public static SequenceResultExtent<T> Default { get; } = new();
 
 	SequenceResultExtent() {}
 

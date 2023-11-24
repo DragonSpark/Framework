@@ -8,7 +8,7 @@ namespace DragonSpark.Reflection.Types;
 
 sealed class AllInterfaces : Store<Type, Array<Type>>
 {
-	public static AllInterfaces Default { get; } = new AllInterfaces();
+	public static AllInterfaces Default { get; } = new();
 
 	AllInterfaces() : base(TypeMetadata.Default.Then()
 	                                   .Select(Interfaces.Default)

@@ -6,7 +6,7 @@ namespace DragonSpark.Application.Entities.Configure;
 
 sealed class EnvironmentalConfiguration : Result<IConfiguration>
 {
-	public static EnvironmentalConfiguration Default { get; } = new EnvironmentalConfiguration();
+	public static EnvironmentalConfiguration Default { get; } = new();
 
 	EnvironmentalConfiguration() : this(EnvironmentName.Default!) {}
 

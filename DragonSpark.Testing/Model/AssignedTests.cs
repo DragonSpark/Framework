@@ -10,7 +10,7 @@ public class AssignedTests
 	public class Benchmarks
 	{
 		readonly int            _other;
-		readonly Assigned<uint> _sut = new Assigned<uint>(6776u);
+		readonly Assigned<uint> _sut = new(6776u);
 
 		public Benchmarks() : this(6776) {}
 

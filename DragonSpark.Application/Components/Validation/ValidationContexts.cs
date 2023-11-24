@@ -8,7 +8,7 @@ public sealed class ValidationContexts : IValidationContexts
 {
 	readonly IValidatorKey<GraphValidationContext> _context;
 	readonly IValidatorKey<ObjectGraphValidator>   _validator;
-	public static ValidationContexts Default { get; } = new ValidationContexts();
+	public static ValidationContexts Default { get; } = new();
 
 	ValidationContexts() : this(ModelValidationContextKey.Default, ValidatorKey.Default) {}
 

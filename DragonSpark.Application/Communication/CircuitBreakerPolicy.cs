@@ -5,7 +5,7 @@ namespace DragonSpark.Application.Communication;
 
 sealed class CircuitBreakerPolicy : CircuitBreakerPolicy<HttpResponseMessage>, ICommunicationsPolicy
 {
-	public static CircuitBreakerPolicy Default { get; } = new CircuitBreakerPolicy();
+	public static CircuitBreakerPolicy Default { get; } = new();
 
 	CircuitBreakerPolicy() {}
 }

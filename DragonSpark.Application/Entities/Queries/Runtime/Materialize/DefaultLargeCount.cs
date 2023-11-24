@@ -7,7 +7,7 @@ namespace DragonSpark.Application.Entities.Queries.Runtime.Materialize;
 
 sealed class DefaultLargeCount<T> : ILargeCount<T>
 {
-	public static DefaultLargeCount<T> Default { get; } = new DefaultLargeCount<T>();
+	public static DefaultLargeCount<T> Default { get; } = new();
 
 	DefaultLargeCount() {}
 

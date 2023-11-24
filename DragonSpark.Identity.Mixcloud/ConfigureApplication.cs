@@ -9,7 +9,7 @@ namespace DragonSpark.Identity.Mixcloud;
 
 sealed class ConfigureApplication : ICommand<AuthenticationBuilder>
 {
-	public static ConfigureApplication Default { get; } = new ConfigureApplication();
+	public static ConfigureApplication Default { get; } = new();
 
 	ConfigureApplication() : this(DefaultClaimActions.Default) {}
 

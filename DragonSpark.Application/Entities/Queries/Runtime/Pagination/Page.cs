@@ -6,7 +6,7 @@ namespace DragonSpark.Application.Entities.Queries.Runtime.Pagination;
 
 public sealed class Page<T> : Collection<T>
 {
-	public static Page<T> Default { get; } = new Page<T>();
+	public static Page<T> Default { get; } = new();
 
 	Page() : this(Empty.Array<T>(), null) {}
 

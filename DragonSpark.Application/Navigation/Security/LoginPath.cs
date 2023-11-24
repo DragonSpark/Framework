@@ -2,7 +2,7 @@
 
 public sealed class LoginPath : TemplatedPath
 {
-	public static LoginPath Default { get; } = new LoginPath();
+	public static LoginPath Default { get; } = new();
 
 	LoginPath() : base(LoginPathTemplate.Default) {}
 }

@@ -6,11 +6,11 @@ namespace DragonSpark.Testing.Objects.Entities.Generation.Compose;
 public static class Include
 {
 	public static Include<T, TOther> New<T, TOther>() where TOther : class
-		=> new Include<T, TOther>((generator, _) => generator.Generate(), (_, _, _) => {},
-		                          scope => scope.Once());
+		=> new((generator, _) => generator.Generate(), (_, _, _) => {},
+		       scope => scope.Once());
 
 	public static IncludeMany<T, TOther> Many<T, TOther>() where TOther : class
-		=> new IncludeMany<T, TOther>((generator, _) => generator.Generate(3), (_, _, _) => {});
+		=> new((generator, _) => generator.Generate(3), (_, _, _) => {});
 }
 
 public readonly struct Include<T, TOther> where TOther : class
@@ -27,19 +27,16 @@ public readonly struct Include<T, TOther> where TOther : class
 		_scope    = scope;
 	}
 
-	public Include<T, TOther> Generate(Func<Faker<TOther>, T, TOther> generate)
-		=> new Include<T, TOther>(generate, _post, _scope);
+	public Include<T, TOther> Generate(Func<Faker<TOther>, T, TOther> generate) => new(generate, _post, _scope);
 
 	public Include<T, TOther> Configure(Action<Faker, TOther> post)
 		=> Configure((generator, _, instance) => post(generator, instance));
 
-	public Include<T, TOther> Configure(Action<Faker, T, TOther> post)
-		=> new Include<T, TOther>(_generate, post, _scope);
+	public Include<T, TOther> Configure(Action<Faker, T, TOther> post) => new(_generate, post, _scope);
 
-	public Include<T, TOther> Scoped(AssignScope<T, TOther> scope)
-		=> new Include<T, TOther>(_generate, _post, scope);
+	public Include<T, TOther> Scoped(AssignScope<T, TOther> scope) => new(_generate, _post, scope);
 
-	internal Payload Complete() => new Payload(_generate, _post, _scope);
+	internal Payload Complete() => new(_generate, _post, _scope);
 
 	public readonly struct Payload
 	{
@@ -58,7 +55,7 @@ public readonly struct Include<T, TOther> where TOther : class
 
 		public AssignScope<T, TOther> Scope { get; }
 
-		public Payload With(Action<Faker, T, TOther> configure) => new Payload(Generate, configure, Scope);
+		public Payload With(Action<Faker, T, TOther> configure) => new(Generate, configure, Scope);
 
 		public void Deconstruct(out Func<Faker<TOther>, T, TOther> generate, out Action<Faker, T, TOther> post,
 		                        out AssignScope<T, TOther> scope)

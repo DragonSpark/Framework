@@ -5,7 +5,7 @@ namespace DragonSpark.Application.Hosting.xUnit;
 
 sealed class DefaultTransformations : Instances<ISpecimenBuilderTransformation>
 {
-	public static DefaultTransformations Default { get; } = new DefaultTransformations();
+	public static DefaultTransformations Default { get; } = new();
 
 	DefaultTransformations() : base(OptionalParameterAlteration.Default, GreedyConstructorAlteration.Default) {}
 }

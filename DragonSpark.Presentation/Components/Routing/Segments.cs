@@ -5,7 +5,7 @@ namespace DragonSpark.Presentation.Components.Routing;
 
 sealed class Segments : IArray<string, string>
 {
-	public static Segments Default { get; } = new Segments();
+	public static Segments Default { get; } = new();
 
 	Segments() : this(Uri.UnescapeDataString, new[] {'/'}) {}
 

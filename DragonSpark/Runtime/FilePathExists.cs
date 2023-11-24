@@ -5,7 +5,7 @@ namespace DragonSpark.Runtime;
 
 sealed class FilePathExists : Condition<string>
 {
-	public static FilePathExists Default { get; } = new FilePathExists();
+	public static FilePathExists Default { get; } = new();
 
 	FilePathExists() : base(File.Exists) {}
 }

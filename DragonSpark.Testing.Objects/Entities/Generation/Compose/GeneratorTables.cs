@@ -30,7 +30,7 @@ sealed class GeneratorTables : ISelect<TypeInfo, IFakerTInternal>
 sealed class GeneratorTables<T> : Select<Configuration, IFakerTInternal> where T : class
 {
 	[UsedImplicitly]
-	public static GeneratorTables<T> Default { get; } = new GeneratorTables<T>();
+	public static GeneratorTables<T> Default { get; } = new();
 
 	GeneratorTables() : base(Generator<T>.Default) {}
 }

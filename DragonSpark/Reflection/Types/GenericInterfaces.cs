@@ -8,7 +8,7 @@ namespace DragonSpark.Reflection.Types;
 
 sealed class GenericInterfaces : Store<Type, Array<Type>>
 {
-	public static GenericInterfaces Default { get; } = new GenericInterfaces();
+	public static GenericInterfaces Default { get; } = new();
 
 	GenericInterfaces() : base(AllInterfaces.Default.Then()
 	                                        .Select(x => x.AsValueEnumerable()

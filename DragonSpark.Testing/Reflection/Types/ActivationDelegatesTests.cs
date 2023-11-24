@@ -8,7 +8,7 @@ public sealed class ActivationDelegatesTests
 {
 	sealed class Counter : ISelect<object, int>
 	{
-		public static Counter Default { get; } = new Counter();
+		public static Counter Default { get; } = new();
 
 		Counter() {}
 

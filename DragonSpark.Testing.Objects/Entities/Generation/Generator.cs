@@ -7,7 +7,7 @@ namespace DragonSpark.Testing.Objects.Entities.Generation;
 
 sealed class Generator<T> : IGenerator<T> where T : class
 {
-	public static Generator<T> Default { get; } = new Generator<T>();
+	public static Generator<T> Default { get; } = new();
 
 	Generator() : this(Configure<T>.Default.Then()) {}
 

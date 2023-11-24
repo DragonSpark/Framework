@@ -7,7 +7,7 @@ namespace DragonSpark.Application.Entities.Queries.Runtime.Materialize;
 
 sealed class DefaultToArray<T> : IToArray<T>
 {
-	public static DefaultToArray<T> Default { get; } = new DefaultToArray<T>();
+	public static DefaultToArray<T> Default { get; } = new();
 
 	DefaultToArray() {}
 

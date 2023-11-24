@@ -6,7 +6,7 @@ namespace DragonSpark.Compose.Model.Memory;
 
 sealed class ConcatenateExistingLease<T> : ISelect<(Leasing<T> First, Memory<T> Second), Concatenation<T>>
 {
-	public static ConcatenateExistingLease<T> Default { get; } = new ConcatenateExistingLease<T>();
+	public static ConcatenateExistingLease<T> Default { get; } = new();
 
 	ConcatenateExistingLease() {}
 

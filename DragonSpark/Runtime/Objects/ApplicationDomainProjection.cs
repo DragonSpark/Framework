@@ -6,7 +6,7 @@ namespace DragonSpark.Runtime.Objects;
 
 sealed class ApplicationDomainProjection : FormattedProjection<AppDomain>
 {
-	public static ApplicationDomainProjection Default { get; } = new ApplicationDomainProjection();
+	public static ApplicationDomainProjection Default { get; } = new();
 
 	ApplicationDomainProjection()
 		: base(DefaultApplicationDomainFormatter.Default.Project(x => x.FriendlyName, x => x.Id),

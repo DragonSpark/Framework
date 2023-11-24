@@ -7,7 +7,7 @@ namespace DragonSpark.Reflection.Selection;
 
 public sealed class PublicAssemblyTypes<T> : ArrayResult<Type>
 {
-	public static PublicAssemblyTypes<T> Default { get; } = new PublicAssemblyTypes<T>();
+	public static PublicAssemblyTypes<T> Default { get; } = new();
 
 	PublicAssemblyTypes() : base(new PublicAssemblyTypes(typeof(T))) {}
 }

@@ -5,7 +5,7 @@ namespace DragonSpark.Application.Diagnostics.Initialization;
 
 sealed class LogRunningMessage<T> : LogMessage<string, Version, int>
 {
-	public static LogRunningMessage<T> Default { get; } = new LogRunningMessage<T>();
+	public static LogRunningMessage<T> Default { get; } = new();
 
 	LogRunningMessage() : base(DefaultInitializeLog<T>.Default.Get(),
 	                           "{Program} {Version} is running on process {Process}") {}

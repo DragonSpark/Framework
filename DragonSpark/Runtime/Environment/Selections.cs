@@ -12,7 +12,7 @@ namespace DragonSpark.Runtime.Environment;
 
 sealed class Selections : ISelect<Type, ISelect<Type, Type>>
 {
-	public static Selections Default { get; } = new Selections();
+	public static Selections Default { get; } = new();
 
 	Selections() : this(Start.A.Selection.Of.System.Type.By.Returning(Default<Type, Type>.Instance)
 	                         .Unless.Input.Is(IsDefinedGenericType.Default)
@@ -44,7 +44,7 @@ sealed class Selections : ISelect<Type, ISelect<Type, Type>>
 
 	sealed class Make : ISelect<Type, ISelect<Type, Type>>, IActivateUsing<Type>
 	{
-		public static Make Instance { get; } = new Make();
+		public static Make Instance { get; } = new();
 
 		Make() : this(Specifications.Instance.Get(),
 		              GenericArguments.Default.Then().Subject.StoredActivation<GenericTypeBuilder>().Get(),
@@ -75,7 +75,7 @@ sealed class Selections : ISelect<Type, ISelect<Type, Type>>
 
 	sealed class Specifications : Instance<ISelect<Type, ICondition<Type>>>
 	{
-		public static Specifications Instance { get; } = new Specifications();
+		public static Specifications Instance { get; } = new();
 
 		Specifications() : this(TypeMetadata.Default) {}
 

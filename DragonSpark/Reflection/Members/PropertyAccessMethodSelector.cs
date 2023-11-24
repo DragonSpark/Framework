@@ -5,7 +5,7 @@ namespace DragonSpark.Reflection.Members;
 
 public sealed class PropertyAccessMethodSelector : ISelect<PropertyInfo, MethodInfo>
 {
-	public static PropertyAccessMethodSelector Default { get; } = new PropertyAccessMethodSelector();
+	public static PropertyAccessMethodSelector Default { get; } = new();
 
 	PropertyAccessMethodSelector() {}
 

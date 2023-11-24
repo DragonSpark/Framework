@@ -5,7 +5,7 @@ namespace DragonSpark.Text.Formatting;
 
 sealed class DefaultApplicationDomainFormatter : Select<AppDomain, string>, IFormatter<AppDomain>
 {
-	public static DefaultApplicationDomainFormatter Default { get; } = new DefaultApplicationDomainFormatter();
+	public static DefaultApplicationDomainFormatter Default { get; } = new();
 
 	DefaultApplicationDomainFormatter() : base(x => $"AppDomain: {x.FriendlyName}") {}
 }

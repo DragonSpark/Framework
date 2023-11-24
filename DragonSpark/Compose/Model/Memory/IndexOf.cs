@@ -6,7 +6,7 @@ namespace DragonSpark.Compose.Model.Memory;
 
 sealed class IndexOf<T> : ISelect<(Memory<T> Subject, T Candidate, IEqualityComparer<T> Comparer), uint?>
 {
-	public static IndexOf<T> Default { get; } = new IndexOf<T>();
+	public static IndexOf<T> Default { get; } = new();
 
 	IndexOf() {}
 

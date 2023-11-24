@@ -7,7 +7,7 @@ namespace DragonSpark.Reflection.Members;
 
 sealed class MethodDelegates<T> : Select<MethodInfo, T> where T : Delegate
 {
-	public static MethodDelegates<T> Default { get; } = new MethodDelegates<T>();
+	public static MethodDelegates<T> Default { get; } = new();
 
 	MethodDelegates() : base(x => (T)x.CreateDelegate(A.Type<T>())) {}
 }

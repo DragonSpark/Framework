@@ -7,7 +7,7 @@ namespace DragonSpark.Application.Entities.Queries.Runtime.Materialize;
 
 public sealed class SumMaterializer : IMaterializer<decimal, decimal>
 {
-	public static SumMaterializer Default { get; } = new SumMaterializer();
+	public static SumMaterializer Default { get; } = new();
 
 	SumMaterializer() {}
 

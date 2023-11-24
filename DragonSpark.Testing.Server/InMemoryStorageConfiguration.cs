@@ -7,7 +7,7 @@ namespace DragonSpark.Testing.Server;
 
 public sealed class InMemoryStorageConfiguration : IStorageConfiguration
 {
-	public static InMemoryStorageConfiguration Default { get; } = new InMemoryStorageConfiguration();
+	public static InMemoryStorageConfiguration Default { get; } = new();
 
 	InMemoryStorageConfiguration() {}
 

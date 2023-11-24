@@ -2,7 +2,7 @@
 
 sealed class ClaimNamespace : Text.Text
 {
-	public static ClaimNamespace Default { get; } = new ClaimNamespace();
+	public static ClaimNamespace Default { get; } = new();
 
 	ClaimNamespace() : base("urn:testing") {}
 }

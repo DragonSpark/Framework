@@ -4,7 +4,7 @@ namespace DragonSpark.Application.Hosting.Server.Blazor;
 
 sealed class DefaultApplicationSelector : Instance<string>
 {
-	public static DefaultApplicationSelector Default { get; } = new DefaultApplicationSelector();
+	public static DefaultApplicationSelector Default { get; } = new();
 
 	DefaultApplicationSelector() : base("/_blazor") {}
 }

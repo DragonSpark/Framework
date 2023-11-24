@@ -12,7 +12,7 @@ namespace DragonSpark.Compose.Extents.Selections;
 
 public sealed class SelectionContext
 {
-	public static SelectionContext Default { get; } = new SelectionContext();
+	public static SelectionContext Default { get; } = new();
 
 	SelectionContext() : this(SelectionExtent.Default) {}
 
@@ -23,11 +23,11 @@ public sealed class SelectionContext
 
 public sealed class SelectionContext<T>
 {
-	public static SelectionContext<T> Instance { get; } = new SelectionContext<T>();
+	public static SelectionContext<T> Instance { get; } = new();
 
 	SelectionContext() {}
 
-	public AlterationSelector<T> Self => new AlterationSelector<T>(Self<T>.Default);
+	public AlterationSelector<T> Self => new(Self<T>.Default);
 
 	public Selector<T, TypeInfo> Metadata => InstanceMetadata<T>.Default.Then();
 
@@ -36,13 +36,13 @@ public sealed class SelectionContext<T>
 	public Selector<T, T> Default() => DragonSpark.Model.Selection.Default<T>.Instance.Then();
 
 	public Selector<T, TOut> Calling<TOut>(Func<T, TOut> select)
-		=> new Selector<T, TOut>(select.Target as ISelect<T, TOut> ?? new Select<T, TOut>(select));
+		=> new(select.Target as ISelect<T, TOut> ?? new Select<T, TOut>(select));
 
 	public Selector<T, TOut> Calling<TOut>(IResult<TOut> result) => Calling(result.Get);
 
 	public Selector<T, TOut> Calling<TOut>(Func<TOut> result) => new DelegatedResult<T, TOut>(result).Then();
 
-	public AlterationSelector<T> Calling(Func<T, T> result) => new AlterationSelector<T>(new Alteration<T>(result));
+	public AlterationSelector<T> Calling(Func<T, T> result) => new(new Alteration<T>(result));
 
 	public Selector<T, TOut> Returning<TOut>(TOut result) => new FixedResult<T, TOut>(result).Then();
 
@@ -77,7 +77,7 @@ public sealed class SelectionContext<T>
 
 public sealed class SelectionContext<TIn, TOut>
 {
-	public static SelectionContext<TIn, TOut> Instance { get; } = new SelectionContext<TIn, TOut>();
+	public static SelectionContext<TIn, TOut> Instance { get; } = new();
 
 	SelectionContext() {}
 

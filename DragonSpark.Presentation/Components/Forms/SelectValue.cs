@@ -7,7 +7,7 @@ namespace DragonSpark.Presentation.Components.Forms;
 
 sealed class SelectValue<T> : ISelect<FieldIdentifier, T>
 {
-	public static SelectValue<T> Default { get; } = new SelectValue<T>();
+	public static SelectValue<T> Default { get; } = new();
 
 	SelectValue() : this(PropertyValueDelegates<T>.Default) {}
 

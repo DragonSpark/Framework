@@ -5,7 +5,7 @@ namespace DragonSpark.SyncfusionRendering;
 
 sealed class Configure : IAlteration<ApplicationProfileContext>
 {
-	public static Configure Default { get; } = new Configure();
+	public static Configure Default { get; } = new();
 
 	Configure() {}
 

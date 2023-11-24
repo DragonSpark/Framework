@@ -6,7 +6,7 @@ namespace DragonSpark.Presentation.Components.State;
 
 public sealed class UpdateActivityReceiver : IUpdateActivityReceiver
 {
-	public static UpdateActivityReceiver Default { get; } = new UpdateActivityReceiver();
+	public static UpdateActivityReceiver Default { get; } = new();
 
 	UpdateActivityReceiver() : this(UpdateActivity.Default) {}
 

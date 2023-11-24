@@ -7,7 +7,7 @@ namespace DragonSpark.Reflection.Types;
 
 sealed class IsAssignableFrom<T> : Condition<Type>
 {
-	public static IsAssignableFrom<T> Default { get; } = new IsAssignableFrom<T>();
+	public static IsAssignableFrom<T> Default { get; } = new();
 
 	IsAssignableFrom() : base(new IsAssignableFrom(A.Metadata<T>())) {}
 }

@@ -23,7 +23,7 @@ public static partial class ExtensionMethods
 		        .Select(x => x.Open().AsValueEnumerable().Select(select).ToArray().Result())
 		        .Get();
 
-	public static Lazy<T> Defer<T>(this IResult<T> @this) => new Lazy<T>(@this.Get);
+	public static Lazy<T> Defer<T>(this IResult<T> @this) => new(@this.Get);
 
 	public static Lazy<T> Defer<T>(this ResultContext<T> @this) => @this.Get().Defer();
 }

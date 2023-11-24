@@ -7,7 +7,7 @@ namespace DragonSpark.Runtime.Activation;
 
 sealed class HasSingleParameterConstructor<T> : Model.Selection.Conditions.Condition<ConstructorInfo>
 {
-	public static HasSingleParameterConstructor<T> Default { get; } = new HasSingleParameterConstructor<T>();
+	public static HasSingleParameterConstructor<T> Default { get; } = new();
 
 	HasSingleParameterConstructor() : this(Parameters.Default.Then()) {}
 

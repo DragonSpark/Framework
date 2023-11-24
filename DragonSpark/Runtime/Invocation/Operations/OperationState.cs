@@ -5,10 +5,10 @@ namespace DragonSpark.Runtime.Invocation.Operations;
 
 sealed class OperationState
 {
-	public OperationState(string name, CancellationToken token = new CancellationToken())
+	public OperationState(string name, CancellationToken token = new())
 		: this(new ContextDetails(name), token) {}
 
-	public OperationState(ContextDetails contextDetails, CancellationToken token = new CancellationToken())
+	public OperationState(ContextDetails contextDetails, CancellationToken token = new())
 	{
 		ContextDetails = contextDetails;
 		Token          = token;

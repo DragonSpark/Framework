@@ -8,7 +8,7 @@ namespace DragonSpark.Testing.Objects;
 
 sealed class ArrayEnumerations<T> : Enumerations<T>, IActivateUsing<uint>, IActivateUsing<IEnumerable<T>>
 {
-	public static ArrayEnumerations<T> Default { get; } = new ArrayEnumerations<T>();
+	public static ArrayEnumerations<T> Default { get; } = new();
 
 	ArrayEnumerations() : this(10_000u) {}
 

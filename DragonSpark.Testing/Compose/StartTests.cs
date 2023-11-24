@@ -11,14 +11,14 @@ public sealed class StartTests
 
 	sealed class Singleton
 	{
-		public static Singleton Default { get; } = new Singleton();
+		public static Singleton Default { get; } = new();
 
 		Singleton() {}
 	}
 
 	sealed class Activated
 	{
-		public static Activated Default { get; } = new Activated();
+		public static Activated Default { get; } = new();
 
 		[UsedImplicitly]
 		public Activated() {}
@@ -88,7 +88,7 @@ public sealed class StartTests
 
 	sealed class SingletonSubject
 	{
-		public static SingletonSubject Default { get; } = new SingletonSubject();
+		public static SingletonSubject Default { get; } = new();
 
 		SingletonSubject() {}
 	}

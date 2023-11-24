@@ -5,7 +5,7 @@ namespace DragonSpark.Reflection.Types;
 
 public class TypeComparer<T> : IEqualityComparer<T>
 {
-	public static TypeComparer<T> Default { get; } = new TypeComparer<T>();
+	public static TypeComparer<T> Default { get; } = new();
 
 	TypeComparer() {}
 

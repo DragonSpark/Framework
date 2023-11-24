@@ -5,7 +5,7 @@ namespace DragonSpark.Runtime.Environment;
 
 sealed class DefaultAssemblies : Instances<Assembly>
 {
-	public static DefaultAssemblies Default { get; } = new DefaultAssemblies();
+	public static DefaultAssemblies Default { get; } = new();
 
 	DefaultAssemblies() : base(PrimaryAssembly.Default, HostingAssembly.Default) {}
 }

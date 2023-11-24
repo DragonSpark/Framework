@@ -5,7 +5,7 @@ namespace DragonSpark.Application.Hosting.xUnit;
 
 sealed class NoSpecimenInstance : Instance<NoSpecimen>
 {
-	public static NoSpecimenInstance Default { get; } = new NoSpecimenInstance();
+	public static NoSpecimenInstance Default { get; } = new();
 
 	NoSpecimenInstance() : base(new NoSpecimen()) {}
 }

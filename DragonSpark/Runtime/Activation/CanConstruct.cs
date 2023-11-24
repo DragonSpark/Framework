@@ -5,7 +5,7 @@ namespace DragonSpark.Runtime.Activation;
 
 sealed class CanConstruct : ICondition<Type>
 {
-	public static CanConstruct Default { get; } = new CanConstruct();
+	public static CanConstruct Default { get; } = new();
 
 	CanConstruct() {}
 

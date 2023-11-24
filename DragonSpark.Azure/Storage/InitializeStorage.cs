@@ -7,7 +7,7 @@ namespace DragonSpark.Azure.Storage;
 
 public sealed class InitializeStorage : ICommand<IApplicationBuilder>
 {
-	public static InitializeStorage Default { get; } = new InitializeStorage();
+	public static InitializeStorage Default { get; } = new();
 
 	InitializeStorage() {}
 

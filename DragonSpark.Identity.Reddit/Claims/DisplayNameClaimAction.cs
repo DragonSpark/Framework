@@ -4,7 +4,7 @@ namespace DragonSpark.Identity.Reddit.Claims;
 
 public sealed class DisplayNameClaimAction : SubKeyClaimAction
 {
-	public static DisplayNameClaimAction Default { get; } = new DisplayNameClaimAction();
+	public static DisplayNameClaimAction Default { get; } = new();
 
 	DisplayNameClaimAction() : base(DisplayName.Default, "subreddit", "title") {}
 }

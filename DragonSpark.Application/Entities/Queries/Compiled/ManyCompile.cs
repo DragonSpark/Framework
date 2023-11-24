@@ -11,7 +11,7 @@ namespace DragonSpark.Application.Entities.Queries.Compiled;
 sealed class ManyCompile<TIn, TOut>
 	: ISelect<Expression<Func<DbContext, TIn, IQueryable<TOut>>>, IElements<TIn, TOut>>
 {
-	public static ManyCompile<TIn, TOut> Default { get; } = new ManyCompile<TIn, TOut>();
+	public static ManyCompile<TIn, TOut> Default { get; } = new();
 
 	ManyCompile() : this(ManyCandidates<TIn, TOut>.Default, A.Type<TIn>(), A.Type<TOut>()) {}
 

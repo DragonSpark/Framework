@@ -5,7 +5,7 @@ namespace DragonSpark.Model.Sequences.Memory;
 
 sealed class EmptyOwner<T> : IMemoryOwner<T>
 {
-	public static EmptyOwner<T> Default { get; } = new EmptyOwner<T>();
+	public static EmptyOwner<T> Default { get; } = new();
 
 	EmptyOwner() : this(Memory<T>.Empty) {}
 

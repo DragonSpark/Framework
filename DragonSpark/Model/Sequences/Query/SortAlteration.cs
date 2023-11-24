@@ -6,7 +6,7 @@ namespace DragonSpark.Model.Sequences.Query;
 
 class SortAlteration<T> : IAlteration<T[]>
 {
-	public static SortAlteration<T> Default { get; } = new SortAlteration<T>();
+	public static SortAlteration<T> Default { get; } = new();
 
 	SortAlteration() : this(SortComparer<T>.Default) {}
 

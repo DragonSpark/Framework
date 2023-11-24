@@ -9,7 +9,7 @@ namespace DragonSpark.Runtime.Invocation.Expressions;
 
 sealed class ConstructorParameters<T> : ConstructorParameters
 {
-	public static ConstructorParameters<T> Default { get; } = new ConstructorParameters<T>();
+	public static ConstructorParameters<T> Default { get; } = new();
 
 	ConstructorParameters() : base(Parameter<T>.Default.Get()) {}
 }

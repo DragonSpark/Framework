@@ -5,7 +5,7 @@ namespace DragonSpark.Reflection.Types;
 
 sealed class IsValueType : ICondition<TypeInfo>
 {
-	public static IsValueType Default { get; } = new IsValueType();
+	public static IsValueType Default { get; } = new();
 
 	IsValueType() {}
 

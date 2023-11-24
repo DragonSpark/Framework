@@ -6,7 +6,7 @@ namespace DragonSpark.Runtime.Objects;
 
 public sealed class InstanceType<T> : Select<T, Type>
 {
-	public static InstanceType<T> Default { get; } = new InstanceType<T>();
+	public static InstanceType<T> Default { get; } = new();
 
 	InstanceType() : base(x => x?.GetType() ?? A.Type<T>()) {}
 }

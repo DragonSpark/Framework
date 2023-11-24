@@ -5,7 +5,7 @@ namespace DragonSpark.Runtime;
 
 public sealed class TimePaths : ISelect<DateTimeOffset, string>
 {
-	public static TimePaths Default { get; } = new TimePaths();
+	public static TimePaths Default { get; } = new();
 
 	TimePaths() : this("yyyy-MM-dd-HH-mm-ss") {}
 

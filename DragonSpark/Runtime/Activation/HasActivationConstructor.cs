@@ -7,7 +7,7 @@ namespace DragonSpark.Runtime.Activation;
 
 sealed class HasActivationConstructor : IsAssigned<Type, ConstructorInfo>
 {
-	public static HasActivationConstructor Default { get; } = new HasActivationConstructor();
+	public static HasActivationConstructor Default { get; } = new();
 
 	HasActivationConstructor() : base(ConstructorLocator.Default.Get) {}
 }

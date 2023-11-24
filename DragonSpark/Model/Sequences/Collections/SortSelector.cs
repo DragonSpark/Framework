@@ -5,7 +5,7 @@ namespace DragonSpark.Model.Sequences.Collections;
 
 sealed class SortSelector<T> : Select<T, int>
 {
-	public static SortSelector<T> Default { get; } = new SortSelector<T>();
+	public static SortSelector<T> Default { get; } = new();
 
 	SortSelector() : base(Start.A.Selection.Of<T>()
 	                           .By.Returning(-1)

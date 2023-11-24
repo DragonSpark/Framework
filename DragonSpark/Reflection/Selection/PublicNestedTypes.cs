@@ -6,7 +6,7 @@ namespace DragonSpark.Reflection.Selection;
 
 public sealed class PublicNestedTypes<T> : ArrayResult<Type>
 {
-	public static PublicNestedTypes<T> Default { get; } = new PublicNestedTypes<T>();
+	public static PublicNestedTypes<T> Default { get; } = new();
 
 	PublicNestedTypes() : base(new PublicNestedTypes(A.Type<T>())) {}
 }

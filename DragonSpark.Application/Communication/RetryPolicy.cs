@@ -5,7 +5,7 @@ namespace DragonSpark.Application.Communication;
 
 sealed class RetryPolicy : RetryPolicy<HttpResponseMessage>, ICommunicationsPolicy
 {
-	public static RetryPolicy Default { get; } = new RetryPolicy();
+	public static RetryPolicy Default { get; } = new();
 
 	RetryPolicy() {}
 }

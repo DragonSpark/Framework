@@ -5,7 +5,7 @@ namespace DragonSpark.Testing.Objects;
 
 sealed class DefaultApplicationDomainFormatter : IFormatter<AppDomain>
 {
-	public static DefaultApplicationDomainFormatter Default { get; } = new DefaultApplicationDomainFormatter();
+	public static DefaultApplicationDomainFormatter Default { get; } = new();
 
 	DefaultApplicationDomainFormatter() {}
 

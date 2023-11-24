@@ -4,7 +4,7 @@ namespace DragonSpark.Compose.Extents.Results;
 
 public sealed class ArrayResultExtent<T> : ResultExtent<T[]>
 {
-	public static ArrayResultExtent<T> Default { get; } = new ArrayResultExtent<T>();
+	public static ArrayResultExtent<T> Default { get; } = new();
 
 	ArrayResultExtent() : this(Start.A.Selection.Of.Type<int>().AndOf<T[]>().By.Instantiation.Get().Then()) {}
 

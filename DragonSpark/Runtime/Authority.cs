@@ -5,7 +5,7 @@ namespace DragonSpark.Runtime;
 
 public sealed class Authority : Select<Uri, string>
 {
-	public static Authority Default { get; } = new Authority();
+	public static Authority Default { get; } = new();
 
 	Authority() : base(x => x.GetLeftPart(UriPartial.Authority)) {}
 }

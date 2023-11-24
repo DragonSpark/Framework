@@ -10,7 +10,7 @@ public class HasSingletonPropertyTests
 	class Contains
 	{
 		[UsedImplicitly]
-		public static Contains Default { get; } = new Contains();
+		public static Contains Default { get; } = new();
 
 		Contains() {}
 	}

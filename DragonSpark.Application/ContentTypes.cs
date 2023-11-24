@@ -5,7 +5,7 @@ namespace DragonSpark.Application;
 
 public sealed class ContentTypes : IAlteration<string>
 {
-	public static ContentTypes Default { get; } = new ContentTypes();
+	public static ContentTypes Default { get; } = new();
 
 	ContentTypes() : this(new FileExtensionContentTypeProvider()) {}
 

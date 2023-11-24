@@ -9,7 +9,7 @@ namespace DragonSpark.Testing.Server;
 
 sealed class ServerConfiguration : ICommand<IHostBuilder>
 {
-	public static ServerConfiguration Default { get; } = new ServerConfiguration();
+	public static ServerConfiguration Default { get; } = new();
 
 	ServerConfiguration() {}
 

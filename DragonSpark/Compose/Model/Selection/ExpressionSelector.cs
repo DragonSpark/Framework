@@ -19,6 +19,5 @@ public class ExpressionSelector<_> : Selector<_, Expression>
 	public ExpressionSelector<_, TTo> Select<TTo>(ISelect<Expression, Expression<TTo>> select)
 		=> Select(select.Get);
 
-	public ExpressionSelector<_, TTo> Select<TTo>(Func<Expression, Expression<TTo>> select)
-		=> new ExpressionSelector<_, TTo>(Get().Select(select));
+	public ExpressionSelector<_, TTo> Select<TTo>(Func<Expression, Expression<TTo>> select) => new(Get().Select(select));
 }

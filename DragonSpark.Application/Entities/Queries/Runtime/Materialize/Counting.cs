@@ -5,7 +5,7 @@ namespace DragonSpark.Application.Entities.Queries.Runtime.Materialize;
 
 public sealed class Counting<T> : Selecting<IQueryable<T>, uint>, ICount<T>
 {
-	public static Counting<T> Default { get; } = new Counting<T>();
+	public static Counting<T> Default { get; } = new();
 
 	Counting() : this(DefaultCount<T>.Default, DefaultLargeCount<T>.Default) {}
 

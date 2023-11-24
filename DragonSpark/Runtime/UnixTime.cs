@@ -5,7 +5,7 @@ namespace DragonSpark.Runtime;
 
 public sealed class UnixTime : ISelect<double, DateTime>
 {
-	public static UnixTime Default { get; } = new UnixTime();
+	public static UnixTime Default { get; } = new();
 
 	UnixTime() : this(DateTime.UnixEpoch) {}
 

@@ -9,7 +9,7 @@ namespace DragonSpark.Reflection.Types;
 
 sealed class GenericInterfaceImplementations : Store<Type, IConditional<Type, Array<Type>>>
 {
-	public static GenericInterfaceImplementations Default { get; } = new GenericInterfaceImplementations();
+	public static GenericInterfaceImplementations Default { get; } = new();
 
 	GenericInterfaceImplementations() : this(GenericTypeDefinition.Default.Then()) {}
 

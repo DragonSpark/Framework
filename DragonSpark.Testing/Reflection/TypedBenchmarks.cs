@@ -40,11 +40,11 @@ public class TypedBenchmarks
 			_third  = third;
 		}
 
-		public Container WithFirst(Func<string> parameter) => new Container(parameter, _second, _third);
+		public Container WithFirst(Func<string> parameter) => new(parameter, _second, _third);
 
-		public Container WithSecond(Func<string> parameter) => new Container(_first, parameter, _third);
+		public Container WithSecond(Func<string> parameter) => new(_first, parameter, _third);
 
-		public Container WithThird(Func<string> parameter) => new Container(_first, _second, parameter);
+		public Container WithThird(Func<string> parameter) => new(_first, _second, parameter);
 	}
 
 	public readonly struct Structure
@@ -60,10 +60,10 @@ public class TypedBenchmarks
 			_third  = third;
 		}
 
-		public Structure WithFirst(Func<string> parameter) => new Structure(parameter, _second, _third);
+		public Structure WithFirst(Func<string> parameter) => new(parameter, _second, _third);
 
-		public Structure WithSecond(Func<string> parameter) => new Structure(_first, parameter, _third);
+		public Structure WithSecond(Func<string> parameter) => new(_first, parameter, _third);
 
-		public Structure WithThird(Func<string> parameter) => new Structure(_first, _second, parameter);
+		public Structure WithThird(Func<string> parameter) => new(_first, _second, parameter);
 	}
 }

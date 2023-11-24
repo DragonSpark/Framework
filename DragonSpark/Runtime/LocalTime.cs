@@ -5,7 +5,7 @@ namespace DragonSpark.Runtime;
 
 public sealed class LocalTime : Result<DateTimeOffset>, ITime
 {
-	public static LocalTime Default { get; } = new LocalTime();
+	public static LocalTime Default { get; } = new();
 
 	LocalTime() : base(() => DateTimeOffset.Now) {}
 }

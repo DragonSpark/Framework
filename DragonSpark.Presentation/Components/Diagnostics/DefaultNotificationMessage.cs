@@ -4,7 +4,7 @@ namespace DragonSpark.Presentation.Components.Diagnostics;
 
 sealed class DefaultNotificationMessage : DragonSpark.Model.Results.Instance<NotificationMessage>
 {
-	public static DefaultNotificationMessage Default { get; } = new DefaultNotificationMessage();
+	public static DefaultNotificationMessage Default { get; } = new();
 
 	DefaultNotificationMessage() : base(new NotificationMessage
 	{

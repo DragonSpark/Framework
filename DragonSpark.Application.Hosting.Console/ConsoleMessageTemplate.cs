@@ -4,7 +4,7 @@ namespace DragonSpark.Application.Hosting.Console;
 
 sealed class ConsoleMessageTemplate : Text.Text
 {
-	public static ConsoleMessageTemplate Default { get; } = new ConsoleMessageTemplate();
+	public static ConsoleMessageTemplate Default { get; } = new();
 
 	ConsoleMessageTemplate() : base($"{TemplateHeader.Default} {{Message:l}}{{NewLine}}{{Exception}}") {}
 }

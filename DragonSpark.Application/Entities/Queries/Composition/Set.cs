@@ -2,7 +2,7 @@
 
 public sealed class Set<T> : Query<T> where T : class
 {
-	public static Set<T> Default { get; } = new Set<T>();
+	public static Set<T> Default { get; } = new();
 
 	Set() : base(x => x.Set<T>()) {}
 }

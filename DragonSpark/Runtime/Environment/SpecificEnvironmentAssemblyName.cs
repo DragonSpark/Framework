@@ -16,6 +16,5 @@ sealed class SpecificEnvironmentAssemblyName : IAlteration<AssemblyName>
 		_name   = name;
 	}
 
-	public AssemblyName Get(AssemblyName parameter)
-		=> new AssemblyName(string.Format(_format, parameter.Name, _name));
+	public AssemblyName Get(AssemblyName parameter) => new(string.Format(_format, parameter.Name, _name));
 }

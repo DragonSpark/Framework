@@ -4,7 +4,7 @@ namespace DragonSpark.Server.Security;
 
 sealed class AuthenticationBaseAddress : EnvironmentVariable
 {
-	public static AuthenticationBaseAddress Default { get; } = new AuthenticationBaseAddress();
+	public static AuthenticationBaseAddress Default { get; } = new();
 
 	AuthenticationBaseAddress() : base(nameof(AuthenticationBaseAddress)) {}
 }

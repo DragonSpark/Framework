@@ -7,7 +7,7 @@ namespace DragonSpark.Runtime.Environment;
 
 sealed class ComponentAssemblyCandidates : ISelect<AssemblyName, IEnumerable<AssemblyName>>
 {
-	public static ComponentAssemblyCandidates Default { get; } = new ComponentAssemblyCandidates();
+	public static ComponentAssemblyCandidates Default { get; } = new();
 
 	ComponentAssemblyCandidates() {}
 

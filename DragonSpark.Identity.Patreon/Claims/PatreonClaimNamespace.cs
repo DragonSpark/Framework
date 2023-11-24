@@ -2,7 +2,7 @@
 
 public sealed class PatreonClaimNamespace : Text.Text
 {
-	public static PatreonClaimNamespace Default { get; } = new PatreonClaimNamespace();
+	public static PatreonClaimNamespace Default { get; } = new();
 
 	PatreonClaimNamespace() : base("urn:patreon") {}
 }

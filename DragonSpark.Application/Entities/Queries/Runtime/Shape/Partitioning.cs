@@ -6,7 +6,7 @@ namespace DragonSpark.Application.Entities.Queries.Runtime.Shape;
 
 sealed class Partitioning<T> : IPartition<T>
 {
-	public static Partitioning<T> Default { get; } = new Partitioning<T>();
+	public static Partitioning<T> Default { get; } = new();
 
 	Partitioning() {}
 

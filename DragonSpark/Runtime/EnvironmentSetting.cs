@@ -4,7 +4,7 @@ namespace DragonSpark.Runtime;
 
 public sealed class EnvironmentSetting : Select<string, string?>
 {
-	public static EnvironmentSetting Default { get; } = new EnvironmentSetting();
+	public static EnvironmentSetting Default { get; } = new();
 
 	EnvironmentSetting() : base(System.Environment.GetEnvironmentVariable) {}
 }

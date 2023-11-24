@@ -5,7 +5,7 @@ namespace DragonSpark.Model.Sequences;
 
 sealed class Repeat<T> : IArray<uint, T>
 {
-	public static Repeat<T> Default { get; } = new Repeat<T>();
+	public static Repeat<T> Default { get; } = new();
 
 	Repeat() : this(New<T>.Default.Get) {}
 

@@ -8,7 +8,7 @@ namespace DragonSpark.Application.Connections;
 
 public sealed class ResponseOptions : ICommand<ResponseCompressionOptions>
 {
-	public static ResponseOptions Default { get; } = new ResponseOptions();
+	public static ResponseOptions Default { get; } = new();
 
 	ResponseOptions() : this(ResponseCompressionDefaults.MimeTypes.Concat(new[] { "application/octet-stream" })
 	                                                    .Result()) {}

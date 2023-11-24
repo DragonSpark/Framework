@@ -5,7 +5,7 @@ namespace DragonSpark.Diagnostics;
 
 sealed class AddJitter : IAlteration<TimeSpan>
 {
-	public static AddJitter Default { get; } = new AddJitter();
+	public static AddJitter Default { get; } = new();
 
 	AddJitter() : this(new Random()) {}
 

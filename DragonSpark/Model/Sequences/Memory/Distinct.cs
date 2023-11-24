@@ -5,7 +5,7 @@ namespace DragonSpark.Model.Sequences.Memory;
 
 sealed class Distinct<T> : IAlteration<Leasing<T>>
 {
-	public static Distinct<T> Default { get; } = new Distinct<T>();
+	public static Distinct<T> Default { get; } = new();
 
 	Distinct() {}
 

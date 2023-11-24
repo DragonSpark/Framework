@@ -7,7 +7,7 @@ namespace DragonSpark.Application.Entities.Queries.Runtime.Shape;
 
 public sealed class Sort<T> : IBody<T>
 {
-	public static Sort<T> Default { get; } = new Sort<T>();
+	public static Sort<T> Default { get; } = new();
 
 	Sort() {}
 

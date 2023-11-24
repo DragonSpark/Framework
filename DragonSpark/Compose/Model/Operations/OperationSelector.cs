@@ -14,11 +14,11 @@ public class OperationSelector : ResultContext<ValueTask>
 
 	public OperationSelector(IResult<ValueTask> instance) : base(instance) {}
 
-	public OperationSelector Append(Await next) => new OperationSelector(new Appending(Get().Await, next));
+	public OperationSelector Append(Await next) => new(new Appending(Get().Await, next));
 
-	public OperationSelector Append(Operate next) => new OperationSelector(new AppendedOperate(Get().Get, next));
+	public OperationSelector Append(Operate next) => new(new AppendedOperate(Get().Get, next));
 
-	public AllocatedOperationSelector Allocate() => new AllocatedOperationSelector(Select(x => x.AsTask()).Get());
+	public AllocatedOperationSelector Allocate() => new(Select(x => x.AsTask()).Get());
 
 	public OperationSelector Disperse() => new(new DelayedDisperse(new Operation(this)).Then().Bind().Get());
 }

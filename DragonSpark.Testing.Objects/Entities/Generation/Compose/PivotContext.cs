@@ -23,12 +23,12 @@ public class PivotContext<T, TCurrent> : IResult<T> where T : class where TCurre
 
 	public PivotContext<T, TCurrent> Configure<TOther>(Expression<Func<TCurrent, TOther>> property,
 	                                                   Func<Faker, TOther> configure)
-		=> new PivotContext<T, TCurrent>(_subject, _current.RuleFor(property, configure), _state);
+		=> new(_subject, _current.RuleFor(property, configure), _state);
 
 	public PivotContext<T, TCurrent> Configure(Alter<Faker<TCurrent>> configure)
-		=> new PivotContext<T, TCurrent>(_subject, configure(_current), _state);
+		=> new(_subject, configure(_current), _state);
 
-	public GeneratorContext<T> Return() => new GeneratorContext<T>(_subject, _state);
+	public GeneratorContext<T> Return() => new(_subject, _state);
 
 	public PivotIncludeContext<T, TCurrent, TOther> Include<TOther>(Expression<Func<TCurrent, TOther>> property)
 		where TOther : class

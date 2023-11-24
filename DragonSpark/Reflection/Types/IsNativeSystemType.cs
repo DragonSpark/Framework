@@ -5,7 +5,7 @@ namespace DragonSpark.Reflection.Types;
 
 public sealed class IsNativeSystemType : Condition<Type>
 {
-	public static IsNativeSystemType Default { get; } = new IsNativeSystemType();
+	public static IsNativeSystemType Default { get; } = new();
 
 	IsNativeSystemType() : base(x =>
 	                            {

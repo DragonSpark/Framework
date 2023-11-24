@@ -7,7 +7,7 @@ namespace DragonSpark.Runtime.Environment;
 
 public sealed class PrimaryAssembly : Instance<Assembly>
 {
-	public static PrimaryAssembly Default { get; } = new PrimaryAssembly();
+	public static PrimaryAssembly Default { get; } = new();
 
 	PrimaryAssembly() : base(Start.A.Selection.Of<Assembly>()
 	                              .As.Sequence.Array.By.Self.Open()

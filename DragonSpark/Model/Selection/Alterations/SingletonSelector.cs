@@ -4,7 +4,7 @@ namespace DragonSpark.Model.Selection.Alterations;
 
 public sealed class SingletonSelector<T> : IAlteration<IResult<T>>
 {
-	public static SingletonSelector<T> Default { get; } = new SingletonSelector<T>();
+	public static SingletonSelector<T> Default { get; } = new();
 
 	SingletonSelector() {}
 

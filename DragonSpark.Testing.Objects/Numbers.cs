@@ -5,7 +5,7 @@ namespace DragonSpark.Testing.Objects;
 
 sealed class Numbers : ArrayStore<uint, int>
 {
-	public static Numbers Default { get; } = new Numbers();
+	public static Numbers Default { get; } = new();
 
 	Numbers() : base(Start.An.Extent<ClassicTake<int>>().From(AllNumbers.Default.ToDelegate())) {}
 }

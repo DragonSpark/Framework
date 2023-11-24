@@ -8,7 +8,7 @@ namespace DragonSpark.Application.Entities.Queries.Compiled;
 
 sealed class Expand<TIn, TOut> : IAlteration<Expression<Func<DbContext, TIn, TOut>>>
 {
-	public static Expand<TIn, TOut> Default { get; } = new Expand<TIn, TOut>();
+	public static Expand<TIn, TOut> Default { get; } = new();
 
 	Expand() {}
 

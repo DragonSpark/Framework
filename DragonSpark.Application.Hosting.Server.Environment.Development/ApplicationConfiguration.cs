@@ -9,7 +9,7 @@ namespace DragonSpark.Application.Hosting.Server.Environment.Development;
 public sealed class ApplicationConfiguration : IApplicationConfiguration
 {
 	[UsedImplicitly]
-	public static ApplicationConfiguration Default { get; } = new ApplicationConfiguration();
+	public static ApplicationConfiguration Default { get; } = new();
 
 	ApplicationConfiguration() {}
 

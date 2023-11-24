@@ -10,13 +10,11 @@ public sealed class ConditionalInputSelectionContext<TIn, TOut>
 
 	public ConditionalInputSelectionContext(ISelect<TIn, TOut> subject) => _subject = subject;
 
-	public AssignedInputConditionSelectionContext<TIn, TOut> IsAssigned
-		=> new AssignedInputConditionSelectionContext<TIn, TOut>(_subject);
+	public AssignedInputConditionSelectionContext<TIn, TOut> IsAssigned => new(_subject);
 
 	public InputConditionSelectionContext<TIn, TOut> IsOf<T>() => Is(IsOf<TIn, T>.Default);
 
 	public InputConditionSelectionContext<TIn, TOut> Is(ISelect<TIn, bool> condition) => Is(condition.Get);
 
-	public InputConditionSelectionContext<TIn, TOut> Is(Func<TIn, bool> condition)
-		=> new InputConditionSelectionContext<TIn, TOut>(_subject, condition);
+	public InputConditionSelectionContext<TIn, TOut> Is(Func<TIn, bool> condition) => new(_subject, condition);
 }

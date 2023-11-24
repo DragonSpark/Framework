@@ -9,7 +9,7 @@ namespace DragonSpark.Testing.Objects.Entities.Generation;
 
 public sealed class ModelBinder<T> : ModelBinder
 {
-	public static ModelBinder<T> Default { get; } = new ModelBinder<T>();
+	public static ModelBinder<T> Default { get; } = new();
 
 	ModelBinder() : base(A.Type<T>().Assembly) {}
 }

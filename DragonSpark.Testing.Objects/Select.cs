@@ -6,7 +6,7 @@ namespace DragonSpark.Testing.Objects;
 
 sealed class Select : Instance<Func<string, int>>
 {
-	public static Select Default { get; } = new Select();
+	public static Select Default { get; } = new();
 
 	Select() : this(x => default) {}
 

@@ -4,7 +4,7 @@ namespace DragonSpark.Identity.Facebook;
 
 public sealed class ProviderName : Text.Text
 {
-	public static ProviderName Default { get; } = new ProviderName();
+	public static ProviderName Default { get; } = new();
 
 	ProviderName() : base(FacebookDefaults.AuthenticationScheme) {}
 }

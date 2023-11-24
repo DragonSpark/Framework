@@ -2,7 +2,7 @@
 
 public sealed class TimestampFormat : DragonSpark.Text.Text
 {
-	public static TimestampFormat Default { get; } = new TimestampFormat();
+	public static TimestampFormat Default { get; } = new();
 
 	TimestampFormat() : base("HH:mm:ss:fff") {}
 }

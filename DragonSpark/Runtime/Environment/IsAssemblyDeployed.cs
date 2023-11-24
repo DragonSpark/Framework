@@ -7,7 +7,7 @@ namespace DragonSpark.Runtime.Environment;
 
 sealed class IsAssemblyDeployed : AnyCondition<Assembly>
 {
-	public static IsAssemblyDeployed Default { get; } = new IsAssemblyDeployed();
+	public static IsAssemblyDeployed Default { get; } = new();
 
 	IsAssemblyDeployed() : this(Start.An.Extent<AssemblyFileExists>()) {}
 

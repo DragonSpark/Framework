@@ -7,7 +7,7 @@ namespace DragonSpark.Presentation.Components.Scoped;
 
 sealed class Properties : ArrayStore<Type, PropertyInfo>
 {
-	public static Properties Default { get; } = new Properties();
+	public static Properties Default { get; } = new();
 
 	Properties() : base(Properties<ScopedInjectionAttribute>.Default) {}
 }

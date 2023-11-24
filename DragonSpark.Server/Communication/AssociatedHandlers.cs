@@ -5,7 +5,7 @@ namespace DragonSpark.Server.Communication;
 
 sealed class AssociatedHandlers : ReferenceValueTable<HttpClient, System.Net.Http.HttpClientHandler>
 {
-	public static AssociatedHandlers Default { get; } = new AssociatedHandlers();
+	public static AssociatedHandlers Default { get; } = new();
 
 	AssociatedHandlers() {}
 }

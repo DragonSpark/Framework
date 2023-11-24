@@ -5,7 +5,7 @@ namespace DragonSpark.Azure.Queues;
 
 sealed class DefaultLife : Instance<TimeSpan>
 {
-	public static DefaultLife Default { get; } = new DefaultLife();
+	public static DefaultLife Default { get; } = new();
 
 	DefaultLife() : base(TimeSpan.FromDays(5)) {}
 }

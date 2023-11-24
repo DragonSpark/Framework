@@ -5,7 +5,7 @@ namespace DragonSpark.Compose.Model.Commands;
 
 public class Action<T> : Command<T>, IAction<T>
 {
-	public static implicit operator Action<T>(System.Action<T> value) => new Action<T>(value);
+	public static implicit operator Action<T>(System.Action<T> value) => new(value);
 
 	public Action(System.Action<T> body) : base(body) {}
 
@@ -18,7 +18,7 @@ public class Action<T> : Command<T>, IAction<T>
 
 public class Action : Command, IAction<None>
 {
-	public static implicit operator Action(System.Action value) => new Action(value);
+	public static implicit operator Action(System.Action value) => new(value);
 
 	public Action(System.Action action) : base(action) {}
 

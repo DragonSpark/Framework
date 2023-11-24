@@ -6,7 +6,7 @@ namespace DragonSpark.Reflection.Types;
 
 public sealed class TypeSelector : ISelect<TypeInfo, Type>
 {
-	public static TypeSelector Default { get; } = new TypeSelector();
+	public static TypeSelector Default { get; } = new();
 
 	TypeSelector() {}
 

@@ -7,7 +7,7 @@ namespace DragonSpark.Reflection.Types;
 
 sealed class GenericParameters : Select<TypeInfo, Array<Type>>
 {
-	public static GenericParameters Default { get; } = new GenericParameters();
+	public static GenericParameters Default { get; } = new();
 
 	GenericParameters() : base(x => x.GenericTypeParameters) {}
 }

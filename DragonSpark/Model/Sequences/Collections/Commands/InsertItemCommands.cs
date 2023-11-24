@@ -10,7 +10,7 @@ namespace DragonSpark.Model.Sequences.Collections.Commands;
 
 sealed class InsertItemCommands<T> : IDecoration<IList<T>, ICommand<T>>
 {
-	public static InsertItemCommands<T> Default { get; } = new InsertItemCommands<T>();
+	public static InsertItemCommands<T> Default { get; } = new();
 
 	InsertItemCommands() : this(DeclaredGroupIndexes<T>.Default.Condition, DeclaredGroupIndexes<T>.Default.Get) {}
 

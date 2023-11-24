@@ -4,7 +4,7 @@ namespace DragonSpark.Model.Sequences.Collections.Groups;
 
 sealed class GroupPairs<T> : IGroupPairs<T>
 {
-	public static GroupPairs<T> Default { get; } = new GroupPairs<T>();
+	public static GroupPairs<T> Default { get; } = new();
 
 	GroupPairs() {}
 

@@ -6,7 +6,7 @@ namespace DragonSpark.Application.Entities.Diagnostics;
 
 sealed class IsApplicationContentException : ICondition<InvalidOperationException>
 {
-	public static IsApplicationContentException Default { get; } = new IsApplicationContentException();
+	public static IsApplicationContentException Default { get; } = new();
 
 	IsApplicationContentException()
 		: this("An exception was thrown while attempting to evaluate the LINQ query parameter expression") {}

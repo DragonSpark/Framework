@@ -9,7 +9,7 @@ namespace DragonSpark.Compose.Extents.Conditions;
 
 public sealed class ConditionExtent
 {
-	public static ConditionExtent Default { get; } = new ConditionExtent();
+	public static ConditionExtent Default { get; } = new();
 
 	ConditionExtent() {}
 
@@ -21,7 +21,7 @@ public sealed class ConditionExtent
 
 	public sealed class SystemExtents
 	{
-		public static SystemExtents Instance { get; } = new SystemExtents();
+		public static SystemExtents Instance { get; } = new();
 
 		SystemExtents() {}
 
@@ -41,7 +41,7 @@ public class ConditionExtent<T>
 
 	public class Selections
 	{
-		public static Selections Instance { get; } = new Selections();
+		public static Selections Instance { get; } = new();
 
 		Selections() {}
 

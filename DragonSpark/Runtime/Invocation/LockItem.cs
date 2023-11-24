@@ -21,7 +21,7 @@ sealed class LockItem<T> : ISelect<int, (Array<T> Items, int Mask)>
 		return stripes;
 	}
 
-	public static LockItem<T> Default { get; } = new LockItem<T>();
+	public static LockItem<T> Default { get; } = new();
 
 	LockItem() : this(Repeat<T>.Default.Get) {}
 

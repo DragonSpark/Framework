@@ -10,7 +10,7 @@ namespace DragonSpark.Reflection.Types;
 
 sealed class GenericSingleton : IActivateExpressions
 {
-	public static GenericSingleton Default { get; } = new GenericSingleton();
+	public static GenericSingleton Default { get; } = new();
 
 	GenericSingleton() : this(typeof(Singletons).GetRuntimeMethod(nameof(Singletons.Get),
 	                                                              typeof(Type).Yield().ToArray())!,

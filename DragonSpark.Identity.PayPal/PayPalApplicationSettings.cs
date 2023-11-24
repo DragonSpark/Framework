@@ -6,6 +6,6 @@ public sealed class PayPalApplicationSettings
 
 	public string Secret { get; set; }  = null!;
 
-	public PayPalAuthenticationSettings Authentication { get; set; } = new PayPalAuthenticationSettings();
+	public PayPalAuthenticationSettings Authentication { get; set; } = new();
 
 }

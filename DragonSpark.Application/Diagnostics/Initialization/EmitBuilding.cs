@@ -2,7 +2,7 @@
 
 sealed class EmitBuilding<T> : EmitProgramLog
 {
-	public static EmitBuilding<T> Default { get; } = new EmitBuilding<T>();
+	public static EmitBuilding<T> Default { get; } = new();
 
 	EmitBuilding() : base(LogBuildingMessage<T>.Default) {}
 }

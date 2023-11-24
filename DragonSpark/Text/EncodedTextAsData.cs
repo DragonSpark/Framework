@@ -5,7 +5,7 @@ namespace DragonSpark.Text;
 
 public sealed class EncodedTextAsData : Select<string, byte[]>
 {
-	public static EncodedTextAsData Default { get; } = new EncodedTextAsData();
+	public static EncodedTextAsData Default { get; } = new();
 
 	EncodedTextAsData() : this(Encoding.UTF8) {}
 

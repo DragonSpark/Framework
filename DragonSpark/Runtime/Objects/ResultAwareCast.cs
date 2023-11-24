@@ -6,7 +6,7 @@ namespace DragonSpark.Runtime.Objects;
 
 sealed class ResultAwareCast<TFrom, TTo> : Select<TFrom, TTo>
 {
-	public static ResultAwareCast<TFrom, TTo> Default { get; } = new ResultAwareCast<TFrom, TTo>();
+	public static ResultAwareCast<TFrom, TTo> Default { get; } = new();
 
 	ResultAwareCast() : base(Start.A.Selection<TFrom>()
 	                              .AndOf<TTo>()

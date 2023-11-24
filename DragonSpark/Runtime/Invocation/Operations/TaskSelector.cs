@@ -6,14 +6,14 @@ namespace DragonSpark.Runtime.Invocation.Operations;
 
 sealed class TaskSelector : Select<Action, Task>
 {
-	public static TaskSelector Default { get; } = new TaskSelector();
+	public static TaskSelector Default { get; } = new();
 
 	TaskSelector() : base(Task.Run) {}
 }
 
 sealed class TaskSelector<T> : Select<Func<T>, Task<T>>
 {
-	public static TaskSelector<T> Default { get; } = new TaskSelector<T>();
+	public static TaskSelector<T> Default { get; } = new();
 
 	TaskSelector() : base(Task.Run) {}
 }

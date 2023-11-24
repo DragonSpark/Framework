@@ -7,7 +7,7 @@ namespace DragonSpark.Runtime.Environment;
 
 sealed class AssemblyLocation : ReferenceValueStore<Assembly, Uri>
 {
-	public static AssemblyLocation Default { get; } = new AssemblyLocation();
+	public static AssemblyLocation Default { get; } = new();
 
 	AssemblyLocation() : base(Start.A.Selection<Assembly>()
 	                               .By.Calling(x => x.Location)

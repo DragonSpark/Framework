@@ -5,7 +5,7 @@ namespace DragonSpark.Reflection.Selection;
 
 public sealed class AllTypesInSameNamespace<T> : ArrayResult<Type>
 {
-	public static AllTypesInSameNamespace<T> Default { get; } = new AllTypesInSameNamespace<T>();
+	public static AllTypesInSameNamespace<T> Default { get; } = new();
 
 	AllTypesInSameNamespace() : base(new AllTypesInSameNamespace(typeof(T))) {}
 }

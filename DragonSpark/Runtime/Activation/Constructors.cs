@@ -6,7 +6,7 @@ namespace DragonSpark.Runtime.Activation;
 
 sealed class Constructors<T> : Delegates<ConstructorInfo, Func<T>>
 {
-	public static Constructors<T> Default { get; } = new Constructors<T>();
+	public static Constructors<T> Default { get; } = new();
 
 	Constructors() : base(ConstructorExpressions.Default) {}
 }

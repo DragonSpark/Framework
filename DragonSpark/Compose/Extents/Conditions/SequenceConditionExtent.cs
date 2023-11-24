@@ -5,7 +5,7 @@ namespace DragonSpark.Compose.Extents.Conditions;
 
 public sealed class SequenceConditionExtent<T> : ConditionExtent<IEnumerable<T>>
 {
-	public static SequenceConditionExtent<T> Default { get; } = new SequenceConditionExtent<T>();
+	public static SequenceConditionExtent<T> Default { get; } = new();
 
 	SequenceConditionExtent() {}
 

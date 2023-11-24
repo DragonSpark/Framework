@@ -2,7 +2,7 @@
 
 public sealed class ValidUrlExpression : Expression
 {
-	public static ValidUrlExpression Default { get; } = new ValidUrlExpression();
+	public static ValidUrlExpression Default { get; } = new();
 
 	ValidUrlExpression() : base(@"^(http(s?):)([/|.|\w|\s|-])*\.(?:jpg|jpeg|gif|png)$") {}
 }

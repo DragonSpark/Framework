@@ -2,7 +2,7 @@
 
 public sealed class ScrollToSection : Text.Text
 {
-	public static ScrollToSection Default { get; } = new ScrollToSection();
+	public static ScrollToSection Default { get; } = new();
 
 	ScrollToSection() : base(nameof(ScrollToSection)) {}
 }

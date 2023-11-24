@@ -6,7 +6,7 @@ namespace DragonSpark.Application.Entities.Diagnostics;
 
 sealed class PolicyAwareMaterialization<T> : ISelect<IAsyncPolicy, IMaterialization<T>>
 {
-	public static PolicyAwareMaterialization<T> Default { get; } = new PolicyAwareMaterialization<T>();
+	public static PolicyAwareMaterialization<T> Default { get; } = new();
 
 	PolicyAwareMaterialization() : this(DefaultMaterialization<T>.Default) {}
 

@@ -14,7 +14,7 @@ namespace DragonSpark.Runtime.Environment;
 sealed class AssemblySelector : IAlteration<Array<Assembly>>,
                                 IActivateUsing<ISelect<Array<Assembly>, Array<Assembly>>>
 {
-	public static AssemblySelector Default { get; } = new AssemblySelector();
+	public static AssemblySelector Default { get; } = new();
 
 	AssemblySelector() : this(ComponentAssemblyNames.Default) {}
 

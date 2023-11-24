@@ -10,7 +10,7 @@ namespace DragonSpark.Application.Entities.Queries.Compiled;
 
 sealed class Compile<TIn, TOut> : ISelect<Expression<Func<DbContext, TIn, TOut>>, IElement<TIn, TOut>>
 {
-	public static Compile<TIn, TOut> Default { get; } = new Compile<TIn, TOut>();
+	public static Compile<TIn, TOut> Default { get; } = new();
 
 	Compile() : this(Candidates<TIn, TOut>.Default, A.Type<TIn>(), A.Type<TOut>()) {}
 

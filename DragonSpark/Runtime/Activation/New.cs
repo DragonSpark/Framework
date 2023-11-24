@@ -28,7 +28,7 @@ public sealed class New<TIn, TOut> : Select<TIn, TOut>
 
 public sealed class New<T> : FixedActivator<T>
 {
-	public static New<T> Default { get; } = new New<T>();
+	public static New<T> Default { get; } = new();
 
 	New() : base(Start.A.Selection(TypeMetadata.Default)
 	                  .Select(ConstructorLocator.Default)

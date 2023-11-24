@@ -6,7 +6,7 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
 
 sealed class ToAny<T> : IEvaluate<T, bool>
 {
-	public static ToAny<T> Default { get; } = new ToAny<T>();
+	public static ToAny<T> Default { get; } = new();
 
 	ToAny() {}
 

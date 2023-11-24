@@ -5,7 +5,7 @@ namespace DragonSpark.Diagnostics;
 
 public sealed class LinearRetryStrategy : ISelect<int, TimeSpan>
 {
-	public static LinearRetryStrategy Default { get; } = new LinearRetryStrategy();
+	public static LinearRetryStrategy Default { get; } = new();
 
 	LinearRetryStrategy() : this(TimeSpan.FromSeconds(1)) {}
 

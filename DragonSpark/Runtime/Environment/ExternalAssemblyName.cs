@@ -9,5 +9,5 @@ class ExternalAssemblyName : IAlteration<AssemblyName>
 
 	public ExternalAssemblyName(string format) => _format = format;
 
-	public AssemblyName Get(AssemblyName parameter) => new AssemblyName(string.Format(_format, parameter.Name));
+	public AssemblyName Get(AssemblyName parameter) => new(string.Format(_format, parameter.Name));
 }

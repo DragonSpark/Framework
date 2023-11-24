@@ -6,7 +6,7 @@ namespace DragonSpark.Reflection.Types;
 
 sealed class HasGenericArguments : AllCondition<TypeInfo>
 {
-	public static HasGenericArguments Default { get; } = new HasGenericArguments();
+	public static HasGenericArguments Default { get; } = new();
 
 	HasGenericArguments() : base(IsGenericType.Default.Get, GenericArguments.Default.Then().HasAny()) {}
 }

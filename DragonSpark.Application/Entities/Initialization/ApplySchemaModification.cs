@@ -5,7 +5,7 @@ namespace DragonSpark.Application.Entities.Initialization;
 
 public sealed class ApplySchemaModification : ICommand<ModelCreating>
 {
-	public static ApplySchemaModification Default { get; } = new ApplySchemaModification();
+	public static ApplySchemaModification Default { get; } = new();
 
 	ApplySchemaModification() {}
 

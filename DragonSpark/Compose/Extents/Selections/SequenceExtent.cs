@@ -6,7 +6,7 @@ namespace DragonSpark.Compose.Extents.Selections;
 
 public sealed class SequenceExtent<T> : SelectionExtent<IEnumerable<T>>
 {
-	public static SequenceExtent<T> Default { get; } = new SequenceExtent<T>();
+	public static SequenceExtent<T> Default { get; } = new();
 
 	SequenceExtent() {}
 
@@ -21,7 +21,7 @@ public sealed class SequenceExtent<T> : SelectionExtent<IEnumerable<T>>
 
 public sealed class SequenceExtent<TIn, TOut> : SelectionExtent<TIn, IEnumerable<TOut>>
 {
-	public static SequenceExtent<TIn, TOut> Default { get; } = new SequenceExtent<TIn, TOut>();
+	public static SequenceExtent<TIn, TOut> Default { get; } = new();
 
 	SequenceExtent() {}
 

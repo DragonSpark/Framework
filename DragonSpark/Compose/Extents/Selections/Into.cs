@@ -7,7 +7,7 @@ namespace DragonSpark.Compose.Extents.Selections;
 
 public sealed class Into<TIn, TOut>
 {
-	public static Into<TIn, TOut> Default { get; } = new Into<TIn, TOut>();
+	public static Into<TIn, TOut> Default { get; } = new();
 
 	Into() {}
 

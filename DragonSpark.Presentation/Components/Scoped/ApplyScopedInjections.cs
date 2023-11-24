@@ -11,7 +11,7 @@ namespace DragonSpark.Presentation.Components.Scoped;
 
 sealed class ApplyScopedInjections : ICommand<ScopedInjection>
 {
-	public static ApplyScopedInjections Default { get; } = new ApplyScopedInjections();
+	public static ApplyScopedInjections Default { get; } = new();
 
 	ApplyScopedInjections() : this(Properties.Default, PropertyAssignmentDelegates.Default) {}
 

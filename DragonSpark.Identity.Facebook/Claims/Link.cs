@@ -2,7 +2,7 @@
 
 public sealed class Link : FacebookClaim
 {
-	public static Link Default { get; } = new Link();
+	public static Link Default { get; } = new();
 
 	Link() : base(nameof(Link).ToLowerInvariant()) {}
 }

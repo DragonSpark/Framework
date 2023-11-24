@@ -5,7 +5,7 @@ namespace DragonSpark.ElasticEmail;
 
 sealed class RegisterLicense : ICommand<string>
 {
-	public static RegisterLicense Default { get; } = new RegisterLicense();
+	public static RegisterLicense Default { get; } = new();
 
 	RegisterLicense() {}
 

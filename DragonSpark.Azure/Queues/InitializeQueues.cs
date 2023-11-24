@@ -7,7 +7,7 @@ namespace DragonSpark.Azure.Queues;
 
 public sealed class InitializeQueues : ICommand<IApplicationBuilder>
 {
-	public static InitializeQueues Default { get; } = new InitializeQueues();
+	public static InitializeQueues Default { get; } = new();
 
 	InitializeQueues() {}
 

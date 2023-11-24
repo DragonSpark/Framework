@@ -7,7 +7,7 @@ namespace DragonSpark.Application;
 
 sealed class ServiceConfigurationLocator : LocateComponent<IApplicationBuilder, IApplicationConfiguration>
 {
-	public static ServiceConfigurationLocator Default { get; } = new ServiceConfigurationLocator();
+	public static ServiceConfigurationLocator Default { get; } = new();
 
 	ServiceConfigurationLocator()
 		: base(x => x.ApplicationServices.GetRequiredService<IComponentType>()) {}

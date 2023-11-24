@@ -7,7 +7,7 @@ namespace DragonSpark.Application.Entities.Queries.Runtime.Shape;
 
 public sealed class Where<T> : IBody<T>
 {
-	public static Where<T> Default { get; } = new Where<T>();
+	public static Where<T> Default { get; } = new();
 
 	Where() {}
 

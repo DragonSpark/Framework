@@ -9,7 +9,7 @@ namespace DragonSpark.Application.Hosting.BenchmarkDotNet;
 
 sealed class DeployedConfiguration : ISelect<Job, IConfig>
 {
-	public static DeployedConfiguration Default { get; } = new DeployedConfiguration();
+	public static DeployedConfiguration Default { get; } = new();
 
 	DeployedConfiguration() : this(AlignJitLoops.Default) {}
 

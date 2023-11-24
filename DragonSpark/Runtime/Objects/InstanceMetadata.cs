@@ -7,7 +7,7 @@ namespace DragonSpark.Runtime.Objects;
 
 sealed class InstanceMetadata<T> : Select<T, TypeInfo>
 {
-	public static InstanceMetadata<T> Default { get; } = new InstanceMetadata<T>();
+	public static InstanceMetadata<T> Default { get; } = new();
 
 	InstanceMetadata() : base(InstanceType<T>.Default.Select(TypeMetadata.Default)) {}
 }

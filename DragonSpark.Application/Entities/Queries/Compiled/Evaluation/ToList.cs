@@ -6,7 +6,7 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
 
 sealed class ToList<T> : IEvaluate<T, List<T>>
 {
-	public static ToList<T> Default { get; } = new ToList<T>();
+	public static ToList<T> Default { get; } = new();
 
 	ToList() {}
 

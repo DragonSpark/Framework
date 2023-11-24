@@ -2,7 +2,7 @@
 
 public sealed class Extents : IExtents
 {
-	public static Extents Default { get; } = new Extents();
+	public static Extents Default { get; } = new();
 
 	Extents() {}
 

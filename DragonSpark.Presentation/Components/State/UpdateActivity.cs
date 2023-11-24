@@ -8,7 +8,7 @@ namespace DragonSpark.Presentation.Components.State;
 
 sealed class UpdateActivity : IUpdateActivity
 {
-	public static UpdateActivity Default { get; } = new UpdateActivity();
+	public static UpdateActivity Default { get; } = new();
 
 	UpdateActivity() : this(Activities.Default.Get, IsActive.Default) {}
 

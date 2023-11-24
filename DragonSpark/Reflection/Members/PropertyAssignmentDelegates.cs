@@ -25,8 +25,7 @@ public sealed class PropertyAssignmentDelegates<T> : ReferenceValueTable<Propert
 public sealed class PropertyAssignmentDelegates<T, TValue> : ReferenceValueTable<PropertyInfo, Action<T, TValue>>,
                                                              IPropertyAssignmentDelegate<T, TValue>
 {
-	public static PropertyAssignmentDelegates<T, TValue> Default { get; }
-		= new PropertyAssignmentDelegates<T, TValue>();
+	public static PropertyAssignmentDelegates<T, TValue> Default { get; } = new();
 
 	PropertyAssignmentDelegates() : base(PropertyAssignmentDelegate<T, TValue>.Default.Then().Stores().New().Get) {}
 }

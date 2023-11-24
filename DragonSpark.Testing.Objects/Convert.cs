@@ -6,7 +6,7 @@ namespace DragonSpark.Testing.Objects;
 
 sealed class Convert : Instance<Converter<string, int>>
 {
-	public static Convert Default { get; } = new Convert();
+	public static Convert Default { get; } = new();
 
 	Convert() : this(x => default) {}
 

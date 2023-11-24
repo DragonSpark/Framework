@@ -13,5 +13,5 @@ public class TypeSelector<T> : Selector<T, Type>
 
 	public Selector<T, TOut> Activate<TOut>() => Activate().Cast<TOut>();
 
-	public MetadataSelector<T> Metadata() => new MetadataSelector<T>(Select(TypeMetadata.Default).Get());
+	public MetadataSelector<T> Metadata() => new(Select(TypeMetadata.Default).Get());
 }

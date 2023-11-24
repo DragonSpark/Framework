@@ -6,7 +6,7 @@ namespace DragonSpark.Presentation.Compose;
 
 public sealed class Evaluation<T> where T : ComponentBase
 {
-	public static Evaluation<T> Default { get; } = new Evaluation<T>();
+	public static Evaluation<T> Default { get; } = new();
 
 	Evaluation() {}
 

@@ -6,7 +6,7 @@ namespace DragonSpark.Diagnostics.Logging.Text;
 
 sealed class ThreadFormatter : IFormatter<Thread>
 {
-	public static ThreadFormatter Default { get; } = new ThreadFormatter();
+	public static ThreadFormatter Default { get; } = new();
 
 	ThreadFormatter() {}
 

@@ -6,7 +6,7 @@ namespace DragonSpark.Reflection.Types;
 
 sealed class GenericArguments : Select<Type, Array<Type>>
 {
-	public static GenericArguments Default { get; } = new GenericArguments();
+	public static GenericArguments Default { get; } = new();
 
 	GenericArguments() : base(x => x.GenericTypeArguments) {}
 }

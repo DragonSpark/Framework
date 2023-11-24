@@ -4,7 +4,7 @@ namespace DragonSpark.Testing.Objects.Entities;
 
 public sealed class NewSqlDatabaseName : IAlteration<string>
 {
-	public static NewSqlDatabaseName Default { get; } = new NewSqlDatabaseName();
+	public static NewSqlDatabaseName Default { get; } = new();
 
 	NewSqlDatabaseName() : this(DefaultSqlDbName.Default) {}
 

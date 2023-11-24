@@ -7,7 +7,7 @@ namespace DragonSpark.Application.Hosting.Server.Testing.Environment.Production;
 public sealed class Configurations : IServiceConfiguration
 {
 	[UsedImplicitly]
-	public static Configurations Default { get; } = new Configurations();
+	public static Configurations Default { get; } = new();
 
 	Configurations() {}
 

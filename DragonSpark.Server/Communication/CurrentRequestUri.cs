@@ -7,7 +7,7 @@ namespace DragonSpark.Server.Communication;
 
 sealed class CurrentRequestUri : ReferenceValueTable<HttpRequest, Uri>
 {
-	public static CurrentRequestUri Default { get; } = new CurrentRequestUri();
+	public static CurrentRequestUri Default { get; } = new();
 
 	CurrentRequestUri() : base(x => new Uri(x.GetDisplayUrl())) {}
 }

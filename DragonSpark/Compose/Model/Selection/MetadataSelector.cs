@@ -8,5 +8,5 @@ public class MetadataSelector<T> : Selector<T, TypeInfo>
 {
 	public MetadataSelector(ISelect<T, TypeInfo> subject) : base(subject) {}
 
-	public TypeSelector<T> AsType() => new TypeSelector<T>(Select(TypeSelector.Default).Get());
+	public TypeSelector<T> AsType() => new(Select(TypeSelector.Default).Get());
 }

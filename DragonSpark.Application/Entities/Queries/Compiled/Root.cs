@@ -5,7 +5,7 @@ namespace DragonSpark.Application.Entities.Queries.Compiled;
 
 sealed class Root : ISelect<MemberExpression, Expression?>
 {
-	public static Root Default { get; } = new Root();
+	public static Root Default { get; } = new();
 
 	Root() {}
 

@@ -7,7 +7,7 @@ namespace DragonSpark.Reflection;
 
 sealed class IsDecoratedWith<T> : Condition<ICustomAttributeProvider> where T : Attribute
 {
-	public static IsDecoratedWith<T> Default { get; } = new IsDecoratedWith<T>();
+	public static IsDecoratedWith<T> Default { get; } = new();
 
 	IsDecoratedWith() : base(x => x.Has<T>()) {}
 }

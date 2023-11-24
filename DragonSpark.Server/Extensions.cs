@@ -43,6 +43,5 @@ public static class Extensions
 	public static Input Input(this ClaimsPrincipal @this, Guid input) => new (@this, input);
 	public static Input<T> Input<T>(this ClaimsPrincipal @this, T input) => new (@this, input);
 
-	public static Query<TOther> Subject<T, TOther>(this @Query<T> @this, TOther subject)
-		=> new Query<TOther>(@this.Owner, subject);
+	public static Query<TOther> Subject<T, TOther>(this @Query<T> @this, TOther subject) => new(@this.Owner, subject);
 }

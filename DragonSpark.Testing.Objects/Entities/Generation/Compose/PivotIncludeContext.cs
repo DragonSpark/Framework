@@ -18,8 +18,7 @@ public class PivotIncludeContext<T, TPivot, TCurrent> : PivotContext<T, TPivot>
 		_state      = state;
 	}
 
-	public PivotContext<T, TCurrent> Pivot()
-		=> new PivotContext<T, TCurrent>(_generators.Subject, _generators.Current, _state);
+	public PivotContext<T, TCurrent> Pivot() => new(_generators.Subject, _generators.Current, _state);
 
 	public PivotIncludeContext<T, TPivot, TOther> ThenInclude<TOther>(Expression<Func<TCurrent, TOther>> property)
 		where TOther : class

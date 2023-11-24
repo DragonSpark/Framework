@@ -5,7 +5,7 @@ namespace DragonSpark.Application;
 
 sealed class ConfigureFromEnvironment : SelectedCommand<IApplicationBuilder>
 {
-	public static ConfigureFromEnvironment Default { get; } = new ConfigureFromEnvironment();
+	public static ConfigureFromEnvironment Default { get; } = new();
 
 	ConfigureFromEnvironment() : base(ServiceConfigurationLocator.Default.Get) {}
 }

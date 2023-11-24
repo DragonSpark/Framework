@@ -2,7 +2,7 @@
 
 public sealed class About : PatreonClaim
 {
-	public static About Default { get; } = new About();
+	public static About Default { get; } = new();
 
 	About() : base(nameof(About).ToLowerInvariant()) {}
 }

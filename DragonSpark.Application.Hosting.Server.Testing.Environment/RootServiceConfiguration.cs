@@ -5,7 +5,7 @@ namespace DragonSpark.Application.Hosting.Server.Testing.Environment;
 
 public sealed class RootServiceConfiguration : IServiceConfiguration
 {
-	public static RootServiceConfiguration Default { get; } = new RootServiceConfiguration();
+	public static RootServiceConfiguration Default { get; } = new();
 
 	RootServiceConfiguration() {}
 

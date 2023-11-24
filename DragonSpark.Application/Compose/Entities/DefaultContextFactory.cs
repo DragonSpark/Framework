@@ -7,7 +7,7 @@ namespace DragonSpark.Application.Compose.Entities;
 
 sealed class DefaultContextFactory<T> : ISelect<IServiceProvider, T> where T : DbContext
 {
-	public static DefaultContextFactory<T> Default { get; } = new DefaultContextFactory<T>();
+	public static DefaultContextFactory<T> Default { get; } = new();
 
 	DefaultContextFactory() {}
 

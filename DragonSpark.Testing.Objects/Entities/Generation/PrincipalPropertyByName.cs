@@ -6,7 +6,7 @@ namespace DragonSpark.Testing.Objects.Entities.Generation;
 
 sealed class PrincipalPropertyByName<T> : PrincipalPropertyByName
 {
-	public static PrincipalPropertyByName<T> Default { get; } = new PrincipalPropertyByName<T>();
+	public static PrincipalPropertyByName<T> Default { get; } = new();
 
 	PrincipalPropertyByName() : base(A.Type<T>().Name) {}
 }

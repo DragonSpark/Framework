@@ -5,7 +5,7 @@ namespace DragonSpark.Identity.Facebook.Claims;
 
 public sealed class PictureClaimAction : CustomClaimAction
 {
-	public static PictureClaimAction Default { get; } = new PictureClaimAction();
+	public static PictureClaimAction Default { get; } = new();
 
 	PictureClaimAction() : base(Picture.Default, "url", x => x.GetProperty("picture").GetProperty("data").GetString("url")!) {}
 }

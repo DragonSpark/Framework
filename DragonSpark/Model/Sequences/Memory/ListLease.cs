@@ -5,7 +5,7 @@ namespace DragonSpark.Model.Sequences.Memory;
 
 sealed class ListLease<T> : ILease<List<T>, T>
 {
-	public static ListLease<T> Default { get; } = new ListLease<T>();
+	public static ListLease<T> Default { get; } = new();
 
 	ListLease() : this(NewLeasing<T>.Default) {}
 

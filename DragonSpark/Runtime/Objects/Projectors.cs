@@ -6,7 +6,7 @@ namespace DragonSpark.Runtime.Objects;
 
 sealed class Projectors : Select<Type, string, Func<object, IProjection>>, IProjectors
 {
-	public static Projectors Default { get; } = new Projectors();
+	public static Projectors Default { get; } = new();
 
 	Projectors() : base(KnownProjectors.Default.Then()
 	                                   .Select(x => x.Open().ToStore().ToDelegate())

@@ -5,7 +5,7 @@ namespace DragonSpark.Runtime;
 
 public sealed class UnixTimestamp : ISelect<DateTime, ulong>
 {
-	public static UnixTimestamp Default { get; } = new UnixTimestamp();
+	public static UnixTimestamp Default { get; } = new();
 
 	UnixTimestamp() : this(DateTime.UnixEpoch) {}
 

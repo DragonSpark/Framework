@@ -5,7 +5,7 @@ namespace DragonSpark.Testing.Objects;
 
 sealed class Far : Instance<Selection>
 {
-	public static Far Default { get; } = new Far();
+	public static Far Default { get; } = new();
 
 	Far() : base(new Selection(5000, 300)) {}
 }

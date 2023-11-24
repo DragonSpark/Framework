@@ -20,7 +20,7 @@ public class IncludeGeneratorContext<T, TCurrent> : GeneratorContext<T> where T 
 		_state   = state;
 	}
 
-	public PivotContext<T, TCurrent> Pivot() => new PivotContext<T, TCurrent>(_subject, _current, _state);
+	public PivotContext<T, TCurrent> Pivot() => new(_subject, _current, _state);
 
 	public IncludeGeneratorContext<T, TOther> ThenInclude<TOther>(Expression<Func<TCurrent, TOther>> property)
 		where TOther : class

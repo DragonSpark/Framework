@@ -6,7 +6,7 @@ namespace DragonSpark.Model.Sequences;
 
 sealed class Result<T> : Select<IEnumerable<T>, Array<T>>
 {
-	public static Result<T> Default { get; } = new Result<T>();
+	public static Result<T> Default { get; } = new();
 
 	Result() : base(x => x.Open()) {}
 }

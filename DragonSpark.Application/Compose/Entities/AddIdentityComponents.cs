@@ -11,7 +11,7 @@ namespace DragonSpark.Application.Compose.Entities;
 
 sealed class AddIdentityComponents<T> : ICommand<IServiceCollection> where T : IdentityUser
 {
-	public static AddIdentityComponents<T> Default { get; } = new AddIdentityComponents<T>();
+	public static AddIdentityComponents<T> Default { get; } = new();
 
 	AddIdentityComponents() {}
 

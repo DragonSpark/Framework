@@ -7,7 +7,7 @@ namespace DragonSpark.Application.Hosting.xUnit;
 
 sealed class DefaultCustomizations : CompositeCustomization
 {
-	public static DefaultCustomizations Default { get; } = new DefaultCustomizations();
+	public static DefaultCustomizations Default { get; } = new();
 
 	DefaultCustomizations() : this(Empty.Array<ICustomization>()) {}
 

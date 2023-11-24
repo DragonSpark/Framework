@@ -23,6 +23,5 @@ public sealed class UnlessInputContext<TIn, TOut>
 
 	public UnlessResultContext<TIn, TOut> Is(ISelect<TIn, bool> condition) => Is(condition.Get);
 
-	public UnlessResultContext<TIn, TOut> Is(Func<TIn, bool> condition)
-		=> new UnlessResultContext<TIn, TOut>(_subject, condition);
+	public UnlessResultContext<TIn, TOut> Is(Func<TIn, bool> condition) => new(_subject, condition);
 }

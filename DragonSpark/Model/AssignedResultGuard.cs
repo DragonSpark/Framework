@@ -6,7 +6,7 @@ namespace DragonSpark.Model;
 
 sealed class AssignedResultGuard<T> : AssignedGuard<T, InvalidOperationException>
 {
-	public static AssignedResultGuard<T> Default { get; } = new AssignedResultGuard<T>();
+	public static AssignedResultGuard<T> Default { get; } = new();
 
 	AssignedResultGuard() : base(AssignedResultMessage.Default.Then().Out<T>()) {}
 

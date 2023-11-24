@@ -10,7 +10,7 @@ namespace DragonSpark.Reflection.Types;
 
 sealed class Interfaces : ISelect<TypeInfo, IEnumerable<Type>>, IActivateUsing<Type>
 {
-	public static Interfaces Default { get; } = new Interfaces();
+	public static Interfaces Default { get; } = new();
 
 	Interfaces() : this(x => Default.Get(x)) {}
 

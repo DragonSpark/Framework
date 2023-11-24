@@ -4,7 +4,7 @@ namespace DragonSpark.Application.Model.Sequences;
 
 public sealed class MembershipTransaction<T> : MembershipTransaction<T, T>
 {
-	public static MembershipTransaction<T> Default { get; } = new MembershipTransaction<T>();
+	public static MembershipTransaction<T> Default { get; } = new();
 
 	MembershipTransaction() { }
 }

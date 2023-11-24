@@ -8,7 +8,7 @@ namespace DragonSpark.Reflection.Members;
 sealed class PropertyDelegateAdapter<T, TValue> : Select<PropertyInfo, Func<object, TValue>>,
                                                   IPropertyValueDelegate<TValue>
 {
-	public static PropertyDelegateAdapter<T, TValue> Default { get; } = new PropertyDelegateAdapter<T, TValue>();
+	public static PropertyDelegateAdapter<T, TValue> Default { get; } = new();
 
 	PropertyDelegateAdapter() : base(Start.An.Instance(PropertyValueDelegates<T, TValue>.Default)
 	                                      .Select(Start.A.Selection.Of.Any.By.CastDown<T>().Get().Select)

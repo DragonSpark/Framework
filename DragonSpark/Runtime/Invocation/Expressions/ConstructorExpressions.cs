@@ -8,14 +8,14 @@ namespace DragonSpark.Runtime.Invocation.Expressions;
 
 sealed class ConstructorExpressions<T> : Select<ConstructorInfo, Expression>
 {
-	public static ConstructorExpressions<T> Default { get; } = new ConstructorExpressions<T>();
+	public static ConstructorExpressions<T> Default { get; } = new();
 
 	ConstructorExpressions() : base(new ConstructorExpressions(ConstructorParameters<T>.Default)) {}
 }
 
 sealed class ConstructorExpressions : ISelect<ConstructorInfo, Expression>
 {
-	public static ConstructorExpressions Default { get; } = new ConstructorExpressions();
+	public static ConstructorExpressions Default { get; } = new();
 
 	ConstructorExpressions() : this(Selector.Instance) {}
 
@@ -28,7 +28,7 @@ sealed class ConstructorExpressions : ISelect<ConstructorInfo, Expression>
 
 	sealed class Selector : Select<ConstructorInfo, IEnumerable<Expression>>
 	{
-		public static Selector Instance { get; } = new Selector();
+		public static Selector Instance { get; } = new();
 
 		Selector() : base(x => x.GetParameters().Select(y => Expression.Default(y.ParameterType))) {}
 	}

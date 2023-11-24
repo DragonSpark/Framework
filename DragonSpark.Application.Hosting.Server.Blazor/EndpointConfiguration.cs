@@ -7,7 +7,7 @@ namespace DragonSpark.Application.Hosting.Server.Blazor;
 
 sealed class EndpointConfiguration : ICommand<IEndpointRouteBuilder>
 {
-	public static EndpointConfiguration Default { get; } = new EndpointConfiguration();
+	public static EndpointConfiguration Default { get; } = new();
 
 	EndpointConfiguration() : this(DefaultApplicationSelector.Default, "/_Host") {}
 

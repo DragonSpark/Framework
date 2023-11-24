@@ -2,9 +2,9 @@
 
 public readonly struct Selection
 {
-	public static Selection Default { get; } = new Selection(0);
+	public static Selection Default { get; } = new(0);
 
-	public static implicit operator Selection(Assigned<uint> length) => new Selection(0, length);
+	public static implicit operator Selection(Assigned<uint> length) => new(0, length);
 
 	public Selection(uint start, Assigned<uint> length = default)
 	{

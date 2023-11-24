@@ -9,7 +9,7 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
 
 public sealed class ToLease<T> : IEvaluate<T, Leasing<T>>
 {
-	public static ToLease<T> Default { get; } = new ToLease<T>();
+	public static ToLease<T> Default { get; } = new();
 
 	ToLease() {}
 

@@ -17,14 +17,14 @@ public sealed class WithCompositionTests
 {
 	sealed class Instances : Select<int, object>
 	{
-		public static Instances Default { get; } = new Instances();
+		public static Instances Default { get; } = new();
 
 		Instances() : base(_ => new object()) {}
 	}
 
 	sealed class Selection : Select<int, object>
 	{
-		public static Selection Default { get; } = new Selection();
+		public static Selection Default { get; } = new();
 
 		Selection() : this(Instances.Default.Get) {}
 
@@ -35,7 +35,7 @@ public sealed class WithCompositionTests
 
 	sealed class Waves : IWaves
 	{
-		public static Waves Default { get; } = new Waves();
+		public static Waves Default { get; } = new();
 
 		Waves() : this(Time.Default, x => x) {}
 

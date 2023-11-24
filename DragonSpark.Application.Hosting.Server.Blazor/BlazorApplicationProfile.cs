@@ -8,7 +8,7 @@ namespace DragonSpark.Application.Hosting.Server.Blazor;
 
 sealed class BlazorApplicationProfile : ApplicationProfile
 {
-	public static BlazorApplicationProfile Default { get; } = new BlazorApplicationProfile();
+	public static BlazorApplicationProfile Default { get; } = new();
 
 	BlazorApplicationProfile() : this(EmptyCommand<IApplicationBuilder>.Default.Execute) {}
 

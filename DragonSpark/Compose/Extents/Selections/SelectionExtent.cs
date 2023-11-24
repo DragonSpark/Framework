@@ -9,7 +9,7 @@ namespace DragonSpark.Compose.Extents.Selections;
 
 public sealed class SelectionExtent
 {
-	public static SelectionExtent Default { get; } = new SelectionExtent();
+	public static SelectionExtent Default { get; } = new();
 
 	SelectionExtent() {}
 
@@ -21,7 +21,7 @@ public sealed class SelectionExtent
 
 	public sealed class SystemExtents
 	{
-		public static SystemExtents Instance { get; } = new SystemExtents();
+		public static SystemExtents Instance { get; } = new();
 
 		SystemExtents() {}
 
@@ -43,7 +43,7 @@ public class SelectionExtent<T>
 
 	public class Selections
 	{
-		public static Selections Instance { get; } = new Selections();
+		public static Selections Instance { get; } = new();
 
 		Selections() {}
 
@@ -67,7 +67,7 @@ public class SelectionExtent<TIn, TOut>
 
 	public class Selections
 	{
-		public static Selections Instance { get; } = new Selections();
+		public static Selections Instance { get; } = new();
 
 		Selections() {}
 

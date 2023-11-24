@@ -6,7 +6,7 @@ namespace DragonSpark.Testing.Objects;
 
 sealed class Strings : Instance<IEnumerable<string>>
 {
-	public static Strings Default { get; } = new Strings();
+	public static Strings Default { get; } = new();
 
 	Strings() : base(new Fixture().CreateMany<string>()) {}
 }

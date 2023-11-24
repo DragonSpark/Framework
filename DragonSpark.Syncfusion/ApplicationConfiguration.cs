@@ -7,7 +7,7 @@ namespace DragonSpark.SyncfusionRendering;
 
 sealed class ApplicationConfiguration : ICommand<IApplicationBuilder>
 {
-	public static ApplicationConfiguration Default { get; } = new ApplicationConfiguration();
+	public static ApplicationConfiguration Default { get; } = new();
 
 	ApplicationConfiguration() {}
 

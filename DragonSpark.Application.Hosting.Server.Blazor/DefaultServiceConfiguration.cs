@@ -6,7 +6,7 @@ namespace DragonSpark.Application.Hosting.Server.Blazor;
 
 sealed class DefaultServiceConfiguration : ICommand<IServiceCollection>
 {
-	public static DefaultServiceConfiguration Default { get; } = new DefaultServiceConfiguration();
+	public static DefaultServiceConfiguration Default { get; } = new();
 
 	DefaultServiceConfiguration() {}
 

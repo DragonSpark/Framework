@@ -18,7 +18,7 @@ public sealed class ThenElseTests
 
 	sealed class Subject : Condition<object>
 	{
-		public static Subject Default { get; } = new Subject();
+		public static Subject Default { get; } = new();
 
 		Subject() : base(Is.Of<Instance>()
 		                   .Then(Start.A.Selection<object>()

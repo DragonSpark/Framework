@@ -9,7 +9,7 @@ namespace DragonSpark.Compose.Extents.Results;
 
 public sealed class ResultExtent
 {
-	public static ResultExtent Default { get; } = new ResultExtent();
+	public static ResultExtent Default { get; } = new();
 
 	ResultExtent() {}
 
@@ -23,7 +23,7 @@ public sealed class ResultExtent
 
 	public sealed class SystemExtents
 	{
-		public static SystemExtents Instance { get; } = new SystemExtents();
+		public static SystemExtents Instance { get; } = new();
 
 		SystemExtents() {}
 
@@ -43,7 +43,7 @@ public class ResultExtent<T>
 
 	public class Selections
 	{
-		public static Selections Instance { get; } = new Selections();
+		public static Selections Instance { get; } = new();
 
 		Selections() {}
 

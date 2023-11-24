@@ -22,7 +22,7 @@ public class ValidatorKey<T> : IValidatorKey<T> where T : class
 
 sealed class ValidatorKey : ValidatorKey<ObjectGraphValidator>
 {
-	public static ValidatorKey Default { get; } = new ValidatorKey();
+	public static ValidatorKey Default { get; } = new();
 
 	ValidatorKey() : base(new object()) {}
 }

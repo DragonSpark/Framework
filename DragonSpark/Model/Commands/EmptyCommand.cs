@@ -11,7 +11,7 @@ public sealed class EmptyCommand<T> : ICommand<T>
 
 public sealed class EmptyCommand : ICommand
 {
-	public static EmptyCommand Default { get; } = new EmptyCommand();
+	public static EmptyCommand Default { get; } = new();
 
 	EmptyCommand() {}
 

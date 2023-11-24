@@ -8,7 +8,7 @@ namespace DragonSpark.Testing.Objects.Entities.Generation;
 
 sealed class LocatePrincipalProperty<T, TValue> : LocatePrincipalProperty
 {
-	public static LocatePrincipalProperty<T, TValue> Default { get; } = new LocatePrincipalProperty<T, TValue>();
+	public static LocatePrincipalProperty<T, TValue> Default { get; } = new();
 
 	LocatePrincipalProperty() : this(PrincipalProperty<T, TValue>.Default) {}
 

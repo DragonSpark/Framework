@@ -6,7 +6,7 @@ namespace DragonSpark.Reflection.Types;
 
 sealed class TypeHierarchy : ISelect<TypeInfo, IEnumerable<TypeInfo>>
 {
-	public static TypeHierarchy Default { get; } = new TypeHierarchy();
+	public static TypeHierarchy Default { get; } = new();
 
 	TypeHierarchy() {}
 

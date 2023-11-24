@@ -9,7 +9,7 @@ namespace DragonSpark.Application.Hosting.BenchmarkDotNet;
 
 public sealed class Configuration : Validated<Array<string>, IConfig>
 {
-	public static Configuration Default { get; } = new Configuration();
+	public static Configuration Default { get; } = new();
 
 	Configuration() : this(Start.A.Condition.Of.Type<string>().As.Sequence.Immutable,
 	                       Start.A.Selection.Of.Type<string>().As.Sequence.Array) {}

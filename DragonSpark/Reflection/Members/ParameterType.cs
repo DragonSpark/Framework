@@ -6,7 +6,7 @@ namespace DragonSpark.Reflection.Members;
 
 sealed class ParameterType : Select<ParameterInfo, Type>
 {
-	public static ParameterType Default { get; } = new ParameterType();
+	public static ParameterType Default { get; } = new();
 
 	ParameterType() : base(x => x.ParameterType) {}
 }

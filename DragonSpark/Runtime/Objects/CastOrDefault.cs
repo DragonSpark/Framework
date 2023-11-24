@@ -6,7 +6,7 @@ namespace DragonSpark.Runtime.Objects;
 
 sealed class CastOrDefault<TFrom, TTo> : ISelect<TFrom, TTo>
 {
-	public static CastOrDefault<TFrom, TTo> Default { get; } = new CastOrDefault<TFrom, TTo>();
+	public static CastOrDefault<TFrom, TTo> Default { get; } = new();
 
 	CastOrDefault() : this(Start.A.Selection<TFrom>().By.Default<TTo>().Get().Get) {}
 

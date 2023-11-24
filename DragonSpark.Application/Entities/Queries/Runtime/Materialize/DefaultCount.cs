@@ -7,7 +7,7 @@ namespace DragonSpark.Application.Entities.Queries.Runtime.Materialize;
 
 sealed class DefaultCount<T> : ICount<T>
 {
-	public static DefaultCount<T> Default { get; } = new DefaultCount<T>();
+	public static DefaultCount<T> Default { get; } = new();
 
 	DefaultCount() {}
 

@@ -7,7 +7,7 @@ namespace DragonSpark.Application.Entities.Queries.Runtime.Materialize;
 
 public sealed class SingleOrDefaultMaterializer<T> : IMaterializer<T, T?>
 {
-	public static SingleOrDefaultMaterializer<T> Default { get; } = new SingleOrDefaultMaterializer<T>();
+	public static SingleOrDefaultMaterializer<T> Default { get; } = new();
 
 	SingleOrDefaultMaterializer() {}
 

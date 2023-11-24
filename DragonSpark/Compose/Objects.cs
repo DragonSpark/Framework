@@ -213,8 +213,7 @@ public static partial class ExtensionMethods
 	/**/
 
 	public static DirectoryInfo Subdirectory(this DirectoryInfo @this, string path)
-		=> new DirectoryInfo(Path.Combine(@this.FullName, path));
+		=> new(Path.Combine(@this.FullName, path));
 
-	public static FileInfo File(this DirectoryInfo @this, string path)
-		=> new FileInfo(Path.Combine(@this.FullName, path));
+	public static FileInfo File(this DirectoryInfo @this, string path) => new(Path.Combine(@this.FullName, path));
 }

@@ -5,13 +5,13 @@ namespace DragonSpark.Presentation.Components.Navigation;
 
 sealed class QueryStringProperties : Properties<QueryStringParameterAttribute, QueryStringProperty>
 {
-	public static QueryStringProperties Default { get; } = new QueryStringProperties();
+	public static QueryStringProperties Default { get; } = new();
 
 	QueryStringProperties() : base(Selector.Instance.Get) {}
 
 	sealed class Selector : ISelect<Property<QueryStringParameterAttribute>, QueryStringProperty>
 	{
-		public static Selector Instance { get; } = new Selector();
+		public static Selector Instance { get; } = new();
 
 		Selector() {}
 

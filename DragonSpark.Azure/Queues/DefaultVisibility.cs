@@ -5,7 +5,7 @@ namespace DragonSpark.Azure.Queues;
 
 sealed class DefaultVisibility : Instance<TimeSpan>
 {
-	public static DefaultVisibility Default { get; } = new DefaultVisibility();
+	public static DefaultVisibility Default { get; } = new();
 
 	DefaultVisibility() : base(TimeSpan.Zero) {}
 }

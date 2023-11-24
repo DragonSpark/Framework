@@ -31,5 +31,5 @@ public class Enumerations<T>
 	public IEnumerable<T> Far { get; }
 
 	public Enumerations<T> Get(Func<IEnumerable<T>, IEnumerable<T>> select)
-		=> new Enumerations<T>(select(Full), select(Near), select(Far));
+		=> new(select(Full), select(Near), select(Far));
 }

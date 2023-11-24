@@ -38,7 +38,7 @@ sealed class ExceptionAwareValidationOperation : IOperation<ValidationContext>
 
 	sealed class Template : ExceptionTemplate<Type, string>
 	{
-		public static Template Default { get; } = new Template();
+		public static Template Default { get; } = new();
 
 		Template() : base("An exception occurred while performing an operation to validate '{Owner}.{Field}'.") {}
 	}

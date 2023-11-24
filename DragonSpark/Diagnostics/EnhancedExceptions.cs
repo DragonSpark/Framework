@@ -6,7 +6,7 @@ namespace DragonSpark.Diagnostics;
 
 sealed class EnhancedExceptions : ReferenceValueTable<Exception, Exception>
 {
-	public static EnhancedExceptions Default { get; } = new EnhancedExceptions();
+	public static EnhancedExceptions Default { get; } = new();
 
 	EnhancedExceptions() : base(x => x.Demystify()) {}
 }

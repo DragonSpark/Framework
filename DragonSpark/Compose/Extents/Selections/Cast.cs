@@ -7,7 +7,7 @@ namespace DragonSpark.Compose.Extents.Selections;
 
 public sealed class Cast<TIn, TOut> : Select<TIn, TOut>
 {
-	public static Cast<TIn, TOut> Default { get; } = new Cast<TIn, TOut>();
+	public static Cast<TIn, TOut> Default { get; } = new();
 
 	Cast() : base(x => CastOrDefault<TIn, TOut>.Default.Get(x)) {}
 
@@ -15,7 +15,7 @@ public sealed class Cast<TIn, TOut> : Select<TIn, TOut>
 
 	public sealed class Alternatives
 	{
-		public static Alternatives Instance { get; } = new Alternatives();
+		public static Alternatives Instance { get; } = new();
 
 		Alternatives() {}
 

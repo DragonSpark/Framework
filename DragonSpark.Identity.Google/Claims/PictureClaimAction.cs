@@ -4,7 +4,7 @@ namespace DragonSpark.Identity.Google.Claims;
 
 public sealed class PictureClaimAction : ClaimAction
 {
-	public static PictureClaimAction Default { get; } = new PictureClaimAction();
+	public static PictureClaimAction Default { get; } = new();
 
 	PictureClaimAction() : base(Picture.Default, "picture") {}
 }

@@ -5,7 +5,7 @@ namespace DragonSpark.Compose.Extents.Commands;
 
 public sealed class SequenceCommandExtent<T> : CommandExtent<IEnumerable<T>>
 {
-	public static SequenceCommandExtent<T> Default { get; } = new SequenceCommandExtent<T>();
+	public static SequenceCommandExtent<T> Default { get; } = new();
 
 	SequenceCommandExtent() {}
 

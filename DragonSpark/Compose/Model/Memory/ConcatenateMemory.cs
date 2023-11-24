@@ -5,7 +5,7 @@ namespace DragonSpark.Compose.Model.Memory;
 
 sealed class ConcatenateMemory<T> : ILease<(Memory<T> First, Memory<T> Second), T>
 {
-	public static ConcatenateMemory<T> Default { get; } = new ConcatenateMemory<T>();
+	public static ConcatenateMemory<T> Default { get; } = new();
 
 	ConcatenateMemory() : this(ConcatenateNewMemory<T>.Default) {}
 

@@ -12,7 +12,7 @@ sealed class IsAssignedConditions<T> : ReferenceValueStore<Type, Func<T, bool>>
 	readonly static Type Type = AccountForUnassignedType.Default.Get(A.Type<T>());
 
 	[UsedImplicitly]
-	public static IsAssignedConditions<T> Default { get; } = new IsAssignedConditions<T>();
+	public static IsAssignedConditions<T> Default { get; } = new();
 
 	IsAssignedConditions()
 		: this(IsAssignableStructure.Default.Get(Type)

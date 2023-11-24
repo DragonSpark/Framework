@@ -5,7 +5,7 @@ namespace DragonSpark.Reflection.Assemblies;
 
 public sealed class AssemblyNameSelector : Select<Assembly, AssemblyName>
 {
-	public static AssemblyNameSelector Default { get; } = new AssemblyNameSelector();
+	public static AssemblyNameSelector Default { get; } = new();
 
 	AssemblyNameSelector() : base(x => x.GetName()) {}
 }

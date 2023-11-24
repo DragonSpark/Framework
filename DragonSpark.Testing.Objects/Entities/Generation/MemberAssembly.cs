@@ -7,7 +7,7 @@ namespace DragonSpark.Testing.Objects.Entities.Generation;
 
 sealed class MemberAssembly : Model.Selection.Coalesce<Type, Assembly>
 {
-	public static MemberAssembly Default { get; } = new MemberAssembly();
+	public static MemberAssembly Default { get; } = new();
 
 	MemberAssembly() : base(Start.A.Selection.Of.System.Type.By.Self.Then()
 	                             .Metadata()

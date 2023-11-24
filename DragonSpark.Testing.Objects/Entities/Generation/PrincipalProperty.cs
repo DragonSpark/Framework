@@ -7,7 +7,7 @@ namespace DragonSpark.Testing.Objects.Entities.Generation;
 
 sealed class PrincipalProperty<T, TValue> : Select<Memory<PropertyInfo>, PropertyInfo?>, IPrincipalProperty
 {
-	public static PrincipalProperty<T, TValue> Default { get; } = new PrincipalProperty<T, TValue>();
+	public static PrincipalProperty<T, TValue> Default { get; } = new();
 
 	PrincipalProperty() : base(Start.An.Instance(LocateOnlyPrincipalProperty.Default)
 	                                .Then()

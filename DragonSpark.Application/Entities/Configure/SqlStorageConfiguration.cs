@@ -10,7 +10,7 @@ namespace DragonSpark.Application.Entities.Configure;
 
 sealed class SqlStorageConfiguration<T> : IStorageConfiguration where T : DbContext
 {
-	public static SqlStorageConfiguration<T> Default { get; } = new SqlStorageConfiguration<T>();
+	public static SqlStorageConfiguration<T> Default { get; } = new();
 
 	SqlStorageConfiguration() : this(_ => {}) {}
 

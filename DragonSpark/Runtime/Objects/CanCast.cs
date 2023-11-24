@@ -6,7 +6,7 @@ namespace DragonSpark.Runtime.Objects;
 
 public sealed class CanCast<TFrom, TTo> : AllCondition<TFrom>
 {
-	public static CanCast<TFrom, TTo> Default { get; } = new CanCast<TFrom, TTo>();
+	public static CanCast<TFrom, TTo> Default { get; } = new();
 
 	CanCast() : base(Start.A.Condition<TFrom>().By.Assigned,
 	                 Start.A.Selection<TFrom>()

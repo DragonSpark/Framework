@@ -5,7 +5,7 @@ namespace DragonSpark.Model;
 
 sealed class AssignedEntryGuard<T> : AssignedGuard<T, ArgumentNullException>
 {
-	public static AssignedEntryGuard<T> Default { get; } = new AssignedEntryGuard<T>();
+	public static AssignedEntryGuard<T> Default { get; } = new();
 
 	AssignedEntryGuard() : this(AssignedArgumentMessage.Default.Then().Out<T>()) {}
 

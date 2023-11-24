@@ -5,7 +5,7 @@ namespace DragonSpark.Compose.Extents;
 
 public sealed class SystemExtents : ISystemExtents
 {
-	public static SystemExtents Default { get; } = new SystemExtents();
+	public static SystemExtents Default { get; } = new();
 
 	SystemExtents() {}
 

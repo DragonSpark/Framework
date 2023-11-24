@@ -227,28 +227,28 @@ public sealed class QueryTests
 
 	sealed class Query : Start<Subject>
 	{
-		public static Query Default { get; } = new Query();
+		public static Query Default { get; } = new();
 
 		Query() : base(q => q.Where(x => x.Name != "Two")) {}
 	}
 
 	sealed class Selection : Projector<Subject, Subject>
 	{
-		public static Selection Default { get; } = new Selection();
+		public static Selection Default { get; } = new();
 
 		Selection() : base(q => q.Where(x => x.Name != "Two")) {}
 	}
 
 	sealed class Parameter : StartInput<string, Subject>
 	{
-		public static Parameter Default { get; } = new Parameter();
+		public static Parameter Default { get; } = new();
 
 		Parameter() : base((@in, set) => set.Where(x => x.Name != @in)) {}
 	}
 
 	sealed class Complex : Start<Subject>
 	{
-		public static Complex Default { get; } = new Complex();
+		public static Complex Default { get; } = new();
 
 		Complex() : this(Selection.Default) {}
 

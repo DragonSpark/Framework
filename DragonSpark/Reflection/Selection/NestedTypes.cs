@@ -7,7 +7,7 @@ namespace DragonSpark.Reflection.Selection;
 
 public sealed class NestedTypes<T> : ArrayResult<Type>
 {
-	public static NestedTypes<T> Default { get; } = new NestedTypes<T>();
+	public static NestedTypes<T> Default { get; } = new();
 
 	NestedTypes() : base(new NestedTypes(A.Metadata<T>())) {}
 }

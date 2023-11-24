@@ -8,7 +8,7 @@ namespace DragonSpark.Application.Hosting.xUnit;
 
 public sealed class EngineParts : DefaultEngineParts
 {
-	public static EngineParts Default { get; } = new EngineParts();
+	public static EngineParts Default { get; } = new();
 
 	EngineParts() : this(DefaultTransformations.Default.Get().Open()) {}
 

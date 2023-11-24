@@ -8,14 +8,14 @@ namespace DragonSpark.Runtime;
 
 sealed class IsAssigned : InverseCondition<object>
 {
-	public static IsAssigned Default { get; } = new IsAssigned();
+	public static IsAssigned Default { get; } = new();
 
 	IsAssigned() : base(IsNullReference.Default) {}
 }
 
 sealed class IsAssigned<T> : Select<T, bool>, ICondition<T>
 {
-	public static IsAssigned<T> Default { get; } = new IsAssigned<T>();
+	public static IsAssigned<T> Default { get; } = new();
 
 	IsAssigned() : base(IsAssignedConditions<T>.Default.Get(typeof(T))) {}
 }

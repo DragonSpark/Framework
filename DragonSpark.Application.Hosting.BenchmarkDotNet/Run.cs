@@ -13,7 +13,7 @@ public static class Run
 
 public class Run<T> : Select<IConfig, Summary>
 {
-	public static Run<T> Default { get; } = new Run<T>();
+	public static Run<T> Default { get; } = new();
 
 	Run() : this(x => BenchmarkRunner.Run<T>(x)) {}
 

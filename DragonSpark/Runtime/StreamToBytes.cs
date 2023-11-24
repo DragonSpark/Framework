@@ -7,7 +7,7 @@ namespace DragonSpark.Runtime;
 
 public sealed class StreamToBytes : ISelect<Stream, Array<byte>>
 {
-	public static StreamToBytes Default { get; } = new StreamToBytes();
+	public static StreamToBytes Default { get; } = new();
 
 	StreamToBytes() : this(CopyStream.Default.Get) {}
 

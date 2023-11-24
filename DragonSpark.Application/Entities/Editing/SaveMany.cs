@@ -15,7 +15,7 @@ public class SaveMany<T> : Modify<Memory<T>> where T : class
 
 sealed class UpdateMany<T> : IModify<Memory<T>> where T : class
 {
-	public static UpdateMany<T> Default { get; } = new UpdateMany<T>();
+	public static UpdateMany<T> Default { get; } = new();
 
 	UpdateMany() {}
 

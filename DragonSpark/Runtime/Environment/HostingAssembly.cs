@@ -6,7 +6,7 @@ namespace DragonSpark.Runtime.Environment;
 
 public sealed class HostingAssembly : Result<Assembly>
 {
-	public static HostingAssembly Default { get; } = new HostingAssembly();
+	public static HostingAssembly Default { get; } = new();
 
 	HostingAssembly() : base(PrimaryAssembly.Default.Then()
 	                                        .Select(x => x.Attribute<HostingAttribute>().Verify())

@@ -12,7 +12,7 @@ namespace DragonSpark.Reflection.Collections;
 
 public sealed class InnerType : Select<TypeInfo, TypeInfo?>
 {
-	public static InnerType Default { get; } = new InnerType();
+	public static InnerType Default { get; } = new();
 
 	InnerType() : this(Always<TypeInfo>.Default) {}
 

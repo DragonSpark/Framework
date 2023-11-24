@@ -2,7 +2,7 @@
 
 public sealed class InvalidContext
 {
-	public static InvalidContext Default { get; } = new InvalidContext();
+	public static InvalidContext Default { get; } = new();
 
 	InvalidContext() {}
 

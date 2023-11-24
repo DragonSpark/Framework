@@ -9,7 +9,7 @@ namespace DragonSpark.Runtime.Environment;
 
 sealed class TypeSelection<T> : TypeSelection where T : class, IActivateUsing<Assembly>, IArray<Type>
 {
-	public static TypeSelection<T> Default { get; } = new TypeSelection<T>();
+	public static TypeSelection<T> Default { get; } = new();
 
 	TypeSelection() : base(Start.An.Extent<T>().From) {}
 }

@@ -4,7 +4,7 @@ namespace DragonSpark.Reflection.Assemblies;
 
 sealed class AssemblyProduct : Declared<AssemblyProductAttribute, string>
 {
-	public static AssemblyProduct Default { get; } = new AssemblyProduct();
+	public static AssemblyProduct Default { get; } = new();
 
 	AssemblyProduct() : base(x => x.Product) {}
 }

@@ -7,7 +7,7 @@ namespace DragonSpark.Runtime.Objects;
 
 sealed class OncePerParameter<TIn, TOut> : IAlteration<ISelect<TIn, TOut>> where TIn : notnull
 {
-	public static OncePerParameter<TIn, TOut> Default { get; } = new OncePerParameter<TIn, TOut>();
+	public static OncePerParameter<TIn, TOut> Default { get; } = new();
 
 	OncePerParameter() {}
 

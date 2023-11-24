@@ -18,7 +18,7 @@ sealed class ValidContext : IDepending<EditContext>
 		}
 	}
 
-	public static ValidContext Default { get; } = new ValidContext();
+	public static ValidContext Default { get; } = new();
 
 	ValidContext() : this(OperationsStore.Default.Get) {}
 

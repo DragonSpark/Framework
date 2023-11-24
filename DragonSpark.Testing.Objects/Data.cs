@@ -5,7 +5,7 @@ namespace DragonSpark.Testing.Objects;
 
 sealed class Data : Instance<string[]>
 {
-	public static Data Default { get; } = new Data();
+	public static Data Default { get; } = new();
 
 	Data() : base(FixtureInstance.Default.Many<string>(10_000).Select(x => x.Result()).Get()) {}
 }

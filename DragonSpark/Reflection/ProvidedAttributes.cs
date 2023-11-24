@@ -9,9 +9,9 @@ namespace DragonSpark.Reflection;
 
 sealed class ProvidedAttributes<T> : ISelect<ICustomAttributeProvider, Array<T>> where T : Attribute
 {
-	public static ProvidedAttributes<T> Default { get; } = new ProvidedAttributes<T>();
+	public static ProvidedAttributes<T> Default { get; } = new();
 
-	public static ProvidedAttributes<T> Inherited { get; } = new ProvidedAttributes<T>(true);
+	public static ProvidedAttributes<T> Inherited { get; } = new(true);
 
 	ProvidedAttributes() : this(false) {}
 

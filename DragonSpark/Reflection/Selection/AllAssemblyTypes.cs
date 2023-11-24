@@ -14,7 +14,7 @@ public sealed class AllAssemblyTypes : Instances<Type>, IActivateUsing<Assembly>
 
 public sealed class AllAssemblyTypes<T> : ArrayResult<Type>
 {
-	public static AllAssemblyTypes<T> Default { get; } = new AllAssemblyTypes<T>();
+	public static AllAssemblyTypes<T> Default { get; } = new();
 
 	AllAssemblyTypes() : base(new AllAssemblyTypes(typeof(T))) {}
 }

@@ -7,7 +7,7 @@ namespace DragonSpark.Runtime.Activation;
 
 sealed class Activator : Select<Type, object>, IActivator
 {
-	public static Activator Default { get; } = new Activator();
+	public static Activator Default { get; } = new();
 
 	Activator() : base(Start.A.Generic(typeof(Activator<>))
 	                        .Of.Type<object>()
@@ -22,7 +22,7 @@ sealed class Activator : Select<Type, object>, IActivator
 
 sealed class Activator<T> : Result<T>, IActivator<T>
 {
-	public static Activator<T> Default { get; } = new Activator<T>();
+	public static Activator<T> Default { get; } = new();
 
 	Activator() : base(New<T>.Default.Then().Unless(Singleton<T>.Default).IsAssigned()) {}
 }

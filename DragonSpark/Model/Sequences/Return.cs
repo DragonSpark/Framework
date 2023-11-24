@@ -5,7 +5,7 @@ namespace DragonSpark.Model.Sequences;
 
 sealed class Return<T> : ICommand<T[]>
 {
-	public static Return<T> Default { get; } = new Return<T>();
+	public static Return<T> Default { get; } = new();
 
 	Return() : this(ArrayPool<T>.Shared) {}
 

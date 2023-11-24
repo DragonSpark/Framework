@@ -6,7 +6,7 @@ namespace DragonSpark.Testing.Objects;
 
 sealed class NativeArray : IArray<int>
 {
-	public static NativeArray Default { get; } = new NativeArray();
+	public static NativeArray Default { get; } = new();
 
 	NativeArray() : this(Select.Default, Data.Default) {}
 

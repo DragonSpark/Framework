@@ -7,7 +7,7 @@ namespace DragonSpark.Runtime.Environment;
 
 sealed class Assemblies : ArrayStore<Assembly>
 {
-	public static Assemblies Default { get; } = new Assemblies();
+	public static Assemblies Default { get; } = new();
 
 	Assemblies() : this(AssemblySelector.Default) {}
 

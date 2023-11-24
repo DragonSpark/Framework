@@ -7,7 +7,7 @@ namespace DragonSpark.Application.Hosting.BenchmarkDotNet;
 
 sealed class QuickConfiguration : ISelect<Job, IConfig>
 {
-	public static QuickConfiguration Default { get; } = new QuickConfiguration();
+	public static QuickConfiguration Default { get; } = new();
 
 	QuickConfiguration() {}
 

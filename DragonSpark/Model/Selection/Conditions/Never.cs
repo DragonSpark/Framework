@@ -2,7 +2,7 @@
 
 sealed class Never : Condition<object>
 {
-	public static Never Default { get; } = new Never();
+	public static Never Default { get; } = new();
 
 	Never() : base(Never<object>.Default.Get) {}
 }

@@ -8,7 +8,7 @@ namespace DragonSpark.Server.Communication;
 
 sealed class Clients : ISelect<Uri, HttpClient>
 {
-	public static Clients Default { get; } = new Clients();
+	public static Clients Default { get; } = new();
 
 	Clients() : this(AssociatedHandlers.Default, ClientHandlers.Default.Get) {}
 

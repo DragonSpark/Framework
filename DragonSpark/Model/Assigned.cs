@@ -2,9 +2,9 @@
 
 public readonly struct Assigned<T> where T : struct
 {
-	public static Assigned<T> Unassigned { get; } = new Assigned<T>(default, false);
+	public static Assigned<T> Unassigned { get; } = new(default, false);
 
-	public static implicit operator Assigned<T>(in T value) => new Assigned<T>(value);
+	public static implicit operator Assigned<T>(in T value) => new(value);
 
 	public static implicit operator T(in Assigned<T> value) => value.Instance;
 

@@ -5,7 +5,7 @@ namespace DragonSpark.Diagnostics.Logging.Text;
 
 sealed class ContextFormatter : IFormatter<ContextDetails>
 {
-	public static ContextFormatter Default { get; } = new ContextFormatter();
+	public static ContextFormatter Default { get; } = new();
 
 	ContextFormatter() : this(DetailsFormatter.Default, TaskDetailsFormatter.Default,
 	                          ThreadingDetailsFormatter.Default) {}

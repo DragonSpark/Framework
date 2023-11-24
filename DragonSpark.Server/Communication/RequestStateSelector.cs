@@ -5,7 +5,7 @@ namespace DragonSpark.Server.Communication;
 
 sealed class RequestStateSelector : Select<HttpRequest, IRequestCookieCollection>
 {
-	public static RequestStateSelector Default { get; } = new RequestStateSelector();
+	public static RequestStateSelector Default { get; } = new();
 
 	RequestStateSelector() : base(x => x.Cookies) {}
 }

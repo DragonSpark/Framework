@@ -7,7 +7,7 @@ namespace DragonSpark.Runtime.Objects;
 
 sealed class OnlyOnceAlteration<TIn, TOut> : IAlteration<ISelect<TIn, TOut>>
 {
-	public static OnlyOnceAlteration<TIn, TOut> Default { get; } = new OnlyOnceAlteration<TIn, TOut>();
+	public static OnlyOnceAlteration<TIn, TOut> Default { get; } = new();
 
 	OnlyOnceAlteration() {}
 

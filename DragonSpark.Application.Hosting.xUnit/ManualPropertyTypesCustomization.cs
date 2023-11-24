@@ -7,7 +7,7 @@ namespace DragonSpark.Application.Hosting.xUnit;
 
 sealed class ManualPropertyTypesCustomization : CompositeCustomization
 {
-	public static ManualPropertyTypesCustomization Default { get; } = new ManualPropertyTypesCustomization();
+	public static ManualPropertyTypesCustomization Default { get; } = new();
 
 	ManualPropertyTypesCustomization() : this(typeof(Thread)) {}
 

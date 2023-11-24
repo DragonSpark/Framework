@@ -5,7 +5,7 @@ namespace DragonSpark.Testing.Environment.Development;
 
 public sealed class Configuration : IServiceConfiguration
 {
-	public static Configuration Default { get; } = new Configuration();
+	public static Configuration Default { get; } = new();
 
 	Configuration() {}
 

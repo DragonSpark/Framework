@@ -4,7 +4,7 @@ namespace DragonSpark.Application;
 
 public sealed class EnvironmentName : EnvironmentVariable
 {
-	public static EnvironmentName Default { get; } = new EnvironmentName();
+	public static EnvironmentName Default { get; } = new();
 
 	EnvironmentName() : base("ASPNETCORE_ENVIRONMENT") {}
 }

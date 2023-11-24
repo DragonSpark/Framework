@@ -6,7 +6,7 @@ namespace DragonSpark.Model.Selection.Stores;
 
 sealed class Stores<TIn, TOut> : Select<Func<TIn, TOut>, ISelect<TIn, TOut>>
 {
-	public static Stores<TIn, TOut> Default { get; } = new Stores<TIn, TOut>();
+	public static Stores<TIn, TOut> Default { get; } = new();
 
 	Stores() : base(IsValueType.Default.Get(A.Metadata<TIn>())
 		                ? Selections<TIn, TOut>.Default

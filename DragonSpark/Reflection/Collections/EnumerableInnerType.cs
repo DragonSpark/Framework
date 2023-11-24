@@ -5,7 +5,7 @@ namespace DragonSpark.Reflection.Collections;
 
 public sealed class EnumerableInnerType : Select<TypeInfo, TypeInfo?>
 {
-	public static EnumerableInnerType Default { get; } = new EnumerableInnerType();
+	public static EnumerableInnerType Default { get; } = new();
 
 	EnumerableInnerType() : base(new InnerType(ImplementsGenericEnumerable.Default)) {}
 }

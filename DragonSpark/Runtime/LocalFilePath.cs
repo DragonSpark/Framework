@@ -5,7 +5,7 @@ namespace DragonSpark.Runtime;
 
 sealed class LocalFilePath : Select<Uri, string>
 {
-	public static LocalFilePath Default { get; } = new LocalFilePath();
+	public static LocalFilePath Default { get; } = new();
 
 	LocalFilePath() : base(x => x.LocalPath) {}
 }

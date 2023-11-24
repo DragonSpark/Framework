@@ -5,7 +5,7 @@ namespace DragonSpark.Model.Commands;
 
 sealed class Delegates<T> : ReferenceValueStore<ICommand<T>, Action<T>>
 {
-	public static Delegates<T> Default { get; } = new Delegates<T>();
+	public static Delegates<T> Default { get; } = new();
 
 	Delegates() : base(x => x.Execute) {}
 }

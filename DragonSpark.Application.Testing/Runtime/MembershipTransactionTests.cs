@@ -22,7 +22,7 @@ public class MembershipTransactionTests
 
 	sealed class Transactional : Transactional<Subject>
 	{
-		public static Transactional Default { get; } = new Transactional();
+		public static Transactional Default { get; } = new();
 
 		Transactional() : base(new DelegatedEqualityComparer<Subject, Guid>(x => x.Id), _ => false) {}
 	}

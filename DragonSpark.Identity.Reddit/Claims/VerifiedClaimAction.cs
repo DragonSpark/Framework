@@ -4,7 +4,7 @@ namespace DragonSpark.Identity.Reddit.Claims;
 
 public sealed class VerifiedClaimAction : ClaimAction
 {
-	public static VerifiedClaimAction Default { get; } = new VerifiedClaimAction();
+	public static VerifiedClaimAction Default { get; } = new();
 
 	VerifiedClaimAction() : base(Verified.Default, Verified.Default) {}
 }

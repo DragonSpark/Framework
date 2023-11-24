@@ -4,7 +4,7 @@ namespace DragonSpark.Identity.DeviantArt.Claims;
 
 public sealed class ImageClaimAction : ClaimAction
 {
-	public static ImageClaimAction Default { get; } = new ImageClaimAction();
+	public static ImageClaimAction Default { get; } = new();
 
 	ImageClaimAction() : base(Image.Default, "usericon") {}
 }

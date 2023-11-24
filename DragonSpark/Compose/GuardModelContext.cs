@@ -5,12 +5,11 @@ namespace DragonSpark.Compose;
 
 public sealed class GuardModelContext<TException> where TException : Exception
 {
-	public static GuardModelContext<TException> Default { get; } = new GuardModelContext<TException>();
+	public static GuardModelContext<TException> Default { get; } = new();
 
 	GuardModelContext() {}
 
 	public GuardThrowContext<T, TException> Displaying<T>(ISelect<T, string> message) => Displaying<T>(message.Get);
 
-	public GuardThrowContext<T, TException> Displaying<T>(Func<T, string> message)
-		=> new GuardThrowContext<T, TException>(message);
+	public GuardThrowContext<T, TException> Displaying<T>(Func<T, string> message) => new(message);
 }

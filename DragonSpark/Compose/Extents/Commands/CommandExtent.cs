@@ -9,7 +9,7 @@ namespace DragonSpark.Compose.Extents.Commands;
 
 public sealed class CommandExtent
 {
-	public static CommandExtent Default { get; } = new CommandExtent();
+	public static CommandExtent Default { get; } = new();
 
 	CommandExtent() {}
 
@@ -23,7 +23,7 @@ public sealed class CommandExtent
 
 	public sealed class SystemExtents
 	{
-		public static SystemExtents Instance { get; } = new SystemExtents();
+		public static SystemExtents Instance { get; } = new();
 
 		SystemExtents() {}
 
@@ -43,7 +43,7 @@ public class CommandExtent<T>
 
 	public class Selections
 	{
-		public static Selections Instance { get; } = new Selections();
+		public static Selections Instance { get; } = new();
 
 		Selections() {}
 

@@ -6,7 +6,7 @@ namespace DragonSpark.Reflection;
 
 sealed class AccountForUnassignedType : IAlteration<Type>
 {
-	public static AccountForUnassignedType Default { get; } = new AccountForUnassignedType();
+	public static AccountForUnassignedType Default { get; } = new();
 
 	AccountForUnassignedType() {}
 

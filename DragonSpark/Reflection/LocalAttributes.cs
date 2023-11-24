@@ -4,7 +4,7 @@ namespace DragonSpark.Reflection;
 
 sealed class LocalAttributes<T> : AttributesStore<T> where T : Attribute
 {
-	public static LocalAttributes<T> Default { get; } = new LocalAttributes<T>();
+	public static LocalAttributes<T> Default { get; } = new();
 
 	LocalAttributes() : base(IsDefined<T>.Default, ProvidedAttributes<T>.Default) {}
 }

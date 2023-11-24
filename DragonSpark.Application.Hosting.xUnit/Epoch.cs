@@ -6,7 +6,7 @@ namespace DragonSpark.Application.Hosting.xUnit;
 
 public sealed class Epoch : Instance<DateTimeOffset>, ITime
 {
-	public static Epoch Default { get; } = new Epoch();
+	public static Epoch Default { get; } = new();
 
 	Epoch() : base(new DateTimeOffset(1976, 6, 7, 23, 17, 24,
 	                                  TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time")

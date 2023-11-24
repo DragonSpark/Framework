@@ -7,7 +7,7 @@ namespace DragonSpark.Reflection.Members;
 
 sealed class Constructors : Select<Type, ICollection<ConstructorInfo>>, IConstructors
 {
-	public static Constructors Default { get; } = new Constructors();
+	public static Constructors Default { get; } = new();
 
 	Constructors() : base(x => x.GetConstructors()) {}
 }

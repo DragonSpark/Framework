@@ -10,7 +10,7 @@ namespace DragonSpark.Runtime.Environment;
 
 sealed class ComponentAssemblyNames : ISelect<AssemblyName, IEnumerable<AssemblyName>>
 {
-	public static ComponentAssemblyNames Default { get; } = new ComponentAssemblyNames();
+	public static ComponentAssemblyNames Default { get; } = new();
 
 	ComponentAssemblyNames() : this(EnvironmentAssemblyName.Default) {}
 

@@ -8,7 +8,7 @@ namespace DragonSpark.Runtime.Activation;
 
 sealed class SingletonPropertyDelegates : Select<PropertyInfo, Func<object>>
 {
-	public static SingletonPropertyDelegates Default { get; } = new SingletonPropertyDelegates();
+	public static SingletonPropertyDelegates Default { get; } = new();
 
 	SingletonPropertyDelegates() : base(Start.A.Selection<PropertyInfo>()
 	                                         .By.Calling(x => x.GetMethod)

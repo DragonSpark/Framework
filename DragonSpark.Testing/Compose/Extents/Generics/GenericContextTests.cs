@@ -12,7 +12,7 @@ public sealed class GenericContextTests
 	sealed class Subject<T> : IResult<string>
 	{
 		[UsedImplicitly]
-		public static Subject<T> Default { get; } = new Subject<T>();
+		public static Subject<T> Default { get; } = new();
 
 		Subject() {}
 

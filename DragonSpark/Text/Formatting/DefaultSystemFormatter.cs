@@ -6,7 +6,7 @@ namespace DragonSpark.Text.Formatting;
 
 sealed class DefaultSystemFormatter : Conditional<object, IFormattable>, IFormatter
 {
-	public static DefaultSystemFormatter Default { get; } = new DefaultSystemFormatter();
+	public static DefaultSystemFormatter Default { get; } = new();
 
 	DefaultSystemFormatter() : base(Always<object>.Default,
 	                                Start.A.Selection.Of.Any.By.StoredActivation<DefaultFormatter>()) {}

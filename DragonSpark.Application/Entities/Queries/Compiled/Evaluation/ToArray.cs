@@ -7,7 +7,7 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
 
 sealed class ToArray<T> : IEvaluate<T, Array<T>>
 {
-	public static ToArray<T> Default { get; } = new ToArray<T>();
+	public static ToArray<T> Default { get; } = new();
 
 	ToArray() {}
 

@@ -5,7 +5,7 @@ namespace DragonSpark.Compose.Extents.Conditions;
 
 public sealed class ConditionContext : IConditionContext
 {
-	public static ConditionContext Default { get; } = new ConditionContext();
+	public static ConditionContext Default { get; } = new();
 
 	ConditionContext() {}
 
@@ -14,7 +14,7 @@ public sealed class ConditionContext : IConditionContext
 
 public sealed class ConditionContext<T>
 {
-	public static ConditionContext<T> Instance { get; } = new ConditionContext<T>();
+	public static ConditionContext<T> Instance { get; } = new();
 
 	ConditionContext() {}
 

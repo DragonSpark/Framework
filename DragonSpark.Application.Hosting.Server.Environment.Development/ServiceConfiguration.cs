@@ -5,7 +5,7 @@ namespace DragonSpark.Application.Hosting.Server.Environment.Development;
 
 public sealed class ServiceConfiguration : IServiceConfiguration
 {
-	public static ServiceConfiguration Default { get; } = new ServiceConfiguration();
+	public static ServiceConfiguration Default { get; } = new();
 
 	ServiceConfiguration() {}
 

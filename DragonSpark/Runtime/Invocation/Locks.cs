@@ -7,7 +7,7 @@ namespace DragonSpark.Runtime.Invocation;
 
 sealed class Locks<T> : Locks<T, object> where T : notnull
 {
-	public static Locks<T> Default { get; } = new Locks<T>();
+	public static Locks<T> Default { get; } = new();
 
 	Locks() : base(System.Environment.ProcessorCount) {}
 }

@@ -30,7 +30,7 @@ public sealed class IdentityTests
 	sealed class StorageBuilder : StorageBuilder<ApplicationStorage>
 	{
 		[UsedImplicitly]
-		public static StorageBuilder Default { get; } = new StorageBuilder();
+		public static StorageBuilder Default { get; } = new();
 
 		StorageBuilder() : base(x => x.UseInMemoryDatabase(Guid.NewGuid().ToString())
 		                              .EnableSensitiveDataLogging()) {}

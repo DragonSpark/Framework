@@ -11,7 +11,7 @@ public class OperationTests
 {
 	sealed class Number : Selecting<string, uint>
 	{
-		public static Number Default { get; } = new Number();
+		public static Number Default { get; } = new();
 
 		Number() : base(x => new ValueTask<uint>((uint)x.Length)) {}
 	}

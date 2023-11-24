@@ -11,7 +11,7 @@ public sealed class ResultContextTests
 
 	sealed class SubjectSingleton
 	{
-		public static SubjectSingleton Default { get; } = new SubjectSingleton();
+		public static SubjectSingleton Default { get; } = new();
 
 		SubjectSingleton() {}
 	}

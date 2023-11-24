@@ -6,7 +6,7 @@ namespace DragonSpark.Server.Communication;
 
 sealed class Request<T> : Select<Task<T>, T>
 {
-	public static Request<T> Default { get; } = new Request<T>();
+	public static Request<T> Default { get; } = new();
 
 	// ReSharper disable once AsyncApostle.AsyncWait
 	Request() : base(x => x.Result) {}

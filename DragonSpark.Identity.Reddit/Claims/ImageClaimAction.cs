@@ -4,7 +4,7 @@ namespace DragonSpark.Identity.Reddit.Claims;
 
 public sealed class ImageClaimAction : ClaimAction
 {
-	public static ImageClaimAction Default { get; } = new ImageClaimAction();
+	public static ImageClaimAction Default { get; } = new();
 
 	ImageClaimAction() : base(Image.Default, "icon_img", "url") {}
 }

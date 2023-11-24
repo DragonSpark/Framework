@@ -8,7 +8,7 @@ namespace DragonSpark.Reflection.Members;
 
 sealed class ConstructorLocator : ISelect<TypeInfo, ConstructorInfo>
 {
-	public static ConstructorLocator Default { get; } = new ConstructorLocator();
+	public static ConstructorLocator Default { get; } = new();
 
 	ConstructorLocator() : this(ConstructorCondition.Default) {}
 

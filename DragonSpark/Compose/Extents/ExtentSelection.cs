@@ -7,7 +7,7 @@ namespace DragonSpark.Compose.Extents;
 
 public sealed class ExtentSelection<T>
 {
-	public static ExtentSelection<T> Default { get; } = new ExtentSelection<T>();
+	public static ExtentSelection<T> Default { get; } = new();
 
 	ExtentSelection() {}
 

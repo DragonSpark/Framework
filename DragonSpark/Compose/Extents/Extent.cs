@@ -4,7 +4,7 @@ namespace DragonSpark.Compose.Extents;
 
 public sealed class Extent
 {
-	public static Extent Default { get; } = new Extent();
+	public static Extent Default { get; } = new();
 
 	Extent() {}
 
@@ -19,7 +19,7 @@ public sealed class Extent
 
 public class Extent<T>
 {
-	public static Extent<T> Default { get; } = new Extent<T>();
+	public static Extent<T> Default { get; } = new();
 
 	Extent() {}
 

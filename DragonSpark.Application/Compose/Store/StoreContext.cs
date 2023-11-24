@@ -9,6 +9,5 @@ public sealed class StoreContext<TIn, TOut>
 
 	public StoreContext(Selector<TIn, TOut> subject) => _subject = subject;
 
-	public MemoryStoreContext<TIn, TOut> In(IMemoryCache memory)
-		=> new MemoryStoreContext<TIn, TOut>(_subject.Get(), memory);
+	public MemoryStoreContext<TIn, TOut> In(IMemoryCache memory) => new(_subject.Get(), memory);
 }

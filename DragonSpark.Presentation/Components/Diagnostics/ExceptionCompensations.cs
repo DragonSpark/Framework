@@ -6,7 +6,7 @@ namespace DragonSpark.Presentation.Components.Diagnostics;
 
 sealed class ExceptionCompensations : IAlteration<Exception>
 {
-	public static ExceptionCompensations Default { get; } = new ExceptionCompensations();
+	public static ExceptionCompensations Default { get; } = new();
 
 	ExceptionCompensations() {}
 

@@ -28,12 +28,10 @@ public class GeneratorContext<T> : IResult<T> where T : class
 		_state   = state;
 	}
 
-	public GeneratorContext<T> Configure<TOther>(Expression<Func<T, TOther>> property,
-	                                             Func<Faker, TOther> configure)
-		=> new GeneratorContext<T>(_subject.RuleFor(property, configure), _state);
+	public GeneratorContext<T> Configure<TOther>(Expression<Func<T, TOther>> property, Func<Faker, TOther> configure)
+		=> new(_subject.RuleFor(property, configure), _state);
 
-	public GeneratorContext<T> Configure(Alter<Faker<T>> configure)
-		=> new GeneratorContext<T>(configure(_subject), _state);
+	public GeneratorContext<T> Configure(Alter<Faker<T>> configure) => new(configure(_subject), _state);
 
 	public IncludeGeneratorContext<T, TOther> Include<TOther>(Expression<Func<T, TOther>> property)
 		where TOther : class

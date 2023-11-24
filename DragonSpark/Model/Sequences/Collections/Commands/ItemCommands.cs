@@ -7,7 +7,7 @@ namespace DragonSpark.Model.Sequences.Collections.Commands;
 
 sealed class ItemCommands<T> : Store<IList<T>, ICommand<T>>
 {
-	public static ItemCommands<T> Default { get; } = new ItemCommands<T>();
+	public static ItemCommands<T> Default { get; } = new();
 
 	ItemCommands() : base(AddItemCommands<T>.Default.Then().Introduce().Select(InsertItemCommands<T>.Default)) {}
 }

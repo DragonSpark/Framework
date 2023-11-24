@@ -5,7 +5,7 @@ namespace DragonSpark.Reflection.Types;
 
 sealed class IsGenericType : Condition<TypeInfo>
 {
-	public static IsGenericType Default { get; } = new IsGenericType();
+	public static IsGenericType Default { get; } = new();
 
 	IsGenericType() : base(x => x.IsGenericType) {}
 }

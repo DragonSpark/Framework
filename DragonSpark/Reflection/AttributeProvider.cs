@@ -6,7 +6,7 @@ namespace DragonSpark.Reflection;
 
 sealed class AttributeProvider<T> : Select<T, ICustomAttributeProvider>
 {
-	public static AttributeProvider<T> Default { get; } = new AttributeProvider<T>();
+	public static AttributeProvider<T> Default { get; } = new();
 
 	AttributeProvider() : base(Start.A.Selection<T>()
 	                                .By.Metadata

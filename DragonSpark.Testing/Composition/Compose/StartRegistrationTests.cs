@@ -152,7 +152,7 @@ public sealed class StartRegistrationTests
 
 	sealed class MessageResult : Result<string>
 	{
-		public static MessageResult Default { get; } = new MessageResult();
+		public static MessageResult Default { get; } = new();
 
 		public MessageResult() : base(() => "Hello World!") {}
 	}

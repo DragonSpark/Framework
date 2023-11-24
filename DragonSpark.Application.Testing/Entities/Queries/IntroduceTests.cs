@@ -331,28 +331,28 @@ public sealed class IntroduceTests
 
 	sealed class OtherNames : StartSelect<Other, string>
 	{
-		public static OtherNames Default { get; } = new OtherNames();
+		public static OtherNames Default { get; } = new();
 
 		OtherNames() : base(x => x.Name) {}
 	}
 
 	sealed class Amounts : StartSelect<Value, uint>
 	{
-		public static Amounts Default { get; } = new Amounts();
+		public static Amounts Default { get; } = new();
 
 		Amounts() : base(x => x.Amount) {}
 	}
 
 	sealed class ThirdAmounts : StartSelect<Third, float>
 	{
-		public static ThirdAmounts Default { get; } = new ThirdAmounts();
+		public static ThirdAmounts Default { get; } = new();
 
 		ThirdAmounts() : base(x => x.Amount) {}
 	}
 
 	sealed class Query : StartIntroduce<Subject, string, Subject>
 	{
-		public static Query Default { get; } = new Query();
+		public static Query Default { get; } = new();
 
 		Query() : this(OtherNames.Default.Then()) {}
 

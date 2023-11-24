@@ -9,7 +9,7 @@ namespace DragonSpark.Reflection.Members;
 
 public class Properties<T> : Properties<T, PropertyInfo> where T : Attribute
 {
-	public static Properties<T> Default { get; } = new Properties<T>();
+	public static Properties<T> Default { get; } = new();
 
 	Properties() : base(x => x.Metadata) {}
 }

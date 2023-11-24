@@ -8,7 +8,7 @@ namespace DragonSpark.Runtime.Environment;
 
 sealed class ComponentTypeLocators : Select<Array<Type>, IComponentTypes>
 {
-	public static ComponentTypeLocators Default { get; } = new ComponentTypeLocators();
+	public static ComponentTypeLocators Default { get; } = new();
 
 	ComponentTypeLocators() : this(IsComponentType.Default.Get) {}
 

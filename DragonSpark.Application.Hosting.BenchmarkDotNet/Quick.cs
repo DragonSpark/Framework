@@ -7,7 +7,7 @@ namespace DragonSpark.Application.Hosting.BenchmarkDotNet;
 
 sealed class Quick : FixedSelectedSingleton<Job, IConfig>
 {
-	public static Quick Default { get; } = new Quick();
+	public static Quick Default { get; } = new();
 
 	Quick()
 		: base(QuickConfiguration.Default, Job.ShortRun.WithToolchain(InProcessNoEmitToolchain.DontLogOutput)) {}

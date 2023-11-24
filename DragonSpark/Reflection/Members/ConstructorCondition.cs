@@ -7,7 +7,7 @@ namespace DragonSpark.Reflection.Members;
 
 sealed class ConstructorCondition : Condition<ConstructorInfo>
 {
-	public static ConstructorCondition Default { get; } = new ConstructorCondition();
+	public static ConstructorCondition Default { get; } = new();
 
 	ConstructorCondition()
 		: base(Start.A.Selection(Parameters.Default)

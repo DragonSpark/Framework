@@ -4,7 +4,7 @@ namespace DragonSpark.Reflection.Assemblies;
 
 sealed class AssemblyTitle : Declared<AssemblyTitleAttribute, string>
 {
-	public static AssemblyTitle Default { get; } = new AssemblyTitle();
+	public static AssemblyTitle Default { get; } = new();
 
 	AssemblyTitle() : base(x => x.Title) {}
 }

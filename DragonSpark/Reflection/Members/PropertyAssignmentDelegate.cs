@@ -40,8 +40,7 @@ sealed class PropertyAssignmentDelegate<T> : IPropertyAssignmentDelegate<T>
 
 sealed class PropertyAssignmentDelegate<T, TValue> : IPropertyAssignmentDelegate<T, TValue>
 {
-	public static PropertyAssignmentDelegate<T, TValue> Default { get; }
-		= new PropertyAssignmentDelegate<T, TValue>();
+	public static PropertyAssignmentDelegate<T, TValue> Default { get; } = new();
 
 	PropertyAssignmentDelegate() : this(Expression.Parameter(typeof(T), "owner"),
 	                                    Expression.Parameter(typeof(TValue), "parameter")) {}

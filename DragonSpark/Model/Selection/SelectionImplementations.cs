@@ -4,7 +4,7 @@ namespace DragonSpark.Model.Selection;
 
 public sealed class SelectionImplementations : GenericImplementations
 {
-	public static SelectionImplementations Default { get; } = new SelectionImplementations();
+	public static SelectionImplementations Default { get; } = new();
 
 	SelectionImplementations() : base(typeof(ISelect<,>)) {}
 }

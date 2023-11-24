@@ -5,7 +5,7 @@ namespace DragonSpark.Runtime;
 
 public sealed class CopyStream : ISelect<Stream, MemoryStream>
 {
-	public static CopyStream Default { get; } = new CopyStream();
+	public static CopyStream Default { get; } = new();
 
 	CopyStream() {}
 

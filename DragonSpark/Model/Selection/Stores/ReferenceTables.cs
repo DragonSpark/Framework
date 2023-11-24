@@ -7,7 +7,7 @@ namespace DragonSpark.Model.Selection.Stores;
 
 public sealed class ReferenceTables<TIn, TOut> : Select<Func<TIn, TOut>, ITable<TIn, TOut>> where TIn : class
 {
-	public static ReferenceTables<TIn, TOut> Default { get; } = new ReferenceTables<TIn, TOut>();
+	public static ReferenceTables<TIn, TOut> Default { get; } = new();
 
 	ReferenceTables() : this(IsValueType.Default.Get(A.Type<TOut>())
 		                         ? typeof(ReferenceVariable<,>)

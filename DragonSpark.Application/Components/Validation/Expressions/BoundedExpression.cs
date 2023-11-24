@@ -8,5 +8,5 @@ public sealed class BoundedExpression : ISelect<Bounds, Expression>
 
 	public BoundedExpression(string expression) => _expression = expression;
 
-	public Expression Get(Bounds parameter) => new Expression($"^{_expression}{{{parameter.Minimum},{parameter.Maximum}}}$");
+	public Expression Get(Bounds parameter) => new($"^{_expression}{{{parameter.Minimum},{parameter.Maximum}}}$");
 }

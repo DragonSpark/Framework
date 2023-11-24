@@ -5,7 +5,7 @@ namespace DragonSpark.Application.Entities.Configure;
 
 sealed class ConnectionString<T> : IFormatter<IConfiguration>
 {
-	public static ConnectionString<T> Default { get; } = new ConnectionString<T>();
+	public static ConnectionString<T> Default { get; } = new();
 
 	ConnectionString() : this(ConnectionName<T>.Default) {}
 

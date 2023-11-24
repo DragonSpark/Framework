@@ -9,7 +9,7 @@ namespace DragonSpark.Application.Entities.Queries.Compiled;
 
 sealed class ExpectedType<TIn, TOut> : IAlteration<Expression<Func<DbContext, TIn, IQueryable<TOut>>>>
 {
-	public static ExpectedType<TIn, TOut> Default { get; } = new ExpectedType<TIn, TOut>();
+	public static ExpectedType<TIn, TOut> Default { get; } = new();
 
 	ExpectedType() {}
 

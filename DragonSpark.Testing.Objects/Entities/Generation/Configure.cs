@@ -6,7 +6,7 @@ namespace DragonSpark.Testing.Objects.Entities.Generation;
 
 sealed class Configure<T> : ICommand<IAutoGenerateConfigBuilder> where T : class
 {
-	public static Configure<T> Default { get; } = new Configure<T>();
+	public static Configure<T> Default { get; } = new();
 
 	Configure() : this(ModelBinder<T>.Default) {}
 

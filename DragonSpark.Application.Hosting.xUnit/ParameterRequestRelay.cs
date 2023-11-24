@@ -5,7 +5,7 @@ namespace DragonSpark.Application.Hosting.xUnit;
 
 public class ParameterRequestRelay : ISpecimenBuilder
 {
-	readonly static NoSpecimen NoSpecimen = new NoSpecimen();
+	readonly static NoSpecimen NoSpecimen = new();
 
 	readonly AutoFixture.Kernel.ParameterRequestRelay _inner;
 

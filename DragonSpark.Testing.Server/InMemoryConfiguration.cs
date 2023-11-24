@@ -6,7 +6,7 @@ namespace DragonSpark.Testing.Server;
 
 sealed class InMemoryConfiguration : ICommand<DbContextOptionsBuilder>
 {
-	public static InMemoryConfiguration Default { get; } = new InMemoryConfiguration();
+	public static InMemoryConfiguration Default { get; } = new();
 
 	InMemoryConfiguration() {}
 

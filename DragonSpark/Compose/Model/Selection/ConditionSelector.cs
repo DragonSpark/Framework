@@ -18,18 +18,17 @@ public class ConditionSelector<T> : Selector<T, bool>
 		=> Or(others.Select(x => new Condition<T>(x)).Open<ISelect<T, bool>>());
 
 	public ConditionSelector<T> Or(params ISelect<T, bool>[] others)
-		=> new ConditionSelector<T>(new AnyCondition<T>(others.Prepend(Get()).Open()));
+		=> new(new AnyCondition<T>(others.Prepend(Get()).Open()));
 
 	public ConditionSelector<T> And(params Func<T, bool>[] others)
 		=> And(others.Select(x => new Condition<T>(x)).Open<ISelect<T, bool>>());
 
 	public ConditionSelector<T> And(params ISelect<T, bool>[] others)
-		=> new ConditionSelector<T>(new AllCondition<T>(others.Prepend(Get()).Open()));
+		=> new(new AllCondition<T>(others.Prepend(Get()).Open()));
 
 	public ElseContext<T> Then(ICondition<T> subject) => Then(subject.Get);
 
-	public ElseContext<T> Then(Func<T, bool> subject) => new ElseContext<T>(Get().Get, subject);
+	public ElseContext<T> Then(Func<T, bool> subject) => new(Get().Get, subject);
 
-	public ConditionSelector<T> Inverse()
-		=> new ConditionSelector<T>(InverseConditions<T>.Default.Get(new Condition<T>(Get().Get)));
+	public ConditionSelector<T> Inverse() => new(InverseConditions<T>.Default.Get(new Condition<T>(Get().Get)));
 }

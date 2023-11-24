@@ -8,7 +8,7 @@ sealed class Concatenate<T>
 	: ISelect<(DragonSpark.Model.Sequences.Memory.Leasing<T> First, EnumerableExtensions.ValueEnumerable<T> Second),
 		Concatenation<T>>
 {
-	public static Concatenate<T> Default { get; } = new Concatenate<T>();
+	public static Concatenate<T> Default { get; } = new();
 
 	Concatenate() {}
 

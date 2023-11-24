@@ -4,7 +4,7 @@ namespace DragonSpark.Application;
 
 public sealed class KeyDelimiter : Character
 {
-	public static KeyDelimiter Default { get; } = new KeyDelimiter();
+	public static KeyDelimiter Default { get; } = new();
 
 	KeyDelimiter() : base('+') {}
 }

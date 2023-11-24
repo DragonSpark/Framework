@@ -5,7 +5,7 @@ namespace DragonSpark.Application.Entities;
 
 sealed class Compose : ICommand<IServiceContainer>
 {
-	public static Compose Default { get; } = new Compose();
+	public static Compose Default { get; } = new();
 
 	Compose() {}
 

@@ -7,7 +7,7 @@ namespace DragonSpark.Application.Communication;
 
 sealed class ExistingAwareConnectionPolicy : Instance<PolicyBuilder<HttpResponseMessage>>
 {
-	public static ExistingAwareConnectionPolicy Default { get; } = new ExistingAwareConnectionPolicy();
+	public static ExistingAwareConnectionPolicy Default { get; } = new();
 
 	ExistingAwareConnectionPolicy()
 		: base(ConnectionBuilder.Default.Then()

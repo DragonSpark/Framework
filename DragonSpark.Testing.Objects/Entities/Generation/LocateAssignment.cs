@@ -8,7 +8,7 @@ namespace DragonSpark.Testing.Objects.Entities.Generation;
 
 sealed class LocateAssignment<T, TValue> : IResult<Action<T, TValue>?>
 {
-	public static LocateAssignment<T, TValue> Default { get; } = new LocateAssignment<T, TValue>();
+	public static LocateAssignment<T, TValue> Default { get; } = new();
 
 	LocateAssignment() : this(LocatePrincipalProperty<T, TValue>.Default) {}
 

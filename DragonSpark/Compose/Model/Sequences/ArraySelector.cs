@@ -13,7 +13,7 @@ public class ArraySelector<_, T> : OpenArraySelector<_, T>
 
 	public ArraySelector(ISelect<_, Array<T>> subject) : base(subject.Open()) => _subject = subject;
 
-	public new Selector<_, Array<T>> Subject => new Selector<_, Array<T>>(_subject);
+	public new Selector<_, Array<T>> Subject => new(_subject);
 
 	public ISelect<_, IArrayMap<TKey, T>> GroupMap<TKey>(ISelect<T, TKey> key)
 		where TKey : notnull

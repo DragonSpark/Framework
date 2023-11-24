@@ -5,7 +5,7 @@ namespace DragonSpark.Runtime.Environment;
 
 sealed class EnvironmentAwareAssemblies : IArray<string, Assembly>
 {
-	public static EnvironmentAwareAssemblies Default { get; } = new EnvironmentAwareAssemblies();
+	public static EnvironmentAwareAssemblies Default { get; } = new();
 
 	EnvironmentAwareAssemblies() {}
 

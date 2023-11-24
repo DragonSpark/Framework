@@ -6,7 +6,7 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
 
 sealed class ToSingle<T> : IEvaluate<T, T>
 {
-	public static ToSingle<T> Default { get; } = new ToSingle<T>();
+	public static ToSingle<T> Default { get; } = new();
 
 	ToSingle() {}
 

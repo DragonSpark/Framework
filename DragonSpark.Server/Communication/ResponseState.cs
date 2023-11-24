@@ -16,5 +16,5 @@ class ResponseState : ISelect<IRequestCookieCollection, Cookie>
 		_state = state;
 	}
 
-	public Cookie Get(IRequestCookieCollection parameter) => new Cookie(_name, _state(parameter));
+	public Cookie Get(IRequestCookieCollection parameter) => new(_name, _state(parameter));
 }

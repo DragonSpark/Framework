@@ -23,7 +23,7 @@ public sealed class CompositionTests
 
 	sealed class Singleton
 	{
-		public static Singleton Default { get; } = new Singleton();
+		public static Singleton Default { get; } = new();
 
 		Singleton() {}
 	}

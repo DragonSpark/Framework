@@ -9,7 +9,7 @@ namespace DragonSpark.Application.Hosting.xUnit;
 
 public sealed class SingletonQuery : ISelect<Type, IEnumerable<IMethod>>, IMethodQuery
 {
-	public static SingletonQuery Default { get; } = new SingletonQuery();
+	public static SingletonQuery Default { get; } = new();
 
 	SingletonQuery() : this(HasSingletonProperty.Default) {}
 

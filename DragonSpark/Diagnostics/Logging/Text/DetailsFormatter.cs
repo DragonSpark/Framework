@@ -5,7 +5,7 @@ namespace DragonSpark.Diagnostics.Logging.Text;
 
 sealed class DetailsFormatter : IFormatter<Details>
 {
-	public static DetailsFormatter Default { get; } = new DetailsFormatter();
+	public static DetailsFormatter Default { get; } = new();
 
 	DetailsFormatter() : this(TimestampFormat.Default) {}
 

@@ -5,7 +5,7 @@ namespace DragonSpark.Model.Sequences.Memory;
 
 public sealed class NewLeasing<T> : INewLeasing<T>
 {
-	public static NewLeasing<T> Default { get; } = new NewLeasing<T>();
+	public static NewLeasing<T> Default { get; } = new();
 
 	NewLeasing() : this(ArrayPool<T>.Shared) {}
 

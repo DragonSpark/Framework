@@ -7,7 +7,7 @@ namespace DragonSpark.Runtime.Activation;
 
 sealed class CanActivate : Condition<Type>
 {
-	public static CanActivate Default { get; } = new CanActivate();
+	public static CanActivate Default { get; } = new();
 
 	CanActivate() : base(HasSingletonProperty.Default.Then()
 	                                         .Or(IsClass.Default.Then()

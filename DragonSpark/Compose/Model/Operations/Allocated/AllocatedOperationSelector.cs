@@ -10,8 +10,7 @@ public class AllocatedOperationSelector : ResultContext<Task>
 {
 	public AllocatedOperationSelector(IResult<Task> instance) : base(instance) {}
 
-	public AllocatedOperationSelector Append(Func<Task> next)
-		=> new AllocatedOperationSelector(new AllocatedAppended(Get().Get, next));
+	public AllocatedOperationSelector Append(Func<Task> next) => new(new AllocatedAppended(Get().Get, next));
 
-	public OperationSelector Structure() => new OperationSelector(Select(x => x.ToOperation()).Get());
+	public OperationSelector Structure() => new(Select(x => x.ToOperation()).Get());
 }

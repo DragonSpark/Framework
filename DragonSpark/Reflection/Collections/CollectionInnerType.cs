@@ -5,7 +5,7 @@ namespace DragonSpark.Reflection.Collections;
 
 public sealed class CollectionInnerType : Select<TypeInfo, TypeInfo?>
 {
-	public static CollectionInnerType Default { get; } = new CollectionInnerType();
+	public static CollectionInnerType Default { get; } = new();
 
 	CollectionInnerType() : base(new InnerType(ImplementsGenericCollection.Default)) {}
 }

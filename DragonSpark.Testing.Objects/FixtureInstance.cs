@@ -5,7 +5,7 @@ namespace DragonSpark.Testing.Objects;
 
 sealed class FixtureInstance : Instance<IFixture>
 {
-	public static FixtureInstance Default { get; } = new FixtureInstance();
+	public static FixtureInstance Default { get; } = new();
 
 	FixtureInstance() : base(new Fixture()) {}
 }

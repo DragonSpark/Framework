@@ -7,7 +7,7 @@ namespace DragonSpark.Application.Entities.Queries.Runtime.Materialize;
 
 public sealed class DefaultAny<T> : IAny<T>
 {
-	public static DefaultAny<T> Default { get; } = new DefaultAny<T>();
+	public static DefaultAny<T> Default { get; } = new();
 
 	DefaultAny() {}
 

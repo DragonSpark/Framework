@@ -4,7 +4,7 @@ namespace DragonSpark.Model;
 
 public readonly struct None : IEquatable<None>
 {
-	public static None Default { get; } = new None();
+	public static None Default { get; } = new();
 
 	public bool Equals(None parameter) => parameter == Default;
 

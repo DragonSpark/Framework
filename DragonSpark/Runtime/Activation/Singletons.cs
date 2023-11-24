@@ -6,7 +6,7 @@ namespace DragonSpark.Runtime.Activation;
 
 public sealed class Singletons : ReferenceValueStore<Type, object>, ISingletons
 {
-	public static Singletons Default { get; } = new Singletons();
+	public static Singletons Default { get; } = new();
 
 	Singletons() : base(Start.A.Selection.Of.System.Type.By.Default<object>()
 	                         .Unless.Input.Is(HasSingletonProperty.Default)

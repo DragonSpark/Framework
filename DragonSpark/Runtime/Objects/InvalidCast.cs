@@ -6,7 +6,7 @@ namespace DragonSpark.Runtime.Objects;
 
 sealed class InvalidCast<TFrom, TTo> : ISelect<TFrom, TTo>
 {
-	public static InvalidCast<TFrom, TTo> Default { get; } = new InvalidCast<TFrom, TTo>();
+	public static InvalidCast<TFrom, TTo> Default { get; } = new();
 
 	InvalidCast() : this(InvalidCastMessage<TFrom, TTo>.Default) {}
 

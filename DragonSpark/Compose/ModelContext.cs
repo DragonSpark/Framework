@@ -9,7 +9,7 @@ namespace DragonSpark.Compose;
 
 public sealed class ModelContext
 {
-	public static ModelContext Default { get; } = new ModelContext();
+	public static ModelContext Default { get; } = new();
 
 	ModelContext() {}
 
@@ -21,5 +21,5 @@ public sealed class ModelContext
 
 	public SelectionContext Selection => SelectionContext.Default;
 
-	public GenericContext Generic(Type definition) => new GenericContext(definition);
+	public GenericContext Generic(Type definition) => new(definition);
 }

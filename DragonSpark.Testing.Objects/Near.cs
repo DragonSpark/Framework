@@ -5,7 +5,7 @@ namespace DragonSpark.Testing.Objects;
 
 sealed class Near : Instance<Selection>
 {
-	public static Near Default { get; } = new Near();
+	public static Near Default { get; } = new();
 
 	Near() : base(new Selection(300, 100)) {}
 }

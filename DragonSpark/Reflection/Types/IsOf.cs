@@ -4,7 +4,7 @@ namespace DragonSpark.Reflection.Types;
 
 sealed class IsOf<TIn, T> : ICondition<TIn>
 {
-	public static IsOf<TIn, T> Default { get; } = new IsOf<TIn, T>();
+	public static IsOf<TIn, T> Default { get; } = new();
 
 	IsOf() {}
 
@@ -13,7 +13,7 @@ sealed class IsOf<TIn, T> : ICondition<TIn>
 
 sealed class IsOf<T> : Condition<object>
 {
-	public static IsOf<T> Default { get; } = new IsOf<T>();
+	public static IsOf<T> Default { get; } = new();
 
 	IsOf() : base(IsOf<object, T>.Default) {}
 }

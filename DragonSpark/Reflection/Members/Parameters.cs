@@ -6,7 +6,7 @@ namespace DragonSpark.Reflection.Members;
 
 sealed class Parameters : Select<ConstructorInfo, Array<ParameterInfo>>
 {
-	public static Parameters Default { get; } = new Parameters();
+	public static Parameters Default { get; } = new();
 
 	Parameters() : base(x => x.GetParameters()) {}
 }

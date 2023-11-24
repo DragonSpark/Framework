@@ -5,7 +5,7 @@ namespace DragonSpark.Runtime;
 
 public sealed class Time : Result<DateTimeOffset>, ITime
 {
-	public static Time Default { get; } = new Time();
+	public static Time Default { get; } = new();
 
 	Time() : base(() => DateTimeOffset.UtcNow) {}
 }

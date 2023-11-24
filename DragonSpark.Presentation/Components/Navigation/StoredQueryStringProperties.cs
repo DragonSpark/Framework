@@ -5,7 +5,7 @@ namespace DragonSpark.Presentation.Components.Navigation;
 
 sealed class StoredQueryStringProperties : ArrayStore<Type, QueryStringProperty>
 {
-	public static StoredQueryStringProperties Default { get; } = new StoredQueryStringProperties();
+	public static StoredQueryStringProperties Default { get; } = new();
 
 	StoredQueryStringProperties() : base(QueryStringProperties.Default) {}
 }

@@ -7,7 +7,7 @@ namespace DragonSpark.Reflection.Assemblies;
 
 sealed class GetAssemblyDetails : ISelect<Assembly, AssemblyDetails>
 {
-	public static GetAssemblyDetails Default { get; } = new GetAssemblyDetails();
+	public static GetAssemblyDetails Default { get; } = new();
 
 	GetAssemblyDetails() : this(AssemblyTitle.Default.Get, AssemblyProduct.Default.Get,
 	                                 AssemblyCompany.Default.Get, AssemblyDescription.Default.Get,

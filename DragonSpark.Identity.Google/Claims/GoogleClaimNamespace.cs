@@ -2,7 +2,7 @@
 
 public sealed class GoogleClaimNamespace : Text.Text
 {
-	public static GoogleClaimNamespace Default { get; } = new GoogleClaimNamespace();
+	public static GoogleClaimNamespace Default { get; } = new();
 
 	GoogleClaimNamespace() : base("urn:google") {}
 }

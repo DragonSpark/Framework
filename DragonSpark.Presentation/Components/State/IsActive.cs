@@ -8,7 +8,7 @@ namespace DragonSpark.Presentation.Components.State;
 
 public sealed class IsActive : IProperty<object, bool>
 {
-	public static IsActive Default { get; } = new IsActive();
+	public static IsActive Default { get; } = new();
 
 	IsActive() : this(Start.A.Selection<object>().By.Calling(_ => false).Stores().New()) {}
 

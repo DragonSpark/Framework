@@ -6,7 +6,7 @@ namespace DragonSpark.Application.Entities.Queries.Compiled;
 
 sealed class Candidates<TIn, TOut> : Instances<Generic<TIn, TOut>>
 {
-	public static Candidates<TIn, TOut> Default { get; } = new Candidates<TIn, TOut>();
+	public static Candidates<TIn, TOut> Default { get; } = new();
 
 	Candidates() : this(typeof(Compiled<,,>), typeof(Compiled<,,,>), typeof(Compiled<,,,,>),
 	                    typeof(Compiled<,,,,,>), typeof(Compiled<,,,,,,>), typeof(Compiled<,,,,,,,>),

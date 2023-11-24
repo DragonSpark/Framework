@@ -6,7 +6,7 @@ namespace DragonSpark.Testing.Objects.Entities.Generation;
 
 sealed class LocateOnlyPrincipalProperty : ISelect<Memory<PropertyInfo>, PropertyInfo?>
 {
-	public static LocateOnlyPrincipalProperty Default { get; } = new LocateOnlyPrincipalProperty();
+	public static LocateOnlyPrincipalProperty Default { get; } = new();
 
 	LocateOnlyPrincipalProperty() {}
 

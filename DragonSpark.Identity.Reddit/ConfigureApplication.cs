@@ -11,7 +11,7 @@ namespace DragonSpark.Identity.Reddit;
 
 sealed class ConfigureApplication : ICommand<AuthenticationBuilder>
 {
-	public static ConfigureApplication Default { get; } = new ConfigureApplication();
+	public static ConfigureApplication Default { get; } = new();
 
 	ConfigureApplication() : this(DefaultClaimActions.Default, _ => {}) {}
 

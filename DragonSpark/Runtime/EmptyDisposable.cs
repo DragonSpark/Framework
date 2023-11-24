@@ -2,7 +2,7 @@
 
 public sealed class EmptyDisposable : Disposable
 {
-	public static EmptyDisposable Default { get; } = new EmptyDisposable();
+	public static EmptyDisposable Default { get; } = new();
 
 	EmptyDisposable() : base(() => {}) {}
 }

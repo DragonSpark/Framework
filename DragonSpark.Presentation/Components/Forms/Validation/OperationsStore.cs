@@ -5,7 +5,7 @@ namespace DragonSpark.Presentation.Components.Forms.Validation;
 
 sealed class OperationsStore : ReferenceValueStore<EditContext, IOperations>, IOperationsStore
 {
-	public static OperationsStore Default { get; } = new OperationsStore();
+	public static OperationsStore Default { get; } = new();
 
 	OperationsStore() : base(_ => new Operations()) {}
 }

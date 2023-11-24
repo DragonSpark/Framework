@@ -2,7 +2,7 @@
 
 public sealed class VowelContext : IVowelContext
 {
-	public static VowelContext Default { get; } = new VowelContext();
+	public static VowelContext Default { get; } = new();
 
 	VowelContext() {}
 
