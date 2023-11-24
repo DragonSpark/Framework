@@ -1,9 +1,6 @@
 ﻿using DragonSpark.Application.Security.Identity.Model;
 using DragonSpark.Compose;
-using DragonSpark.Model.Commands;
-using DragonSpark.Model.Operations.Results;
 using DragonSpark.Model.Operations.Selection.Conditions;
-using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -39,30 +36,5 @@ public sealed class RefreshAuthenticationDisplayState<T> : IDepending<ClaimsPrin
 		}
 
 		return result;
-	}
-}
-
-// TODO
-
-public sealed class AuthenticationStore : IResulting<AuthenticationState>, ICommand<AuthenticationState>
-{
-	readonly AuthenticationStateProvider                 _service;
-	readonly IHostEnvironmentAuthenticationStateProvider _environment;
-
-	public AuthenticationStore(AuthenticationStateProvider service)
-		: this(service, service.To<IHostEnvironmentAuthenticationStateProvider>()) {}
-
-	public AuthenticationStore(AuthenticationStateProvider service,
-	                           IHostEnvironmentAuthenticationStateProvider environment)
-	{
-		_service     = service;
-		_environment = environment;
-	}
-
-	public ValueTask<AuthenticationState> Get() => _service.GetAuthenticationStateAsync().ToOperation();
-
-	public void Execute(AuthenticationState parameter)
-	{
-		_environment.SetAuthenticationState(parameter.ToOperation().AsTask());
 	}
 }
