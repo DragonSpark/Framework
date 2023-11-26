@@ -1,4 +1,5 @@
-﻿using DragonSpark.Application.Entities.Initialization;
+﻿using DragonSpark.Application.Entities.Configuration;
+using DragonSpark.Application.Entities.Initialization;
 using DragonSpark.Model.Commands;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,7 +16,8 @@ public class Entities : DbContext
 
 	protected override void OnModelCreating(ModelBuilder builder)
 	{
-		_configure.Execute(new (this, builder));
+		builder.Entity<Setting>();
+		_configure.Execute(new(this, builder));
 		base.OnModelCreating(builder);
 	}
 }
@@ -33,7 +35,8 @@ public class Entities<T> : Security.Identity.IdentityDbContext<T> where T : Secu
 
 	protected override void OnModelCreating(ModelBuilder builder)
 	{
-		_configure.Execute(new ModelCreating(this, builder));
+		builder.Entity<Setting>();
+		_configure.Execute(new(this, builder));
 		base.OnModelCreating(builder);
 	}
 }

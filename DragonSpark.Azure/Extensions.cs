@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Azure.Queues;
 using DragonSpark.Azure.Storage;
+using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Composition.Compose;
 using Microsoft.Extensions.DependencyInjection;
@@ -52,4 +53,7 @@ public static class Extensions
 		        .Singleton()
 		        .Then.Start<T>()
 		        .Singleton();
+
+	public static IServiceCollection AddAzureKeyVaultSecret(this IServiceCollection @this)
+		=> Data.AddAzureKeyVaultSecret.Default.Parameter(@this);
 }

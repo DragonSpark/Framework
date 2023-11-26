@@ -9,7 +9,6 @@ namespace DragonSpark.Presentation.Environment.Browser;
 
 public sealed class ConnectionAwareClientVariableAccessor<T> : IClientVariableAccessor<T>
 {
-	public IRemove Remove { get; }
 	readonly ISelecting<string, ProtectedBrowserStorageResult<T>> _get;
 	readonly IOperation<Pair<string, T>>                          _set;
 
@@ -23,6 +22,8 @@ public sealed class ConnectionAwareClientVariableAccessor<T> : IClientVariableAc
 		_get   = get;
 		_set   = set;
 	}
+
+	public IRemove Remove { get; }
 
 	public ValueTask<ProtectedBrowserStorageResult<T>> Get(string parameter) => _get.Get(parameter);
 

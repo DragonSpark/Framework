@@ -7,17 +7,22 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Application.Security.Identity;
 
-public sealed class CommonRegistrations<TContext, T> : ICommand<IServiceCollection>
+sealed class CommonRegistrations<TContext, T> : ICommand<IServiceCollection>
 	where TContext : DbContext
 	where T : IdentityUser
 
 {
 	public static CommonRegistrations<TContext, T> Default { get; } = new();
 
-	CommonRegistrations() {}
+	CommonRegistrations() : this(Entities.Configuration.Registrations.Default) {}
+
+	readonly ICommand<IServiceCollection> _previous;
+
+	public CommonRegistrations(ICommand<IServiceCollection> previous) => _previous = previous;
 
 	public void Execute(IServiceCollection parameter)
 	{
+		_previous.Execute(parameter);
 		parameter.AddSingleton<IKnownClaims>(KnownClaims.Default)
 		         .AddSingleton(typeof(IAuthentications<>), typeof(Authentications<>))
 		         .AddSingleton(typeof(IUsers<>), typeof(Users<>))
