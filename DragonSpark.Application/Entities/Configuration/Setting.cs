@@ -1,6 +1,15 @@
-﻿namespace DragonSpark.Application.Entities.Configuration;
+﻿using System.ComponentModel.DataAnnotations;
 
-public sealed record Setting(string Id, string? Value);
+namespace DragonSpark.Application.Entities.Configuration;
+
+public sealed class Setting
+{
+	[MaxLength(32)]
+	public string Id { get; init; } = default!;
+
+	[MaxLength(256)]
+	public string? Value { get; set; }
+}
 
 /*public class ConfigurationContext : DbContext
 {
