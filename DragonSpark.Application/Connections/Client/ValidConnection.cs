@@ -7,5 +7,6 @@ namespace DragonSpark.Application.Connections.Client;
 
 sealed class ValidConnection : Condition
 {
-	public ValidConnection(IResult<HubConnection?> store) : base(new IsAssigned<HubConnection>(store).Get) {}
+	public ValidConnection(IResult<HubConnection?> store)
+		: base(new IsAssigned<HubConnection>(store).Then().And(new LastConnection()).Then()) {}
 }
