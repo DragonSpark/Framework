@@ -7,8 +7,8 @@
 @using DragonSpark.Presentation.Components.Content.Templates
 @inherits ComponentStateComponentBase
 
-<SessionStateComponent T="T" Owner="Owner" Qualifier="@Qualifier">
-    <ClientValueBindingComponent T="T" Value="@Value" AssignedValue="@AssignedValue" Store="context" ChildContent="@ChildContent" Allowed="@Allowed" ValueChanged="@OnChange" Comparer="@Comparer" />
+<SessionStateComponent T="T" Owner="Owner" Qualifier="@Qualifier" ProvidedKey="@ProvidedKey">
+    <ClientValueBindingComponent T="T" Value="@Value" AssignedValue="@AssignedValue" Store="context" ChildContent="@ChildContent" Allowed="@Allowed" ValueChanged="@OnChange" Comparer="@Comparer" LoadingTemplate="@LoadingTemplate" />
 </SessionStateComponent>
 
 @code {

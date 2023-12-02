@@ -80,13 +80,13 @@
                 var value = _result.Value.Value ?? (AssignedValue is not null ? AssignedValue.Invoke() : Value);
                 Binding = new Binding<T>(value, RequestUpdate, Comparer);
                 await Loaded.InvokeAsync(Binding);
-                await ValueChanged.InvokeAsync(Value = Binding.Value).ConfigureAwait(false);
+                await ValueChanged.InvokeAsync(Value = Binding.Value);
             }
             else if (AssignedValue is not null)
             {
                 var value = AssignedValue();
                 Binding = new Binding<T>(value, RequestUpdate, Comparer);
-                await ValueChanged.InvokeAsync(Value = value).ConfigureAwait(false);
+                await ValueChanged.InvokeAsync(Value = value);
             }
             else
             {

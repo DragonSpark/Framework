@@ -88,10 +88,7 @@ public class DataList<T> : RadzenDataList<T>, IRefreshAware
 				if (_pageIndex != 0)
 				{
 					_pageIndex = 0;
-					if (_update.Down())
-					{
-						PageIndexChanged.InvokeAsync(_pageIndex);
-					}
+					_update.Down();
 				}
 
 				_reload?.Execute();
