@@ -7,18 +7,18 @@
 
 @inject IContentKey Key
 
-@ChildContent(Store)
+@ChildContent(_store)
 
 @code
 {
+    IClientVariable<T> _store = default!;
+
     [Parameter]
     public ProtectedBrowserStorage Storage { get; set; } = default!;
 
-    IClientVariable<T> Store { get; set; } = default!;
-
     protected override void OnInitialized()
     {
-        Store = new ComponentStateVariable<T>($"{ProvidedKey ?? Key.Get(Owner)}/{Qualifier}", Storage);
+        _store = new ComponentStateVariable<T>($"{ProvidedKey ?? Key.Get(Owner)}/{Qualifier}", Storage);
         base.OnInitialized();
     }
 }

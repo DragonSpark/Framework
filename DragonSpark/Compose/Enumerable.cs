@@ -13,7 +13,7 @@ namespace DragonSpark.Compose;
 
 public static partial class ExtensionMethods
 {
-	public static T[] Open<T>(this IEnumerable<T> @this) => @this is T[] array ? array : @this.ToArray();
+	public static T[] Open<T>(this IEnumerable<T> @this) => @this as T[] ?? @this.ToArray();
 
 	public static Array<T> Result<T>(this IEnumerable<T> @this) => @this.Open();
 

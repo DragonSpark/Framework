@@ -8,34 +8,21 @@
 
 <RefreshObjectMonitor Topic="@Topic" Updated="@OnUpdate" />
 
-<CascadingValue Value="@Subject" IsFixed="@Fixed">
-	@ChildContent
-</CascadingValue>
+<CascadingValue Value="@_subject" IsFixed="@Fixed" ChildContent="@ChildContent" />
 
 @code {
-    readonly ICollection<IRefreshAware> _children = new List<IRefreshAware>();
+    readonly HashSet<IRefreshAware> _children = new ();
 
-    IRefreshContainer Subject { get; set; } = default!;
+    IRefreshContainer _subject = default!;
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        Subject = new State.RefreshContainer(_children);
+        _subject = new State.RefreshContainer(_children);
     }
 
     [Parameter]
-    public object Topic 
-    {
-        get => _topic;
-        set
-        {
-            if (_topic != value)
-            {
-                _topic = value;
-                _children.Clear();
-            }
-        }
-    }	object _topic = default!;
+    public object Topic { get; set; } = default!;
 
     [Parameter]
     public bool Fixed { get; set; } = true;
@@ -45,8 +32,7 @@
 
 	async Task OnUpdate(object _)
 	{
-	    using var lease = _children.AsValueEnumerable().ToArray(ArrayPool<IRefreshAware>.Shared);
-	    foreach (var item in lease)
+        foreach (var item in _children)
 		{
 			await item.Await();
 		}

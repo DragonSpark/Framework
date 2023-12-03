@@ -8,9 +8,16 @@
 
 @typeparam T
 
-@if (Binding is not null)
+@if (_rendered)
 {
-    @ChildContent(Binding)
+    @if (Binding is not null)
+    {
+        @ChildContent(Binding)
+    }
+}
+else
+{
+    @LoadingTemplate
 }
 
 
