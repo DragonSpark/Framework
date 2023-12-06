@@ -1,35 +1,27 @@
-﻿using DragonSpark.Model.Commands;
+﻿using DragonSpark.Composition;
+using DragonSpark.Text;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 
 namespace DragonSpark.Application.Entities.Configure;
 
-public sealed class ConfigureSqlServer<T> : ConfigureSqlServer
+public sealed class ConfigureSqlServer<T> : IStorageConfiguration where T : DbContext
 {
-	public ConfigureSqlServer(string name) : this(new SqlServerMigrations(name).Execute) {}
-
-	public ConfigureSqlServer(Type migrations) : this(new SqlServerMigrations(migrations).Execute) {}
+	readonly IFormatter<IConfiguration>               _connection;
+	readonly Action<SqlServerDbContextOptionsBuilder> _configure;
 
 	public ConfigureSqlServer(Action<SqlServerDbContextOptionsBuilder> configure)
-		: base(ConnectionString<T>.Default.Get(EnvironmentalConfiguration.Default.Get()), configure) {}
-}
+		: this(ConnectionString<T>.Default, configure) {}
 
-public class ConfigureSqlServer : ICommand<DbContextOptionsBuilder>
-{
-	readonly string                                   _connection;
-	readonly Action<SqlServerDbContextOptionsBuilder> _configuration;
-
-	public ConfigureSqlServer(string connection) : this(connection, _ => {}) {}
-
-	public ConfigureSqlServer(string connection, Action<SqlServerDbContextOptionsBuilder> configuration)
+	public ConfigureSqlServer(IFormatter<IConfiguration> connection, Action<SqlServerDbContextOptionsBuilder> configure)
 	{
-		_connection    = connection;
-		_configuration = configuration;
+		_connection = connection;
+		_configure  = configure;
 	}
 
-	public void Execute(DbContextOptionsBuilder parameter)
-	{
-		parameter.UseSqlServer(_connection, _configuration);
-	}
+	public Action<DbContextOptionsBuilder> Get(IServiceCollection parameter)
+		=> new UseSqlServer(_connection.Get(parameter.Configuration()), _configure).Execute;
 }

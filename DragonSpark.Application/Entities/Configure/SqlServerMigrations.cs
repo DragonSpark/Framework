@@ -4,6 +4,13 @@ using System;
 
 namespace DragonSpark.Application.Entities.Configure;
 
+public sealed class SqlServerMigrations<T> : SqlServerMigrations
+{
+	public static SqlServerMigrations<T> Default { get; } = new();
+
+	SqlServerMigrations() : base(A.Type<T>()) {}
+}
+
 public class SqlServerMigrations : ISqlServerConfiguration
 {
 	readonly string _name;

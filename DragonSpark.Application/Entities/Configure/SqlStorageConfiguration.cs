@@ -27,5 +27,5 @@ sealed class SqlStorageConfiguration<T> : IStorageConfiguration where T : DbCont
 	}
 
 	public Action<DbContextOptionsBuilder> Get(IServiceCollection parameter)
-		=> new ConfigureSqlServer(parameter.Configuration().GetConnectionString(_name).Verify(), _configuration).Execute;
+		=> new UseSqlServer(parameter.Configuration().GetConnectionString(_name).Verify(), _configuration).Execute;
 }

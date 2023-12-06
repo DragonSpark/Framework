@@ -28,5 +28,5 @@ public sealed class ConfigureSqlServerWithMigration<T> : IStorageConfiguration
 	}
 
 	public Action<DbContextOptionsBuilder> Get(IServiceCollection parameter)
-		=> new ConfigureSqlServer(_connection.Get(parameter.Configuration()), _configure).Execute;
+		=> new UseSqlServer(_connection.Get(parameter.Configuration()), _configure).Execute;
 }

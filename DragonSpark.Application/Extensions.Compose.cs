@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Linq;
@@ -30,6 +31,14 @@ namespace DragonSpark.Application;
 // ReSharper disable once MismatchedFileName
 public static partial class Extensions
 {
+	public static StorageConfigurationBuilder WithSqlServer<T>(this StorageConfigurationBuilder @this)
+		where T : DbContext => @this.WithSqlServer<T>(_ => {});
+
+	public static StorageConfigurationBuilder WithSqlServer<T>(this StorageConfigurationBuilder @this,
+	                                                           Action<SqlServerDbContextOptionsBuilder> configure)
+		where T : DbContext
+		=> @this.Append(new ConfigureSqlServer<T>(configure));
+
 	public static StorageConfigurationBuilder WithSqlServer<T>(this StorageConfigurationBuilder @this, string name)
 		where T : DbContext
 		=> @this.Append(new ConfigureSqlServerWithMigration<T>(name));
@@ -142,6 +151,7 @@ public static partial class Extensions
 	/**/
 
 	public static InstanceComposer<TIn, T> Then<TIn, T>(this IInstance<TIn, T> @this) => new(@this);
+
 	public static InstanceComposer<T> Then<T>(this IInstance<T> @this) => new(@this);
 
 	public static IQuery<T> Then<T>(this QueryComposer<None, T> @this) => new Query<T>(@this.Instance());
