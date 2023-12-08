@@ -1,15 +1,14 @@
-﻿using DragonSpark.Application.Communication;
-using DragonSpark.Model.Selection.Conditions;
+﻿using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences;
 using Microsoft.AspNetCore.Http;
 
-namespace DragonSpark.Server.Requests.Warmup;
+namespace DragonSpark.Application.Communication;
 
-sealed class IsKnownWarmupAgent : ICondition<IHeaderDictionary>
+public sealed class IsKnownWarmupAgent : ICondition<IHeaderDictionary>
 {
 	public static IsKnownWarmupAgent Default { get; } = new();
 
-	IsKnownWarmupAgent() : this(UserAgentHeader.Default, KnownUserAgents.Default) { }
+	IsKnownWarmupAgent() : this(UserAgentHeader.Default, KnownUserAgents.Default) {}
 
 	readonly IHeader       _header;
 	readonly Array<string> _agents;

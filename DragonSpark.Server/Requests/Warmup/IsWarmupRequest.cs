@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Selection.Conditions;
+﻿using DragonSpark.Application.Communication;
+using DragonSpark.Model.Selection.Conditions;
 using Microsoft.AspNetCore.Http;
 
 namespace DragonSpark.Server.Requests.Warmup;
@@ -21,6 +22,5 @@ sealed class IsWarmupRequest : ICondition<HttpContext>
 		_address = address;
 	}
 
-	public bool Get(HttpContext parameter)
-		=> _agent.Get(parameter.Request.Headers) && _address.Get(parameter);
+	public bool Get(HttpContext parameter) => _agent.Get(parameter.Request.Headers) && _address.Get(parameter);
 }

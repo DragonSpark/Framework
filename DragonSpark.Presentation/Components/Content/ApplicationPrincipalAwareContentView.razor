@@ -1,0 +1,17 @@
+﻿@using DragonSpark.Presentation.Environment
+
+@inject IsApplicationAgentStore Condition
+
+@if(ForceRender || Condition.Get())
+{
+    @ChildContent
+}
+
+@code {
+
+    [Parameter]
+    public bool ForceRender { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+}

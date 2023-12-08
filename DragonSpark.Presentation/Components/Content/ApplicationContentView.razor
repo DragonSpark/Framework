@@ -3,13 +3,14 @@
 @typeparam TValue
 
 @inherits DragonSpark.Presentation.Components.Content.Templates.ActiveContentTemplateComponentBase<TValue>
-
-<ActivityContainer CssClass="@CssClass">
-	<ActivityContainerContent Input="@Contents"
-        ForceRender="@ForceRender" ChildContent="@ChildContent" LoadingTemplate="@LoadingTemplate"
-        NotFoundTemplate="@NotFoundTemplate" ExceptionTemplate="@ExceptionTemplate" Rendered="@Rendered" Refreshed="@Refreshed"
+<DragonSpark.Presentation.Components.Content.ApplicationPrincipalAwareContentView ForceRender="@ForceRender">
+    <ActivityContainer CssClass="@CssClass">
+        <ActivityContainerContent Input="@Contents"
+                                  ForceRender="@ForceRender" ChildContent="@ChildContent" LoadingTemplate="@LoadingTemplate"
+                                  NotFoundTemplate="@NotFoundTemplate" ExceptionTemplate="@ExceptionTemplate" Rendered="@Rendered" Refreshed="@Refreshed"
         />
-</ActivityContainer>
+    </ActivityContainer>
+</DragonSpark.Presentation.Components.Content.ApplicationPrincipalAwareContentView>
 
 @code
 {

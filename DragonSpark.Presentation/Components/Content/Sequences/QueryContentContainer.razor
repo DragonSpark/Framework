@@ -13,27 +13,29 @@
 
 @inject IPagination<T> DefaultPagination
 
-<ResultingContentView T="IPages<T>"
-    Content="@Subject"
-	LoadingTemplate="@LoadingTemplate"
-    NotFoundTemplate="@NotFoundTemplate"
-	ExceptionTemplate="@ExceptionTemplate">
-	@if (HeaderTemplate is not null)
-	{
-		@HeaderTemplate(context)
-	}
+<DragonSpark.Presentation.Components.Content.ApplicationPrincipalAwareContentView>
+    <ResultingContentView T="IPages<T>"
+                          Content="@Subject"
+                          LoadingTemplate="@LoadingTemplate"
+                          NotFoundTemplate="@NotFoundTemplate"
+                          ExceptionTemplate="@ExceptionTemplate">
+        @if (HeaderTemplate is not null)
+        {
+            @HeaderTemplate(context)
+        }
 
-	@if (Results.Get(context))
-	{
-		@ChildContent(context)
-	}
-	else
-	{
-		@EmptyElementsTemplate
-	}
+        @if (Results.Get(context))
+        {
+            @ChildContent(context)
+        }
+        else
+        {
+            @EmptyElementsTemplate
+        }
 
-    @if (FooterTemplate is not null)
-    {
-        @FooterTemplate(context)
-    }
-</ResultingContentView>
+        @if (FooterTemplate is not null)
+        {
+            @FooterTemplate(context)
+        }
+    </ResultingContentView>
+</DragonSpark.Presentation.Components.Content.ApplicationPrincipalAwareContentView>

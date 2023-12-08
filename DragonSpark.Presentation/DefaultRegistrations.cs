@@ -47,8 +47,8 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Start<IEventAggregator>()
 		         .Forward<EventAggregator>()
 		         .Scoped()
-		         //
-		         .Then.Start<RenderStateMonitor>()
+				 //
+				 .Then.Start<RenderStateMonitor>()
 		         .Include(x => x.Dependencies.Recursive())
 		         .Scoped()
 		         //
@@ -111,7 +111,8 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         //
 		         .Then.Start<IInitializeContext>()
 		         .Forward<InitializeContext>()
-		         .Decorate<ReferrerAwareInitializeContext>()
+		         // .Decorate<ReferrerAwareInitializeContext>()
+				 .Decorate<ApplicationAgentAwareInitializeContext>()
 		         .Include(x => x.Dependencies)
 		         .Scoped()
 		         //

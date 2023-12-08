@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Model.Sequences;
 
-namespace DragonSpark.Server.Requests.Warmup;
+namespace DragonSpark.Application.Communication;
 
 sealed class KnownUserAgents : Instances<string>
 {
@@ -8,6 +8,5 @@ sealed class KnownUserAgents : Instances<string>
 
 	KnownUserAgents()
 		: base("AlwaysOn", "HostnameSyncPinger", "SiteWarmup", "IIS Application Initialization Warmup",
-		       "IIS Application Initialization Preload")
-	{ }
+		       "IIS Application Initialization Preload") {}
 }
