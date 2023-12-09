@@ -5,16 +5,16 @@ using Microsoft.Extensions.Logging;
 
 namespace DragonSpark.Presentation.Environment;
 
-sealed class ReferrerAwareInitializeContext : IInitializeContext
+sealed class ReferrerAwareEstablishContext : IEstablishContext
 {
-	readonly IInitializeContext            _previous;
+	readonly IEstablishContext            _previous;
 	readonly ISelect<HttpRequest, string?> _header;
 	readonly Message                       _message;
 
-	public ReferrerAwareInitializeContext(IInitializeContext previous, Message message)
+	public ReferrerAwareEstablishContext(IEstablishContext previous, Message message)
 		: this(previous, HostAwareReferrerHeader.Default, message) {}
 
-	public ReferrerAwareInitializeContext(IInitializeContext previous, ISelect<HttpRequest, string?> header,
+	public ReferrerAwareEstablishContext(IEstablishContext previous, ISelect<HttpRequest, string?> header,
 	                                      Message message)
 	{
 		_previous = previous;

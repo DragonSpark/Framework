@@ -109,10 +109,10 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Forward<DetermineContext>()
 		         .Scoped()
 		         //
-		         .Then.Start<IInitializeContext>()
-		         .Forward<InitializeContext>()
+		         .Then.Start<IEstablishContext>()
+		         .Forward<EstablishContext>()
 		         // .Decorate<ReferrerAwareInitializeContext>()
-				 .Decorate<ApplicationAgentAwareInitializeContext>()
+				 .Decorate<ApplicationAgentAwareEstablishContext>()
 		         .Include(x => x.Dependencies)
 		         .Scoped()
 		         //

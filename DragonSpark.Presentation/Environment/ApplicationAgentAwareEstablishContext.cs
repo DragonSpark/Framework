@@ -4,17 +4,17 @@ using Microsoft.AspNetCore.Http;
 
 namespace DragonSpark.Presentation.Environment;
 
-sealed class ApplicationAgentAwareInitializeContext : IInitializeContext
+sealed class ApplicationAgentAwareEstablishContext : IEstablishContext
 {
-	readonly IInitializeContext      _previous;
+	readonly IEstablishContext      _previous;
 	readonly IsApplicationAgentStore _store;
 	readonly ICondition<HttpContext> _condition;
 
 	[UsedImplicitly]
-	public ApplicationAgentAwareInitializeContext(IInitializeContext previous, IsApplicationAgentStore store)
+	public ApplicationAgentAwareEstablishContext(IEstablishContext previous, IsApplicationAgentStore store)
 		: this(previous, store, IsApplicationAgent.Default) {}
 
-	public ApplicationAgentAwareInitializeContext(IInitializeContext previous, IsApplicationAgentStore store,
+	public ApplicationAgentAwareEstablishContext(IEstablishContext previous, IsApplicationAgentStore store,
 	                                              ICondition<HttpContext> condition)
 	{
 		_previous  = previous;

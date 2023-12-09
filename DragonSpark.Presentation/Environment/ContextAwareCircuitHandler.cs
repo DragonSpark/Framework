@@ -10,17 +10,17 @@ namespace DragonSpark.Presentation.Environment;
 
 sealed class ContextAwareCircuitHandler : CircuitHandler
 {
-	readonly IInitializeContext          _initialize;
+	readonly IEstablishContext          _establish;
 	readonly IMutable<HubCallerContext?> _source;
 	readonly IHttpContextAccessor        _accessor;
 
-	public ContextAwareCircuitHandler(IInitializeContext initialize, IHttpContextAccessor accessor)
-		: this(initialize, AmbientContext.Default, accessor) {}
+	public ContextAwareCircuitHandler(IEstablishContext establish, IHttpContextAccessor accessor)
+		: this(establish, AmbientContext.Default, accessor) {}
 
-	public ContextAwareCircuitHandler(IInitializeContext initialize, IMutable<HubCallerContext?> source,
+	public ContextAwareCircuitHandler(IEstablishContext establish, IMutable<HubCallerContext?> source,
 	                                  IHttpContextAccessor accessor)
 	{
-		_initialize = initialize;
+		_establish = establish;
 		_source     = source;
 		_accessor   = accessor;
 	}
@@ -29,7 +29,7 @@ sealed class ContextAwareCircuitHandler : CircuitHandler
 	{
 		var context = _source.Get().Verify().GetHttpContext().Verify();
 		_accessor.HttpContext ??= context;
-		_initialize.Execute(context);
+		_establish.Execute(context);
 		return Task.CompletedTask;
 	}
 }
