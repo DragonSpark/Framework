@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Application.Entities.Queries.Compiled;
 using DragonSpark.Model;
-using DragonSpark.Testing.Objects.Entities;
+using DragonSpark.Testing.Objects.Entities.Sql;
 using FluentAssertions;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;

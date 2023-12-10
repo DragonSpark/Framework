@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Testing.Objects.Entities;
+﻿namespace DragonSpark.Testing.Objects.Entities.Sql;
 
 sealed class DefaultSqlDbName : Text.Text
 {

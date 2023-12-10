@@ -4,6 +4,7 @@ using DragonSpark.Application.Entities.Editing;
 using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 using DragonSpark.Testing.Objects.Entities;
+using DragonSpark.Testing.Objects.Entities.Sql;
 using FluentAssertions;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;

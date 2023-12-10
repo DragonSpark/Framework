@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Model.Selection.Alterations;
 
-namespace DragonSpark.Testing.Objects.Entities;
+namespace DragonSpark.Testing.Objects.Entities.Sql;
 
 public sealed class NewSqlDatabaseName : IAlteration<string>
 {

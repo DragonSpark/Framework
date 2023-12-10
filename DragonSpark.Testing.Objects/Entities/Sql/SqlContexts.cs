@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Testing.Objects.Entities;
+namespace DragonSpark.Testing.Objects.Entities.Sql;
 
 public sealed class SqlContexts<T> : IContexts<T>, IAsyncDisposable where T : DbContext
 {
@@ -38,42 +38,6 @@ public sealed class SqlContexts<T> : IContexts<T>, IAsyncDisposable where T : Db
 	public async ValueTask DisposeAsync()
 	{
 		await using var context = _contexts.Get();
-		await context.Database.EnsureDeletedAsync();
-	}
-}
-
-// TODO
-
-public sealed class SqlLiteContexts<T> : IContexts<T>, IAsyncDisposable where T : DbContext
-{
-	public SqlLiteContexts() : this(NewSqlLiteOptions<T>.Default.Get()) {}
-
-	public SqlLiteContexts(DbContextOptions<T> options) : this(new Contexts<T>(new SqlLiteDbContexts<T>(options))) {}
-
-	public SqlLiteContexts(IContexts<T> contexts) => Contexts = contexts;
-
-	public IContexts<T> Contexts { get; }
-
-	public async ValueTask<SqlLiteContexts<T>> Initialize()
-	{
-		await using var context = Contexts.Get();
-		if (!await context.Database.GetService<IDatabaseCreator>()
-		                  .To<RelationalDatabaseCreator>()
-		                  .ExistsAsync()
-		                  .ConfigureAwait(false))
-		{
-			await context.Database.EnsureDeletedAsync().ConfigureAwait(false);
-		}
-
-		await context.Database.EnsureCreatedAsync().ConfigureAwait(false);
-		return this;
-	}
-
-	public T Get() => Contexts.Get();
-
-	public async ValueTask DisposeAsync()
-	{
-		await using var context = Contexts.Get();
 		await context.Database.EnsureDeletedAsync();
 	}
 }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace DragonSpark.Testing.Objects.Entities;
+namespace DragonSpark.Testing.Objects.Entities.Sql;
 
 public sealed class PooledSqlContexts<T> : PooledContexts<T> where T : DbContext
 {

@@ -3,7 +3,7 @@ using DragonSpark.Application.Entities.Editing;
 using DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
 using DragonSpark.Application.Entities.Queries.Composition;
 using DragonSpark.Compose;
-using DragonSpark.Testing.Objects.Entities;
+using DragonSpark.Testing.Objects.Entities.SqlLite;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
@@ -17,26 +17,47 @@ public sealed class DemonstrationTests
 	[Fact]
 	public async Task Verify()
 	{
+		int             id;
 		await using var contexts = await new SqlLiteContexts<BloggingContext>().Initialize();
-		var scopes = new EnlistedScopes(new StandardScopes<BloggingContext>(contexts.Contexts), AmbientContext.Default);
+		var scopes = new EnlistedScopes(new StandardScopes<BloggingContext>(contexts.Contexts),
+		                                AmbientContext.Default);
 		var editors = new Editors(scopes);
-		using var editor = await editors.Await();
-		var entity = new Blog { Url = "http://blogs.msdn.com/adonet" };
-		editor.Add(entity);
-		await editor.Await();
+		var get     = new GetSpecificBlog(scopes);
+		var edit    = new EditSpecificBlog(scopes);
+		{
+			using var editor = await editors.Await();
+			var       entity = new Blog { Url = "http://blogs.msdn.com/adonet" };
+			editor.Add(entity);
+			await editor.Await();
+			id = entity.BlogId;
+		}
 
-		var       id = entity.BlogId;
-		using var edit         = await new EditSpecificBlog(scopes).Await(id);
-		edit.Subject.Posts.Add(new () { Title = "Hello World", Content = "I wrote an app using EF Core!" });
-		await edit.Await();
+		id.Should().NotBe(0);
 
-		/*edit.Remove(edit.Subject);
-		await edit.Await();*/
+		{
+			using var editor = await edit.Await(id);
+			editor.Subject.Posts.Add(new() { Title = "Hello World", Content = "I wrote an app using EF Core!" });
+			await editor.Await();
+		}
 
-		var get      = new GetSpecificBlog(scopes);
-		var specific = await get.Await(id);
-		specific.Should().NotBeNull();
-		specific.BlogId.Should().Be(id);
+		{
+			var specific = await get.Await(id);
+			specific.Should().NotBeNull();
+			var verify = specific.Verify();
+			verify.BlogId.Should().Be(id);
+			verify.Posts.Should().NotBeEmpty();
+		}
+
+		{
+			using var editor = await edit.Await(id);
+			editor.Remove(editor.Subject);
+			await editor.Await();
+		}
+
+		{
+			var specific = await get.Await(id);
+			specific.Should().BeNull();
+		}
 	}
 
 	sealed class EditSpecificBlog : Editing<int, Blog>
@@ -44,17 +65,16 @@ public sealed class DemonstrationTests
 		public EditSpecificBlog(IScopes context) : base(context, SelectBlogs.Default) {}
 	}
 
-	sealed class GetSpecificBlog : EvaluateToSingle<int, Blog>
+	sealed class GetSpecificBlog : EvaluateToSingleOrDefault<int, Blog>
 	{
 		public GetSpecificBlog(IScopes context) : base(context, SelectBlogs.Default) {}
 	}
-
 
 	sealed class SelectBlogs : StartWhere<int, Blog>
 	{
 		public static SelectBlogs Default { get; } = new();
 
-		SelectBlogs() : base((p, x) => x.BlogId == p) {}
+		SelectBlogs() : base(q => q.Include(x => x.Posts), (p, x) => x.BlogId == p) {}
 	}
 
 	public class BloggingContext : DbContext

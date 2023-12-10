@@ -3,7 +3,7 @@ using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 using Microsoft.EntityFrameworkCore;
 
-namespace DragonSpark.Testing.Objects.Entities;
+namespace DragonSpark.Testing.Objects.Entities.Sql;
 
 public sealed class NewSqlOptions<T> : SelectedResult<string, DbContextOptions<T>> where T : DbContext
 {
@@ -11,13 +11,4 @@ public sealed class NewSqlOptions<T> : SelectedResult<string, DbContextOptions<T
 
 	NewSqlOptions() : base(NewSqlDatabaseName.Default.Then().Bind(IdentifyingText.Default.Get),
 	                       SqlOptions<T>.Default.Get) {}
-}
-
-// TODO
-public sealed class NewSqlLiteOptions<T> : SelectedResult<string, DbContextOptions<T>> where T : DbContext
-{
-	public static NewSqlLiteOptions<T> Default { get; } = new();
-
-	NewSqlLiteOptions()
-		: base(NewSqlDatabaseName.Default.Then().Bind(IdentifyingText.Default.Get), SqlLiteOptions<T>.Default.Get) {}
 }
