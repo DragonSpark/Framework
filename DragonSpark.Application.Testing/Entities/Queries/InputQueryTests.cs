@@ -6,7 +6,7 @@ using DragonSpark.Compose;
 using DragonSpark.Model.Operations.Selection;
 using DragonSpark.Runtime.Execution;
 using DragonSpark.Testing.Objects.Entities;
-using DragonSpark.Testing.Objects.Entities.Sql;
+using DragonSpark.Testing.Objects.Entities.SqlLite;
 using FluentAssertions;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
@@ -75,7 +75,7 @@ public sealed class InputQueryTests
 	[Fact]
 	public async Task VerifyExternalParameterSql()
 	{
-		await using var contexts = await new SqlContexts<Context>().Initialize();
+		await using var contexts = await new SqlLiteContexts<Context>().Initialize();
 		{
 			await using var context = contexts.Get();
 			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
@@ -99,7 +99,7 @@ public sealed class InputQueryTests
 	[Fact]
 	public async Task VerifySelectedSql()
 	{
-		await using var factory = await new SqlContexts<Context>().Initialize();
+		await using var factory = await new SqlLiteContexts<Context>().Initialize();
 		{
 			await using var context = factory.Get();
 			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
@@ -154,7 +154,7 @@ public sealed class InputQueryTests
 	[Fact]
 	public async Task VerifyComplexSelectedSql()
 	{
-		await using var contexts = await new SqlContexts<ContextWithData>().Initialize();
+		await using var contexts = await new SqlLiteContexts<ContextWithData>().Initialize();
 		{
 			await using var context = contexts.Get();
 			await context.Database.EnsureCreatedAsync();
@@ -200,7 +200,7 @@ public sealed class InputQueryTests
 	[Fact]
 	public async Task VerifyWhereWithParameterSql()
 	{
-		await using var contexts = await new SqlContexts<ContextWithData>().Initialize();
+		await using var contexts = await new SqlLiteContexts<ContextWithData>().Initialize();
 		{
 			await using var data = contexts.Get();
 			await data.Database.EnsureCreatedAsync();

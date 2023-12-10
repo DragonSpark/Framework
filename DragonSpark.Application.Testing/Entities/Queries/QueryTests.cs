@@ -10,7 +10,7 @@ using DragonSpark.Model.Operations.Selection;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Runtime.Execution;
 using DragonSpark.Testing.Objects.Entities;
-using DragonSpark.Testing.Objects.Entities.Sql;
+using DragonSpark.Testing.Objects.Entities.SqlLite;
 using FluentAssertions;
 using JetBrains.Annotations;
 using LinqKit;
@@ -160,7 +160,7 @@ public sealed class QueryTests
 	[Fact]
 	public async Task VerifyParameterSql()
 	{
-		await using var factory = await new SqlContexts<Context>().Initialize();
+		await using var factory = await new SqlLiteContexts<Context>().Initialize();
 		{
 			await using var context = factory.Get();
 			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },

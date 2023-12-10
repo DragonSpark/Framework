@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Application.Entities.Queries.Compiled;
 using DragonSpark.Model;
-using DragonSpark.Testing.Objects.Entities.Sql;
+using DragonSpark.Testing.Objects.Entities.SqlLite;
 using FluentAssertions;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +18,7 @@ public class CompileTests
 	[Fact]
 	public async Task Verify()
 	{
-		await using var contexts = await new SqlContexts<ContextWithData>().Initialize();
+		await using var contexts = await new SqlLiteContexts<ContextWithData>().Initialize();
 		{
 			await using var context = contexts.Get();
 
@@ -35,7 +35,7 @@ public class CompileTests
 	[Fact]
 	public async Task VerifyNone()
 	{
-		await using var contexts = await new SqlContexts<ContextWithData>().Initialize();
+		await using var contexts = await new SqlLiteContexts<ContextWithData>().Initialize();
 
 		{
 			await using var context = contexts.Get();

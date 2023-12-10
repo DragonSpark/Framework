@@ -4,7 +4,7 @@ using DragonSpark.Application.Entities.Editing;
 using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 using DragonSpark.Testing.Objects.Entities;
-using DragonSpark.Testing.Objects.Entities.Sql;
+using DragonSpark.Testing.Objects.Entities.SqlLite;
 using FluentAssertions;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +23,7 @@ public sealed class SaveTests
 		const string original = "Default Name",
 		             expected = "Updated Name";
 
-		await using var contexts = await new SqlContexts<Context>().Initialize();
+		await using var contexts = await new SqlLiteContexts<Context>().Initialize();
 		{
 			await using var data = contexts.Get();
 			data.Subjects.Add(new Subject { Name = original });
@@ -48,7 +48,7 @@ public sealed class SaveTests
 	[Fact]
 	public async Task VerifyRelationship()
 	{
-		await using var contexts = await new SqlContexts<ContextWithRelationship>().Initialize();
+		await using var contexts = await new SqlLiteContexts<ContextWithRelationship>().Initialize();
 		{
 			await using var data = contexts.Get();
 			data.Update(new First());

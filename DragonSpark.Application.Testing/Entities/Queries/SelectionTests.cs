@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Application.Entities;
 using DragonSpark.Compose;
 using DragonSpark.Testing.Objects.Entities;
-using DragonSpark.Testing.Objects.Entities.Sql;
+using DragonSpark.Testing.Objects.Entities.SqlLite;
 using FluentAssertions;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
@@ -41,7 +41,7 @@ public sealed class SelectionTests
 	[Fact]
 	public async Task VerifySql()
 	{
-		await using var contexts = await new SqlContexts<Context>().Initialize();
+		await using var contexts = await new SqlLiteContexts<Context>().Initialize();
 		{
 			await using var context = contexts.Get();
 			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },

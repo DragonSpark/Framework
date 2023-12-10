@@ -2,7 +2,7 @@
 using DragonSpark.Application.Entities.Queries.Composition;
 using DragonSpark.Compose;
 using DragonSpark.Testing.Objects.Entities;
-using DragonSpark.Testing.Objects.Entities.Sql;
+using DragonSpark.Testing.Objects.Entities.SqlLite;
 using FluentAssertions;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
@@ -39,7 +39,7 @@ public sealed class CombineTests
 	[Fact]
 	public async Task VerifySql()
 	{
-		await using var factory = await new SqlContexts<Context>().Initialize();
+		await using var factory = await new SqlLiteContexts<Context>().Initialize();
 		{
 			await using var context = factory.Get();
 			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },

@@ -2,7 +2,7 @@
 using DragonSpark.Application.Entities.Queries.Composition;
 using DragonSpark.Compose;
 using DragonSpark.Testing.Objects.Entities;
-using DragonSpark.Testing.Objects.Entities.Sql;
+using DragonSpark.Testing.Objects.Entities.SqlLite;
 using FluentAssertions;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
@@ -41,7 +41,7 @@ public sealed class IntroduceTests
 	[Fact]
 	public async Task VerifySql()
 	{
-		await using var contexts = await new SqlContexts<Context>().Initialize();
+		await using var contexts = await new SqlLiteContexts<Context>().Initialize();
 		{
 			await using var context = contexts.Get();
 			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
@@ -87,7 +87,7 @@ public sealed class IntroduceTests
 	[Fact]
 	public async Task VerifyComposeSql()
 	{
-		await using var contexts = await new SqlContexts<Context>().Initialize();
+		await using var contexts = await new SqlLiteContexts<Context>().Initialize();
 		{
 			await using var context = contexts.Get();
 			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
@@ -152,7 +152,7 @@ public sealed class IntroduceTests
 	[Fact]
 	public async Task VerifyComposeTwoSql()
 	{
-		await using var contexts = await new SqlContexts<Context>().Initialize();
+		await using var contexts = await new SqlLiteContexts<Context>().Initialize();
 		{
 			await using var context = contexts.Get();
 			context.Subjects.AddRange(new Subject { Name = "One", Amount   = 5 },
@@ -237,7 +237,7 @@ public sealed class IntroduceTests
 	[Fact]
 	public async Task VerifyComposeThreeSql()
 	{
-		await using var contexts = await new SqlContexts<Context>().Initialize();
+		await using var contexts = await new SqlLiteContexts<Context>().Initialize();
 		{
 			await using var context = contexts.Get();
 			context.Subjects.AddRange(new Subject { Name = "One", Amount   = 05, ThirdAmount = -.5f },
