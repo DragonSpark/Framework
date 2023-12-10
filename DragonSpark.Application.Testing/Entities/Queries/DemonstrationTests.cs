@@ -7,6 +7,7 @@ using DragonSpark.Testing.Objects.Entities.SqlLite;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -79,16 +80,18 @@ public sealed class DemonstrationTests
 
 	public class BloggingContext : DbContext
 	{
-		public DbSet<Blog> Blogs { get; set; }
-		public DbSet<Post> Posts { get; set; }
-
 		public BloggingContext(DbContextOptions options) : base(options) {}
+
+		public DbSet<Blog> Blogs { get; set; } = default!;
+
+		public DbSet<Post> Posts { get; set; } = default!;
 	}
 
 	public class Blog
 	{
 		public int BlogId { get; set; }
-		public string Url { get; set; }
+		[MaxLength(1024)]
+		public string Url { get; set; } = default!;
 
 		public List<Post> Posts { get; } = new();
 	}
@@ -96,10 +99,12 @@ public sealed class DemonstrationTests
 	public class Post
 	{
 		public int PostId { get; set; }
-		public string Title { get; set; }
-		public string Content { get; set; }
+		[MaxLength(64)]
+		public string Title { get; set; } = default!;
+		[MaxLength(1024)]
+		public string Content { get; set; } = default!;
 
 		public int BlogId { get; set; }
-		public Blog Blog { get; set; }
+		public Blog Blog { get; set; } = default!;
 	}
 }
