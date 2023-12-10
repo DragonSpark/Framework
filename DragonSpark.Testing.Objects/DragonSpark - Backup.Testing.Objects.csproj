@@ -9,6 +9,6 @@
     <ProjectReference Include="..\DragonSpark.Application\DragonSpark.Application.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Entities\Sql\" />
+    <Folder Include="Entities\NewFolder\" />
   </ItemGroup>
 </Project>
