@@ -1,13 +1,10 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Diagnostics;
-using DragonSpark.Model.Results;
-using Polly;
+﻿using DragonSpark.Diagnostics;
 
 namespace DragonSpark.Application.Connections.Client;
 
-public sealed class DurableConnectionPolicy : Deferred<IAsyncPolicy>
+public sealed class DurableConnectionPolicy : DurableConnectionPolicyBase
 {
 	public static DurableConnectionPolicy Default { get; } = new();
 
-	DurableConnectionPolicy() : base(SubscriptionBuilder.Default.Then().Select(DefaultRetryPolicyBuilder.Default)) {}
+	DurableConnectionPolicy() : base(DefaultRetryPolicyBuilder.Default) {}
 }

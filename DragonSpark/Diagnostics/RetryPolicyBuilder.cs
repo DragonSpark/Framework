@@ -26,7 +26,7 @@ public class RetryPolicyBuilder : IPolicy
 	readonly Func<int, TimeSpan>             _strategy;
 	readonly Func<Exception, TimeSpan, Task> _retry;
 
-	protected RetryPolicyBuilder() : this(5, DefaultJitterStrategy.Default.Get) {}
+	protected RetryPolicyBuilder(byte times = 5) : this(times, DefaultJitterStrategy.Default.Get) {}
 
 	protected RetryPolicyBuilder(byte times, Func<int, TimeSpan> strategy)
 		: this(times, strategy, (_, _) => Task.CompletedTask) {}
