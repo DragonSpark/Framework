@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Application.Security.Identity.Authentication;
+using DragonSpark.Application.Security.Identity.Authentication.State;
 using DragonSpark.Application.Security.Identity.Profile;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
@@ -17,12 +18,17 @@ sealed class AddIdentityComponents<T> : ICommand<IServiceCollection> where T : I
 
 	public void Execute(IServiceCollection parameter)
 	{
-		parameter.Start<IStateViews<T>>()
+		parameter.Start<IStateUser<T>>()
+		         .Forward<StateUser<T>>()
+		         .Decorate<PolicyAwareStateUser<T>>()
+		         .Decorate<MemoryAwareStateUser<T>>()
+		         .Singleton()
+		         //
+		         .Then.Start<IStateViews<T>>()
 		         .Forward<StateViews<T>>()
-		         .Decorate<PolicyAwareStateViews<T>>()
-		         .Decorate<ApplicationAwareStateViews<T>>()
 		         .Decorate<MemoryAwareStateViews<T>>()
 		         .Decorate<AnonymousAwareState<T>>()
+		         .Include(x => x.Dependencies)
 		         .Singleton()
 		         //
 		         .Then.Start<CurrentProfileStatus>()

@@ -8,6 +8,7 @@ using DragonSpark.Application.Diagnostics.Time;
 using DragonSpark.Application.Entities;
 using DragonSpark.Application.Entities.Configure;
 using DragonSpark.Application.Entities.Queries.Composition;
+using DragonSpark.Application.Model;
 using DragonSpark.Compose;
 using DragonSpark.Compose.Model.Operations;
 using DragonSpark.Compose.Model.Selection;
@@ -101,6 +102,12 @@ public static partial class Extensions
 	public static IWindow FromThen(this ITime @this, TimeSpan window) => new FromThen(@this, window);
 
 	public static IWindow Outside(this ITime @this, TimeSpan window) => new Outside(@this, window);
+
+	/**/
+
+	public static DragonSpark.Compose.Model.Operations.OperationResultSelector<TIn, TOut> UsingSelf<TIn, TOut>(
+		this Compose.Store.Operations.ConfiguredMemoryStoreContext<TIn, TOut> @this) where TIn : class
+		=> @this.Using(Object<TIn>.Default);
 
 	/**/
 

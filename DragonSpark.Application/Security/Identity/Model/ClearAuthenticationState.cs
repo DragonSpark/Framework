@@ -5,6 +5,5 @@ namespace DragonSpark.Application.Security.Identity.Model;
 
 sealed class ClearAuthenticationState : RemoveFromMemory<uint>, IClearAuthenticationState
 {
-	public ClearAuthenticationState(IMemoryCache memory)
-		: base(memory, StateViewKey.Default) {}
+	public ClearAuthenticationState(IMemoryCache memory) : base(memory, StateViewKey.Default) {}
 }

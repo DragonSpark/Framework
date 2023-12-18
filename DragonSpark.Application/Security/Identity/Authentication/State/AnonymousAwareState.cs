@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity.Authentication;
+namespace DragonSpark.Application.Security.Identity.Authentication.State;
 
 sealed class AnonymousAwareState<T> : IStateViews<T> where T : IdentityUser
 {

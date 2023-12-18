@@ -10,7 +10,8 @@ sealed class StateViewMemoryKey : IFormatter<ClaimsPrincipal>
 {
 	public static StateViewMemoryKey Default { get; } = new();
 
-	StateViewMemoryKey() : this(IsApplicationPrincipal.Default, StateViewKey.Default, AuthenticationIdentifier.Default) {}
+	StateViewMemoryKey()
+		: this(IsApplicationPrincipal.Default, StateViewKey.Default, AuthenticationIdentifier.Default) {}
 
 	readonly ICondition<ClaimsPrincipal>       _application;
 	readonly IFormatter<uint>                  _key;
