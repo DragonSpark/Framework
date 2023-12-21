@@ -25,7 +25,7 @@
                 _timer = new();
             }
         }
-    }	DateTimeOffset _until = default!;
+    }	DateTimeOffset _until;
 
     [Parameter]
     public RenderFragment<DateTimeOffset>? ChildContent { get; set; }

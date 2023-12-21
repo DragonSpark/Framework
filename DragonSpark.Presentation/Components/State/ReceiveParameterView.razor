@@ -1,5 +1,4 @@
 ﻿@using DragonSpark.Compose
-@using DragonSpark.Model.Operations
 @using DragonSpark.Application.Connections.Client
 @using DragonSpark.Model.Operations.Selection.Conditions
 @using DragonSpark.Presentation.Components.Content.Rendering
@@ -12,7 +11,7 @@
 
 @code
 {
-    ISubscription? _connection = default!;
+    ISubscription? _connection;
 
     [Parameter]
     public ISubscribe<T> Registration { get; set; } = default!;

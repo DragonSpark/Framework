@@ -1,13 +1,8 @@
 ﻿@using BlazorPro.BlazorSize
 @using DragonSpark.Compose
-@using DragonSpark.Model.Operations
-@using DragonSpark.Presentation
 @using DragonSpark.Presentation.Components.Content.Templates
-@using DragonSpark.Presentation.Components.State
 @using DragonSpark.Presentation.Environment.Browser
-@using Syncfusion.Blazor
 @using Syncfusion.Blazor.Grids
-@using Microsoft.AspNetCore.Components
 @using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
 
 @typeparam T
@@ -55,7 +50,7 @@ else
 <MediaQuery Media="@Breakpoint" @bind-Matches="@Matches" />
 
 @code {
-    SfGrid<T>? _subject = default!;
+    SfGrid<T>? _subject;
 
     [Parameter]
     public string Id { get; set; } = string.Empty;

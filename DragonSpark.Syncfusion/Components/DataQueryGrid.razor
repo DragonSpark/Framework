@@ -3,8 +3,6 @@
 @using DragonSpark.Model.Operations
 @using DragonSpark.Presentation
 @using DragonSpark.Presentation.Components.Content.Rendering
-@using DragonSpark.Presentation.Components.Content.Templates
-@using DragonSpark.Presentation.Components.State
 @using DragonSpark.SyncfusionRendering.Entities
 @using DragonSpark.SyncfusionRendering.Queries
 @using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
@@ -40,7 +38,7 @@
               @attributes="@AdditionalAttributes">
 
     <GridTemplates EmptyRecordTemplate="@EmptyTemplate"/>
-      
+
 
     <GridEvents TValue="T" DataBound="OnDataBound" OnActionBegin="@OnActionBegin"/>
     <Syncfusion.Blazor.Data.SfDataManager Adaptor="Adaptors.CustomAdaptor">
@@ -56,7 +54,7 @@
     readonly Model.Results.Switch _refresh = new(), _active = new(true);
 
     GridStateVariable _store = null!;
-    AdaptiveGrid<T>? _subject = default!;
+    AdaptiveGrid<T>? _subject;
 
     protected override void OnInitialized()
     {
