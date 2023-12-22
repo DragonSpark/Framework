@@ -1,10 +1,12 @@
 ﻿using DragonSpark.Model.Selection;
+using DragonSpark.Runtime;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Composition;
 
-sealed class LocateAwareServiceProvider : IServiceProvider
+sealed class LocateAwareServiceProvider : IServiceProvider, IAsyncDisposable, IDisposable
 {
 	readonly IServiceProvider     _previous;
 	readonly ISelect<Type, Type?> _locate;
@@ -35,4 +37,11 @@ sealed class LocateAwareServiceProvider : IServiceProvider
 			throw;
 		}
 	}
+
+	public void Dispose()
+	{
+		DisposeAny.Default.Execute(_previous);
+	}
+
+	public ValueTask DisposeAsync() => DisposingAny.Default.Get(_previous);
 }

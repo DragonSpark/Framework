@@ -1,11 +1,12 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Selection.Conditions;
+﻿using DragonSpark.Model.Selection.Conditions;
+using DragonSpark.Runtime;
 using DragonSpark.Runtime.Activation;
 using System;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Composition;
 
-sealed class ActivationAwareServiceProvider : IServiceProvider, IDisposable
+sealed class ActivationAwareServiceProvider : IServiceProvider, IDisposable, IAsyncDisposable
 {
 	readonly IActivator       _activator;
 	readonly ICondition<Type> _condition;
@@ -39,6 +40,8 @@ sealed class ActivationAwareServiceProvider : IServiceProvider, IDisposable
 
 	public void Dispose()
 	{
-		_provider.ToDisposable().Dispose();
+		DisposeAny.Default.Execute(_provider);
 	}
+
+	public ValueTask DisposeAsync() => DisposingAny.Default.Get(_provider);
 }
