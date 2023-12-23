@@ -1,6 +1,7 @@
 ﻿using Azure.Storage.Queues;
 using DragonSpark.Model.Commands;
 using Microsoft.Azure.WebJobs.Host;
+using Microsoft.Azure.WebJobs.ServiceBus;
 using System;
 
 namespace DragonSpark.Application.Hosting.Azure.WebJobs;
@@ -21,4 +22,15 @@ sealed class DefaultQueueConfiguration : ICommand<QueuesOptions>
 		parameter.MaxPollingInterval = _poll;
 		parameter.MessageEncoding    = QueueMessageEncoding.None;
 	}
+}
+
+// TODO
+
+sealed class DefaultServiceBusConfiguration : ICommand<ServiceBusOptions>
+{
+	public static DefaultServiceBusConfiguration Default { get; } = new();
+
+	DefaultServiceBusConfiguration() {}
+
+	public void Execute(ServiceBusOptions parameter) {}
 }

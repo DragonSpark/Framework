@@ -1,4 +1,4 @@
-﻿using DragonSpark.Azure.Queues;
+﻿using DragonSpark.Azure.Messages;
 using DragonSpark.Azure.Storage;
 using DragonSpark.Compose;
 using DragonSpark.Composition;
@@ -24,7 +24,7 @@ public static class Extensions
 	public static IAppend Append(this IContainer @this) => new Append(@this.Get());
 
 	public static IMove Move(this IContainer @this, IContainer destination)
-		=> new Move(@destination.Copy(), @this.Delete());
+		=> new Move(destination.Copy(), @this.Delete());
 
 	public static IMove Move(this IContainer @this) => new Move(@this.Copy(), @this.Delete());
 
@@ -34,11 +34,17 @@ public static class Extensions
 
 	public static IDeleteContents DeleteContents(this IContainer @this) => new DeleteContents(@this.Get());
 
-	public static ISend Send(this IQueue @this, TimeSpan? life = null, TimeSpan? visibility = null)
+	/*public static ISend Send(this IQueue @this, TimeSpan? life = null, TimeSpan? visibility = null)
 		=> new Send(@this.Get(), life.GetValueOrDefault(DefaultLife.Default),
 		            visibility.GetValueOrDefault(DefaultVisibility.Default));
 
-	public static IMessage Message(this IQueue @this) => new Message(@this.Get());
+	public static IMessage Message(this IQueue @this) => new Message(@this.Get());*/
+
+
+	public static ISend Send(this ISender @this, TimeSpan? life = null, TimeSpan? visibility = null)
+		=> new Send(@this.Get(), life, visibility);
+
+	public static IMessage Message(this ISender @this) => new Message(@this.Get());
 
 	public static RegistrationResult Storage<T>(this IServiceCollection @this) where T : class, IContainer
 		=> @this.Start<IContainer>()
@@ -47,12 +53,8 @@ public static class Extensions
 		        .Then.Start<T>()
 		        .Singleton();
 
-	public static RegistrationResult Queue<T>(this IServiceCollection @this) where T : class, IQueue
-		=> @this.Start<IQueue>()
-		        .Forward<T>()
-		        .Singleton()
-		        .Then.Start<T>()
-		        .Singleton();
+	/*public static RegistrationResult Queue<T>(this IServiceCollection @this) where T : class, IQueue
+		=> @this.Start<IQueue>().Forward<T>().Singleton().Then.Start<T>().Singleton();*/
 
 	public static IServiceCollection AddAzureKeyVaultSecret(this IServiceCollection @this)
 		=> Data.AddAzureKeyVaultSecret.Default.Parameter(@this);

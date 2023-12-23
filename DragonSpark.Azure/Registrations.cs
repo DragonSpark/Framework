@@ -1,5 +1,4 @@
 ﻿using Azure.Storage.Blobs;
-using DragonSpark.Azure.Queues;
 using DragonSpark.Azure.Storage;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
@@ -24,11 +23,6 @@ sealed class Registrations : ICommand<IServiceCollection>
 		         .Then.Start<IStorageContainers>()
 		         .Forward<StorageContainers>()
 		         .Decorate<ValidatedStorageContainers>()
-		         .Singleton()
-		         //
-		         .Then.Start<IQueueClients>()
-		         .Forward<QueueClients>()
-		         .Decorate<ValidatedQueueClients>()
 		         .Singleton()
 			;
 	}
