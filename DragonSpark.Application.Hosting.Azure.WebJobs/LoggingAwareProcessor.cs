@@ -8,18 +8,18 @@ using Exception = System.Exception;
 
 namespace DragonSpark.Application.Hosting.Azure.WebJobs;
 
-sealed class LoggingAwareQueueApplication : IOperation<Guid>
+sealed class LoggingAwareProcessor : IOperation<Guid>
 {
 	readonly IOperation<Guid> _previous;
 	readonly ErrorOccurred    _error;
 
-	public LoggingAwareQueueApplication(IOperation<Guid> previous, ILoggerFactory factory)
+	public LoggingAwareProcessor(IOperation<Guid> previous, ILoggerFactory factory)
 		: this(previous, factory.CreateLogger(previous.GetType())) {}
 
-	public LoggingAwareQueueApplication(IOperation<Guid> previous, ILogger logger)
+	public LoggingAwareProcessor(IOperation<Guid> previous, ILogger logger)
 		: this(previous, new ErrorOccurred(logger)) {}
 
-	public LoggingAwareQueueApplication(IOperation<Guid> previous, ErrorOccurred error)
+	public LoggingAwareProcessor(IOperation<Guid> previous, ErrorOccurred error)
 	{
 		_previous = previous;
 		_error    = error;
@@ -40,6 +40,6 @@ sealed class LoggingAwareQueueApplication : IOperation<Guid>
 
 	public sealed class ErrorOccurred : LogWarningException<Guid>
 	{
-		public ErrorOccurred(ILogger logger) : base(logger, "Exception encountered processing {Guid}") {}
+		public ErrorOccurred(ILogger logger) : base(logger, "Exception encountered processing {Identity}") {}
 	}
 }
