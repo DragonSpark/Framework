@@ -1,6 +1,5 @@
 ﻿using AspNet.Security.OAuth.Paypal;
 using DragonSpark.Application.Security.Identity.Claims.Compile;
-using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Authentication;
@@ -17,10 +16,10 @@ sealed class ConfigureApplication : ICommand<AuthenticationBuilder>
 
 	public void Execute(AuthenticationBuilder parameter)
 	{
-		var settings = parameter.Services.Deferred<PayPalApplicationSettings>();
-		parameter.Services.Register<PayPalApplicationSettings>()
-		         .TryDecorate<IClaims, Claims>()
-		         .Return(parameter)
-		         .AddPaypal(new ConfigureAuthentication(settings, _configure).Execute);
+		var services = parameter.Services;
+		services.Register<PayPalApplicationSettings>();
+		services.TryDecorate<IClaims, Claims>();
+		services.TryDecorate<IKnownClaims, AdditionalClaims>();
+		parameter.AddPaypal(new ConfigureAuthentication(services, _configure).Execute);
 	}
 }

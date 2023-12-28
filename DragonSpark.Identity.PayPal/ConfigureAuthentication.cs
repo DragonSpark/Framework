@@ -1,6 +1,8 @@
 ﻿using AspNet.Security.OAuth.Paypal;
 using DragonSpark.Application.Security.Identity.Claims.Actions;
+using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 
 namespace DragonSpark.Identity.PayPal;
@@ -11,8 +13,12 @@ sealed class ConfigureAuthentication : ICommand<PaypalAuthenticationOptions>
 	readonly IClaimAction                        _claim;
 	readonly Action<PaypalAuthenticationOptions> _configure;
 
-	public ConfigureAuthentication(Func<PayPalApplicationSettings> settings, Action<PaypalAuthenticationOptions> configure)
-		: this(settings, PayIdentifierClaimAction.Default, configure) {}
+	public ConfigureAuthentication(IServiceCollection services, Action<PaypalAuthenticationOptions> configure)
+		: this(services.Deferred<PayPalApplicationSettings>(), configure) {}
+
+	public ConfigureAuthentication(Func<PayPalApplicationSettings> settings,
+	                               Action<PaypalAuthenticationOptions> configure)
+		: this(settings, ClaimActions.Default, configure) {}
 
 	public ConfigureAuthentication(Func<PayPalApplicationSettings> settings, IClaimAction claim,
 	                               Action<PaypalAuthenticationOptions> configure)
