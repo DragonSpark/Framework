@@ -25,8 +25,6 @@ public sealed class RenderStateMonitorComponent : Microsoft.AspNetCore.Component
 		Navigation.LocationChanged += _changed;
 	}
 
-	string Key { get; set; } = A.Type<RenderStateMonitorComponent>().FullName.Verify();
-
 	void NavigationOnLocationChanged(object? sender, LocationChangedEventArgs e)
 	{
 		Monitor.Execute();
