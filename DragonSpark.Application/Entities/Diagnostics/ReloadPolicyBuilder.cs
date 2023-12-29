@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Diagnostics;
 
-class ReloadPolicyBuilder : RetryPolicyBuilder
+class ReloadPolicyBuilder : RetryPolicy
 {
 	protected ReloadPolicyBuilder(Func<(DbUpdateConcurrencyException, TimeSpan), ValueTask> reload)
 		: base(Start.A.Selection<(Exception, TimeSpan)>()

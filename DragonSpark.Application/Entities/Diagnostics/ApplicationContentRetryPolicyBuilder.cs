@@ -3,7 +3,7 @@ using System;
 
 namespace DragonSpark.Application.Entities.Diagnostics;
 
-public sealed class ApplicationContentRetryPolicyBuilder : RetryPolicyBuilder
+public sealed class ApplicationContentRetryPolicyBuilder : RetryPolicy
 {
 	public static ApplicationContentRetryPolicyBuilder Default { get; } = new();
 

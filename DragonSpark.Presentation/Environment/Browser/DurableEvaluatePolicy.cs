@@ -9,5 +9,5 @@ public sealed class DurableEvaluatePolicy : Deferred<IAsyncPolicy>
 {
 	public static DurableEvaluatePolicy Default { get; } = new();
 
-	DurableEvaluatePolicy() : base(EvaluateBuilder.Default.Then().Select(DefaultRetryPolicyBuilder.Default)) {}
+	DurableEvaluatePolicy() : base(EvaluateBuilder.Default.Then().Select(DefaultRetryPolicy.Default)) {}
 }

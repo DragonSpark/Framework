@@ -5,7 +5,7 @@ using System;
 
 namespace DragonSpark.Application.Entities.Diagnostics;
 
-sealed class RapidReloadPolicyBuilder : RetryPolicyBuilder
+sealed class RapidReloadPolicyBuilder : RetryPolicy
 {
 	public static RapidReloadPolicyBuilder Default { get; } = new();
 

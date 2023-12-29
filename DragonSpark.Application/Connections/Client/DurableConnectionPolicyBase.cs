@@ -7,6 +7,6 @@ namespace DragonSpark.Application.Connections.Client;
 
 public class DurableConnectionPolicyBase : Deferred<IAsyncPolicy>
 {
-	protected DurableConnectionPolicyBase(RetryPolicyBuilder builder)
+	protected DurableConnectionPolicyBase(RetryPolicy builder)
 		: base(SubscriptionBuilder.Default.Then().Select(builder)) {}
 }

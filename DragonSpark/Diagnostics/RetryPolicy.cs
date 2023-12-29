@@ -20,23 +20,23 @@ public class RetryPolicy<T> : IPolicy<T>
 	public IAsyncPolicy<T> Get(PolicyBuilder<T> parameter) => parameter.WaitAndRetryAsync(_times, _strategy);
 }
 
-public class RetryPolicyBuilder : IPolicy
+public class RetryPolicy : IPolicy
 {
 	readonly byte                            _times;
 	readonly Func<int, TimeSpan>             _strategy;
 	readonly Func<Exception, TimeSpan, Task> _retry;
 
-	protected RetryPolicyBuilder(byte times = 5) : this(times, DefaultJitterStrategy.Default.Get) {}
+	protected RetryPolicy(byte times = 5) : this(times, DefaultJitterStrategy.Default.Get) {}
 
-	protected RetryPolicyBuilder(byte times, Func<int, TimeSpan> strategy)
+	protected RetryPolicy(byte times, Func<int, TimeSpan> strategy)
 		: this(times, strategy, (_, _) => Task.CompletedTask) {}
 
-	protected RetryPolicyBuilder(Func<Exception, TimeSpan, Task> retry) : this(5, retry) {}
+	protected RetryPolicy(Func<Exception, TimeSpan, Task> retry) : this(5, retry) {}
 
-	protected RetryPolicyBuilder(byte times, Func<Exception, TimeSpan, Task> retry)
+	protected RetryPolicy(byte times, Func<Exception, TimeSpan, Task> retry)
 		: this(times, DefaultJitterStrategy.Default.Get, retry) {}
 
-	protected RetryPolicyBuilder(byte times, Func<int, TimeSpan> strategy, Func<Exception, TimeSpan, Task> retry)
+	protected RetryPolicy(byte times, Func<int, TimeSpan> strategy, Func<Exception, TimeSpan, Task> retry)
 	{
 		_times    = times;
 		_strategy = strategy;
