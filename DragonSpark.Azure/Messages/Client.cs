@@ -15,7 +15,7 @@ sealed class Client : Instance<ServiceBusClient>, IClient, IAsyncDisposable
 		: this(@namespace, new() { TransportType = type }, DefaultCredential.Default) {}
 
 	public Client(string @namespace, ServiceBusClientOptions options, TokenCredential credential)
-		: base(new(@namespace, credential, options)) {}
+		: base(new($"{@namespace}.servicebus.windows.net", credential, options)) {}
 
 	public ValueTask DisposeAsync() => Get().DisposeAsync();
 }
