@@ -1,10 +1,13 @@
-﻿using DragonSpark.Azure.Messages;
+﻿using Azure.Core.Serialization;
+using DragonSpark.Azure.Messages;
 using DragonSpark.Azure.Storage;
 using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Composition.Compose;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Azure;
 
@@ -40,6 +43,14 @@ public static class Extensions
 
 	public static IMessage Message(this IQueue @this) => new Message(@this.Get());*/
 
+	public static ValueTask<object?> ToObjectAsync(this BinaryData data, Type type,
+	                                               CancellationToken cancellationToken = default)
+		=> data.ToObjectAsync(type, JsonObjectSerializer.Default, cancellationToken);
+
+	// ReSharper disable once TooManyArguments
+	public static ValueTask<object?> ToObjectAsync(this BinaryData data, Type type, ObjectSerializer serializer,
+	                                               CancellationToken cancellationToken = default)
+		=> serializer.DeserializeAsync(data.ToStream(), type, cancellationToken);
 
 	public static ISend Send(this ISender @this, TimeSpan? life = null, TimeSpan? visibility = null)
 		=> new Send(@this.Get(), life, visibility);

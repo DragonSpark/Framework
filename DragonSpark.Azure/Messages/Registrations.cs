@@ -1,11 +1,11 @@
-﻿using DragonSpark.Azure.Storage;
+﻿using Azure.Messaging.ServiceBus;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Azure;
+namespace DragonSpark.Azure.Messages;
 
-sealed class Registrations : ICommand<IServiceCollection>
+public sealed class Registrations : ICommand<IServiceCollection>
 {
 	public static Registrations Default { get; } = new();
 
@@ -13,6 +13,6 @@ sealed class Registrations : ICommand<IServiceCollection>
 
 	public void Execute(IServiceCollection parameter)
 	{
-		parameter.Register<AzureStorageConfiguration>();
+		parameter.Register<ServiceBusConfiguration>().Start<ServiceBusClient>().Use<Client>().Singleton();
 	}
 }

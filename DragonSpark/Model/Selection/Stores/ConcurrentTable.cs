@@ -1,10 +1,11 @@
+using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection.Conditions;
 using System;
 using System.Collections.Concurrent;
 
 namespace DragonSpark.Model.Selection.Stores;
 
-public class ConcurrentTable<TIn, TOut> : ITable<TIn, TOut> where TIn : notnull
+public class ConcurrentTable<TIn, TOut> : ITable<TIn, TOut>, ICommand where TIn : notnull
 {
 	readonly Func<TIn, TOut>                 _select;
 	readonly ConcurrentDictionary<TIn, TOut> _table;
@@ -36,4 +37,9 @@ public class ConcurrentTable<TIn, TOut> : ITable<TIn, TOut> where TIn : notnull
 	}
 
 	public bool Remove(TIn key) => _table.TryRemove(key, out _);
+
+	public void Execute(None parameter)
+	{
+		_table.Clear();
+	}
 }
