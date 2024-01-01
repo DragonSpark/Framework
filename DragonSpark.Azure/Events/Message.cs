@@ -39,10 +39,6 @@ public class Subscribe<T> : ISubscribe<T>
 	}
 }
 
-public readonly record struct SubscriberInput<T>(uint? Recipient, Func<T, Task> Body);
-
-public interface ISubscriber<T> : ISelect<SubscriberInput<T>, ISubscription>;
-
 public class Subscriber<T> : ISubscriber<T>
 {
 	readonly IKeyedEntry                                _entry;

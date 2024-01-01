@@ -5,46 +5,12 @@
 @using DragonSpark.Presentation.Components.Content.Rendering
 
 @typeparam T where T : notnull
-
-@implements IAsyncDisposable
-
-@inject RenderStateStore State
+@inherits FilteredReceiveParameterViewComponent<T>
 
 @code
 {
-    readonly static IDepending<T> DefaultCondition = Is.Always<T>().Operation().Out();
-
-    ISubscription? _connection;
-
     [Parameter]
     public ISubscribe<T> Registration { get; set; } = default!;
 
-    [Parameter]
-    public IDepending<T> Condition { get; set; } = DefaultCondition;
-
-    [Parameter]
-    public EventCallback<T> Received { get; set; }
-
-    protected override Task OnInitializedAsync()
-    {
-        switch (State.Get())
-        {
-            case RenderState.Ready:
-            case RenderState.Established:
-                _connection = Registration.Get(OnReceive);
-                return _connection.Allocate();
-        }
-
-        return base.OnInitializedAsync();
-    }
-
-    async Task OnReceive(T parameter)
-    {
-        if (await Condition.Get(parameter))
-        {
-            await Received.InvokeAsync(parameter).ConfigureAwait(false);
-        }
-    }
-
-    public ValueTask DisposeAsync() => _connection?.DisposeAsync() ?? Task.CompletedTask.ToOperation();
+    protected override ISubscription DetermineSubscription() => Registration.Get(OnReceive);
 }
