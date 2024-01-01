@@ -1,9 +1,10 @@
 ﻿@using DragonSpark.Compose
 @using DragonSpark.Application.Connections.Client
+@using DragonSpark.Application.Runtime
 @using DragonSpark.Model.Operations.Selection.Conditions
 @using DragonSpark.Presentation.Components.Content.Rendering
 
-@typeparam T
+@typeparam T where T : notnull
 
 @implements IAsyncDisposable
 
@@ -11,13 +12,15 @@
 
 @code
 {
+    readonly static IDepending<T> DefaultCondition = Is.Always<T>().Operation().Out();
+
     ISubscription? _connection;
 
     [Parameter]
     public ISubscribe<T> Registration { get; set; } = default!;
 
     [Parameter]
-    public IDepending<T> Condition { get; set; } = Is.Always<T>().Operation().Out();
+    public IDepending<T> Condition { get; set; } = DefaultCondition;
 
     [Parameter]
     public EventCallback<T> Received { get; set; }

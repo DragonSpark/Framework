@@ -18,6 +18,7 @@
 		<PackageReference Include="Azure.Extensions.AspNetCore.DataProtection.Keys" Version="1.2.2" />
 		<PackageReference Include="DistributedLock.Azure" Version="1.0.0" />
 		<PackageReference Include="Microsoft.Data.SqlClient.AlwaysEncrypted.AzureKeyVaultProvider" Version="3.0.0" />
+		<PackageReference Include="System.ServiceModel.Primitives" Version="8.0.0" />
 	</ItemGroup>
 
 	<ItemGroup>

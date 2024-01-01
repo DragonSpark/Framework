@@ -10,18 +10,18 @@
 
 @code
 {
-    Func<Task> _receive = null!;
+    readonly static IDepending<None> DefaultCondition = Is.Always<None>().Operation().Out();
+    ISubscription?                   connection;
+    Func<Task>                       _receive = null!;
 
     [Parameter]
     public ISubscribe Registration { get; set; } = default!;
 
     [Parameter]
-    public IDepending<None> Condition { get; set; } = Is.Always<None>().Operation().Out();
+    public IDepending<None> Condition { get; set; } = DefaultCondition;
 
     [Parameter]
     public EventCallback<None> Received { get; set; }
-
-    ISubscription? connection;
 
     protected override Task OnInitializedAsync()
     {
@@ -39,15 +39,11 @@
 
     Task OnReceiveStart() => InvokeAsync(_receive);
 
-    Task OnReceive()
+    Task OnReceive() => State.Get() switch
     {
-        switch (State.Get())
-        {
-            case RenderState.Destroyed:
-                return Task.CompletedTask;
-        }
-        return Received.InvokeAsync(None.Default);
-    }
+        RenderState.Destroyed => Task.CompletedTask,
+        _ => Received.InvokeAsync(None.Default)
+    };
 
     public ValueTask DisposeAsync() => connection?.DisposeAsync() ?? ValueTask.CompletedTask;
 }

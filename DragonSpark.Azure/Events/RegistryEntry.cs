@@ -1,10 +1,8 @@
-﻿using DragonSpark.Model.Operations;
-using System;
-using System.Collections.Concurrent;
+﻿using System;
 
 namespace DragonSpark.Azure.Events;
 
-public sealed record RegistryEntry(Type Key, ConcurrentBag<IOperation<object>> Handlers)
+public sealed record RegistryEntry(Type Key, Handlers Handlers)
 {
 	public RegistryEntry(Type Key) : this(Key, new()) {}
 }

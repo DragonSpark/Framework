@@ -3,21 +3,22 @@ using Azure.Messaging.EventHubs.Processor;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
-using NetFabric.Hyperlinq;
-using System.Buffers;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Events;
 
-sealed class HandleEvent : IOperation<ProcessEventArgs>
+public sealed class HandleEvent : IOperation<ProcessEventArgs>
 {
-	public static HandleEvent Default { get; } = new();
-
-	HandleEvent() : this(GetEntry.Default) {}
-
 	readonly ISelect<EventData, RegistryEntry?> _entry;
+	readonly ProcessEntry                       _process;
 
-	public HandleEvent(ISelect<EventData, RegistryEntry?> entry) => _entry = entry;
+	public HandleEvent(ProcessEntry process) : this(GetEntry.Default, process) {}
+
+	public HandleEvent(ISelect<EventData, RegistryEntry?> entry, ProcessEntry process)
+	{
+		_entry   = entry;
+		_process = process;
+	}
 
 	public async ValueTask Get(ProcessEventArgs parameter)
 	{
@@ -28,11 +29,7 @@ sealed class HandleEvent : IOperation<ProcessEventArgs>
 			var message = await parameter.Data.Data.Verify().ToObjectAsync(key).ConfigureAwait(false);
 			if (message is not null)
 			{
-				using var lease = handlers.AsValueEnumerable().ToArray(ArrayPool<IOperation<object>>.Shared);
-				foreach (var operation in lease)
-				{
-					await operation.Await(message);
-				}
+				await _process.Await(new(message, handlers));
 			}
 		}
 	}

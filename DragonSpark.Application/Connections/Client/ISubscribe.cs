@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Connections.Client;
 
+// TODO: Move
 public interface ISubscribe : ISelect<Func<Task>, ISubscription>;
 
 public interface ISubscribe<out T> : ISelect<Func<T, Task>, ISubscription>;

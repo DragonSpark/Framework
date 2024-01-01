@@ -13,11 +13,8 @@ public class ProcessClientService : IHostedService
 	readonly Func<ProcessEventArgs, Task>      _process;
 	readonly Func<ProcessErrorEventArgs, Task> _error;
 
-	protected ProcessClientService(EventProcessorClient client, ProcessError error)
-		: this(client, ProcessEvent.Default, error) {}
-
-	protected ProcessClientService(EventProcessorClient client, ProcessEvent process, ProcessError error)
-		: this(client, process.Get, error.Get) {}
+	protected ProcessClientService(EventProcessorClient client, ProcessEvents events)
+		: this(client, events.Get, events.Get) {}
 
 	protected ProcessClientService(EventProcessorClient client, Func<ProcessEventArgs, Task> process,
 	                               Func<ProcessErrorEventArgs, Task> error)
