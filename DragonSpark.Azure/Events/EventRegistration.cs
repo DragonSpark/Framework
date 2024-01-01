@@ -15,22 +15,23 @@ public class EventRegistration<T, U> : EventRegistration<T> where T : Message<U>
 
 public class EventRegistration<T> : IEventRegistration where T : class
 {
-	readonly string             _key;
+	readonly IKeyedEntry        _entry;
+	readonly EntryKey           _key;
 	readonly IOperation<object> _body;
 
-	protected EventRegistration(IOperation<T> body) : this(A.Type<T>().FullName.Verify(), new Process<T>(body)) {}
+	protected EventRegistration(IOperation<T> body)
+		: this(KeyedEntry<T>.Default, new(A.Type<T>().FullName.Verify()), new Process<T>(body)) {}
 
-	protected EventRegistration(string key, IOperation<object> body)
+	protected EventRegistration(IKeyedEntry entry, EntryKey key, IOperation<object> body)
 	{
-		_key  = key;
-		_body = body;
+		_entry = entry;
+		_key   = key;
+		_body  = body;
 	}
 
-	public void Execute(ITable<string, RegistryEntry> parameter)
+	public void Execute(ITable<EntryKey, RegistryEntry> parameter)
 	{
-		var entry = parameter.TryGet(_key, out var current)
-			            ? current
-			            : parameter.Parameter(new(_key, new RegistryEntry(A.Type<T>()))).Value;
+		var entry = _entry.Get(_key);
 		entry.Handlers.Add(_body);
 	}
 }
@@ -44,7 +45,7 @@ sealed class Process<T> : IOperation<object>, IReportedTypeAware
 
 	public Process(IOperation<T> body, Type reportedType)
 	{
-		_body              = body;
+		_body         = body;
 		_reportedType = reportedType;
 	}
 

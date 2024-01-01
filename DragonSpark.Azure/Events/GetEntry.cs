@@ -9,16 +9,27 @@ sealed class GetEntry : ISelect<EventData, RegistryEntry?>
 {
 	public static GetEntry Default { get; } = new();
 
-	GetEntry() : this(Entries.Default) {}
+	GetEntry() : this(Entries.Default, Recipient.Default, EventType.Default) {}
 
-	readonly ITable<string, RegistryEntry> _registry;
+	readonly ITable<EntryKey, RegistryEntry> _registry;
+	readonly string                          _recipient, _eventType;
 
-	public GetEntry(ITable<string, RegistryEntry> registry) => _registry = registry;
+	public GetEntry(ITable<EntryKey, RegistryEntry> registry, string recipient, string eventType)
+	{
+		_registry       = registry;
+		_recipient      = recipient;
+		_eventType = eventType;
+	}
 
 	public RegistryEntry? Get(EventData parameter)
-		=> parameter.Properties.TryGetValue(EventType.Default, out var type)
-		   &&
-		   _registry.TryGet(type.To<string>(), out var element)
-			   ? element
-			   : null;
+	{
+		var recipient = parameter.Properties.TryGetValue(_recipient, out var found)
+			                ? found.To<uint>()
+			                : default(uint?);
+		return parameter.Properties.TryGetValue(_eventType, out var type)
+		       &&
+		       _registry.TryGet(new(recipient, type.To<string>()), out var element)
+			       ? element
+			       : null;
+	}
 }

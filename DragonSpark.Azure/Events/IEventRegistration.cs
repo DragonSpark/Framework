@@ -3,4 +3,4 @@ using DragonSpark.Model.Selection.Stores;
 
 namespace DragonSpark.Azure.Events;
 
-public interface IEventRegistration : ICommand<ITable<string, RegistryEntry>>;
+public interface IEventRegistration : ICommand<ITable<EntryKey, RegistryEntry>>;

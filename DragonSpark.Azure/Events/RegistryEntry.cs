@@ -2,7 +2,7 @@
 
 namespace DragonSpark.Azure.Events;
 
-public sealed record RegistryEntry(Type Key, Handlers Handlers)
+public sealed record RegistryEntry(Type MessageType, Handlers Handlers)
 {
-	public RegistryEntry(Type Key) : this(Key, new()) {}
+	public RegistryEntry(Type type) : this(type, new()) {}
 }
