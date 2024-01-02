@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.State;
 
-public class FilteredSubscriberComponent<T> : FilteredReceiveParameterViewComponent<T> where T : notnull
+public class FilteredSubscriberComponent<T> : FilteredSubscriptionComponent<T> where T : notnull
 {
 	[Parameter]
 	public uint? Recipient { get; set; }
@@ -16,7 +16,7 @@ public class FilteredSubscriberComponent<T> : FilteredReceiveParameterViewCompon
 	protected override ISubscription DetermineSubscription() => Registration.Get(new(Recipient, OnReceive));
 }
 
-public sealed class FilteredSubscriberComponent : FilteredReceiveParameterViewComponent<None>
+public sealed class FilteredSubscriberComponent : FilteredSubscriptionComponent<None>
 {
 	[Parameter]
 	public uint? Recipient { get; set; }

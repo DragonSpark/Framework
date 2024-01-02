@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.State;
 
-public abstract class FilteredReceiveParameterViewComponent<T> : ReceiveParameterViewComponent<T> where T : notnull
+public abstract class FilteredSubscriptionComponent<T> : SubscriptionComponent<T> where T : notnull
 {
 	readonly static IDepending<T> DefaultCondition = Is.Always<T>().Operation().Out();
 

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.State;
 
-public abstract class ReceiveParameterViewComponent<T> : ComponentBase, IAsyncDisposable where T : notnull
+public abstract class SubscriptionComponent<T> : ComponentBase, IAsyncDisposable where T : notnull
 {
 	ISubscription? _connection;
 
@@ -33,12 +33,9 @@ public abstract class ReceiveParameterViewComponent<T> : ComponentBase, IAsyncDi
 
 	protected abstract ISubscription DetermineSubscription();
 
-	protected virtual Task OnReceive(T parameter)
-	{
-		return Received.InvokeAsync(parameter);
-	}
+	protected virtual Task OnReceive(T parameter) => Received.InvokeAsync(parameter);
 
 	public ValueTask DisposeAsync() => _connection?.DisposeAsync() ?? Task.CompletedTask.ToOperation();
 }
 
-public abstract class ReceiveParameterViewComponent : ReceiveParameterViewComponent<None>;
+public abstract class SubscriptionComponent : SubscriptionComponent<None>;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.State;
 
-public sealed class SubscriberComponent<T> : ReceiveParameterViewComponent<T> where T : notnull
+public sealed class SubscriberComponent<T> : SubscriptionComponent<T> where T : notnull
 {
 	Func<T, Task> _body = default!;
 
@@ -25,7 +25,7 @@ public sealed class SubscriberComponent<T> : ReceiveParameterViewComponent<T> wh
 	protected override ISubscription DetermineSubscription() => Registration.Get(new(Recipient, _body));
 }
 
-public sealed class SubscriberOfComponent : ReceiveParameterViewComponent
+public sealed class SubscriberOfComponent : SubscriptionComponent
 {
 	Func<Task> _body = default!;
 

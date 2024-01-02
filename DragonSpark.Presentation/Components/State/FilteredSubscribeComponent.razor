@@ -1,0 +1,12 @@
+﻿@using DragonSpark.Application.Connections.Client
+
+@typeparam T where T : notnull
+@inherits FilteredSubscriptionComponent<T>
+
+@code
+{
+    [Parameter]
+    public ISubscribe<T> Registration { get; set; } = default!;
+
+    protected override ISubscription DetermineSubscription() => Registration.Get(OnReceive);
+}
