@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Events;
 
-public class Send<T, U> : IOperation<T> where U : class
+public class Send<T, U> : IOperation<T> where U : Message
 {
 	readonly EventHubProducerClient _client;
 	readonly Func<T, U>             _select;
@@ -57,13 +57,8 @@ public class CreateEventData : ICreateEventData
 	public EventData Get(CreateEventDataInput parameter)
 	{
 		var (recipient, message) = parameter;
-		var result = new EventData(BinaryData.FromObjectAsJson(message))
-		{
-			Properties =
-			{
-				[EventType.Default] = _key
-			}
-		};
+		var body   = BinaryData.FromObjectAsJson(message);
+		var result = new EventData(body) { Properties = { [EventType.Default] = _key } };
 
 		if (recipient is not null)
 		{
@@ -74,14 +69,31 @@ public class CreateEventData : ICreateEventData
 	}
 }
 
-public class SendTo<T> : IOperation<CreateEventDataInput>
+public class SendFixed<T> : IOperation<uint> where T : Message, new()
+{
+	readonly IOperation<CreateEventDataInput> _previous;
+	readonly T                                _message;
+
+	protected SendFixed(EventHubProducerClient client) : this(client, new T()) {}
+
+	protected SendFixed(EventHubProducerClient client, T message)
+		: this(new SendTo(client, CreateEventData<T>.Default), message) {}
+
+	protected SendFixed(IOperation<CreateEventDataInput> previous, T message)
+	{
+		_previous = previous;
+		_message  = message;
+	}
+
+	public ValueTask Get(uint parameter) => _previous.Get(new(parameter, _message));
+}
+
+public class SendTo : IOperation<CreateEventDataInput>
 {
 	readonly EventHubProducerClient _client;
 	readonly ICreateEventData       _create;
 
-	protected SendTo(EventHubProducerClient client) : this(client, CreateEventData<T>.Default) {}
-
-	protected SendTo(EventHubProducerClient client, ICreateEventData create)
+	public SendTo(EventHubProducerClient client, ICreateEventData create)
 	{
 		_client = client;
 		_create = create;

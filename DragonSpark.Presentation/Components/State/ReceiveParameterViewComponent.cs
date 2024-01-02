@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Application.Connections.Client;
 using DragonSpark.Compose;
-using DragonSpark.Model.Operations.Selection.Conditions;
+using DragonSpark.Model;
 using DragonSpark.Presentation.Components.Content.Rendering;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -41,42 +41,4 @@ public abstract class ReceiveParameterViewComponent<T> : ComponentBase, IAsyncDi
 	public ValueTask DisposeAsync() => _connection?.DisposeAsync() ?? Task.CompletedTask.ToOperation();
 }
 
-// TODO
-
-public abstract class FilteredReceiveParameterViewComponent<T> : ReceiveParameterViewComponent<T> where T : notnull
-{
-	readonly static IDepending<T> DefaultCondition = Is.Always<T>().Operation().Out();
-
-	[Parameter]
-	public IDepending<T> Condition { get; set; } = DefaultCondition;
-
-	protected override async Task OnReceive(T parameter)
-	{
-		if (await Condition.Get(parameter))
-		{
-			await base.OnReceive(parameter).ConfigureAwait(false);
-		}
-	}
-}
-
-public sealed class FilteredSubscriberComponent<T> : FilteredReceiveParameterViewComponent<T> where T : notnull
-{
-	[Parameter]
-	public uint? Recipient { get; set; }
-
-	[Parameter]
-	public ISubscriber<T> Registration { get; set; } = default!;
-
-	protected override ISubscription DetermineSubscription() => Registration.Get(new(Recipient, OnReceive));
-}
-
-public sealed class SubscriberComponent<T> : ReceiveParameterViewComponent<T> where T : notnull
-{
-	[Parameter]
-	public uint? Recipient { get; set; }
-
-	[Parameter]
-	public ISubscriber<T> Registration { get; set; } = default!;
-
-	protected override ISubscription DetermineSubscription() => Registration.Get(new(Recipient, OnReceive));
-}
+public abstract class ReceiveParameterViewComponent : ReceiveParameterViewComponent<None>;

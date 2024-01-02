@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Application.Connections.Client;
 using DragonSpark.Compose;
+using DragonSpark.Model;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Stores;
@@ -9,11 +10,8 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Events;
 
-public record Message<T>(T Subject);
-
-// public interface ISubscribe : ISelect<Func<Task>, ISubscription>;
-
-//public interface ISubscribe<out T> : ISelect<Func<T, Task>, ISubscription>;
+public abstract record Message;
+public abstract record Message<T>(T Subject) : Message;
 
 public class Subscribe<T> : ISubscribe<T>
 {
@@ -39,15 +37,28 @@ public class Subscribe<T> : ISubscribe<T>
 	}
 }
 
+public class SubscriberOf<T> : Subscriber<None>, ISubscriber
+{
+	protected SubscriberOf() : base(A.Type<T>().FullName.Verify()) {}
+
+	public ISubscription Get(SubscriberInput parameter)
+	{
+		var (recipient, body) = parameter;
+		return Get(new SubscriberInput<None>(recipient, body.Start().Accept()));
+	}
+}
+
 public class Subscriber<T> : ISubscriber<T>
 {
 	readonly IKeyedEntry                                _entry;
 	readonly ISelect<Func<T, Task>, IOperation<object>> _operation;
 	readonly string                                     _key;
 
-	protected Subscriber() : this(KeyedEntry<T>.Default, A.Type<T>().FullName.Verify(), CreateOperation<T>.Default) {}
+	protected Subscriber() : this(A.Type<T>().FullName.Verify()) {}
 
-	public Subscriber(IKeyedEntry entry, string key, ISelect<Func<T, Task>, IOperation<object>> operation)
+	protected Subscriber(string key) : this(KeyedEntry<T>.Default, key, CreateOperation<T>.Default) {}
+
+	protected Subscriber(IKeyedEntry entry, string key, ISelect<Func<T, Task>, IOperation<object>> operation)
 	{
 		_entry     = entry;
 		_operation = operation;
