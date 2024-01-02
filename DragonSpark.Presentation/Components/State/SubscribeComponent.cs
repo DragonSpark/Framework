@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Connections.Client;
+﻿using DragonSpark.Application.Connections.Events;
 using Microsoft.AspNetCore.Components;
 
 namespace DragonSpark.Presentation.Components.State;

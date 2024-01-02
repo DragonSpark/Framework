@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Connections.Client;
+﻿using DragonSpark.Application.Connections.Events;
 using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Presentation.Components.Content.Rendering;
@@ -33,7 +33,7 @@ public abstract class SubscriptionComponent<T> : ComponentBase, IAsyncDisposable
 
 	protected abstract ISubscription DetermineSubscription();
 
-	protected virtual Task OnReceive(T parameter) => Received.InvokeAsync(parameter);
+	protected virtual Task OnReceive(T parameter) => InvokeAsync(() => Received.InvokeAsync(parameter));
 
 	public ValueTask DisposeAsync() => _connection?.DisposeAsync() ?? Task.CompletedTask.ToOperation();
 }

@@ -41,9 +41,6 @@ partial class Extensions
 	public static ApplicationProfileContext WithConnectionConfigurations(this ApplicationProfileContext @this)
 		=> Connections.Configure.Default.Get(@this.WithBearerSupport());
 
-	public static ApplicationProfileContext WithClientConnectionConfigurations(this ApplicationProfileContext @this)
-		=> Connections.Client.Configure.Default.Get(@this);
-
 	public static ApplicationProfileContext WithServerConnectionConfigurations(this ApplicationProfileContext @this)
 		=> @this.WithBearerSupport().Append(ServerRegistrations.Default);
 

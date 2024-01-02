@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Connections.Client;
+﻿using DragonSpark.Application.Connections.Events;
 using DragonSpark.Model;
 using Microsoft.AspNetCore.Components;
 using System;
