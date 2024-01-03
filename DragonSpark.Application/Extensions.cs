@@ -2,7 +2,6 @@
 using DragonSpark.Application.Compose;
 using DragonSpark.Application.Compose.Runtime;
 using DragonSpark.Application.Compose.Store.Operations;
-using DragonSpark.Application.Connections;
 using DragonSpark.Application.Entities.Diagnostics;
 using DragonSpark.Application.Entities.Editing;
 using DragonSpark.Application.Entities.Queries.Runtime.Pagination;
@@ -12,7 +11,6 @@ using DragonSpark.Application.Runtime;
 using DragonSpark.Application.Runtime.Operations.Execution;
 using DragonSpark.Application.Security.Identity;
 using DragonSpark.Application.Security.Identity.Authentication;
-using DragonSpark.Application.Security.Identity.Bearer;
 using DragonSpark.Application.Security.Identity.Claims.Access;
 using DragonSpark.Compose;
 using DragonSpark.Compose.Model.Operations;
@@ -37,12 +35,6 @@ partial class Extensions
 {
 	public static BuildHostContext WithFrameworkConfigurations(this BuildHostContext @this)
 		=> Configure.Default.Get(@this);
-
-	public static ApplicationProfileContext WithConnectionConfigurations(this ApplicationProfileContext @this)
-		=> Connections.Configure.Default.Get(@this.WithBearerSupport());
-
-	public static ApplicationProfileContext WithServerConnectionConfigurations(this ApplicationProfileContext @this)
-		=> @this.WithBearerSupport().Append(ServerRegistrations.Default);
 
 	public static BuildHostContext WithAmbientConfiguration(this BuildHostContext @this)
 		=> @this.Select(Configuration.WithAmbientConfiguration.Default);
