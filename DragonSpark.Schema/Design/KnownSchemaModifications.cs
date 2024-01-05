@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Entities;
+﻿using DragonSpark.Application.Entities.Initialization;
 
 namespace DragonSpark.Schema.Design
 {

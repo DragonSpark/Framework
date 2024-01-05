@@ -69,7 +69,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Application.Env
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Environment", "Environment", "{5A258A1B-48EE-4AFD-B9B4-83B9A910606B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Schema", "DragonSpark.Schema\DragonSpark.Schema.csproj", "{41546521-3AB7-4142-A0E0-526D5AA22399}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Schema", "DragonSpark.Schema\DragonSpark.Schema.csproj", "{41546521-3AB7-4142-A0E0-526D5AA22399}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Diagnostics", "DragonSpark.Diagnostics\DragonSpark.Diagnostics.csproj", "{3C0CBFE5-15B9-4E08-8D8E-AE60EC1F3E8F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -185,6 +187,10 @@ Global
 		{41546521-3AB7-4142-A0E0-526D5AA22399}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{41546521-3AB7-4142-A0E0-526D5AA22399}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{41546521-3AB7-4142-A0E0-526D5AA22399}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C0CBFE5-15B9-4E08-8D8E-AE60EC1F3E8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C0CBFE5-15B9-4E08-8D8E-AE60EC1F3E8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C0CBFE5-15B9-4E08-8D8E-AE60EC1F3E8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C0CBFE5-15B9-4E08-8D8E-AE60EC1F3E8F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
