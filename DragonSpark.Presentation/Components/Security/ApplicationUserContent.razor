@@ -1,0 +1,14 @@
+﻿@using DragonSpark.Application.Security.Identity.Authentication
+
+@if(Status >= ProfileStatus.Confirming)
+{
+    @ChildContent
+}
+
+@code {
+    [CascadingParameter]
+    ProfileStatus Status { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+}
