@@ -23,11 +23,11 @@
 
 	<ItemGroup>
 		<PackageReference Include="BlazorPro.BlazorSize" Version="6.2.2" />
-		<PackageReference Include="DeviceDetector.NET" Version="6.1.4" />
+		<PackageReference Include="DeviceDetector.NET" Version="6.2.0" />
 		<PackageReference Include="Majorsoft.Blazor.Components.Common.JsInterop" Version="1.5.0" />
 		<PackageReference Include="Majorsoft.Blazor.Components.Debounce" Version="1.5.0" />
 		<PackageReference Include="MatBlazor" Version="2.10.0" />
-		<PackageReference Include="Radzen.Blazor" Version="4.23.1" />
+		<PackageReference Include="Radzen.Blazor" Version="4.24.2" />
 		<!--<PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.9.5">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>

@@ -114,7 +114,7 @@ else
 
 	public Task Refresh() => _subject?.Refresh() ?? Task.CompletedTask;
 
-    public Task Export() => _subject?.ExportToExcelAsync(new(){IncludeTemplateColumn = true}) ?? Task.CompletedTask;
+    public Task Export() => _subject?.ExportToExcelAsync(new ExcelExportProperties(){IncludeTemplateColumn = true}) ?? Task.CompletedTask;
 
 	IClientVariable<string> Store { get; set; } = default!;
 
