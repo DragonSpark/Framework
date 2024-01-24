@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences.Memory;
 using Microsoft.Extensions.Configuration.Json;
@@ -23,21 +24,30 @@ sealed class AmbientConfigurationSources : ISelect<IHostEnvironment, Leasing<Jso
 	public Leasing<JsonConfigurationSource> Get(IHostEnvironment parameter)
 	{
 		var directory = _root.Get(parameter);
-		var result = directory.Exists
-			             ? directory.GetFiles("appsettings.json", SearchOption.AllDirectories)
-			                        .Concat(directory.GetFiles($"appsettings.{parameter.EnvironmentName}.json",
-			                                                   SearchOption.AllDirectories))
-			                        .OrderBy(x => x.FullName.Count(y => y == Path.DirectorySeparatorChar))
-			                        .ThenBy(x => x.Name.Count(y => y == '.'))
-			                        .AsValueEnumerable()
-			                        .Select(x => new JsonConfigurationSource
-			                        {
-				                        Path           = x.FullName,
-				                        ReloadOnChange = true
-			                        })
-			                        .ToArray(ArrayPool<JsonConfigurationSource>.Shared)
-			                        .Then()
-			             : Leasing<JsonConfigurationSource>.Default;
-		return result;
+		if (directory.Exists)
+		{
+			var first = directory.EnumerateFiles($"appsettings.{parameter.EnvironmentName}.json",
+			                                     SearchOption.AllDirectories);
+			var second = parameter.IsDevelopment()
+				             ? directory.EnumerateFiles($"appsettings.{parameter.EnvironmentName}.developer.json",
+				                                        SearchOption.AllDirectories)
+				             : Empty.Array<FileInfo>();
+
+			var others = first.Union(second);
+			return directory.EnumerateFiles("appsettings.json", SearchOption.AllDirectories)
+			                .Concat(others)
+			                .OrderBy(x => x.FullName.Count(y => y == Path.DirectorySeparatorChar))
+			                .ThenBy(x => x.Name.Count(y => y == '.'))
+			                .AsValueEnumerable()
+			                .Select(x => new JsonConfigurationSource
+			                {
+				                Path           = x.FullName,
+				                ReloadOnChange = true
+			                })
+			                .ToArray(ArrayPool<JsonConfigurationSource>.Shared)
+			                .Then();
+		}
+
+		return Leasing<JsonConfigurationSource>.Default;
 	}
 }
