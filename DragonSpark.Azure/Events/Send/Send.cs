@@ -29,3 +29,4 @@ public class Send<T, U> : IOperation<T> where U : Message
 		return _client.SendAsync(data).ToOperation();
 	}
 }
+
