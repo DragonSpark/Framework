@@ -15,12 +15,6 @@ sealed class Subscription : ISubscription
 		_subject  = subject;
 	}
 
-	public ValueTask DisposeAsync()
-	{
-		_handlers.Remove(_subject);
-		return ValueTask.CompletedTask;
-	}
-
 	public ValueTask Get()
 	{
 		if (!_handlers.Contains(_subject))
@@ -28,6 +22,12 @@ sealed class Subscription : ISubscription
 			_handlers.Add(_subject);
 		}
 
+		return ValueTask.CompletedTask;
+	}
+
+	public ValueTask DisposeAsync()
+	{
+		_handlers.Remove(_subject);
 		return ValueTask.CompletedTask;
 	}
 }
