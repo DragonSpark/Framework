@@ -13,6 +13,11 @@ sealed class Registrations : ICommand<IServiceCollection>
 
 	public void Execute(IServiceCollection parameter)
 	{
-		parameter.Register<EmailMessagingSettings>().TryDecorate<IEmailSender, EmailSender>();
+		parameter.Register<EmailMessagingSettings>()
+		         .Start<IAllowSend>()
+		         .Forward<AllowSend>()
+		         .Singleton()
+				 //
+				 .Then.TryDecorate<IEmailSender, EmailSender>();
 	}
 }

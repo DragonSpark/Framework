@@ -6,16 +6,16 @@ namespace DragonSpark.Application.Messaging;
 sealed class EmailSender : IEmailSender
 {
 	readonly IEmailSender _previous;
-	readonly bool         _enabled;
+	readonly IAllowSend   _allow;
 
-	public EmailSender(IEmailSender previous, EmailMessagingSettings settings) : this(previous, settings.Enabled) {}
-
-	public EmailSender(IEmailSender previous, bool enabled)
+	public EmailSender(IEmailSender previous, IAllowSend allow)
 	{
 		_previous = previous;
-		_enabled  = enabled;
+		_allow    = allow;
 	}
 
 	public Task SendEmailAsync(string email, string subject, string htmlMessage)
-		=> _enabled ? _previous.SendEmailAsync(email, subject, htmlMessage) : Task.CompletedTask;
+		=> _allow.Get(new(email, subject, htmlMessage))
+			   ? _previous.SendEmailAsync(email, subject, htmlMessage)
+			   : Task.CompletedTask;
 }
