@@ -50,5 +50,5 @@ public class OperationContext<T> : Selector<T, ValueTask>
 
 	public TaskSelector<T> Allocate() => new(Get().Select(SelectTask.Default));
 
-
+	public OperationContext<T> Delayed(TimeSpan by) => new(new Delay<T>(_subject.Then().Out(), by));
 }
