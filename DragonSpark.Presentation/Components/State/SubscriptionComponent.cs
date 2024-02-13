@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Application.Connections.Events;
 using DragonSpark.Compose;
 using DragonSpark.Model;
-using DragonSpark.Presentation.Components.Content.Rendering;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Threading.Tasks;
@@ -12,23 +11,13 @@ public abstract class SubscriptionComponent<T> : ComponentBase, IAsyncDisposable
 {
 	ISubscription? _connection;
 
-	[Inject]
-	RenderStateStore State { get; set; } = default!;
-
 	[Parameter]
 	public EventCallback<T> Received { get; set; }
 
 	protected override Task OnInitializedAsync()
 	{
-		switch (State.Get())
-		{
-			case RenderState.Ready:
-			case RenderState.Established:
-				_connection = DetermineSubscription();
-				return _connection.Allocate();
-		}
-
-		return base.OnInitializedAsync();
+		_connection = DetermineSubscription();
+		return _connection.Allocate();
 	}
 
 	protected abstract ISubscription DetermineSubscription();

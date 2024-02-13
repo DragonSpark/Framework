@@ -1,0 +1,36 @@
+﻿@using DragonSpark.Model.Results
+@using DragonSpark.Compose
+@using DragonSpark.Presentation.Components.Content.Templates
+@inject RenderStateStore Render
+
+@if (_render)
+{
+    @ChildContent
+}
+else
+{
+    @LoadingTemplate
+}
+
+@code {
+    readonly Switch _render = new();
+
+    protected override void OnInitialized()
+    {
+        switch (Render.Get())
+        {
+            case RenderState.Ready:
+            case RenderState.Established:
+                _render.Up();
+                break;
+        }
+
+        base.OnInitialized();
+    }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment LoadingTemplate { get; set; } = EmptyContentTemplate.Default;
+}

@@ -37,9 +37,8 @@ public abstract class ContentComponentBase<T> : ComponentBase
 	{
 		switch (Current.Get())
 		{
-			case RenderState.Default:
-				break;
-			default:
+			case RenderState.Ready:
+			case RenderState.Established:
 				RequestNewContent();
 				return base.RefreshState();
 		}

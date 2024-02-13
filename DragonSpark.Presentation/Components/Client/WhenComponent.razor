@@ -10,7 +10,9 @@
 else
 {
     @LoadingTemplate
-    <DragonSpark.Presentation.Components.Eventing.HandlerView T="ClientOffsetAssignedMessage" Received="@OnUpdate" />
+    <DragonSpark.Presentation.Components.Content.Rendering.ConnectedStateAwareComponent>
+        <DragonSpark.Presentation.Components.Eventing.HandlerView T="ClientOffsetAssignedMessage" Received="@OnUpdate" />
+    </DragonSpark.Presentation.Components.Content.Rendering.ConnectedStateAwareComponent>
 }
 
 @code

@@ -7,7 +7,6 @@
 @implements IDisposable
 
 @inject IEventAggregator Events
-@inject RenderStateStore State
 
 @code
 {
@@ -20,24 +19,17 @@
 	[Parameter]
 	public EventCallback<T> Received { get; set; }
 
-	protected override Task OnInitializedAsync()
-	{
-	    switch (State.Get())
-	    {
-	        case RenderState.Default:
-	            break;
-	        default:
-	            Events.Subscribe(this);
-	            break;
-	    }
-		return Task.CompletedTask;
-	}
+    protected override void OnInitialized()
+    {
+        Events.Subscribe(this);
+        base.OnInitialized();
+    }
 
-	public async Task HandleAsync(T parameter)
+    public async Task HandleAsync(T parameter)
 	{
-	    if (Enabled && await Condition.Get(parameter))
+		if (Enabled && await Condition.Get(parameter))
 		{
-		    await InvokeAsync(() => Received.InvokeAsync(parameter));
+			await InvokeAsync(() => Received.InvokeAsync(parameter));
 		}
 	}
 
