@@ -2,7 +2,6 @@
 using DragonSpark.Application.Navigation.Security;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
-using Microsoft.JSInterop;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Security;
@@ -26,9 +25,6 @@ public sealed class RedirectToLogin : ComponentBase
 
 	[Inject]
 	NavigationManager Navigation { get; set; } = default!;
-
-	[Inject]
-	IJSRuntime Runtime { get; set; } = default!;
 
 	protected override Task OnAfterRenderAsync(bool firstRender)
 	{

@@ -42,9 +42,6 @@ public sealed class RenderStateMonitorComponent : Microsoft.AspNetCore.Component
 		}
 	}
 
-	[Inject]
-	IRenderState Render { get; set; } = default!;
-
 	public void Dispose()
 	{
 		Navigation.LocationChanged -= _changed;
