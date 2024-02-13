@@ -1,6 +1,6 @@
 ﻿namespace DragonSpark.Model.Results;
 
-public sealed class ProtectedAwareMutable<T> : IMutable<T>
+public class ProtectedAwareMutable<T> : IMutable<T>
 {
 	readonly IMutable<T> _previous;
 
