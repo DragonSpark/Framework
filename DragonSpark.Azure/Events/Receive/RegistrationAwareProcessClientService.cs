@@ -17,8 +17,7 @@ public class RegistrationAwareProcessClientService : IHostedService
 		: this(previous, registrations, Entries.Default) {}
 
 	protected RegistrationAwareProcessClientService(ProcessClientService previous,
-	                                                IEnumerable<IEventRegistration> registrations,
-	                                                IEntries entries)
+	                                                IEnumerable<IEventRegistration> registrations, IEntries entries)
 	{
 		_previous      = previous;
 		_registrations = registrations;
