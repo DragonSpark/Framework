@@ -9,8 +9,6 @@ sealed class CreateMessageFromContent : ISelect<string, ServiceBusMessage>
 	readonly TimeSpan?                                _life, _fromNow;
 	readonly ISelect<MessageInput, ServiceBusMessage> _create;
 
-	public CreateMessageFromContent(TimeSpan? life, TimeSpan? fromNow) : this(life, fromNow, CreateMessage.Default) {}
-
 	public CreateMessageFromContent(TimeSpan? life, TimeSpan? fromNow, ISelect<MessageInput, ServiceBusMessage> create)
 	{
 		_life    = life;

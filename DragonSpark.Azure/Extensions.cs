@@ -41,12 +41,6 @@ public static class Extensions
 
 	public static IDeleteContents DeleteContents(this IContainer @this) => new DeleteContents(@this.Get());
 
-	/*public static ISend Send(this IQueue @this, TimeSpan? life = null, TimeSpan? visibility = null)
-		=> new Send(@this.Get(), life.GetValueOrDefault(DefaultLife.Default),
-		            visibility.GetValueOrDefault(DefaultVisibility.Default));
-
-	public static IMessage Message(this IQueue @this) => new Message(@this.Get());*/
-
 	public static ValueTask<object?> ToObjectAsync(this BinaryData data, Type type,
 	                                               CancellationToken cancellationToken = default)
 		=> data.ToObjectAsync(type, JsonObjectSerializer.Default, cancellationToken);
@@ -57,9 +51,9 @@ public static class Extensions
 		=> serializer.DeserializeAsync(data.ToStream(), type, cancellationToken);
 
 	public static ISend Send(this ISender @this, TimeSpan? life = null, TimeSpan? visibility = null)
-		=> new Send(@this.Get(), life, visibility);
+		=> @this.Get(new SendInput(life, visibility));
 
-	public static IMessage Message(this ISender @this) => new Message(@this.Get());
+	/*public static IMessage Message(this ISender @this) => new Message(@this.Get());*/
 
 	public static RegistrationResult Storage<T>(this IServiceCollection @this) where T : class, IContainer
 		=> @this.Start<IContainer>()
@@ -67,9 +61,6 @@ public static class Extensions
 		        .Singleton()
 		        .Then.Start<T>()
 		        .Singleton();
-
-	/*public static RegistrationResult Queue<T>(this IServiceCollection @this) where T : class, IQueue
-		=> @this.Start<IQueue>().Forward<T>().Singleton().Then.Start<T>().Singleton();*/
 
 	public static IServiceCollection AddAzureKeyVaultSecret(this IServiceCollection @this)
 		=> Data.AddAzureKeyVaultSecret.Default.Parameter(@this);
