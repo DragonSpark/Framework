@@ -25,11 +25,3 @@ public sealed class AudienceAwareProcessEvent : IAllocated<ProcessEventArgs>
 	public Task Get(ProcessEventArgs parameter)
 		=> _condition.Get(parameter) ? _previous.Get(parameter) : Task.CompletedTask;
 }
-
-// TODO
-
-public sealed class ContainsIntendedAudience : Condition<ProcessEventArgs>
-{
-	public ContainsIntendedAudience(string? audience)
-		: base(new Messaging.Receive.ContainsIntendedAudience(audience).Get) {}
-}
