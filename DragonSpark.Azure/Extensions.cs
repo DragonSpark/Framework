@@ -1,11 +1,15 @@
 ﻿using Azure.Core.Serialization;
-using DragonSpark.Azure.Messages;
+using Azure.Messaging.EventHubs.Processor;
+using Azure.Messaging.ServiceBus;
+using DragonSpark.Azure.Messaging.Messages;
 using DragonSpark.Azure.Storage;
 using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Composition.Compose;
+using DragonSpark.Model.Selection;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -69,4 +73,16 @@ public static class Extensions
 
 	public static IServiceCollection AddAzureKeyVaultSecret(this IServiceCollection @this)
 		=> Data.AddAzureKeyVaultSecret.Default.Parameter(@this);
+
+	/**/
+
+	public static T Get<T>(this ISelect<IReadOnlyDictionary<string, object>, T> @this, ProcessEventArgs parameter)
+	{
+		var properties = parameter.Data.Properties;
+		return @this.Get(properties as IReadOnlyDictionary<string, object> ?? properties.AsReadOnly());
+	}
+
+	public static T Get<T>(this ISelect<IReadOnlyDictionary<string, object>, T> @this,
+	                       ServiceBusReceivedMessage parameter)
+		=> @this.Get(parameter.ApplicationProperties);
 }

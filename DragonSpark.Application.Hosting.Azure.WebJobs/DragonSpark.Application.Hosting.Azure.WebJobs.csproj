@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <ProjectReference Include="..\DragonSpark.Azure\DragonSpark.Azure.csproj" />
     <ProjectReference Include="..\DragonSpark.Server\DragonSpark.Server.csproj" />
   </ItemGroup>
 

@@ -11,6 +11,6 @@ sealed class Configure : IAlteration<BuildHostContext>
 
 	public BuildHostContext Get(BuildHostContext parameter)
 		=> parameter.Configure(Registrations.Default)
-		            .Configure(Messages.Registrations.Default)
-		            .Configure(Events.Registrations.Default);
+		            .Configure(Messaging.Messages.Registrations.Default)
+		            .Configure(Messaging.Events.Registrations.Default);
 }
