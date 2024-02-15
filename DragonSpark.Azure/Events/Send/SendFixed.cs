@@ -1,5 +1,4 @@
-﻿using Azure.Messaging.EventHubs.Producer;
-using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model.Operations;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Events.Send;
@@ -9,9 +8,9 @@ public class SendFixed<T> : IOperation<uint> where T : Message, new()
 	readonly IOperation<CreateEventDataInput> _previous;
 	readonly T                                _message;
 
-	protected SendFixed(EventHubProducerClient client) : this(client, new T()) {}
+	protected SendFixed(IProducer client) : this(client, new T()) {}
 
-	protected SendFixed(EventHubProducerClient client, T message) : this(new SendTo<T>(client), message) {}
+	protected SendFixed(IProducer client, T message) : this(new SendTo<T>(client), message) {}
 
 	protected SendFixed(IOperation<CreateEventDataInput> previous, T message)
 	{

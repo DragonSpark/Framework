@@ -1,15 +1,34 @@
-﻿using Azure.Core;
+﻿using Azure.Messaging.EventHubs;
 using Azure.Messaging.EventHubs.Producer;
 using DragonSpark.Azure.Data;
-using DragonSpark.Model.Results;
+using DragonSpark.Azure.Events.Receive;
+using DragonSpark.Compose;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Events.Send;
 
-public class Producer : Instance<EventHubProducerClient>, IProducer
+public class Producer : IProducer
 {
-	protected Producer(EventHubConfiguration settings, string name)
-		: this(settings.Namespace, name, DefaultCredential.Default) {}
+	readonly EventHubProducerClient _instance;
+	readonly string?                _audience;
 
-	protected Producer(string @namespace, string name, TokenCredential credential)
-		: base(new($"{@namespace}.servicebus.windows.net", name, credential)) {}
+	protected Producer(EventHubConfiguration settings, string name)
+		: this(new EventHubProducerClient($"{settings.Namespace}.servicebus.windows.net", name, DefaultCredential.Default),
+		       settings.Audience) {}
+
+	public Producer(EventHubProducerClient instance, string? audience)
+	{
+		_instance = instance;
+		_audience = audience;
+	}
+
+	public ValueTask Get(EventData parameter)
+	{
+		if (_audience is not null)
+		{
+			parameter.Properties[IntendedAudience.Default] = _audience;
+		}
+
+		return _instance.SendAsync(parameter.Yield()).ToOperation();
+	}
 }

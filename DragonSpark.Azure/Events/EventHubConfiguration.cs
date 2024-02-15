@@ -7,4 +7,6 @@ public sealed class EventHubConfiguration
 	public string Namespace { get; set; } = default!;
 
 	public string Group { get; set; } = EventHubConsumerClient.DefaultConsumerGroupName;
+
+	public string? Audience { get; set; }
 }
