@@ -1,7 +1,7 @@
 ﻿using Azure.Core.Serialization;
 using Azure.Messaging.EventHubs.Processor;
 using Azure.Messaging.ServiceBus;
-using DragonSpark.Azure.Messaging.Messages;
+using DragonSpark.Azure.Messaging.Messages.Queues;
 using DragonSpark.Azure.Storage;
 using DragonSpark.Compose;
 using DragonSpark.Composition;

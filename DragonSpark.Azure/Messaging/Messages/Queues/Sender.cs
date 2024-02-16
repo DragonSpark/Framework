@@ -3,7 +3,7 @@ using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Azure.Messaging.Messages;
+namespace DragonSpark.Azure.Messaging.Messages.Queues;
 
 public class Sender : ISender
 {
@@ -31,7 +31,7 @@ public class Sender : ISender
 	public ISend Get(SendInput parameter)
 	{
 		var (life, visibility) = parameter;
-		return new Send(this, new CreateMessageFromContent(life, visibility, _create));
+		return new Send(_instance, new CreateMessageFromContent(life, visibility, _create));
 	}
 
 	public ValueTask Get(ServiceBusMessage parameter) => _instance.SendMessageAsync(parameter).ToOperation();

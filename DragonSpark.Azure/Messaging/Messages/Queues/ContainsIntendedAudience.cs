@@ -1,7 +1,7 @@
 ﻿using Azure.Messaging.ServiceBus;
 using DragonSpark.Compose.Model.Selection;
 
-namespace DragonSpark.Azure.Messaging.Messages;
+namespace DragonSpark.Azure.Messaging.Messages.Queues;
 
 public sealed class ContainsIntendedAudience : Condition<ServiceBusReceivedMessage>
 {

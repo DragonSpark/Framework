@@ -1,3 +1,3 @@
-﻿namespace DragonSpark.Azure.Messaging.Events;
+﻿namespace DragonSpark.Azure.Messaging;
 
 public record NumberMessage(uint Subject) : Message<uint>(Subject);

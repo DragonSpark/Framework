@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Azure.Messaging.Events;
+﻿namespace DragonSpark.Azure.Messaging;
 
 sealed class Recipient : Text.Text
 {

@@ -5,7 +5,7 @@ using DragonSpark.Model.Results;
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Azure.Messaging.Messages;
+namespace DragonSpark.Azure.Messaging.Messages.Queues;
 
 sealed class Client : Instance<ServiceBusClient>, IClient, IAsyncDisposable
 {

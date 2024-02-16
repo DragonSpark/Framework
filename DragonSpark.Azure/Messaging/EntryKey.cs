@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Azure.Messaging.Events;
+﻿namespace DragonSpark.Azure.Messaging;
 
 public sealed record EntryKey(uint? Recipient, string MessageType)
 {
