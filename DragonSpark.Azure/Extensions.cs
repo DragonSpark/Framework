@@ -67,6 +67,9 @@ public static class Extensions
 
 	/**/
 
+	public static T Get<T>(this ISelect<IReadOnlyDictionary<string, object>, T> @this,
+	                       ProcessMessageEventArgs parameter) => @this.Get(parameter.Message);
+
 	public static T Get<T>(this ISelect<IReadOnlyDictionary<string, object>, T> @this, ProcessEventArgs parameter)
 	{
 		var properties = parameter.Data.Properties;
