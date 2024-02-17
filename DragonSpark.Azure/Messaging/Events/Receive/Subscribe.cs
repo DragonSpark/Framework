@@ -17,7 +17,7 @@ public class Subscribe<T, U> : Subscribe<T> where U : Message<T>
 }
 
 public class Subscribe<T> : ISubscribe<T>
-{
+{	
 	readonly Handlers                                   _handlers;
 	readonly ISelect<Func<T, Task>, IOperation<object>> _operation;
 
