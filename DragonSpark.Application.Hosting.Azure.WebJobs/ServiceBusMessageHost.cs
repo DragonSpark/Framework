@@ -29,5 +29,7 @@ public class ServiceBusMessageHost : IAllocated<ServiceBusReceivedMessage>
 	}
 
 	public virtual Task Get(ServiceBusReceivedMessage parameter)
-		=> _condition.Get(parameter) ? _previous.Get(parameter.Body.ToString()) : Task.CompletedTask;
+	{
+		return /*_condition.Get(parameter) ?*/ _previous.Get(parameter.Body.ToString())/* : Task.CompletedTask*/; // TODO
+	}
 }
