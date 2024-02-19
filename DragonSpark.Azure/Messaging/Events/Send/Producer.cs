@@ -9,25 +9,12 @@ namespace DragonSpark.Azure.Messaging.Events.Send;
 public class Producer : IProducer
 {
 	readonly EventHubProducerClient _instance;
-	readonly string?                _audience;
 
 	protected Producer(EventHubConfiguration settings, string name)
-		: this(new EventHubProducerClient($"{settings.Namespace}.servicebus.windows.net", name, DefaultCredential.Default),
-		       settings.Audience) {}
+		: this(new EventHubProducerClient($"{settings.Namespace}.servicebus.windows.net", name,
+		                                  DefaultCredential.Default)) {}
 
-	public Producer(EventHubProducerClient instance, string? audience)
-	{
-		_instance = instance;
-		_audience = audience;
-	}
+	public Producer(EventHubProducerClient instance) => _instance = instance;
 
-	public ValueTask Get(EventData parameter)
-	{
-		if (_audience is not null)
-		{
-			parameter.Properties[IntendedAudience.Default] = _audience;
-		}
-
-		return _instance.SendAsync(parameter.Yield()).ToOperation();
-	}
+	public ValueTask Get(EventData parameter) => _instance.SendAsync(parameter.Yield()).ToOperation();
 }
