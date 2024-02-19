@@ -15,7 +15,7 @@ sealed class Hosting : ICommand<IHostBuilder>
 
 	public void Execute(IHostBuilder parameter)
 	{
-		parameter.ConfigureWebJobs(x => x.AddAzureStorageBlobs().AddServiceBus(_bus))
-		         .ConfigureServices(x => x.AddSingleton<INameResolver, NameResolver>());
+		parameter.ConfigureServices(x => x.AddSingleton<INameResolver, NameResolver>())
+		         .ConfigureWebJobs(x => x.AddAzureStorageBlobs().AddServiceBus(_bus));
 	}
 }
