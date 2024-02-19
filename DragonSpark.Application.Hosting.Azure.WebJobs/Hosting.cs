@@ -1,5 +1,7 @@
 ﻿using DragonSpark.Model.Commands;
+using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.ServiceBus;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 
@@ -13,6 +15,7 @@ sealed class Hosting : ICommand<IHostBuilder>
 
 	public void Execute(IHostBuilder parameter)
 	{
-		parameter.ConfigureWebJobs(x => x.AddAzureStorageBlobs().AddServiceBus(_bus));
+		parameter.ConfigureWebJobs(x => x.AddAzureStorageBlobs().AddServiceBus(_bus))
+		         .ConfigureServices(x => x.AddSingleton<INameResolver, NameResolver>());
 	}
 }

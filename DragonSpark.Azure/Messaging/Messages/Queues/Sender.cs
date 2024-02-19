@@ -14,7 +14,7 @@ public class Sender : ISender
 		: this(client, name, configuration.Audience) {}
 
 	protected Sender(ServiceBusClient client, string name, string? audience)
-		: this(client.CreateSender(name), new CreateMessage(audience)) {}
+		: this(client.CreateSender($"{name}{audience}"), CreateMessage.Default) {}
 
 	protected Sender(ServiceBusSender instance, ISelect<MessageInput, ServiceBusMessage> create)
 	{

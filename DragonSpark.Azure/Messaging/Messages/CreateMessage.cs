@@ -6,16 +6,13 @@ namespace DragonSpark.Azure.Messaging.Messages;
 
 sealed class CreateMessage : ISelect<MessageInput, ServiceBusMessage>
 {
-	readonly string? _audience;
-	readonly ITime   _time;
+	public static CreateMessage Default { get; } = new();
 
-	public CreateMessage(string? audience) : this(audience, Time.Default) {}
+	CreateMessage() : this(Time.Default) {}
 
-	public CreateMessage(string? audience, ITime time)
-	{
-		_audience = audience;
-		_time     = time;
-	}
+	readonly ITime _time;
+
+	public CreateMessage(ITime time) => _time = time;
 
 	public ServiceBusMessage Get(MessageInput parameter)
 	{
@@ -30,11 +27,6 @@ sealed class CreateMessage : ISelect<MessageInput, ServiceBusMessage>
 		if (life is not null)
 		{
 			result.TimeToLive = life.Value;
-		}
-
-		if (_audience is not null)
-		{
-			result.ApplicationProperties[IntendedAudience.Default] = _audience;
 		}
 
 		return result;
