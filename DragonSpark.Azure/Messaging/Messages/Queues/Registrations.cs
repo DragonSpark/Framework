@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Azure.Messaging.Messages.Queues;
 
-public sealed class Registrations : ICommand<IServiceCollection>
+sealed class Registrations : ICommand<IServiceCollection>
 {
 	public static Registrations Default { get; } = new();
 
