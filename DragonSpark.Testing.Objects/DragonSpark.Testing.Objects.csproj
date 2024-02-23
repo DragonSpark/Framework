@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-	  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="8.0.1" />
-	  <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" Version="8.0.1" />
-    <PackageReference Include="AutoBogus.Conventions" Version="2.13.1" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" />
+    <PackageReference Include="AutoBogus.Conventions" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DragonSpark.Application.Hosting.xUnit\DragonSpark.Application.Hosting.xUnit.csproj" />

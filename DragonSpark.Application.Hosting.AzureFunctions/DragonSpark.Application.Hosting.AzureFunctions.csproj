@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
     <!--<PackageReference Include="Microsoft.NET.Sdk.Functions" Version="1.0.13" />-->
-    <PackageReference Include="Serilog.Sinks.AzureWebJobsTraceWriter-preview" Version="2.0.3-alpha" />
+    <PackageReference Include="Serilog.Sinks.AzureWebJobsTraceWriter-preview" />
   </ItemGroup>
 
   <ItemGroup>

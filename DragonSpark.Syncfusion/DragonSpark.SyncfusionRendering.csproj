@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+<Project Sdk="Microsoft.NET.Sdk.Razor">
   <ItemGroup>
     <Compile Remove="Components\ClipMode.cs" />
     <Compile Remove="Components\ComboBoxTemplates.cs" />
@@ -17,7 +17,7 @@
 	<FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
   <ItemGroup>
-	  <PackageReference Include="Syncfusion.Blazor" Version="24.1.47" />
+	  <PackageReference Include="Syncfusion.Blazor" />
   </ItemGroup>
   <ItemGroup>
 	<ProjectReference Include="..\DragonSpark.Presentation\DragonSpark.Presentation.csproj" />

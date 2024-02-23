@@ -1,8 +1,8 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
     <ProjectReference Include="..\DragonSpark.Application\DragonSpark.Application.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="SendGrid.Extensions.DependencyInjection" Version="1.0.1" />
+    <PackageReference Include="SendGrid.Extensions.DependencyInjection" />
   </ItemGroup>
 </Project>

@@ -1,4 +1,4 @@
-﻿<Project>
+<Project>
   <PropertyGroup>
 	<TargetFramework>net8.0</TargetFramework>
 	<LangVersion>latest</LangVersion>
@@ -8,7 +8,7 @@
 	<DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>	
 	 <GitVersionBaseDirectory>$(MSBuildThisFileDirectory)</GitVersionBaseDirectory>
 	 <Company>DragonSpark Technologies Incorporated</Company>
-	 <Copyright>Copyright &#169; 2022 DragonSpark Technologies Incorporated</Copyright>
+	 <Copyright>Copyright © 2024 DragonSpark Technologies Incorporated</Copyright>
 	 <Trademark>DragonSpark Technologies Incorporated</Trademark>
 	  <AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
   </PropertyGroup>
@@ -18,10 +18,5 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'!='Debug|AnyCPU'">
     <NoWarn>$(NoWarn);CS8669;BL0007;EF1001</NoWarn>
   </PropertyGroup>
-	<ItemGroup Condition="'$(Configuration)'=='Release'">
-		<PackageReference Include="Nerdbank.GitVersioning"
-                    Version="3.4.255"
-                    PrivateAssets="all"
-                    Condition="!Exists('packages.config')" />
-	</ItemGroup>	
+	
 </Project>
