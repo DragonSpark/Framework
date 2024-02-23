@@ -35,7 +35,7 @@ sealed class TestInvoker : XunitTestInvoker
 	{
 		try
 		{
-			return GetTaskFromResult(base.CallTestMethod(instance));
+			return AsyncUtility.TryConvertToTask(base.CallTestMethod(instance));
 		}
 		catch (Exception e)
 		{
