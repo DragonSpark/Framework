@@ -98,6 +98,5 @@
   </ItemGroup>
   <ItemGroup>
     <GlobalPackageReference Include="Nerdbank.GitVersioning" Version="3.6.133" Condition="'$(Configuration)'=='Release'" />
-	<GlobalPackageReference Include="ReferenceTrimmer" Version="3.2.4" />
   </ItemGroup>
 </Project>
