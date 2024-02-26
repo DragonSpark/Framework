@@ -48,7 +48,7 @@ public static partial class Extensions
 		=> @this.Append(EnvironmentalStorageConfiguration.Default);
 
 	public static StorageConfigurationBuilder WithModel(this StorageConfigurationBuilder @this, IModel model)
-		=> @this.Append(new RuntimeModelConfiguration(new ThreadAwareModel(model)));
+		=> @this.Append(new RuntimeModelConfiguration(model));
 
 	/**/
 
