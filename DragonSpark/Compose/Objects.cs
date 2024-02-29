@@ -180,6 +180,8 @@ public static partial class ExtensionMethods
 
 	public static decimal Currency(this in decimal @this) => Math.Floor(@this * 100) / 100;
 
+	public static decimal CurrencyAlternate(this in decimal @this) => Math.Ceiling(@this * 100) / 100;
+
 	public static double Expand(this in float @this) => @this;
 
 	public static decimal Expand(this in double @this) => (decimal)@this;
