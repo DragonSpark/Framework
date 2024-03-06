@@ -102,6 +102,7 @@
     {
         _stored = _current = Value;
         _active.Up();
+        _focus.Up();
         return OnFocus.InvokeAsync(parameter);
     }
 
@@ -142,10 +143,10 @@
     Task KeyDown(KeyboardEventArgs parameter)
     {
         _timer.Stop();
+        _focus.Up();
         switch (parameter.Key)
         {
             case "Enter":
-                _focus.Up();
                 return OnCommit(_current);
         }
         return OnKeyDown.InvokeAsync(parameter);
@@ -167,9 +168,9 @@
     async Task EndEdit()
     {
         await Commit();
-        await Task.Delay(250);
         if (_focus.Down())
         {
+            await Task.Delay(250);
             await Focus.FocusElementAsync(RefBack.Current).ConfigureAwait(false);
         }
     }
