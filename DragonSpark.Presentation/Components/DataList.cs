@@ -59,6 +59,7 @@ public class DataList<T> : RadzenDataList<T>, IRefreshAware
 			var page = Math.Min(CurrentPage, Math.Max(0, (int)(Math.Ceiling((double)Count / PageSize) - 1)));
 			if (_pageIndex != page)
 			{
+				_reload?.Execute();
 				await PageIndexChanged.InvokeAsync(_pageIndex = page).ConfigureAwait(false);
 			}
 		}
