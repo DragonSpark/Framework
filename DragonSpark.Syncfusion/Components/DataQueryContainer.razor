@@ -3,6 +3,7 @@
 @using DragonSpark.Application.Entities.Queries.Runtime.Pagination
 @using DragonSpark.Application.Entities.Queries.Runtime.Shape
 @using DragonSpark.Application.Runtime.Operations
+@using DragonSpark.Compose
 @using DragonSpark.Model.Selection.Conditions
 @using DragonSpark.Presentation.Components
 @using DragonSpark.Presentation.Components.Content.Templates
@@ -63,24 +64,43 @@
 </DragonSpark.Presentation.Components.State.ActivityReceiverContainer>
 
 @code {
+    string           _identity  = string.Empty, _identifier = string.Empty;
+    Model.Results.Switch _update = new(true);
+    DataQueryGrid<T>?    _subject;
 
-	DataQueryGrid<T>? _subject;
-
-	protected override void OnInitialized()
-	{
-		base.OnInitialized();
-		_identity = $"{GenerateElementIdentifier.Default.Get(Id)}{Qualifier}";
-	}
-
-	[Parameter]
-	public Guid Id { get; set; }
-
-	string _identity = string.Empty;
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _identifier = GenerateElementIdentifier.Default.Get(Id);
+    }
 
     [Parameter]
-	public string Qualifier { get; set; } = string.Empty;
+    public Guid Id { get; set; }
 
-	[Parameter]
+    [Parameter]
+    public string Qualifier 
+    {
+        get => _qualifier;
+        set
+        {
+            if (_qualifier != value)
+            {
+                _qualifier = value;
+                _update.Up();
+            }
+        }
+    }	string _qualifier = default!;
+
+    protected override void OnParametersSet()
+    {
+        if (_update.Down())
+        {
+            _identity = $"{_identifier}{Qualifier}";
+        }
+        base.OnParametersSet();
+    }
+
+    [Parameter]
 	public IQueries<T> Content {get; set; } = default!;
 
 	[Parameter]

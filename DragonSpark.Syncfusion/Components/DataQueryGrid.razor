@@ -116,9 +116,11 @@
     protected override Await<DataManagerRequest, object> CreateInput()
     {
         var body = new StateAwareDataRequest(Content, _store, _active);
-        var next = new MemoryAwareDataRequest(body, Memory, Key.Get(this));
+        var next = new MemoryAwareDataRequest(body, Memory, DetermineKey);
         return next.Then().Then().Handle(EmptyDataResult.Default.Get());
     }
+
+    string DetermineKey() => $"{Id}_{Key.Get(this)}";
 
     void OnDataBound()
     {

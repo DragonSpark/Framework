@@ -9,7 +9,7 @@ namespace DragonSpark.SyncfusionRendering.Components;
 public sealed class MemoryAwareRequests : IRequests
 {
 	readonly MemoryStoreProfile<DataManagerRequest> _profile;
-	
+
 	public MemoryAwareRequests(IMemoryCache memory, TimeSpan @for, string key)
 		: this(new(memory, @for, new RequestKey(key).Get)) {}
 
