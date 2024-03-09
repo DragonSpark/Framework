@@ -4,6 +4,7 @@
 @using DragonSpark.Application.Runtime.Operations
 @using DragonSpark.Model.Selection.Conditions
 @using DragonSpark.Presentation.Components.Content.Sequences
+@using DragonSpark.Presentation.Components.Content.Templates
 
 @typeparam T
 
@@ -25,7 +26,7 @@
 		Content="@context"
 		Reporter="@Reporter"
 		ChildContent="@ChildContent"
-		LoadingTemplate="@LoadingTemplate"
+        LoadingTemplate="@EmptyContentTemplate.Default"
 		ExceptionTemplate="@ExceptionTemplate"
 		NotFoundTemplate="@NotFoundTemplate"
 	/>

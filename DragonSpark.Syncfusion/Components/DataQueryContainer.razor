@@ -6,7 +6,6 @@
 @using DragonSpark.Compose
 @using DragonSpark.Model.Selection.Conditions
 @using DragonSpark.Presentation.Components
-@using DragonSpark.Presentation.Components.Content.Templates
 @using DragonSpark.SyncfusionRendering.Entities
 @using DragonSpark.SyncfusionRendering.Queries
 @using Syncfusion.Blazor.Grids
@@ -17,7 +16,7 @@
 
 <DragonSpark.Presentation.Components.State.ActivityReceiverContainer Context="_">
 	<SyncfusionQueryContainer T="T" Content="@Content" Compose="@Compose" Results="@Results" Reporter="@Reporter"
-							  LoadingTemplate="@EmptyContentTemplate.Default"
+							  LoadingTemplate="@LoadingTemplate"
 							  EmptyElementsTemplate="@EmptyElementsTemplate"
 							  NotFoundTemplate="@NotFoundTemplate"
 							  ExceptionTemplate="@ExceptionTemplate"
