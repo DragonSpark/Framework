@@ -51,14 +51,13 @@
 </AdaptiveGrid>
 
 @code {
-    readonly Model.Results.Switch _refresh = new(), _active = new(true);
+    readonly Model.Results.Switch _refresh = new(), _active = new(true), _update = new(true);
 
     GridStateVariable _store = null!;
     AdaptiveGrid<T>? _subject;
 
     protected override void OnInitialized()
     {
-        _store = new GridStateVariable(Id, Session);
         EmptyTemplate = LoadingTemplate.Accept;
         base.OnInitialized();
     }
@@ -71,7 +70,18 @@
     public Task Export() => _subject?.Export() ?? Task.CompletedTask;
 
     [Parameter]
-    public string Id { get; set; } = string.Empty;
+    public string Id
+    {
+        get => _id;
+        set
+        {
+            if (_id != value)
+            {
+                _id = value;
+                _update.Up();
+            }
+        }
+    }	string _id = string.Empty;
 
     [Parameter]
     public FilterType FilterType { get; set; } = FilterType.Excel;
@@ -150,6 +160,14 @@
     {
         _refresh.Down();
         return base.OnRequest(parameter);
+    }
+    protected override void OnParametersSet()
+    {
+        if (_update.Down())
+        {
+            _store = new(Id, Session);
+        }
+        base.OnParametersSet();
     }
 
 }

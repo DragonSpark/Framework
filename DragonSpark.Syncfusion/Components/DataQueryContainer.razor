@@ -63,9 +63,9 @@
 </DragonSpark.Presentation.Components.State.ActivityReceiverContainer>
 
 @code {
-    string           _identity  = string.Empty, _identifier = string.Empty;
-    Model.Results.Switch _update = new(true);
-    DataQueryGrid<T>?    _subject;
+    readonly Model.Results.Switch _update   = new(true);
+    string                        _identity = string.Empty, _identifier = string.Empty;
+    DataQueryGrid<T>?             _subject;
 
     protected override void OnInitialized()
     {
