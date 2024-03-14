@@ -22,6 +22,9 @@ public sealed class BuildHostContext : ISelecting<HostBuilder, IHost>, IActivate
 
 	public BuildHostContext WithEnvironment(string name) => Select(new ConfigureEnvironment(name));
 
+	public BuildHostContext Configure(Action<IHostBuilder> configuration)
+		=> Configure(Start.A.Command<IHostBuilder>().By.Calling(configuration).Get());
+
 	public BuildHostContext Configure(ICommand<IHostBuilder> configuration)
 		=> Select(configuration.Then().ToConfiguration().Out());
 

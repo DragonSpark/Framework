@@ -48,7 +48,7 @@
     <PackageVersion Include="LinqKit.Microsoft.EntityFrameworkCore" Version="8.1.5" />
     <PackageVersion Include="Majorsoft.Blazor.Components.Common.JsInterop" Version="1.5.0" />
     <PackageVersion Include="Majorsoft.Blazor.Components.Debounce" Version="1.5.0" />
-    <PackageVersion Include="Markdig" Version="0.35.0" />
+    <PackageVersion Include="Markdig" Version="0.36.0" />
     <PackageVersion Include="MatBlazor" Version="2.10.0" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.Facebook" Version="8.0.3" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.Google" Version="8.0.3" />
