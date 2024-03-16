@@ -13,7 +13,6 @@ sealed class ApplicationConfiguration : ICommand<IApplicationBuilder>
 
 	public void Execute(IApplicationBuilder parameter)
 	{
-		parameter.ApplicationServices.GetRequiredService<Initializer>()
-		         .Execute();
+		parameter.ApplicationServices.GetRequiredService<Initializer>().Execute();
 	}
 }

@@ -1,0 +1,40 @@
+﻿@using DragonSpark.Application.Entities.Queries.Runtime.Pagination
+@using DragonSpark.Compose
+@using DragonSpark.Model.Results
+@typeparam T
+
+@ChildContent(_subject)
+
+@code {
+    readonly Switch _update = new();
+
+    [Parameter]
+    public IPages<T> Input
+    {
+        get => _input;
+        set
+        {
+            if (_input != value)
+            {
+                _input = value;
+                _update.Up();
+            }
+        }
+    }	IPages<T> _input = default!, _subject = default!;
+
+    [Parameter]
+    public RenderFragment<IPages<T>> ChildContent { get; set; } = default!;
+
+    [CascadingParameter]
+    IPageContainer<T> Container { get; set; } = default!;
+
+    protected override void OnParametersSet()
+    {
+        if (_update.Down())
+        {
+            _subject = new ContainerAwarePages<T>(Container, Input);
+        }
+        base.OnParametersSet();
+    }
+
+}

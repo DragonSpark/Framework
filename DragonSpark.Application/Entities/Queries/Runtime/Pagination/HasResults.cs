@@ -2,11 +2,11 @@
 
 namespace DragonSpark.Application.Entities.Queries.Runtime.Pagination;
 
-public sealed class HasResults<T> : ICondition<IPages<T>>
+public sealed class HasResults : ICondition<bool?>
 {
-	public static HasResults<T> Default { get; } = new();
+	public static HasResults Default { get; } = new();
 
 	HasResults() {}
 
-	public bool Get(IPages<T> parameter) => parameter.HasResults();
+	public bool Get(bool? parameter) => parameter is null || parameter.Value;
 }

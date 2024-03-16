@@ -19,7 +19,7 @@
 <DragonSpark.Presentation.Components.State.ActivityReceiverContainer Context="receiver">
         <DragonSpark.SyncfusionRendering.Components.DataQueryContainer
             T="T" Id="@Id" Content="@Content"
-            Compose="@Compose" Reporter="@Reporter" Results="@(Is.Always<IPages<T>>().Out())"
+            Compose="@Compose" Reporter="@Reporter" Results="@(Is.Always<bool?>().Out())"
             ReportedType="@ReportedType" FilterType="@FilterType" Columns="@Columns" BodyHeaderTemplate="@BodyHeaderTemplate"
             BodyFooterTemplate="@BodyFooterTemplate"
             AllowSelection="true"

@@ -1,5 +1,5 @@
-﻿using DragonSpark.Model.Operations.Selection;
+﻿using DragonSpark.Model.Selection.Alterations;
 
 namespace DragonSpark.Application.Entities.Queries.Runtime.Pagination;
 
-public interface IPagination<T> : ISelecting<PagingInput<T>, IPages<T>>;
+public interface IPagination<T> : IAlteration<IPages<T>>;

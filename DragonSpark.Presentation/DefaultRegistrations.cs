@@ -19,6 +19,7 @@ using DragonSpark.Presentation.Security.Identity;
 using Majorsoft.Blazor.Components.Common.JsInterop;
 using Microsoft.Extensions.DependencyInjection;
 using Radzen;
+using MediaQueryService = DragonSpark.Presentation.Components.Interaction.MediaQueryService;
 
 namespace DragonSpark.Presentation;
 
@@ -47,8 +48,8 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Start<IEventAggregator>()
 		         .Forward<EventAggregator>()
 		         .Scoped()
-				 //
-				 .Then.Start<RenderStateMonitor>()
+		         //
+		         .Then.Start<RenderStateMonitor>()
 		         .Include(x => x.Dependencies.Recursive())
 		         .Scoped()
 		         //
@@ -73,10 +74,6 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Then.ForDefinition<RenderStateAwarePagingContents<object>>()
 		         .Include(x => x.Dependencies)
 		         .Scoped()
-		         .Then.ForDefinition<RenderStateAwareAnyContents<object>>()
-		         .Include(x => x.Dependencies)
-		         .Scoped()
-		         //
 		         .Then.Start<IContentKey>()
 		         .Forward<ContentKey>()
 		         .Decorate<StoreAwareContentKey>()
@@ -112,7 +109,7 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Then.Start<IEstablishContext>()
 		         .Forward<EstablishContext>()
 		         // .Decorate<ReferrerAwareInitializeContext>()
-				 .Decorate<ApplicationAgentAwareEstablishContext>()
+		         .Decorate<ApplicationAgentAwareEstablishContext>()
 		         .Include(x => x.Dependencies)
 		         .Scoped()
 		         //
@@ -140,6 +137,9 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         //
 		         .Then.AddJsInteropExtensions()
 		         .AddMediaQueryService()
+		         .Start<IMediaQueryService>()
+		         .Forward<MediaQueryService>()
+		         .Scoped()
 			;
 	}
 }

@@ -29,31 +29,31 @@
 			@BodyHeaderTemplate
 		}
 
-			<DataQueryGrid T="T" @ref="_subject" Content="context"
-					       Id="@_identity"
-						   FilterType="@FilterType"
-						   ReportedType="@ReportedType"
-						   Columns="@Columns"
-						   AllowSelection="@AllowSelection"
-						   AllowPaging="@AllowPaging"
-						   AllowFiltering="@AllowFiltering"
-						   AllowSorting="@AllowSorting"
-                           AllowExport="@AllowExport"
-						   LoadingTemplate="@LoadingTemplate"
-                           DesktopToolbar="@DesktopToolbar"
-                           MobileToolbar="@MobileToolbar"
-						   CssClass="@CssClass"
-						   Breakpoint="@Breakpoint"
-						   PageSize="@PageSize"
-						   Editing="@Editing"
-						   Created="@Created"
-						   Updated="@Updated"
-						   @attributes="@AdditionalAttributes">
-				@if (BodyContentTemplate is not null)
-				{
-					@BodyContentTemplate
-				}
-			</DataQueryGrid>
+		<DataQueryGrid T="T" @ref="_subject" Content="context"
+					   Id="@_identity"
+					   FilterType="@FilterType"
+					   ReportedType="@ReportedType"
+					   Columns="@Columns"
+					   AllowSelection="@AllowSelection"
+					   AllowPaging="@AllowPaging"
+					   AllowFiltering="@AllowFiltering"
+					   AllowSorting="@AllowSorting"
+                       AllowExport="@AllowExport"
+					   LoadingTemplate="@LoadingTemplate"
+                       DesktopToolbar="@DesktopToolbar"
+                       MobileToolbar="@MobileToolbar"
+					   CssClass="@CssClass"
+					   Breakpoint="@Breakpoint"
+					   PageSize="@PageSize"
+					   Editing="@Editing"
+					   Created="@Created"
+					   Updated="@Updated"
+					   @attributes="@AdditionalAttributes">
+			@if (BodyContentTemplate is not null)
+			{
+				@BodyContentTemplate
+			}
+		</DataQueryGrid>
 
 		@if (BodyFooterTemplate is not null)
 		{
@@ -77,7 +77,7 @@
     public Guid Id { get; set; }
 
     [Parameter]
-    public string Qualifier 
+    public string Qualifier
     {
         get => _qualifier;
         set
@@ -106,7 +106,7 @@
 	public ICompose<T> Compose { get; set; } = SyncfusionCompose<T>.Default;
 
     [Parameter]
-    public ICondition<IPages<T>> Results { get; set; } = HasResults<T>.Default;
+    public ICondition<bool?> Results { get; set; } = HasResults.Default;
 
 	[Parameter]
 	public IReporter<IDataRequest>? Reporter { get; set; } = Queries.Reporter.Default;

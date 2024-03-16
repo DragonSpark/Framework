@@ -41,14 +41,13 @@
 	public ICompose<T> Compose { get; set; } = SyncfusionCompose<T>.Default;
 
     [Parameter]
-    public ICondition<IPages<T>> Results { get; set; } = HasResults<T>.Default;
+    public ICondition<bool?> Results { get; set; } = HasResults.Default;
 
 	[Parameter]
 	public IReporter<IDataRequest>? Reporter { get; set; } = Queries.Reporter.Default;
 
 	[Parameter]
 	public Type? ReportedType { get; set; }
-
 
 	[Parameter]
 	public RenderFragment<IPages<T>>? HeaderTemplate { get; set; }

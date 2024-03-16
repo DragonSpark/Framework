@@ -1,17 +1,19 @@
 ﻿using DragonSpark.Application.Entities.Queries.Runtime;
 using DragonSpark.Application.Entities.Queries.Runtime.Pagination;
 using DragonSpark.Application.Entities.Queries.Runtime.Shape;
-using DragonSpark.Compose;
-using DragonSpark.Model.Operations.Results;
-using DragonSpark.Model.Selection;
+using DragonSpark.Model.Commands;
+using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection.Conditions;
 using Microsoft.AspNetCore.Components;
 using System;
 
 namespace DragonSpark.Presentation.Components.Content.Sequences;
 
-partial class QueryContentContainer<T> : IReportedTypeAware, IAnyComposer<T>
+partial class QueryContentContainer<T> : IReportedTypeAware, IPageContainer<T>
 {
+	bool?                       _results;
+	readonly IMutable<Page<T>?> _current = new CurrentPage<T>();
+
 	[Parameter]
 	public IQueries<T>? Content
 	{
@@ -22,6 +24,7 @@ partial class QueryContentContainer<T> : IReportedTypeAware, IAnyComposer<T>
 			{
 				_content = value;
 				Subject  = null;
+				_results = null;
 			}
 		}
 	}	IQueries<T>? _content;
@@ -41,10 +44,7 @@ partial class QueryContentContainer<T> : IReportedTypeAware, IAnyComposer<T>
 	}	ICompose<T> _compose = DefaultCompose<T>.Default;
 
 	[Parameter]
-	public ICondition<IPages<T>> Results { get; set; } = HasResults<T>.Default;
-
-	[Parameter]
-	public IAnyComposer<T>? Any { get; set; }
+	public ICondition<bool?> Results { get; set; } = HasResults.Default;
 
 	[Parameter]
 	public Type? ReportedType { get; set; }
@@ -56,28 +56,28 @@ partial class QueryContentContainer<T> : IReportedTypeAware, IAnyComposer<T>
 	public RenderFragment<IPages<T>>? FooterTemplate { get; set; }
 
 	[Parameter]
-	public IPaginationComposer<T>? Pagination { get; set; }
+	public IPagination<T>? Pagination { get; set; }
 
-	IResulting<IPages<T>>? Subject { get; set; }
+	IPages<T>? Subject { get; set; }
 
 	protected override void OnParametersSet()
 	{
 		base.OnParametersSet();
-		Subject ??= DetermineSubject();
+		Subject ??= Content is not null ? DetermineSubject(Content) : EmptyPages<T>.Default;
 	}
 
-	IResulting<IPages<T>> DetermineSubject()
+	IPages<T> DetermineSubject(IQueries<T> parameter)
 	{
-		if (Content != null)
-		{
-			var start = DefaultPagination.Then().Bind(new PagingInput<T>(this, Content, Compose)).Out();
-			return Pagination?.Get(start) ?? start;
-		}
-		return EmptyPaging<T>.Default;
+		var start = Paging.Get(new(this, parameter, Compose));
+		return Pagination?.Get(start) ?? start;
 	}
-
 
 	public Type Get() => ReportedType ?? GetType();
 
-	IAny<T>? ISelect<IAny<T>, IAny<T>?>.Get(IAny<T> parameter) => Any?.Get(parameter);
+	void ICommand<Page<T>>.Execute(Page<T> parameter)
+	{
+		_results ??= parameter.Total is > 0;
+		_current.Execute(parameter);
+		StateHasChanged();
+	}
 }
