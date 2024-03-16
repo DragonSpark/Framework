@@ -10,5 +10,5 @@ sealed class ToFirstOrDefault<T> : IEvaluate<T, T?>
 
 	ToFirstOrDefault() {}
 
-	public ValueTask<T?> Get(IAsyncEnumerable<T> parameter) => parameter.FirstOrDefaultAsync();
+	public ValueTask<T?> Get(IAsyncEnumerable<T> parameter) => parameter.Take(1).FirstOrDefaultAsync();
 }
