@@ -1,5 +1,7 @@
-﻿using DragonSpark.Application.Entities.Queries.Compiled;
+﻿using DragonSpark.Application.Entities;
+using DragonSpark.Application.Entities.Queries.Compiled;
 using DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
+using DragonSpark.Application.Entities.Queries.Composition;
 using DragonSpark.Model.Operations.Selection;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Model.Sequences.Memory;
@@ -10,9 +12,19 @@ namespace DragonSpark.Application.Compose.Entities.Queries;
 
 public sealed class QueryInvocationComposer<TIn, T>
 {
+	readonly IScopes          _scopes;
+	readonly IQuery<TIn, T>   _query;
 	readonly IReading<TIn, T> _subject;
 
-	public QueryInvocationComposer(IReading<TIn, T> subject) => _subject = subject;
+	public QueryInvocationComposer(IScopes scopes, IQuery<TIn, T> query)
+		: this(scopes, query, new Reading<TIn, T>(scopes, query.Get())) {}
+
+	public QueryInvocationComposer(IScopes scopes, IQuery<TIn, T> query, IReading<TIn, T> subject)
+	{
+		_scopes  = scopes;
+		_query   = query;
+		_subject = subject;
+	}
 
 	public ISelecting<TIn, Array<T>> Array() => new Evaluate<TIn, T, Array<T>>(_subject, ToArray<T>.Default);
 
@@ -28,13 +40,13 @@ public sealed class QueryInvocationComposer<TIn, T>
 		where TKey : notnull
 		=> new Evaluate<TIn, T, Dictionary<TKey, TValue>>(_subject, new ToDictionary<T, TKey, TValue>(key, value));
 
-	public ISelecting<TIn, T> Single() => new Evaluate<TIn, T, T>(_subject, ToSingle<T>.Default);
+	public ISelecting<TIn, T> Single() => new EvaluateToSingle<TIn, T>(_scopes, _query.Get());
 
-	public ISelecting<TIn, T?> SingleOrDefault() => new Evaluate<TIn, T, T?>(_subject, ToSingleOrDefault<T>.Default);
+	public ISelecting<TIn, T?> SingleOrDefault() => new EvaluateToSingleOrDefault<TIn, T>(_scopes, _query.Get());
 
-	public ISelecting<TIn, T> First() => new Evaluate<TIn, T, T>(_subject, ToFirst<T>.Default);
+	public ISelecting<TIn, T> First() => new EvaluateToFirst<TIn, T>(_scopes, _query.Get());
 
-	public ISelecting<TIn, T?> FirstOrDefault() => new Evaluate<TIn, T, T?>(_subject, ToFirstOrDefault<T>.Default);
+	public ISelecting<TIn, T?> FirstOrDefault() => new EvaluateToFirstOrDefault<TIn, T>(_scopes, _query.Get());
 
-	public ISelecting<TIn, bool> Any() => new Evaluate<TIn, T, bool>(_subject, ToAny<T>.Default);
+	public ISelecting<TIn, bool> Any() => new EvaluateToAny<TIn, T>(_scopes, _query.Get());
 }

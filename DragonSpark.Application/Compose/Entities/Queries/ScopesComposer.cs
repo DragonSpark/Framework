@@ -16,7 +16,7 @@ public sealed class ScopesComposer<TIn, T> : IResult<IReading<TIn, T>>
 		_query  = query;
 	}
 
-	public QueryInvocationComposer<TIn, T> To => new(Get());
+	public QueryInvocationComposer<TIn, T> To => new(_scopes, _query);
 
 	public EditInvocationComposer<TIn, T> Edit => new(Get());
 
