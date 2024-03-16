@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Model;
+using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -20,7 +21,7 @@ public class EvaluateToFirst<T> : EvaluateToFirst<None, T>
 public class EvaluateToFirst<TIn, T> : Evaluate<TIn, T, T>
 {
 	protected EvaluateToFirst(IScopes scopes, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
-		: this(new Reading<TIn, T>(scopes, expression)) {}
+		: this(new Reading<TIn, T>(scopes, (d, @in) => expression.Invoke(d, @in).Take(1))) {}
 
 	protected EvaluateToFirst(IReading<TIn, T> reading) : base(reading, ToFirst<T>.Default) {}
 }

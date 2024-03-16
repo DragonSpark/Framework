@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Model;
+using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
@@ -23,7 +24,7 @@ public class EvaluateToFirstOrDefault<TIn, T> : Evaluate<TIn, T, T?>
 {
 	protected EvaluateToFirstOrDefault(IScopes scopes,
 	                                   Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
-		: this(new Reading<TIn, T>(scopes, expression)) {}
+		: this(new Reading<TIn, T>(scopes, (d, @in) => expression.Invoke(d, @in).Take(1))) {}
 
 	protected EvaluateToFirstOrDefault(IReading<TIn, T> reading) : base(reading, ToFirstOrDefault<T>.Default) {}
 }
