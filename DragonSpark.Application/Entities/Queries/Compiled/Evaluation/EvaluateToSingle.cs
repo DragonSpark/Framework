@@ -21,7 +21,7 @@ public class EvaluateToSingle<T> : EvaluateToSingle<None, T>
 public class EvaluateToSingle<TIn, T> : Evaluate<TIn, T, T>
 {
 	public EvaluateToSingle(IScopes scopes, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
-		: this(new Reading<TIn, T>(scopes, (d, @in) => expression.Invoke(d, @in).Take(2))) {}
+		: this(new Reading<TIn, T>(scopes, (d, @in) => expression.Invoke(d, @in))) {}
 
 	protected EvaluateToSingle(IReading<TIn, T> reading) : base(reading, ToSingle<T>.Default) {}
 }
