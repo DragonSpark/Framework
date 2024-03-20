@@ -4,7 +4,12 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Editing;
 
-sealed class CommitAwareEdits<TIn, T> : IEdit<TIn, T>
+public class CommitAwareEdits<T> : CommitAwareEdits<T, T>
+{
+	protected CommitAwareEdits(IScopes scopes) : base(scopes, Start.A.Selection<T>().By.Self.Operation().Out()) {}
+}
+
+public class CommitAwareEdits<TIn, T> : IEdit<TIn, T>
 {
 	readonly IScopes            _scopes;
 	readonly ISelecting<TIn, T> _select;
