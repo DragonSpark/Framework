@@ -64,6 +64,7 @@
 
     protected override async Task OnRequest(DataRequestResult parameter)
     {
+        parameter.Request.RequiresCounts = true;
         await base.OnRequest(parameter);
         await Requested.InvokeAsync(parameter).ConfigureAwait(false);
     }
