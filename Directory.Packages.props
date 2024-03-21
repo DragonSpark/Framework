@@ -73,7 +73,7 @@
     <PackageVersion Include="MockQueryable.Moq" Version="7.0.1" />
     <PackageVersion Include="NetFabric.Hyperlinq" Version="3.0.0-beta48" />
     <PackageVersion Include="Polly" Version="8.3.1" />
-    <PackageVersion Include="Radzen.Blazor" Version="4.28.3" />
+    <PackageVersion Include="Radzen.Blazor" Version="4.28.4" />
     <PackageVersion Include="Scrutor" Version="4.2.2" />
     <PackageVersion Include="SendGrid.Extensions.DependencyInjection" Version="1.0.1" />
     <PackageVersion Include="Seq.Extensions.Logging" Version="8.0.0" />
