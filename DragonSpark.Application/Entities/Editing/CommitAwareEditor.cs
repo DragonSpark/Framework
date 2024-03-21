@@ -40,11 +40,6 @@ sealed class CommitAwareEditor : IEditor
 		_previous.Attach(entity);
 	}
 
-	public void Detach(object entity)
-	{
-		_previous.Detach(entity);
-	}
-
 	public void Update(object entity)
 	{
 		_previous.Update(entity);

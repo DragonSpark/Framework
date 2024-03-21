@@ -1,9 +1,7 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using DragonSpark.Reflection.Members;
-using DragonSpark.Reflection.Types;
 using DragonSpark.Runtime.Invocation.Expressions;
-using System;
 using System.Reflection;
 
 namespace DragonSpark.Runtime.Activation;
@@ -31,18 +29,5 @@ public sealed class New<T> : FixedActivator<T>
 {
 	public static New<T> Default { get; } = new();
 
-	New() : base(ActivateNew<T>.Default.Get) {}
-}
-
-// TODO
-
-public sealed class ActivateNew<T> : Select<Type, T>
-{
-	public static ActivateNew<T> Default { get; } = new();
-
-	ActivateNew() : base(Start.A.Selection(TypeMetadata.Default)
-	                          .Select(ConstructorLocator.Default)
-	                          .Select(Constructors<T>.Default)
-	                          .Then()
-	                          .Invoke()) {}
+	New() : base(NewInstance<T>.Default.Get) {}
 }

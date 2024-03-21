@@ -28,35 +28,3 @@ public class EditExisting<T> : IEdit<T> where T : class
 		return new(editor, parameter);
 	}
 }
-
-/*
-// TODO
-
-public class ModifyExisting<T> : IOperation<T>
-{
-	readonly IEdit<T>            _edit;
-	readonly IOperation<Edit<T>> _modify;
-
-	protected ModifyExisting(IEdit<T> edit, ICommand<Edit<T>> modify) : this(edit, modify.Then().Operation().Out()) {}
-
-	protected ModifyExisting(IEdit<T> edit, ICommand<T> modify)
-		: this(edit, Start.A.Selection<Edit<T>>().By.Calling(x => x.Subject).Terminate(modify).Operation().Out()) {}
-
-	protected ModifyExisting(IEdit<T> edit, Action<T> modify) : this(edit, Start.A.Command(modify).Get()) {}
-
-	protected ModifyExisting(IEdit<T> edit, IOperation<T> modify)
-		: this(edit, Start.A.Selection<Edit<T>>().By.Calling(x => x.Subject).Select(modify).Out()) {}
-
-	protected ModifyExisting(IEdit<T> edit, IOperation<Edit<T>> modify)
-	{
-		_edit   = edit;
-		_modify = modify;
-	}
-
-	public async ValueTask Get(T parameter)
-	{
-		using var edit = await _edit.Await(parameter);
-		await _modify.Await(edit);
-		await edit.Await();
-	}
-}*/

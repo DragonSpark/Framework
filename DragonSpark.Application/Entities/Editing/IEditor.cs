@@ -10,8 +10,6 @@ public interface IEditor : IOperation, IDisposable
 
 	void Attach(object entity);
 
-	void Detach(object entity); // TODO: Remove
-
 	void Update(object entity);
 
 	void Remove(object entity);
