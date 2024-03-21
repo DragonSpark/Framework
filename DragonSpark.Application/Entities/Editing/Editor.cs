@@ -28,6 +28,11 @@ sealed class Editor : DragonSpark.Model.Operations.Allocated.Terminating<int>, I
 		_context.Attach(entity);
 	}
 
+	public void Detach(object entity)
+	{
+		_context.Entry(entity).State = EntityState.Detached;
+	}
+
 	public void Update(object entity)
 	{
 		_context.Update(entity);

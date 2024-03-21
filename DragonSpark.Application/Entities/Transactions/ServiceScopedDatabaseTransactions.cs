@@ -6,9 +6,9 @@ namespace DragonSpark.Application.Entities.Transactions;
 
 public sealed class ServiceScopedDatabaseTransactions : ITransactions
 {
-	readonly IScopedTransactions _boundaries;
+	readonly IServiceScopedTransactions _boundaries;
 
-	public ServiceScopedDatabaseTransactions(IScopedTransactions boundaries) => _boundaries = boundaries;
+	public ServiceScopedDatabaseTransactions(IServiceScopedTransactions boundaries) => _boundaries = boundaries;
 
 	public async ValueTask<ITransaction> Get()
 	{

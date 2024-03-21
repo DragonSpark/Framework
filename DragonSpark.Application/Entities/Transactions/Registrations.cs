@@ -12,15 +12,15 @@ sealed class Registrations : ICommand<IServiceCollection>
 
 	public void Execute(IServiceCollection parameter)
 	{
-		parameter.Start<IScopedTransactions>()
-		         .Forward<ScopedTransactions>()
+		parameter.Start<IServiceScopedTransactions>()
+		         .Forward<ServiceScopedTransactions>()
 		         .Singleton()
 		         //
 		         .Then.Start<EntityContextTransactions>()
 		         .And<ServiceScopedDatabaseTransactions>()
 		         .Singleton()
 		         //
-		         .Then.Start<ScopedEntityContextTransactions>()
+		         .Then.Start<ScopedAmbientComponentsTransaction>()
 		         .Scoped()
 			;
 	}

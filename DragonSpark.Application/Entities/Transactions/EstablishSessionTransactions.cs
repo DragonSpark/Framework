@@ -2,6 +2,6 @@
 
 public sealed class EstablishSessionTransactions : AppendedTransactions
 {
-	public EstablishSessionTransactions(SessionBoundaryTransactions first, SessionDatabaseTransactions second)
+	public EstablishSessionTransactions(SessionBoundaryTransactions first, DatabaseTransactions second)
 		: base(first, second) {}
 }

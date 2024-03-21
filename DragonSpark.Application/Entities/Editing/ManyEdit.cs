@@ -36,6 +36,11 @@ public readonly struct ManyEdit<T> : IEditor
 		_editor.Attach(entity);
 	}
 
+	public void Detach(object entity)
+	{
+		_editor.Detach(entity);
+	}
+
 	public void Update(object entity)
 	{
 		_editor.Update(entity);

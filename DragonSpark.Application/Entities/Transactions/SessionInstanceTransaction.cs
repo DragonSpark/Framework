@@ -10,8 +10,6 @@ sealed class SessionInstanceTransaction : ITransaction
 	readonly IDisposable            _instance;
 	readonly IMutable<IDisposable?> _store;
 
-	public SessionInstanceTransaction(IDisposable instance) : this(instance, AmbientLock.Default) {}
-
 	public SessionInstanceTransaction(IDisposable instance, IMutable<IDisposable?> store)
 	{
 		_instance = instance;

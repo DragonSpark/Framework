@@ -1,7 +1,5 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Model.Commands;
-using DragonSpark.Model.Operations;
-using System;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Editing;
@@ -21,7 +19,7 @@ public class EditExisting<T> : IEdit<T> where T : class
 	{
 		var (context, disposable) = _scopes.Get();
 		var editor = new Editor(context, await disposable.Await());
-		editor.Attach(parameter);
+		context.ChangeTracker.TrackGraph(parameter, x => x.Entry.State = EntityState.Unchanged);
 		if (_reload)
 		{
 			await context.Entry(parameter).ReloadAsync().ConfigureAwait(false);
@@ -31,6 +29,7 @@ public class EditExisting<T> : IEdit<T> where T : class
 	}
 }
 
+/*
 // TODO
 
 public class ModifyExisting<T> : IOperation<T>
@@ -60,4 +59,4 @@ public class ModifyExisting<T> : IOperation<T>
 		await _modify.Await(edit);
 		await edit.Await();
 	}
-}
+}*/

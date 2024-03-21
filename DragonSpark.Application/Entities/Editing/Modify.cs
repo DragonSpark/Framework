@@ -1,6 +1,8 @@
 ﻿using DragonSpark.Application.Entities.Queries.Composition;
 using DragonSpark.Compose;
+using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
+using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Editing;
@@ -16,6 +18,15 @@ public class Modify<T> : Modify<T, T>
 
 	protected Modify(IEdit<T, T> edit, Await<Edit<T>> configure) : base(edit, configure) {}
 
+	protected Modify(IEdit<T> edit, ICommand<Edit<T>> modify) : base(edit, modify) {}
+
+	protected Modify(IEdit<T> edit, ICommand<T> modify) : base(edit, modify) {}
+
+	protected Modify(IEdit<T> edit, IOperation<T> modify) : base(edit, modify) {}
+
+	protected Modify(IEdit<T> edit, IOperation<Edit<T>> modify) : base(edit, modify) {}
+
+	protected Modify(IEdit<T> edit, Action<T> modify) : this(edit, Start.A.Command(modify).Get()) {}
 }
 
 public class Modify<TIn, T> : IOperation<TIn>
@@ -37,6 +48,13 @@ public class Modify<TIn, T> : IOperation<TIn>
 	protected Modify(IEdit<TIn, T> select, Await<T> configure) : this(select, x => configure(x.Subject)) {}
 
 	protected Modify(IEdit<TIn, T> select, IOperation<Edit<T>> configure) : this(select, configure.Await) {}
+
+	protected Modify(IEdit<TIn, T> edit, ICommand<Edit<T>> modify) : this(edit, modify.Then().Operation().Out()) {}
+
+	protected Modify(IEdit<TIn, T> edit, ICommand<T> modify)
+		: this(edit, Start.A.Selection<Edit<T>>().By.Calling(x => x.Subject).Terminate(modify).Operation().Out()) {}
+
+	protected Modify(IEdit<TIn, T> edit, Action<T> modify) : this(edit, Start.A.Command(modify).Get()) {}
 
 	protected Modify(IEdit<TIn, T> select, Await<Edit<T>> configure)
 	{

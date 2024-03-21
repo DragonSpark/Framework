@@ -11,7 +11,7 @@ public sealed class AmbientProvider : IResult<IServiceProvider?>
 	AmbientProvider() : this(LogicalScope.Default, LogicalProvider.Default) {}
 
 	readonly IResult<AsyncServiceScope?> _scope;
-	readonly IResult<IServiceProvider?>   _store;
+	readonly IResult<IServiceProvider?>  _store;
 
 	public AmbientProvider(IResult<AsyncServiceScope?> scope, IResult<IServiceProvider?> store)
 	{

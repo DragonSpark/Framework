@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.Entities.Transactions;
 
-public interface IScopedTransactions : IResult<IScopedTransaction>;
+public interface IServiceScopedTransactions : IResult<IScopedTransaction>;

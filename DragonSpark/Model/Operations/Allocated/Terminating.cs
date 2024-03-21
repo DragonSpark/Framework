@@ -24,7 +24,7 @@ public class Terminating<T> : IOperation
 
 	protected Terminating(Func<Task<T>> operation) : this(operation.Start().Out()) {}
 
-	protected Terminating(AwaitOf<T> await) => _await = @await;
+	protected Terminating(AwaitOf<T> await) => _await = await;
 
 	public async ValueTask Get()
 	{

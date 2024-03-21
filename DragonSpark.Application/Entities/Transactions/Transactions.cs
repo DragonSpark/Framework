@@ -5,9 +5,9 @@ namespace DragonSpark.Application.Entities.Transactions;
 
 public sealed class Transactions : ITransactions
 {
-	readonly IScopedTransactions _transactions;
+	readonly IServiceScopedTransactions _transactions;
 
-	public Transactions(IScopedTransactions transactions) => _transactions = transactions;
+	public Transactions(IServiceScopedTransactions transactions) => _transactions = transactions;
 
 	public ValueTask<ITransaction> Get() => _transactions.Get().ToOperation<ITransaction>();
 }
