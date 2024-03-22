@@ -162,6 +162,7 @@
   </ItemGroup>
 
   <ItemGroup>
+	  <PackageReference Include="EntityFrameworkCore.Exceptions.SqlServer" />
 	  <PackageReference Include="FluentAssertions" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" />
     <PackageReference Include="xunit" />
