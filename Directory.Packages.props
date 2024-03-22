@@ -3,9 +3,6 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <CentralPackageTransitivePinningEnabled>false</CentralPackageTransitivePinningEnabled>
   </PropertyGroup>
-  <ItemGroup Condition="'$(Configuration)'=='Release'">
-    <GlobalPackageReference Include="Nerdbank.GitVersioning" Version="3.5.109" />
-  </ItemGroup>
   <ItemGroup>
     <PackageVersion Include="AspNet.Security.OAuth.Amazon" Version="8.0.0" />
     <PackageVersion Include="AspNet.Security.OAuth.Coinbase" Version="8.0.0" />
