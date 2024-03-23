@@ -1,10 +1,12 @@
 ﻿using DragonSpark.Model.Operations.Selection.Conditions;
 using DragonSpark.Model.Selection;
+using JetBrains.Annotations;
 using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Components.Validation.Expressions;
 
+[UsedImplicitly]
 public class ValidatingValue<T> : Depending<T>, IValidatingValue<T>
 {
 	protected ValidatingValue(ISelect<T, ValueTask<bool>> @select) : base(@select) {}

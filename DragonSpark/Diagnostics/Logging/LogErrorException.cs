@@ -1,9 +1,11 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Sequences;
+using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 
 namespace DragonSpark.Diagnostics.Logging;
 
+[UsedImplicitly]
 public class LogErrorException : ILogException<Array<object>>
 {
 	readonly Exception _action;

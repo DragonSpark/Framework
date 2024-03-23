@@ -1,11 +1,13 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
+using JetBrains.Annotations;
 using NetFabric.Hyperlinq;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations.Selection.Conditions;
 
+[UsedImplicitly]
 public class DependingOnAll<T> : IDepending<T>
 {
 	readonly Array<Await<T, bool>> _selections;

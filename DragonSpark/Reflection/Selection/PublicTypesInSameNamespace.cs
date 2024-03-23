@@ -1,8 +1,10 @@
 ﻿using DragonSpark.Model.Sequences;
+using JetBrains.Annotations;
 using System;
 
 namespace DragonSpark.Reflection.Selection;
 
+[UsedImplicitly]
 public sealed class PublicTypesInSameNamespace<T> : ArrayResult<Type>
 {
 	public static PublicTypesInSameNamespace<T> Default { get; } = new();

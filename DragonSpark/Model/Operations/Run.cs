@@ -1,10 +1,12 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
+using JetBrains.Annotations;
 using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations;
 
+[UsedImplicitly]
 public class Run : ICommand
 {
 	readonly Func<Task> _previous;

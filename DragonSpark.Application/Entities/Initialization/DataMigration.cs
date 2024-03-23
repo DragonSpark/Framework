@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Results;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using System;
@@ -11,8 +12,8 @@ namespace DragonSpark.Application.Entities.Initialization;
 /// This is not very good, but the best we have for now:
 /// https://github.com/dotnet/efcore/issues/24710#issuecomment-993242982
 /// </summary>
-public abstract class DataMigration<T> : Migration
-	where T : DbContext
+[UsedImplicitly]
+public abstract class DataMigration<T> : Migration where T : DbContext
 {
 	readonly IResult<IServiceProvider?> _services;
 	readonly Type                       _initializer;

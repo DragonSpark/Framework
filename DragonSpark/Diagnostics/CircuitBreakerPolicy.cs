@@ -1,4 +1,5 @@
-﻿using Polly;
+﻿using JetBrains.Annotations;
+using Polly;
 using System;
 
 namespace DragonSpark.Diagnostics;
@@ -19,6 +20,7 @@ public class CircuitBreakerPolicy<T> : IPolicy<T>
 	public IAsyncPolicy<T> Get(PolicyBuilder<T> parameter) => parameter.CircuitBreakerAsync(_attempts, _break);
 }
 
+[UsedImplicitly]
 public class CircuitBreakerPolicy : IPolicy
 {
 	readonly byte     _attempts;

@@ -1,8 +1,10 @@
 ﻿using DragonSpark.Model.Selection;
+using JetBrains.Annotations;
 using System;
 
 namespace DragonSpark.Runtime;
 
+[UsedImplicitly]
 public sealed class TimePaths : ISelect<DateTimeOffset, string>
 {
 	public static TimePaths Default { get; } = new();

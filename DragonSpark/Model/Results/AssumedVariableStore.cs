@@ -1,5 +1,8 @@
-﻿namespace DragonSpark.Model.Results;
+﻿using JetBrains.Annotations;
 
+namespace DragonSpark.Model.Results;
+
+[UsedImplicitly]
 public class AssumedVariableStore<T> : IMutable<T?>
 {
 	readonly IMutable<IMutable<T?>?> _variable;

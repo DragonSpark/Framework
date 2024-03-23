@@ -1,8 +1,10 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations.Allocated;
 
+[UsedImplicitly]
 public class ReportedAllocating<TIn, TOut> : IAllocating<TIn, TOut>
 {
 	readonly IAllocating<TIn, TOut> _previous;

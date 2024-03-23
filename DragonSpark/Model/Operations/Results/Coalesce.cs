@@ -1,8 +1,10 @@
 ﻿using DragonSpark.Compose;
+using JetBrains.Annotations;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations.Results;
 
+[UsedImplicitly]
 public class Coalesce<T> : IResulting<T>
 {
 	readonly IResulting<T?> _first;

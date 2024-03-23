@@ -1,10 +1,12 @@
 ﻿using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
+using JetBrains.Annotations;
 using System;
 using System.IO;
 
 namespace DragonSpark.Runtime;
 
+[UsedImplicitly]
 public sealed class StreamToBytes : ISelect<Stream, Array<byte>>
 {
 	public static StreamToBytes Default { get; } = new();

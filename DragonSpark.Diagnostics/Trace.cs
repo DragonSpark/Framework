@@ -18,5 +18,6 @@ public class Trace<T> : ISelect<T, Tracing>
 	}
 
 	public Tracing Get(T parameter)
+		// ReSharper disable once TemplateIsNotCompileTimeConstantProblem
 		=> new(_configuration.TraceTo(_logger), _logger.StartActivity(_template, parameter));
 }

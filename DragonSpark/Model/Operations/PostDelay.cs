@@ -1,9 +1,11 @@
 ﻿using DragonSpark.Compose;
+using JetBrains.Annotations;
 using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations;
 
+[UsedImplicitly]
 public class PostDelay<T> : IOperation<T>
 {
 	readonly IOperation<T> _previous;

@@ -42,26 +42,3 @@ public class WhereSelection<TIn, T, TTo> : Combine<TIn, T, TTo>
 	                         Expression<Func<DbContext, TIn, IQueryable<T>, IQueryable<TTo>>> select)
 		: base(previous, (context, @in, q) => select.Invoke(context, @in, q.Where(x => where.Invoke(@in, x)))) {}
 }
-
-public class WhereSelection<T, TTo> : WhereSelection<None, T, TTo>, IQuery<TTo>
-{
-	protected WhereSelection(Expression<Func<DbContext, IQueryable<T>>> previous,
-	                         Expression<Func<T, bool>> where,
-	                         Expression<Func<IQueryable<T>, IQueryable<TTo>>> select)
-		: base(previous.Then(), where, select) {}
-
-	protected WhereSelection(Expression<Func<DbContext, IQueryable<T>>> previous,
-	                         Expression<Func<T, bool>> where,
-	                         Expression<Func<None, IQueryable<T>, IQueryable<TTo>>> select)
-		: base(previous.Then(), where, select) {}
-
-	protected WhereSelection(Expression<Func<DbContext, IQueryable<T>>> previous,
-	                         Expression<Func<None, T, bool>> where,
-	                         Expression<Func<IQueryable<T>, IQueryable<TTo>>> select)
-		: base(previous.Then(), where, select) {}
-
-	protected WhereSelection(Expression<Func<DbContext, IQueryable<T>>> previous,
-	                         Expression<Func<None, T, bool>> where,
-	                         Expression<Func<None, IQueryable<T>, IQueryable<TTo>>> select) :
-		base(previous.Then(), where, select) {}
-}

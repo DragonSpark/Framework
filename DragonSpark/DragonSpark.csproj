@@ -17,4 +17,8 @@
     <PackageReference Include="JetBrains.Annotations" />
     <PackageReference Include="Polly" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Runtime\Invocation\Operations\" />
+  </ItemGroup>
 </Project>

@@ -1,9 +1,11 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Sequences;
+using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 
 namespace DragonSpark.Diagnostics.Logging;
 
+[UsedImplicitly]
 public class LogCritical : ILogMessage<Array<object>>
 {
 	readonly Message _action;
@@ -23,6 +25,7 @@ public class LogCritical : ILogMessage<Array<object>>
 	}
 }
 
+[UsedImplicitly]
 public class LogCritical<T> : ILogMessage<T>
 {
 	readonly Message<T> _action;
@@ -42,6 +45,7 @@ public class LogCritical<T> : ILogMessage<T>
 	}
 }
 
+[UsedImplicitly]
 public class LogCritical<T1, T2> : ILogMessage<(T1, T2)>
 {
 	readonly Message<T1, T2> _action;
@@ -61,6 +65,7 @@ public class LogCritical<T1, T2> : ILogMessage<(T1, T2)>
 	}
 }
 
+[UsedImplicitly]
 public class LogCritical<T1, T2, T3> : ILogMessage<(T1, T2, T3)>
 {
 	readonly Message<T1, T2, T3> _action;

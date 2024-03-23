@@ -26,7 +26,6 @@ public class Selector<TIn, TOut> : IResult<ISelect<TIn, TOut>>, IActivateUsing<I
 {
 	public static implicit operator Func<TIn, TOut>(Selector<TIn, TOut> instance) => instance._subject.Get;
 
-
 	readonly ISelect<TIn, TOut> _subject;
 
 	public Selector(ISelect<TIn, TOut> subject) => _subject = subject;
@@ -62,7 +61,7 @@ public class Selector<TIn, TOut> : IResult<ISelect<TIn, TOut>>, IActivateUsing<I
 	public Selector<TIn, TOut> Configure(ICommand<(TIn, TOut)> configuration) => Configure(configuration.Execute);
 
 	public Selector<TIn, TOut> Configure(Action<TIn, TOut> configure)
-		=> new DragonSpark.Model.Selection.Configure<TIn, TOut>(_subject.Get, configure).Then();
+		=> new Configure<TIn, TOut>(_subject.Get, configure).Then();
 
 	public Selector<TIn, TOut> Configure(ICommand<TOut> configure) => Configure(configure.Execute);
 

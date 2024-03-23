@@ -1,7 +1,9 @@
 ﻿using DragonSpark.Model.Commands;
+using JetBrains.Annotations;
 
 namespace DragonSpark.Model.Selection.Stores;
 
+[UsedImplicitly]
 class RemoveCommand<TIn, TOut> : ICommand<TIn>
 {
 	readonly ITable<TIn, TOut> _table;

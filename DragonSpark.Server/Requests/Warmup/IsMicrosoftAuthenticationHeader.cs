@@ -1,10 +1,12 @@
 ﻿using DragonSpark.Application.Communication;
 using DragonSpark.Model.Selection.Conditions;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Http;
 using System;
 
 namespace DragonSpark.Server.Requests.Warmup;
 
+[UsedImplicitly]
 sealed class IsMicrosoftAuthenticationHeader : ICondition<IHeaderDictionary>
 {
 	public static IsMicrosoftAuthenticationHeader Default { get; } = new();

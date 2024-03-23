@@ -3,7 +3,7 @@ using System;
 
 namespace DragonSpark.Model.Sequences;
 
-public class ArrayResult<T> : Results.Result<Array<T>>, IArray<T>
+public class ArrayResult<T> : Result<Array<T>>, IArray<T>
 {
 	public ArrayResult(IResult<Array<T>> source) : this(source.Get) {}
 

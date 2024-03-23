@@ -1,3 +1,5 @@
+using JetBrains.Annotations;
+
 namespace DragonSpark.Model.Commands;
 
 public sealed class EmptyCommand<T> : ICommand<T>
@@ -11,6 +13,7 @@ public sealed class EmptyCommand<T> : ICommand<T>
 
 public sealed class EmptyCommand : ICommand
 {
+	[UsedImplicitly]
 	public static EmptyCommand Default { get; } = new();
 
 	EmptyCommand() {}

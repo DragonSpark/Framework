@@ -1,11 +1,13 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Reflection.Types;
+using JetBrains.Annotations;
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
 
 namespace DragonSpark.Reflection.Members;
 
+[UsedImplicitly]
 sealed class FieldValueDelegate : IFieldValueDelegate
 {
 	readonly IGeneric<IFieldValueDelegate> _generic;
@@ -22,6 +24,7 @@ sealed class FieldValueDelegate : IFieldValueDelegate
 		           .Get(parameter);
 }
 
+[UsedImplicitly]
 sealed class FieldValueDelegate<T> : IFieldValueDelegate<T>
 {
 	readonly IGeneric<IFieldValueDelegate<T>> _generic;
@@ -37,6 +40,7 @@ sealed class FieldValueDelegate<T> : IFieldValueDelegate<T>
 		=> _generic.Get(parameter.DeclaringType ?? parameter.ReflectedType.Verify(), parameter.FieldType)
 		           .Get(parameter);
 }
+
 sealed class FieldValueDelegate<T, TValue> : IFieldValueDelegate<T, TValue>
 {
 	public static FieldValueDelegate<T, TValue> Default { get; } = new();

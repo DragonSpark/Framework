@@ -21,7 +21,7 @@ sealed class Registrations : ICommand<IServiceCollection>
 		         //
 		         .Then.Start<ITwitterIdentity>()
 		         .Forward<TwitterIdentity>()
-		         .Decorate<Twitter.ValidationAwareTwitterIdentity>()
+		         .Decorate<ValidationAwareTwitterIdentity>()
 		         .Include(x => x.Dependencies.Recursive())
 		         .Singleton();
 	}

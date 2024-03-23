@@ -2,6 +2,7 @@
 using DragonSpark.Application.Security.Identity.Claims.Actions;
 using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using System;
 
@@ -9,6 +10,7 @@ namespace DragonSpark.Identity.Facebook;
 
 public static class Extensions
 {
+	[UsedImplicitly]
 	public static AuthenticationContext UsingFacebook(this AuthenticationContext @this, IClaimAction claims)
 		=> @this.UsingFacebook(Start.A.Selection<FacebookOptions>()
 		                            .By.Calling(x => x.ClaimActions)

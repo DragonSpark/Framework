@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using JetBrains.Annotations;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations;
 
@@ -9,6 +10,7 @@ public sealed class EmptyOperation<T> : Operation<T>
 	EmptyOperation() : base(_ => ValueTask.CompletedTask) {}
 }
 
+[UsedImplicitly]
 public sealed class EmptyOperation : Operation
 {
 	public static EmptyOperation Default { get; } = new();

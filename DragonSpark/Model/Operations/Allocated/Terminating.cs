@@ -4,18 +4,6 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations.Allocated;
 
-public class Terminating<TIn, TOut> : IOperation<TIn>
-{
-	readonly Func<TIn, Task<TOut>> _await;
-
-	public Terminating(Func<TIn, Task<TOut>> await) => _await = @await;
-
-	public async ValueTask Get(TIn parameter)
-	{
-		await _await(parameter).ConfigureAwait(false);
-	}
-}
-
 public class Terminating<T> : IOperation
 {
 	readonly AwaitOf<T> _await;

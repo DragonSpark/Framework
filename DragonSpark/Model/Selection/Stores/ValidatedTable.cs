@@ -1,7 +1,9 @@
 ﻿using DragonSpark.Model.Selection.Conditions;
+using JetBrains.Annotations;
 
 namespace DragonSpark.Model.Selection.Stores;
 
+[UsedImplicitly]
 public class ValidatedTable<TIn, TOut> : ITable<TIn, TOut>
 {
 	readonly ITable<TIn, TOut> _table;

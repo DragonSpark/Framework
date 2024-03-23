@@ -2,6 +2,7 @@
 using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
+using JetBrains.Annotations;
 using System;
 
 namespace DragonSpark.Application.Entities.Editing;
@@ -33,6 +34,7 @@ public class Attach<TIn, T> : Modify<TIn, T> where T : class
 		: base(select, AttachLocal<T>.Default.Then().Operation().Append(configure)) {}
 }
 
+[UsedImplicitly]
 public class Attach<T> : Modify<T> where T : class
 {
 	protected Attach(IEnlistedScopes scopes, IOperation<Edit<T>> modification) : this(scopes, modification.Await) {}

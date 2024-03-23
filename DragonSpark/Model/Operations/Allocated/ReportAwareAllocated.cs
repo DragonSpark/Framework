@@ -1,8 +1,10 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations.Allocated;
 
+[UsedImplicitly]
 public class ReportAwareAllocated<T> : IAllocated<T>
 {
 	readonly IAllocated<T> _previous;

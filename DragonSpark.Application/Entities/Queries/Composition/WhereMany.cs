@@ -1,5 +1,4 @@
-﻿using DragonSpark.Model;
-using LinqKit;
+﻿using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -31,11 +30,4 @@ public class WhereMany<TIn, T, TTo> : Combine<TIn, T, TTo>
 		: base(previous,
 		       (context, @in, q)
 			       => q.Where(x => where.Invoke(@in, x)).SelectMany(x => select.Invoke(context, @in, x))) {}
-}
-
-public class WhereMany<T, TTo> : WhereMany<None, T, TTo>, IQuery<TTo>
-{
-	public WhereMany(Expression<Func<DbContext, IQueryable<T>>> previous, Expression<Func<T, bool>> where,
-	                 Expression<Func<T, IEnumerable<TTo>>> select)
-		: base((context, _) => previous.Invoke(context), where, select) {}
 }

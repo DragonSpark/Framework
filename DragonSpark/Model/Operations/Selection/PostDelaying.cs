@@ -1,9 +1,11 @@
 ﻿using DragonSpark.Compose;
+using JetBrains.Annotations;
 using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations.Selection;
 
+[UsedImplicitly]
 public class PostDelaying<TIn, TOut> : ISelecting<TIn, TOut>
 {
 	readonly ISelecting<TIn, TOut> _previous;

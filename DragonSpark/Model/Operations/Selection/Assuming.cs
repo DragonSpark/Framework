@@ -1,8 +1,10 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations.Selection;
 
+[UsedImplicitly]
 public class Assuming<TIn, TOut> : ISelecting<TIn, TOut>
 {
 	readonly Func<ISelecting<TIn, TOut>> _previous;

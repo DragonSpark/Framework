@@ -1,10 +1,12 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Text;
+using JetBrains.Annotations;
 using System.Text;
 
 namespace DragonSpark.Application.Security.Data;
 
+[UsedImplicitly]
 public sealed class DecryptDataAsText : Alteration<string>
 {
 	public DecryptDataAsText(IDecrypt select) : this(select, Encoding.UTF8) {}

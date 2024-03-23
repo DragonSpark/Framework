@@ -1,8 +1,10 @@
 ﻿using DragonSpark.Model.Sequences;
+using JetBrains.Annotations;
 using System;
 
 namespace DragonSpark.Reflection.Selection;
 
+[UsedImplicitly]
 public sealed class AllTypesInSameNamespace<T> : ArrayResult<Type>
 {
 	public static AllTypesInSameNamespace<T> Default { get; } = new();

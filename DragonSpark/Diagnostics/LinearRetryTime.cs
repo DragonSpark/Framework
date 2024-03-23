@@ -1,8 +1,11 @@
-﻿namespace DragonSpark.Diagnostics;
+﻿using JetBrains.Annotations;
+
+namespace DragonSpark.Diagnostics;
 
 public sealed class LinearRetryTime : RetryTimeBase
 {
+	[UsedImplicitly]
 	public static LinearRetryTime Default { get; } = new();
 
-	LinearRetryTime() : base(parameter => parameter) {}
+	LinearRetryTime() : base(x => x) {}
 }

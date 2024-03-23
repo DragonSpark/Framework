@@ -1,8 +1,10 @@
 using DragonSpark.Compose;
 using DragonSpark.Model.Results;
+using JetBrains.Annotations;
 
 namespace DragonSpark.Model.Selection.Stores;
 
+[UsedImplicitly]
 public class TableVariable<TIn, TOut> : IMutable<TOut?>
 {
 	readonly TIn                _key;

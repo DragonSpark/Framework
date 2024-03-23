@@ -13,8 +13,3 @@ public class StartSelect<TFrom, TTo> : Select<TFrom, TTo> where TFrom : class
 	                      Expression<Func<TFrom, TTo>> select)
 		: base(context => start.Invoke(context.Set<TFrom>()), select) {}
 }
-
-public class StartSelect<TIn, TFrom, TTo> : Select<TIn, TFrom, TTo> where TFrom : class
-{
-	protected StartSelect(Expression<Func<TFrom, TTo>> select) : base(Set<TIn, TFrom>.Default.Then(), select) {}
-}

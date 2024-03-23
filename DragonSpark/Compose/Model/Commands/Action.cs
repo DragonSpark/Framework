@@ -15,16 +15,3 @@ public class Action<T> : Command<T>, IAction<T>
 		return None.Default;
 	}
 }
-
-public class Action : Command, IAction<None>
-{
-	public static implicit operator Action(System.Action value) => new(value);
-
-	public Action(System.Action action) : base(action) {}
-
-	public None Get(None parameter)
-	{
-		Execute(parameter);
-		return None.Default;
-	}
-}

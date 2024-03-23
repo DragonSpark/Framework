@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
+using JetBrains.Annotations;
 using System;
 using System.Reflection;
 
@@ -30,6 +31,7 @@ public sealed class PropertyDelegates : ISelect<(Type Owner, string Name), Func<
 	}
 }
 
+[UsedImplicitly]
 public sealed class PropertyDelegates<T> : IPropertyDelegates<T>
 {
 	public static PropertyDelegates<T> Default { get; } = new();

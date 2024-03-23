@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Reflection.Types;
+using JetBrains.Annotations;
 using System;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -22,6 +23,7 @@ sealed class PropertyAssignmentDelegate : IPropertyAssignmentDelegate
 		           .Get(parameter);
 }
 
+[UsedImplicitly]
 sealed class PropertyAssignmentDelegate<T> : IPropertyAssignmentDelegate<T>
 {
 	readonly IGeneric<IPropertyAssignmentDelegate<T>> _generic;

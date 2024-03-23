@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations.Results;
 using DragonSpark.Model.Operations.Selection;
+using JetBrains.Annotations;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations;
@@ -19,6 +20,7 @@ public class Terminating<TIn, TOut> : IOperation<TIn>
 	}
 }
 
+[UsedImplicitly]
 public class Terminating<T> : IOperation
 {
 	readonly AwaitOf<T> _await;

@@ -1,8 +1,10 @@
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection.Conditions;
+using JetBrains.Annotations;
 
 namespace DragonSpark.Model.Selection.Stores;
 
+[UsedImplicitly]
 public class Assignable<TIn, TOut> : IAssignable<TIn, TOut>
 {
 	readonly ISelect<TIn, TOut> _select;

@@ -1,8 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 	<ItemGroup>
+	  <Compile Remove="Messaging\Events\**" />
 	  <Compile Remove="Storage\Queues\**" />
+	  <EmbeddedResource Remove="Messaging\Events\**" />
 	  <EmbeddedResource Remove="Storage\Queues\**" />
+	  <None Remove="Messaging\Events\**" />
 	  <None Remove="Storage\Queues\**" />
 	</ItemGroup>
 

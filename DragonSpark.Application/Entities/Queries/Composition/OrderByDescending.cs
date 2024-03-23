@@ -1,18 +1,10 @@
-﻿using DragonSpark.Model;
-using LinqKit;
+﻿using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
 
 namespace DragonSpark.Application.Entities.Queries.Composition;
-
-public class OrderByDescending<T, TProperty> : OrderBy<None, T, TProperty>, IQuery<T>
-{
-	public OrderByDescending(Expression<Func<DbContext, IQueryable<T>>> previous,
-	                         Expression<Func<T, TProperty>> property)
-		: base(previous.Then(), property) {}
-}
 
 public class OrderByDescending<TIn, T, TProperty> : Combine<TIn, T, T>
 {

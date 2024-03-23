@@ -1,9 +1,11 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Sequences;
+using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 
 namespace DragonSpark.Diagnostics.Logging;
 
+[UsedImplicitly]
 public class LogDetailedException : ILogException<Array<object>>
 {
 	readonly Exception _action;
@@ -23,6 +25,7 @@ public class LogDetailedException : ILogException<Array<object>>
 	}
 }
 
+[UsedImplicitly]
 public class LogDetailedException<T> : ILogException<T>
 {
 	readonly Exception<T> _action;
@@ -42,6 +45,7 @@ public class LogDetailedException<T> : ILogException<T>
 	}
 }
 
+[UsedImplicitly]
 public class LogDetailedException<T1, T2> : ILogException<(T1, T2)>
 {
 	readonly Exception<T1, T2> _action;
@@ -61,6 +65,7 @@ public class LogDetailedException<T1, T2> : ILogException<(T1, T2)>
 	}
 }
 
+[UsedImplicitly]
 public class LogDetailedException<T1, T2, T3> : ILogException<(T1, T2, T3)>
 {
 	readonly Exception<T1, T2, T3> _action;

@@ -10,7 +10,7 @@ namespace DragonSpark.Compose.Model.Commands;
 
 public class CommandContext : CommandContext<None>
 {
-	public static implicit operator System.Action(CommandContext instance) => instance.Get().Execute;
+	public static implicit operator Action(CommandContext instance) => instance.Get().Execute;
 
 	public CommandContext(ICommand command) : base(command) => Command = command;
 

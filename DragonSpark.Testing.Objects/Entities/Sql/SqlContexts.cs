@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Application.Entities;
 using DragonSpark.Compose;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
@@ -8,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Testing.Objects.Entities.Sql;
 
+[UsedImplicitly]
 public sealed class SqlContexts<T> : IContexts<T>, IAsyncDisposable where T : DbContext
 {
 	readonly IContexts<T> _contexts;

@@ -1,4 +1,5 @@
-﻿using LinqKit;
+﻿using JetBrains.Annotations;
+using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq.Expressions;
@@ -13,6 +14,7 @@ public class ContextProjection<TFrom, TTo>
 	protected ContextProjection(Expression<Func<DbContext, TFrom, TTo>> instance) : base(instance) {}
 }
 
+[UsedImplicitly]
 public class ContextProjection<TIn, TFrom, TTo>
 	: DragonSpark.Model.Results.Instance<Expression<Func<DbContext, TIn, TFrom, TTo>>>
 {

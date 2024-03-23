@@ -1,9 +1,11 @@
 ﻿using DragonSpark.Model.Results;
+using JetBrains.Annotations;
 using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations;
 
+[UsedImplicitly]
 public class Assuming : IOperation
 {
 	readonly Func<IOperation> _previous;
@@ -15,6 +17,7 @@ public class Assuming : IOperation
 	public ValueTask Get() => _previous().Get();
 }
 
+[UsedImplicitly]
 public class Assuming<T> : IOperation<T>
 {
 	readonly Func<IOperation<T>> _previous;

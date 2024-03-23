@@ -1,7 +1,9 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 
 namespace DragonSpark.Model.Selection;
 
+[UsedImplicitly]
 public class Configured<TIn, TOut> : ISelect<TIn, TOut>
 {
 	readonly Action<TIn>     _configure;

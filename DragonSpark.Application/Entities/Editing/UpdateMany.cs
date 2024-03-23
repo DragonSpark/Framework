@@ -2,13 +2,13 @@
 
 namespace DragonSpark.Application.Entities.Editing;
 
-sealed class UpdateMany : IModify<Memory<object>>
+sealed class UpdateMany<T> : IModify<Memory<T>> where T : class
 {
-	public static UpdateMany Default { get; } = new();
+	public static UpdateMany<T> Default { get; } = new();
 
 	UpdateMany() {}
 
-	public void Execute(Edit<Memory<object>> parameter)
+	public void Execute(Edit<Memory<T>> parameter)
 	{
 		var (context, memory) = parameter;
 		for (var i = 0; i < memory.Length; i++)

@@ -13,15 +13,6 @@ public sealed class PropertyAssignmentDelegates : ReferenceValueTable<PropertyIn
 	PropertyAssignmentDelegates() : base(PropertyAssignmentDelegate.Default.Then().Stores().New().Get) {}
 }
 
-
-public sealed class PropertyAssignmentDelegates<T> : ReferenceValueTable<PropertyInfo, Action<object, T>>,
-                                                     IPropertyAssignmentDelegate<T>
-{
-	public static PropertyAssignmentDelegates<T> Default { get; } = new ();
-
-	PropertyAssignmentDelegates() : base(PropertyAssignmentDelegate<T>.Default.Then().Stores().New().Get) {}
-}
-
 public sealed class PropertyAssignmentDelegates<T, TValue> : ReferenceValueTable<PropertyInfo, Action<T, TValue>>,
                                                              IPropertyAssignmentDelegate<T, TValue>
 {

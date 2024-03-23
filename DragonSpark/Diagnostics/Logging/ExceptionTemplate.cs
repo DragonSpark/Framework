@@ -1,7 +1,9 @@
 ﻿using DragonSpark.Model.Sequences;
+using JetBrains.Annotations;
 
 namespace DragonSpark.Diagnostics.Logging;
 
+[UsedImplicitly]
 public class ExceptionTemplate<T> : ITemplate<T>
 {
 	readonly string _template;
@@ -42,6 +44,7 @@ public class ExceptionTemplate<T1, T2, T3> : ITemplate<(T1, T2, T3)>
 	}
 }
 
+[UsedImplicitly]
 public class ExceptionTemplate : ITemplate<Array<object>>
 {
 	readonly string _template;

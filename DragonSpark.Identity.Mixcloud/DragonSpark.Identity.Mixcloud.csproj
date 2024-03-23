@@ -1,9 +1,0 @@
-<Project Sdk="Microsoft.NET.Sdk">
-  <ItemGroup>
-    <PackageReference Include="AspNet.Security.OAuth.Mixcloud" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\DragonSpark.Application\DragonSpark.Application.csproj" />
-  </ItemGroup>
-</Project>

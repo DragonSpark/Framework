@@ -1,9 +1,11 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations.Selection;
+using JetBrains.Annotations;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Editing;
 
+[UsedImplicitly]
 public class CommitAwareEdits<T> : CommitAwareEdits<T, T>
 {
 	protected CommitAwareEdits(IScopes scopes) : base(scopes, Start.A.Selection<T>().By.Self.Operation().Out()) {}

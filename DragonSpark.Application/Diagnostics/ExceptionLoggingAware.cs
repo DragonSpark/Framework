@@ -2,6 +2,7 @@
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
+using JetBrains.Annotations;
 using System;
 using System.Threading.Tasks;
 
@@ -33,6 +34,7 @@ public class ExceptionLoggingAware<T> : IOperation<T>
 	}
 }
 
+[UsedImplicitly]
 public class ExceptionLoggingAware : IOperation
 {
 	readonly Func<ValueTask>  _previous;

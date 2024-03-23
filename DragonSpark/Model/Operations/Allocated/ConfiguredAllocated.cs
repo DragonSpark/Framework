@@ -1,8 +1,10 @@
-﻿using System;
+﻿using JetBrains.Annotations;
+using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations.Allocated;
 
+[UsedImplicitly]
 public class ConfiguredAllocated : IAllocated
 {
 	readonly Action _subject;
