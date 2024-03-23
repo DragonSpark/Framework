@@ -1,27 +1,9 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations.Selection.Conditions;
-using DragonSpark.Model.Selection.Conditions;
 using NetFabric.Hyperlinq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Claims.Access;
-
-public class HasClaim : ICondition<ClaimsPrincipal>
-{
-	readonly string _claim;
-	readonly string _value;
-
-	public HasClaim(string claim) : this(claim, bool.TrueString) {}
-
-	public HasClaim(string claim, string value)
-	{
-		_claim = claim;
-		_value = value;
-	}
-
-	public bool Get(ClaimsPrincipal parameter) => parameter.HasClaim(_claim, _value);
-}
 
 public class HasClaim<T> : IDepending<T> where T : IdentityUser
 {
