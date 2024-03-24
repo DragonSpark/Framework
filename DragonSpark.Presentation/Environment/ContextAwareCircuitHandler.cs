@@ -27,9 +27,8 @@ sealed class ContextAwareCircuitHandler : CircuitHandler
 
 	public override Task OnCircuitOpenedAsync(Circuit circuit, CancellationToken cancellationToken)
 	{
-		var context = _source.Get().Verify().GetHttpContext().Verify();
-		_accessor.HttpContext ??= context;
-		_establish.Execute(context);
+		_accessor.HttpContext ??= _source.Get().Verify().GetHttpContext().Verify();
+		_establish.Execute(_accessor.HttpContext);
 		return Task.CompletedTask;
 	}
 }
