@@ -12,7 +12,22 @@ sealed class BlazorApplicationProfile : ApplicationProfile
 
 	BlazorApplicationProfile() : this(EmptyCommand<IApplicationBuilder>.Default.Execute) {}
 
-	public BlazorApplicationProfile(Action<IApplicationBuilder> application)
+	public BlazorApplicationProfile(Action<IApplicationBuilder> configure)
 		: base(DefaultServiceConfiguration.Default.Execute,
-		       Start.A.Command(application).Append(DefaultApplicationConfiguration.Default)) {}
+		       Start.A.Command(configure).Append(DefaultApplicationConfiguration.Default)) {}
+}
+
+sealed class BlazorApplicationProfile<T> : ApplicationProfile
+{
+	public static BlazorApplicationProfile<T> Default { get; } = new();
+
+	BlazorApplicationProfile()
+		: this(EmptyCommand<IApplicationBuilder>.Default.Execute) {}
+
+	public BlazorApplicationProfile(Action<IApplicationBuilder> configure)
+		: this(configure, ApplyBlazorWebApplication<T>.Default.Execute) {}
+
+	public BlazorApplicationProfile(Action<IApplicationBuilder> configure, Action<IApplicationBuilder> post)
+		: base(DefaultServiceConfiguration.Default.Execute,
+		       Start.A.Command(configure).Append(DefaultApplicationConfiguration.Default).Append(post)) {}
 }
