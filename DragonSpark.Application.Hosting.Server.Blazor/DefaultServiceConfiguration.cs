@@ -1,5 +1,4 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Commands;
+﻿using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Application.Hosting.Server.Blazor;
@@ -12,9 +11,6 @@ sealed class DefaultServiceConfiguration : ICommand<IServiceCollection>
 
 	public void Execute(IServiceCollection parameter)
 	{
-		parameter.AddRazorPages()
-		         .Return(parameter)
-		         .AddServerSideBlazor()
-		         .Return(parameter);
+		parameter.AddRazorComponents().AddInteractiveServerComponents();
 	}
 }

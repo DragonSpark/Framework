@@ -13,4 +13,9 @@ public static class Extensions
 	public static ApplicationProfileContext WithBlazorServerApplication(
 		this BuildHostContext @this, Action<IApplicationBuilder> builder)
 		=> @this.Apply(new BlazorApplicationProfile(builder));
+
+	public static ApplicationProfileContext WithBlazorServerApplication<T>(
+		this BuildHostContext @this, Action<IApplicationBuilder> builder)
+		=> @this.Apply(new BlazorApplicationProfile<T>(builder));
+
 }

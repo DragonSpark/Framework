@@ -19,7 +19,8 @@ sealed class ComponentContextFilter : IHubFilter
 	public async ValueTask<object?> InvokeMethodAsync(HubInvocationContext invocationContext,
 	                                                  Func<HubInvocationContext, ValueTask<object?>> next)
 	{
-		if (invocationContext.HubMethodName == "StartCircuit" && invocationContext.Hub.GetType().Name == "ComponentHub")
+		if (invocationContext.HubMethodName == "UpdateRootComponents" 
+				&& invocationContext.Hub.GetType().Name == "ComponentHub")
 		{
 			using (_store.Assigned(invocationContext.Context))
 			{
