@@ -1,35 +1,25 @@
-﻿@using DragonSpark.Compose
-@using JetBrains.Annotations
+﻿@using DragonSpark.Model
+
 @inherits EditorComponent
 
-<DialogContext T="DragonSpark.Model.None" @ref="_confirm" Title="@Title" Context="_">
-	<Confirm Accept="@(_refresh)" PrimaryClass="primary button fit" SecondaryClass="button fit" ChildContent="@ConfirmContent" />
-</DialogContext>
+<ConfirmResultContext T="None" @ref="_confirm" Title="@Title"PrimaryClass="primary button fit" SecondaryClass="button fit">
+    @ChildContent
+</ConfirmResultContext>
 
-@ChildContent?.Invoke(_confirming)
+@if (Enabled)
+{
+    <BrowserUnloadMonitor />
+}
 
-@code {
-
-	EventCallback _refresh, _confirming;
-	protected override void OnInitialized()
-	{
-		_refresh = Start.A.Callback(Exit).Using(ActualReceiver).Handle<ChangeMonitor>(Exceptions).UpdateActivity();
-		_confirming = EventCallback.Factory.Create(this, Confirm);
-		base.OnInitialized();
-    }
-
-
-    [UsedImplicitly]
-	DialogContext<DragonSpark.Model.None> _confirm = default!;
+@code
+{
+    ConfirmResultContext<None> _confirm = default!;
 
 	[Parameter]
 	public string Title { get; set; } = "Changes Detected";
 
 	[Parameter]
-	public RenderFragment<EventCallback>? ChildContent { get; set; }
-
-	[Parameter]
-	public RenderFragment ConfirmContent { get; set; }
+	public RenderFragment ChildContent { get; set; }
 		= @<p>Changes have been detected on this page and will be lost if you leave.  Press OK to leave, press Cancel to stay on this page.</p>;
 
 	[Parameter]
@@ -43,10 +33,8 @@
 
 	object ActualReceiver => Receiver ?? DefaultReceiver;
 
-	public override bool HasChanges => Enabled && base.HasChanges;
+    protected override async ValueTask<bool> Allow(LocationChangingContext parameter)
+        => !Enabled || await base.Allow(parameter) || await _confirm.Confirm(None.Default) == DialogResult.Ok;
 
-	Task Confirm() => HasChanges ? OnNavigationCanceled() : Exit();
-
-	protected override Task OnNavigationCanceled()
-		=> Task.Delay(25).ContinueWith(_ => _confirm.Open(DragonSpark.Model.None.Default));
+    protected override bool HasChanges() => Enabled && base.HasChanges();
 }

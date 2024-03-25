@@ -4,15 +4,14 @@ namespace DragonSpark.Presentation.Components.Routing;
 
 public class ConfirmComponent : ChangeAwareComponent
 {
-	bool Active { get; set; } = true;
+	bool _active = true;
 
-	public override bool HasChanges => Active;
+	public override bool HasChanges => _active;
 
 	protected override Task Exit()
 	{
-		Active = false;
+		_active = false;
 
 		return base.Exit();
 	}
-
 }

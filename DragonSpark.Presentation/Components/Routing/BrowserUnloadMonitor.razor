@@ -1,0 +1,11 @@
+﻿@implements IAsyncDisposable
+
+@inject ISetPageExitCheck Model
+
+@code {
+
+    protected override Task OnInitializedAsync() => Model.Get(true).AsTask();
+
+    public ValueTask DisposeAsync() => Model.Get(false);
+
+}
