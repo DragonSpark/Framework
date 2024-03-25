@@ -1,14 +1,15 @@
 ﻿using DragonSpark.Compose;
+using Majorsoft.Blazor.Components.Common.JsInterop.Focus;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Components.Routing;
+using Microsoft.JSInterop;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Routing;
 
-public class EditorComponent : ChangeAwareComponent
+public class EditorComponent : NavigationAwareComponent
 {
-	public override bool HasChanges => Session.ActiveComponent == this && EditContext.IsModified();
-
 	[CascadingParameter]
 	EditContext EditContext
 	{
@@ -30,12 +31,27 @@ public class EditorComponent : ChangeAwareComponent
 		}
 	}	EditContext _editContext = default!;
 
+	[Inject]
+	IFocusHandler Focus { get; set; } = default!;
+
 	void OnChanged(object? sender, FieldChangedEventArgs e)
 	{
 		if (EditContext.IsModified(e.FieldIdentifier))
 		{
-			InvokeAsync(() => Session.UpdateExitState().AsTask());
+//			InvokeAsync(() => Session.UpdateExitState().AsTask());
 		}
+	}
+
+	protected virtual bool HasChanges() => EditContext.IsModified();
+
+	protected override async ValueTask<bool> Allow(LocationChangingContext parameter)
+	{
+		var focused = await Focus.GetFocusedElementAsync();
+		if (focused.Account() is not null)
+		{
+			await focused.InvokeVoidAsync("blur").ConfigureAwait(false);
+		}
+		return !HasChanges();
 	}
 
 	protected override Task Exit()

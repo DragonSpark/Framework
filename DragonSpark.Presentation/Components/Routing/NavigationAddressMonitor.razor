@@ -7,7 +7,7 @@
 	string _filter = default!;
 	readonly EventHandler<LocationChangedEventArgs> _changed;
 
-	public NavigationAddressMonitor() => _changed = SessionOnNavigation;
+	public NavigationAddressMonitor() => _changed = OnNavigation;
 
 	[Parameter]
 	public EventCallback Navigated { get; set; }
@@ -22,9 +22,10 @@
 		base.OnInitialized();
 	}
 
-	void SessionOnNavigation(object? sender, EventArgs e)
+	void OnNavigation(object? sender, EventArgs e)
 	{
-		if (Navigation.Uri == _filter) {
+		if (Navigation.Uri == _filter)
+        {
 			InvokeAsync(() => Navigated.InvokeAsync());
 		}
 	}
