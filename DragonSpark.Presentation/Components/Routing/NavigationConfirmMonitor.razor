@@ -1,5 +1,5 @@
 ﻿@using DragonSpark.Compose
-@using JetBrains.Annotations
+
 @inherits ConfirmComponent
 
 <DialogContext T="DragonSpark.Model.None" @ref="_confirm" Title="@Title" Context="_">
@@ -9,16 +9,15 @@
 @ChildContent?.Invoke(_confirming)
 
 @code {
-    EventCallback _refresh, _confirming;
+    EventCallback                         _refresh, _confirming;
+    DialogContext<DragonSpark.Model.None> _confirm = default!;
+
     protected override void OnInitialized()
     {
         _refresh = Start.A.Callback(Exit).Using(ActualReceiver).Handle<NavigationConfirmMonitor>(Exceptions).UpdateActivity();
         _confirming = EventCallback.Factory.Create(this, Confirm);
         base.OnInitialized();
     }
-
-    [UsedImplicitly]
-    DialogContext<DragonSpark.Model.None> _confirm = default!;
 
     [Parameter]
     public string Title { get; set; } = "Changes Detected";
