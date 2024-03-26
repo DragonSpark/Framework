@@ -24,16 +24,19 @@ public sealed class Local<TKey, T> : ISelecting<TKey, T?> where T : class
 
 	public ValueTask<T?> Get(TKey parameter)
 	{
-		var subject = _context.Get();
-		foreach (var local in subject.Set<T>().Local.AsValueEnumerable())
+		var (subject, boundary) = _context.Get();
+		using (boundary)
 		{
-			var entity = _key(local);
-			if (_equality.Equals(entity, parameter))
+			foreach (var local in subject.Set<T>().Local.AsValueEnumerable())
 			{
-				return local.ToOperation<T?>();
+				var entity = _key(local);
+				if (_equality.Equals(entity, parameter))
+				{
+					return local.ToOperation<T?>();
+				}
 			}
-		}
 
-		return default(T?).ToOperation();
+			return default(T?).ToOperation();
+		}
 	}
 }

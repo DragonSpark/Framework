@@ -1,10 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DragonSpark.Runtime;
 
 namespace DragonSpark.Application.Entities;
 
 public sealed class EnlistedContexts : IEnlistedContexts
 {
-	readonly IContexts         _previous;
+	readonly IContexts       _previous;
 	readonly IAmbientContext _context;
 
 	public EnlistedContexts(IContexts previous, IAmbientContext context)
@@ -13,5 +13,9 @@ public sealed class EnlistedContexts : IEnlistedContexts
 		_context  = context;
 	}
 
-	public DbContext Get() => _context.Get() ?? _previous.Get();
+	public Scope Get()
+	{
+		var enlisted = _context.Get();
+		return enlisted is not null ? new Scope(enlisted, EmptyDisposable.Default) : _previous.Get();
+	}
 }

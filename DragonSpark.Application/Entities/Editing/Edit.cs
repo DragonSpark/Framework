@@ -21,9 +21,9 @@ public sealed class Edit<TIn, T, TResult> : IEdit<TIn, TResult>
 
 	public async ValueTask<Edit<TResult>> Get(TIn parameter)
 	{
-		var (context, elements) = _reading.Get(parameter);
+		var (context, disposable, elements) = _reading.Get(parameter);
 		var evaluate = await _evaluate.Await(elements);
-		return new(new Editor(context), evaluate);
+		return new(new Editor(context, disposable), evaluate);
 	}
 }
 

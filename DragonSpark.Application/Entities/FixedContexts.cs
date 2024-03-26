@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Application.Entities;
 
-public sealed class FixedContexts : Instance<DbContext>, IContexts
+public sealed class FixedContexts : Instance<Scope>, IContexts
 {
-	public FixedContexts(DbContext context) : base(context) {}
+	public FixedContexts(DbContext context) : base(new (context, context)) {}
 }

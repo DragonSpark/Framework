@@ -19,8 +19,8 @@ sealed class Queries<TIn, TOut> : IQueries<TOut>
 
 	public Query<TOut> Get()
 	{
-		var subject = _contexts.Get();
-		var query   = _compiled(subject, _parameter);
-		return new(query, subject);
+		var (context, disposable) = _contexts.Get();
+		var query   = _compiled(context, _parameter);
+		return new(query, disposable);
 	}
 }
