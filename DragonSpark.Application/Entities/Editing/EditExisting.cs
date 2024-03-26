@@ -15,8 +15,8 @@ public class EditExisting<T> : IEdit<T> where T : class
 
 	public async ValueTask<Edit<T>> Get(T parameter)
 	{
-		var context = _contexts.Get();
-		var editor = new Editor(context);
+		var (context, disposable) = _contexts.Get();
+		var editor = new Editor(context, disposable);
 		editor.Attach(parameter);
 		if (_reload)
 		{

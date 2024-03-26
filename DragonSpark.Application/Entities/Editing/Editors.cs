@@ -16,7 +16,7 @@ public class Editors<T> : ISelect<T, IEditor>
 
 	public IEditor Get(T parameter)
 	{
-		var context = _contexts.Get();
-		return new Editor(context);
+		var (context, disposable) = _contexts.Get();
+		return new Editor(context, disposable);
 	}
 }

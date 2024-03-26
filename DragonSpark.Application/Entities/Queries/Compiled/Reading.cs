@@ -6,17 +6,17 @@ using System.Linq.Expressions;
 
 namespace DragonSpark.Application.Entities.Queries.Compiled;
 
-public readonly record struct Reading<T>(DbContext Context, IAsyncEnumerable<T> Elements) : IDisposable
+public readonly record struct Reading<T>(DbContext Context, IDisposable Disposable, IAsyncEnumerable<T> Elements) : IDisposable
 {
 	public void Dispose()
 	{
-		Context.Dispose();
+		Disposable.Dispose();
 	}
 }
 
 public sealed class Reading<TIn, T> : IReading<TIn, T>
 {
-	readonly IContexts           _contexts;
+	readonly IContexts         _contexts;
 	readonly IElements<TIn, T> _elements;
 
 	public Reading(IContexts contexts, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
@@ -24,14 +24,14 @@ public sealed class Reading<TIn, T> : IReading<TIn, T>
 
 	public Reading(IContexts contexts, IElements<TIn, T> elements)
 	{
-		_contexts   = contexts;
+		_contexts = contexts;
 		_elements = elements;
 	}
 
 	public Reading<T> Get(TIn parameter)
 	{
-		var context = _contexts.Get();
+		var (context, disposable) = _contexts.Get();
 		var elements = _elements.Get(new(context, parameter));
-		return new(context, elements);
+		return new(context, disposable, elements);
 	}
 }

@@ -10,7 +10,7 @@ sealed class Editor : DragonSpark.Model.Operations.Allocated.Terminating<int>, I
 	readonly DbContext   _context;
 	readonly IDisposable _disposable;
 
-	public Editor(DbContext context) : this(context, context) {}
+	/*public Editor(DbContext context) : this(context, context) {}*/
 
 	public Editor(DbContext context, IDisposable disposable) : base(context.Save)
 	{
