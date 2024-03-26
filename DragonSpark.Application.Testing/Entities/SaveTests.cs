@@ -23,14 +23,14 @@ public sealed class SaveTests
 		const string original = "Default Name",
 		             expected = "Updated Name";
 
-		await using var contexts = await new SqlLiteContexts<Context>().Initialize();
+		await using var contexts = await new SqlLiteNewContext<Context>().Initialize();
 		{
 			await using var data = contexts.Get();
 			data.Subjects.Add(new Subject { Name = original });
 			await data.SaveChangesAsync();
 		}
 		var query = contexts.Then().Use<Subject>().To.Single();
-		var sut = new Save<Subject>(new EnlistedScopes(new StandardScopes<Context>(contexts),
+		var sut = new Save<Subject>(new EnlistedContexts(new Contexts<Context>(contexts),
 		                                               EmptyAmbientContext.Default));
 		{
 			var first = await query.Await();
@@ -48,7 +48,7 @@ public sealed class SaveTests
 	[Fact]
 	public async Task VerifyRelationship()
 	{
-		await using var contexts = await new SqlLiteContexts<ContextWithRelationship>().Initialize();
+		await using var contexts = await new SqlLiteNewContext<ContextWithRelationship>().Initialize();
 		{
 			await using var data = contexts.Get();
 			data.Update(new First());
@@ -131,16 +131,16 @@ public sealed class SaveTests
 
 	public class Benchmarks
 	{
-		readonly IContexts<Context> _contexts;
+		readonly INewContext<Context> _new;
 
-		public Benchmarks() : this(new PooledMemoryContexts<Context>()) {}
+		public Benchmarks() : this(new PooledMemoryNewContext<Context>()) {}
 
-		Benchmarks(IContexts<Context> contexts) => _contexts = contexts;
+		Benchmarks(INewContext<Context> @new) => _new = @new;
 
 		[GlobalSetup]
 		public async Task GlobalSetup()
 		{
-			await using var context = _contexts.Get();
+			await using var context = _new.Get();
 			await context.Database.EnsureDeletedAsync();
 			await context.Database.EnsureCreatedAsync();
 			context.Subjects.Add(new Subject { Name = "One" });
@@ -150,7 +150,7 @@ public sealed class SaveTests
 		[Benchmark(Baseline = true)]
 		public async Task<object> MeasureUnit()
 		{
-			await using var context = _contexts.Get();
+			await using var context = _new.Get();
 			var             result  = await context.Subjects.SingleAsync();
 			result.Name = "Updated";
 			await context.SaveChangesAsync();
@@ -160,7 +160,7 @@ public sealed class SaveTests
 		[Benchmark]
 		public async Task<object> MeasureAttach()
 		{
-			await using var context = _contexts.Get();
+			await using var context = _new.Get();
 			var             result  = await context.Subjects.AsNoTracking().SingleAsync();
 			context.Subjects.Attach(result);
 			result.Name = "Updated";
@@ -172,7 +172,7 @@ public sealed class SaveTests
 		public async Task<object> MeasureSelectAndSave()
 		{
 			var             result  = await Select();
-			await using var context = _contexts.Get();
+			await using var context = _new.Get();
 			context.Subjects.Attach(result);
 
 			result.Name = "Updated";
@@ -182,23 +182,23 @@ public sealed class SaveTests
 
 		async Task<Subject> Select()
 		{
-			await using var context = _contexts.Get();
+			await using var context = _new.Get();
 			return await context.Subjects.SingleAsync();
 		}
 	}
 
 	public class DisposeBenchmarks
 	{
-		readonly IContexts<Context> _contexts;
+		readonly INewContext<Context> _new;
 
-		public DisposeBenchmarks() : this(new PooledMemoryContexts<Context>()) {}
+		public DisposeBenchmarks() : this(new PooledMemoryNewContext<Context>()) {}
 
-		DisposeBenchmarks(IContexts<Context> contexts) => _contexts = contexts;
+		DisposeBenchmarks(INewContext<Context> @new) => _new = @new;
 
 		[GlobalSetup]
 		public async Task GlobalSetup()
 		{
-			await using var context = _contexts.Get();
+			await using var context = _new.Get();
 			await context.Database.EnsureDeletedAsync();
 			await context.Database.EnsureCreatedAsync();
 			context.Subjects.Add(new Subject { Name = "One" });
@@ -208,19 +208,19 @@ public sealed class SaveTests
 		[Benchmark(Baseline = true)]
 		public void Synchronous()
 		{
-			using var context = _contexts.Get();
+			using var context = _new.Get();
 		}
 
 		[Benchmark]
 		public async ValueTask Operation()
 		{
-			await using var context = _contexts.Get();
+			await using var context = _new.Get();
 		}
 
 		[Benchmark]
 		public ValueTask SynchronousOperation()
 		{
-			using var context = _contexts.Get();
+			using var context = _new.Get();
 			return ValueTask.CompletedTask;
 		}
 	}

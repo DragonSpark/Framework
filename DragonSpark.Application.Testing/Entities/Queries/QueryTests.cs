@@ -61,8 +61,8 @@ public sealed class QueryTests
 
 		counter.Get().Should().Be(1);
 
-		var contexts = new Contexts<Context>(factory);
-		var invoke   = new Reading<None, Subject>(new StandardScopes<Context>(contexts), Query.Default);
+		var contexts = new NewContext<Context>(factory);
+		var invoke   = new Reading<None, Subject>(new Contexts<Context>(contexts), Query.Default);
 		{
 			using var invocation = invoke.Get(None.Default);
 			var       elements   = await invocation.Elements.AsAsyncValueEnumerable().ToArrayAsync();
@@ -87,7 +87,7 @@ public sealed class QueryTests
 
 		counter.Get().Should().Be(1);
 
-		var evaluate = new SubjectsNotTwo(new Contexts<Context>(factory));
+		var evaluate = new SubjectsNotTwo(new NewContext<Context>(factory));
 		{
 			var results = await evaluate.Await();
 			var open    = results.Open();
@@ -112,7 +112,7 @@ public sealed class QueryTests
 
 		counter.Get().Should().Be(1);
 
-		var evaluate = new SubjectsNotTwo(new Contexts<Context>(factory), Complex.Default);
+		var evaluate = new SubjectsNotTwo(new NewContext<Context>(factory), Complex.Default);
 		{
 			var results = await evaluate.Await();
 			var open    = results.Open();
@@ -137,7 +137,7 @@ public sealed class QueryTests
 
 		counter.Get().Should().Be(1);
 
-		var evaluate = new SubjectsNotWithParameter(new Contexts<Context>(factory));
+		var evaluate = new SubjectsNotWithParameter(new NewContext<Context>(factory));
 		{
 			var results = await evaluate.Await("One");
 			var open    = results.Open();
@@ -160,7 +160,7 @@ public sealed class QueryTests
 	[Fact]
 	public async Task VerifyParameterSql()
 	{
-		await using var factory = await new SqlLiteContexts<Context>().Initialize();
+		await using var factory = await new SqlLiteNewContext<Context>().Initialize();
 		{
 			await using var context = factory.Get();
 			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
@@ -195,7 +195,7 @@ public sealed class QueryTests
 			await context.SaveChangesAsync();
 		}
 
-		var evaluate = new SubjectsNotTwo(new Contexts<Context>(factory));
+		var evaluate = new SubjectsNotTwo(new NewContext<Context>(factory));
 		{
 			var             results  = await evaluate.Await();
 			await using var context  = factory.CreateDbContext();
@@ -259,16 +259,16 @@ public sealed class QueryTests
 
 	sealed class SubjectsNotTwo : EvaluateToArray<None, Subject>
 	{
-		public SubjectsNotTwo(IContexts<Context> contexts) : base(contexts.Then().Scopes(), Query.Default) {}
+		public SubjectsNotTwo(INewContext<Context> @new) : base(@new.Then().Contexts(), Query.Default) {}
 
-		public SubjectsNotTwo(IContexts<Context> contexts, IQuery<Subject> query)
-			: base(contexts.Then().Scopes(), query.Get()) {}
+		public SubjectsNotTwo(INewContext<Context> @new, IQuery<Subject> query)
+			: base(@new.Then().Contexts(), query.Get()) {}
 	}
 
 	sealed class SubjectsNotWithParameter : EvaluateToArray<string, Subject>
 	{
-		public SubjectsNotWithParameter(IContexts<Context> contexts)
-			: base(contexts.Then().Scopes(), Parameter.Default) {}
+		public SubjectsNotWithParameter(INewContext<Context> @new)
+			: base(@new.Then().Contexts(), Parameter.Default) {}
 	}
 
 	public class Benchmarks
@@ -282,8 +282,8 @@ public sealed class QueryTests
 		Benchmarks(DbContextOptions<Context> options) : this(new PooledDbContextFactory<Context>(options)) {}
 
 		Benchmarks(IDbContextFactory<Context> factory)
-			: this(new SubjectsNotTwo(new Contexts<Context>(factory)),
-			       new SubjectsNotWithParameter(new Contexts<Context>(factory)),
+			: this(new SubjectsNotTwo(new NewContext<Context>(factory)),
+			       new SubjectsNotWithParameter(new NewContext<Context>(factory)),
 			       new Scoped(factory.CreateDbContext()).Get()) {}
 
 		Benchmarks(ISelecting<None, Array<Subject>> query, ISelecting<string, Array<Subject>> selected,

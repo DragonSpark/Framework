@@ -9,21 +9,21 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
 
 public class EvaluateToFirstOrDefault<T> : EvaluateToFirstOrDefault<None, T>
 {
-	protected EvaluateToFirstOrDefault(IScopes scopes,
+	protected EvaluateToFirstOrDefault(IContexts contexts,
 	                                   Expression<Func<DbContext, IQueryable<T>>> expression)
-		: base(scopes, expression.Then()) {}
+		: base(contexts, expression.Then()) {}
 
-	protected EvaluateToFirstOrDefault(IScopes scopes,
+	protected EvaluateToFirstOrDefault(IContexts contexts,
 	                                   Expression<Func<DbContext, None, IQueryable<T>>> expression)
-		: base(scopes, expression) {}
+		: base(contexts, expression) {}
 
 	protected EvaluateToFirstOrDefault(IReading<None, T> reading) : base(reading) {}
 }
 
 public class EvaluateToFirstOrDefault<TIn, T> : Evaluate<TIn, T, T?>
 {
-	public EvaluateToFirstOrDefault(IScopes scopes, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
-		: this(new Reading<TIn, T>(scopes, (d, @in) => expression.Invoke(d, @in))) {}
+	public EvaluateToFirstOrDefault(IContexts contexts, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
+		: this(new Reading<TIn, T>(contexts, (d, @in) => expression.Invoke(d, @in))) {}
 
 	protected EvaluateToFirstOrDefault(IReading<TIn, T> reading) : base(reading, ToFirstOrDefault<T>.Default) {}
 }

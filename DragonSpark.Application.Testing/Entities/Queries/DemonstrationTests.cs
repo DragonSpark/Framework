@@ -19,8 +19,8 @@ public sealed class DemonstrationTests
 	public async Task Verify()
 	{
 		int             id;
-		await using var contexts = await new SqlLiteContexts<BloggingContext>().Initialize();
-		var scopes = new EnlistedScopes(new StandardScopes<BloggingContext>(contexts.Contexts),
+		await using var contexts = await new SqlLiteNewContext<BloggingContext>().Initialize();
+		var scopes = new EnlistedContexts(new Contexts<BloggingContext>(contexts.NewContext),
 		                                AmbientContext.Default);
 		var editors = new Editors(scopes);
 		var get     = new GetSpecificBlog(scopes);
@@ -63,12 +63,12 @@ public sealed class DemonstrationTests
 
 	sealed class EditSpecificBlog : Editing<int, Blog>
 	{
-		public EditSpecificBlog(IScopes context) : base(context, SelectBlogs.Default) {}
+		public EditSpecificBlog(IContexts context) : base(context, SelectBlogs.Default) {}
 	}
 
 	sealed class GetSpecificBlog : EvaluateToSingleOrDefault<int, Blog>
 	{
-		public GetSpecificBlog(IScopes context) : base(context, SelectBlogs.Default) {}
+		public GetSpecificBlog(IContexts context) : base(context, SelectBlogs.Default) {}
 	}
 
 	sealed class SelectBlogs : StartWhere<int, Blog>

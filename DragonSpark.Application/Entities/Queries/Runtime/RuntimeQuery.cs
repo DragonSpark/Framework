@@ -9,21 +9,21 @@ namespace DragonSpark.Application.Entities.Queries.Runtime;
 
 public class RuntimeQuery<T> : RuntimeQuery<None, T>, IRuntimeQuery<T>
 {
-	protected RuntimeQuery(IScopes scopes, IQuery<None, T> query) : base(scopes, query) {}
+	protected RuntimeQuery(IContexts contexts, IQuery<None, T> query) : base(contexts, query) {}
 }
 
 public class RuntimeQuery<TIn, TOut> : IRuntimeQuery<TIn, TOut>
 {
-	readonly IScopes                                _scopes;
+	readonly IContexts                                _contexts;
 	readonly Func<DbContext, TIn, IQueryable<TOut>> _compiled;
 
-	protected RuntimeQuery(IScopes scopes, IQuery<TIn, TOut> query) : this(scopes, query.Get().Expand().Compile()) {}
+	protected RuntimeQuery(IContexts contexts, IQuery<TIn, TOut> query) : this(contexts, query.Get().Expand().Compile()) {}
 
-	RuntimeQuery(IScopes scopes, Func<DbContext, TIn, IQueryable<TOut>> compiled)
+	RuntimeQuery(IContexts contexts, Func<DbContext, TIn, IQueryable<TOut>> compiled)
 	{
-		_scopes   = scopes;
+		_contexts   = contexts;
 		_compiled = compiled;
 	}
 
-	public IQueries<TOut> Get(TIn parameter) => new Queries<TIn, TOut>(_scopes, parameter, _compiled);
+	public IQueries<TOut> Get(TIn parameter) => new Queries<TIn, TOut>(_contexts, parameter, _compiled);
 }

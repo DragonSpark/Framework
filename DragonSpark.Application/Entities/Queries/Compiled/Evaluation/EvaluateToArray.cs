@@ -11,11 +11,11 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
 
 public class EvaluateToArray<T> : EvaluateToArray<None, T>, IResulting<Array<T>>
 {
-	public EvaluateToArray(IScopes scopes, Expression<Func<DbContext, IQueryable<T>>> expression)
-		: base(scopes, expression.Then()) {}
+	public EvaluateToArray(IContexts contexts, Expression<Func<DbContext, IQueryable<T>>> expression)
+		: base(contexts, expression.Then()) {}
 
-	public EvaluateToArray(IScopes scopes, Expression<Func<DbContext, None, IQueryable<T>>> expression)
-		: base(scopes, expression) {}
+	public EvaluateToArray(IContexts contexts, Expression<Func<DbContext, None, IQueryable<T>>> expression)
+		: base(contexts, expression) {}
 
 	public EvaluateToArray(IReading<None, T> reading) : base(reading) {}
 
@@ -24,8 +24,8 @@ public class EvaluateToArray<T> : EvaluateToArray<None, T>, IResulting<Array<T>>
 
 public class EvaluateToArray<TIn, T> : Evaluate<TIn, T, Array<T>>
 {
-	public EvaluateToArray(IScopes scopes, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
-		: this(new Reading<TIn, T>(scopes, expression)) {}
+	public EvaluateToArray(IContexts contexts, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
+		: this(new Reading<TIn, T>(contexts, expression)) {}
 
 	protected EvaluateToArray(IReading<TIn, T> reading) : base(reading, ToArray<T>.Default) {}
 }

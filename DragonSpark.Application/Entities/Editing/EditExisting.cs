@@ -4,18 +4,18 @@ namespace DragonSpark.Application.Entities.Editing;
 
 public class EditExisting<T> : IEdit<T> where T : class
 {
-	readonly IScopes _scopes;
+	readonly IContexts _contexts;
 	readonly bool    _reload;
 
-	protected EditExisting(IScopes scopes, bool reload = true)
+	protected EditExisting(IContexts contexts, bool reload = true)
 	{
-		_scopes = scopes;
+		_contexts = contexts;
 		_reload = reload;
 	}
 
 	public async ValueTask<Edit<T>> Get(T parameter)
 	{
-		var context = _scopes.Get();
+		var context = _contexts.Get();
 		var editor = new Editor(context);
 		editor.Attach(parameter);
 		if (_reload)

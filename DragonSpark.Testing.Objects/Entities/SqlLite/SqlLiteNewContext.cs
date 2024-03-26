@@ -8,19 +8,19 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Testing.Objects.Entities.SqlLite;
 
-public sealed class SqlLiteContexts<T> : IContexts<T>, IAsyncDisposable where T : DbContext
+public sealed class SqlLiteNewContext<T> : INewContext<T>, IAsyncDisposable where T : DbContext
 {
-	public SqlLiteContexts() : this(NewSqlLiteOptions<T>.Default.Get()) {}
+	public SqlLiteNewContext() : this(NewSqlLiteOptions<T>.Default.Get()) {}
 
-	public SqlLiteContexts(DbContextOptions<T> options) : this(new Contexts<T>(new SqlLiteDbContexts<T>(options))) {}
+	public SqlLiteNewContext(DbContextOptions<T> options) : this(new NewContext<T>(new SqlLiteDbContexts<T>(options))) {}
 
-	public SqlLiteContexts(IContexts<T> contexts) => Contexts = contexts;
+	public SqlLiteNewContext(INewContext<T> @new) => NewContext = @new;
 
-	public IContexts<T> Contexts { get; }
+	public INewContext<T> NewContext { get; }
 
-	public async ValueTask<SqlLiteContexts<T>> Initialize()
+	public async ValueTask<SqlLiteNewContext<T>> Initialize()
 	{
-		await using var context = Contexts.Get();
+		await using var context = NewContext.Get();
 		if (!await context.Database.GetService<IDatabaseCreator>()
 		                  .To<RelationalDatabaseCreator>()
 		                  .ExistsAsync()
@@ -33,11 +33,11 @@ public sealed class SqlLiteContexts<T> : IContexts<T>, IAsyncDisposable where T 
 		return this;
 	}
 
-	public T Get() => Contexts.Get();
+	public T Get() => NewContext.Get();
 
 	public async ValueTask DisposeAsync()
 	{
-		await using var context = Contexts.Get();
+		await using var context = NewContext.Get();
 		await context.Database.EnsureDeletedAsync();
 	}
 }

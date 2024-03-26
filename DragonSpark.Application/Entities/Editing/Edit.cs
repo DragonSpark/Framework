@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Editing;
 
-public class Edit<TIn, T, TResult> : IEdit<TIn, TResult>
+public sealed class Edit<TIn, T, TResult> : IEdit<TIn, TResult>
 {
 	readonly IReading<TIn, T>      _reading;
 	readonly IEvaluate<T, TResult> _evaluate;
@@ -21,9 +21,9 @@ public class Edit<TIn, T, TResult> : IEdit<TIn, TResult>
 
 	public async ValueTask<Edit<TResult>> Get(TIn parameter)
 	{
-		var (context, disposable, elements) = _reading.Get(parameter);
+		var (context, elements) = _reading.Get(parameter);
 		var evaluate = await _evaluate.Await(elements);
-		return new(new Editor(context, disposable), evaluate);
+		return new(new Editor(context), evaluate);
 	}
 }
 
