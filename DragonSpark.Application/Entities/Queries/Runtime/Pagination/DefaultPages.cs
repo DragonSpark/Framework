@@ -22,7 +22,7 @@ sealed class DefaultPages<T> : IPages<T>
 
 	public async ValueTask<Page<T>> Get(PageInput parameter)
 	{
-		using var session = await _queries.Await();
+		using var session = _queries.Get();
 		var (query, count) = await _compose.Await(new(parameter, session.Subject));
 		var materialize = await _materialize.Await(new(query, parameter.Token));
 		return new(materialize.Open(), count);

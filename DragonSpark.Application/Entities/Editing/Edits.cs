@@ -17,8 +17,8 @@ public sealed class Edits<TIn, T> : IEdit<TIn, T>
 
 	public async ValueTask<Edit<T>> Get(TIn parameter)
 	{
-		var (context, disposable) = _scopes.Get();
+		var context = _scopes.Get();
 		var instance = await _select.Await(parameter);
-		return new(new Editor(context, await disposable.Await()), instance);
+		return new(new Editor(context), instance);
 	}
 }

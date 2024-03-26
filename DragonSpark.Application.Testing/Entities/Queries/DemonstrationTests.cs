@@ -26,7 +26,7 @@ public sealed class DemonstrationTests
 		var get     = new GetSpecificBlog(scopes);
 		var edit    = new EditSpecificBlog(scopes);
 		{
-			using var editor = await editors.Await();
+			using var editor = editors.Get();
 			var       entity = new Blog { Url = "http://blogs.msdn.com/adonet" };
 			editor.Add(entity);
 			await editor.Await();
