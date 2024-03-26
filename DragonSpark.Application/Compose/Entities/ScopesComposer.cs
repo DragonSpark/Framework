@@ -6,9 +6,9 @@ namespace DragonSpark.Application.Compose.Entities;
 
 public class ScopesComposer
 {
-	readonly IContexts _subject;
+	readonly IScopes _subject;
 
-	public ScopesComposer(IContexts subject) => _subject = subject;
+	public ScopesComposer(IScopes subject) => _subject = subject;
 
 	public ScopesComposer<TIn, TElement> Use<TIn, TElement>(QueryComposer<TIn, TElement> query) => Use(query.Get());
 

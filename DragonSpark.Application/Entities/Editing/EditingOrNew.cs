@@ -10,8 +10,8 @@ public class EditingOrNew<TIn, T> : IEdit<TIn, T> where T : class
 	readonly IEdit<TIn, T?>     _previous;
 	readonly ISelecting<TIn, T> _create;
 
-	protected EditingOrNew(IContexts context, ISelecting<TIn, T> create, IQuery<TIn, T> query)
-		: this(new Edit(context, query), create) {}
+	protected EditingOrNew(IScopes scope, ISelecting<TIn, T> create, IQuery<TIn, T> query)
+		: this(new Edit(scope, query), create) {}
 
 	protected EditingOrNew(IEdit<TIn, T?> previous, ISelecting<TIn, T> create)
 	{
@@ -33,6 +33,6 @@ public class EditingOrNew<TIn, T> : IEdit<TIn, T> where T : class
 
 	sealed class Edit : EditingOrDefault<TIn, T>
 	{
-		public Edit(IContexts context, IQuery<TIn, T> query) : base(context, query) {}
+		public Edit(IScopes scope, IQuery<TIn, T> query) : base(scope, query) {}
 	}
 }

@@ -6,20 +6,20 @@ namespace DragonSpark.Application.Entities.Queries.Runtime;
 
 sealed class Queries<TIn, TOut> : IQueries<TOut>
 {
-	readonly IContexts                                _contexts;
+	readonly IScopes                                _scopes;
 	readonly TIn                                    _parameter;
 	readonly Func<DbContext, TIn, IQueryable<TOut>> _compiled;
 
-	public Queries(IContexts contexts, TIn parameter, Func<DbContext, TIn, IQueryable<TOut>> compiled)
+	public Queries(IScopes scopes, TIn parameter, Func<DbContext, TIn, IQueryable<TOut>> compiled)
 	{
-		_contexts    = contexts;
+		_scopes    = scopes;
 		_parameter = parameter;
 		_compiled  = compiled;
 	}
 
 	public Query<TOut> Get()
 	{
-		var (context, disposable) = _contexts.Get();
+		var (context, disposable) = _scopes.Get();
 		var query   = _compiled(context, _parameter);
 		return new(query, disposable);
 	}

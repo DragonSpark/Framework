@@ -1,3 +1,3 @@
 ﻿namespace DragonSpark.Application.Entities;
 
-public interface IEnlistedContexts : IContexts;
+public interface IEnlistedScopes : IScopes;

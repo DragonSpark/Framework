@@ -4,5 +4,5 @@ namespace DragonSpark.Application.Entities.Configuration;
 
 sealed class GetSetting : EvaluateToSingleOrDefault<string, Setting>
 {
-	public GetSetting(IContexts contexts) : base(contexts, SelectSetting.Default) {}
+	public GetSetting(IScopes scopes) : base(scopes, SelectSetting.Default) {}
 }

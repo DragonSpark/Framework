@@ -4,6 +4,6 @@ namespace DragonSpark.Application.Entities.Editing;
 
 public class EditingOrDefault<TIn, T> : Edit<TIn, T?>
 {
-	protected EditingOrDefault(IContexts context, IQuery<TIn, T> query)
-		: base(context.Then().Use(query).Edit.SingleOrDefault()) {}
+	protected EditingOrDefault(IScopes scope, IQuery<TIn, T> query)
+		: base(scope.Then().Use(query).Edit.SingleOrDefault()) {}
 }

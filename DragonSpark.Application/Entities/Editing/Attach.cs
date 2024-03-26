@@ -9,20 +9,20 @@ namespace DragonSpark.Application.Entities.Editing;
 
 public class Attach<TIn, T> : Modify<TIn, T> where T : class
 {
-	protected Attach(IEnlistedContexts contexts, IQuery<TIn, T> query, IOperation<Edit<T>> modification)
-		: this(contexts, query, modification.Await) {}
+	protected Attach(IEnlistedScopes scopes, IQuery<TIn, T> query, IOperation<Edit<T>> modification)
+		: this(scopes, query, modification.Await) {}
 
-	protected Attach(IEnlistedContexts contexts, IQuery<TIn, T> query, Await<T> configure)
-		: this(contexts, query, x => configure(x.Subject)) {}
+	protected Attach(IEnlistedScopes scopes, IQuery<TIn, T> query, Await<T> configure)
+		: this(scopes, query, x => configure(x.Subject)) {}
 
-	protected Attach(IEnlistedContexts contexts, IQuery<TIn, T> query, Await<Edit<T>> configure)
-		: base(contexts, query, AttachLocal<T>.Default.Then().Operation().Append(configure)) {}
+	protected Attach(IEnlistedScopes scopes, IQuery<TIn, T> query, Await<Edit<T>> configure)
+		: base(scopes, query, AttachLocal<T>.Default.Then().Operation().Append(configure)) {}
 
-	protected Attach(IEnlistedContexts contexts, IQuery<TIn, T> query, ICommand<T> configure)
-		: this(contexts, query, configure.Then().Operation()) {}
+	protected Attach(IEnlistedScopes scopes, IQuery<TIn, T> query, ICommand<T> configure)
+		: this(scopes, query, configure.Then().Operation()) {}
 
-	protected Attach(IEnlistedContexts contexts, IQuery<TIn, T> query, Action<T> configure)
-		: this(contexts, query, Start.A.Command(configure).Operation()) {}
+	protected Attach(IEnlistedScopes scopes, IQuery<TIn, T> query, Action<T> configure)
+		: this(scopes, query, Start.A.Command(configure).Operation()) {}
 
 	protected Attach(IEdit<TIn, T> select, IOperation<T> configure) : this(select, configure.Await) {}
 
@@ -37,10 +37,10 @@ public class Attach<TIn, T> : Modify<TIn, T> where T : class
 [UsedImplicitly]
 public class Attach<T> : Modify<T> where T : class
 {
-	protected Attach(IEnlistedContexts contexts, IOperation<Edit<T>> modification) : this(contexts, modification.Await) {}
+	protected Attach(IEnlistedScopes scopes, IOperation<Edit<T>> modification) : this(scopes, modification.Await) {}
 
-	protected Attach(IEnlistedContexts contexts, Await<T> configure) : this(contexts, x => configure(x.Subject)) {}
+	protected Attach(IEnlistedScopes scopes, Await<T> configure) : this(scopes, x => configure(x.Subject)) {}
 
-	protected Attach(IEnlistedContexts contexts, Await<Edit<T>> configure)
-		: base(contexts, AttachLocal<T>.Default.Then().Operation().Append(configure)) {}
+	protected Attach(IEnlistedScopes scopes, Await<Edit<T>> configure)
+		: base(scopes, AttachLocal<T>.Default.Then().Operation().Append(configure)) {}
 }

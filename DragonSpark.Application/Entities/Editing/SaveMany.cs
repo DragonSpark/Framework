@@ -5,5 +5,5 @@ namespace DragonSpark.Application.Entities.Editing;
 
 public class SaveMany<T> : Modify<Memory<T>> where T : class
 {
-	public SaveMany(IEnlistedContexts contexts) : base(contexts, UpdateMany<T>.Default.Then().Operation()) {}
+	public SaveMany(IEnlistedScopes scopes) : base(scopes, UpdateMany<T>.Default.Then().Operation()) {}
 }

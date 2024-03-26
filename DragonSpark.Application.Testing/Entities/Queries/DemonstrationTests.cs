@@ -20,7 +20,7 @@ public sealed class DemonstrationTests
 	{
 		int             id;
 		await using var contexts = await new SqlLiteNewContext<BloggingContext>().Initialize();
-		var scopes = new EnlistedContexts(new Contexts<BloggingContext>(contexts.NewContext),
+		var scopes = new EnlistedScopes(new Scopes<BloggingContext>(contexts.NewContext),
 		                                AmbientContext.Default);
 		var editors = new Editors(scopes);
 		var get     = new GetSpecificBlog(scopes);
@@ -63,12 +63,12 @@ public sealed class DemonstrationTests
 
 	sealed class EditSpecificBlog : Editing<int, Blog>
 	{
-		public EditSpecificBlog(IContexts context) : base(context, SelectBlogs.Default) {}
+		public EditSpecificBlog(IScopes scope) : base(scope, SelectBlogs.Default) {}
 	}
 
 	sealed class GetSpecificBlog : EvaluateToSingleOrDefault<int, Blog>
 	{
-		public GetSpecificBlog(IContexts context) : base(context, SelectBlogs.Default) {}
+		public GetSpecificBlog(IScopes scope) : base(scope, SelectBlogs.Default) {}
 	}
 
 	sealed class SelectBlogs : StartWhere<int, Blog>

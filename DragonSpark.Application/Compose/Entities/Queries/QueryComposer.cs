@@ -225,7 +225,7 @@ public class QueryComposer<TIn, T> : DragonSpark.Model.Results.Instance<IQuery<T
 
 	public ScopesComposer<TIn, T> Invoke<TContext>(INewContext<TContext> @new)
 		where TContext : DbContext
-		=> new(new Contexts<TContext>(@new), _subject);
+		=> new(new Scopes<TContext>(@new), _subject);
 
 	public FormComposer<TIn, T> Form => new(new Elements<TIn, T>(_subject));
 }

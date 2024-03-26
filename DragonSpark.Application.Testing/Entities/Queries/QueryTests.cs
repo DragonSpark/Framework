@@ -62,7 +62,7 @@ public sealed class QueryTests
 		counter.Get().Should().Be(1);
 
 		var contexts = new NewContext<Context>(factory);
-		var invoke   = new Reading<None, Subject>(new Contexts<Context>(contexts), Query.Default);
+		var invoke   = new Reading<None, Subject>(new Scopes<Context>(contexts), Query.Default);
 		{
 			using var invocation = invoke.Get(None.Default);
 			var       elements   = await invocation.Elements.AsAsyncValueEnumerable().ToArrayAsync();
@@ -259,16 +259,16 @@ public sealed class QueryTests
 
 	sealed class SubjectsNotTwo : EvaluateToArray<None, Subject>
 	{
-		public SubjectsNotTwo(INewContext<Context> @new) : base(@new.Then().Contexts(), Query.Default) {}
+		public SubjectsNotTwo(INewContext<Context> @new) : base(@new.Then().Scopes(), Query.Default) {}
 
 		public SubjectsNotTwo(INewContext<Context> @new, IQuery<Subject> query)
-			: base(@new.Then().Contexts(), query.Get()) {}
+			: base(@new.Then().Scopes(), query.Get()) {}
 	}
 
 	sealed class SubjectsNotWithParameter : EvaluateToArray<string, Subject>
 	{
 		public SubjectsNotWithParameter(INewContext<Context> @new)
-			: base(@new.Then().Contexts(), Parameter.Default) {}
+			: base(@new.Then().Scopes(), Parameter.Default) {}
 	}
 
 	public class Benchmarks

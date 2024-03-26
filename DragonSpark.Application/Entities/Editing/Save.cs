@@ -2,7 +2,7 @@
 
 public class Save<T> : Update<T> where T : class
 {
-	public Save(IEnlistedContexts contexts) : base(contexts) {}
+	public Save(IEnlistedScopes scopes) : base(scopes) {}
 
-	protected Save(IContexts contexts) : base(contexts) {}
+	protected Save(IScopes scopes) : base(scopes) {}
 }
