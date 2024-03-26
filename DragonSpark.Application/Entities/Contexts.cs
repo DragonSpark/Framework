@@ -8,5 +8,5 @@ public class Contexts<T> : IContexts where T : DbContext
 
 	public Contexts(INewContext<T> @new) => _new = @new;
 
-	public DbContext Get() => _new.Get();
+	public Scope Get() => new(_new.Get());
 }
