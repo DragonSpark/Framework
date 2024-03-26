@@ -1,4 +1,6 @@
-﻿namespace DragonSpark.Application.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace DragonSpark.Application.Entities;
 
 public class AmbientAwareScopes : IEnlistedScopes
 {
@@ -11,10 +13,5 @@ public class AmbientAwareScopes : IEnlistedScopes
 		_context  = context;
 	}
 
-	public Scope Get()
-	{
-		var context = _context.Get();
-		var result  = context != null ? new Scope(context, EmptyBoundary.Default) : _previous.Get();
-		return result;
-	}
+	public DbContext Get() => _context.Get() ?? _previous.Get();
 }
