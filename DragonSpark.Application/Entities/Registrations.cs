@@ -14,10 +14,7 @@ sealed class Registrations<T> : ICommand<IServiceCollection> where T : DbContext
 
 	public void Execute(IServiceCollection parameter)
 	{
-		parameter.Start<AttachMany>().And<Clear>()
-		         .Scoped()
-		         //
-		         .Then.Start<IContexts<T>>()
+		parameter.Start<IContexts<T>>()
 		         .Forward<Contexts<T>>()
 		         .Singleton()
 		         //
@@ -28,15 +25,6 @@ sealed class Registrations<T> : ICommand<IServiceCollection> where T : DbContext
 		         .Then.Start<IEnlistedScopes>()
 		         .Forward<EnlistedScopes>()
 		         .Singleton()
-		         //
-		         .Then.Start<ISessionScopes>()
-		         .Forward<SessionScopes>()
-		         .Include(x => x.Dependencies)
-		         .Scoped()
-		         //
-		         .Then.Start<RemoveForSession<object>>()
-		         .Generic()
-		         .Scoped()
 		         //
 		         .Then.Start<Remove<object>>()
 		         .Generic()
