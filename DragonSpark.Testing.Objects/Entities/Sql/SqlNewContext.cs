@@ -10,19 +10,19 @@ using System.Threading.Tasks;
 namespace DragonSpark.Testing.Objects.Entities.Sql;
 
 [UsedImplicitly]
-public sealed class SqlContexts<T> : IContexts<T>, IAsyncDisposable where T : DbContext
+public sealed class SqlNewContext<T> : INewContext<T>, IAsyncDisposable where T : DbContext
 {
-	readonly IContexts<T> _contexts;
+	readonly INewContext<T> _new;
 
-	public SqlContexts() : this(NewSqlOptions<T>.Default.Get()) {}
+	public SqlNewContext() : this(NewSqlOptions<T>.Default.Get()) {}
 
-	public SqlContexts(DbContextOptions<T> options) : this(new Contexts<T>(new SqlDbContexts<T>(options))) {}
+	public SqlNewContext(DbContextOptions<T> options) : this(new NewContext<T>(new SqlDbContexts<T>(options))) {}
 
-	public SqlContexts(IContexts<T> contexts) => _contexts = contexts;
+	public SqlNewContext(INewContext<T> @new) => _new = @new;
 
-	public async ValueTask<SqlContexts<T>> Initialize()
+	public async ValueTask<SqlNewContext<T>> Initialize()
 	{
-		await using var context = _contexts.Get();
+		await using var context = _new.Get();
 		if (!await context.Database.GetService<IDatabaseCreator>()
 		                  .To<RelationalDatabaseCreator>()
 		                  .ExistsAsync()
@@ -35,11 +35,11 @@ public sealed class SqlContexts<T> : IContexts<T>, IAsyncDisposable where T : Db
 		return this;
 	}
 
-	public T Get() => _contexts.Get();
+	public T Get() => _new.Get();
 
 	public async ValueTask DisposeAsync()
 	{
-		await using var context = _contexts.Get();
+		await using var context = _new.Get();
 		await context.Database.EnsureDeletedAsync();
 	}
 }

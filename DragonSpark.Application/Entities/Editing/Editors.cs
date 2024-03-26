@@ -5,18 +5,18 @@ namespace DragonSpark.Application.Entities.Editing;
 
 public sealed class Editors : Editors<None>
 {
-	public Editors(IEnlistedScopes scopes) : base(scopes) {}
+	public Editors(IEnlistedContexts contexts) : base(contexts) {}
 }
 
 public class Editors<T> : ISelect<T, IEditor>
 {
-	readonly IScopes _scopes;
+	readonly IContexts _contexts;
 
-	protected Editors(IScopes scopes) => _scopes = scopes;
+	protected Editors(IContexts contexts) => _contexts = contexts;
 
 	public IEditor Get(T parameter)
 	{
-		var context = _scopes.Get();
+		var context = _contexts.Get();
 		return new Editor(context);
 	}
 }

@@ -20,7 +20,7 @@ public sealed class FormComposerTests
 	[Fact]
 	public async Task VerifyArray()
 	{
-		var contexts = new MemoryContexts<Context>();
+		var contexts = new MemoryNewContext<Context>();
 		{
 			await using var context = contexts.Get();
 			await context.Database.EnsureCreatedAsync();
@@ -39,7 +39,7 @@ public sealed class FormComposerTests
 	[Fact]
 	public async Task VerifyLease()
 	{
-		var contexts = new Contexts<Context>(new InMemoryDbContextFactory<Context>());
+		var contexts = new NewContext<Context>(new InMemoryDbContextFactory<Context>());
 		{
 			await using var context = contexts.Get();
 			await context.Database.EnsureCreatedAsync();
@@ -55,7 +55,7 @@ public sealed class FormComposerTests
 	[Fact]
 	public async Task VerifyList()
 	{
-		var contexts = new Contexts<Context>(new InMemoryDbContextFactory<Context>());
+		var contexts = new NewContext<Context>(new InMemoryDbContextFactory<Context>());
 		{
 			await using var context = contexts.Get();
 			await context.Database.EnsureCreatedAsync();
@@ -74,7 +74,7 @@ public sealed class FormComposerTests
 	[Fact]
 	public async Task VerifyDictionary()
 	{
-		var contexts = new Contexts<Context>(new InMemoryDbContextFactory<Context>());
+		var contexts = new NewContext<Context>(new InMemoryDbContextFactory<Context>());
 		{
 			await using var context = contexts.Get();
 			await context.Database.EnsureCreatedAsync();
@@ -93,7 +93,7 @@ public sealed class FormComposerTests
 	[Fact]
 	public async Task VerifyDictionaryValues()
 	{
-		var contexts = new Contexts<Context>(new InMemoryDbContextFactory<Context>());
+		var contexts = new NewContext<Context>(new InMemoryDbContextFactory<Context>());
 		{
 			await using var context = contexts.Get();
 			await context.Database.EnsureCreatedAsync();
@@ -118,7 +118,7 @@ public sealed class FormComposerTests
 	[Fact]
 	public async Task VerifySingle()
 	{
-		var contexts = new Contexts<Context>(new InMemoryDbContextFactory<Context>());
+		var contexts = new NewContext<Context>(new InMemoryDbContextFactory<Context>());
 		{
 			await using var context = contexts.Get();
 			await context.Database.EnsureCreatedAsync();
@@ -140,7 +140,7 @@ public sealed class FormComposerTests
 	[Fact]
 	public async Task VerifySingleOrDefault()
 	{
-		var contexts = new Contexts<Context>(new InMemoryDbContextFactory<Context>());
+		var contexts = new NewContext<Context>(new InMemoryDbContextFactory<Context>());
 		{
 			await using var context = contexts.Get();
 			await context.Database.EnsureCreatedAsync();
@@ -166,7 +166,7 @@ public sealed class FormComposerTests
 	[Fact]
 	public async Task VerifyFirst()
 	{
-		var contexts = new MemoryContexts<Context>();
+		var contexts = new MemoryNewContext<Context>();
 		{
 			await using var context = contexts.Get();
 			await context.Database.EnsureCreatedAsync();
@@ -188,7 +188,7 @@ public sealed class FormComposerTests
 	[Fact]
 	public async Task VerifyFirstOrDefault()
 	{
-		var contexts = new Contexts<Context>(new InMemoryDbContextFactory<Context>());
+		var contexts = new NewContext<Context>(new InMemoryDbContextFactory<Context>());
 		{
 			await using var context = contexts.Get();
 			await context.Database.EnsureCreatedAsync();
@@ -214,7 +214,7 @@ public sealed class FormComposerTests
 	[Fact]
 	public async Task VerifyAny()
 	{
-		var contexts = new Contexts<Context>(new InMemoryDbContextFactory<Context>());
+		var contexts = new NewContext<Context>(new InMemoryDbContextFactory<Context>());
 		{
 			await using var context = contexts.Get();
 			await context.Database.EnsureCreatedAsync();
@@ -267,10 +267,10 @@ public sealed class FormComposerTests
 
 		public Benchmarks() : this(new InMemoryDbContextFactory<Context>()) {}
 
-		Benchmarks(IDbContextFactory<Context> factory) : this(new Contexts<Context>(factory), factory) {}
+		Benchmarks(IDbContextFactory<Context> factory) : this(new NewContext<Context>(factory), factory) {}
 
-		Benchmarks(IContexts<Context> contexts, IDbContextFactory<Context> factory)
-			: this(Start.A.Query<Subject>().Where(x => x.Name == "Two").Invoke(contexts).To.Single(),
+		Benchmarks(INewContext<Context> @new, IDbContextFactory<Context> factory)
+			: this(Start.A.Query<Subject>().Where(x => x.Name == "Two").Invoke(@new).To.Single(),
 			       factory,
 			       EF.CompileAsyncQuery<DbContext, Subject>(x => x.Set<Subject>().Single(y => y.Name == "Two"))) {}
 

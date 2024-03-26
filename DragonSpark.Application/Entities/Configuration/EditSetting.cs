@@ -4,5 +4,5 @@ namespace DragonSpark.Application.Entities.Configuration;
 
 sealed class EditSetting : EditOrDefault<string, Setting>
 {
-	public EditSetting(IEnlistedScopes context) : base(context, SelectSetting.Default) {}
+	public EditSetting(IEnlistedContexts context) : base(context, SelectSetting.Default) {}
 }

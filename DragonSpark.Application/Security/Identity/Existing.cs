@@ -5,5 +5,5 @@ namespace DragonSpark.Application.Security.Identity;
 
 public class Existing<T> : EditExisting<T> where T : IdentityUser
 {
-	protected Existing(IEnlistedScopes scopes) : base(scopes) {}
+	protected Existing(IEnlistedContexts contexts) : base(contexts) {}
 }

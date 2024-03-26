@@ -9,15 +9,15 @@ namespace DragonSpark.Application.Compose.Entities;
 
 public sealed class ContextsComposer<T> where T : DbContext
 {
-	readonly IContexts<T> _subject;
+	readonly INewContext<T> _subject;
 
-	public ContextsComposer(IContexts<T> subject) => _subject = subject;
+	public ContextsComposer(INewContext<T> subject) => _subject = subject;
 
 	public ScopesComposer<None, TElement> Use<TElement>() where TElement : class
-		=> new(Scopes(), Set<TElement>.Default);
+		=> new(Contexts(), Set<TElement>.Default);
 
 	public ScopesComposer<TIn, TElement> Use<TIn, TElement>(IQuery<TIn, TElement> query)
-		=> new(Scopes(), query);
+		=> new(Contexts(), query);
 
-	public IStandardScopes Scopes() => new StandardScopes<T>(_subject);
+	public IContexts Contexts() => new Contexts<T>(_subject);
 }
