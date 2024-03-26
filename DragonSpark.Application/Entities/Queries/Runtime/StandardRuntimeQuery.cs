@@ -4,10 +4,10 @@ namespace DragonSpark.Application.Entities.Queries.Runtime;
 
 public class StandardRuntimeQuery<TIn, TOut> : RuntimeQuery<TIn, TOut>
 {
-	protected StandardRuntimeQuery(IContexts contexts, IQuery<TIn, TOut> query) : base(contexts, query) {}
+	protected StandardRuntimeQuery(IScopes scopes, IQuery<TIn, TOut> query) : base(scopes, query) {}
 }
 
 public class StandardRuntimeQuery<TOut> : RuntimeQuery<TOut>
 {
-	protected StandardRuntimeQuery(IContexts contexts, IQuery<TOut> query) : base(contexts, query) {}
+	protected StandardRuntimeQuery(IScopes scopes, IQuery<TOut> query) : base(scopes, query) {}
 }

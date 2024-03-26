@@ -117,7 +117,7 @@ public static partial class Extensions
 
 	public static ContextsComposer<T> Then<T>(this INewContext<T> @this) where T : DbContext => new(@this);
 
-	public static ScopesComposer Then(this IContexts @this) => new(@this);
+	public static ScopesComposer Then(this IScopes @this) => new(@this);
 
 	public static QueryComposer<TIn, T> Then<TIn, T>(this IQuery<TIn, T> @this) => new(@this);
 

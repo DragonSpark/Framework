@@ -36,7 +36,7 @@ public sealed class InputQueryTests
 		counter.Get().Should().Be(1);
 
 		var evaluate =
-			new EvaluateToArray<string, string>(new NewContext<Context>(factory).Then().Contexts(),
+			new EvaluateToArray<string, string>(new NewContext<Context>(factory).Then().Scopes(),
 			                                    Selected.Default);
 		{
 			var results = await evaluate.Await("One");
@@ -107,7 +107,7 @@ public sealed class InputQueryTests
 			await context.SaveChangesAsync();
 		}
 
-		var evaluation = new EvaluateToArray<string, string>(factory.Then().Contexts(), Selected.Default);
+		var evaluation = new EvaluateToArray<string, string>(factory.Then().Scopes(), Selected.Default);
 		{
 			var results = await evaluation.Await("One");
 			var open    = results.Open();
@@ -139,7 +139,7 @@ public sealed class InputQueryTests
 		var id = new Guid("C750443A-19D0-4FD0-B45A-9D1722AD0DB3");
 
 		var evaluate =
-			new EvaluateToArray<Input, string>(new NewContext<ContextWithData>(contexts).Then().Contexts(),
+			new EvaluateToArray<Input, string>(new NewContext<ContextWithData>(contexts).Then().Scopes(),
 			                                   ComplexSelected.Default);
 		{
 			var results = await evaluate.Await(new(id, "One"));

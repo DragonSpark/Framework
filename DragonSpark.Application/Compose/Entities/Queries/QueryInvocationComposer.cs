@@ -12,16 +12,16 @@ namespace DragonSpark.Application.Compose.Entities.Queries;
 
 public sealed class QueryInvocationComposer<TIn, T>
 {
-	readonly IContexts          _contexts;
+	readonly IScopes          _scopes;
 	readonly IQuery<TIn, T>   _query;
 	readonly IReading<TIn, T> _subject;
 
-	public QueryInvocationComposer(IContexts contexts, IQuery<TIn, T> query)
-		: this(contexts, query, new Reading<TIn, T>(contexts, query.Get())) {}
+	public QueryInvocationComposer(IScopes scopes, IQuery<TIn, T> query)
+		: this(scopes, query, new Reading<TIn, T>(scopes, query.Get())) {}
 
-	public QueryInvocationComposer(IContexts contexts, IQuery<TIn, T> query, IReading<TIn, T> subject)
+	public QueryInvocationComposer(IScopes scopes, IQuery<TIn, T> query, IReading<TIn, T> subject)
 	{
-		_contexts  = contexts;
+		_scopes  = scopes;
 		_query   = query;
 		_subject = subject;
 	}
@@ -40,13 +40,13 @@ public sealed class QueryInvocationComposer<TIn, T>
 		where TKey : notnull
 		=> new Evaluate<TIn, T, Dictionary<TKey, TValue>>(_subject, new ToDictionary<T, TKey, TValue>(key, value));
 
-	public ISelecting<TIn, T> Single() => new EvaluateToSingle<TIn, T>(_contexts, _query.Get());
+	public ISelecting<TIn, T> Single() => new EvaluateToSingle<TIn, T>(_scopes, _query.Get());
 
-	public ISelecting<TIn, T?> SingleOrDefault() => new EvaluateToSingleOrDefault<TIn, T>(_contexts, _query.Get());
+	public ISelecting<TIn, T?> SingleOrDefault() => new EvaluateToSingleOrDefault<TIn, T>(_scopes, _query.Get());
 
-	public ISelecting<TIn, T> First() => new EvaluateToFirst<TIn, T>(_contexts, _query.Get());
+	public ISelecting<TIn, T> First() => new EvaluateToFirst<TIn, T>(_scopes, _query.Get());
 
-	public ISelecting<TIn, T?> FirstOrDefault() => new EvaluateToFirstOrDefault<TIn, T>(_contexts, _query.Get());
+	public ISelecting<TIn, T?> FirstOrDefault() => new EvaluateToFirstOrDefault<TIn, T>(_scopes, _query.Get());
 
-	public ISelecting<TIn, bool> Any() => new EvaluateToAny<TIn, T>(_contexts, _query.Get());
+	public ISelecting<TIn, bool> Any() => new EvaluateToAny<TIn, T>(_scopes, _query.Get());
 }

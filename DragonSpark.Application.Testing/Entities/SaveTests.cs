@@ -30,7 +30,7 @@ public sealed class SaveTests
 			await data.SaveChangesAsync();
 		}
 		var query = contexts.Then().Use<Subject>().To.Single();
-		var sut = new Save<Subject>(new EnlistedContexts(new Contexts<Context>(contexts),
+		var sut = new Save<Subject>(new EnlistedScopes(new Scopes<Context>(contexts),
 		                                               EmptyAmbientContext.Default));
 		{
 			var first = await query.Await();

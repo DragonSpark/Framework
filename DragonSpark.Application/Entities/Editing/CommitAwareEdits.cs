@@ -8,23 +8,23 @@ namespace DragonSpark.Application.Entities.Editing;
 [UsedImplicitly]
 public class CommitAwareEdits<T> : CommitAwareEdits<T, T>
 {
-	protected CommitAwareEdits(IContexts contexts) : base(contexts, Start.A.Selection<T>().By.Self.Operation().Out()) {}
+	protected CommitAwareEdits(IScopes scopes) : base(scopes, Start.A.Selection<T>().By.Self.Operation().Out()) {}
 }
 
 public class CommitAwareEdits<TIn, T> : IEdit<TIn, T>
 {
-	readonly IContexts          _contexts;
+	readonly IScopes          _scopes;
 	readonly ISelecting<TIn, T> _select;
 
-	public CommitAwareEdits(IContexts contexts, ISelecting<TIn, T> select)
+	public CommitAwareEdits(IScopes scopes, ISelecting<TIn, T> select)
 	{
-		_contexts = contexts;
+		_scopes = scopes;
 		_select   = select;
 	}
 
 	public async ValueTask<Edit<T>> Get(TIn parameter)
 	{
-		var (context, disposable) = _contexts.Get();
+		var (context, disposable) = _scopes.Get();
 		var instance = await _select.Await(parameter);
 		var previous = new Editor(context, disposable);
 		var editor   = new CommitAwareEditor(context.Database, previous);
