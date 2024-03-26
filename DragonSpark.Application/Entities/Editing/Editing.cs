@@ -4,5 +4,5 @@ namespace DragonSpark.Application.Entities.Editing;
 
 public class Editing<TIn, T> : Edit<TIn, T>
 {
-	protected Editing(IContexts context, IQuery<TIn, T> query) : base(context.Then().Use(query).Edit.Single()) {}
+	protected Editing(IScopes scope, IQuery<TIn, T> query) : base(scope.Then().Use(query).Edit.Single()) {}
 }

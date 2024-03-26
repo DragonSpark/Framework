@@ -14,10 +14,10 @@ public sealed class ContextsComposer<T> where T : DbContext
 	public ContextsComposer(INewContext<T> subject) => _subject = subject;
 
 	public ScopesComposer<None, TElement> Use<TElement>() where TElement : class
-		=> new(Contexts(), Set<TElement>.Default);
+		=> new(Scopes(), Set<TElement>.Default);
 
 	public ScopesComposer<TIn, TElement> Use<TIn, TElement>(IQuery<TIn, TElement> query)
-		=> new(Contexts(), query);
+		=> new(Scopes(), query);
 
-	public IContexts Contexts() => new Contexts<T>(_subject);
+	public IScopes Scopes() => new Scopes<T>(_subject);
 }

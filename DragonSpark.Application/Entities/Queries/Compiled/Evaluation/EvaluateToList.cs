@@ -10,8 +10,8 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
 [UsedImplicitly]
 public class EvaluateToList<TIn, T> : Evaluate<TIn, T, List<T>>
 {
-	protected EvaluateToList(IContexts contexts, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
-		: this(new Reading<TIn, T>(contexts, expression)) {}
+	protected EvaluateToList(IScopes scopes, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
+		: this(new Reading<TIn, T>(scopes, expression)) {}
 
 	protected EvaluateToList(IReading<TIn, T> reading) : base(reading, ToList<T>.Default) {}
 }

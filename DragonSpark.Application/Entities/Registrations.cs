@@ -18,12 +18,12 @@ sealed class Registrations<T> : ICommand<IServiceCollection> where T : DbContext
 		         .Forward<NewContext<T>>()
 		         .Singleton()
 		         //
-		         .Then.Start<IContexts>()
-		         .Forward<Contexts<T>>()
+		         .Then.Start<IScopes>()
+		         .Forward<Scopes<T>>()
 		         .Singleton()
 		         //
-		         .Then.Start<IEnlistedContexts>()
-		         .Forward<EnlistedContexts>()
+		         .Then.Start<IEnlistedScopes>()
+		         .Forward<EnlistedScopes>()
 		         .Singleton()
 		         //
 		         .Then.Start<Remove<object>>()

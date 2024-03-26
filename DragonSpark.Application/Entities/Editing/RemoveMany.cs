@@ -9,8 +9,8 @@ public class RemoveMany<TIn, TOut> : IOperation<TIn> where TOut : class
 {
 	readonly IEditMany<TIn, TOut> _edit;
 
-	protected RemoveMany(IEnlistedContexts contexts, IQuery<TIn, TOut> query)
-		: this(new EditMany<TIn, TOut>(contexts, query)) {}
+	protected RemoveMany(IEnlistedScopes scopes, IQuery<TIn, TOut> query)
+		: this(new EditMany<TIn, TOut>(scopes, query)) {}
 
 	public RemoveMany(IEditMany<TIn, TOut> edit) => _edit = edit;
 
