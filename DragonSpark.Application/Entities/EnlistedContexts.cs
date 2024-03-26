@@ -2,12 +2,12 @@
 
 namespace DragonSpark.Application.Entities;
 
-public class AmbientAwareScopes : IEnlistedScopes
+public sealed class EnlistedContexts : IEnlistedContexts
 {
-	readonly IScopes         _previous;
+	readonly IContexts         _previous;
 	readonly IAmbientContext _context;
 
-	protected AmbientAwareScopes(IScopes previous, IAmbientContext context)
+	public EnlistedContexts(IContexts previous, IAmbientContext context)
 	{
 		_previous = previous;
 		_context  = context;

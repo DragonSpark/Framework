@@ -2,11 +2,11 @@
 
 namespace DragonSpark.Application.Entities;
 
-public class Contexts<T> : IContexts<T> where T : DbContext
+public class Contexts<T> : IContexts where T : DbContext
 {
-	readonly IDbContextFactory<T> _factory;
+	readonly INewContext<T> _new;
 
-	public Contexts(IDbContextFactory<T> factory) => _factory = factory;
+	public Contexts(INewContext<T> @new) => _new = @new;
 
-	public T Get() => _factory.CreateDbContext();
+	public DbContext Get() => _new.Get();
 }

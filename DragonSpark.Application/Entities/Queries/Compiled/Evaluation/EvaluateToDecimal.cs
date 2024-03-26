@@ -7,8 +7,8 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
 
 public class EvaluateToDecimal<T> : Evaluate<T, decimal, decimal>
 {
-	protected EvaluateToDecimal(IScopes scopes, Expression<Func<DbContext, T, IQueryable<decimal>>> expression)
-		: this(new Reading<T, decimal>(scopes, expression)) {}
+	protected EvaluateToDecimal(IContexts contexts, Expression<Func<DbContext, T, IQueryable<decimal>>> expression)
+		: this(new Reading<T, decimal>(contexts, expression)) {}
 
 	protected EvaluateToDecimal(IReading<T, decimal> reading) : base(reading, ToDecimal.Default) {}
 }

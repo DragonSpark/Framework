@@ -19,7 +19,7 @@ public sealed class CombineTests
 	[Fact]
 	public async Task Verify()
 	{
-		var contexts = new Contexts<Context>(new InMemoryDbContextFactory<Context>());
+		var contexts = new NewContext<Context>(new InMemoryDbContextFactory<Context>());
 		{
 			await using var context = contexts.Get();
 			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
@@ -39,7 +39,7 @@ public sealed class CombineTests
 	[Fact]
 	public async Task VerifySql()
 	{
-		await using var factory = await new SqlLiteContexts<Context>().Initialize();
+		await using var factory = await new SqlLiteNewContext<Context>().Initialize();
 		{
 			await using var context = factory.Get();
 			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },

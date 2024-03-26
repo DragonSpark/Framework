@@ -7,18 +7,18 @@ namespace DragonSpark.Application.Compose.Entities.Queries;
 
 public sealed class ScopesComposer<TIn, T> : IResult<IReading<TIn, T>>
 {
-	readonly IScopes        _scopes;
+	readonly IContexts        _contexts;
 	readonly IQuery<TIn, T> _query;
 
-	public ScopesComposer(IScopes scopes, IQuery<TIn, T> query)
+	public ScopesComposer(IContexts contexts, IQuery<TIn, T> query)
 	{
-		_scopes = scopes;
+		_contexts = contexts;
 		_query  = query;
 	}
 
-	public QueryInvocationComposer<TIn, T> To => new(_scopes, _query);
+	public QueryInvocationComposer<TIn, T> To => new(_contexts, _query);
 
 	public EditInvocationComposer<TIn, T> Edit => new(Get());
 
-	public IReading<TIn, T> Get() => new Reading<TIn, T>(_scopes, _query.Get());
+	public IReading<TIn, T> Get() => new Reading<TIn, T>(_contexts, _query.Get());
 }

@@ -9,13 +9,13 @@ namespace DragonSpark.Application.Entities;
 
 public sealed class Local<TKey, T> : ISelecting<TKey, T?> where T : class
 {
-	readonly IScopes                 _context;
+	readonly IContexts                 _context;
 	readonly Func<T, TKey>           _key;
 	readonly IEqualityComparer<TKey> _equality;
 
-	public Local(IScopes context, Func<T, TKey> key) : this(context, key, EqualityComparer<TKey>.Default) {}
+	public Local(IContexts context, Func<T, TKey> key) : this(context, key, EqualityComparer<TKey>.Default) {}
 
-	public Local(IScopes context, Func<T, TKey> key, IEqualityComparer<TKey> equality)
+	public Local(IContexts context, Func<T, TKey> key, IEqualityComparer<TKey> equality)
 	{
 		_context  = context;
 		_key      = key;

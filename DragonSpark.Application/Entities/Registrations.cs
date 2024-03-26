@@ -14,16 +14,16 @@ sealed class Registrations<T> : ICommand<IServiceCollection> where T : DbContext
 
 	public void Execute(IServiceCollection parameter)
 	{
-		parameter.Start<IContexts<T>>()
+		parameter.Start<INewContext<T>>()
+		         .Forward<NewContext<T>>()
+		         .Singleton()
+		         //
+		         .Then.Start<IContexts>()
 		         .Forward<Contexts<T>>()
 		         .Singleton()
 		         //
-		         .Then.Start<IStandardScopes>()
-		         .Forward<StandardScopes<T>>()
-		         .Singleton()
-		         //
-		         .Then.Start<IEnlistedScopes>()
-		         .Forward<EnlistedScopes>()
+		         .Then.Start<IEnlistedContexts>()
+		         .Forward<EnlistedContexts>()
 		         .Singleton()
 		         //
 		         .Then.Start<Remove<object>>()

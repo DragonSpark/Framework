@@ -7,8 +7,8 @@ namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
 
 public class EvaluateToNumber<T> : Evaluate<T, int, uint>
 {
-	protected EvaluateToNumber(IScopes scopes, Expression<Func<DbContext, T, IQueryable<int>>> expression)
-		: this(new Reading<T, int>(scopes, expression)) {}
+	protected EvaluateToNumber(IContexts contexts, Expression<Func<DbContext, T, IQueryable<int>>> expression)
+		: this(new Reading<T, int>(contexts, expression)) {}
 
 	protected EvaluateToNumber(IReading<T, int> reading) : base(reading, ToNumber.Default) {}
 }

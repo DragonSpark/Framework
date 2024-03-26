@@ -36,7 +36,7 @@ public sealed class InputQueryTests
 		counter.Get().Should().Be(1);
 
 		var evaluate =
-			new EvaluateToArray<string, string>(new Contexts<Context>(factory).Then().Scopes(),
+			new EvaluateToArray<string, string>(new NewContext<Context>(factory).Then().Contexts(),
 			                                    Selected.Default);
 		{
 			var results = await evaluate.Await("One");
@@ -51,7 +51,7 @@ public sealed class InputQueryTests
 	[Fact]
 	public async Task VerifyExternalParameter()
 	{
-		var contexts = new MemoryContexts<Context>();
+		var contexts = new MemoryNewContext<Context>();
 		{
 			await using var context = contexts.Get();
 			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
@@ -75,7 +75,7 @@ public sealed class InputQueryTests
 	[Fact]
 	public async Task VerifyExternalParameterSql()
 	{
-		await using var contexts = await new SqlLiteContexts<Context>().Initialize();
+		await using var contexts = await new SqlLiteNewContext<Context>().Initialize();
 		{
 			await using var context = contexts.Get();
 			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
@@ -99,7 +99,7 @@ public sealed class InputQueryTests
 	[Fact]
 	public async Task VerifySelectedSql()
 	{
-		await using var factory = await new SqlLiteContexts<Context>().Initialize();
+		await using var factory = await new SqlLiteNewContext<Context>().Initialize();
 		{
 			await using var context = factory.Get();
 			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
@@ -107,7 +107,7 @@ public sealed class InputQueryTests
 			await context.SaveChangesAsync();
 		}
 
-		var evaluation = new EvaluateToArray<string, string>(factory.Then().Scopes(), Selected.Default);
+		var evaluation = new EvaluateToArray<string, string>(factory.Then().Contexts(), Selected.Default);
 		{
 			var results = await evaluation.Await("One");
 			var open    = results.Open();
@@ -139,7 +139,7 @@ public sealed class InputQueryTests
 		var id = new Guid("C750443A-19D0-4FD0-B45A-9D1722AD0DB3");
 
 		var evaluate =
-			new EvaluateToArray<Input, string>(new Contexts<ContextWithData>(contexts).Then().Scopes(),
+			new EvaluateToArray<Input, string>(new NewContext<ContextWithData>(contexts).Then().Contexts(),
 			                                   ComplexSelected.Default);
 		{
 			var results = await evaluate.Await(new(id, "One"));
@@ -154,7 +154,7 @@ public sealed class InputQueryTests
 	[Fact]
 	public async Task VerifyComplexSelectedSql()
 	{
-		await using var contexts = await new SqlLiteContexts<ContextWithData>().Initialize();
+		await using var contexts = await new SqlLiteNewContext<ContextWithData>().Initialize();
 		{
 			await using var context = contexts.Get();
 			await context.Database.EnsureCreatedAsync();
@@ -174,7 +174,7 @@ public sealed class InputQueryTests
 	[Fact]
 	public async Task VerifyWhereWithParameter()
 	{
-		var contexts = new MemoryContexts<ContextWithData>();
+		var contexts = new MemoryNewContext<ContextWithData>();
 		{
 			await using var data = contexts.Get();
 			await data.Database.EnsureCreatedAsync();
@@ -200,7 +200,7 @@ public sealed class InputQueryTests
 	[Fact]
 	public async Task VerifyWhereWithParameterSql()
 	{
-		await using var contexts = await new SqlLiteContexts<ContextWithData>().Initialize();
+		await using var contexts = await new SqlLiteNewContext<ContextWithData>().Initialize();
 		{
 			await using var data = contexts.Get();
 			await data.Database.EnsureCreatedAsync();
@@ -285,7 +285,7 @@ public sealed class InputQueryTests
 
 	public class Benchmarks
 	{
-		readonly IContexts<ContextWithData> _contexts;
+		readonly INewContext<ContextWithData> _new;
 		readonly ISelecting<Input, Result>  _select;
 
 		public Benchmarks() : this(new DbContextOptionsBuilder<ContextWithData>().UseInMemoryDatabase("0")
@@ -294,29 +294,29 @@ public sealed class InputQueryTests
 		Benchmarks(DbContextOptions<ContextWithData> options) :
 			this(new PooledDbContextFactory<ContextWithData>(options)) {}
 
-		Benchmarks(IDbContextFactory<ContextWithData> factory) : this(new Contexts<ContextWithData>(factory)) {}
+		Benchmarks(IDbContextFactory<ContextWithData> factory) : this(new NewContext<ContextWithData>(factory)) {}
 
-		Benchmarks(IContexts<ContextWithData> contexts)
-			: this(contexts,
+		Benchmarks(INewContext<ContextWithData> @new)
+			: this(@new,
 			       Start.A.Query<Subject>()
 			            .Accept<Input>()
 			            .Where((input, subject)
 				                   => subject.Name.StartsWith(input.Name))
 			            .Where((input, subject) => input.Identity == subject.Id)
 			            .Select(x => new Result(x.Id, x.Name))
-			            .Invoke(contexts)
+			            .Invoke(@new)
 			            .To.Single()) {}
 
-		Benchmarks(IContexts<ContextWithData> contexts, ISelecting<Input, Result> select)
+		Benchmarks(INewContext<ContextWithData> @new, ISelecting<Input, Result> select)
 		{
-			_contexts = contexts;
+			_new = @new;
 			_select   = @select;
 		}
 
 		[GlobalSetup]
 		public async Task GlobalSetup()
 		{
-			await using var dbContext = _contexts.Get();
+			await using var dbContext = _new.Get();
 			await dbContext.Database.EnsureCreatedAsync();
 		}
 

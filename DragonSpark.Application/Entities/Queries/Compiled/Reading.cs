@@ -16,21 +16,21 @@ public readonly record struct Reading<T>(DbContext Context, IAsyncEnumerable<T> 
 
 public sealed class Reading<TIn, T> : IReading<TIn, T>
 {
-	readonly IScopes           _scopes;
+	readonly IContexts           _contexts;
 	readonly IElements<TIn, T> _elements;
 
-	public Reading(IScopes scopes, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
-		: this(scopes, new Elements<TIn, T>(expression)) {}
+	public Reading(IContexts contexts, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
+		: this(contexts, new Elements<TIn, T>(expression)) {}
 
-	public Reading(IScopes scopes, IElements<TIn, T> elements)
+	public Reading(IContexts contexts, IElements<TIn, T> elements)
 	{
-		_scopes   = scopes;
+		_contexts   = contexts;
 		_elements = elements;
 	}
 
 	public Reading<T> Get(TIn parameter)
 	{
-		var context = _scopes.Get();
+		var context = _contexts.Get();
 		var elements = _elements.Get(new(context, parameter));
 		return new(context, elements);
 	}
