@@ -24,9 +24,9 @@ public class CommitAwareEdits<TIn, T> : IEdit<TIn, T>
 
 	public async ValueTask<Edit<T>> Get(TIn parameter)
 	{
-		var (context, disposable) = _scopes.Get();
+		var context  = _scopes.Get();
 		var instance = await _select.Await(parameter);
-		var previous = new Editor(context, await disposable.Await());
+		var previous = new Editor(context);
 		var editor   = new CommitAwareEditor(context.Database, previous);
 		return new(editor, instance);
 	}

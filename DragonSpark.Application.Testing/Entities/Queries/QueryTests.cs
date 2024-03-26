@@ -64,7 +64,7 @@ public sealed class QueryTests
 		var contexts = new Contexts<Context>(factory);
 		var invoke   = new Reading<None, Subject>(new StandardScopes<Context>(contexts), Query.Default);
 		{
-			using var invocation = await invoke.Get(None.Default);
+			using var invocation = invoke.Get(None.Default);
 			var       elements   = await invocation.Elements.AsAsyncValueEnumerable().ToArrayAsync();
 			elements.Should().HaveCount(2);
 			elements.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");

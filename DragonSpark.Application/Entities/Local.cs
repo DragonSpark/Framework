@@ -22,19 +22,18 @@ public sealed class Local<TKey, T> : ISelecting<TKey, T?> where T : class
 		_equality = equality;
 	}
 
-	public async ValueTask<T?> Get(TKey parameter)
+	public ValueTask<T?> Get(TKey parameter)
 	{
-		var (subject, boundary) = _context.Get();
-		using var _ = await boundary.Await();
+		var subject = _context.Get();
 		foreach (var local in subject.Set<T>().Local.AsValueEnumerable())
 		{
 			var entity = _key(local);
 			if (_equality.Equals(entity, parameter))
 			{
-				return local;
+				return local.ToOperation<T?>();
 			}
 		}
 
-		return null;
+		return default(T?).ToOperation();
 	}
 }
