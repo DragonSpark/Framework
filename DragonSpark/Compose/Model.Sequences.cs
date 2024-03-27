@@ -13,6 +13,8 @@ public static partial class ExtensionMethods
 
 	public static ISelect<_, T[]> Open<_, T>(this ISelect<_, Array<T>> @this) => @this.Select(x => x.Open());
 
+	public static T[] Open<T>(this IArray<T> @this) => @this.Get();
+
 	/**/
 
 	public static Selector<_, T[]> Open<_, T>(this Selector<_, IEnumerable<T>> @this)
