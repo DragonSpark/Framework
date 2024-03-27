@@ -1,19 +1,24 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
+using DragonSpark.Model.Sequences;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
+using System.Reflection;
 
 namespace DragonSpark.Application.Hosting.Server.Blazor;
 
 sealed class ApplyBlazorWebApplication<T> : ICommand<IApplicationBuilder>
 {
-	public static ApplyBlazorWebApplication<T> Default { get; } = new();
+	readonly string          _name;
+	readonly Array<Assembly> _assemblies;
 
-	ApplyBlazorWebApplication() : this("__EndpointRouteBuilder") {}
+	public ApplyBlazorWebApplication(Array<Assembly> assemblies) : this("__EndpointRouteBuilder", assemblies) {}
 
-	readonly string _name;
-
-	public ApplyBlazorWebApplication(string name) => _name = name;
+	public ApplyBlazorWebApplication(string name, Array<Assembly> assemblies)
+	{
+		_name       = name;
+		_assemblies = assemblies;
+	}
 
 	public void Execute(IApplicationBuilder parameter)
 	{
@@ -21,6 +26,7 @@ sealed class ApplyBlazorWebApplication<T> : ICommand<IApplicationBuilder>
 		         .Verify()
 		         .To<IEndpointRouteBuilder>()
 		         .MapRazorComponents<T>()
-		         .AddInteractiveServerRenderMode();
+		         .AddInteractiveServerRenderMode()
+		         .AddAdditionalAssemblies(_assemblies);
 	}
 }

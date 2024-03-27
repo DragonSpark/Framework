@@ -3,6 +3,7 @@ using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Builder;
 using System;
+using System.Reflection;
 
 namespace DragonSpark.Application.Hosting.Server.Blazor;
 
@@ -24,8 +25,8 @@ sealed class BlazorApplicationProfile<T> : ApplicationProfile
 	BlazorApplicationProfile()
 		: this(EmptyCommand<IApplicationBuilder>.Default.Execute) {}
 
-	public BlazorApplicationProfile(Action<IApplicationBuilder> configure)
-		: this(configure, ApplyBlazorWebApplication<T>.Default.Execute) {}
+	public BlazorApplicationProfile(Action<IApplicationBuilder> configure, params Assembly[] additional)
+		: this(configure, new ApplyBlazorWebApplication<T>(additional).Execute) {}
 
 	public BlazorApplicationProfile(Action<IApplicationBuilder> configure, Action<IApplicationBuilder> post)
 		: base(DefaultServiceConfiguration.Default.Execute,
