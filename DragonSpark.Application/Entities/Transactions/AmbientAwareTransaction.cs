@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Transactions;
 
-sealed class AmbientAwareTransaction : ITransaction
+public sealed class AmbientAwareTransaction : ITransaction
 {
 	readonly ITransaction           _previous;
 	readonly IMutable<IOperations?> _store;

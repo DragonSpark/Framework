@@ -1,12 +1,13 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model;
+using DragonSpark.Model.Results;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Transactions;
 
-sealed class RequiredDatabaseTransaction : ITransaction
+sealed class RequiredDatabaseTransaction : ITransaction, IContextAware
 {
 	readonly DbContext      _context;
 	readonly DatabaseFacade _facade;
@@ -28,4 +29,6 @@ sealed class RequiredDatabaseTransaction : ITransaction
 	}
 
 	public ValueTask DisposeAsync() => _facade.CurrentTransaction?.DisposeAsync() ?? ValueTask.CompletedTask;
+
+	DbContext IResult<DbContext>.Get() => _context;
 }
