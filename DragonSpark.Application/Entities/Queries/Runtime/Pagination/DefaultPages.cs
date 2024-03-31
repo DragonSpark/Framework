@@ -24,7 +24,7 @@ sealed class DefaultPages<T> : IPages<T>
 	{
 		using var session = await _queries.Await();
 		var (query, count) = await _compose.Await(new(parameter, session.Subject));
-		var materialize = await _materialize.Await(query);
+		var materialize = await _materialize.Await(new(query, parameter.Token));
 		return new(materialize.Open(), count);
 	}
 }

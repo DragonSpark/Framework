@@ -27,9 +27,8 @@
 
 <div @ref="_element" style="width: 1px;height: 1px"></div>
 
-
 @code {
-    readonly Switch _reload = new();
+    readonly Switch _reload = new(), _notify = new();
     readonly List<T> _items = new();
     ElementReference? _element;
     IJSObjectReference? _instance;
@@ -81,31 +80,19 @@
     {
         if (!_complete && !_loading)
         {
-            _loading = true;
+            _loading =   true;
+            _source  ??= new();
+
+            StateHasChanged();
             try
             {
-                _source ??= new CancellationTokenSource();
-
-                StateHasChanged();
-                try
+                var page = await Input.Get(new(true, OrderBy, Filter, new(_items.Count, PageSize), _source.Token));
+                if (!_source.IsCancellationRequested)
                 {
-                    var page = await Input.Get(new(true, OrderBy, Filter, new(_items.Count, PageSize)));
-                    if (page.Count > 0)
-                    {
-                        _items.AddRange(page);
-                    }
-
-                    if (_items.Count < (int)page.Total.Value())
-                    {
-                        await _instance.Verify().InvokeVoidAsync("onNewItems");
-                    }
-                    else
-                    {
-                        _complete = true;
-                    }
+                    await Load(page);
                 }
-                catch (OperationCanceledException oce) when (oce.CancellationToken == _source.Token) {}
             }
+            catch (OperationCanceledException oce) when (oce.CancellationToken == _source.Token) {}
             finally
             {
                 _loading = false;
@@ -115,12 +102,49 @@
         }
     }
 
+    async Task Load(Page<T> page)
+    {
+        if (page.Count > 0)
+        {
+            _items.AddRange(page);
+        }
+
+        if (_items.Count < (int)page.Total.Value())
+        {
+            await Notify().ConfigureAwait(false);
+        }
+        else
+        {
+            _complete = true;
+        }
+    }
+
+    async Task Notify()
+    {
+        if (_instance is not null)
+        {
+            await _instance.InvokeVoidAsync("onNewItems").ConfigureAwait(false);
+        }
+        else
+        {
+            _notify.Up();
+        }
+    }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         _instance ??= _active && _element is not null ? await Instance(_element.Value) : null;
-        if (_reload.Down())
+        if (_instance is not null)
         {
-            await LoadMoreItems().ConfigureAwait(false);
+            if(_notify.Down())
+            {
+                await Notify().ConfigureAwait(false);
+            }
+
+            if (_reload.Down())
+            {
+                await LoadMoreItems().ConfigureAwait(false);
+            }
         }
     }
 

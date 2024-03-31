@@ -10,11 +10,11 @@
         @HeaderTemplate?.Invoke(context)
 
         @{
-            var current = _current.Get();
+            @*var current = _current.Get();
             if (current is null)
             {
                 @LoadingTemplate
-            }
+            }*@
 
             if (Results.Get(_results))
             {
