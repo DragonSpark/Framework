@@ -18,10 +18,9 @@ sealed class ConfigureSerilog : ICommand<IServiceCollection>
 	public void Execute(IServiceCollection parameter)
 	{
 		var configuration = new LoggerConfiguration().ReadFrom.Configuration(parameter.Configuration());
-		var logger        = configuration.CreateLogger();
 		parameter.AddSingleton(new ActivityListenerConfiguration())
 		         .AddSingleton(configuration)
-		         .AddSingleton<ILogger>(logger)
+		         .AddSingleton<ILogger>(_ => configuration.CreateLogger())
 		         .AddScoped(_provider);
 	}
 }
