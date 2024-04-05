@@ -25,4 +25,6 @@ public class Program : IProgram
 	public Task Get(Array<string> arguments) => Get(Host.CreateDefaultBuilder(arguments));
 
 	public Task Get(IHostBuilder parameter) => _run.Get(_select(parameter).Build()).AsTask();
+
+	protected IHostBuilder Create(string[] parameter) => _select(Host.CreateDefaultBuilder(parameter));
 }
