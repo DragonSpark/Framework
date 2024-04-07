@@ -22,9 +22,13 @@ sealed class Registrations : ICommand<IServiceCollection>
 		         .Include(x => x.Dependencies.Recursive())
 		         .Singleton()
 		         //
+		         .Then.Start<IBearer>()
+		         .Forward<Bearer>()
+		         .Include(x => x.Dependencies.Recursive())
+		         .Singleton()
+		         //
 		         .Then.Start<ICurrentBearer>()
 		         .Forward<CurrentBearer>()
-		         .Include(x => x.Dependencies.Recursive())
 		         .Scoped();
 	}
 }

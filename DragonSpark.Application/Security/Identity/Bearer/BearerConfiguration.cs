@@ -4,9 +4,9 @@ using System;
 
 namespace DragonSpark.Application.Security.Identity.Bearer;
 
-public sealed class BearerConfiguration : ICommand<JwtBearerOptions>
+sealed class BearerConfiguration : ICommand<JwtBearerOptions>
 {
-	readonly Func<TokenValidation>   _validation;
+	readonly Func<TokenValidation> _validation;
 
 	public BearerConfiguration(Func<TokenValidation> validation) => _validation = validation;
 

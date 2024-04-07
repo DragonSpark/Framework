@@ -11,12 +11,14 @@ using DragonSpark.Application.Runtime;
 using DragonSpark.Application.Runtime.Operations.Execution;
 using DragonSpark.Application.Security.Identity;
 using DragonSpark.Application.Security.Identity.Authentication;
+using DragonSpark.Application.Security.Identity.Bearer;
 using DragonSpark.Application.Security.Identity.Claims.Access;
 using DragonSpark.Compose;
 using DragonSpark.Compose.Model.Operations;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
+using DragonSpark.Model.Selection;
 using Humanizer;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
@@ -74,6 +76,9 @@ partial class Extensions
 	public static string UserName(this ClaimsPrincipal @this) => Security.Identity.UserName.Default.Get(@this);
 
 	public static bool IsAuthenticated(this ClaimsPrincipal @this) => @this.Identity?.IsAuthenticated ?? false;
+
+	public static T Get<T>(this ISelect<ClaimsIdentity, T> @this, ClaimsPrincipal parameter)
+		=> @this.Get(PrincipalIdentity.Default.Get(parameter));
 
 	public static string? Get(this IValueProvider @this, string key)
 	{
