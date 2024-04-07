@@ -13,7 +13,7 @@ sealed class BearerClaims : ISelect<ClaimsIdentity, IEnumerable<Claim>>
 	readonly Array<IBearerClaim> _claims;
 
 	public BearerClaims(IEnumerable<IBearerClaim> direct)
-		: this(new[] { ClaimTypes.NameIdentifier, ClaimTypes.Name }, direct.ToArray()) {}
+		: this([ClaimTypes.NameIdentifier, ClaimTypes.Name], direct.ToArray()) {}
 
 	public BearerClaims(string[] known, Array<IBearerClaim> claims)
 	{

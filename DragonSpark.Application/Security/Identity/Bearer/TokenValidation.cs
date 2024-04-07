@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Composition;
 using DragonSpark.Model.Results;
 using DragonSpark.Text;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
 namespace DragonSpark.Application.Security.Identity.Bearer;
@@ -11,7 +12,7 @@ public sealed class TokenValidation : Instance<TokenValidationParameters>
 
 	[Candidate(false)]
 	public TokenValidation(BearerSettings settings, byte[] key)
-		: base(new TokenValidationParameters
+		: base(new()
 		{
 			ValidateIssuer           = true,
 			ValidateAudience         = true,
@@ -19,6 +20,7 @@ public sealed class TokenValidation : Instance<TokenValidationParameters>
 			ValidateIssuerSigningKey = true,
 			ValidIssuer              = settings.Issuer,
 			ValidAudience            = settings.Audience,
+			AuthenticationType       = IdentityConstants.ApplicationScheme,
 			IssuerSigningKey         = new SymmetricSecurityKey(key)
 		}) {}
 }

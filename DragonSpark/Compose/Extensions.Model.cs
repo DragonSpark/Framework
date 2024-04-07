@@ -69,6 +69,9 @@ public static partial class ExtensionMethods
 	public static Model.Commands.CommandContext Command(this ModelContext _, Action action)
 		=> new(new Command(action));
 
+	public static CommandResultContext<T> Command<T>(this ModelContext _, Func<ICommand<T>> action)
+		=> new(action.Start().Get());
+
 	public static CommandResultContext Command(this ModelContext _, Func<ICommand> action)
 		=> new(action.Start().Get());
 
