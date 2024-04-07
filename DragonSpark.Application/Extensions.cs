@@ -93,6 +93,9 @@ partial class Extensions
 	public static ProviderIdentity AsIdentity(this ExternalLoginInfo @this)
 		=> ExternalLoginIdentity.Default.Get(@this);
 
+	public static T Get<T>(this ISelect<ClaimsPrincipal, T> @this, AuthenticationState parameter)
+		=> @this.Get(parameter.User);
+
 	/**/
 
 	public static ICollection<T> OrderedLarge<T>(this ICollection<T> @this) where T : class, ILargeOrderAware
