@@ -10,7 +10,7 @@ using Xunit;
 
 namespace DragonSpark.Application.Testing.Compose.Store.Operations;
 
-public sealed class MemoryTests
+public sealed class GetTests
 {
 	[Fact]
 	public async Task Verify()

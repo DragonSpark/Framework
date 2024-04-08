@@ -24,7 +24,7 @@ public sealed class ConfiguredMemoryStoreContext<TIn, TOut> : MemoryStoreContext
 		=> Using(new Key<TIn>(A.Type<T>().AssemblyQualifiedName.Verify(), key).Get);
 
 	public Selector<TIn, TOut> Using(Func<TIn, object> key)
-		=> new Memory<TIn, TOut>(Memory,
+		=> new Access<TIn, TOut>(Memory,
 		                         key,
 		                         new ConfiguredMemoryResult<TIn, TOut>(Memory, Subject.Get, _configure.Execute).Get)
 			.Then();

@@ -1,4 +1,6 @@
-﻿using DragonSpark.Compose.Model.Results;
+﻿using DragonSpark.Compose.Model.Commands;
+using DragonSpark.Compose.Model.Results;
+using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Sequences;
 using NetFabric.Hyperlinq;
@@ -14,6 +16,8 @@ public static partial class ExtensionMethods
 
 	public static ResultContext<T> Start<T>(this Func<T> @this)
 		=> Compose.Start.A.Result.Of.Type<T>().By.Calling(@this);
+
+	public static CommandContext<T> Assume<T>(this Func<ICommand<T>> @this) => Compose.Start.A.Command(@this).Assume();
 
 	public static Func<T> ToDelegate<T>(this IResult<T> @this) => @this.Get;
 
