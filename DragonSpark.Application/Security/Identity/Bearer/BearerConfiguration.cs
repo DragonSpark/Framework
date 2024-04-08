@@ -1,17 +1,16 @@
 ﻿using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using System;
 
 namespace DragonSpark.Application.Security.Identity.Bearer;
 
 sealed class BearerConfiguration : ICommand<JwtBearerOptions>
 {
-	readonly Func<TokenValidation> _validation;
+	readonly TokenValidation _validation;
 
-	public BearerConfiguration(Func<TokenValidation> validation) => _validation = validation;
+	public BearerConfiguration(TokenValidation validation) => _validation = validation;
 
 	public void Execute(JwtBearerOptions parameter)
 	{
-		parameter.TokenValidationParameters = _validation();
+		parameter.TokenValidationParameters = _validation;
 	}
 }

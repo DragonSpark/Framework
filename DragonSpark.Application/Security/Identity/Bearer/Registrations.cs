@@ -14,7 +14,7 @@ sealed class Registrations : ICommand<IServiceCollection>
 	{
 		parameter.Register<BearerSettings>()
 		         //
-		         .Start<TokenValidation>()
+		         .Start<BearerConfiguration>().And<TokenValidation>()
 		         .Singleton()
 		         //
 		         .Then.Start<ISign>()
