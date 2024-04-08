@@ -106,7 +106,7 @@ public static partial class Extensions
 	/**/
 
 	public static DragonSpark.Compose.Model.Operations.OperationResultSelector<TIn, TOut> UsingSelf<TIn, TOut>(
-		this Compose.Store.Operations.ConfiguredMemoryStoreContext<TIn, TOut> @this) where TIn : class
+		this Compose.Store.Operations.Memory.ConfiguredStoreContext<TIn, TOut> @this) where TIn : class
 		=> @this.Using(Object<TIn>.Default);
 
 	/**/

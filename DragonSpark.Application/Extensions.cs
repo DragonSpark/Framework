@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Application.Components.Validation.Expressions;
 using DragonSpark.Application.Compose;
 using DragonSpark.Application.Compose.Runtime;
-using DragonSpark.Application.Compose.Store.Operations;
+using DragonSpark.Application.Compose.Store.Operations.Memory;
 using DragonSpark.Application.Entities.Diagnostics;
 using DragonSpark.Application.Entities.Editing;
 using DragonSpark.Application.Entities.Queries.Runtime.Pagination;
@@ -192,6 +192,6 @@ partial class Extensions
 	public static IOperation<T> ReloadAware<T>(this IOperation<T> @this) => new ReloadAware<T>(@this);
 /**/
 	public static DragonSpark.Compose.Model.Operations.OperationResultSelector<TIn, TOut> Using<TIn, TOut>(
-		this StoreContext<TIn, TOut> @this, MemoryStoreProfile<TIn> profile)
+		this Compose.Store.Operations.StoreContext<TIn, TOut> @this, StoreProfile<TIn> profile)
 		=> @this.In(profile.Memory).For(profile.For).Using(profile.Key);
 }

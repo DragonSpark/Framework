@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Model;
+﻿using DragonSpark.Application.Compose.Store;
 
 namespace DragonSpark.Presentation.Components.Content.Rendering;
 

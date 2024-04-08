@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Caching.Memory;
 using System;
 
-namespace DragonSpark.Application.Model;
+namespace DragonSpark.Application.Compose.Store;
 
 public class SlidingExpiration : ICommand<ICacheEntry>
 {

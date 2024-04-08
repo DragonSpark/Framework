@@ -184,7 +184,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Compose\Store\Operations\" />
     <Folder Include="Security\Identity\" />
   </ItemGroup>
 

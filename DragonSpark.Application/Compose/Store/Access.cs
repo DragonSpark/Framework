@@ -5,13 +5,13 @@ using System;
 
 namespace DragonSpark.Application.Compose.Store;
 
-sealed class Memory<TIn, TOut> : ISelect<TIn, TOut>
+sealed class Access<TIn, TOut> : ISelect<TIn, TOut>
 {
 	readonly IMemoryCache      _memory;
 	readonly Get<TIn, TOut>    _get;
 	readonly Func<TIn, object> _key;
 
-	public Memory(IMemoryCache memory, Func<TIn, object> key, Get<TIn, TOut> get)
+	public Access(IMemoryCache memory, Func<TIn, object> key, Get<TIn, TOut> get)
 	{
 		_memory = memory;
 		_get    = get;

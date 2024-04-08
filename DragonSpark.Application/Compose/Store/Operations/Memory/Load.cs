@@ -4,15 +4,15 @@ using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Compose.Store.Operations;
+namespace DragonSpark.Application.Compose.Store.Operations.Memory;
 
-sealed class Source<TIn, TOut> : ISelecting<EntryKey<TIn>, TOut>
+sealed class Load<TIn, TOut> : ISelecting<EntryKey<TIn>, TOut>
 {
 	readonly IMemoryCache        _memory;
 	readonly Await<TIn, TOut>    _source;
 	readonly Action<ICacheEntry> _configure;
 
-	public Source(IMemoryCache memory, Await<TIn, TOut> source, Action<ICacheEntry> configure)
+	public Load(IMemoryCache memory, Await<TIn, TOut> source, Action<ICacheEntry> configure)
 	{
 		_memory    = memory;
 		_source    = source;

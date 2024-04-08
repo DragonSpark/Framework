@@ -5,14 +5,17 @@ using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Compose.Store.Operations;
+namespace DragonSpark.Application.Compose.Store.Operations.Memory;
 
-public sealed class ConfiguredMemoryStoreContext<TIn, TOut> : MemoryStoreContext<TIn, TOut>
+public sealed class ConfiguredStoreContext<TIn, TOut> : StoreContext<TIn, TOut>
 {
 	readonly ICommand<ICacheEntry> _configure;
 
-	public ConfiguredMemoryStoreContext(ISelect<TIn, ValueTask<TOut>> subject, IMemoryCache memory,
-	                                    ICommand<ICacheEntry> configure)
+	public ConfiguredStoreContext(ISelect<TIn, ValueTask<TOut>> subject, IMemoryCache memory)
+		: this(subject, memory, EmptyCommand<ICacheEntry>.Default) {}
+
+	public ConfiguredStoreContext(ISelect<TIn, ValueTask<TOut>> subject, IMemoryCache memory,
+	                              ICommand<ICacheEntry> configure)
 		: base(subject, memory)
 		=> _configure = configure;
 
@@ -26,7 +29,7 @@ public sealed class ConfiguredMemoryStoreContext<TIn, TOut> : MemoryStoreContext
 		=> Using(key.Get);
 
 	public DragonSpark.Compose.Model.Operations.OperationResultSelector<TIn, TOut> Using(Func<TIn, object> key)
-		=> new Memory<TIn, TOut>(Memory,
-		                         new Source<TIn, TOut>(Memory, Subject.Await, _configure.Execute).Await,
-		                         key).Then().Protecting();
+		=> new Memory<TIn, TOut>(Memory, new Load<TIn, TOut>(Memory, Subject.Await, _configure.Execute).Await, key)
+		   .Then()
+		   .Protecting();
 }
