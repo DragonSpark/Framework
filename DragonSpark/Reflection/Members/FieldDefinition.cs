@@ -15,16 +15,3 @@ public class FieldDefinition : Instance<FieldInfo>
 	protected FieldDefinition(Type type, string name)
 		: base(type.GetField(name, PrivateInstanceFlags.Default).Verify()) {}
 }
-
-// TODO
-
-public class PropertyDefinition<T> : PropertyDefinition
-{
-	public PropertyDefinition(string name) : base(A.Type<T>(), name) {}
-}
-
-public class PropertyDefinition : Instance<PropertyInfo>
-{
-	protected PropertyDefinition(Type type, string name)
-		: base(type.GetProperty(name, PrivateInstanceFlags.Default).Verify()) {}
-}
