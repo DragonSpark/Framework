@@ -116,7 +116,6 @@ public class Validating : ComponentBase, IDisposable
 
 	async Task FieldChanged(FieldChangedEventArgs _)
 	{
-		await Task.Delay(100);
 		if (!_requested.Down())
 		{
 			await StartUpdate().ConfigureAwait(false);

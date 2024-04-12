@@ -82,6 +82,7 @@ public static class Extensions
 
 	public static EditContextCallbackContext Callback(this ModelContext _, EditContext context) => new(context);
 
+	public static CallbackContext Callback(this ResultContext<ValueTask> @this) => new(@this.Then().Allocate());
 	public static CallbackContext Callback(this ResultContext<Task> @this) => new(@this);
 
 	public static CallbackContext<T> Callback<T>(this TaskSelector<T> @this) => new(@this);
@@ -105,6 +106,7 @@ public static class Extensions
 
 	public static bool IsValid(this EditContext @this, object receiver)
 		=> @this.IsValid() && !IsActive.Default.Get(receiver);
+
 
 	public static void NotifyModelField(this EditContext @this, string field)
 		=> @this.NotifyFieldChanged(@this.Field(field));

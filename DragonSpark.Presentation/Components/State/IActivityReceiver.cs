@@ -7,4 +7,5 @@ public interface IActivityReceiver
 	ValueTask Start();
 	ValueTask Complete();
 
+	bool Active { get; }
 }

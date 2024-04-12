@@ -12,11 +12,6 @@
 			<CopyToOutputDirectory>Never</CopyToOutputDirectory>
 		</None>
 	</ItemGroup>
-	<!--<ItemGroup>
-		<TypeScriptCompile Remove="wwwroot/**/*.ts" />
-		<None Include="wwwroot/**/*.ts" />
-	</ItemGroup>-->
-
 	<ItemGroup>
 		<ProjectReference Include="..\DragonSpark.Application\DragonSpark.Application.csproj" />
 	</ItemGroup>
@@ -27,11 +22,8 @@
 		<PackageReference Include="Majorsoft.Blazor.Components.Common.JsInterop" />
 		<PackageReference Include="Majorsoft.Blazor.Components.Debounce" />
 		<PackageReference Include="MatBlazor" />
+		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" />
 		<PackageReference Include="Radzen.Blazor" />
-		<!--<PackageReference Include="Microsoft.TypeScript.MSBuild" Version="4.9.5">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-		</PackageReference>-->
 	</ItemGroup>
 	<ItemGroup>
 	  <Compile Update="Properties\Resources.Designer.cs">

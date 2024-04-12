@@ -18,7 +18,7 @@ public sealed class IsActive : IProperty<object, bool>
 
 	public ICondition<object> Condition => _store.Condition;
 
-	public bool Get(object parameter) => _store.Get(parameter);
+	public bool Get(object parameter) => parameter is IActivityReceiver ar ? ar.Active : _store.Get(parameter);
 
 	public void Execute(Pair<object, bool> parameter)
 	{
