@@ -1,4 +1,5 @@
 ﻿@using DragonSpark.Compose
+@using DragonSpark.Model.Results
 @using DragonSpark.Presentation.Environment.Browser.Document
 
 @inherits DragonSpark.Presentation.Components.ComponentBase
@@ -9,7 +10,7 @@
 @inject IFocusedElement Focus
 
 <div class="@Class">
-	<fieldset disabled="@_active">
+	<fieldset disabled="@Active">
 		<CascadingValue TValue="IActivityReceiver" Value="@this" IsFixed="true">
 			@ChildContent(ActualReceiver)
 		</CascadingValue>
@@ -18,7 +19,7 @@
 
 @code
 {
-	bool _active;
+	Switch _allowed = new(), _restore = new();
 
 	[Parameter]
 	public string CssClass { get; set; } = string.Empty;
@@ -35,7 +36,7 @@
 	string? Class
 	{
 		get {
-			var start = _active ? ActiveStyle : null;
+			var start = Active ? ActiveStyle : null;
 			var result = $"{start} {CssClass}".Trim().NullIfEmpty();
 			return result;
 		}
@@ -43,25 +44,19 @@
 
 	object ActualReceiver => Receiver ?? this;
 
-	protected override async Task OnAfterRenderAsync(bool firstRender)
+	protected override Task OnAfterRenderAsync(bool firstRender)
 	{
-		Allowed = true;
-		if (Restore)
-		{
-			Restore = false;
-		    await Focus.Restore.Await();
-		}
+		_allowed.Up();
+		return _restore.Down() ? Focus.Restore.Get().AsTask() : Task.CompletedTask;
 	}
 
-	bool Allowed { get; set; }
-
-	bool Restore { get; set; }
+	public bool Active { get; private set; }
 
 	bool Update()
 	{
 		var active = IsActive.Default.Get(ActualReceiver);
-		var result = active != _active;
-		_active = active;
+		var result = active != Active;
+		Active = active;
 		return result;
 	}
 
@@ -69,7 +64,7 @@
 	{
 		if (Update())
 		{
-			if (Allowed)
+			if (_allowed)
 			{
 				await Focus.Store.Get();
 			}
@@ -79,7 +74,7 @@
 
 	public ValueTask Complete()
 	{
-		Restore = Update();
+		_restore.Execute(Update());
 		return RefreshState();
 	}
 

@@ -19,7 +19,8 @@ using DragonSpark.Presentation.Security.Identity;
 using Majorsoft.Blazor.Components.Common.JsInterop;
 using Microsoft.Extensions.DependencyInjection;
 using Radzen;
-using MediaQueryService = DragonSpark.Presentation.Components.Interaction.MediaQueryService;
+
+using Microsoft.FluentUI.AspNetCore.Components;
 
 namespace DragonSpark.Presentation;
 
@@ -57,7 +58,7 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Include(x => x.Dependencies)
 		         .Scoped()
 		         //
-		         .Then.Start<DialogService>()
+		         .Then.Start<Radzen.DialogService>()
 		         .And<NotificationService>()
 		         .And<ScrollToFirstValidationMessage>()
 		         .And<ResourceExistsValidation>()
@@ -107,7 +108,6 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         //
 		         .Then.Start<IEstablishContext>()
 		         .Forward<EstablishContext>()
-		         // .Decorate<ReferrerAwareInitializeContext>()
 		         .Decorate<ApplicationAgentAwareEstablishContext>()
 		         .Include(x => x.Dependencies)
 		         .Scoped()
@@ -137,8 +137,10 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Then.AddJsInteropExtensions()
 		         .AddMediaQueryService()
 		         .Start<IMediaQueryService>()
-		         .Forward<MediaQueryService>()
+		         .Forward<DragonSpark.Presentation.Components.Interaction.MediaQueryService>()
 		         .Scoped()
+		         //
+		         .Then.AddFluentUIComponents()
 			;
 	}
 }
