@@ -13,7 +13,7 @@ public sealed class UpdateActivityReceiver : IUpdateActivityReceiver
 	readonly IUpdateActivity       _activity;
 	readonly ISelect<object, bool> _active;
 
-	public UpdateActivityReceiver(IUpdateActivity activity) : this(activity, IsActive.Default) {}
+	public UpdateActivityReceiver(IUpdateActivity activity) : this(activity, ActiveState.Default) {}
 
 	public UpdateActivityReceiver(IUpdateActivity activity, ISelect<object, bool> active)
 	{

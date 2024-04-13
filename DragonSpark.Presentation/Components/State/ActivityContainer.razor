@@ -54,7 +54,7 @@
 
 	bool Update()
 	{
-		var active = IsActive.Default.Get(ActualReceiver);
+		var active = ActiveState.Default.Get(ActualReceiver);
 		var result = active != Active;
 		Active = active;
 		return result;

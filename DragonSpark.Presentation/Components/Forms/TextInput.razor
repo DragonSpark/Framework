@@ -195,7 +195,7 @@
 
     async Task HandleFocusOut(FocusEventArgs parameter)
     {
-        if (Receiver is not null && IsActive.Default.Get(Receiver))
+        if (Receiver?.Active ?? false)
         {
             _active.Up();
             _focus.Up();

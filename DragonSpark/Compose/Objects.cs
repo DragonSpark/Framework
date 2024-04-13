@@ -102,7 +102,10 @@ public static partial class ExtensionMethods
 		=> @this ?? throw new InvalidOperationException(message);
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static T Value<T>(this T? @this, string message = "Provided instance is not assigned.")
+	public static T Value<T>(this T? @this) where T : struct => @this.Value("Provided instance is not assigned.");
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static T Value<T>(this T? @this, string message)
 		where T : struct
 		=> @this ?? throw new InvalidOperationException(message);
 
