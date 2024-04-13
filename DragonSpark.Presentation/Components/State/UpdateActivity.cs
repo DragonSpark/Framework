@@ -10,7 +10,7 @@ sealed class UpdateActivity : IUpdateActivity
 {
 	public static UpdateActivity Default { get; } = new();
 
-	UpdateActivity() : this(Activities.Default.Get, IsActive.Default) {}
+	UpdateActivity() : this(Activities.Default.Get, ActiveState.Default) {}
 
 	readonly Func<object, ConcurrentBag<object>> _activities;
 	readonly IProperty<object, bool>             _active;
