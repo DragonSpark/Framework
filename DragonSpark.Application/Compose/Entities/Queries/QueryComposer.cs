@@ -55,7 +55,8 @@ public class QueryComposer<TIn, T> : DragonSpark.Model.Results.Instance<IQuery<T
 
 	public QueryComposer<TIn, T> One() => Take(1);
 
-	public QueryComposer<TIn, T> Take(int number) => Select(x => x.Take(number));
+	public QueryComposer<TIn, T> Skip(uint number) => Select(x => x.Skip((int)number));
+	public QueryComposer<TIn, T> Take(uint number) => Select(x => x.Take((int)number));
 
 	public QueryComposer<TIn, TTo> Select<TTo>(Expression<Func<T, TTo>> select)
 		=> Next(new Select<TIn, T, TTo>(_subject.Get(), select));
