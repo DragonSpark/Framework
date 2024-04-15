@@ -18,7 +18,6 @@
 	<PackageReference Include="SmartFormat.NET" />
 	<PackageReference Include="System.Linq.Async" />
 	<PackageReference Include="System.Linq.Dynamic.Core" />
-
   </ItemGroup>
 
   <ItemGroup>
