@@ -47,6 +47,20 @@ public class EvaluateToPage<TIn, T> : ISelecting<PageRequest<TIn>, PageResponse<
 	}
 }
 
+public class EvaluateToQuery<TIn, T> : ISelect<TIn, IQueryable<T>>
+{
+	readonly DbContext                                       _context;
+	readonly Expression<Func<DbContext, TIn, IQueryable<T>>> _expression;
+
+	protected EvaluateToQuery(DbContext context, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
+	{
+		_context    = context;
+		_expression = expression;
+	}
+
+	public IQueryable<T> Get(TIn parameter) => _expression.Invoke(_context, parameter).AsExpandable();
+}
+
 public interface IFilter<T> : ISelect<FilterInput<T>, IQueryable<T>>;
 
 public readonly record struct FilterInput<T>(IQueryable<T> Source, string Filter);

@@ -5,9 +5,9 @@ namespace DragonSpark.Presentation.Components.Content.Rendering.Sequences;
 
 sealed class RenderStateAwarePagingContents<T> : ISelect<RenderStateAwarePagingContentsInput<T>, IPages<T>>
 {
-	readonly RenderCache        _memory;
-	readonly RenderStateStore _state;
-	readonly IRenderContentKey  _key;
+	readonly RenderCache       _memory;
+	readonly RenderStateStore  _state;
+	readonly IRenderContentKey _key;
 
 	public RenderStateAwarePagingContents(RenderCache memory, RenderStateStore state, IRenderContentKey key)
 	{

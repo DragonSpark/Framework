@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Application;
 using DragonSpark.Application.Components.Validation.Expressions;
 using DragonSpark.Application.Compose;
-using DragonSpark.Application.Entities.Queries.Runtime.Pagination;
 using DragonSpark.Application.Model.Interaction;
 using DragonSpark.Compose;
 using DragonSpark.Compose.Model.Operations;
@@ -12,7 +11,6 @@ using DragonSpark.Model;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
 using DragonSpark.Presentation.Components.Content;
-using DragonSpark.Presentation.Components.Content.Sequences;
 using DragonSpark.Presentation.Components.Forms;
 using DragonSpark.Presentation.Components.Forms.Validation;
 using DragonSpark.Presentation.Components.State;
@@ -158,8 +156,4 @@ public static class Extensions
 
 	public static Task Invoke(this EventCallback @this) => @this.HasDelegate ? @this.InvokeAsync() : Task.CompletedTask;
 
-/**/
-
-	public static IPages<T> Aware<T>(this IPages<T> @this, IPageContainer<T> container)
-		=> new ContainerAwarePages<T>(container, @this);
 }

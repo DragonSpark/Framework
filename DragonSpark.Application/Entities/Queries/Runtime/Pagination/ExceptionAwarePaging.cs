@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Application.Diagnostics;
-using DragonSpark.Compose;
 using System;
 
 namespace DragonSpark.Application.Entities.Queries.Runtime.Pagination;
@@ -18,13 +17,12 @@ sealed class ExceptionAwarePaging<T> : IPaging<T>
 	public IPages<T> Get(PagingInput<T> parameter)
 	{
 		var (owner, _, _) = parameter;
-		var type = owner.AsTo<IReportedTypeAware, Type?>(x => x.Get()) ?? owner.GetType();
-		return new Pages(_previous.Get(parameter), _exceptions, type);
+		return new Report(_previous.Get(parameter), _exceptions, owner.Get());
 	}
 
-	sealed class Pages : ExceptionAwareSelecting<PageInput, Page<T>>, IPages<T>
+	sealed class Report : ExceptionAwareSelecting<PageInput, Page<T>>, IPages<T>
 	{
-		public Pages(IPages<T> previous, IExceptions exceptions, Type? reportedType = null)
+		public Report(IPages<T> previous, IExceptions exceptions, Type? reportedType = null)
 			: base(previous, exceptions, reportedType) {}
 	}
 }

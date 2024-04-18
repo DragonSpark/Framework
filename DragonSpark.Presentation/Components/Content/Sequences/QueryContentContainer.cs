@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Application.Entities.Queries.Runtime;
 using DragonSpark.Application.Entities.Queries.Runtime.Pagination;
 using DragonSpark.Application.Entities.Queries.Runtime.Shape;
+using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection.Conditions;
@@ -9,10 +10,11 @@ using System;
 
 namespace DragonSpark.Presentation.Components.Content.Sequences;
 
-partial class QueryContentContainer<T> : IReportedTypeAware, IPageContainer<T>
+partial class QueryContentContainer<T> : IPageContainer<T>
 {
-	bool?                       _results;
-	readonly IMutable<Page<T>?> _current = new CurrentPage<T>();
+	Switch     _error = new();
+	bool?      _results;
+	IPages<T>? _subject;
 
 	[Parameter]
 	public IQueries<T>? Content
@@ -23,7 +25,7 @@ partial class QueryContentContainer<T> : IReportedTypeAware, IPageContainer<T>
 			if (_content != value)
 			{
 				_content = value;
-				Subject  = null;
+				_subject = null;
 				_results = null;
 			}
 		}
@@ -38,7 +40,7 @@ partial class QueryContentContainer<T> : IReportedTypeAware, IPageContainer<T>
 			if (_compose != value)
 			{
 				_compose = value;
-				Subject  = null;
+				_subject = null;
 			}
 		}
 	}	ICompose<T> _compose = DefaultCompose<T>.Default;
@@ -58,12 +60,10 @@ partial class QueryContentContainer<T> : IReportedTypeAware, IPageContainer<T>
 	[Parameter]
 	public IPagination<T>? Pagination { get; set; }
 
-	IPages<T>? Subject { get; set; }
-
 	protected override void OnParametersSet()
 	{
 		base.OnParametersSet();
-		Subject ??= Content is not null ? DetermineSubject(Content) : EmptyPages<T>.Default;
+		_subject ??= DetermineSubject(Content.Verify());
 	}
 
 	IPages<T> DetermineSubject(IQueries<T> parameter)
@@ -76,8 +76,14 @@ partial class QueryContentContainer<T> : IReportedTypeAware, IPageContainer<T>
 
 	void ICommand<Page<T>>.Execute(Page<T> parameter)
 	{
+		_error.Down();
 		_results ??= parameter.Total is > 0;
-		_current.Execute(parameter);
 		StateHasChanged();
+	}
+
+	void ICommand<Exception>.Execute(Exception parameter)
+	{
+		_error.Up();
+		_results = null;
 	}
 }

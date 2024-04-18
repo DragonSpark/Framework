@@ -6,28 +6,22 @@
 @inject IPaging<T> Paging
 
 <DragonSpark.Presentation.Components.Content.ApplicationPrincipalAwareContentView>
-    <ContentView TValue="IPages<T>" Content="@Subject" NotFoundTemplate="@NotFoundTemplate">
+    <ContentView TValue="IPages<T>" Content="@_subject" NotFoundTemplate="@NotFoundTemplate">
         @HeaderTemplate?.Invoke(context)
 
-        @{
-            @*var current = _current.Get();
-            if (current is null)
+        @if (Results.Get(_results))
+        {
+            if (!_error && _results is null)
             {
                 @LoadingTemplate
-            }*@
-
-            if (Results.Get(_results))
-            {
-                <CascadingValue TValue="IPageContainer<T>" Value="@this" IsFixed="true">
-                    <PageContainer Input="context" Context="input">
-                        @ChildContent(input)
-                    </PageContainer>
-                </CascadingValue>
             }
-            else
-            {
-                @EmptyElementsTemplate
-            }
+            <CascadingValue TValue="IPageContainer<T>" Value="@this" IsFixed="true">
+                @ChildContent(context)
+            </CascadingValue>
+        }
+        else
+        {
+            @EmptyElementsTemplate
         }
 
         @FooterTemplate?.Invoke(context)
