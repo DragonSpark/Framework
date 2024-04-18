@@ -4,7 +4,6 @@ using DragonSpark.Application.Compose.Runtime;
 using DragonSpark.Application.Compose.Store.Operations.Memory;
 using DragonSpark.Application.Entities.Diagnostics;
 using DragonSpark.Application.Entities.Editing;
-using DragonSpark.Application.Entities.Queries.Runtime.Pagination;
 using DragonSpark.Application.Entities.Transactions;
 using DragonSpark.Application.Model.Sequences;
 using DragonSpark.Application.Runtime;
@@ -171,10 +170,7 @@ partial class Extensions
 	public static string? Read(this IReadClaim @this, ClaimsPrincipal parameter)
 		=> @this.Get(parameter).To<Accessed, string?>(x => x.Exists ? x.Value : null);
 
-	/**/
-	public static bool HasResults<T>(this IPages<T> @this) => @this != EmptyPages<T>.Default;
-
-	public static bool IsEmpty<T>(this IPages<T> @this) => @this == EmptyPages<T>.Default;
+	
 
 /**/
 	public static string Ordinalize(this in byte @this) => ((int)@this).Ordinalize();

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.SyncfusionRendering.Components;
 
-public abstract class DataQueryComponent : DragonSpark.Presentation.Components.ComponentBase
+public abstract class DataQueryComponent : DataComponent
 {
 	[Parameter]
 	public IDataRequest Content
@@ -29,6 +29,27 @@ public abstract class DataQueryComponent : DragonSpark.Presentation.Components.C
 
 	protected virtual void OnContentChanged(Await<DataManagerRequest, object>? parameter){}
 
+	Await<DataManagerRequest, object>? Input { get; set; }
+
+	protected override void OnParametersSet()
+	{
+		Input ??= CreateInput();
+		base.OnParametersSet();
+	}
+
+	protected abstract Await<DataManagerRequest, object> CreateInput();
+
+	protected virtual async Task OnRequest(DataRequestResult parameter)
+	{
+		var data = await Input!(parameter.Request);
+		parameter.Execute(data);
+	}
+}
+
+// TODO
+
+public class DataComponent : DragonSpark.Presentation.Components.ComponentBase
+{
 	[Parameter]
 	public Type? ReportedType { get; set; }
 
@@ -58,20 +79,4 @@ public abstract class DataQueryComponent : DragonSpark.Presentation.Components.C
 
 	[CascadingParameter]
 	protected IActivityReceiver Receiver { get; set; } = default!;
-
-	Await<DataManagerRequest, object>? Input { get; set; }
-
-	protected override void OnParametersSet()
-	{
-		Input ??= CreateInput();
-		base.OnParametersSet();
-	}
-
-	protected abstract Await<DataManagerRequest, object> CreateInput();
-
-	protected virtual async Task OnRequest(DataRequestResult parameter)
-	{
-		var data = await Input!(parameter.Request);
-		parameter.Execute(data);
-	}
 }

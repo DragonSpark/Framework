@@ -1,0 +1,121 @@
+﻿@using BlazorPro.BlazorSize
+@using DragonSpark.Compose
+@using DragonSpark.Presentation.Components
+@using DragonSpark.SyncfusionRendering.Entities
+@using Syncfusion.Blazor
+@using Syncfusion.Blazor.Grids
+@using System.Net.Http
+
+@typeparam T
+@inherits DataComponent
+
+<DragonSpark.SyncfusionRendering.Components.DataGrid T="T"
+          @ref="@_subject"
+          Id="@_identity"
+          FilterType="@FilterType"
+          Columns="@Columns"
+          AllowSelection="@AllowSelection"
+          AllowPaging="@AllowPaging"
+          AllowFiltering="@AllowFiltering"
+          AllowSorting="@AllowSorting"
+          AllowExport="@AllowExport"
+          Breakpoint="@Breakpoint"
+          DesktopToolbar="@DesktopToolbar"
+          MobileToolbar="@MobileToolbar"
+          CssClass="@CssClass"
+          PageSize="@PageSize"
+          LoadingTemplate="@LoadingTemplate"
+          EmptyElementsTemplate="@EmptyElementsTemplate"
+          Updated="@Updated"
+          Editing="@Editing"
+          Created="@Created"
+          @attributes="@AdditionalAttributes">
+    <ChildContent>
+        <Syncfusion.Blazor.Data.SfDataManager HttpClientInstance="@Client" Url="@Address" Adaptor="Adaptors.ODataV4Adaptor" />
+
+        @if (ChildContent is not null)
+        {
+            @ChildContent
+        }
+    </ChildContent>
+</DragonSpark.SyncfusionRendering.Components.DataGrid>
+
+@code {
+    readonly Model.Results.Switch _update   = new(true);
+    string                        _identity = string.Empty, _identifier = string.Empty;
+    DataGrid<T>?                  _subject;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        _identifier = GenerateElementIdentifier.Default.Get(Id);
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (_update.Down())
+        {
+            _identity = $"{_identifier}{Qualifier}";
+        }
+        base.OnParametersSet();
+    }
+
+    [Parameter]
+    public Guid Id { get; set; }
+
+    [Parameter]
+    public string Qualifier
+    {
+        get => _qualifier;
+        set
+        {
+            if (_qualifier != value)
+            {
+                _qualifier = value;
+                _update.Up();
+            }
+        }
+    }	string _qualifier = default!;
+
+    [Parameter]
+    public HttpClient Client { get; set; } = default!;
+
+    [Parameter]
+    public string Address { get; set; } = string.Empty;
+
+    [Parameter]
+    public FilterType FilterType { get; set; } = FilterType.Excel;
+
+    [Parameter]
+    public bool AllowExport { get; set; }
+
+    [Parameter]
+    public bool AllowSelection { get; set; }
+
+    [Parameter]
+    public RenderFragment Columns { get; set; } = default!;
+
+    [Parameter]
+    public string Breakpoint { get; set; } = Breakpoints.SmallUp;
+
+    [Parameter]
+    public RenderFragment EmptyElementsTemplate { get; set; } = DefaultEmptyResultTemplate.Default;
+
+    [Parameter]
+    public ICollection<string>? DesktopToolbar { get; set; }
+
+    [Parameter]
+    public ICollection<string>? MobileToolbar { get; set; } = DefaultToolbar.Default;
+
+    [Parameter]
+    public EventCallback<Updated<T>> Updated { get; set; }
+
+    [Parameter]
+    public EventCallback<Allow<T>> Editing { get; set; }
+
+    [Parameter]
+    public EventCallback<T> Created { get; set; }
+
+    public Task Export() => _subject?.Export() ?? Task.CompletedTask;
+    public Task Refresh() => _subject?.Refresh() ?? Task.CompletedTask;
+}

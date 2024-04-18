@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.Entities.Queries.Runtime.Pagination;
 
-public readonly record struct PagingInput<T>(object Owner, IQueries<T> Queries, ICompose<T> Compose);
+public readonly record struct PagingInput<T>(IPageContainer<T> Owner, IQueries<T> Queries, ICompose<T> Compose);

@@ -1,0 +1,129 @@
+﻿@using BlazorPro.BlazorSize
+@using DragonSpark.Compose
+@using DragonSpark.SyncfusionRendering.Entities
+@using Syncfusion.Blazor.Grids
+@using Action = Syncfusion.Blazor.Grids.Action
+
+@typeparam T
+@inherits DataComponent
+
+<AdaptiveGrid T="T"
+              @ref="@_subject"
+              Id="@Id"
+              Enabled="@Enabled"
+              FilterType="@FilterType"
+              Columns="@Columns"
+              AllowSelection="@AllowSelection"
+              AllowPaging="@AllowPaging"
+              AllowFiltering="@AllowFiltering"
+              AllowSorting="@AllowSorting"
+              AllowExport="@AllowExport"
+              Breakpoint="@Breakpoint"
+              DesktopToolbar="@DesktopToolbar"
+              MobileToolbar="@MobileToolbar"
+              CssClass="@CssClass"
+              PageSize="@PageSize"
+              LoadingTemplate="@LoadingTemplate"
+              @attributes="@AdditionalAttributes">
+
+    <GridTemplates EmptyRecordTemplate="@EmptyTemplate" />
+    <GridEvents TValue="T" DataBound="@OnDataBound" OnActionBegin="@OnActionBegin" />
+
+    @if (ChildContent is not null)
+    {
+        @ChildContent
+    }
+</AdaptiveGrid>
+
+@code {
+    readonly Model.Results.Switch _update = new(true);
+
+    AdaptiveGrid<T>? _subject;
+
+    protected override void OnInitialized()
+    {
+        EmptyTemplate = LoadingTemplate.Accept;
+        base.OnInitialized();
+    }
+
+    public Task Export() => _subject?.Export() ?? Task.CompletedTask;
+
+    [Parameter]
+    public string Id
+    {
+        get => _id;
+        set
+        {
+            if (_id != value)
+            {
+                _id = value;
+                _update.Up();
+            }
+        }
+    }   string _id = string.Empty;
+
+    [Parameter]
+    public bool Enabled { get; set; } = true;
+
+    [Parameter]
+    public FilterType FilterType { get; set; } = FilterType.Excel;
+
+    [Parameter]
+    public bool AllowExport { get; set; }
+
+    [Parameter]
+    public bool AllowSelection { get; set; }
+
+    [Parameter]
+    public RenderFragment Columns { get; set; } = default!;
+
+    [Parameter]
+    public string Breakpoint { get; set; } = Breakpoints.SmallUp;
+
+    [Parameter]
+    public RenderFragment EmptyElementsTemplate { get; set; } = DefaultEmptyResultTemplate.Default;
+
+    [Parameter]
+    public ICollection<string>? DesktopToolbar { get; set; }
+
+    [Parameter]
+    public ICollection<string>? MobileToolbar { get; set; } = DefaultToolbar.Default;
+
+    [Parameter]
+    public EventCallback<Updated<T>> Updated { get; set; }
+
+    [Parameter]
+    public EventCallback<Allow<T>> Editing { get; set; }
+
+    [Parameter]
+    public EventCallback<T> Created { get; set; }
+
+    RenderFragment<EmptyRecordTemplateContext>? EmptyTemplate { get; set; }
+
+    public Task Refresh() => _subject?.Refresh() ?? Task.CompletedTask;
+
+    void OnDataBound()
+    {
+        EmptyTemplate = EmptyElementsTemplate.Accept;
+    }
+
+    async Task OnActionBegin(ActionEventArgs<T> parameter)
+    {
+        switch (parameter.RequestType)
+        {
+            case Action.BeginEdit:
+                var allow = new Allow<T>(parameter.Data);
+                await Editing.InvokeAsync(allow).ConfigureAwait(false);
+                parameter.Cancel = !allow.Get();
+                break;
+            case Action.Add:
+                await Created.InvokeAsync(parameter.Data).ConfigureAwait(false);
+                break;
+            case Action.Save:
+            case Action.Delete:
+                await Updated.InvokeAsync(new(parameter.Data, parameter.Action)).ConfigureAwait(false);
+                break;
+        }
+    }
+
+}

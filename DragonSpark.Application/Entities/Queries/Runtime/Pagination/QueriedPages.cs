@@ -5,15 +5,15 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Queries.Runtime.Pagination;
 
-sealed class DefaultPages<T> : IPages<T>
+sealed class QueriedPages<T> : IPages<T>
 {
 	readonly IQueries<T> _queries;
 	readonly ICompose<T> _compose;
 	readonly IToArray<T> _materialize;
 
-	public DefaultPages(IQueries<T> queries, ICompose<T> compose) : this(queries, compose, DefaultToArray<T>.Default) {}
+	public QueriedPages(IQueries<T> queries, ICompose<T> compose) : this(queries, compose, DefaultToArray<T>.Default) {}
 
-	public DefaultPages(IQueries<T> queries, ICompose<T> compose, IToArray<T> materialize)
+	public QueriedPages(IQueries<T> queries, ICompose<T> compose, IToArray<T> materialize)
 	{
 		_queries     = queries;
 		_compose     = compose;
