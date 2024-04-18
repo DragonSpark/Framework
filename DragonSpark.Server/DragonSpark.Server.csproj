@@ -9,5 +9,6 @@
 
   <ItemGroup>
     <PackageReference Include="LightInject.Microsoft.AspNetCore.Hosting" />
+    <PackageReference Include="Microsoft.AspNetCore.OData" />
   </ItemGroup>
 </Project>

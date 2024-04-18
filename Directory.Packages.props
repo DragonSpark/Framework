@@ -56,6 +56,7 @@
     <PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.4" />
     <PackageVersion Include="Microsoft.AspNetCore.Identity.UI" Version="8.0.4" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="8.0.4" />
+	<PackageVersion Include="Microsoft.AspNetCore.OData" Version="8.2.5" />
     <PackageVersion Include="Microsoft.AspNetCore.SignalR.Client" Version="8.0.4" />
     <PackageVersion Include="Microsoft.Azure.WebJobs" Version="3.0.39" />
     <PackageVersion Include="Microsoft.Azure.WebJobs.Extensions.ServiceBus" Version="5.14.0" />
