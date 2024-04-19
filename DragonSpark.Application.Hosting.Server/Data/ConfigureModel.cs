@@ -3,7 +3,7 @@ using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.OData;
 using Microsoft.OData.Edm;
 
-namespace DragonSpark.Server.Data;
+namespace DragonSpark.Application.Hosting.Server.Data;
 
 public class ConfigureModel : ICommand<ODataOptions>
 {
