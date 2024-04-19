@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Connections;
+﻿using DragonSpark.Application.Communication;
 using DragonSpark.Model.Commands;
 using System.Net.Http.Headers;
 

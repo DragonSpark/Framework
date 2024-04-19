@@ -1,6 +1,4 @@
-﻿using DragonSpark.Application.Connections;
-
-namespace DragonSpark.Application.Communication;
+﻿namespace DragonSpark.Application.Communication;
 
 public sealed class CookieHeader : Header
 {

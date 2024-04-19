@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace DragonSpark.Application.Connections;
+namespace DragonSpark.Application.Communication;
 
 public sealed class CookieHeaderName : HeaderName
 {

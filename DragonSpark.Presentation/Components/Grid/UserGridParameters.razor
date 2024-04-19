@@ -1,0 +1,29 @@
+﻿@using DragonSpark.Application
+@using DragonSpark.Model.Selection
+@using System.Security.Claims
+
+@ChildContent(new(_client, _address))
+
+@code {
+    HttpClient _client  = default!;
+    string     _address = default!;
+
+    protected override void OnInitialized()
+    {
+        _client  = Clients.Get(State);
+        _address = Address.Get("/v2/queries/topics").ToString();
+        base.OnInitialized();
+    }
+
+    [Parameter]
+    public ISelect<ClaimsPrincipal, HttpClient> Clients { get; set; } = default!;
+
+    [Parameter]
+    public ISelect<string, Uri> Address { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment<UserGridParametersView> ChildContent { get; set; } = default!;
+
+    [CascadingParameter]
+    AuthenticationState State { get; set; } = default!;
+}
