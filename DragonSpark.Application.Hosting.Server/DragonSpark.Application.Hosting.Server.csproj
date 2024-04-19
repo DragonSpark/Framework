@@ -1,11 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>Library</OutputType>
+	</PropertyGroup>
 
-  <PropertyGroup>
-    <OutputType>Library</OutputType>
-  </PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\DragonSpark.Server\DragonSpark.Server.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\DragonSpark.Server\DragonSpark.Server.csproj" />
-  </ItemGroup>
-
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.OData" />
+	</ItemGroup>
 </Project>
