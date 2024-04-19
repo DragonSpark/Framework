@@ -1,0 +1,27 @@
+﻿@if (_identity.HasValue)
+{
+    @ChildContent(_identity.Value)
+}
+else{
+    @NotFoundTemplate
+}
+
+@code {
+    uint? _identity;
+
+    protected override void OnInitialized()
+    {
+        _identity = uint.TryParse(Input, out var identity) ? identity : null;
+        base.OnInitialized();
+    }
+
+
+    [Parameter]
+    public string Input { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment<uint> ChildContent { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment NotFoundTemplate { get; set; } = @<div>The identity could not be determined</div>;
+}
