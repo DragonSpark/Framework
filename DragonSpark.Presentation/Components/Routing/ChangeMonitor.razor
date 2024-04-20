@@ -6,13 +6,21 @@
     @ChildContent
 </ConfirmResultContext>
 
-@if (Enabled)
+@if (_enabled)
 {
     <BrowserUnloadMonitor />
 }
 
 @code
 {
+    bool _enabled;
+
+    protected override void OnParametersSet()
+    {
+        _enabled = HasChanges();
+        base.OnParametersSet();
+    }
+
     ConfirmResultContext<None> _confirm = default!;
 
 	[Parameter]
