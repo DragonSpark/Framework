@@ -7,5 +7,9 @@ public static class Extensions
 {
 	public static IServiceCollection WithDistributedMemory<T>(this IServiceCollection @this)
 		where T : ConfigureDistributedMemory
-		=> Registrations<T>.Default.Parameter(@this);
+		=> MemoryRegistrations<T>.Default.Parameter(@this);
+
+	public static IServiceCollection WithDistributedOutputs<T>(this IServiceCollection @this)
+		where T : ConfigureDistributedOutputs
+		=> OutputsRegistrations<T>.Default.Parameter(@this);
 }

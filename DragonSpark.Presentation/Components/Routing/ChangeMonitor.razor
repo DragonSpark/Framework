@@ -2,7 +2,9 @@
 
 @inherits EditorComponent
 
-<ConfirmResultContext T="None" @ref="_confirm" Title="@Title"PrimaryClass="primary button fit" SecondaryClass="button fit">
+<FieldModelMonitor Changed="@OnUpdate" />
+
+<ConfirmResultContext T="None" @ref="_confirm" Title="@Title" PrimaryClass="primary button fit" SecondaryClass="button fit">
     @ChildContent
 </ConfirmResultContext>
 
@@ -17,8 +19,13 @@
 
     protected override void OnParametersSet()
     {
-        _enabled = HasChanges();
+        Update();
         base.OnParametersSet();
+    }
+
+    void Update()
+    {
+        _enabled = HasChanges();
     }
 
     ConfirmResultContext<None> _confirm = default!;
@@ -36,6 +43,9 @@
 	[Parameter]
 	public bool Enabled { get; set; } = true;
 
+    [Parameter]
+    public EventCallback Updated { get; set; }
+
 	[CascadingParameter]
 	IActivityReceiver DefaultReceiver { get; set; } = default!;
 
@@ -45,4 +55,10 @@
         => !Enabled || await base.Allow(parameter) || await _confirm.Confirm(None.Default) == DialogResult.Ok;
 
     protected override bool HasChanges() => Enabled && base.HasChanges();
+
+    Task OnUpdate()
+    {
+        Update();
+        return Updated.InvokeAsync();
+    }
 }
