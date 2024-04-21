@@ -23,6 +23,7 @@ public sealed class ConfiguredApplicationConfiguration : ICommand<IApplicationBu
 		         .UseAuthentication()
 		         .UseCors()
 		         .UseAuthorization()
+				 .UseOutputCache()
 		         .UseEndpoints(_endpoints);
 	}
 }
