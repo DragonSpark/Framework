@@ -1,9 +1,8 @@
 ﻿using DragonSpark.Application.Model;
-using DragonSpark.Text;
 
 namespace DragonSpark.Server.Output;
 
-public interface IUserOutputKey : IText
+public interface IUserOutputKey : IOutputKey
 {
 	string Get<T>(T parameter) where T : IUserIdentity;
 }

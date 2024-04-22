@@ -2,7 +2,7 @@
 
 namespace DragonSpark.Server.Output;
 
-public class UserOutputKey : Text.Text, IUserOutputKey
+public class UserOutputKey : OutputKey, IUserOutputKey
 {
 	readonly string _key;
 
@@ -10,6 +10,5 @@ public class UserOutputKey : Text.Text, IUserOutputKey
 
 	protected UserOutputKey(string name, string key) : base(name) => _key = key;
 
-	//public string Get(T parameter) => $"{parameter.Get()}_{_key}";
 	public string Get<T>(T parameter) where T : IUserIdentity => $"{parameter.Get()}_{_key}";
 }

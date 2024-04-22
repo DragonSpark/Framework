@@ -6,6 +6,8 @@ namespace DragonSpark.Model.Sequences;
 
 public class Instances<T> : Instance<Array<T>>, IArray<T>
 {
+	public static implicit operator T[](Instances<T> @this) => @this.Get();
+
 	protected Instances(IEnumerable<T> enumerable) : this(enumerable.Open()) {}
 
 	public Instances(params T[] instance) : base(instance) {}
