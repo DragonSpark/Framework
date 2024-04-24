@@ -1,5 +1,7 @@
 ﻿@using BlazorPro.BlazorSize
 @using DragonSpark.Compose
+@using DragonSpark.Presentation
+@using DragonSpark.Presentation.Components.Content.Templates
 @using DragonSpark.SyncfusionRendering.Entities
 @using Syncfusion.Blazor.Grids
 @using Action = Syncfusion.Blazor.Grids.Action
@@ -26,8 +28,8 @@
               LoadingTemplate="@LoadingTemplate"
               @attributes="@AdditionalAttributes">
 
-    <GridTemplates EmptyRecordTemplate="@EmptyTemplate" />
-    <GridEvents TValue="T" DataBound="@OnDataBound" OnActionBegin="@OnActionBegin" />
+    <GridTemplates EmptyRecordTemplate="@_empty" />
+    <GridEvents TValue="T" DataBound="@OnDataBound" OnActionBegin="@OnActionBegin" OnActionFailure="@OnFailure" />
 
     @if (ChildContent is not null)
     {
@@ -37,12 +39,12 @@
 
 @code {
     readonly Model.Results.Switch _update = new(true);
-
+    RenderFragment<EmptyRecordTemplateContext>? _empty;
     AdaptiveGrid<T>? _subject;
 
     protected override void OnInitialized()
     {
-        EmptyTemplate = LoadingTemplate.Accept;
+        _empty = LoadingTemplate.Accept;
         base.OnInitialized();
     }
 
@@ -84,6 +86,9 @@
     public RenderFragment EmptyElementsTemplate { get; set; } = DefaultEmptyResultTemplate.Default;
 
     [Parameter]
+    public RenderFragment ProblemTemplate { get; set; } = DefaultExceptionTemplate.Default;
+
+    [Parameter]
     public ICollection<string>? DesktopToolbar { get; set; }
 
     [Parameter]
@@ -98,13 +103,14 @@
     [Parameter]
     public EventCallback<T> Created { get; set; }
 
-    RenderFragment<EmptyRecordTemplateContext>? EmptyTemplate { get; set; }
+    [Parameter]
+    public EventCallback<Exception> Error { get; set; }
 
     public Task Refresh() => _subject?.Refresh() ?? Task.CompletedTask;
 
     void OnDataBound()
     {
-        EmptyTemplate = EmptyElementsTemplate.Accept;
+        _empty = EmptyElementsTemplate.Accept;
     }
 
     async Task OnActionBegin(ActionEventArgs<T> parameter)
@@ -113,17 +119,24 @@
         {
             case Action.BeginEdit:
                 var allow = new Allow<T>(parameter.Data);
-                await Editing.InvokeAsync(allow).ConfigureAwait(false);
+                await Editing.Invoke(allow).ConfigureAwait(false);
                 parameter.Cancel = !allow.Get();
                 break;
             case Action.Add:
-                await Created.InvokeAsync(parameter.Data).ConfigureAwait(false);
+                await Created.Invoke(parameter.Data).ConfigureAwait(false);
                 break;
             case Action.Save:
             case Action.Delete:
-                await Updated.InvokeAsync(new(parameter.Data, parameter.Action)).ConfigureAwait(false);
+                await Updated.Invoke(new(parameter.Data, parameter.Action)).ConfigureAwait(false);
                 break;
         }
+    }
+
+    async Task OnFailure(FailureEventArgs parameter)
+    {
+        _empty = ProblemTemplate.Accept;
+        await Exceptions.Get(new(ReportedType ?? GetType(), parameter.Error));
+        await Error.Invoke(parameter.Error);
     }
 
 }
