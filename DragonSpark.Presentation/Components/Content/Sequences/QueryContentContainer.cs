@@ -85,5 +85,6 @@ partial class QueryContentContainer<T> : IPageContainer<T>
 	{
 		_error.Up();
 		_results = null;
+		StateHasChanged();
 	}
 }
