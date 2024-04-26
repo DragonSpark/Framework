@@ -12,30 +12,32 @@ public class Transactional<T> : ITransactional<T> where T : class
 	readonly Func<Update<T>, bool>        _modified;
 	readonly Func<Location<T>, Update<T>> _select;
 
-	protected Transactional() : this(_ => false) { }
+	protected Transactional() : this(_ => false) {}
 
-	protected Transactional(Func<Update<T>, bool> modified) : this(EqualityComparer<T>.Default, modified) { }
+	protected Transactional(Func<Update<T>, bool> modified) : this(EqualityComparer<T>.Default, modified) {}
+
+	protected Transactional(IEqualityComparer<T> equals) : this(equals, _ => false) {}
 
 	protected Transactional(IEqualityComparer<T> equals, Func<Update<T>, bool> modified)
-		: this(equals, modified, new Selector(equals).Get) { }
+		: this(equals, modified, new Selector(equals).Get) {}
 
 	protected Transactional(IEqualityComparer<T> equals, Func<Update<T>, bool> modified,
-							Func<Location<T>, Update<T>> select)
+	                        Func<Location<T>, Update<T>> select)
 	{
-		_equals = equals;
+		_equals   = equals;
 		_modified = modified;
-		_select = select;
+		_select   = select;
 	}
 
 	public Transactions<T> Get(TransactionInput<T> parameter)
 	{
-		var (first, second) = parameter;
-		var (left, add) = Left(first, second);
+		var (first, second)   = parameter;
+		var (left, add)       = Left(first, second);
 		var (sources, delete) = Right(first, second);
 
 		using var update = ArrayBuilder.New<Update<T>>(sources.Count);
-		using var lease = left.AsLease();
-		var inputs = lease.AsMemory();
+		using var lease  = left.AsLease();
+		var       inputs = lease.AsMemory();
 		foreach (var stored in sources.AsSpan())
 		{
 			var select = _select(new(inputs, stored));
@@ -52,10 +54,10 @@ public class Transactional<T> : ITransactional<T> where T : class
 
 	State Left(Memory<T> first, Memory<T> second)
 	{
-		var count = second.Length;
-		var add = ArrayBuilder.New<T>(count);
-		var left = ArrayBuilder.New<T>(count);
-		var span = second.Span;
+		var count    = second.Length;
+		var add      = ArrayBuilder.New<T>(count);
+		var left     = ArrayBuilder.New<T>(count);
+		var span     = second.Span;
 		var selector = first.Then();
 		for (var i = 0; i < count; i++)
 		{
@@ -76,8 +78,8 @@ public class Transactional<T> : ITransactional<T> where T : class
 	State Right(Memory<T> first, Memory<T> second)
 	{
 		var delete = ArrayBuilder.New<T>(first.Length);
-		var right = ArrayBuilder.New<T>(first.Length);
-		var span = first.Span;
+		var right  = ArrayBuilder.New<T>(first.Length);
+		var span   = first.Span;
 		for (var i = 0; i < first.Length; i++)
 		{
 			var candidate = span[i];
