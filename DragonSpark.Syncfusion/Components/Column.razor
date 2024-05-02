@@ -6,10 +6,11 @@
 	AllowSorting="@AllowSorting"
 	Format="@Format"
 	HeaderText="@HeaderText"
+            HeaderTemplate="@_header"
 	Field="@Field"
 	Width="@Width"
 	FilterTemplate="@FilterTemplate"
-	Template="@ActualTemplate"
+            Template="@_template"
     ClipMode="@ClipMode"
 	Type="@Type"
 	HeaderTextAlign="@HeaderTextAlign"
@@ -18,35 +19,38 @@
 />
 
 @code {
+    RenderFragment<object>? _template, _header;
 
-	protected override void OnInitialized()
-	{
-		ActualTemplate = Template != null ? x => Template((T)x) : null;
-		base.OnInitialized();
-	}
+    protected override void OnInitialized()
+    {
+        _header = HeaderTemplate is not null ? x => HeaderTemplate((T)x) : null;
+        _template = Template is not null ? x => Template((T)x) : null;
+        base.OnInitialized();
+    }
 
-	RenderFragment<object>? ActualTemplate { get; set; }
+    [Parameter]
+    public RenderFragment<T>? Template { get; set; }
 
-	[Parameter]
-	public RenderFragment<T>? Template { get; set; }
+    [Parameter]
+    public bool AutoFit { get; set; }
 
-	[Parameter]
-	public bool AutoFit { get; set; }
+    [Parameter]
+    public bool AllowFiltering { get; set; } = true;
 
-	[Parameter]
-	public bool AllowFiltering { get; set; } = true;
+    [Parameter]
+    public bool AllowSorting { get; set; } = true;
 
-	[Parameter]
-	public bool AllowSorting { get; set; } = true;
+    [Parameter]
+    public string Format { get; set; } = default!;
 
-	[Parameter]
-	public string Format { get; set; } = default!;
+    [Parameter]
+    public string Width { get; set; } = string.Empty;
 
-	[Parameter]
-	public string Width { get; set; } = string.Empty;
+    [Parameter]
+    public string? HeaderText { get; set; }
 
-	[Parameter]
-	public string? HeaderText { get; set; }
+    [Parameter]
+    public RenderFragment<T>? HeaderTemplate { get; set; } = default!;
 
 	[Parameter]
 	public string Field { get; set; } = string.Empty;
