@@ -1,0 +1,32 @@
+﻿@using DragonSpark.Presentation.Components.Content.Rendering
+@using DragonSpark.SyncfusionRendering.Queries
+@using Microsoft.Extensions.Caching.Memory
+
+@inject IMemoryCache Memory
+@inject IContentKey Key
+
+@ChildContent(_context)
+
+@code {
+    [Parameter]
+    public string Id { get; set; } = string.Empty;
+
+    [Parameter]
+    public IDataRequest Input 
+    {
+        get => _input;
+        set
+        {
+            if (_input != value)
+            {
+                _input   = value;
+                _context = new MemoryAwareDataRequest(_input, Memory, DetermineKey);
+            }
+        }
+    }	IDataRequest _input = default!, _context = default!;
+
+    [Parameter]
+    public RenderFragment<IDataRequest> ChildContent { get; set; } = default!;
+
+    string DetermineKey() => $"{Id}_{Key.Get(this)}";
+}

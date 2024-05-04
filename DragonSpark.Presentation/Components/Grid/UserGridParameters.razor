@@ -11,9 +11,12 @@
     protected override void OnInitialized()
     {
         _client  = Clients.Get(State);
-        _address = Address.Get("/v2/queries/topics").ToString();
+        _address = Address.Get(Path).ToString();
         base.OnInitialized();
     }
+
+    [Parameter]
+    public string Path { get; set; } = default!;
 
     [Parameter]
     public ISelect<ClaimsPrincipal, HttpClient> Clients { get; set; } = default!;

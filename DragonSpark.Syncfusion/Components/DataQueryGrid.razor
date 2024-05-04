@@ -9,52 +9,36 @@
 @using Microsoft.Extensions.Caching.Memory
 @using Syncfusion.Blazor
 @using Syncfusion.Blazor.Grids
-@using Action = Syncfusion.Blazor.Grids.Action
 
 @typeparam T
 @inherits DataQueryComponent
-@implements ISpecialColumnContainer
 
-@inject IMemoryCache Memory
-@inject IContentKey Key
+
 @inject ProtectedSessionStorage Session
 
-@if (_display)
-{
-    <style>
-        .e-excelfilter .e-searchbox {
-            display: none;
-        }
-    </style>
-}
-
-<CascadingValue TValue="ISpecialColumnContainer" IsFixed="true" Value="@this">
-    <DataGrid T="T"
-                  @ref="@_subject"
-                  Id="@Id"
-                  Enabled="@_active"
-                  FilterType="@FilterType"
-                  Columns="@Columns"
-                  AllowSelection="@AllowSelection"
-                  AllowPaging="@AllowPaging"
-                  AllowFiltering="@AllowFiltering"
-                  AllowSorting="@AllowSorting"
-                  AllowExport="@AllowExport"
-                  Breakpoint="@Breakpoint"
-                  DesktopToolbar="@DesktopToolbar"
-                  MobileToolbar="@MobileToolbar"
-                  CssClass="@CssClass"
-                  PageSize="@PageSize"
-                  LoadingTemplate="@LoadingTemplate"
-EmptyElementsTemplate="@EmptyElementsTemplate"
+<DataGrid T="T"
+          @ref="@_subject"
+          Id="@Id"
+          Enabled="@_active"
+          FilterType="@FilterType"
+          Columns="@Columns"
+          AllowSelection="@AllowSelection"
+          AllowPaging="@AllowPaging"
+          AllowFiltering="@AllowFiltering"
+          AllowSorting="@AllowSorting"
+          AllowExport="@AllowExport"
+          Breakpoint="@Breakpoint"
+          DesktopToolbar="@DesktopToolbar"
+          MobileToolbar="@MobileToolbar"
+          CssClass="@CssClass"
+          PageSize="@PageSize"
+          LoadingTemplate="@LoadingTemplate"
+          EmptyElementsTemplate="@EmptyElementsTemplate"
           Updated="@Updated"
           Editing="@Editing"
           Created="@Created"
-                  @attributes="@AdditionalAttributes">
-
-        <GridTemplates EmptyRecordTemplate="@EmptyTemplate"/>
-
-        <GridEvents TValue="T" DataBound="OnDataBound" OnActionBegin="@OnActionBegin"/>
+          @attributes="@AdditionalAttributes">
+    <ChildContent>
         <Syncfusion.Blazor.Data.SfDataManager Adaptor="Adaptors.CustomAdaptor">
             <DataRequestCallbackAdaptor Requested="@OnRequest"/>
         </Syncfusion.Blazor.Data.SfDataManager>
@@ -62,25 +46,14 @@ EmptyElementsTemplate="@EmptyElementsTemplate"
         {
             @ChildContent
         }
-    </DataGrid>
-</CascadingValue>
+    </ChildContent>
+</DataGrid>
 
 @code {
-    readonly Model.Results.Switch _refresh = new(), _active = new(true), _update = new(true), _display = new();
-    readonly HashSet<string> _columns = new();
+    readonly Model.Results.Switch _active = new(true), _update = new(true);
+
     GridStateVariable _store = null!;
     DataGrid<T>? _subject;
-
-    protected override void OnInitialized()
-    {
-        EmptyTemplate = LoadingTemplate.Accept;
-        base.OnInitialized();
-    }
-
-    protected override void OnContentChanged(Await<DataManagerRequest, object>? parameter)
-    {
-        _refresh.Execute(parameter is not null);
-    }
 
     public Task Export() => _subject?.Export() ?? Task.CompletedTask;
 
@@ -120,49 +93,14 @@ EmptyElementsTemplate="@EmptyElementsTemplate"
     [Parameter]
     public EventCallback<T> Created { get; set; }
 
-    RenderFragment<EmptyRecordTemplateContext>? EmptyTemplate { get; set; }
-
     public Task Refresh() => _subject?.Refresh() ?? Task.CompletedTask;
-/* TODO: Review
-    protected override Task OnParametersSetAsync()
-        => _subject is not null && _refresh.Down() ? Refresh() : base.OnParametersSetAsync();
-*/
+
+    protected override void OnContentChanged(Await<DataManagerRequest, object>? parameter) {}
 
     protected override Await<DataManagerRequest, object> CreateInput()
-    {
-        var body = new StateAwareDataRequest(Content, _store, _active);
-        var next = new MemoryAwareDataRequest(body, Memory, DetermineKey);
-        return next.Then().Then().Handle(EmptyDataResult.Default.Get());
-    }
+        => new StateAwareDataRequest(Content, _store, _active).Then().Then().Handle(EmptyDataResult.Default.Get());
 
     string DetermineKey() => $"{Id}_{Key.Get(this)}";
-
-    void OnDataBound()
-    {
-        EmptyTemplate = EmptyElementsTemplate.Accept;
-    }
-
-    async Task OnActionBegin(ActionEventArgs<T> arg)
-    {
-        switch (arg.RequestType)
-        {
-	    case Action.FilterBeforeOpen:
-                _display.Execute(_columns.Contains(arg.ColumnName));
-                break;
-            case Action.BeginEdit:
-                var allow = new Allow<T>(arg.Data);
-                await Editing.InvokeAsync(allow);
-                arg.Cancel = !allow.Get();
-                break;
-            case Action.Add:
-                await Created.InvokeAsync(arg.Data);
-                break;
-            case Action.Save:
-            case Action.Delete:
-                await Updated.InvokeAsync(new(arg.Data, arg.Action));
-                break;
-        }
-    }
 
     protected override Task OnRequest(DataRequestResult parameter)
     {
@@ -177,10 +115,4 @@ EmptyElementsTemplate="@EmptyElementsTemplate"
         }
         base.OnParametersSet();
     }
-
-    void ICommand<string>.Execute(string parameter)
-    {
-        _columns.Add(parameter);
-    }
-
 }

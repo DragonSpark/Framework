@@ -29,6 +29,7 @@
           Updated="@Updated"
           Editing="@Editing"
           Created="@Created"
+          Empty="@Empty"
           @attributes="@AdditionalAttributes">
     <ChildContent>
         <Syncfusion.Blazor.Data.SfDataManager HttpClientInstance="@Client" Url="@Address" Adaptor="Adaptors.ODataV4Adaptor" />
@@ -115,6 +116,9 @@
 
     [Parameter]
     public EventCallback<T> Created { get; set; }
+
+    [Parameter]
+    public EventCallback Empty { get; set; }
 
     public Task Export() => _subject?.Export() ?? Task.CompletedTask;
     public Task Refresh() => _subject?.Refresh() ?? Task.CompletedTask;
