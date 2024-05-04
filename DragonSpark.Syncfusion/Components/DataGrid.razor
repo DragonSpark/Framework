@@ -106,11 +106,18 @@
     [Parameter]
     public EventCallback<Exception> Error { get; set; }
 
+    [Parameter]
+    public EventCallback Empty { get; set; }
+
     public Task Refresh() => _subject?.Refresh() ?? Task.CompletedTask;
 
-    void OnDataBound()
+    async Task OnDataBound(object parameter)
     {
         _empty = EmptyElementsTemplate.Accept;
+        if (_subject?.IsEmpty() ?? false)
+        {
+            await Empty.Invoke().ConfigureAwait(false);
+        }
     }
 
     async Task OnActionBegin(ActionEventArgs<T> parameter)
@@ -136,7 +143,7 @@
     {
         _empty = ProblemTemplate.Accept;
         await Exceptions.Get(new(ReportedType ?? GetType(), parameter.Error));
-        await Error.Invoke(parameter.Error);
+        await Error.Invoke(parameter.Error).ConfigureAwait(false);
     }
 
 }

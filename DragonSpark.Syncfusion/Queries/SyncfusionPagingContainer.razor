@@ -6,10 +6,8 @@
 
 @inherits DragonSpark.Presentation.Components.Content.Templates.ManyActiveContentTemplateComponentBase<IDataRequest>
 
-<ReportingContentView
-	TIn="IDataRequest"
-	TOut="IDataRequest"
-	Content="@Subject"
+<ReportingContentView TIn="IDataRequest" TOut="IDataRequest"
+	Content="@_subject"
 	Reporter="@Reporter"
 	LoadingTemplate="@LoadingTemplate"
 	ExceptionTemplate="@ExceptionTemplate"
@@ -19,6 +17,8 @@
 </ReportingContentView>
 
 @code {
+    IDataRequest? _subject;
+
 	[Parameter]
 	public IPages<T> Content
 	{
@@ -28,7 +28,7 @@
 			if (_content != value)
 			{
 				_content = value;
-				Subject = null;
+                _subject = null;
 			}
 		}
 	}	IPages<T> _content = default!;
@@ -39,11 +39,9 @@
 	[Parameter]
 	public IReporter<IDataRequest> Reporter { get; set; } = Queries.Reporter.Default;
 
-    IDataRequest? Subject { get; set; }
-
 	protected override void OnParametersSet()
 	{
+        _subject ??= Requests.Get(Content);
 		base.OnParametersSet();
-		Subject ??= Requests.Get(Content);
 	}
 }

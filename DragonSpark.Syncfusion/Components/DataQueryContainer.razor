@@ -28,32 +28,33 @@
 		{
 			@BodyHeaderTemplate
 		}
-
-		<DataQueryGrid T="T" @ref="_subject" Content="context"
-					   Id="@_identity"
-					   FilterType="@FilterType"
-					   ReportedType="@ReportedType"
-					   Columns="@Columns"
-					   AllowSelection="@AllowSelection"
-					   AllowPaging="@AllowPaging"
-					   AllowFiltering="@AllowFiltering"
-					   AllowSorting="@AllowSorting"
-                       AllowExport="@AllowExport"
-					   LoadingTemplate="@LoadingTemplate"
-                       DesktopToolbar="@DesktopToolbar"
-                       MobileToolbar="@MobileToolbar"
-					   CssClass="@CssClass"
-					   Breakpoint="@Breakpoint"
-					   PageSize="@PageSize"
-					   Editing="@Editing"
-					   Created="@Created"
-					   Updated="@Updated"
-					   @attributes="@AdditionalAttributes">
-			@if (BodyContentTemplate is not null)
-			{
-				@BodyContentTemplate
-			}
-		</DataQueryGrid>
+        <DragonSpark.SyncfusionRendering.Components.MemoryAwareRequestContainer Id="@_identity" Input="context" Context="input">
+            <DataQueryGrid T="T" @ref="_subject" Content="input"
+                           Id="@_identity"
+                           FilterType="@FilterType"
+                           ReportedType="@ReportedType"
+                           Columns="@Columns"
+                           AllowSelection="@AllowSelection"
+                           AllowPaging="@AllowPaging"
+                           AllowFiltering="@AllowFiltering"
+                           AllowSorting="@AllowSorting"
+                           AllowExport="@AllowExport"
+                           LoadingTemplate="@LoadingTemplate"
+                           DesktopToolbar="@DesktopToolbar"
+                           MobileToolbar="@MobileToolbar"
+                           CssClass="@CssClass"
+                           Breakpoint="@Breakpoint"
+                           PageSize="@PageSize"
+                           Editing="@Editing"
+                           Created="@Created"
+                           Updated="@Updated"
+                           @attributes="@AdditionalAttributes">
+                @if (BodyContentTemplate is not null)
+                {
+                    @BodyContentTemplate
+                }
+            </DataQueryGrid>
+        </DragonSpark.SyncfusionRendering.Components.MemoryAwareRequestContainer>
 
 		@if (BodyFooterTemplate is not null)
 		{

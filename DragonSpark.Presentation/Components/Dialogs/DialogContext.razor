@@ -15,13 +15,11 @@
     [Parameter]
     public RenderFragment<DialogParameter<T>> ChildContent { get; set; } = default!;
 
-    public Task Open(T entity) => Dialogs.OpenAsync(Title, x => ChildContent(new (x, entity)),
-                                                    new DialogOptions { Width = Width });
+    public Task Open(T entity) => Dialogs.OpenAsync(Title, x => ChildContent(new(x, entity)), new() { Width = Width });
 
     public Task Close()
     {
         Dialogs.Close();
         return Task.CompletedTask;
     }
-
 }

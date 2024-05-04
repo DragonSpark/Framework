@@ -2,19 +2,16 @@
 @using DragonSpark.Compose
 @using DragonSpark.Model.Operations
 @using DragonSpark.Presentation
-@using DragonSpark.Presentation.Components.Content.Rendering
 @using DragonSpark.SyncfusionRendering.Entities
 @using DragonSpark.SyncfusionRendering.Queries
 @using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
-@using Microsoft.Extensions.Caching.Memory
 @using Syncfusion.Blazor
 @using Syncfusion.Blazor.Grids
 
 @typeparam T
 @inherits DataQueryComponent
 
-@inject IMemoryCache Memory
-@inject IContentKey Key
+
 @inject ProtectedSessionStorage Session
 
 <DataGrid T="T"
@@ -51,7 +48,7 @@
 </DataGrid>
 
 @code {
-    readonly Model.Results.Switch _refresh = new(), _active = new(true), _update = new(true);
+    readonly Model.Results.Switch _active = new(true), _update = new(true);
 
     GridStateVariable _store = null!;
     DataGrid<T>? _subject;
@@ -96,25 +93,11 @@
 
     public Task Refresh() => _subject?.Refresh() ?? Task.CompletedTask;
 
-    protected override void OnContentChanged(Await<DataManagerRequest, object>? parameter)
-    {
-        _refresh.Execute(parameter is not null);
-    }
+    protected override void OnContentChanged(Await<DataManagerRequest, object>? parameter) {}
 
     protected override Await<DataManagerRequest, object> CreateInput()
-    {
-        var body = new StateAwareDataRequest(Content, _store, _active);
-        var next = new MemoryAwareDataRequest(body, Memory, DetermineKey);
-        return next.Then().Then().Handle(EmptyDataResult.Default.Get());
-    }
+        => new StateAwareDataRequest(Content, _store, _active).Then().Then().Handle(EmptyDataResult.Default.Get());
 
-    string DetermineKey() => $"{Id}_{Key.Get(this)}";
-
-    protected override Task OnRequest(DataRequestResult parameter)
-    {
-        _refresh.Down();
-        return base.OnRequest(parameter);
-    }
     protected override void OnParametersSet()
     {
         if (_update.Down())
