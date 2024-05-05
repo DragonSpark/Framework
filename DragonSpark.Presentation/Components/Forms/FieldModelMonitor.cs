@@ -1,18 +1,20 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Forms;
 
-public class FieldModelMonitor : ComponentBase
+public sealed class FieldModelMonitor : ComponentBase
 {
+	readonly Switch _update = new();
+
 	[Parameter]
 	public object Model { get; set; } = default!;
 
 	[Parameter]
 	public EventCallback Changed { get; set; }
-
-	EditContext? _editContext;
 
 	[CascadingParameter]
 	EditContext? EditContext
@@ -33,14 +35,17 @@ public class FieldModelMonitor : ComponentBase
 				}
 			}
 		}
-	}
+	}	EditContext? _editContext;
 
 	void FieldChanged(object? sender, FieldChangedEventArgs args)
 	{
 		var model = Model.Account() ?? EditContext?.Model;
-		if (args.FieldIdentifier.Model == model)
+		if (args.FieldIdentifier.Model == model && _update.Up())
 		{
-			Changed.InvokeAsync(Model);
+			StateHasChanged();
 		}
 	}
+
+	protected override Task OnAfterRenderAsync(bool firstRender)
+		=> _update.Down() ? Changed.InvokeAsync() : base.OnAfterRenderAsync(firstRender);
 }
