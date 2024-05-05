@@ -56,7 +56,7 @@ public static class Extensions
 
 	/**/
 	public static CallbackContext Callback(this ModelContext @this, EventCallback callback)
-		=> @this.Callback(() => callback.InvokeAsync());
+		=> @this.Callback(() => callback.Invoke());
 
 	public static CallbackContext Callback(this ModelContext @this, Func<ValueTask> method)
 		=> @this.Callback(method.Start().Select(x => x.AsTask()));
@@ -86,7 +86,7 @@ public static class Extensions
 	public static CallbackContext<T> Callback<T>(this TaskSelector<T> @this) => new(@this);
 
 	public static OperationContext<T> Then<T>(this EventCallback<T> @this)
-		=> Start.A.Selection<T>().By.Calling(x => @this.InvokeAsync(x)).Then().Structure();
+		=> Start.A.Selection<T>().By.Calling(x => @this.Invoke(x)).Then().Structure();
 
 	/**/
 
@@ -151,7 +151,7 @@ public static class Extensions
 
 /**/
 
-	public static Task Invoke<T>(this EventCallback<T> @this, T parameter)
+	public static Task Invoke<T>(this EventCallback<T> @this, T? parameter)
 		=> @this.HasDelegate ? @this.InvokeAsync(parameter) : Task.CompletedTask;
 
 	public static Task Invoke(this EventCallback @this) => @this.HasDelegate ? @this.InvokeAsync() : Task.CompletedTask;

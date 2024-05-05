@@ -68,7 +68,7 @@ else
     {
         if (_requested.Down() && Binding is not null)
         {
-            await ValueChanged.InvokeAsync(Value = Binding.Value);
+            await ValueChanged.Invoke(Value = Binding.Value);
             if (Allowed.Get(Binding.Value))
             {
                 await Store.Await(Binding.Value);
@@ -86,14 +86,14 @@ else
             {
                 var value = _result.Value.Value ?? (AssignedValue is not null ? AssignedValue.Invoke() : Value);
                 Binding = new Binding<T>(value, RequestUpdate, Comparer);
-                await Loaded.InvokeAsync(Binding);
-                await ValueChanged.InvokeAsync(Value = Binding.Value);
+                await Loaded.Invoke(Binding);
+                await ValueChanged.Invoke(Value = Binding.Value);
             }
             else if (AssignedValue is not null)
             {
                 var value = AssignedValue();
                 Binding = new Binding<T>(value, RequestUpdate, Comparer);
-                await ValueChanged.InvokeAsync(Value = value);
+                await ValueChanged.Invoke(Value = value);
             }
             else
             {

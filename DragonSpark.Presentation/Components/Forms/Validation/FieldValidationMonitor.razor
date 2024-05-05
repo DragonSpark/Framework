@@ -34,7 +34,7 @@
     public EventCallback<ValidatedField> Validated { get; set; }
 
     Task OnUpdate() => EditContext is not null ?
-                           Validated.InvokeAsync(new(Identifier, EditContext.GetValidationMessages(Identifier).Any()))
+                           Validated.Invoke(new(Identifier, EditContext.GetValidationMessages(Identifier).Any()))
                            : Task.CompletedTask;
 
     void Update(object? sender, EventArgs e)

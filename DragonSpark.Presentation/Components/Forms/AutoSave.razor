@@ -77,14 +77,14 @@
                 using var active = _active.Start();
                 try
                 {
-                    await ModelChanging.InvokeAsync(Model);
+                    await ModelChanging.Invoke(Model);
                     Target.Execute(new(Model, content));
-                    await ModelChanged.InvokeAsync(Model).ConfigureAwait(false);
+                    await ModelChanged.Invoke(Model).ConfigureAwait(false);
                 }
                 catch (Exception e)
                 {
                     Loading.Execute(new (e, content));
-                    await ErrorOccurred.InvokeAsync().ConfigureAwait(false);
+                    await ErrorOccurred.Invoke().ConfigureAwait(false);
                 }
             }
         }
@@ -98,7 +98,7 @@
             catch (Exception e)
             {
                 Saving.Execute(e);
-                await ErrorOccurred.InvokeAsync().ConfigureAwait(false);
+                await ErrorOccurred.Invoke().ConfigureAwait(false);
             }
         }
     }

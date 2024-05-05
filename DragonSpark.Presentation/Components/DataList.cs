@@ -60,7 +60,7 @@ public class DataList<T> : RadzenDataList<T>, IRefreshAware
 			if (_pageIndex != page)
 			{
 				_reload?.Execute();
-				await PageIndexChanged.InvokeAsync(_pageIndex = page).ConfigureAwait(false);
+				await PageIndexChanged.Invoke(_pageIndex = page).ConfigureAwait(false);
 			}
 		}
 	}

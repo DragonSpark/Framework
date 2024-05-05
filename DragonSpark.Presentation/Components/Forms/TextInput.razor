@@ -103,7 +103,7 @@
         _stored = _current = Value;
         _active.Up();
         _focus.Up();
-        return OnFocus.InvokeAsync(parameter);
+        return OnFocus.Invoke(parameter);
     }
 
     Task KeyUp(KeyboardEventArgs parameter)
@@ -133,7 +133,7 @@
                     _timer.Stop();
                     _timer.Start();
                     _active.Up();
-                    return OnKeyUp.InvokeAsync(parameter);
+                    return OnKeyUp.Invoke(parameter);
                 }
                 break;
         }
@@ -149,13 +149,13 @@
             case "Enter":
                 return OnCommit(_current);
         }
-        return OnKeyDown.InvokeAsync(parameter);
+        return OnKeyDown.Invoke(parameter);
     }
 
     Task Input(ChangeEventArgs parameter)
     {
         _current = parameter.Value?.ToString() ?? string.Empty;
-        return OnInput.InvokeAsync(parameter);
+        return OnInput.Invoke(parameter);
     }
 
     Task OnCommit(string parameter)
@@ -204,10 +204,9 @@
         else if (_active.Down())
         {
             _timer.Stop();
-            // await Commit();
         }
 
-        await OnFocusOut.InvokeAsync(parameter).ConfigureAwait(false);
+        await OnFocusOut.Invoke(parameter).ConfigureAwait(false);
     }
 
     public void Dispose()

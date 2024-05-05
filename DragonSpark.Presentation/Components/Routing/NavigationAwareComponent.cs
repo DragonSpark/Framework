@@ -38,7 +38,7 @@ public abstract class NavigationAwareComponent : ComponentBase, IAsyncDisposable
 
 	protected virtual Task OnNavigationCanceled() => Task.CompletedTask;
 
-	protected virtual Task Exit() => Exited.InvokeAsync(this);
+	protected virtual Task Exit() => Exited.Invoke();
 
 	protected virtual void OnDispose(bool disposing) {}
 

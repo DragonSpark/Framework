@@ -9,8 +9,5 @@
     [Parameter]
     public ICondition<None> Condition { get; set; } = Is.Always<None>().Out();
 
-    protected override Task OnInitializedAsync() => Condition.Get() ? Subject.InvokeAsync(this) : Task.CompletedTask;
-
-    /*protected override Task OnAfterRenderAsync(bool firstRender)
-        => firstRender && Condition.Get() ? Subject.InvokeAsync(this) : base.OnAfterRenderAsync(firstRender);*/
+    protected override Task OnInitializedAsync() => Condition.Get() ? Subject.Invoke() : Task.CompletedTask;
 }

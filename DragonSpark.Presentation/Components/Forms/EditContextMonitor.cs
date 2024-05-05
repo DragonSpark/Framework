@@ -37,7 +37,7 @@ public class EditContextMonitor : ComponentBase, IDisposable
 	}	EditContext? _context;
 
 	protected override Task OnInitializedAsync()
-		=> NotifyOnInitialized && EditContext != null ? Changed.InvokeAsync(EditContext) : base.OnInitializedAsync();
+		=> NotifyOnInitialized && EditContext != null ? Changed.Invoke(EditContext) : base.OnInitializedAsync();
 
 	void ValidationStateChanged(object? sender, ValidationStateChangedEventArgs e)
 	{
@@ -48,7 +48,7 @@ public class EditContextMonitor : ComponentBase, IDisposable
 	{
 		if (EditContext != null)
 		{
-			Changed.InvokeAsync(EditContext);
+			Changed.Invoke(EditContext);
 		}
 	}
 

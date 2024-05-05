@@ -18,7 +18,7 @@
 
 	void OnChanged(object? sender, EventArgs e)
 	{
-	    InvokeAsync(() => Changed.InvokeAsync());
+	    InvokeAsync(() => Changed.Invoke());
 	}
 
     public void Dispose()

@@ -1,6 +1,7 @@
 ﻿@using DragonSpark.Application.Model.Sequences
 @using DragonSpark.Compose
 @using DragonSpark.Model
+@using DragonSpark.Presentation
 @using NetFabric.Hyperlinq
 @using Syncfusion.Blazor.Data
 @using Syncfusion.Blazor.DropDowns
@@ -101,12 +102,12 @@
             _selecting = true;
             var single = Value = _subject.GetDataByValue(parameter.Value).Single();
             _selecting = false;
-            return ValueChanged.InvokeAsync(single);
+            return ValueChanged.Invoke(single);
         }
         return Task.CompletedTask;
     }
 
-    Task Update() => Updated.InvokeAsync(this);
+    Task Update() => Updated.Invoke();
 
     void OnActionComplete(ActionCompleteEventArgs<TItem> parameter)
     {

@@ -1,4 +1,5 @@
 ﻿@inherits DataAdaptor
+@using DragonSpark.Presentation
 @using Syncfusion.Blazor
 
 @code {
@@ -9,7 +10,7 @@
 	public override async Task<object> ReadAsync(DataManagerRequest request, string? key = null)
 	{
 		var result = new DataRequestResult(request, key);
-		await Requested.InvokeAsync(result).ConfigureAwait(false);
+		await Requested.Invoke(result).ConfigureAwait(false);
 		return result.Get();
 	}
 

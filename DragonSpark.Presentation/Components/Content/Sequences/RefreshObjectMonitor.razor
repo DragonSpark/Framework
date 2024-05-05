@@ -19,7 +19,7 @@
 	}
 
 	public Task HandleAsync(RefreshObjectMessage message)
-		=> message.Subject == Topic ? Updated.InvokeAsync(Topic) : Task.CompletedTask;
+		=> message.Subject == Topic ? Updated.Invoke(Topic) : Task.CompletedTask;
 
 	public void Dispose()
 	{

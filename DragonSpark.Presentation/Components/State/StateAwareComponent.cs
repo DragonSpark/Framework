@@ -10,8 +10,5 @@ public class StateAwareComponent : ComponentBase
 
 	// ReSharper disable once FlagArgument
 	protected override Task OnAfterRenderAsync(bool firstRender)
-		=> firstRender ? Initialized.InvokeAsync() : base.OnAfterRenderAsync(firstRender);
-
-
-
+		=> firstRender ? Initialized.Invoke() : base.OnAfterRenderAsync(firstRender);
 }

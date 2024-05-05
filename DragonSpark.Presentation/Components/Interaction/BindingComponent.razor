@@ -49,7 +49,7 @@
         {
             UpdateRequested = false;
 
-            return ValueChanged.InvokeAsync(Value = !string.IsNullOrEmpty(Content) ? Parser.Get(Content) : default);
+            return ValueChanged.Invoke(Value = !string.IsNullOrEmpty(Content) ? Parser.Get(Content) : default);
         }
         return Task.CompletedTask;
     }

@@ -21,6 +21,6 @@
     Task OnUpdate()
     {
         StateHasChanged();
-        return Updated.InvokeAsync(this);
+        return Updated.Invoke();
     }
 }

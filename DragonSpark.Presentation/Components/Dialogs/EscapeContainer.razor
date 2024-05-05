@@ -35,7 +35,7 @@
     {
         return eventArgs.Code switch
                {
-               "Escape" => Escaped.InvokeAsync(),
+               "Escape" => Escaped.Invoke(),
                _ => Task.CompletedTask
                };
     }

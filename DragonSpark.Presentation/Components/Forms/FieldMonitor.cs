@@ -60,7 +60,7 @@ public sealed class FieldMonitor<T> : ComponentBase
 		if (_update.Down())
 		{
 			var value = _identifier.GetValue<T>();
-			return Changed.InvokeAsync(value);
+			return Changed.Invoke(value);
 		}
 
 		return base.OnAfterRenderAsync(firstRender);
