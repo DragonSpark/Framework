@@ -1,10 +1,17 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Results;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Forms;
 
-public class FieldMonitor<T> : ComponentBase
+public sealed class FieldMonitor<T> : ComponentBase
 {
+	readonly Switch _update = new();
+
+	FieldIdentifier _identifier = default!;
+
 	[Parameter]
 	public object? Model { get; set; }
 
@@ -41,10 +48,21 @@ public class FieldMonitor<T> : ComponentBase
 	void FieldChanged(object? sender, FieldChangedEventArgs args)
 	{
 		var model = Model is null || Model == args.FieldIdentifier.Model;
-		if (model && args.FieldIdentifier.FieldName == FieldName)
+		if (model && args.FieldIdentifier.FieldName == FieldName && _update.Up())
 		{
-			var value = args.FieldIdentifier.GetValue<T>();
-			Changed.InvokeAsync(value);
+			_identifier = args.FieldIdentifier;
+			StateHasChanged();
 		}
+	}
+
+	protected override Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (_update.Down())
+		{
+			var value = _identifier.GetValue<T>();
+			return Changed.InvokeAsync(value);
+		}
+
+		return base.OnAfterRenderAsync(firstRender);
 	}
 }

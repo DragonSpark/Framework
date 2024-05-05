@@ -13,8 +13,8 @@ sealed class ValidationOperation<T> : IOperation<ValidationContext>
 
 	public async ValueTask Get(ValidationContext parameter)
 	{
-		var ((_, field), messages, (invalid, _, _)) = parameter;
-		if (!await _validator.Await(field.GetValue<T>()))
+		var ((context, field), messages, (invalid, _, _)) = parameter;
+		if (context.IsValid() && !await _validator.Await(field.GetValue<T>()))
 		{
 			messages.Add(in field, invalid);
 		}

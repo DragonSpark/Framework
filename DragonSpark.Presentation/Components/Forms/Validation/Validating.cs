@@ -10,7 +10,7 @@ namespace DragonSpark.Presentation.Components.Forms.Validation;
 
 public class Validating : ComponentBase, IDisposable
 {
-	readonly Switch           _requested = new();
+	readonly Switch           _requested = new(), _active = new();
 	readonly IOperationsStore _store;
 	readonly Func<Task>       _update;
 
@@ -52,7 +52,7 @@ public class Validating : ComponentBase, IDisposable
 				_enabled = value;
 				if (value)
 				{
-					Request();
+					_requested.Up();
 				}
 			}
 		}
@@ -99,26 +99,30 @@ public class Validating : ComponentBase, IDisposable
 
 	void Request()
 	{
-		if (Enabled)
+		if (Enabled && !_active && _requested.Up())
 		{
-			_requested.Up();
-			_list.Execute(StartUpdate());
+			StateHasChanged();
+		}
+	}
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (_requested.Down())
+		{
+			using (_active.Assigned(true))
+			{
+				var task = StartUpdate();
+				_list.Execute(task);
+				await task.ConfigureAwait(false);
+			}
 		}
 	}
 
 	void FieldChanged(object? sender, FieldChangedEventArgs e)
 	{
-		if (Enabled && e.FieldIdentifier.Equals(Identifier))
+		if (e.FieldIdentifier.Equals(Identifier))
 		{
-			Task.Run(FieldChanged(e).Self);
-		}
-	}
-
-	async Task FieldChanged(FieldChangedEventArgs _)
-	{
-		if (!_requested.Down())
-		{
-			await StartUpdate().ConfigureAwait(false);
+			Request();
 		}
 	}
 
@@ -129,11 +133,11 @@ public class Validating : ComponentBase, IDisposable
 		_messages.Clear(Identifier);
 		if (IsValid())
 		{
-			await Validate.InvokeAsync(new(new(Context.Verify(), Identifier), _messages, Message));
+			await Validate.Invoke(new(new(Context.Verify(), Identifier), _messages, Message));
 			_context.Verify().NotifyValidationStateChanged();
 
 			var callback = IsEmpty() ? Valid : Invalid;
-			await callback.InvokeAsync().ConfigureAwait(false);
+			await callback.Invoke().ConfigureAwait(false);
 		}
 	}
 
