@@ -81,6 +81,6 @@
     Task Input(ChangeEventArgs parameter)
     {
         Value = parameter.Value is string value && (Validator?.Get(value) ?? true) ? Parser.Get(value) : default;
-        return OnInput.InvokeAsync(parameter);
+        return OnInput.Invoke(parameter);
     }
 }

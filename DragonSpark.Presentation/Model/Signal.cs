@@ -9,6 +9,6 @@ public sealed class Signal : Variable<EventCallback?>
 	public Task Fire()
 	{
 		var callback = Get();
-		return callback is not null ? callback.Value.InvokeAsync() : Task.CompletedTask;
+		return callback is not null ? callback.Value.Invoke() : Task.CompletedTask;
 	}
 }

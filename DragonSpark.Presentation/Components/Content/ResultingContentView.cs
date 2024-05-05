@@ -101,7 +101,7 @@ partial class ResultingContentView<T>
 				if (result is not null)
 				{
 					var callback = refresh ? Refreshed : Rendered;
-					return callback.InvokeAsync(result);
+					return callback.Invoke(result);
 				}
 			}
 		}

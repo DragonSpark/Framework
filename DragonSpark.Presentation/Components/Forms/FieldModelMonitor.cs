@@ -47,5 +47,5 @@ public sealed class FieldModelMonitor : ComponentBase
 	}
 
 	protected override Task OnAfterRenderAsync(bool firstRender)
-		=> _update.Down() ? Changed.InvokeAsync() : base.OnAfterRenderAsync(firstRender);
+		=> _update.Down() ? Changed.Invoke() : base.OnAfterRenderAsync(firstRender);
 }

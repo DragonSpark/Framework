@@ -36,7 +36,7 @@
             Result = await Store.Get();
             if (Result?.Success ?? false)
             {
-                await Initialized.InvokeAsync(Result.Value.Value).ConfigureAwait(false);
+                await Initialized.Invoke(Result.Value.Value).ConfigureAwait(false);
             }
         }
     }

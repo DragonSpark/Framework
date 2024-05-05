@@ -31,5 +31,5 @@
     [Parameter]
     public IEqualityComparer<T> Comparer { get; set; } = EqualityComparer<T>.Default;
 
-    Task OnChange(T parameter) => ValueChanged.InvokeAsync(Value = parameter);
+    Task OnChange(T parameter) => ValueChanged.Invoke(Value = parameter);
 }

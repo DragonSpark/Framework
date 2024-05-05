@@ -11,7 +11,7 @@
     public EventCallback Focused { get; set; }
 
     [JSInvokable]
-    public Task OnFocus() => Focused.InvokeAsync();
+    public Task OnFocus() => Focused.Invoke();
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

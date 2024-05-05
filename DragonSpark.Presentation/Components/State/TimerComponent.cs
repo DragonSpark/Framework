@@ -74,7 +74,7 @@ public class TimerComponent : Microsoft.AspNetCore.Components.ComponentBase, IDi
 	protected override void OnInitialized()
 	{
 		base.OnInitialized();
-		_refresh = () => Updated.InvokeAsync();
+		_refresh = () => Updated.Invoke();
 		Timer    = new Timer();
 	}
 

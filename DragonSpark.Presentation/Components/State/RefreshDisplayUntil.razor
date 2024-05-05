@@ -14,7 +14,7 @@
     public TimeSpan Interval { get; set; } = TimeSpan.FromSeconds(1);
 
     [Parameter]
-    public DateTimeOffset Until 
+    public DateTimeOffset Until
     {
         get => _until;
         set
@@ -43,10 +43,10 @@
         if (time >= Until && _timer is not null)
         {
             _timer = null;
-            return Refreshed.InvokeAsync(this);
+            return Refreshed.Invoke();
         }
         StateHasChanged();
-        return Updated.InvokeAsync();
+        return Updated.Invoke();
     }
 
 }

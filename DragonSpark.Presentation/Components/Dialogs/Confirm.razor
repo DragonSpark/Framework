@@ -7,7 +7,7 @@
 @inject DialogService Dialogs
 @inject IExceptions Exceptions
 
-<DragonSpark.Presentation.Components.Dialogs.DefaultEscapeContainer Escaped="@(() => Cancel.InvokeAsync(default!))" EnableFocus="@EnableFocus">
+<DragonSpark.Presentation.Components.Dialogs.DefaultEscapeContainer Escaped="@(() => Cancel.Invoke(default!))" EnableFocus="@EnableFocus">
 	<ActivityReceiverContainer Context="receiver">
         <div class="card">
             <div class="@ContentClass">@ChildContent</div>
@@ -30,7 +30,7 @@
     protected override Task OnInitializedAsync()
     {
         _click = Start.A.Selection<object>().By.Calling(Create).Stores().New().Get;
-        return Opened.InvokeAsync();
+        return Opened.Invoke();
     }
 
     EventCallback<MouseEventArgs> Create(object parameter) => Start.A.Callback<MouseEventArgs>(OnAccept).Handle(Exceptions, ReportedType ?? GetType()).Using(parameter).UpdateActivity().Block();
@@ -39,14 +39,14 @@
 	{
 		if (await Confirmation())
 		{
-			await Accept.InvokeAsync(parameter);
+			await Accept.Invoke(parameter);
 			Dialogs.Close();
 		}
 	}
 
 	async Task OnCancel(MouseEventArgs parameter)
 	{
-		await Cancel.InvokeAsync(parameter);
+		await Cancel.Invoke(parameter);
 		Dialogs.Close();
 	}
 

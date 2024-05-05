@@ -26,5 +26,5 @@
     public EventCallback<T> Updated { get; set; }
 
     protected override Task OnParametersSetAsync()
-        => _update.Down() ? Updated.InvokeAsync(Value) : base.OnParametersSetAsync();
+        => _update.Down() ? Updated.Invoke(Value) : base.OnParametersSetAsync();
 }

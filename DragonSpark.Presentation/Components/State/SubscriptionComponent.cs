@@ -31,7 +31,7 @@ public abstract class SubscriptionComponent<T> : ComponentBase, IAsyncDisposable
 
 	protected virtual Task OnReceive(T parameter) => _operation.Get(parameter).AsTask();
 
-	Task Fire(T parameter) => InvokeAsync(() => Received.InvokeAsync(parameter));
+	Task Fire(T parameter) => InvokeAsync(() => Received.Invoke(parameter));
 
 	public ValueTask DisposeAsync() => _connection?.DisposeAsync() ?? Task.CompletedTask.ToOperation();
 }

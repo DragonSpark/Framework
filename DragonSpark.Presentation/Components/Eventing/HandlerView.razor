@@ -29,7 +29,7 @@
 	{
 		if (Enabled && await Condition.Get(parameter))
 		{
-			await InvokeAsync(() => Received.InvokeAsync(parameter));
+			await InvokeAsync(() => Received.Invoke(parameter));
 		}
 	}
 

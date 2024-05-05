@@ -21,7 +21,7 @@ public class EditContextPublisher : ComponentBase
 
 		if (change)
 		{
-			await Updated.InvokeAsync(EditContext).ConfigureAwait(false);
+			await Updated.Invoke(EditContext).ConfigureAwait(false);
 		}
 	}
 }

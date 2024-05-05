@@ -150,7 +150,7 @@
     async Task OnCreate(T parameter)
     {
         await Add.Get(parameter);
-        await Created.InvokeAsync(parameter).ConfigureAwait(false);
+        await Created.Invoke(parameter).ConfigureAwait(false);
     }
 
     async Task OnUpdate(Updated<T> parameter)
@@ -163,13 +163,13 @@
                 {
                     case DialogResult.Ok:
                         await Update.Get(parameter);
-                        await Updated.InvokeAsync(parameter).ConfigureAwait(false);
+                        await Updated.Invoke(parameter).ConfigureAwait(false);
                         break;
                 }
                 break;
             default:
                 await Update.Get(parameter);
-                await Updated.InvokeAsync(parameter).ConfigureAwait(false);
+                await Updated.Invoke(parameter).ConfigureAwait(false);
                 break;
         }
     }

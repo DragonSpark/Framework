@@ -1,11 +1,16 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Results;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using System;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Forms.Validation;
 
-public class ValidationRequestedMonitor : ComponentBase, IDisposable
+public sealed class ValidationRequestedMonitor : ComponentBase, IDisposable
 {
+	readonly Switch _update = new();
+
 	[Parameter]
 	public EventCallback<EditContext> Requested { get; set; }
 
@@ -37,15 +42,17 @@ public class ValidationRequestedMonitor : ComponentBase, IDisposable
 
 	void Update()
 	{
-		if (EditContext != null)
+		if (EditContext != null && _update.Up())
 		{
-			Requested.InvokeAsync(EditContext);
+			StateHasChanged();
 		}
 	}
 
+	protected override Task OnAfterRenderAsync(bool firstRender)
+		=> _update.Down() ? Requested.Invoke(EditContext) : base.OnAfterRenderAsync(firstRender);
+
 	public void Dispose()
 	{
-		GC.SuppressFinalize(this);
 		EditContext = null;
 	}
 }
