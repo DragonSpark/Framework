@@ -76,4 +76,5 @@
                    .Handle(EmptyDataResult.Default);
 
     public Task Display() => _subject.ShowPopupAsync();
+    public Task Blur() => _subject.FocusOutAsync();
 }
