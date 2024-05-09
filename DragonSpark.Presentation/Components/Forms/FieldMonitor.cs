@@ -10,7 +10,7 @@ public sealed class FieldMonitor<T> : ComponentBase
 {
 	readonly Switch _update = new();
 
-	FieldIdentifier _identifier = default!;
+	FieldIdentifier _identifier;
 
 	[Parameter]
 	public object? Model { get; set; }
