@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Forms;
 
-public class EditContextPublisher : ComponentBase
+public sealed class EditContextPublisher : ComponentBase
 {
 	[Parameter]
 	public EventCallback<EditContext> Updated { get; set; }

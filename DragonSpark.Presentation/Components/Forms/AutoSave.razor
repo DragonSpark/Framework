@@ -14,10 +14,10 @@
 @typeparam T where T : class
 
 @code {
-    Array<string> _skip = Array<string>.Empty;
-    readonly ISwitch _save = new Switch(), _active = new Switch();
-    Action _update = default!;
-    IOperation<None> _call = default!;
+    readonly ISwitch  _save   = new Switch(), _active = new Switch();
+    Array<string>    _skip   = Array<string>.Empty;
+    Action           _update = default!;
+    IOperation<None> _call   = default!;
 
     protected override void OnInitialized()
     {

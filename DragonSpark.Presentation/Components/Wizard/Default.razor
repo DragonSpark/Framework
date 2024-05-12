@@ -1,0 +1,388 @@
+﻿@using Microsoft.FluentUI.AspNetCore.Components
+@using Microsoft.FluentUI.AspNetCore.Components.Utilities
+@inherits Microsoft.FluentUI.AspNetCore.Components.FluentComponentBase
+
+<CascadingValue Value="this">
+    <div id="@Id"
+         style="@StyleValue"
+         class="@ClassValue"
+         border-outside=@Border.HasFlag(WizardBorder.Outside)
+         position="@(StepperPosition == StepperPosition.Top ? "top" : "left")"
+         @attributes="@AdditionalAttributes">
+        <ol style=@GetStepperWidthOrHeight()
+            border-inside=@Border.HasFlag(WizardBorder.Inside)>
+            @Steps
+        </ol>
+
+        <div class="fluent-wizard-content"
+             border-inside=@Border.HasFlag(WizardBorder.Inside)>
+            @foreach (var step in _steps.Where(i => i.Index == Value || !i.DeferredLoading))
+            {
+                <div style="@(step.Index == Value ? "" : "display: none;")">
+                    <CascadingValue Value="step">
+                        @(step.ChildContent)
+                    </CascadingValue>
+                </div>
+            }
+        </div>
+
+        <div class="fluent-wizard-buttons"
+             border-inside=@Border.HasFlag(WizardBorder.Inside)>
+            @if (ButtonTemplate == null)
+            {
+                string buttonWidth = "80px;";
+
+                @if (Value > 0)
+                {
+                    <FluentButton Appearance="Appearance.Neutral"
+                                  Style="@($"width: {buttonWidth};")"
+                                  OnClick="@OnPreviousHandlerAsync" Disabled="@Receiver.Active">
+                        @LabelButtonPrevious
+                    </FluentButton>
+                }
+
+                <span style="margin-right: 10px"></span>
+
+                @if (Value < _steps.Count - 1)
+                {
+                    <FluentButton Appearance="Appearance.Accent"
+                                  Style="@($"width: {buttonWidth};")"
+                                  OnClick="@OnNextHandlerAsync" Disabled="@Receiver.Active">
+                        @LabelButtonNext
+                    </FluentButton>
+                }
+                else
+                {
+                    <FluentButton Appearance="Appearance.Accent"
+                                  Style="@($"width: {buttonWidth};")"
+                                  OnClick="OnFinishHandlerAsync" Disabled="@Receiver.Active">
+                        @LabelButtonDone
+                    </FluentButton>
+                }
+            }
+            else
+            {
+                @ButtonTemplate(Value)
+            }
+        </div>
+    </div>
+</CascadingValue>
+
+@code {
+    static string LabelButtonPrevious = "Previous", LabelButtonNext = "Next", LabelButtonDone = "Done";
+
+    private readonly List<Step> _steps = new();
+    private int _value;
+    internal int _maxStepVisited;
+
+    /// <summary />
+    protected string? ClassValue => new CssBuilder(Class).AddClass("fluent-wizard").Build();
+
+    /// <summary />
+    protected string? StyleValue => new StyleBuilder(Style).AddStyle("width", Width).AddStyle("height", Height).Build();
+
+    /// <summary>
+    /// Gets or sets the height of the wizard.
+    /// </summary>
+    [Parameter]
+    public string Height { get; set; } = "400px";
+
+    /// <summary>
+    /// Gets or sets the width of the wizard.
+    /// </summary>
+    [Parameter]
+    public string Width { get; set; } = "100%";
+
+    /// <summary>
+    /// Triggers when the done button is clicked.
+    /// </summary>
+    [Parameter]
+    public EventCallback OnFinish { get; set; }
+
+    /// <summary>
+    /// Gets or sets the stepper position in the wizard (Top or Left).
+    /// </summary>
+    [Parameter]
+    public StepperPosition StepperPosition { get; set; } = StepperPosition.Left;
+
+    /// <summary>
+    /// Gets or sets the stepper width (if position is Left)
+    /// or the stepper height (if position is Top).
+    /// </summary>
+    [Parameter]
+    public string? StepperSize { get; set; }
+
+    /// <summary>
+    /// Gets or sets the space between two bullets (ex. 120px).
+    /// </summary>
+    [Parameter]
+    public string? StepperBulletSpace { get; set; }
+
+    /// <summary>
+    /// Display a border of the Wizard.
+    /// </summary>
+    [Parameter]
+    public WizardBorder Border { get; set; } = WizardBorder.None;
+
+    /// <summary>
+    /// Display a number on each step icon. Can be overridden by the step <see cref="FluentWizardStep.DisplayStepNumber"/> property.
+    /// </summary>
+    [Parameter]
+    public WizardStepStatus DisplayStepNumber { get; set; } = WizardStepStatus.None;
+
+    /// <summary>
+    /// Gets or sets the step index of the current step.
+    /// This value is bindable.
+    /// </summary>
+    [Parameter]
+    public int Value
+    {
+        get
+        {
+            return _value;
+        }
+
+        set
+        {
+            if (value < 0 || _steps.Count <= 0)
+            {
+                _value = 0;
+            }
+            else if (value > _steps.Count - 1)
+            {
+                _value = _steps.Count - 1;
+            }
+            else
+            {
+                _value = value;
+            }
+
+            _maxStepVisited = Math.Max(_value, _maxStepVisited);
+
+            SetCurrentStatusToStep(_value);
+        }
+    }
+
+    /// <summary>
+    /// Triggers when the value has changed.
+    /// </summary>
+    [Parameter]
+    public EventCallback<int> ValueChanged { get; set; }
+
+    /// <summary>
+    /// Gets or sets the buttons section of the wizard.
+    /// This configuration overrides the whole rendering of the bottom-right section of the Wizard,
+    /// including the built-in buttons and thus provides a full control over it.
+    /// Custom Wizard buttons do not trigger the component OnChange and OnFinish events.
+    /// </summary>
+    [Parameter]
+    public RenderFragment<int>? ButtonTemplate { get; set; }
+
+    /// <summary>
+    /// Gets or sets the wizard steps. Add WizardStep tags inside this tag.
+    /// </summary>
+    [Parameter]
+    public RenderFragment? Steps { get; set; }
+
+    /// <summary>
+    /// Hide step titles and summaries on specified sizes (you can combine several values: GridItemHidden.Sm | GridItemHidden.Xl).
+    /// The default value is <see cref="GridItemHidden.XsAndDown"/> to adapt to mobile devices.
+    /// </summary>
+    [Parameter]
+    public GridItemHidden? StepTitleHiddenWhen { get; set; } = GridItemHidden.XsAndDown;
+
+    /// <summary>
+    /// Gets or sets the way to navigate in the Wizard Steps.
+    /// Default is <see cref="WizardStepSequence.Linear"/>.
+    /// </summary>
+    [Parameter]
+    public WizardStepSequence StepSequence { get; set; } = WizardStepSequence.Linear;
+
+    [CascadingParameter] IActivityReceiver Receiver { get; set; } = default!;
+
+    /// <summary />
+    protected virtual async Task OnNextHandlerAsync(MouseEventArgs e)
+    {
+        // Target step index
+        var targetIndex = Value;
+        do
+        {
+            targetIndex++;
+        }
+        while (_steps[targetIndex].Disabled && targetIndex < _steps.Count - 1);
+
+        // StepChange event
+        var stepChangeArgs = await OnStepChangeHandlerAsync(targetIndex, true);
+        var isCanceled = stepChangeArgs.IsCancelled;
+
+        if (!isCanceled)
+        {
+            Value = targetIndex;
+            StateHasChanged();
+        }
+    }
+
+    /// <summary />
+    protected virtual async Task OnPreviousHandlerAsync(MouseEventArgs e)
+    {
+        // Target step index
+        var targetIndex = Value;
+        do
+        {
+            targetIndex--;
+        }
+        while (_steps[targetIndex].Disabled && targetIndex > 0);
+
+        // StepChange event
+        var stepChangeArgs = await OnStepChangeHandlerAsync(targetIndex, false);
+        var isCanceled = stepChangeArgs.IsCancelled;
+
+        if (!isCanceled)
+        {
+            Value = targetIndex;
+            StateHasChanged();
+        }
+    }
+
+    /// <summary />
+    protected virtual async Task<WizardStepChangeEventArgs> OnStepChangeHandlerAsync(int targetIndex, bool validateEditContexts)
+    {
+        var stepChangeArgs = new WizardStepChangeEventArgs(targetIndex, _steps[targetIndex].Label);
+        if (validateEditContexts)
+        {
+            var allEditContextsAreValid = _steps[Value].ValidateEditContexts();
+            stepChangeArgs.IsCancelled = !allEditContextsAreValid;
+
+            if (!allEditContextsAreValid)
+            {
+                await _steps[Value].InvokeOnInValidSubmitForEditFormsAsync();
+            }
+            if (!stepChangeArgs.IsCancelled && allEditContextsAreValid)
+            {
+                // Invoke the 'OnValidSubmit' handlers for the Edit Forms
+                await _steps[Value].InvokeOnValidSubmitForEditFormsAsync();
+            }
+
+            await _steps[Value].InvokeOnSubmitForEditFormsAsync();
+        }
+
+        await ValueChanged.InvokeAsync(targetIndex);
+
+        return await OnStepChangeHandlerAsync(stepChangeArgs);
+    }
+
+    /// <summary />
+    protected virtual async Task<WizardStepChangeEventArgs> OnStepChangeHandlerAsync(WizardStepChangeEventArgs args)
+    {
+        if (_steps[Value].OnChange.HasDelegate)
+        {
+            await _steps[Value].OnChange.InvokeAsync(args);
+        }
+
+        return args;
+    }
+
+    /// <summary />
+    protected virtual async Task OnFinishHandlerAsync(MouseEventArgs e)
+    {
+        // Validate any form edit contexts
+        var allEditContextsAreValid = _steps[Value].ValidateEditContexts();
+        if (!allEditContextsAreValid)
+        {
+            // Invoke the 'OnInvalidSubmit' handlers for the edit forms.
+            await _steps[Value].InvokeOnInValidSubmitForEditFormsAsync();
+            return;
+        }
+
+        // Invoke the 'OnValidSubmit' handlers for the edit forms.
+        await _steps[Value].InvokeOnValidSubmitForEditFormsAsync();
+        await _steps[Value].InvokeOnSubmitForEditFormsAsync();
+
+        _steps[Value].Status = WizardStepStatus.Previous;
+
+        if (OnFinish.HasDelegate)
+        {
+            await OnFinish.InvokeAsync();
+        }
+    }
+
+    internal async Task GoToStepAsync(int targetIndex, bool validateEditContexts)
+    {
+        var stepChangeArgs = await OnStepChangeHandlerAsync(targetIndex, validateEditContexts);
+        var isCanceled = stepChangeArgs.IsCancelled;
+
+        if (!isCanceled)
+        {
+            Value = targetIndex;
+            StateHasChanged();
+        }
+    }
+
+    internal int AddStep(Step step)
+    {
+        _steps.Add(step);
+        var index = _steps.Count - 1;
+
+        if (index == Value)
+        {
+            SetCurrentStatusToStep(index);
+        }
+
+        StateHasChanged();
+
+        return index;
+    }
+
+    // ReSharper disable once ExcessiveIndentation
+    private void SetCurrentStatusToStep(int stepIndex)
+    {
+        for (var i = 0; i < _steps.Count; i++)
+        {
+            // Step disabled
+            if (_steps[i].Disabled)
+            {
+                _steps[i].Status = WizardStepStatus.Next;
+            }
+
+            // Step enabled
+            else
+            {
+                if (i < stepIndex)
+                {
+                    _steps[i].Status = WizardStepStatus.Previous;
+                }
+                else if (i == stepIndex)
+                {
+                    _steps[i].Status = WizardStepStatus.Current;
+                }
+                else if (i > stepIndex)
+                {
+                    _steps[i].Status = WizardStepStatus.Next;
+                }
+                else
+                {
+                    _steps[i].Status = WizardStepStatus.Next;
+                }
+            }
+        }
+    }
+
+    private string? GetStepperWidthOrHeight()
+    {
+        if (string.IsNullOrEmpty(StepperSize))
+        {
+            return null;
+        }
+
+        switch (StepperPosition)
+        {
+            case StepperPosition.Top:
+                return $"height: {StepperSize}";
+
+            case StepperPosition.Left:
+                return $"width: {StepperSize}";
+        }
+
+        return null;
+    }
+}
