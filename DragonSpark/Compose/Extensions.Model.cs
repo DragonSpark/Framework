@@ -90,10 +90,10 @@ public static partial class ExtensionMethods
 	public static GuardModelContext<T> Guard<T>(this ModelContext _) where T : Exception
 		=> GuardModelContext<T>.Default;
 
-	public static Switching Start(this ISwitch @this)
+	public static Switching Scoped(this ISwitch @this)
 	{
 		@this.Up();
-		return new (@this);
+		return new(@this);
 	}
 
 	public static bool Down(this IMutable<bool> @this)

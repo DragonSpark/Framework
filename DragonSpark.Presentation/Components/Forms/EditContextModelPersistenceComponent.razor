@@ -1,0 +1,87 @@
+﻿@typeparam T where T : class
+
+@using DragonSpark.Application.Diagnostics
+@using DragonSpark.Application.Runtime
+@using DragonSpark.Compose
+@using DragonSpark.Model
+@using DragonSpark.Model.Operations
+@using DragonSpark.Model.Results
+@using DragonSpark.Model.Sequences
+
+@inherits ModelPersistenceComponentBase<T>
+
+<ModelPersistenceComponent Model="@Model" Formatter="@Formatter" Target="@Target" Load="@Load" Save="@Save" ModelChanging="@ModelChanging" ModelChanged="@ModelChanged" Store="@Store" ErrorOccurred="@ErrorOccurred" />
+
+@code {
+    readonly Switch  _start  = new();
+    Array<string>    _skip   = Array<string>.Empty;
+    Action           _update = default!;
+    IOperation<None> _call   = default!;
+    EditContext?     _current;
+
+    protected override void OnInitialized()
+    {
+        _update = OnUpdate;
+        var operate = new ExceptionAware<None>(OnUpdate, Exceptions, GetType()).Then();
+        _call = new ThrottleOperation<None>(operate, TimeSpan.FromMilliseconds(100)).Then().Out();
+        base.OnInitialized();
+    }
+
+    protected override void OnParametersSet()
+    {
+        var context = (EditContext ?? ParentEditContext).Verify("Edit Context is required for EditContextModelPersistenceComponent");
+        if (_current != context)
+        {
+            if (_current is not null)
+            {
+                _current.OnFieldChanged -= FieldChanged;
+            }
+
+            if ((_current = context) != null)
+            {
+                _current.OnFieldChanged += FieldChanged;
+            }
+        }
+
+        base.OnParametersSet();
+    }
+
+    [Parameter]
+    public EditContext? EditContext { get; set; }
+
+    [Parameter]
+    public string FieldsToSkip
+    {
+        get => _fieldsToSkip;
+        set
+        {
+            if (_fieldsToSkip != value)
+            {
+                _fieldsToSkip = value;
+                _skip         = _fieldsToSkip.Split(',');
+            }
+        }
+    }   string _fieldsToSkip = default!;
+
+    [CascadingParameter]
+    EditContext? ParentEditContext { get; set; }
+
+    void FieldChanged(object? sender, FieldChangedEventArgs args)
+    {
+        if (!_skip.Open().Contains(args.FieldIdentifier.FieldName) && _start.Up())
+        {
+            StateHasChanged();
+        }
+    }
+
+    ValueTask OnUpdate(None _) => InvokeAsync(_update).ToOperation();
+
+    void OnUpdate()
+    {
+        Save.Execute(true);
+        StateHasChanged();
+    }
+
+    protected override Task OnAfterRenderAsync(bool firstRender) => _start.Down() ? _call.Get().AsTask() : base.OnAfterRenderAsync(firstRender);
+
+}
