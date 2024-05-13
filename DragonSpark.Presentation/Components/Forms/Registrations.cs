@@ -12,6 +12,6 @@ sealed class Registrations : ICommand<IServiceCollection>
 
 	public void Execute(IServiceCollection parameter)
 	{
-		parameter.Start<ProblemLoadingAutoSaveState>().And<ProblemSavingAutoSaveState>().Singleton();
+		parameter.Start<ProblemLoadingState>().And<ProblemSavingState>().And<SavedContentMessage>().Singleton();
 	}
 }

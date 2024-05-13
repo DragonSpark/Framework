@@ -5,7 +5,6 @@
 @using DragonSpark.Model.Operations
 @using DragonSpark.Model.Sequences
 @using DragonSpark.Text
-@using Exception = System.Exception
 @using DragonSpark.Application.Runtime
 @using DragonSpark.Application.Diagnostics
 
@@ -23,7 +22,7 @@
     {
         _update = OnUpdate;
         var operate = new ExceptionAware<None>(OnUpdate, Exceptions, GetType()).Then();
-        _call = new ThrottleOperation<None>(operate, TimeSpan.FromMilliseconds(100)).Then().Then().Out();
+        _call = new ThrottleOperation<None>(operate, TimeSpan.FromMilliseconds(100)).Then().Out();
         base.OnInitialized();
     }
 
@@ -61,10 +60,10 @@
     public EventCallback ErrorOccurred { get; set; }
 
     [Inject]
-    ProblemLoadingAutoSaveState Loading { get; set; } = default!;
+    ProblemLoadingState Loading { get; set; } = default!;
 
     [Inject]
-    ProblemSavingAutoSaveState Saving { get; set; } = default!;
+    ProblemSavingState Saving { get; set; } = default!;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -74,7 +73,7 @@
             if (current.Success)
             {
                 var content = current.Value.Verify();
-                using var active = _active.Start();
+                using var active = _active.Scoped();
                 try
                 {
                     await ModelChanging.Invoke(Model);

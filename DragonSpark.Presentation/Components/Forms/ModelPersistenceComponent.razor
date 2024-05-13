@@ -1,0 +1,64 @@
+﻿@using DragonSpark.Compose
+@using Humanizer
+
+@typeparam T where T : class
+
+@inherits ModelPersistenceComponentBase<T>
+
+@inject ProblemLoadingState ProblemLoading
+@inject ProblemSavingState ProblemSaving
+@inject SavedContentMessage Saved
+
+@code {
+
+    [Parameter]
+    public EventCallback Loaded { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (Load.Down())
+        {
+            await LoadContent().ConfigureAwait(false);
+        }
+        else if (Save.Down())
+        {
+            await SaveContent().ConfigureAwait(false);
+        }
+    }
+
+    async Task LoadContent()
+    {
+        var current = await Store.Get();
+        if (current.Success)
+        {
+            var content = current.Value.Verify();
+            try
+            {
+                await ModelChanging.Invoke(Model);
+                Target.Execute(new(Model, content));
+                await ModelChanged.Invoke(Model).ConfigureAwait(false);
+            }
+            catch (Exception e)
+            {
+                ProblemLoading.Execute(new(e, content));
+                await ErrorOccurred.Invoke().ConfigureAwait(false);
+            }
+        }
+    }
+
+    async Task SaveContent()
+    {
+        try
+        {
+            var content = Formatter.Get(Model);
+            await Store.Await(content);
+            Saved.Execute(content.Length.Bytes().Humanize());
+        }
+        catch (Exception e)
+        {
+            ProblemSaving.Execute(e);
+            await ErrorOccurred.Invoke().ConfigureAwait(false);
+        }
+    }
+
+}
