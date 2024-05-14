@@ -10,15 +10,16 @@
 
 @inherits ModelPersistenceComponentBase<T>
 
-<ModelPersistenceComponent Model="@Model" Formatter="@Formatter" Target="@Target" Load="@Load" Save="@Save" ModelChanging="@ModelChanging" ModelChanged="@ModelChanged" Store="@Store" ErrorOccurred="@ErrorOccurred" />
+<ModelPersistenceComponent Model="@_model" Formatter="@Formatter" Target="@Target" Load="@Load" Save="@Save" ModelChanging="@ModelChanging" ModelChanged="@ModelChanged" Store="@Store" ErrorOccurred="@ErrorOccurred" />
 
 @code {
     readonly Switch  _start  = new();
     Array<string>    _skip   = Array<string>.Empty;
     Action           _update = default!;
     IOperation<None> _call   = default!;
+    T                _model  = default!;
     EditContext?     _current;
-
+    
     protected override void OnInitialized()
     {
         _update = OnUpdate;
@@ -40,11 +41,15 @@
             if ((_current = context) != null)
             {
                 _current.OnFieldChanged += FieldChanged;
+                _model = Model ?? _current.Model.To<T>();
             }
         }
 
         base.OnParametersSet();
     }
+
+    [Parameter]
+    public T? Model { get; set; }
 
     [Parameter]
     public EditContext? EditContext { get; set; }

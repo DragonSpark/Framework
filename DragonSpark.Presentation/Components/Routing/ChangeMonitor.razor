@@ -2,7 +2,7 @@
 
 @inherits EditorComponent
 
-<FieldModelMonitor Changed="@OnUpdate" />
+<FieldModelMonitor Changed="@Updated" />
 
 <ConfirmResultContext T="None" @ref="_confirm" Title="@Title" PrimaryClass="primary button fit" SecondaryClass="button fit">
     @ChildContent
@@ -15,22 +15,21 @@
 
 @code
 {
-    bool _enabled;
-
-    protected override void OnParametersSet()
-    {
-        Update();
-        base.OnParametersSet();
-    }
-
-    void Update()
-    {
-        _enabled = HasChanges();
-    }
-
     ConfirmResultContext<None> _confirm = default!;
+    bool                       _enabled;
 
-	[Parameter]
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        var enabled = EnableBrowserMonitor && HasChanges();
+        if (_enabled != enabled)
+        {
+            _enabled = enabled;
+            StateHasChanged();
+        }
+        return base.OnAfterRenderAsync(firstRender);
+    }
+
+    [Parameter]
 	public string Title { get; set; } = "Changes Detected";
 
 	[Parameter]
@@ -44,6 +43,9 @@
 	public bool Enabled { get; set; } = true;
 
     [Parameter]
+    public bool EnableBrowserMonitor { get; set; } = true;
+
+    [Parameter]
     public EventCallback Updated { get; set; }
 
 	[CascadingParameter]
@@ -55,10 +57,4 @@
         => !Enabled || await base.Allow(parameter) || await _confirm.Confirm(None.Default) == DialogResult.Ok;
 
     protected override bool HasChanges() => Enabled && base.HasChanges();
-
-    Task OnUpdate()
-    {
-        Update();
-        return Updated.Invoke();
-    }
 }
