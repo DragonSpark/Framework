@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Commands;
+﻿using DragonSpark.Model;
+using DragonSpark.Model.Commands;
 using System;
 using System.Collections.Generic;
 
@@ -32,5 +33,10 @@ public sealed class Binding<T> : ICommand<T>
 	public void Execute(T parameter)
 	{
 		_value = parameter;
+	}
+
+	public void Execute(None parameter)
+	{
+		_notify(Value);
 	}
 }
