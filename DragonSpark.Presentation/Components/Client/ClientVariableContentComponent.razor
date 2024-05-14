@@ -1,0 +1,52 @@
+﻿@using DragonSpark.Presentation.Components.Content.Templates
+@using DragonSpark.Presentation.Environment.Browser
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+
+@typeparam T
+
+@inherits DragonSpark.Presentation.Components.ComponentBase
+
+@if (_input is null)
+{
+    @LoadingTemplate
+}
+else if (_input.Value.Success)
+{
+    @ChildContent(_input.Value.Value)
+}
+else
+{
+    @NotFoundTemplate
+}
+
+@code {
+    ProtectedBrowserStorageResult<T>? _input;
+
+    [Parameter]
+    public IClientVariable<T> Input { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
+
+    [Parameter]
+    public RenderFragment<T?> ChildContent { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment NotFoundTemplate { get; set; } = EmptyContentTemplate.Default;
+
+    [Parameter]
+    public EventCallback<ProtectedBrowserStorageResult<T>> Ready { get; set; }
+
+    [CascadingParameter]
+    IActivityReceiver Receiver { get; set; } = default!;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _input = await Input.Get();
+            await Ready.Invoke(_input.Value);
+            StateHasChanged();
+        }
+    }
+}
