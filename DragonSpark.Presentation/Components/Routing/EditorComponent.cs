@@ -38,7 +38,7 @@ public class EditorComponent : NavigationAwareComponent
 	{
 		if (EditContext.IsModified(e.FieldIdentifier))
 		{
-//			InvokeAsync(() => Session.UpdateExitState().AsTask());
+			StateHasChanged();
 		}
 	}
 

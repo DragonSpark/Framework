@@ -11,14 +11,39 @@
 
 @code {
 
+    EventCallback _load;
+    protected override void OnInitialized()
+    {
+        _load = Start.A.Callback(LoadContent).Using(Receiver).UpdateActivity();
+        // _save = Start.A.Callback(SaveContent).Using(Receiver).UpdateActivity();
+        base.OnInitialized();
+    }
+
+    [Parameter]
+    public T Model
+    {
+        get => _model;
+        set
+        {
+            if (_model != value)
+            {
+                _model = value;
+                Save.Down();
+            }
+        }
+    }   T _model = default!;
+
     [Parameter]
     public EventCallback Loaded { get; set; }
+
+    [CascadingParameter]
+    IActivityReceiver Receiver { get; set; } = default!;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (Load.Down())
         {
-            await LoadContent().ConfigureAwait(false);
+            await _load.InvokeAsync().ConfigureAwait(false);
         }
         else if (Save.Down())
         {

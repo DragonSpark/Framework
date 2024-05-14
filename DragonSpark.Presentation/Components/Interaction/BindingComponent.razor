@@ -1,10 +1,15 @@
-﻿@using DragonSpark.Model.Selection
+﻿@using DragonSpark.Compose
+@using DragonSpark.Model.Results
+@using DragonSpark.Model.Selection
 
 @typeparam T
 
-@ChildContent(Binding)
+@ChildContent(_binding)
 
 @code {
+    readonly Switch  _requested = new();
+    string?          _content;
+    Binding<string?> _binding = default!;
 
     [Parameter]
     public ISelect<T, string> Formatter { get; set; } = default!;
@@ -24,33 +29,20 @@
     [Parameter]
     public RenderFragment<Binding<string?>> ChildContent { get; set; } = default!;
 
-    string? Content { get; set; }
-
     protected override void OnInitialized()
     {
-        Content = Value is not null ? Formatter.Get(Value) : null;
-        Binding = new Binding<string?>(Content, RequestUpdate, Comparer);
+        _content = Value is not null ? Formatter.Get(Value) : null;
+        _binding = new Binding<string?>(_content, RequestUpdate, Comparer);
         base.OnInitialized();
     }
 
     void RequestUpdate(string? parameter)
     {
-        Content = parameter;
-        UpdateRequested = true;
+        _content = parameter;
+        _requested.Up();
         StateHasChanged();
     }
 
-    bool UpdateRequested { get; set; }
-    Binding<string?> Binding { get; set; } = default!;
-
     protected override Task OnParametersSetAsync()
-    {
-        if (UpdateRequested)
-        {
-            UpdateRequested = false;
-
-            return ValueChanged.Invoke(Value = !string.IsNullOrEmpty(Content) ? Parser.Get(Content) : default);
-        }
-        return Task.CompletedTask;
-    }
+        => _requested.Down() ? ValueChanged.Invoke(Value = !string.IsNullOrEmpty(_content) ? Parser.Get(_content) : default) : Task.CompletedTask;
 }
