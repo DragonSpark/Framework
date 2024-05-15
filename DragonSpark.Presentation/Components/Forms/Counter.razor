@@ -1,0 +1,12 @@
+﻿<label class="@CssClass"><small>@(Maximum - Count)</small></label>
+
+@code {
+    [Parameter]
+    public string CssClass { get; set; } = string.Empty;
+
+    [Parameter]
+    public ushort Count { get; set; }
+
+    [Parameter]
+    public ushort Maximum { get; set; }
+}
