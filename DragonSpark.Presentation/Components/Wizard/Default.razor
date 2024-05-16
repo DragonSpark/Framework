@@ -18,7 +18,7 @@
              border-inside=@Border.HasFlag(WizardBorder.Inside)>
             @foreach (var step in _steps.Where(i => i.Index == Value || !i.DeferredLoading))
             {
-                <div style="@(step.Index == Value ? "" : "display: none;")">
+                <div style="@(step.Index == Value ? string.Empty : "display: none;")">
                     <CascadingValue Value="step">
                         @(step.ChildContent)
                     </CascadingValue>
@@ -215,7 +215,11 @@
         var stepChangeArgs = await OnStepChangeHandlerAsync(targetIndex, true);
         var isCanceled = stepChangeArgs.IsCancelled;
 
-        if (!isCanceled)
+        if (isCanceled)
+        {
+            await ValueChanged.Invoke(Value).ConfigureAwait(false);
+        }
+        else
         {
             Value = targetIndex;
             StateHasChanged();
@@ -237,7 +241,11 @@
         var stepChangeArgs = await OnStepChangeHandlerAsync(targetIndex, false);
         var isCanceled = stepChangeArgs.IsCancelled;
 
-        if (!isCanceled)
+        if (isCanceled)
+        {
+            await ValueChanged.Invoke(Value).ConfigureAwait(false);
+        }
+        else
         {
             Value = targetIndex;
             StateHasChanged();

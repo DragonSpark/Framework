@@ -11,11 +11,12 @@ namespace DragonSpark.Application.Components.Validation;
 /// <summary>
 /// Attribution: https://www.nuget.org/packages/Microsoft.AspNetCore.Components.DataAnnotations.Validation
 /// </summary>
-public class ObjectGraphDataAnnotationsValidator : ComponentBase, IDisposable
+public sealed class ObjectGraphDataAnnotationsValidator : ComponentBase, IDisposable
 {
 	readonly IDelegates          _delegates;
 	readonly IValidationContexts _contexts;
 	Messages                     _messages = default!;
+	ObjectGraphValidator         _validator = default!;
 
 	public ObjectGraphDataAnnotationsValidator() : this(new StoredDelegates(), ValidationContexts.Default) {}
 
@@ -27,8 +28,6 @@ public class ObjectGraphDataAnnotationsValidator : ComponentBase, IDisposable
 
 	[Parameter]
 	public ICondition<object?> Condition { get; set; } = Is.Assigned<object?>().Out();
-
-	ObjectGraphValidator Validator { get; set; } = null!;
 
 	[CascadingParameter]
 	EditContext? EditContext
@@ -50,7 +49,7 @@ public class ObjectGraphDataAnnotationsValidator : ComponentBase, IDisposable
 					_context.OnValidationRequested += ValidationRequested;
 					_context.OnFieldChanged        += FieldChanged;
 					_messages                      =  new Messages(_context, new ValidationMessageStore(_context));
-					Validator                      =  new ObjectGraphValidator(Condition.Then());
+					_validator                     =  new ObjectGraphValidator(Condition.Then());
 				}
 			}
 		}
@@ -61,7 +60,7 @@ public class ObjectGraphDataAnnotationsValidator : ComponentBase, IDisposable
 	void ValidationRequested(object? sender, ValidationRequestedEventArgs e)
 	{
 		var edit    = EditContext.Verify();
-		var context = Validator.Validate(edit.Model);
+		var context = _validator.Validate(edit.Model);
 
 		_messages.Execute();
 		_messages.Execute(context);
@@ -73,21 +72,24 @@ public class ObjectGraphDataAnnotationsValidator : ComponentBase, IDisposable
 	{
 		var edit    = EditContext.Verify();
 		var field   = e.FieldIdentifier;
-		var value   = _delegates.Get(field);
-		var context = _contexts.Get(new NewValidationContext(field, Validator));
-		var results = new List<ValidationResult>();
+		if (!string.IsNullOrEmpty(field.FieldName))
+		{
+			var value   = _delegates.Get(field);
+			var context = _contexts.Get(new NewValidationContext(field, _validator));
+			var results = new List<ValidationResult>();
 
-		System.ComponentModel.DataAnnotations.Validator.TryValidateProperty(value, context, results);
+			Validator.TryValidateProperty(value, context, results);
 
-		_messages.Execute((field, results));
-		_messages.Execute(_contexts.Get(context));
+			_messages.Execute((field, results));
+			_messages.Execute(_contexts.Get(context));
 
-		edit.NotifyValidationStateChanged();
+			edit.NotifyValidationStateChanged();
+		}
 	}
 
 	public void Dispose()
 	{
-		GC.SuppressFinalize(this);
+		// GC.SuppressFinalize(this);
 		EditContext = null;
 	}
 }
