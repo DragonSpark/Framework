@@ -1,6 +1,9 @@
-﻿namespace DragonSpark.Application.Security.Identity.Bearer;
+﻿using DragonSpark.Model.Selection.Stores;
+using System.Security.Claims;
 
-/*sealed class DetermineBearerIdentity : ReferenceValueStore<ClaimsIdentity, ClaimsIdentity>
+namespace DragonSpark.Application.Security.Identity.Bearer;
+
+sealed class DetermineBearerIdentity : ReferenceValueStore<ClaimsIdentity, ClaimsIdentity>
 {
 	public DetermineBearerIdentity(BearerIdentity source) : base(source) {}
-}*/
+}
