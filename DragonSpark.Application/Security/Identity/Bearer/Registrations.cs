@@ -14,7 +14,8 @@ sealed class Registrations : ICommand<IServiceCollection>
 	{
 		parameter.Register<BearerSettings>()
 		         //
-		         .Start<BearerConfiguration>().And<TokenValidation>()
+		         .Start<BearerConfiguration>()
+		         .And<TokenValidation>()
 		         .Singleton()
 		         //
 		         .Then.Start<ISign>()
@@ -25,7 +26,7 @@ sealed class Registrations : ICommand<IServiceCollection>
 		         .Then.Start<IBearer>()
 		         .Forward<Bearer>()
 		         .Include(x => x.Dependencies.Recursive())
-		         .Singleton()
+		         .Scoped()
 		         //
 		         .Then.Start<ICurrentBearer>()
 		         .Forward<CurrentBearer>()

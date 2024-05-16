@@ -6,5 +6,5 @@ namespace DragonSpark.Application.Security.Identity.Bearer;
 
 sealed class Bearer : Formatter<ClaimsIdentity>, IBearer
 {
-	public Bearer(ISign sign, DetermineBearerIdentity bearer) : base(bearer.Then().Select(sign)) {}
+	public Bearer(ISign sign, BearerIdentity bearer) : base(bearer.Then().Select(sign)) {}
 }
