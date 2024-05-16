@@ -1,15 +1,9 @@
-﻿namespace DragonSpark.Application.Security.Identity.Bearer;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Results;
 
-sealed class CurrentBearer : ICurrentBearer
+namespace DragonSpark.Application.Security.Identity.Bearer;
+
+sealed class CurrentBearer : Result<string>, ICurrentBearer
 {
-	readonly ICurrentPrincipal _principal;
-	readonly Bearer            _bearer;
-
-	public CurrentBearer(ICurrentPrincipal principal, Bearer bearer)
-	{
-		_principal = principal;
-		_bearer    = bearer;
-	}
-
-	public string Get() => _bearer.Get(_principal.Get());
+	public CurrentBearer(ICurrentPrincipal principal, IBearer bearer) : base(principal.Then().Select(bearer.Get)) {}
 }
