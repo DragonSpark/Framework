@@ -1,4 +1,5 @@
-﻿@using Microsoft.FluentUI.AspNetCore.Components
+﻿@using DragonSpark.Compose
+@using Microsoft.FluentUI.AspNetCore.Components
 @using Microsoft.FluentUI.AspNetCore.Components.Extensions
 @using Microsoft.FluentUI.AspNetCore.Components.Utilities
 @inherits Microsoft.FluentUI.AspNetCore.Components.FluentComponentBase
@@ -31,7 +32,7 @@
     }
 </li>
 @code {
-    private readonly Dictionary<EditForm, EditContext> _editForms = new Dictionary<EditForm, EditContext>();
+    private readonly HashSet<EditForm> _editForms = new ();
 
     /// <summary />
     protected string? ClassValue => new CssBuilder(Class).Build();
@@ -164,33 +165,21 @@
         base.OnInitialized();
     }
 
-    public void RegisterEditFormAndContext(EditForm editForm, EditContext editContext)
+    public void RegisterEditFormAndContext(EditForm editForm)
     {
-        if (!_editForms.ContainsKey(editForm))
-        {
-            _editForms.Add(editForm, editContext);
-        }
+        _editForms.Add(editForm);
     }
 
     public bool ValidateEditContexts()
     {
-        var isValid = true;
-        foreach (var editForm in _editForms)
-        {
-            var contextIsValid = editForm.Value.Validate();
-            if (!contextIsValid)
-            {
-                isValid = false;
-            }
-        }
-        return isValid;
+        return _editForms.Aggregate(true, (current, editForm) => current & editForm.EditContext.Verify().Validate());
     }
 
     internal async Task InvokeOnValidSubmitForEditFormsAsync()
     {
         foreach (var editForm in _editForms)
         {
-            await editForm.Key.OnValidSubmit.InvokeAsync(editForm.Value);
+            await editForm.OnValidSubmit.InvokeAsync(editForm.EditContext);
         }
     }
 
@@ -198,7 +187,7 @@
     {
         foreach (var editForm in _editForms)
         {
-            await editForm.Key.OnInvalidSubmit.InvokeAsync(editForm.Value);
+            await editForm.OnInvalidSubmit.InvokeAsync(editForm.EditContext);
         }
     }
 
@@ -206,7 +195,7 @@
     {
         foreach (var editForm in _editForms)
         {
-            await editForm.Key.OnSubmit.InvokeAsync(editForm.Value);
+            await editForm.OnSubmit.InvokeAsync(editForm.EditContext);
         }
     }
 

@@ -11,15 +11,15 @@ namespace DragonSpark.Presentation.Components.Forms;
 public class DsEditForm : EditForm
 {
 	[CascadingParameter]
-	public Step? WizardStep { get; set; }
+	Step? Step { get; set; }
 
 	protected override void BuildRenderTree(RenderTreeBuilder builder)
 	{
 		base.BuildRenderTree(builder);
 
-		if (WizardStep is not null && EditContext is not null)
+		if (Step is not null && EditContext is not null)
 		{
-			WizardStep.RegisterEditFormAndContext(this, EditContext);
+			Step.RegisterEditFormAndContext(this);
 		}
 	}
 }

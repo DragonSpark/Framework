@@ -19,7 +19,7 @@
     IOperation<None> _call   = default!;
     T                _model  = default!;
     EditContext?     _current;
-    
+
     protected override void OnInitialized()
     {
         _update = OnUpdate;
@@ -49,6 +49,9 @@
     }
 
     [Parameter]
+    public bool Enabled { get; set; } = true;
+
+    [Parameter]
     public T? Model { get; set; }
 
     [Parameter]
@@ -63,7 +66,7 @@
             if (_fieldsToSkip != value)
             {
                 _fieldsToSkip = value;
-                _skip         = _fieldsToSkip.Split(',');
+                _skip         = _fieldsToSkip.Split(',', StringSplitOptions.RemoveEmptyEntries);
             }
         }
     }   string _fieldsToSkip = default!;
@@ -73,7 +76,7 @@
 
     void FieldChanged(object? sender, FieldChangedEventArgs args)
     {
-        if (!_skip.Open().Contains(args.FieldIdentifier.FieldName) && _start.Up())
+        if (Enabled && !_skip.Open().Contains(args.FieldIdentifier.FieldName) && _start.Up())
         {
             StateHasChanged();
         }

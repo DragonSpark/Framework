@@ -53,9 +53,7 @@ public sealed class ObjectGraphDataAnnotationsValidator : ComponentBase, IDispos
 				}
 			}
 		}
-	}
-
-	EditContext? _context;
+	}	EditContext? _context;
 
 	void ValidationRequested(object? sender, ValidationRequestedEventArgs e)
 	{
