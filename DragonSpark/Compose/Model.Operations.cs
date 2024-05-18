@@ -116,6 +116,12 @@ public static partial class ExtensionMethods
 	public static async ValueTask<TOut> Verifying<TIn, TOut>(this ISelecting<TIn, TOut?> @this, TIn parameter)
 		=> (await @this.Await(parameter)).Verify();
 
+	public static ISelecting<TIn, TOut> Verifying<TIn, TOut>(this ISelecting<TIn, TOut?> @this)
+		=> new Verifying<TIn, TOut>(@this);
+
+	public static OperationResultSelector<TIn, TOut> Verifying<TIn, TOut>(this OperationResultSelector<TIn, TOut?> @this)
+		=> new Verifying<TIn, TOut>(@this.Get()).Then();
+
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static async ValueTask<T> Verifying<T>(this IResulting<T?> @this) => (await @this.Await()).Verify();
 }

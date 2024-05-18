@@ -1,0 +1,22 @@
+﻿@using DragonSpark.Model.Results
+@using DragonSpark.Presentation.Components.Content.Templates
+
+@if (Input)
+{
+    @ActiveTemplate
+}
+else
+{
+    @ChildContent
+}
+
+@code {
+    [Parameter]
+    public Switch Input { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment ActiveTemplate { get; set; } = DefaultLoadingTemplate.Default;
+}

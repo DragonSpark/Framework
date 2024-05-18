@@ -58,6 +58,9 @@ public static partial class ExtensionMethods
 
 	/**/
 
+	public static Selector<TIn?, TOut> VerifyIn<TIn, TOut>(this Selector<TIn?, TOut> @this)
+		=> new(new VerifyInput<TIn, TOut>(@this.Get()));
+
 	public static Selector<TIn?, TOut> AccountInStructure<TIn, TOut>(this Selector<TIn, TOut> @this)
 		where TIn : struct => new(new AccountedStructure<TIn, TOut>(@this.Get()));
 
