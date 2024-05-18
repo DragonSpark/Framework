@@ -29,6 +29,9 @@ public sealed class OperationCallbackContext : IResult<EventCallback>
 	public OperationCallbackContext Block(TimeSpan duration)
 		=> new(_receiver, new BlockingEntryOperation(_operation, duration));
 
+	public OperationCallbackContext Monitoring(Switch subject)
+		=> new(_receiver, new MonitoredOperation(_operation, subject));
+
 	public OperationCallbackContext UpdateActivity()
 		=> new(_receiver, new ActivityAwareOperation(_operation, _receiver));
 
