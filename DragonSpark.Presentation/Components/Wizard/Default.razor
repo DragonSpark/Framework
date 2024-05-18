@@ -137,11 +137,7 @@
     [Parameter]
     public int Value
     {
-        get
-        {
-            return _value;
-        }
-
+        get => _value;
         set
         {
             if (value < 0 || _steps.Count <= 0)
@@ -255,28 +251,25 @@
     /// <summary />
     protected virtual async Task<WizardStepChangeEventArgs> OnStepChangeHandlerAsync(int targetIndex, bool validateEditContexts)
     {
-        var stepChangeArgs = new WizardStepChangeEventArgs(targetIndex, _steps[targetIndex].Label);
+        var args = new WizardStepChangeEventArgs(targetIndex, _steps[targetIndex].Label);
         if (validateEditContexts)
         {
-            var allEditContextsAreValid = _steps[Value].ValidateEditContexts();
-            stepChangeArgs.IsCancelled = !allEditContextsAreValid;
+            var step = _steps[Value];
+            args.IsCancelled = !step.ValidateEditContexts();
 
-            if (!allEditContextsAreValid)
+            if (args.IsCancelled)
             {
-                await _steps[Value].InvokeOnInValidSubmitForEditFormsAsync();
-            }
-            if (!stepChangeArgs.IsCancelled && allEditContextsAreValid)
-            {
-                // Invoke the 'OnValidSubmit' handlers for the Edit Forms
-                await _steps[Value].InvokeOnValidSubmitForEditFormsAsync();
+                await step.InvokeOnInValidSubmitForEditFormsAsync();
+                return args;
             }
 
-            await _steps[Value].InvokeOnSubmitForEditFormsAsync();
+            await step.InvokeOnValidSubmitForEditFormsAsync();
+            await step.InvokeOnSubmitForEditFormsAsync();
         }
 
         await ValueChanged.InvokeAsync(targetIndex);
 
-        return await OnStepChangeHandlerAsync(stepChangeArgs);
+        return await OnStepChangeHandlerAsync(args).ConfigureAwait(false);
     }
 
     /// <summary />
