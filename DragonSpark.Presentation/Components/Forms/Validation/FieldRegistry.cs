@@ -24,13 +24,13 @@ public sealed class FieldRegistry
 		_identifiers.Remove(identifier.ToString());
 	}
 
-	public FieldIdentifier Register(Expression<Func<object?>> identifier)
+	public FieldIdentifier Register<T>(Expression<Func<T>> identifier)
 	{
 		var key = identifier.ToString();
 		return _identifiers.TryGetValue(key, out var existing) ? existing : Add(key, identifier);
 	}
 
-	FieldIdentifier Add(string key, Expression<Func<object?>> identifier)
+	FieldIdentifier Add<T>(string key, Expression<Func<T>> identifier)
 	{
 		var result = FieldIdentifier.Create(identifier);
 		_identifiers.Add(key, result);
