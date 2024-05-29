@@ -48,12 +48,12 @@
             margin: 5px 10px 0px 15px;
         }
 
-        .fluent-wizard[position="left"] .fluent-wizard-buttons {
-            grid-column: 2;
-            grid-row: 2;
-            text-align-last: end;
-            padding: 10px;
-        }
+    .fluent-wizard[position="left"] .fluent-wizard-buttons {
+        grid-column: 2;
+        grid-row: 2;
+        text-align-last: end;
+        padding: 10px;
+    }
 
     /* Wizard with steps on Top */
     .fluent-wizard[position="top"] {
@@ -70,8 +70,9 @@
                 border-bottom: 1px solid var(--neutral-stroke-hover);
             }
 
-        .fluent-wizard[position="top"] .fluent-wizard-content {
-            margin: 5px 10px 0px 10px;
+        .fluent-wizard[position="top"] .fluent-wizard-content { margin: 5px 10px 0px 10px; }
+        @media screen and (max-width: 400px) {
+            .fluent-wizard[position="top"] .fluent-wizard-content { margin: 5px 3px 0px 3px; }
         }
 
         .fluent-wizard[position="top"] .fluent-wizard-buttons {
