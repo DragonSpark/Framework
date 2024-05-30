@@ -6,7 +6,9 @@ using System.Reflection;
 
 namespace DragonSpark.Reflection.Members;
 
-public sealed class PropertyDelegates : ISelect<(Type Owner, string Name), Func<object, object>>
+public interface IPropertyDelegates : ISelect<(Type Owner, string Name), Func<object, object?>?>; // TODO
+
+public sealed class PropertyDelegates : IPropertyDelegates
 {
 	public static PropertyDelegates Default { get; } = new();
 
@@ -21,12 +23,11 @@ public sealed class PropertyDelegates : ISelect<(Type Owner, string Name), Func<
 		_flags     = flags;
 	}
 
-	public Func<object, object> Get((Type Owner, string Name) parameter)
+	public Func<object, object?>? Get((Type Owner, string Name) parameter)
 	{
 		var (owner, name) = parameter;
-		var property = owner.GetProperty(name, _flags)
-		                    .Verify($"Could not locate property '{name}' on type '{owner}'");
-		var result = _delegates.Get(property);
+		var property = owner.GetProperty(name, _flags);
+		var result   = property is not null ? _delegates.Get(property) : null;
 		return result;
 	}
 }

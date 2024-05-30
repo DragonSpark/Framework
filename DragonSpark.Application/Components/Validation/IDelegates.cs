@@ -3,4 +3,4 @@ using Microsoft.AspNetCore.Components.Forms;
 
 namespace DragonSpark.Application.Components.Validation;
 
-public interface IDelegates : ISelect<FieldIdentifier, object>;
+public interface IDelegates : ISelect<FieldIdentifier, object?>;

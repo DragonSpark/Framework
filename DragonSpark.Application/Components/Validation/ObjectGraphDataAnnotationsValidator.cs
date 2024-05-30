@@ -18,7 +18,7 @@ public sealed class ObjectGraphDataAnnotationsValidator : ComponentBase, IDispos
 	Messages                     _messages = default!;
 	ObjectGraphValidator         _validator = default!;
 
-	public ObjectGraphDataAnnotationsValidator() : this(new StoredDelegates(), ValidationContexts.Default) {}
+	public ObjectGraphDataAnnotationsValidator() : this(new Delegates(), ValidationContexts.Default) {}
 
 	public ObjectGraphDataAnnotationsValidator(IDelegates delegates, IValidationContexts contexts)
 	{
