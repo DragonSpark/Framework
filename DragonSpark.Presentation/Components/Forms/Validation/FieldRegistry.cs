@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components.Forms;
-using NetFabric.Hyperlinq;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
@@ -8,36 +7,38 @@ namespace DragonSpark.Presentation.Components.Forms.Validation;
 
 public sealed class FieldRegistry
 {
-	readonly EditContext                         _context;
 	readonly Dictionary<string, FieldIdentifier> _identifiers;
 
-	public FieldRegistry(EditContext context) : this(context, new Dictionary<string, FieldIdentifier>()) {}
+	public FieldRegistry() : this(new Dictionary<string, FieldIdentifier>()) {}
 
-	public FieldRegistry(EditContext context, Dictionary<string, FieldIdentifier> identifiers)
-	{
-		_context     = context;
-		_identifiers = identifiers;
-	}
+	public FieldRegistry(Dictionary<string, FieldIdentifier> identifiers) => _identifiers = identifiers;
 
-	public void Clear(Expression<Func<object?>> identifier)
+	/*public void Clear(Expression<Func<object?>> identifier)
 	{
 		_identifiers.Remove(identifier.ToString());
-	}
+	}*/
 
 	public FieldIdentifier Register<T>(Expression<Func<T>> identifier)
 	{
 		var key = identifier.ToString();
-		return _identifiers.TryGetValue(key, out var existing) ? existing : Add(key, identifier);
+		return _identifiers.TryGetValue(key, out var existing)
+			       ? existing
+			       : Add(key, FieldIdentifier.Create(identifier));
 	}
 
-	FieldIdentifier Add<T>(string key, Expression<Func<T>> identifier)
+	public FieldIdentifier Register(object model, string path)
 	{
-		var result = FieldIdentifier.Create(identifier);
-		_identifiers.Add(key, result);
-		return result;
+		var key = $"{model.GetHashCode()}+{path}";
+		return _identifiers.TryGetValue(key, out var existing) ? existing : Add(key, new(model, path));
 	}
 
-	public bool HasErrors()
+	FieldIdentifier Add(string key, FieldIdentifier identifier)
+	{
+		_identifiers.Add(key, identifier);
+		return identifier;
+	}
+
+	/*public bool HasErrors()
 	{
 		foreach (var identifier in _identifiers.Values)
 		{
@@ -48,7 +49,7 @@ public sealed class FieldRegistry
 		}
 
 		return false;
-	}
+	}*/
 
 	public void Clear()
 	{

@@ -1,7 +1,13 @@
 ﻿@using System.Net
-<img class="@Class" src="http://via.placeholder.com/@(Width)x@Height.png/@Background/@Foreground?text=@WebUtility.UrlEncode(Text)" @attributes="AdditionalAttributes" />
+<img class="@Class" src="@_address" />
 
 @code {
+    string _address = string.Empty;
+    protected override void OnInitialized()
+    {
+        _address = $"//via.placeholder.com/{Width}x{Height}.png/{Background}/{Foreground}?text={WebUtility.UrlEncode(Text)}";
+        base.OnInitialized();
+    }
 
     [Parameter]
     public string Class { get; set; } = "img-fluid";
@@ -20,7 +26,4 @@
 
     [Parameter]
     public ushort Height { get; set; } = 100;
-
-    [Parameter(CaptureUnmatchedValues = true)]
-    public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
 }
