@@ -111,7 +111,7 @@ public static class Extensions
 
 	public static T GetValue<T>(this FieldIdentifier @this)
 		=> @this.FieldName.Contains(".")
-			   ? PropertyAccess.GetValue(@this.Model, @this.FieldName).To<T>()
+			   ? (T)PropertyAccess.GetValue(@this.Model, @this.FieldName)
 			   : SelectValue<T>.Default.Get(@this);
 
 	public static string Text(this RenderFragment @this) => FragmentText.Default.Get(@this);
