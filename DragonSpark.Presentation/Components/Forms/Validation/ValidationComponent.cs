@@ -86,12 +86,9 @@ public abstract class ValidationComponent : ComponentBase, IDisposable
 	void Update()
 	{
 		_messages.Clear(Identifier);
-		if (Enabled)
+		if (Enabled && !Validate())
 		{
-			if (!Validate())
-			{
-				_messages.Add(Identifier, ErrorMessage);
-			}
+			_messages.Add(Identifier, ErrorMessage);
 		}
 		_context.Verify().NotifyValidationStateChanged();
 	}
