@@ -13,11 +13,10 @@ public sealed class IsBotRequest : ICondition<HttpRequest>
 		: this(UserAgent.Default,
 		       Start.A.Condition<string>()
 		            .By.Calling(string.IsNullOrEmpty)
-		            .Or(Start.A.Selection<string, string>(string.Intern)
-		                     .Then()
-		                     .Select(IsBotAgent.Default.Then())
-		                     .Get()
-		                     .ToConcurrentTable())
+		            .Or(Intern.Default.Then()
+		                      .Select(IsBotAgent.Default.Then())
+		                      .Get()
+		                      .ToConcurrentTable())
 		            .Out()) {}
 
 	readonly IFormatter<HttpRequest> _agent;
