@@ -9,9 +9,7 @@ sealed class LocateAssignments<T, TOther> : ReferenceValueStore<string, IResult<
 {
 	public static LocateAssignments<T, TOther> Default { get; } = new();
 
-	LocateAssignments() : base(Start.A.Selection<string>()
-	                                .By.Calling(string.Intern)
-	                                .Select(x => new PrincipalPropertyByName(x))
-	                                .Select(x => new LocatePrincipalProperty<T, TOther>(x))
-	                                .Select(x => new LocateAssignment<T, TOther>(x))) {}
+	LocateAssignments() : base(Text.Intern.Default.Select(x => new PrincipalPropertyByName(x))
+	                               .Select(x => new LocatePrincipalProperty<T, TOther>(x))
+	                               .Select(x => new LocateAssignment<T, TOther>(x))) {}
 }
