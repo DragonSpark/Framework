@@ -1,0 +1,42 @@
+﻿@using DragonSpark.Compose
+@using DragonSpark.Model.Results
+
+@if (!_rebuild)
+{
+    @ChildContent
+}
+
+@code {
+    readonly Switch _rebuild = new();
+
+    [Parameter]
+    public object? Input 
+    {
+        get => _input;
+        set
+        {
+            if (_input != value)
+            {
+                if (_input is not null)
+                {
+                    _rebuild.Up();
+                }
+                _input = value;
+
+            }
+        }
+    }	object? _input;
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (_rebuild.Down())
+        {
+            StateHasChanged();
+        }
+        base.OnAfterRender(firstRender);
+    }
+
+}
