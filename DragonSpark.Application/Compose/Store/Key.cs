@@ -10,11 +10,11 @@ public class Key<T> : IFormatter<T>
 	readonly char            _delimiter;
 	readonly Func<T, string> _key;
 
-	public Key(Type prefix, Func<T, string> key) : this(prefix.AssemblyQualifiedName.Verify(), key) {}
-
 	public Key(string prefix, Func<T, string> key) : this(prefix, KeyDelimiter.Default, key) {}
 
-	public Key(string prefix, char delimiter, Func<T, string> key)
+	protected Key(Type prefix, Func<T, string> key) : this(prefix.AssemblyQualifiedName.Verify(), key) {}
+
+	protected Key(string prefix, char delimiter, Func<T, string> key)
 	{
 		_prefix    = prefix;
 		_delimiter = delimiter;
