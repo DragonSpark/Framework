@@ -1,5 +1,6 @@
 ﻿@using BlazorPro.BlazorSize
 @using DragonSpark.Compose
+@using DragonSpark.Model.Commands
 @using DragonSpark.Model.Operations
 @using DragonSpark.Presentation
 @using DragonSpark.Presentation.Components.Content.Rendering
@@ -13,45 +14,57 @@
 
 @typeparam T
 @inherits DataQueryComponent
+@implements ISpecialColumnContainer
 
 @inject IMemoryCache Memory
 @inject IContentKey Key
 @inject ProtectedSessionStorage Session
 
-<AdaptiveGrid T="T"
-              @ref="@_subject"
-              Id="@Id"
-              Enabled="@_active"
-              FilterType="@FilterType"
-              Columns="@Columns"
-              AllowSelection="@AllowSelection"
-              AllowPaging="@AllowPaging"
-              AllowFiltering="@AllowFiltering"
-              AllowSorting="@AllowSorting"
-              AllowExport="@AllowExport"
-              Breakpoint="@Breakpoint"
-              DesktopToolbar="@DesktopToolbar"
-              MobileToolbar="@MobileToolbar"
-              CssClass="@CssClass"
-              PageSize="@PageSize"
-              LoadingTemplate="@LoadingTemplate"
-              @attributes="@AdditionalAttributes">
+@if (_display)
+{
+    <style>
+        .e-excelfilter .e-searchbox {
+            display: none;
+        }
+    </style>
+}
 
-    <GridTemplates EmptyRecordTemplate="@EmptyTemplate"/>
+<CascadingValue TValue="ISpecialColumnContainer" IsFixed="true" Value="@this">
+    <AdaptiveGrid T="T"
+                  @ref="@_subject"
+                  Id="@Id"
+                  Enabled="@_active"
+                  FilterType="@FilterType"
+                  Columns="@Columns"
+                  AllowSelection="@AllowSelection"
+                  AllowPaging="@AllowPaging"
+                  AllowFiltering="@AllowFiltering"
+                  AllowSorting="@AllowSorting"
+                  AllowExport="@AllowExport"
+                  Breakpoint="@Breakpoint"
+                  DesktopToolbar="@DesktopToolbar"
+                  MobileToolbar="@MobileToolbar"
+                  CssClass="@CssClass"
+                  PageSize="@PageSize"
+                  LoadingTemplate="@LoadingTemplate"
+                  @attributes="@AdditionalAttributes">
 
-    <GridEvents TValue="T" DataBound="OnDataBound" OnActionBegin="@OnActionBegin"/>
-    <Syncfusion.Blazor.Data.SfDataManager Adaptor="Adaptors.CustomAdaptor">
-        <DataRequestCallbackAdaptor Requested="@OnRequest"/>
-    </Syncfusion.Blazor.Data.SfDataManager>
-    @if (ChildContent is not null)
-    {
-        @ChildContent
-    }
-</AdaptiveGrid>
+        <GridTemplates EmptyRecordTemplate="@EmptyTemplate"/>
+
+        <GridEvents TValue="T" DataBound="OnDataBound" OnActionBegin="@OnActionBegin"/>
+        <Syncfusion.Blazor.Data.SfDataManager Adaptor="Adaptors.CustomAdaptor">
+            <DataRequestCallbackAdaptor Requested="@OnRequest"/>
+        </Syncfusion.Blazor.Data.SfDataManager>
+        @if (ChildContent is not null)
+        {
+            @ChildContent
+        }
+    </AdaptiveGrid>
+</CascadingValue>
 
 @code {
-    readonly Model.Results.Switch _refresh = new(), _active = new(true), _update = new(true);
-
+    readonly Model.Results.Switch _refresh = new(), _active = new(true), _update = new(true), _display = new();
+    readonly HashSet<string> _columns = new();
     GridStateVariable _store = null!;
     AdaptiveGrid<T>? _subject;
 
@@ -140,6 +153,10 @@
     {
         switch (arg.RequestType)
         {
+            case Action.FilterBeforeOpen:
+                _display.Execute(_columns.Contains(arg.ColumnName));
+                break;
+
             case Action.BeginEdit:
                 var allow = new Allow<T>(arg.Data);
                 await Editing.InvokeAsync(allow);
@@ -167,6 +184,11 @@
             _store = new(Id, Session);
         }
         base.OnParametersSet();
+    }
+
+    void ICommand<string>.Execute(string parameter)
+    {
+        _columns.Add(parameter);
     }
 
 }

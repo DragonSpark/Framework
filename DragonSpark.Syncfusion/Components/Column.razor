@@ -19,11 +19,19 @@
 
 @code {
 
-	protected override void OnInitialized()
-	{
-		ActualTemplate = Template != null ? x => Template((T)x) : null;
-		base.OnInitialized();
-	}
+    protected override void OnInitialized()
+    {
+        ActualTemplate = Template != null ? x => Template((T)x) : null;
+        base.OnInitialized();
+
+        if (!DisplayFilter)
+        {
+            Columns.Execute(Field);
+        }
+    }
+
+    [CascadingParameter]
+    ISpecialColumnContainer Columns { get; set; } = default!;
 
 	RenderFragment<object>? ActualTemplate { get; set; }
 
@@ -38,6 +46,9 @@
 
 	[Parameter]
 	public bool AllowSorting { get; set; } = true;
+
+    [Parameter]
+    public bool DisplayFilter { get; set; } = true;
 
 	[Parameter]
 	public string Format { get; set; } = default!;
