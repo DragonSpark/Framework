@@ -30,7 +30,7 @@
           Editing="@Editing"
           Created="@Created"
           Empty="@Empty"
-          @attributes="@AdditionalAttributes!">
+          @attributes="@(AdditionalAttributes!)">
     <ChildContent>
         <Syncfusion.Blazor.Data.SfDataManager HttpClientInstance="@Client" Url="@Address" Adaptor="Adaptors.ODataV4Adaptor" />
 

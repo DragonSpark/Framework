@@ -8,7 +8,7 @@
          class="@ClassValue"
          border-outside=@Border.HasFlag(WizardBorder.Outside)
          position="@(StepperPosition == StepperPosition.Top ? "top" : "left")"
-         @attributes="@AdditionalAttributes!">
+         @attributes="@(AdditionalAttributes!)">
         <ol style=@GetStepperWidthOrHeight()
             border-inside=@Border.HasFlag(WizardBorder.Inside)>
             @Steps

@@ -31,7 +31,7 @@ else
 			RowRenderingMode="@(Matches ? RowDirection.Horizontal : RowDirection.Vertical)"
 			DataSource="@DataSource"
             class="@Class"
-			@attributes="@AdditionalAttributes!" >
+			@attributes="@(AdditionalAttributes!)" >
 		<GridPageSettings PageSize="@PageSize" />
 		<GridFilterSettings Type="@FilterType" />
 		<GridColumns ChildContent="@Columns" />
