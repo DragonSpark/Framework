@@ -12,7 +12,7 @@
     public RenderFragment<string> ChildContent { get; set; } = default!;
 
     [Parameter(CaptureUnmatchedValues = true)]
-    public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
+    public Dictionary<string, object?> AdditionalAttributes { get; set; } = default!;
 
     async Task OnClick()
     {

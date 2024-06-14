@@ -3,7 +3,7 @@
 @using DragonSpark.Model.Results
 @inject IJSRuntime Runtime
 
-<section id="@Identifier" @attributes="AdditionalAttributes">
+<section id="@Identifier" @attributes="@AdditionalAttributes">
 	@ChildContent
 </section>
 
@@ -40,6 +40,6 @@
 	public RenderFragment ChildContent { get; set; } = default!;
 
 	[Parameter(CaptureUnmatchedValues = true)]
-	public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
+	public Dictionary<string, object?> AdditionalAttributes { get; set; } = default!;
 
 }
