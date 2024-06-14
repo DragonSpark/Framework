@@ -2,11 +2,9 @@
 @using DragonSpark.Compose
 @using DragonSpark.Model.Operations
 @using DragonSpark.Presentation
-@using DragonSpark.Presentation.Components.Content.Rendering
 @using DragonSpark.SyncfusionRendering.Entities
 @using DragonSpark.SyncfusionRendering.Queries
 @using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
-@using Microsoft.Extensions.Caching.Memory
 @using Syncfusion.Blazor
 @using Syncfusion.Blazor.Grids
 
@@ -100,13 +98,6 @@
     protected override Await<DataManagerRequest, object> CreateInput()
         => new StateAwareDataRequest(Content, _store, _active).Then().Then().Handle(EmptyDataResult.Default.Get());
 
-    string DetermineKey() => $"{Id}_{Key.Get(this)}";
-
-    protected override Task OnRequest(DataRequestResult parameter)
-    {
-        _refresh.Down();
-        return base.OnRequest(parameter);
-    }
     protected override void OnParametersSet()
     {
         if (_update.Down())
