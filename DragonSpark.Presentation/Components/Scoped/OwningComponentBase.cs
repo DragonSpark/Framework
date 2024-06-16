@@ -70,7 +70,6 @@ public class OwningComponentBase<T> : OwningComponentBase where T : class
 			}
 
 			// We cache this because we don't know the lifetime. We have to assume that it could be transient.
-			// ReSharper disable once NullCoalescingConditionIsAlwaysNotNullAccordingToAPIContract
 			_item ??= ScopedServices.GetRequiredService<T>();
 			return _item;
 		}

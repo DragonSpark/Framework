@@ -3,7 +3,6 @@ using DragonSpark.Model.Operations.Selection;
 using FluentAssertions;
 using System.Threading.Tasks;
 using Xunit;
-// ReSharper disable AsyncApostle.AsyncWait
 
 namespace DragonSpark.Testing.Model.Operations;
 

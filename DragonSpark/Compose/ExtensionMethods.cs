@@ -7,7 +7,6 @@ using Exception = System.Exception;
 
 namespace DragonSpark.Compose;
 
-// ReSharper disable once MismatchedFileName
 // ReSharper disable TemplateIsNotCompileTimeConstantProblem
 // ReSharper disable TooManyArguments
 public static partial class ExtensionMethods
@@ -237,17 +236,14 @@ public static partial class ExtensionMethods
 	public static TemplateException Get<T1, T2>(this ITemplate<(T1, T2)> @this, T1 first, T2 second)
 		=> @this.Get(new InvalidOperationException(), first, second);
 
-	// ReSharper disable once TooManyArguments
 	public static TemplateException Get<T1, T2>(this ITemplate<(T1, T2)> @this,
 	                                            Exception exception, T1 first, T2 second)
 		=> @this.Get(new ExceptionParameter<(T1, T2)>(exception, (first, second)));
 
-	// ReSharper disable once TooManyArguments
 	public static TemplateException Get<T1, T2, T3>(this ITemplate<(T1, T2, T3)> @this,
 	                                                T1 first, T2 second, T3 third)
 		=> @this.Get(new InvalidOperationException(), first, second, third);
 
-	// ReSharper disable once TooManyArguments
 	public static TemplateException Get<T1, T2, T3>(this ITemplate<(T1, T2, T3)> @this,
 	                                                Exception exception, T1 first, T2 second, T3 third)
 		=> @this.Get(new ExceptionParameter<(T1, T2, T3)>(exception, (first, second, third)));

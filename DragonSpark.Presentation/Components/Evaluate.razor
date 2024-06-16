@@ -29,7 +29,6 @@
 
 	protected override bool ShouldRender() => Force;
 
-	// ReSharper disable once FlagArgument
 	protected override Task OnAfterRenderAsync(bool firstRender)
 	{
 		if ((firstRender || Force) && Type == "text/javascript")

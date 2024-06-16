@@ -9,7 +9,6 @@
 
 @code {
 
-	// ReSharper disable once FlagArgument
 	protected override Task OnAfterRenderAsync(bool firstRender)
 	{
         var result = Enabled && (firstRender || Signal.Down()) ? Runtime.InvokeAsync<bool>("scrollToElementId", Identifier).AsTask() : base.OnAfterRenderAsync(false);

@@ -1,6 +1,4 @@
-﻿// ReSharper disable TooManyArguments
-
-using Bogus;
+﻿using Bogus;
 using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection.Alterations;

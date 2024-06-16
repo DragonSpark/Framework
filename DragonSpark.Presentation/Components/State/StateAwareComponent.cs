@@ -8,7 +8,6 @@ public class StateAwareComponent : ComponentBase
 	[Parameter]
 	public EventCallback Initialized { get; set; }
 
-	// ReSharper disable once FlagArgument
 	protected override Task OnAfterRenderAsync(bool firstRender)
 		=> firstRender ? Initialized.Invoke() : base.OnAfterRenderAsync(firstRender);
 }
