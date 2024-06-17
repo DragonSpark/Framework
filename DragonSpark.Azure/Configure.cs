@@ -10,5 +10,7 @@ sealed class Configure : IAlteration<BuildHostContext>
 	Configure() {}
 
 	public BuildHostContext Get(BuildHostContext parameter)
-		=> parameter.Configure(Registrations.Default).Configure(Messaging.Messages.Queues.Registrations.Default);
+		=> parameter.Configure(Registrations.Default)
+		            .Configure(Messaging.Messages.Queues.Registrations.Default)
+		            .Configure(Ai.Registrations.Default);
 }
