@@ -122,7 +122,7 @@ public class Selector<TIn, TOut> : IResult<ISelect<TIn, TOut>>, IActivateUsing<I
 	public CommandContext<(TIn, T)> Terminate<T>(Action<TOut, T> command)
 		=> new SelectedAssignment<TIn, TOut, T>(_subject.Get, command).Then();
 
-	public OperationResultSelector<TIn, TOut> Operation() => new(_subject.Select(x => x.ToOperation()));
+	public OperationResultComposer<TIn, TOut> Operation() => new(_subject.Select(x => x.ToOperation()));
 
 	public ISelect<TIn, TOut> Get() => _subject;
 }

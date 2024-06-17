@@ -18,12 +18,12 @@ public sealed class TableStoreContext<TIn, TOut>
 		_storage = storage;
 	}
 
-	public DragonSpark.Compose.Model.Operations.OperationResultSelector<TIn, TOut> Using<T>(Func<TIn, string> key)
+	public DragonSpark.Compose.Model.Operations.OperationResultComposer<TIn, TOut> Using<T>(Func<TIn, string> key)
 		=> Using(new Key<TIn>(A.Type<T>().AssemblyQualifiedName.Verify(), key).Get);
 
-	public DragonSpark.Compose.Model.Operations.OperationResultSelector<TIn, TOut> Using(ISelect<TIn, string> key) => Using(key.Get);
+	public DragonSpark.Compose.Model.Operations.OperationResultComposer<TIn, TOut> Using(ISelect<TIn, string> key) => Using(key.Get);
 
-	public DragonSpark.Compose.Model.Operations.OperationResultSelector<TIn, TOut> Using(Func<TIn, string> key)
+	public DragonSpark.Compose.Model.Operations.OperationResultComposer<TIn, TOut> Using(Func<TIn, string> key)
 		=> new Source(_storage, _subject.Get, key).Then();
 
 	sealed class Source : ISelecting<TIn, TOut>

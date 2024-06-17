@@ -12,7 +12,7 @@ sealed class DefaultToArray<T> : IToArray<T>
 
 	DefaultToArray() {}
 
-	public async ValueTask<Array<T>> Get(TokenAware<IQueryable<T>> parameter)
+	public async ValueTask<Array<T>> Get(Token<IQueryable<T>> parameter)
 	{
 		var (queryable, token) = parameter;
 		return await queryable.ToArrayAsync(token).ConfigureAwait(false);

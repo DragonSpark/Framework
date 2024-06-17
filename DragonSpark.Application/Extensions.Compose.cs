@@ -90,7 +90,7 @@ public static partial class Extensions
 	public static StoreContext<TIn, TOut> Store<TIn, TOut>(this Selector<TIn, TOut> @this) => new(@this);
 
 	public static Compose.Store.Operations.StoreContext<TIn, TOut> Store<TIn, TOut>(
-		this DragonSpark.Compose.Model.Operations.OperationResultSelector<TIn, TOut> @this)
+		this DragonSpark.Compose.Model.Operations.OperationResultComposer<TIn, TOut> @this)
 		=> new(@this);
 
 	public static Slide Slide(this TimeSpan @this) => new(@this);
@@ -105,7 +105,7 @@ public static partial class Extensions
 
 	/**/
 
-	public static DragonSpark.Compose.Model.Operations.OperationResultSelector<TIn, TOut> UsingSelf<TIn, TOut>(
+	public static DragonSpark.Compose.Model.Operations.OperationResultComposer<TIn, TOut> UsingSelf<TIn, TOut>(
 		this Compose.Store.Operations.Memory.ConfiguredStoreContext<TIn, TOut> @this) where TIn : class
 		=> @this.Using(Object<TIn>.Default);
 
@@ -163,7 +163,7 @@ public static partial class Extensions
 
 	public static IQuery<T> Then<T>(this QueryComposer<None, T> @this) => new Query<T>(@this.Instance());
 
-	public static OperationResultSelector<T?> Handle<T>(this OperationResultSelector<T?> @this,
+	public static OperationResultComposer<T?> Handle<T>(this OperationResultComposer<T?> @this,
 	                                                    IExceptions exceptions, Type? reportedType = null)
 		=> new(new ExceptionAwareResult<T>(@this, exceptions, reportedType));
 

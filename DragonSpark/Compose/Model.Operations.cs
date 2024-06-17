@@ -16,20 +16,20 @@ namespace DragonSpark.Compose;
 // ReSharper disable SuspiciousTypeConversion.Global
 public static partial class ExtensionMethods
 {
-	public static OperationResultSelector<TIn, TOut> Or<TIn, TOut>(this OperationResultSelector<TIn, TOut?> @this,
+	public static OperationResultComposer<TIn, TOut> Or<TIn, TOut>(this OperationResultComposer<TIn, TOut?> @this,
 	                                                               ISelecting<TIn, TOut> second)
 		where TOut : class => @this.Or(second.Await);
 
-	public static OperationResultSelector<TIn, TOut> Or<TIn, TOut>(this OperationResultSelector<TIn, TOut?> @this,
+	public static OperationResultComposer<TIn, TOut> Or<TIn, TOut>(this OperationResultComposer<TIn, TOut?> @this,
 	                                                               Await<TIn, TOut> next)
 		where TOut : class
 		=> new DragonSpark.Model.Operations.Selection.Coalesce<TIn, TOut>(@this, next).Then();
 
-	public static OperationResultSelector<TIn, TOut?> OrMaybe<TIn, TOut>(this OperationResultSelector<TIn, TOut?> @this,
+	public static OperationResultComposer<TIn, TOut?> OrMaybe<TIn, TOut>(this OperationResultComposer<TIn, TOut?> @this,
 	                                                                     ISelecting<TIn, TOut?> second)
 		where TOut : class => @this.OrMaybe(second.Await);
 
-	public static OperationResultSelector<TIn, TOut?> OrMaybe<TIn, TOut>(this OperationResultSelector<TIn, TOut?> @this,
+	public static OperationResultComposer<TIn, TOut?> OrMaybe<TIn, TOut>(this OperationResultComposer<TIn, TOut?> @this,
 	                                                                     Await<TIn, TOut?> next)
 		where TOut : class
 		=> new DragonSpark.Model.Operations.Selection.Maybe<TIn, TOut>(@this, next).Then();
@@ -110,6 +110,14 @@ public static partial class ExtensionMethods
 		=> await @this.Await(parameter);
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static async ValueTask<Token<TOut?>> Accounting<TIn, TOut>(this ISelectingToken<TIn, TOut> @this,
+	                                                                  Token<TIn> parameter)
+	{
+		var (subject, token) = await @this.Await(parameter);
+		return new(subject.Account(), token);
+	}
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static async ValueTask<T?> Accounting<T>(this IResulting<T> @this) => await @this.Await();
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -119,7 +127,8 @@ public static partial class ExtensionMethods
 	public static ISelecting<TIn, TOut> Verifying<TIn, TOut>(this ISelecting<TIn, TOut?> @this)
 		=> new Verifying<TIn, TOut>(@this);
 
-	public static OperationResultSelector<TIn, TOut> Verifying<TIn, TOut>(this OperationResultSelector<TIn, TOut?> @this)
+	public static OperationResultComposer<TIn, TOut> Verifying<TIn, TOut>(
+		this OperationResultComposer<TIn, TOut?> @this)
 		=> new Verifying<TIn, TOut>(@this.Get()).Then();
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]

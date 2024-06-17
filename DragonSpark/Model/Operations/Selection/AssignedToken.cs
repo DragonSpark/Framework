@@ -6,16 +6,16 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations.Selection;
 
-sealed class TokenAware<TIn, TOut> : ISelecting<TIn, TOut>
+sealed class AssignedToken<TIn, TOut> : ISelecting<TIn, TOut>
 {
 	readonly ISelect<TIn, ValueTask<TOut>> _previous;
 	readonly CancellationToken             _token;
 	readonly IMutable<CancellationToken>   _store;
 
-	public TokenAware(ISelect<TIn, ValueTask<TOut>> previous, CancellationToken token)
+	public AssignedToken(ISelect<TIn, ValueTask<TOut>> previous, CancellationToken token)
 		: this(previous, token, AmbientToken.Default) {}
 
-	public TokenAware(ISelect<TIn, ValueTask<TOut>> previous, CancellationToken token,
+	public AssignedToken(ISelect<TIn, ValueTask<TOut>> previous, CancellationToken token,
 	                  IMutable<CancellationToken> store)
 	{
 		_previous = previous;

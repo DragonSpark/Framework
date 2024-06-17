@@ -115,10 +115,10 @@ public static partial class ExtensionMethods
 
 	public static OperationContext<T> Then<T>(this Selector<T, ValueTask> @this) => @this.Get().Then();
 
-	public static OperationResultSelector<T> Then<T>(this IResult<ValueTask<T>> @this)
+	public static OperationResultComposer<T> Then<T>(this IResult<ValueTask<T>> @this)
 		=> new(@this);
 
-	public static OperationResultSelector<T> Then<T>(this ResultContext<ValueTask<T>> @this) => @this.Get().Then();
+	public static OperationResultComposer<T> Then<T>(this ResultContext<ValueTask<T>> @this) => @this.Get().Then();
 
 	public static OperationSelector Then(this IResult<ValueTask> @this) => new(@this);
 
@@ -128,11 +128,11 @@ public static partial class ExtensionMethods
 
 	public static AllocatedOperationSelector Then(this ResultContext<Task> @this) => @this.Get().Then();
 
-	public static OperationResultSelector<_, T> Then<_, T>(this ISelecting<_, T> @this) => new(@this);
+	public static OperationResultComposer<_, T> Then<_, T>(this ISelecting<_, T> @this) => new(@this);
 
-	public static OperationResultSelector<_, T> Then<_, T>(this ISelect<_, ValueTask<T>> @this) => new(@this);
+	public static OperationResultComposer<_, T> Then<_, T>(this ISelect<_, ValueTask<T>> @this) => new(@this);
 
-	public static OperationResultSelector<_, T> Then<_, T>(this Selector<_, ValueTask<T>> @this) => @this.Get().Then();
+	public static OperationResultComposer<_, T> Then<_, T>(this Selector<_, ValueTask<T>> @this) => @this.Get().Then();
 
 	public static TaskSelector<_, T> Then<_, T>(this ISelect<_, Task<T>> @this) => new(@this);
 
@@ -215,6 +215,9 @@ public static partial class ExtensionMethods
 
 	public static ISelecting<TIn, TOut> Out<TIn, TOut>(this Selector<TIn, ValueTask<TOut>> @this)
 		=> @this.Get().To(x => x as ISelecting<TIn, TOut> ?? new Selecting<TIn, TOut>(x.Get));
+
+	public static ISelectingToken<TIn, TOut> Out<TIn, TOut>(this Selector<Token<TIn>, ValueTask<Token<TOut>>> @this)
+		=> @this.Get().To(x => x as ISelectingToken<TIn, TOut> ?? new SelectingToken<TIn, TOut>(x.Get));
 
 
 	public static IAllocating<TIn, TOut> Out<TIn, TOut>(this Selector<TIn, Task<TOut>> @this) => @this.Get().Out();

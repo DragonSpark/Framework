@@ -16,15 +16,15 @@ public sealed class ConfiguredStoreContext<TIn, TOut> : StoreContext<TIn, TOut>
 		: base(subject, memory)
 		=> _configure = configure;
 
-	public DragonSpark.Compose.Model.Operations.OperationResultSelector<TIn, TOut> Using<T>()
+	public DragonSpark.Compose.Model.Operations.OperationResultComposer<TIn, TOut> Using<T>()
 		=> Using(A.Type<T>().FullName.Verify().Accept);
 
-	public DragonSpark.Compose.Model.Operations.OperationResultSelector<TIn, TOut> Using<T>(Func<TIn, string> key)
+	public DragonSpark.Compose.Model.Operations.OperationResultComposer<TIn, TOut> Using<T>(Func<TIn, string> key)
 		=> Using(new Key<TIn>(A.Type<T>().FullName.Verify(), key).Get);
 
-	public DragonSpark.Compose.Model.Operations.OperationResultSelector<TIn, TOut> Using(ISelect<TIn, string> key)
+	public DragonSpark.Compose.Model.Operations.OperationResultComposer<TIn, TOut> Using(ISelect<TIn, string> key)
 		=> Using(key.Get);
 
-	public DragonSpark.Compose.Model.Operations.OperationResultSelector<TIn, TOut> Using(Func<TIn, string> key)
+	public DragonSpark.Compose.Model.Operations.OperationResultComposer<TIn, TOut> Using(Func<TIn, string> key)
 		=> new Distributed<TIn, TOut>(Memory, key, new Load<TIn, TOut>(Memory, Subject.Await, _configure).Await).Then();
 }

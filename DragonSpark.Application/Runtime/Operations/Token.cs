@@ -1,10 +1,11 @@
 ﻿using DragonSpark.Composition;
-using DragonSpark.Model.Operations;
+using DragonSpark.Model.Results;
 using System;
 using System.Threading;
 
 namespace DragonSpark.Application.Runtime.Operations;
-
+// TODO
+public interface IToken : IResult<CancellationToken>;
 sealed class Token : IToken, IDisposable
 {
 	readonly CancellationTokenSource _source;
@@ -21,9 +22,8 @@ sealed class Token : IToken, IDisposable
 
 	public CancellationToken Get()
 	{
-		var result = _token;
-		result.ThrowIfCancellationRequested();
-		return result;
+		_token.ThrowIfCancellationRequested();
+		return _token;
 	}
 
 	public void Dispose()

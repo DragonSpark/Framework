@@ -29,16 +29,16 @@ public sealed class ConfiguredStoreContext<TIn, TOut> : StoreContext<TIn, TOut>
 	public ConfiguredStoreContext<TIn, TOut> OnEviction(Action<PostEvictionInput> parameter)
 		=> Append(x => x.RegisterPostEvictionCallback(new Adapter(parameter).Execute));
 
-	public DragonSpark.Compose.Model.Operations.OperationResultSelector<TIn, TOut> Using<T>()
+	public DragonSpark.Compose.Model.Operations.OperationResultComposer<TIn, TOut> Using<T>()
 		=> Using(A.Type<T>().AssemblyQualifiedName.Verify().Accept);
 
-	public DragonSpark.Compose.Model.Operations.OperationResultSelector<TIn, TOut> Using<T>(Func<TIn, string> key)
+	public DragonSpark.Compose.Model.Operations.OperationResultComposer<TIn, TOut> Using<T>(Func<TIn, string> key)
 		=> Using(new Key<TIn>(A.Type<T>().AssemblyQualifiedName.Verify(), key).Get);
 
-	public DragonSpark.Compose.Model.Operations.OperationResultSelector<TIn, TOut> Using(ISelect<TIn, object> key)
+	public DragonSpark.Compose.Model.Operations.OperationResultComposer<TIn, TOut> Using(ISelect<TIn, object> key)
 		=> Using(key.Get);
 
-	public DragonSpark.Compose.Model.Operations.OperationResultSelector<TIn, TOut> Using(Func<TIn, object> key)
+	public DragonSpark.Compose.Model.Operations.OperationResultComposer<TIn, TOut> Using(Func<TIn, object> key)
 		=> new Memory<TIn, TOut>(Memory, new Load<TIn, TOut>(Memory, Subject.Await, _configure.Execute).Await, key)
 		   .Then()
 		   .Protecting();

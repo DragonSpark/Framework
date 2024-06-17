@@ -12,7 +12,7 @@ public class TaskSelector<_, T> : Selector<_, Task<T>>
 {
 	public TaskSelector(ISelect<_, Task<T>> subject) : base(subject) {}
 
-	public OperationResultSelector<_, T> Structure() => new(Get().Select(SelectOperation<T>.Default));
+	public OperationResultComposer<_, T> Structure() => new(Get().Select(SelectOperation<T>.Default));
 
 	public TaskSelector<_, TTo> Select<TTo>(ISelect<T, TTo> select) => Select(select.Get);
 

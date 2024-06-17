@@ -70,8 +70,8 @@ public static partial class ExtensionMethods
 	public static Selector<TIn, TOut?> AccountOut<TIn, TOut>(this Selector<TIn, TOut> @this)
 		=> @this.Select(x => x.Account());
 
-	public static OperationResultSelector<TIn, TOut?> AccountOut<TIn, TOut>(
-		this OperationResultSelector<TIn, TOut> @this)
+	public static OperationResultComposer<TIn, TOut?> AccountOut<TIn, TOut>(
+		this OperationResultComposer<TIn, TOut> @this)
 		=> @this.Select(x => x.Account());
 
 	public static Selector<_, T> Verified<_, T>(this Selector<_, T?> @this) where T : class

@@ -4,4 +4,4 @@ using System.Linq;
 
 namespace DragonSpark.Application.Entities.Queries.Runtime.Materialize;
 
-public interface IMaterializer<T, TResult> : ISelecting<TokenAware<IQueryable<T>>, TResult>;
+public interface IMaterializer<T, TResult> : ISelecting<Token<IQueryable<T>>, TResult>;

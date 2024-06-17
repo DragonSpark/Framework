@@ -12,7 +12,7 @@ sealed class DefaultLargeCount<T> : ILargeCount<T>
 
 	DefaultLargeCount() {}
 
-	public async ValueTask<ulong> Get(TokenAware<IQueryable<T>> parameter)
+	public async ValueTask<ulong> Get(Token<IQueryable<T>> parameter)
 	{
 		var (subject, token) = parameter;
 		var count  = await subject.LongCountAsync(token).ConfigureAwait(false);

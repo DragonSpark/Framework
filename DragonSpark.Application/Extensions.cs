@@ -187,7 +187,7 @@ partial class Extensions
 	public static IOperation<T> Ambient<T>(this IOperation<T> @this) => new DeferredOperation<T>(@this);
 	public static IOperation<T> ReloadAware<T>(this IOperation<T> @this) => new ReloadAware<T>(@this);
 /**/
-	public static DragonSpark.Compose.Model.Operations.OperationResultSelector<TIn, TOut> Using<TIn, TOut>(
+	public static DragonSpark.Compose.Model.Operations.OperationResultComposer<TIn, TOut> Using<TIn, TOut>(
 		this Compose.Store.Operations.StoreContext<TIn, TOut> @this, StoreProfile<TIn> profile)
 		=> @this.In(profile.Memory).For(profile.For).Using(profile.Key);
 }

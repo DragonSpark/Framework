@@ -23,7 +23,7 @@ public class ResultContext<T>
 
 	public Selector<object, T> Any() => Accept<object>();
 
-	public OperationResultSelector<T> Operation() => new (_instance.Then().Select(x => x.ToOperation()).Out());
+	public OperationResultComposer<T> Operation() => new (_instance.Then().Select(x => x.ToOperation()).Out());
 
 	public ResultContext<T> Singleton() => new Deferred<T>(_instance.Get).Then();
 

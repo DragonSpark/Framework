@@ -142,8 +142,8 @@ public static class Extensions
 
 	public static ActiveContentComposer<T> Then<T>(this IActiveContent<T> @this) => new(@this);
 
-	public static Compose.OperationResultSelector<_, T> Then<_, T>(
-		this DragonSpark.Compose.Model.Operations.OperationResultSelector<_, T> @this)
+	public static Compose.OperationResultComposer<_, T> Then<_, T>(
+		this DragonSpark.Compose.Model.Operations.OperationResultComposer<_, T> @this)
 		=> new(@this.Out());
 
 	public static Compose.OperationComposer<T> Then<T>(this Application.Compose.OperationComposer<T> @this)

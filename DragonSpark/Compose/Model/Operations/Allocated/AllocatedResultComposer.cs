@@ -11,5 +11,5 @@ public class AllocatedResultComposer<T> : ResultContext<Task<T>>
 
 	public AllocatedResultComposer(IResult<Task<T>> instance) : base(instance) {}
 
-	public OperationResultSelector<T> Structure() => new(Select(x => x.ToOperation()).Get());
+	public OperationResultComposer<T> Structure() => new(Select(x => x.ToOperation()).Get());
 }
