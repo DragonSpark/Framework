@@ -1,34 +1,43 @@
-﻿using DragonSpark.Model.Operations.Selection;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model;
+using DragonSpark.Model.Operations.Selection;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.State;
 
-public class ActivityAwareSelecting<TIn, TOut> : ISelecting<TIn, TOut>
+sealed class ActivityAwareSelecting<TIn, TOut> : ISelecting<TIn, TOut>
 {
 	readonly ISelecting<TIn, TOut>   _previous;
 	readonly object                  _subject;
-	readonly IUpdateActivityReceiver _activity;
+	readonly ActivityReaderInstance  _input;
+	readonly IUpdateActivityReceiver _update;
 
 	public ActivityAwareSelecting(ISelecting<TIn, TOut> previous, object subject)
-		: this(previous, subject, UpdateActivityReceiver.Default) {}
+		: this(previous, subject, ActivityReceiverInput.Default) {}
 
-	public ActivityAwareSelecting(ISelecting<TIn, TOut> previous, object subject, IUpdateActivityReceiver activity)
+	public ActivityAwareSelecting(ISelecting<TIn, TOut> previous, object subject, ActivityReceiverInput input)
+		: this(previous, subject, new(previous, input), UpdateActivityReceiver.Default) {}
+
+	// ReSharper disable once TooManyDependencies
+	public ActivityAwareSelecting(ISelecting<TIn, TOut> previous, object subject, ActivityReaderInstance input,
+	                              IUpdateActivityReceiver update)
 	{
 		_previous = previous;
 		_subject  = subject;
-		_activity = activity;
+		_input    = input;
+		_update   = update;
 	}
 
 	public async ValueTask<TOut> Get(TIn parameter)
 	{
-		await _activity.Get((_subject, _previous));
+		await _update.Get(Pairs.Create(_subject, _input));
 		try
 		{
 			return await _previous.Get(parameter);
 		}
 		finally
 		{
-			await _activity.Get(_subject);
+			await _update.Await(_subject);
 		}
 	}
 }

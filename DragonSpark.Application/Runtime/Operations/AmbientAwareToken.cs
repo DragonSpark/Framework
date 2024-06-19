@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace DragonSpark.Application.Runtime.Operations;
 
-sealed class AmbientAwareToken : DragonSpark.Model.Results.Coalesce<CancellationToken>, IToken
+sealed class AmbientAwareToken : DragonSpark.Model.Results.Coalesce<CancellationToken>, IScopedToken
 {
-	public AmbientAwareToken(IToken second) : base(AmbientToken.Default, second) {}
+	public AmbientAwareToken(IScopedToken second) : base(AmbientToken.Default, second) {}
 }

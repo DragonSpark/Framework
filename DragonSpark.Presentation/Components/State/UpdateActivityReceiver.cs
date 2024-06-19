@@ -10,26 +10,26 @@ public sealed class UpdateActivityReceiver : IUpdateActivityReceiver
 
 	UpdateActivityReceiver() : this(UpdateActivity.Default) {}
 
-	readonly IUpdateActivity       _activity;
+	readonly IUpdateActivity       _update;
 	readonly ISelect<object, bool> _active;
 
-	public UpdateActivityReceiver(IUpdateActivity activity) : this(activity, ActiveState.Default) {}
+	public UpdateActivityReceiver(IUpdateActivity update) : this(update, ActiveState.Default) {}
 
-	public UpdateActivityReceiver(IUpdateActivity activity, ISelect<object, bool> active)
+	public UpdateActivityReceiver(IUpdateActivity update, ISelect<object, bool> active)
 	{
-		_activity = activity;
+		_update = update;
 		_active   = active;
 	}
 
-	public ValueTask Get(Pair<object, object> parameter)
+	public ValueTask Get(Pair<object, ActivityReaderInstance> parameter)
 	{
-		var (key, _) = parameter;
+		var (key, (instance, input)) = parameter;
 
 		var start = !_active.Get(key);
 
-		_activity.Execute(parameter);
+		_update.Execute((key, instance));
 
-		var result = start && key is IActivityReceiver receiver ? receiver.Start() : ValueTask.CompletedTask;
+		var result = start && key is IActivityReceiver receiver ? receiver.Start(input) : ValueTask.CompletedTask;
 		return result;
 	}
 
@@ -37,7 +37,7 @@ public sealed class UpdateActivityReceiver : IUpdateActivityReceiver
 	{
 		var prior = _active.Get(parameter);
 
-		_activity.Execute(parameter);
+		_update.Execute(parameter);
 
 		var completed = prior && !_active.Get(parameter);
 		var result = completed && parameter is IActivityReceiver receiver

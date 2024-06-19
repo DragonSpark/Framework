@@ -19,8 +19,8 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 
 	public void Execute(IServiceCollection parameter)
 	{
-		parameter.Start<IToken>()
-		         .Forward<Token>()
+		parameter.Start<IScopedToken>()
+		         .Forward<ScopedToken>()
 		         .Decorate<AmbientAwareToken>()
 		         .Scoped()
 		         //

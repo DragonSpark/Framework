@@ -11,7 +11,10 @@ public sealed class ActivityAwareActiveContent<T> : Resulting<T?>, IActiveConten
 	readonly ICommand _previous;
 
 	public ActivityAwareActiveContent(IActiveContent<T> previous, object receiver)
-		: this(previous, previous.Condition, new ActivityAwareResult<T>(previous, receiver)) {}
+		: this(previous, receiver, ActivityReceiverInput.Default) {}
+
+	public ActivityAwareActiveContent(IActiveContent<T> previous, object receiver, ActivityReceiverInput input)
+		: this(previous, previous.Condition, new ActivityAwareResult<T>(previous, receiver, input)) {}
 
 	public ActivityAwareActiveContent(ICommand previous, ICondition<None> refresh, IResulting<T?> resulting)
 		: base(resulting)

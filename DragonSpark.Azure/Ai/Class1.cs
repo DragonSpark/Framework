@@ -2,6 +2,7 @@
 using Azure.AI.OpenAI;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
+using DragonSpark.Model.Operations.Allocated;
 using DragonSpark.Model.Operations.Selection;
 using DragonSpark.Model.Results;
 using Microsoft.Extensions.DependencyInjection;
@@ -64,7 +65,7 @@ sealed class ImageClients : IResult<ImageClient>
 	public ImageClient Get() => _client.GetImageClient(_model);
 }
 
-public sealed class GenerateImage : ISelecting<string, GeneratedImage>
+public sealed class GenerateImage : ISelecting<Token<string>, GeneratedImage>
 {
 	readonly ImageClient            _client;
 	readonly ImageGenerationOptions _options;
@@ -77,9 +78,9 @@ public sealed class GenerateImage : ISelecting<string, GeneratedImage>
 		_options = options;
 	}
 
-	public async ValueTask<GeneratedImage> Get(string parameter)
+	public async ValueTask<GeneratedImage> Get(Token<string> parameter)
 	{
-		var response = await _client.GenerateImageAsync(parameter, _options);
+		var response = await _client.GenerateImageAsync(parameter, _options, parameter.Item);
 		return response.Value;
 	}
 }

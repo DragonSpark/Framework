@@ -9,74 +9,109 @@
 
 @inject IFocusedElement Focus
 
-<div class="@Class">
-	<fieldset disabled="@Active">
-		<CascadingValue TValue="IActivityReceiver" Value="@this" IsFixed="true">
-			@ChildContent(ActualReceiver)
-		</CascadingValue>
-	</fieldset>
+<div class="@_outer">
+    <div class="@_class">
+        <fieldset disabled="@Active">
+            <CascadingValue TValue="IActivityReceiver" Value="@this" IsFixed="true">
+                @ChildContent(ActualReceiver)
+            </CascadingValue>
+        </fieldset>
+    </div>
+    @if (Active && _display?.Message is not null)
+    {
+        <div class="position-absolute top-0 d-flex w-100 h-100 flex-column align-items-center justify-content-center">
+            <div class="d-flex gap-2">
+                <div class="spinner-border" role="status"></div>
+                <div>@(_active ? "Please wait..." : _display?.Message)</div>
+            </div>
+            @if (_display?.Handle is not null && !_active)
+            {
+                <ul class="actions">
+                    <li><button class="small button" disabled="@_active" @onclick="@OnCancel">Cancel</button></li>
+                </ul>   
+            }
+        </div>
+    }
 </div>
 
 @code
 {
-	Switch _allowed = new(), _restore = new();
+    string? _class, _outer;
+    readonly Switch _allowed = new(), _restore = new(), _active = new();
+    ActivityReceiverInput? _display;
 
-	[Parameter]
-	public string CssClass { get; set; } = string.Empty;
+    [Parameter]
+    public string CssClass { get; set; } = string.Empty;
 
-	[Parameter]
-	public string ActiveStyle { get; set; } = "dragonspark-activity-active";
+    [Parameter]
+    public string ActiveStyle { get; set; } = "dragonspark-activity-active";
 
-	[Parameter]
-	public object? Receiver { get; set; }
+    [Parameter]
+    public object? Receiver { get; set; }
 
-	[Parameter]
-	public RenderFragment<object> ChildContent { get; set; } = default!;
+    [Parameter]
+    public RenderFragment<object> ChildContent { get; set; } = default!;
 
-	string? Class
-	{
-		get {
-			var start = Active ? ActiveStyle : null;
-			var result = $"{start} {CssClass}".Trim().NullIfEmpty();
-			return result;
-		}
-	}
+    string? Class()
+    {
+        var start = Active ? $"{ActiveStyle} {CssClass}" : CssClass;
+        var result = start.Trim().NullIfEmpty();
+        return result;
+    }
 
-	object ActualReceiver => Receiver ?? this;
+    object ActualReceiver => Receiver ?? this;
 
-	protected override Task OnAfterRenderAsync(bool firstRender)
-	{
-		_allowed.Up();
-		return _restore.Down() ? Focus.Restore.Get().AsTask() : Task.CompletedTask;
-	}
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        _allowed.Up();
+        return _restore.Down() ? Focus.Restore.Get().AsTask() : Task.CompletedTask;
+    }
 
-	public bool Active { get; private set; }
+    public bool Active { get; private set; }
 
-	bool Update()
-	{
-		var active = ActiveState.Default.Get(ActualReceiver);
-		var result = active != Active;
-		Active = active;
-		return result;
-	}
+    bool Update(ActivityReceiverInput? parameter)
+    {
+        var active = ActiveState.Default.Get(ActualReceiver);
+        var result = active != Active;
+        Active = active;
+        if (result)
+        {
+            _class = Class();
+            _outer = Active && parameter?.Message is not null ? "position-relative" : string.Empty;
+        }
+        return result;
+    }
 
-	public async ValueTask Start()
-	{
-		if (Update())
-		{
-			if (_allowed)
-			{
-				await Focus.Store.Get();
-			}
-			await RefreshState().ConfigureAwait(false);
-		}
-	}
+    public async ValueTask Start(ActivityReceiverInput parameter)
+    {
+        if (Update(parameter))
+        {
+            _display = parameter;
+            if (_allowed)
+            {
+                await Focus.Store.Get();
+            }
+            await RefreshState().ConfigureAwait(false);
+        }
+    }
 
-	public ValueTask Complete()
-	{
-		_restore.Execute(Update());
-		return RefreshState();
-	}
+    public ValueTask Complete()
+    {
+        _active.Down();
+        _restore.Execute(Update(_display));
+        return RefreshState();
+    }
 
-	public ValueTask DisposeAsync() => Focus.DisposeAsync();
+    Task OnCancel()
+    {
+        var handle = _display?.Handle;
+        if (handle is not null)
+        {
+            _active.Up();
+            return handle.Get().AsTask();
+        }
+        return Task.CompletedTask;
+    }
+
+    public ValueTask DisposeAsync() => Focus.DisposeAsync();
 }

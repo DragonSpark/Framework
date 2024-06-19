@@ -61,8 +61,10 @@ public sealed class OperationCallbackContext<T> : IResult<EventCallback<T>>
 	public OperationCallbackContext<T> Block(TimeSpan duration)
 		=> new(_receiver, new BlockingEntryOperation<T>(_operation, duration));
 
-	public OperationCallbackContext<T> UpdateActivity()
-		=> new(_receiver, new ActivityAwareOperation<T>(_operation, _receiver));
+	public OperationCallbackContext<T> UpdateActivity() => UpdateActivity(ActivityReceiverInput.Default);
+
+	public OperationCallbackContext<T> UpdateActivity(ActivityReceiverInput input)
+		=> new(_receiver, new ActivityAwareOperation<T>(_operation, _receiver, input));
 
 	public EventCallback<T> Get() => EventCallback.Factory.Create(_receiver, new Func<T, Task>(_operation.Allocate));
 

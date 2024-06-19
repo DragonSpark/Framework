@@ -9,21 +9,28 @@ sealed class ActivityAwareResult<T> : IResulting<T?>
 {
 	readonly IResulting<T?>          _previous;
 	readonly object                  _subject;
+	readonly ActivityReaderInstance  _input;
 	readonly IUpdateActivityReceiver _activity;
 
 	public ActivityAwareResult(IResulting<T?> previous, object subject)
-		: this(previous, subject, UpdateActivityReceiver.Default) {}
+		: this(previous, subject, ActivityReceiverInput.Default) {}
 
-	public ActivityAwareResult(IResulting<T?> previous, object subject, IUpdateActivityReceiver activity)
+	public ActivityAwareResult(IResulting<T?> previous, object subject, ActivityReceiverInput input)
+		: this(previous, subject, new(previous, input), UpdateActivityReceiver.Default) {}
+
+	// ReSharper disable once TooManyDependencies
+	public ActivityAwareResult(IResulting<T?> previous, object subject, ActivityReaderInstance input,
+	                           IUpdateActivityReceiver activity)
 	{
 		_previous = previous;
 		_subject  = subject;
+		_input    = input;
 		_activity = activity;
 	}
 
 	public async ValueTask<T?> Get()
 	{
-		await _activity.Await(Pairs.Create<object, object>(_subject, _previous));
+		await _activity.Await(Pairs.Create(_subject, _input));
 		try
 		{
 			return await _previous.Await();
