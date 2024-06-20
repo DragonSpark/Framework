@@ -1,6 +1,8 @@
 ﻿using Azure;
 using Azure.AI.OpenAI;
+using DragonSpark.Application.Connections.Events;
 using DragonSpark.Composition;
+using DragonSpark.Diagnostics;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations.Allocated;
 using DragonSpark.Model.Operations.Selection;
@@ -8,6 +10,7 @@ using DragonSpark.Model.Results;
 using Microsoft.Extensions.DependencyInjection;
 using OpenAI;
 using OpenAI.Images;
+using System.ClientModel;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Ai;
@@ -83,4 +86,13 @@ public sealed class GenerateImage : ISelecting<Token<string>, GeneratedImage>
 		var response = await _client.GenerateImageAsync(parameter, _options, parameter.Item);
 		return response.Value;
 	}
+}
+
+
+
+public sealed class DurableConnectionPolicy : DurableConnectionPolicyBase<ClientResultException>
+{
+	public static DurableConnectionPolicy Default { get; } = new();
+
+	DurableConnectionPolicy() : base(DefaultRetryPolicy.Default) {}
 }
