@@ -87,12 +87,12 @@
             try
             {
                 var page = await Input.Get(new(true, OrderBy, Filter, new(_items.Count, PageSize), _source.Token));
-                if (!_source.IsCancellationRequested)
+                if (!_source?.IsCancellationRequested ?? false)
                 {
                     await Load(page);
                 }
             }
-            catch (OperationCanceledException oce) when (oce.CancellationToken == _source.Token) {}
+            catch (OperationCanceledException oce) when (oce.CancellationToken == _source?.Token) {}
             finally
             {
                 _loading = false;
