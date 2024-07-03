@@ -61,22 +61,6 @@ public sealed class TokenHandle : ITokenHandle
 		_source = source;
 	}
 
-	/*public CancellationToken Get()
-	{
-		var source = _source.Get();
-		if (source.IsCancellationRequested)
-		{
-			Execute(None.Default);
-		}
-
-		return source.Token;
-	}
-
-	public void Execute(None parameter)
-	{
-		_source.Get().CancelAsync();
-		_store.Execute(null);
-	}*/
 	public async ValueTask Get()
 	{
 		var source = _store.Get();
