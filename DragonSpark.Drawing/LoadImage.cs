@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations.Results;
+using SixLabors.ImageSharp.Formats.Png;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
@@ -8,7 +9,7 @@ using Image = SixLabors.ImageSharp.Image;
 
 namespace DragonSpark.Drawing;
 
-public abstract class LoadImage(Bitmap source, ImageFormat format) : IResulting<Image>
+public class LoadImage(Bitmap source, ImageFormat format) : IResulting<Image>
 {
 	public ValueTask<Image> Get()
 	{
@@ -19,6 +20,12 @@ public abstract class LoadImage(Bitmap source, ImageFormat format) : IResulting<
 	}
 }
 
+public sealed class DefaultPngEncoder : Model.Results.Instance<PngEncoder>
+{
+	public static DefaultPngEncoder Default { get; } = new();
+
+	DefaultPngEncoder() : base(new PngEncoder { ColorType = PngColorType.RgbWithAlpha }) {}
+}
 // TODO
 
 public abstract class PngFromBitmap(Bitmap source) : LoadImage(source, ImageFormat.Png);
