@@ -1,0 +1,10 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<ItemGroup>
+		<PackageReference Include="SixLabors.ImageSharp.Drawing" />
+		<PackageReference Include="System.Drawing.Common" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\DragonSpark.Composition\DragonSpark.Composition.csproj" />
+	</ItemGroup>
+</Project>
