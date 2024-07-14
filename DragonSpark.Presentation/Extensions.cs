@@ -2,6 +2,7 @@
 using DragonSpark.Application.Components.Validation.Expressions;
 using DragonSpark.Application.Compose;
 using DragonSpark.Application.Model.Interaction;
+using DragonSpark.Application.Runtime.Operations;
 using DragonSpark.Compose;
 using DragonSpark.Compose.Model.Operations;
 using DragonSpark.Compose.Model.Operations.Allocated;
@@ -156,4 +157,6 @@ public static class Extensions
 
 	public static Task Invoke(this EventCallback @this) => @this.HasDelegate ? @this.InvokeAsync() : Task.CompletedTask;
 
+/**/
+	public static ActivityReceiverInput Get(this ITokenHandle @this, string message) => new(message, @this);
 }

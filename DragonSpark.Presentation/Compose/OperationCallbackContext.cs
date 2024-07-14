@@ -32,8 +32,10 @@ public sealed class OperationCallbackContext : IResult<EventCallback>
 	public OperationCallbackContext Monitoring(Switch subject)
 		=> new(_receiver, new MonitoredOperation(_operation, subject));
 
-	public OperationCallbackContext UpdateActivity()
-		=> new(_receiver, new ActivityAwareOperation(_operation, _receiver));
+	public OperationCallbackContext UpdateActivity() => UpdateActivity(ActivityReceiverInput.Default);
+
+	public OperationCallbackContext UpdateActivity(ActivityReceiverInput input)
+		=> new(_receiver, new ActivityAwareOperation(_operation, _receiver, input));
 
 	public OperationCallbackContext Watching(IRenderState parameter)
 		=> new (_receiver, new ActiveRenderAwareOperation(_operation, parameter));
