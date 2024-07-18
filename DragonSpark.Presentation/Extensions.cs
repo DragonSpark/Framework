@@ -117,7 +117,7 @@ public static class Extensions
 
 	public static string Text(this RenderFragment @this) => FragmentText.Default.Get(@this);
 
-	public static MarkupString AsMarkdown(this string @this) => MarkDownify.Default.Get(@this);
+	public static MarkupString AsMarkdown(this string @this) => MarkdownString.Default.Get(@this);
 
 	/**/
 
