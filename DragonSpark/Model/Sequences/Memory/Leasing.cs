@@ -34,7 +34,7 @@ public readonly struct Leasing<T> : IDisposable
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public Memory<T> AsMemory() => _reference[..(int)Length];
-
+	
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public Span<T> AsSpan() => _reference.Span[..(int)Length];
 

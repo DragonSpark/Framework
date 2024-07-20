@@ -66,6 +66,7 @@ public struct ArrayBuilder<T> : IDisposable
 	// }
 
 	public readonly Span<T> AsSpan() => buffer!.AsSpan(..Count);
+	public readonly Memory<T> AsMemory() => buffer!.AsMemory(..Count);
 
 	public readonly Leasing<T> AsLease()
 	{
@@ -128,6 +129,13 @@ public struct ArrayBuilder<T> : IDisposable
 			others.Span.CopyTo(buffer[Count..]);
 		}
 
+		Count = total;
+	}
+
+	public void UncheckedAdd(ReadOnlyMemory<T> others)
+	{
+		var total = Count + others.Length;
+		others.Span.CopyTo(buffer![Count..]);
 		Count = total;
 	}
 
