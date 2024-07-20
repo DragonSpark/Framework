@@ -6,6 +6,13 @@ using System;
 
 namespace DragonSpark.Runtime.Activation;
 
+public sealed class NewInstance :Select<Type, object>
+{
+	public static NewInstance Default { get; } = new();
+
+	NewInstance() : base(NewInstance<object>.Default) {}
+}
+
 public sealed class NewInstance<T> : Select<Type, T>
 {
 	public static NewInstance<T> Default { get; } = new();
