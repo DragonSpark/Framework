@@ -68,14 +68,16 @@ sealed class ImageClients : IResult<ImageClient>
 	public ImageClient Get() => _client.GetImageClient(_model);
 }
 
-public sealed class GenerateImage : ISelecting<Token<string>, GeneratedImage>
+public sealed class GenerateImageFromPrompt : ISelecting<Token<string>, GeneratedImage>
 {
 	readonly ImageClient            _client;
 	readonly ImageGenerationOptions _options;
 
-	public GenerateImage(ImageClient client) : this(client, new() { Size = GeneratedImageSize.W1024xH1024 }) {}
+	public GenerateImageFromPrompt(ImageClient client)
+		: this(client, new() { ResponseFormat = GeneratedImageFormat.Bytes, Size = GeneratedImageSize.W1024xH1024 }) {}
 
-	public GenerateImage(ImageClient client, ImageGenerationOptions options)
+	[Candidate(false)]
+	public GenerateImageFromPrompt(ImageClient client, ImageGenerationOptions options)
 	{
 		_client  = client;
 		_options = options;
@@ -88,7 +90,28 @@ public sealed class GenerateImage : ISelecting<Token<string>, GeneratedImage>
 	}
 }
 
+public readonly record struct GenerateImageInput(
+	string Prompt,
+	GeneratedImageSize Size,
+	GeneratedImageFormat Format = GeneratedImageFormat.Bytes)
+{
+	public GenerateImageInput(string Prompt, GeneratedImageFormat Format = GeneratedImageFormat.Bytes)
+		: this(Prompt, GeneratedImageSize.W1024xH1024, Format) {}
+}
 
+public sealed class GenerateImage : ISelecting<Token<GenerateImageInput>, GeneratedImage>
+{
+	readonly ImageClient _client;
+
+	public GenerateImage(ImageClient client) => _client = client;
+
+	public async ValueTask<GeneratedImage> Get(Token<GenerateImageInput> parameter)
+	{
+		var ((prompt, size, format), item) = parameter;
+		var response = await _client.GenerateImageAsync(prompt, new() { ResponseFormat = format, Size = size }, item);
+		return response.Value;
+	}
+}
 
 public sealed class DurableConnectionPolicy : DurableConnectionPolicyBase<ClientResultException>
 {
