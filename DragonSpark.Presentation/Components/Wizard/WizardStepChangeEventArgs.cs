@@ -1,20 +1,5 @@
 ﻿namespace DragonSpark.Presentation.Components.Wizard;
 
-class Class1;
-
-public sealed class WizardStepArgs
-{
-	public WizardStepArgs(int index, int active)
-	{
-		Index  = index;
-		Active = index == active;
-	}
-
-	public int Index { get; }
-
-	public bool Active { get; }
-}
-
 public sealed class WizardStepChangeEventArgs
 {
 	/// <summary />
