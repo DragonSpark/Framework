@@ -1,12 +1,9 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Model.Selection;
 using JetBrains.Annotations;
 using System;
 using System.Reflection;
 
 namespace DragonSpark.Reflection.Members;
-
-public interface IPropertyDelegates : ISelect<(Type Owner, string Name), Func<object, object?>?>; // TODO
 
 public sealed class PropertyDelegates : IPropertyDelegates
 {

@@ -43,20 +43,3 @@ public sealed class ConfiguredStoreContext<TIn, TOut> : StoreContext<TIn, TOut>
 		   .Then()
 		   .Protecting();
 }
-
-// TODO
-
-sealed class Adapter : Command<PostEvictionInput>
-{
-	public Adapter(ICommand<PostEvictionInput> command) : base(command) {}
-
-	public Adapter(Action<PostEvictionInput> command) : base(command) {}
-
-	// ReSharper disable once TooManyArguments
-	public void Execute(object key, object? value, EvictionReason reason, object? state)
-	{
-		Execute(new(key, value, reason, state));
-	}
-}
-
-public readonly record struct PostEvictionInput(object Key, object? Value, EvictionReason Reason, object? State);
