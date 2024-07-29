@@ -9,6 +9,7 @@
 @using DragonSpark.Model.Sequences
 
 @inherits ModelPersistenceComponentBase<T>
+@implements IDisposable
 
 <ModelPersistenceComponent Model="@_model" Formatter="@Formatter" Target="@Target" Load="@Load" Save="@Save" ModelChanging="@ModelChanging" ModelChanged="@ModelChanged" Store="@Store" ErrorOccurred="@ErrorOccurred" />
 
@@ -92,4 +93,11 @@
 
     protected override Task OnAfterRenderAsync(bool firstRender) => _start.Down() ? _call.Get().AsTask() : base.OnAfterRenderAsync(firstRender);
 
+    public void Dispose()
+    {
+        if (_current is not null)
+        {
+            _current.OnFieldChanged -= FieldChanged;
+        }
+    }
 }

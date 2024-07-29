@@ -2,11 +2,12 @@
 using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Forms;
 
-public sealed class FieldMonitor<T> : ComponentBase
+public sealed class FieldMonitor<T> : ComponentBase, IDisposable
 {
 	readonly Switch _update = new();
 
@@ -65,4 +66,10 @@ public sealed class FieldMonitor<T> : ComponentBase
 
 		return base.OnAfterRenderAsync(firstRender);
 	}
+
+	public void Dispose()
+	{
+		EditContext = null;
+	}
+
 }

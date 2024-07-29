@@ -1,9 +1,10 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using System;
 
 namespace DragonSpark.Presentation.Components.Forms;
 
-public class FieldTypeMonitor<T> : ComponentBase
+public class FieldTypeMonitor<T> : ComponentBase, IDisposable
 {
 	[Parameter]
 	public object? Model { get; set; }
@@ -46,4 +47,10 @@ public class FieldTypeMonitor<T> : ComponentBase
 			Changed.Invoke(args.FieldIdentifier.GetValue<T>());
 		}
 	}
+
+	public void Dispose()
+	{
+		EditContext = null;
+	}
+
 }
