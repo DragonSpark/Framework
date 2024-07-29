@@ -131,10 +131,11 @@ public class Validating : ComponentBase, IDisposable
 	async Task Update()
 	{
 		_messages.Clear(Identifier);
-		if (IsValid())
+		var context = _context;
+		if (context is not null && IsValid())
 		{
-			await Validate.Invoke(new(new(Context.Verify(), Identifier), _messages, Message));
-			_context.Verify().NotifyValidationStateChanged();
+			await Validate.Invoke(new(new(context, Identifier), _messages, Message));
+			context.NotifyValidationStateChanged();
 
 			var callback = IsEmpty() ? Valid : Invalid;
 			await callback.Invoke().ConfigureAwait(false);
