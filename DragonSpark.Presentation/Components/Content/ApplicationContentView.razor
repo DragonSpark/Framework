@@ -2,7 +2,7 @@
 @using DragonSpark.Compose
 @typeparam TValue
 
-@inherits DragonSpark.Presentation.Components.Content.Templates.ActiveContentTemplateComponentBase<TValue>
+@inherits Templates.ActiveContentTemplateComponentBase<TValue>
 <DragonSpark.Presentation.Components.Content.ApplicationPrincipalAwareContentView ForceRender="@ForceRender">
     <ActivityContainer CssClass="@CssClass">
         <ActivityContainerContent Input="@Contents"
