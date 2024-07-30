@@ -2,7 +2,7 @@
 @using DragonSpark.Model.Results
 @using DragonSpark.Presentation.Environment.Browser.Document
 
-@inherits DragonSpark.Presentation.Components.ComponentBase
+@inherits Components.ComponentBase
 
 @implements IActivityReceiver
 @implements IAsyncDisposable
@@ -12,9 +12,11 @@
 <div class="@_outer">
     <div class="@_class">
         <fieldset disabled="@Active">
-            <CascadingValue TValue="IActivityReceiver" Value="@this" IsFixed="true">
-                @ChildContent(ActualReceiver)
-            </CascadingValue>
+            <ShouldRenderComponent Enabled="@(!Active)">
+                <CascadingValue TValue="IActivityReceiver" Value="@this" IsFixed="true">
+                    @ChildContent(ActualReceiver)
+                </CascadingValue>
+            </ShouldRenderComponent>
         </fieldset>
     </div>
     @if (Active && _display?.Message is not null)

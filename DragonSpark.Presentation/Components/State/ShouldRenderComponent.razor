@@ -1,0 +1,12 @@
+﻿@ChildContent
+
+@code {
+    [Parameter]
+    public bool Enabled { get; set; } = true;
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+
+    protected override bool ShouldRender() => Enabled;
+
+}
