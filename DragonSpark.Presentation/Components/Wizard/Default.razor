@@ -17,13 +17,11 @@
 
         <div class="fluent-wizard-content"
              border-inside=@Border.HasFlag(WizardBorder.Inside)>
-            @foreach (var step in _steps.Where(i => i.Index == Value || !i.DeferredLoading))
+            @if (_steps.Count > 0)
             {
-                <div style="@(step.Index == Value ? string.Empty : "display: none;")">
-                    <CascadingValue Value="step">
-                        @(step.ChildContent)
-                    </CascadingValue>
-                </div>
+                <CascadingValue Value="@_steps[Value]">
+                    @_steps[Value].ChildContent
+                </CascadingValue>   
             }
         </div>
 
