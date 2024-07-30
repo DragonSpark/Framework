@@ -42,7 +42,7 @@
 
                 @if (Value < _steps.Count - 1)
                 {
-                    <FluentButton @ref="_temp" Appearance="Appearance.Neutral"
+                    <FluentButton @ref="_temp" Appearance="Appearance.Accent"
                                   Style="@($"width: {buttonWidth};")"
                                   OnClick="@OnNextHandlerAsync" Disabled="@Receiver.Active">
                         @LabelButtonNext
@@ -66,7 +66,6 @@
 </CascadingValue>
 
 @code {
-    FluentButton _temp;
     static string LabelButtonPrevious = "Previous", LabelButtonNext = "Next", LabelButtonDone = "Done";
 
     private readonly List<Step> _steps = new();
@@ -384,7 +383,4 @@
 
         return null;
     }
-
-    protected override Task OnAfterRenderAsync(bool firstRender) => base.OnAfterRenderAsync(firstRender);
-
 }
