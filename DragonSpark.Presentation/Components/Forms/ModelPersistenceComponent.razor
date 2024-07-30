@@ -1,4 +1,5 @@
 ﻿@using DragonSpark.Compose
+@using DragonSpark.Presentation.Components.Eventing
 @using Humanizer
 
 @typeparam T where T : class
@@ -9,47 +10,28 @@
 @inject ProblemSavingState ProblemSaving
 @inject SavedContentMessage Saved
 
+<HandlerView T="LoadModelMessage" Received="@HandleAsync" />
+<HandlerView T="SaveModelMessage" Received="@HandleAsync" />
+
 @code {
 
     EventCallback _load;
     protected override void OnInitialized()
     {
         _load = Start.A.Callback(LoadContent).Using(Receiver).UpdateActivity();
-        // _save = Start.A.Callback(SaveContent).Using(Receiver).UpdateActivity();
         base.OnInitialized();
     }
 
     [Parameter]
-    public T Model
-    {
-        get => _model;
-        set
-        {
-            if (_model != value)
-            {
-                _model = value;
-                Save.Down();
-            }
-        }
-    }   T _model = default!;
+    public T Model { get; set; } = default!;
 
     [Parameter]
     public EventCallback Loaded { get; set; }
 
-    [CascadingParameter]
-    IActivityReceiver Receiver { get; set; } = default!;
+    [CascadingParameter] IActivityReceiver Receiver { get; set; } = default!;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (Load.Down())
-        {
-            await _load.InvokeAsync().ConfigureAwait(false);
-        }
-        else if (Save.Down())
-        {
-            await SaveContent().ConfigureAwait(false);
-        }
-    }
+    /*protected override Task OnAfterRenderAsync(bool firstRender)
+        => Load.Down() ? _load.Invoke() : Save.Down() ? SaveContent() : base.OnAfterRenderAsync(firstRender);*/
 
     async Task LoadContent()
     {
@@ -85,5 +67,9 @@
             await ErrorOccurred.Invoke().ConfigureAwait(false);
         }
     }
+
+    public Task HandleAsync(SaveModelMessage message) => message.Subject == Model ? SaveContent() : Task.CompletedTask;
+
+    public Task HandleAsync(LoadModelMessage message) => message.Subject == Model ? _load.Invoke() : Task.CompletedTask;
 
 }

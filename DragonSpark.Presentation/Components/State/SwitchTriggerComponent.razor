@@ -1,0 +1,13 @@
+﻿@using DragonSpark.Compose
+@using DragonSpark.Model.Results
+
+@code {
+    [Parameter]
+    public Switch Input { get; set; } = default!;
+
+    [Parameter]
+    public EventCallback Updated { get; set; }
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+        => Input.Down() ? Updated.Invoke() : base.OnAfterRenderAsync(firstRender);
+}

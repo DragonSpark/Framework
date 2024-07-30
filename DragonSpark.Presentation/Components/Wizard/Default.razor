@@ -19,9 +19,7 @@
              border-inside=@Border.HasFlag(WizardBorder.Inside)>
             @if (_steps.Count > 0)
             {
-                <CascadingValue Value="@_steps[Value]">
-                    @_steps[Value].ChildContent
-                </CascadingValue>   
+                <CascadingValue Value="@_steps[Value]" ChildContent="@_steps[Value].ChildContent" />
             }
         </div>
 
@@ -44,7 +42,7 @@
 
                 @if (Value < _steps.Count - 1)
                 {
-                    <FluentButton Appearance="Appearance.Accent"
+                    <FluentButton @ref="_temp" Appearance="Appearance.Neutral"
                                   Style="@($"width: {buttonWidth};")"
                                   OnClick="@OnNextHandlerAsync" Disabled="@Receiver.Active">
                         @LabelButtonNext
@@ -68,6 +66,7 @@
 </CascadingValue>
 
 @code {
+    FluentButton _temp;
     static string LabelButtonPrevious = "Previous", LabelButtonNext = "Next", LabelButtonDone = "Done";
 
     private readonly List<Step> _steps = new();
@@ -385,4 +384,7 @@
 
         return null;
     }
+
+    protected override Task OnAfterRenderAsync(bool firstRender) => base.OnAfterRenderAsync(firstRender);
+
 }

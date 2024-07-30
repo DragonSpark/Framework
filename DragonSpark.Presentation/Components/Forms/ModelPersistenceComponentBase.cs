@@ -1,5 +1,4 @@
-﻿using DragonSpark.Model.Results;
-using DragonSpark.Presentation.Environment.Browser;
+﻿using DragonSpark.Presentation.Environment.Browser;
 using DragonSpark.Text;
 using Microsoft.AspNetCore.Components;
 
@@ -7,11 +6,11 @@ namespace DragonSpark.Presentation.Components.Forms;
 
 public class ModelPersistenceComponentBase<T> : ComponentBase where T : class
 {
-	[Parameter]
+	/*[Parameter]
 	public Switch Load { get; set; } = new();
 
 	[Parameter]
-	public Switch Save { get; set; } = new();
+	public Switch Save { get; set; } = new();*/
 
 	[Parameter]
 	public EventCallback<T> ModelChanging { get; set; }

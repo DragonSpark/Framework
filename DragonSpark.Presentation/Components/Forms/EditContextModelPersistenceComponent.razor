@@ -7,31 +7,36 @@
 @using DragonSpark.Model.Operations
 @using DragonSpark.Model.Results
 @using DragonSpark.Model.Sequences
+@using DragonSpark.Presentation.Components.Eventing
 
 @inherits ModelPersistenceComponentBase<T>
 @implements IDisposable
 
-<ModelPersistenceComponent Model="@_model" Formatter="@Formatter" Target="@Target" Load="@Load" Save="@Save" ModelChanging="@ModelChanging" ModelChanged="@ModelChanged" Store="@Store" ErrorOccurred="@ErrorOccurred" />
+@inject IPublisher<LoadModelMessage> Load
+@inject IPublisher<SaveModelMessage> Save
+
+<ModelPersistenceComponent Model="@_model" Formatter="@Formatter" Target="@Target" ModelChanging="@ModelChanging" ModelChanged="@ModelChanged" Store="@Store" ErrorOccurred="@ErrorOccurred" />
+
+<HandlerView T="LoadEditContextMessage" Received="@HandleAsync" />
+<HandlerView T="SaveEditContextMessage" Received="@HandleAsync" />
 
 @code {
-    readonly Switch  _start  = new();
+    readonly Switch  _save = new();
     Array<string>    _skip   = Array<string>.Empty;
-    Action           _update = default!;
     IOperation<None> _call   = default!;
     T                _model  = default!;
     EditContext?     _current;
 
     protected override void OnInitialized()
     {
-        _update = OnUpdate;
-        var operate = new ExceptionAware<None>(OnUpdate, Exceptions, GetType()).Then();
+        var operate = new ExceptionAware<None>(OnSave, Exceptions, GetType()).Then();
         _call = new ThrottleOperation<None>(operate, TimeSpan.FromMilliseconds(100)).Then().Out();
         base.OnInitialized();
     }
 
     protected override void OnParametersSet()
     {
-        var context = (EditContext ?? ParentEditContext).Verify("Edit Context is required for EditContextModelPersistenceComponent");
+        var context = ResolvedContext;
         if (_current != context)
         {
             if (_current is not null)
@@ -48,6 +53,9 @@
 
         base.OnParametersSet();
     }
+
+    EditContext ResolvedContext
+        => (EditContext ?? ParentEditContext).Verify("Edit Context is required for EditContextModelPersistenceComponent");
 
     [Parameter]
     public bool Enabled { get; set; } = true;
@@ -77,21 +85,22 @@
 
     void FieldChanged(object? sender, FieldChangedEventArgs args)
     {
-        if (Enabled && !_skip.Open().Contains(args.FieldIdentifier.FieldName) && _start.Up())
+        if (Enabled && !_skip.Open().Contains(args.FieldIdentifier.FieldName) && _save.Up())
         {
             StateHasChanged();
         }
     }
 
-    ValueTask OnUpdate(None _) => InvokeAsync(_update).ToOperation();
+    ValueTask OnSave(None _) => Save.Get(new(_model));
 
-    void OnUpdate()
-    {
-        Save.Execute(true);
-        StateHasChanged();
-    }
+    protected override Task OnAfterRenderAsync(bool firstRender)
+        => _save.Down() ? _call.Get().AsTask() : base.OnAfterRenderAsync(firstRender);
 
-    protected override Task OnAfterRenderAsync(bool firstRender) => _start.Down() ? _call.Get().AsTask() : base.OnAfterRenderAsync(firstRender);
+    public Task HandleAsync(SaveEditContextMessage message)
+        => message.Subject == ResolvedContext ?  _call.Get().AsTask(): Task.CompletedTask;
+
+    public Task HandleAsync(LoadEditContextMessage message)
+        => message.Subject == ResolvedContext ? Load.Get(new(_model)).AsTask() : Task.CompletedTask;
 
     public void Dispose()
     {

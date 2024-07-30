@@ -12,11 +12,7 @@
 <div class="@_outer">
     <div class="@_class">
         <fieldset disabled="@Active">
-            <ShouldRenderComponent Enabled="@(!Active)">
-                <CascadingValue TValue="IActivityReceiver" Value="@this" IsFixed="true">
-                    @ChildContent(ActualReceiver)
-                </CascadingValue>
-            </ShouldRenderComponent>
+            <CascadingValue TValue="IActivityReceiver" Value="@this" IsFixed="true" ChildContent="@ChildContent(ActualReceiver)" />
         </fieldset>
     </div>
     @if (Active && _display?.Message is not null)
@@ -30,7 +26,7 @@
             {
                 <ul class="actions">
                     <li><button class="small button" disabled="@_active" @onclick="@OnCancel">Cancel</button></li>
-                </ul>   
+                </ul>
             }
         </div>
     }
