@@ -42,7 +42,7 @@
 
                 @if (Value < _steps.Count - 1)
                 {
-                    <FluentButton @ref="_temp" Appearance="Appearance.Accent"
+                    <FluentButton Appearance="Appearance.Accent"
                                   Style="@($"width: {buttonWidth};")"
                                   OnClick="@OnNextHandlerAsync" Disabled="@Receiver.Active">
                         @LabelButtonNext
