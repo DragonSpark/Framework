@@ -1,6 +1,7 @@
 ﻿@using Microsoft.FluentUI.AspNetCore.Components
 @using Microsoft.FluentUI.AspNetCore.Components.Utilities
-@inherits Microsoft.FluentUI.AspNetCore.Components.FluentComponentBase
+
+@inherits FluentComponentBase
 
 <CascadingValue Value="this">
     <div id="@Id"
@@ -8,7 +9,7 @@
          class="@ClassValue"
          border-outside=@Border.HasFlag(WizardBorder.Outside)
          position="@(StepperPosition == StepperPosition.Top ? "top" : "left")"
-         @attributes="@(AdditionalAttributes!)">
+         @attributes="@AdditionalAttributes">
         <ol style=@GetStepperWidthOrHeight()
             border-inside=@Border.HasFlag(WizardBorder.Inside)>
             @Steps

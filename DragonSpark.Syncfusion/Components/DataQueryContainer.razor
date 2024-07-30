@@ -12,7 +12,7 @@
 
 @typeparam T
 
-@inherits DragonSpark.Presentation.Components.Content.Templates.ManyActiveContentTemplateComponentBase<DragonSpark.SyncfusionRendering.Queries.IDataRequest>
+@inherits DragonSpark.Presentation.Components.Content.Templates.ManyActiveContentTemplateComponentBase<IDataRequest>
 
 <DragonSpark.Presentation.Components.State.ActivityReceiverContainer Context="_">
 	<SyncfusionQueryContainer T="T" Content="@Content" Compose="@Compose" Results="@Results" Reporter="@Reporter"
@@ -48,7 +48,7 @@
                            Editing="@Editing"
                            Created="@Created"
                            Updated="@Updated"
-                           @attributes="@(AdditionalAttributes!)">
+                           @attributes="@AdditionalAttributes">
                 @if (BodyContentTemplate is not null)
                 {
                     @BodyContentTemplate

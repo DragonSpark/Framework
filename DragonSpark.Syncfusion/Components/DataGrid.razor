@@ -26,7 +26,7 @@
               CssClass="@CssClass"
               PageSize="@PageSize"
               LoadingTemplate="@LoadingTemplate"
-              @attributes="@(AdditionalAttributes!)">
+              @attributes="@AdditionalAttributes">
 
     <GridTemplates EmptyRecordTemplate="@_empty" />
     <GridEvents TValue="T" DataBound="@OnDataBound" OnActionBegin="@OnActionBegin" OnActionFailure="@OnFailure" />
