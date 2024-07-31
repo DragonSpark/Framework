@@ -44,6 +44,10 @@ public static partial class ExtensionMethods
 	public static ConfiguredTaskAwaitable<T> Await<T>(this Task<T> @this) => @this.ConfigureAwait(false);
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ConfiguredValueTaskAwaitable<T> Await<T>(this ValueTask<T> @this) => @this.ConfigureAwait(false);
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static ConfiguredTaskAwaitable Await(this Task @this) => @this.ConfigureAwait(false);
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static ConfiguredValueTaskAwaitable Await(this ValueTask @this) => @this.ConfigureAwait(false);
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ValueTask<T> ToOperation<T>(this T @this) => new(@this);

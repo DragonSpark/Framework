@@ -18,10 +18,15 @@ public abstract class ContentComponentBase<T> : ComponentBase
 
 	protected override void OnInitialized()
 	{
-		var start = Start.A.Result<ValueTask<T?>>().By.Calling(GetContent).Out();
-		Content = Contents.Get(new(this, start));
+		InitializeContent();
 
 		base.OnInitialized();
+	}
+
+	protected void InitializeContent()
+	{
+		var start = Start.A.Result<ValueTask<T?>>().By.Calling(GetContent).Out();
+		Content = Contents.Get(new(this, start));
 	}
 
 	protected IActiveContent<T> Content { get; private set; } = default!;

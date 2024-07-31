@@ -9,6 +9,6 @@
 	[Parameter]
 	public EventCallback<object> Updated { get; set; }
 
-	public Task HandleAsync(RefreshObjectMessage message)
+	Task HandleAsync(RefreshObjectMessage message)
 		=> message.Subject == Topic ? Updated.Invoke(Topic) : Task.CompletedTask;
 }
