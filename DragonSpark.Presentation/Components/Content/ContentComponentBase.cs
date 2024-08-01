@@ -8,22 +8,20 @@ namespace DragonSpark.Presentation.Components.Content;
 
 public abstract class ContentComponentBase<T> : ComponentBase
 {
-	First? first;
+	First? _first;
 
-	[Inject]
-	IActiveContents<T> Contents { get; set; } = default!;
+	[Inject] IActiveContents<T> Contents { get; set; } = default!;
 
-	[Inject]
-	RenderStateStore Current { get; set; } = default!;
+	[Inject] RenderStateStore Current { get; set; } = default!;
 
 	protected override void OnInitialized()
 	{
-		InitializeContent();
+		Reset();
 
 		base.OnInitialized();
 	}
 
-	protected void InitializeContent()
+	protected void Reset()
 	{
 		var start = Start.A.Result<ValueTask<T?>>().By.Calling(GetContent).Out();
 		Content = Contents.Get(new(this, start));
@@ -35,7 +33,7 @@ public abstract class ContentComponentBase<T> : ComponentBase
 
 	protected virtual void RequestNewContent()
 	{
-		first = new();
+		_first = new();
 	}
 
 	protected override ValueTask RefreshState()
@@ -52,7 +50,7 @@ public abstract class ContentComponentBase<T> : ComponentBase
 
 	protected override void OnAfterRender(bool firstRender)
 	{
-		if (first?.Get() ?? false)
+		if (_first?.Get() ?? false)
 		{
 			Content.Execute();
 		}
