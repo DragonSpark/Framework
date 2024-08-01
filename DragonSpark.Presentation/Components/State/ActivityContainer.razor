@@ -20,12 +20,12 @@
         <div class="position-absolute top-0 d-flex w-100 h-100 flex-column align-items-center justify-content-center">
             <div class="d-flex gap-2">
                 <div class="spinner-border" role="status"></div>
-                <div>@(_active ? "Please wait..." : _display?.Message)</div>
+                <div>@(_displaying ? "Please wait..." : _display?.Message)</div>
             </div>
-            @if (_display?.Handle is not null && !_active)
+            @if (_display?.Handle is not null && !_displaying)
             {
                 <ul class="actions">
-                    <li><button class="small button" disabled="@_active" @onclick="@OnCancel">Cancel</button></li>
+                    <li><button class="small button" disabled="@_displaying" @onclick="@OnCancel">Cancel</button></li>
                 </ul>
             }
         </div>
@@ -35,7 +35,7 @@
 @code
 {
     string? _class, _outer;
-    readonly Switch _allowed = new(), _restore = new(), _active = new();
+    readonly Switch _allowed = new(), _restore = new(), _displaying = new();
     ActivityReceiverInput? _display;
 
     [Parameter]
@@ -52,7 +52,7 @@
 
     string? Class()
     {
-        var start = Active ? $"{ActiveStyle} {CssClass}" : CssClass;
+        var start  = Active ? $"{ActiveStyle} {CssClass}" : CssClass;
         var result = start.Trim().NullIfEmpty();
         return result;
     }
@@ -62,20 +62,22 @@
     protected override Task OnAfterRenderAsync(bool firstRender)
     {
         _allowed.Up();
-        return _restore.Down() ? Focus.Restore.Get().AsTask() : Task.CompletedTask;
+        return _restore.Down() ? Focus.Restore.Allocate() : Task.CompletedTask;
     }
 
     public bool Active { get; private set; }
+
+    bool Update() => Update(_display);
 
     bool Update(ActivityReceiverInput? parameter)
     {
         var active = ActiveState.Default.Get(ActualReceiver);
         var result = active != Active;
-        Active = active;
         if (result)
         {
+            Active = active;
             _class = Class();
-            _outer = Active && parameter?.Message is not null ? "position-relative" : string.Empty;
+            _outer = active && parameter?.Message is not null ? "position-relative" : string.Empty;
         }
         return result;
     }
@@ -89,15 +91,14 @@
             {
                 await Focus.Store.Get();
             }
-            await RefreshState().ConfigureAwait(false);
         }
     }
 
     public ValueTask Complete()
     {
-        _active.Down();
-        _restore.Execute(Update(_display));
-        return RefreshState();
+        _displaying.Down();
+        _restore.Execute(Update());
+        return ValueTask.CompletedTask;
     }
 
     Task OnCancel()
@@ -105,7 +106,7 @@
         var handle = _display?.Handle;
         if (handle is not null)
         {
-            _active.Up();
+            _displaying.Up();
             return handle.Get().AsTask();
         }
         return Task.CompletedTask;

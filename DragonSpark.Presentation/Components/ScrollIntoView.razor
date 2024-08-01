@@ -1,5 +1,4 @@
-﻿@using DragonSpark.Application.Runtime
-@using DragonSpark.Compose
+﻿@using DragonSpark.Compose
 @using DragonSpark.Model.Results
 @inject IJSRuntime Runtime
 
@@ -11,15 +10,16 @@
 
 	protected override Task OnAfterRenderAsync(bool firstRender)
 	{
-        var result = Enabled && (firstRender || Signal.Down()) ? Runtime.InvokeAsync<bool>("scrollToElementId", Identifier).AsTask() : base.OnAfterRenderAsync(false);
+		var enabled = Enabled && (firstRender || Signal.Down());
+		var result  = enabled ? Runtime.InvokeAsync<bool>("scrollToElementId", Identifier).AsTask() : base.OnAfterRenderAsync(false);
 		return result;
 	}
 
-    [Parameter]
-    public Switch Signal { get; set; } = new();
+	[Parameter]
+	public Switch Signal { get; set; } = new();
 
 	[Parameter]
-	public string Identifier { get; set; } = IdentifyingText.Default.Get();
+	public string Identifier { get; set; } = UniqueIdentifiers.Default.Get();
 
 	[Parameter]
 	public bool Enabled
@@ -30,7 +30,7 @@
 			if (_enabled != value)
 			{
 				_enabled = value;
-                Signal.Up();
+				Signal.Up();
 			}
 		}
 	}	bool _enabled = true;
@@ -40,5 +40,4 @@
 
 	[Parameter(CaptureUnmatchedValues = true)]
 	public Dictionary<string, object?> AdditionalAttributes { get; set; } = default!;
-
 }

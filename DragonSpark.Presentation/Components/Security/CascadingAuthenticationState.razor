@@ -1,11 +1,11 @@
 ﻿@implements IDisposable
-@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject AuthenticationStateProvider Provider
 
-<CascadingValue TValue="Task<AuthenticationState>" Value="@_currentAuthenticationStateTask" ChildContent="@ChildContent"/>
+<CascadingValue Value="@_task" ChildContent="@ChildContent"/>
 
 @code
 {
-	Task<AuthenticationState>? _currentAuthenticationStateTask;
+	Task<AuthenticationState>? _task;
 	AuthenticationStateChangedHandler _handler = default!;
 
 	[Parameter]
@@ -13,26 +13,29 @@
 
 	protected override void OnInitialized()
 	{
+        _handler = OnAuthenticationStateChanged;
+		Provider.AuthenticationStateChanged += _handler;
 
-		_handler = OnAuthenticationStateChanged;
-		AuthenticationStateProvider.AuthenticationStateChanged += _handler;
-
-		_currentAuthenticationStateTask = AuthenticationStateProvider.GetAuthenticationStateAsync();
+		_task = Provider.GetAuthenticationStateAsync();
 	}
 
-	protected override Task OnParametersSetAsync() => _currentAuthenticationStateTask ?? base.OnParametersSetAsync();
+	protected override Task OnParametersSetAsync() => _task ?? base.OnParametersSetAsync();
 
 	void OnAuthenticationStateChanged(Task<AuthenticationState> _)
 	{
 		InvokeAsync(() =>
 		            {
-			            _currentAuthenticationStateTask = AuthenticationStateProvider.GetAuthenticationStateAsync();
-			            StateHasChanged();
+                        var task = Provider.GetAuthenticationStateAsync();
+                        if (_task != task)
+                        {
+                            _task = task;
+                            StateHasChanged();
+                        }
 		            });
 	}
 
 	void IDisposable.Dispose()
 	{
-		AuthenticationStateProvider.AuthenticationStateChanged -= _handler;
+		Provider.AuthenticationStateChanged -= _handler;
 	}
 }

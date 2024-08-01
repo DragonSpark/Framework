@@ -68,8 +68,7 @@
         }
     }
 
-    public Task HandleAsync(SaveModelMessage message) => message.Subject == Model ? SaveContent() : Task.CompletedTask;
+    Task HandleAsync(SaveModelMessage message) => message.Subject == Model ? SaveContent() : Task.CompletedTask;
 
-    public Task HandleAsync(LoadModelMessage message) => message.Subject == Model ? _load.Invoke() : Task.CompletedTask;
-
+    Task HandleAsync(LoadModelMessage message) => message.Subject == Model ? _load.Invoke() : Task.CompletedTask;
 }
