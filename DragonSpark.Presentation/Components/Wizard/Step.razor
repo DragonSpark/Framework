@@ -229,13 +229,8 @@
                 return false;
             }
 
-            if (FluentWizard.StepSequence == WizardStepSequence.Visited &&
-                Index > FluentWizard._maxStepVisited)
-            {
-                return false;
-            }
-
-            return true;
+            return FluentWizard.StepSequence != WizardStepSequence.Visited ||
+                   Index <= FluentWizard._maxStepVisited;
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿@using Microsoft.FluentUI.AspNetCore.Components
+﻿@using DragonSpark.Compose
+@using DragonSpark.Model.Results
+@using Microsoft.FluentUI.AspNetCore.Components
 @using Microsoft.FluentUI.AspNetCore.Components.Utilities
 
 @inherits FluentComponentBase
@@ -66,11 +68,11 @@
 </CascadingValue>
 
 @code {
-    static string LabelButtonPrevious = "Previous", LabelButtonNext = "Next", LabelButtonDone = "Done";
-
-    private readonly List<Step> _steps = new();
-    private int _value;
-    internal int _maxStepVisited;
+    static   string     LabelButtonPrevious = "Previous", LabelButtonNext = "Next", LabelButtonDone = "Done";
+    readonly Switch     _active             = new();
+    readonly List<Step> _steps              = new();
+    int                 _value;
+    internal int        _maxStepVisited;
 
     /// <summary />
     protected string? ClassValue => new CssBuilder(Class).AddClass("fluent-wizard").Build();
@@ -193,6 +195,12 @@
 
     [CascadingParameter] IActivityReceiver Receiver { get; set; } = default!;
 
+    protected override bool ShouldRender()
+    {
+        var shouldRender = !_active.Down() || !ValueChanged.HasDelegate;
+        return shouldRender;
+    }
+
     /// <summary />
     protected virtual async Task OnNextHandlerAsync(MouseEventArgs e)
     {
@@ -215,8 +223,9 @@
         else
         {
             Value = targetIndex;
-            StateHasChanged();
+            // StateHasChanged();
         }
+        _active.Up();
     }
 
     /// <summary />
@@ -241,8 +250,9 @@
         else
         {
             Value = targetIndex;
-            StateHasChanged();
+            //StateHasChanged();
         }
+        _active.Up();
     }
 
     /// <summary />
@@ -324,9 +334,8 @@
         if (index == Value)
         {
             SetCurrentStatusToStep(index);
+            StateHasChanged();
         }
-
-        StateHasChanged();
 
         return index;
     }
