@@ -1,11 +1,11 @@
 ﻿@using DragonSpark.Compose
 
-@inherits DragonSpark.Presentation.Components.ComponentBase
+@inherits Components.ComponentBase
 
 @implements IValidated
 @implements IDisposable
 
-<CascadingValue TValue="IValidated" Value="@this" IsFixed="true">
+<CascadingValue TValue="IValidated" Value="@(this)" IsFixed="true">
 	@ChildContent(Validation.Verify());
 </CascadingValue>
 

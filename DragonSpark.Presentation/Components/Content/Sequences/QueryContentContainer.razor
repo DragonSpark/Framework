@@ -1,7 +1,7 @@
 ﻿@typeparam T
 @using DragonSpark.Application.Entities.Queries.Runtime.Pagination
 
-@inherits DragonSpark.Presentation.Components.Content.Templates.ManyActiveContentTemplateComponentBase<DragonSpark.Application.Entities.Queries.Runtime.Pagination.IPages<T>>
+@inherits Templates.ManyActiveContentTemplateComponentBase<IPages<T>>
 
 @inject IPaging<T> Paging
 
@@ -15,7 +15,7 @@
             {
                 @LoadingTemplate
             }
-            <CascadingValue TValue="IPageContainer<T>" Value="@this" IsFixed="true">
+            <CascadingValue TValue="IPageContainer<T>" Value="@(this)" IsFixed="true">
                 @ChildContent(context)
             </CascadingValue>
         }
