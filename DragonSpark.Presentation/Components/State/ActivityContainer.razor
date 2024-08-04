@@ -12,7 +12,10 @@
 <div class="@_outer">
     <div class="@_class">
         <fieldset disabled="@Active">
-            <CascadingValue TValue="IActivityReceiver" Value="@(this)" IsFixed="true" ChildContent="@ChildContent(ActualReceiver)" />
+            @*<ShouldRenderComponent Enabled="@(!Active)">
+                <CascadingValue TValue="IActivityReceiver" Value="@(this)" IsFixed="true" ChildContent="@ChildContent(ActualReceiver)" />
+            </ShouldRenderComponent>*@
+            <CascadingValue TValue="IActivityReceiver" Value="@this" IsFixed="true" ChildContent="@ChildContent(ActualReceiver)" />
         </fieldset>
     </div>
     @if (Active && _display?.Message is not null)

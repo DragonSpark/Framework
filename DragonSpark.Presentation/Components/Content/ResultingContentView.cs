@@ -2,6 +2,7 @@
 using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Operations.Results;
+using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Presentation.Components.Content.Rendering;
 using Microsoft.AspNetCore.Components;
@@ -12,7 +13,10 @@ namespace DragonSpark.Presentation.Components.Content;
 
 partial class ResultingContentView<T>
 {
-	Func<Task> _update = default!;
+	RenderFragment? _fragment;
+	readonly Switch _loaded = new();
+	Func<Task>      _update = default!;
+	Worker<T?>?     _subject;
 
 	[Parameter]
 	public IResulting<T?>? Content
@@ -23,8 +27,8 @@ partial class ResultingContentView<T>
 			if (_content != value)
 			{
 				_content = value;
-				Loaded   = false;
-				Subject  = null;
+				_loaded.Down();
+				_subject = null;
 			}
 		}
 	}	IResulting<T?>? _content;
@@ -42,10 +46,6 @@ partial class ResultingContentView<T>
 	[Parameter]
 	public bool ForceRender { get; set; }
 
-	RenderFragment? Fragment { get; set; }
-
-	bool Loaded { get; set; }
-
 	protected override void OnInitialized()
 	{
 		_update = Update;
@@ -60,51 +60,58 @@ partial class ResultingContentView<T>
 
 	void Load()
 	{
-		Subject ??= new WorkingResult<T?>(Content ?? Defaulting<T>.Default, _update).Get();
+		_subject ??= new WorkingResult<T?>(Content ?? Defaulting<T>.Default, _update).Get();
 	}
 
 	protected override Task OnParametersSetAsync()
 	{
-		if (Subject != null)
+		if (_subject is not null)
 		{
-			var task = Subject.Value.AsTask();
-			return task.IsCompletedSuccessfully ? Update() : ForceRender || Render.Get() > RenderState.Default ? task : base.OnParametersSetAsync();
+			var task = _subject.Value.AsTask();
+			return task.IsCompletedSuccessfully ? Update(false) : ForceRender || Render.Get() > RenderState.Default ? task : base.OnParametersSetAsync();
 		}
 
 		return base.OnParametersSetAsync();
 	}
 
-	Worker<T?>? Subject { get; set; }
+	Task Update() => Update(true);
 
-	protected override Task OnAfterRenderAsync(bool firstRender) => Update();
-
-	Task Update()
+	Task Update(bool update)
 	{
 		if (UpdateMonitor?.Get() ?? false)
 		{
-			Loaded  = false;
-			Subject = null;
+			_loaded.Down();
+			_subject = null;
 			Load();
+			return Task.CompletedTask;
 		}
-		else
+
+		return Complete(update);
+	}
+
+	Task Complete(bool update)
+	{
+		if (_subject is { Status.IsCompletedSuccessfully: true } && _loaded.Up())
 		{
-			var loaded = Subject is { Status.IsCompletedSuccessfully: true };
-			var update = loaded && loaded != Loaded;
-			Loaded = loaded;
-			if (update)
+			// ReSharper disable once AsyncApostle.AsyncWait
+			var result  = _subject.Value().Status.Result;
+			var refresh = _fragment is not null;
+			_fragment = result is not null ? ChildContent(result) : NotFoundTemplate;
+			if (result is not null)
 			{
-				// ReSharper disable once AsyncApostle.AsyncWait
-				var result  = Subject.Value().Status.Result;
-				var refresh = Fragment is not null;
-				Fragment = result is not null ? ChildContent(result) : NotFoundTemplate;
-				StateHasChanged();
-				if (result is not null)
+				var callback = refresh ? Refreshed : Rendered;
+				if (callback.HasDelegate)
 				{
-					var callback = refresh ? Refreshed : Rendered;
-					return callback.Invoke(result);
+					return callback.InvokeAsync(result);
 				}
 			}
+
+			if (update)
+			{
+				StateHasChanged();
+			}
 		}
+
 		return Task.CompletedTask;
 	}
 }

@@ -41,7 +41,7 @@ sealed class WorkerOperation<T> : IOperation
 {
 	readonly Task<T>                 _subject;
 	readonly TaskCompletionSource<T> _source;
-	readonly Func<Task>         _complete;
+	readonly Func<Task>              _complete;
 
 	public WorkerOperation(Task<T> subject, TaskCompletionSource<T> source, Func<Task> complete)
 	{

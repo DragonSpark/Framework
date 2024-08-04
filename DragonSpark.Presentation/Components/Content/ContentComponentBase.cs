@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Presentation.Components.Content.Rendering;
-using DragonSpark.Runtime.Execution;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 
@@ -8,8 +7,6 @@ namespace DragonSpark.Presentation.Components.Content;
 
 public abstract class ContentComponentBase<T> : ComponentBase
 {
-	First? _first;
-
 	[Inject] IActiveContents<T> Contents { get; set; } = default!;
 
 	[Inject] RenderStateStore Current { get; set; } = default!;
@@ -33,7 +30,7 @@ public abstract class ContentComponentBase<T> : ComponentBase
 
 	protected virtual void RequestNewContent()
 	{
-		_first = new();
+		Content.Execute();
 	}
 
 	protected override ValueTask RefreshState()
@@ -46,14 +43,5 @@ public abstract class ContentComponentBase<T> : ComponentBase
 				return base.RefreshState();
 		}
 		return ValueTask.CompletedTask;
-	}
-
-	protected override void OnAfterRender(bool firstRender)
-	{
-		if (_first?.Get() ?? false)
-		{
-			Content.Execute();
-		}
-		base.OnAfterRender(firstRender);
 	}
 }

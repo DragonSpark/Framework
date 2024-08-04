@@ -6,17 +6,17 @@
 
 @inject RenderStateStore Render
 
-@if (Subject is null)
+@if (_subject is null)
 {
 	@NotFoundTemplate
 }
-else if (Subject is { Status.IsFaulted : true })
+else if (_subject is { Status.IsFaulted : true })
 {
 	@ExceptionTemplate
 }
-else if (Fragment != null)
+else if (_fragment is not null)
 {
-	@Fragment
+	@_fragment
 }
 else
 {
