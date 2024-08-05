@@ -9,9 +9,9 @@ namespace DragonSpark.Presentation.Components;
 
 public class ComponentBase : Microsoft.AspNetCore.Components.ComponentBase
 {
-	protected readonly Action                 StateChanged;
+	readonly Action _changed;
 
-	public ComponentBase() => StateChanged = StateHasChanged;
+	public ComponentBase() => _changed = StateHasChanged;
 
 	protected override Task OnInitializedAsync() => Execute.Get(GetType(), Initialize()).AsTask();
 
@@ -19,7 +19,7 @@ public class ComponentBase : Microsoft.AspNetCore.Components.ComponentBase
 
 	protected virtual ValueTask RefreshState() => DefaultRefreshState();
 
-	ValueTask DefaultRefreshState() => InvokeAsync(StateChanged).ToOperation();
+	ValueTask DefaultRefreshState() => InvokeAsync(_changed).ToOperation();
 
 	[Inject]
 	protected IExceptions Exceptions { get; [UsedImplicitly] set; } = default!;
