@@ -1,75 +1,74 @@
-﻿@using DragonSpark.Compose
-@using DragonSpark.Model.Results
-@using Microsoft.FluentUI.AspNetCore.Components
+﻿@using Microsoft.FluentUI.AspNetCore.Components
 @using Microsoft.FluentUI.AspNetCore.Components.Utilities
 
 @inherits FluentComponentBase
 
-<CascadingValue Value="this">
-    <div id="@Id"
-         style="@StyleValue"
-         class="@ClassValue"
-         border-outside=@Border.HasFlag(WizardBorder.Outside)
-         position="@(StepperPosition == StepperPosition.Top ? "top" : "left")"
-         @attributes="@AdditionalAttributes">
-        <ol style=@GetStepperWidthOrHeight()
-            border-inside=@Border.HasFlag(WizardBorder.Inside)>
-            @Steps
-        </ol>
+<ProtectedCallbacks Context="callbacks">
+    <CascadingValue Value="this">
+        <div id="@Id"
+             style="@StyleValue"
+             class="@ClassValue"
+             border-outside=@Border.HasFlag(WizardBorder.Outside)
+             position="@(StepperPosition == StepperPosition.Top ? "top" : "left")"
+             @attributes="@AdditionalAttributes">
+            <ol style=@GetStepperWidthOrHeight()
+                border-inside=@Border.HasFlag(WizardBorder.Inside)>
+                @Steps
+            </ol>
 
-        <div class="fluent-wizard-content"
-             border-inside=@Border.HasFlag(WizardBorder.Inside)>
-            @if (_steps.Count > 0)
-            {
-                <CascadingValue Value="@_steps[Value]" ChildContent="@_steps[Value].ChildContent" />
-            }
-        </div>
-
-        <div class="fluent-wizard-buttons"
-             border-inside=@Border.HasFlag(WizardBorder.Inside)>
-            @if (ButtonTemplate == null)
-            {
-                string buttonWidth = "80px;";
-
-                @if (Value > 0)
+            <div class="fluent-wizard-content"
+                 border-inside=@Border.HasFlag(WizardBorder.Inside)>
+                @if (_steps.Count > 0)
                 {
-                    <FluentButton Appearance="Appearance.Neutral"
-                                  Style="@($"width: {buttonWidth};")"
-                                  OnClick="@OnPreviousHandlerAsync" Disabled="@Receiver.Active">
-                        @LabelButtonPrevious
-                    </FluentButton>
+                    <CascadingValue Value="@_steps[Value]" ChildContent="@_steps[Value].ChildContent"/>
                 }
+            </div>
 
-                <span style="margin-right: 10px"></span>
-
-                @if (Value < _steps.Count - 1)
+            <div class="fluent-wizard-buttons"
+                 border-inside=@Border.HasFlag(WizardBorder.Inside)>
+                @if (ButtonTemplate == null)
                 {
-                    <FluentButton Appearance="Appearance.Accent"
-                                  Style="@($"width: {buttonWidth};")"
-                                  OnClick="@OnNextHandlerAsync" Disabled="@Receiver.Active">
-                        @LabelButtonNext
-                    </FluentButton>
+                    string buttonWidth = "80px;";
+
+                    @if (Value > 0)
+                    {
+                        <FluentButton Appearance="Appearance.Neutral"
+                                      Style="@($"width: {buttonWidth};")"
+                                      OnClick="@callbacks.Register(OnPreviousHandlerAsync)" Disabled="@Receiver.Active">
+                            @LabelButtonPrevious
+                        </FluentButton>
+                    }
+
+                    <span style="margin-right: 10px"></span>
+
+                    @if (Value < _steps.Count - 1)
+                    {
+                        <FluentButton Appearance="Appearance.Accent"
+                                      Style="@($"width: {buttonWidth};")"
+                                      OnClick="@callbacks.Register(OnNextHandlerAsync)" Disabled="@Receiver.Active">
+                            @LabelButtonNext
+                        </FluentButton>
+                    }
+                    else
+                    {
+                        <FluentButton Appearance="Appearance.Accent"
+                                      Style="@($"width: {buttonWidth};")"
+                                      OnClick="callbacks.Register(OnFinishHandlerAsync)" Disabled="@Receiver.Active">
+                            @LabelButtonDone
+                        </FluentButton>
+                    }
                 }
                 else
                 {
-                    <FluentButton Appearance="Appearance.Accent"
-                                  Style="@($"width: {buttonWidth};")"
-                                  OnClick="OnFinishHandlerAsync" Disabled="@Receiver.Active">
-                        @LabelButtonDone
-                    </FluentButton>
+                    @ButtonTemplate(Value)
                 }
-            }
-            else
-            {
-                @ButtonTemplate(Value)
-            }
+            </div>
         </div>
-    </div>
-</CascadingValue>
+    </CascadingValue>
+</ProtectedCallbacks>
 
 @code {
     static   string     LabelButtonPrevious = "Previous", LabelButtonNext = "Next", LabelButtonDone = "Done";
-    readonly Switch     _active             = new();
     readonly List<Step> _steps              = new();
     int                 _value;
     internal int        _maxStepVisited;
@@ -195,14 +194,8 @@
 
     [CascadingParameter] IActivityReceiver Receiver { get; set; } = default!;
 
-    protected override bool ShouldRender()
-    {
-        var shouldRender = !_active.Down() || !ValueChanged.HasDelegate;
-        return shouldRender;
-    }
-
     /// <summary />
-    protected virtual async Task OnNextHandlerAsync(MouseEventArgs e)
+    protected virtual async Task OnNextHandlerAsync()
     {
         // Target step index
         var targetIndex = Value;
@@ -223,13 +216,11 @@
         else
         {
             Value = targetIndex;
-            // StateHasChanged();
         }
-        _active.Up();
     }
 
     /// <summary />
-    protected virtual async Task OnPreviousHandlerAsync(MouseEventArgs e)
+    protected virtual async Task OnPreviousHandlerAsync()
     {
         // Target step index
         var targetIndex = Value;
@@ -250,9 +241,7 @@
         else
         {
             Value = targetIndex;
-            //StateHasChanged();
         }
-        _active.Up();
     }
 
     /// <summary />
@@ -291,7 +280,7 @@
     }
 
     /// <summary />
-    protected virtual async Task OnFinishHandlerAsync(MouseEventArgs e)
+    protected virtual async Task OnFinishHandlerAsync()
     {
         // Validate any form edit contexts
         var allEditContextsAreValid = _steps[Value].ValidateEditContexts();

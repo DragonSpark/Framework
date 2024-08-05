@@ -1,8 +1,8 @@
-﻿<CascadingValue Value="@_registry" ChildContent="@ChildContent(_registry)" />
+﻿<CascadingValue Value="@_registry" ChildContent="@_content" IsFixed="true" />
 
 @code {
-    
     FieldRegistry _registry = default!;
+    RenderFragment? _content;
 
     [CascadingParameter]
     EditContext? EditContext
@@ -12,14 +12,15 @@
         {
             if (_context != value)
             {
-                if (_context != null)
+                if (_context is not null)
                 {
                     _registry.Clear();
                 }
 
-                if ((_context = value) != null)
+                if ((_context = value) is not null)
                 {
                     _registry = new FieldRegistry();
+                    _content  = ChildContent(_registry);
                 }
             }
         }

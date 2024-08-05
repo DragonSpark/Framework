@@ -1,4 +1,5 @@
 ﻿@using DragonSpark.Model
+@using DragonSpark.Model.Results
 
 @inherits EditorComponent
 
@@ -15,18 +16,13 @@
 
 @code
 {
+    readonly Switch            _enabled = new();
     ConfirmResultContext<None> _confirm = default!;
-    bool                       _enabled;
-
-    protected override Task OnAfterRenderAsync(bool firstRender)
+    
+    protected override void OnParametersSet()
     {
-        var enabled = EnableBrowserMonitor && HasChanges();
-        if (_enabled != enabled)
-        {
-            _enabled = enabled;
-            StateHasChanged();
-        }
-        return base.OnAfterRenderAsync(firstRender);
+        _enabled.Execute(EnableBrowserMonitor && HasChanges());
+        base.OnParametersSet();
     }
 
     [Parameter]

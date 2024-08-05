@@ -60,36 +60,32 @@ partial class ResultingContentView<T>
 
 	void Load()
 	{
-		_subject ??= new WorkingResult<T?>(Content ?? Defaulting<T>.Default, _update).Get();
+		if (UpdateMonitor?.Get() ?? false)
+		{
+			_loaded.Down();
+			_subject = null;
+		}
+
+		_subject ??= Working();
 	}
+
+	Worker<T?> Working() => new WorkingResult<T?>(Content ?? Defaulting<T>.Default, _update).Get();
 
 	protected override Task OnParametersSetAsync()
 	{
 		if (_subject is not null)
 		{
-			var task = _subject.Value.AsTask();
-			return task.IsCompletedSuccessfully ? Update(false) : ForceRender || Render.Get() > RenderState.Default ? task : base.OnParametersSetAsync();
+			var task         = _subject.Value.AsTask();
+			var successfully = task.IsCompletedSuccessfully;
+			var forceRender  = ForceRender || Render.Get() > RenderState.Default;
+			var result       = successfully ? Update() : forceRender ? task : base.OnParametersSetAsync();
+			return result;
 		}
 
 		return base.OnParametersSetAsync();
 	}
 
-	Task Update() => Update(true);
-
-	Task Update(bool update)
-	{
-		if (UpdateMonitor?.Get() ?? false)
-		{
-			_loaded.Down();
-			_subject = null;
-			Load();
-			return Task.CompletedTask;
-		}
-
-		return Complete(update);
-	}
-
-	Task Complete(bool update)
+	Task Update()
 	{
 		if (_subject is { Status.IsCompletedSuccessfully: true } && _loaded.Up())
 		{
@@ -106,10 +102,10 @@ partial class ResultingContentView<T>
 				}
 			}
 
-			if (update)
+			/*if (update)
 			{
 				StateHasChanged();
-			}
+			}*/
 		}
 
 		return Task.CompletedTask;
