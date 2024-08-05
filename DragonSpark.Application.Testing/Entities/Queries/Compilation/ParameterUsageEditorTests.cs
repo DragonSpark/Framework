@@ -8,7 +8,6 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using Xunit;
-// ReSharper disable NotAccessedPositionalProperty.Local
 
 namespace DragonSpark.Application.Testing.Entities.Queries.Compilation;
 

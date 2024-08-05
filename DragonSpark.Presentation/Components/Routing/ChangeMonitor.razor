@@ -18,7 +18,7 @@
 {
     readonly Switch            _enabled = new();
     ConfirmResultContext<None> _confirm = default!;
-    
+
     protected override void OnParametersSet()
     {
         _enabled.Execute(EnableBrowserMonitor && HasChanges());

@@ -1,0 +1,21 @@
+﻿<ProtectedCallbacks Context="callbacks">
+    <FieldNameMonitor Model="@Model" Updated="@callbacks.Register(_empty)" />
+</ProtectedCallbacks>
+
+@ChildContent
+
+@code {
+    EventCallback _empty;
+
+    protected override void OnInitialized()
+    {
+        _empty = EmptyCallback.Default.Get(this);
+        base.OnInitialized();
+    }
+
+    [Parameter]
+    public object? Model { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+}
