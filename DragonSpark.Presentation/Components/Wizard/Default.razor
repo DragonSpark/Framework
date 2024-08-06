@@ -3,7 +3,7 @@
 
 @inherits FluentComponentBase
 
-<ProtectedCallbacks Context="callbacks">
+<CallbackRenderGate Context="callbacks">
     <CascadingValue Value="this">
         <div id="@Id"
              style="@StyleValue"
@@ -66,7 +66,7 @@
             </DragonSpark.Presentation.Components.Forms.RefreshDisplayModelMonitor>
         </div>
     </CascadingValue>
-</ProtectedCallbacks>
+</CallbackRenderGate>
 
 @code {
     static   string     LabelButtonPrevious = "Previous", LabelButtonNext = "Next", LabelButtonDone = "Done";

@@ -1,0 +1,21 @@
+﻿@using Microsoft.Extensions.Logging
+
+@inject ILogger<RenderReporter> Logger
+
+@code {
+    [Parameter]
+    public string Identifier { get; set; } = string.Empty;
+
+    protected override void OnParametersSet()
+    {
+        Logger.LogDebug("{Method}: {Identifier}", nameof(OnParametersSet), Identifier);
+        base.OnParametersSet();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        Logger.LogDebug("{Method}: {Identifier}", nameof(OnAfterRender), Identifier);
+        base.OnAfterRender(firstRender);
+    }
+
+}

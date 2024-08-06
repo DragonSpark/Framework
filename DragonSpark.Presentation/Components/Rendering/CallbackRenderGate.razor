@@ -18,7 +18,7 @@
     public string Identifier { get; set; } = string.Empty;
 
     [Parameter]
-    public RenderFragment<ProtectedCallbacks> ChildContent { get; set; } = default!;
+    public RenderFragment<CallbackRenderGate> ChildContent { get; set; } = default!;
 
     public EventCallback<T> Register<T>(Func<T, Task> parameter)
     {

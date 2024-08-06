@@ -1,6 +1,6 @@
-﻿<ProtectedCallbacks Context="callbacks">
+﻿<CallbackRenderGate Context="callbacks">
     <FieldModelMonitor Model="@Model" Changed="@callbacks.Register(_empty)" />
-</ProtectedCallbacks>
+</CallbackRenderGate>
 
 @ChildContent
 

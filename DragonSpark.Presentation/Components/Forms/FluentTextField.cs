@@ -10,9 +10,7 @@ public sealed class FluentTextField : Microsoft.FluentUI.AspNetCore.Components.F
 	readonly Switch _invoke = new();
 
 	protected override Task ChangeHandlerAsync(ChangeEventArgs e)
-	{
-		return _invoke.Down() ? InvokeAsync(() => base.ChangeHandlerAsync(e)) : Task.CompletedTask;
-	}
+		=> _invoke.Down() ? InvokeAsync(() => base.ChangeHandlerAsync(e)) : Task.CompletedTask;
 
 	protected override Task InputHandlerAsync(ChangeEventArgs e)
 	{
