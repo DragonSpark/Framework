@@ -20,8 +20,3 @@ public sealed class FluentTextField : Microsoft.FluentUI.AspNetCore.Components.F
 		return base.InputHandlerAsync(e);
 	}
 }
-// TODO
-public sealed class FluentTextArea : Microsoft.FluentUI.AspNetCore.Components.FluentTextArea
-{
-	protected override Task ChangeHandlerAsync(ChangeEventArgs e) => InvokeAsync(() => base.ChangeHandlerAsync(e));
-}
