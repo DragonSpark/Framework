@@ -23,7 +23,7 @@
                     <CascadingValue Value="@_steps[Value]" ChildContent="@_steps[Value].ChildContent"/>
                 }
             </div>
-            <DragonSpark.Presentation.Components.Forms.RefreshDisplayModelMonitor>
+            <DragonSpark.Presentation.Components.State.RedrawWhenActivityMonitorUpdates>
                 <div class="fluent-wizard-buttons"
                      border-inside=@Border.HasFlag(WizardBorder.Inside)>
                     @if (ButtonTemplate == null)
@@ -34,7 +34,7 @@
                         {
                             <FluentButton Appearance="Appearance.Neutral"
                                           Style="@($"width: {buttonWidth};")"
-                                          OnClick="@callbacks.Register(OnPreviousHandlerAsync)" Disabled="@Receiver.Active">
+                                          OnClick="@callbacks.Register(OnPreviousHandlerAsync)" Disabled="@Active">
                                 @LabelButtonPrevious
                             </FluentButton>
                         }
@@ -45,7 +45,7 @@
                         {
                             <FluentButton Appearance="Appearance.Accent"
                                           Style="@($"width: {buttonWidth};")"
-                                          OnClick="@callbacks.Register(OnNextHandlerAsync)" Disabled="@Receiver.Active">
+                                          OnClick="@callbacks.Register(OnNextHandlerAsync)" Disabled="@Active">
                                 @LabelButtonNext
                             </FluentButton>
                         }
@@ -53,7 +53,7 @@
                         {
                             <FluentButton Appearance="Appearance.Accent"
                                           Style="@($"width: {buttonWidth};")"
-                                          OnClick="callbacks.Register(OnFinishHandlerAsync)" Disabled="@Receiver.Active">
+                                          OnClick="callbacks.Register(OnFinishHandlerAsync)" Disabled="@Active">
                                 @LabelButtonDone
                             </FluentButton>
                         }
@@ -63,7 +63,7 @@
                         @ButtonTemplate(Value)
                     }
                 </div>
-            </DragonSpark.Presentation.Components.Forms.RefreshDisplayModelMonitor>
+            </DragonSpark.Presentation.Components.State.RedrawWhenActivityMonitorUpdates>
         </div>
     </CascadingValue>
 </CallbackRenderGate>
@@ -193,7 +193,10 @@
     [Parameter]
     public WizardStepSequence StepSequence { get; set; } = WizardStepSequence.Linear;
 
-    [CascadingParameter] IActivityReceiver Receiver { get; set; } = default!;
+    [CascadingParameter] IActivityMonitor? Monitor { get; set; }
+    [CascadingParameter] IActivityReceiver? Receiver { get; set; }
+
+    bool Active => Monitor?.Active ?? (Receiver?.Active ?? false);
 
     /// <summary />
     protected virtual async Task OnNextHandlerAsync()

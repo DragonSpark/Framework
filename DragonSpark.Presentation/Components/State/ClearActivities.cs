@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
-using System.Collections.Concurrent;
+using System.Collections.Generic;
 
 namespace DragonSpark.Presentation.Components.State;
 
@@ -10,9 +10,9 @@ public sealed class ClearActivities : ICommand<object>
 
 	ClearActivities() : this(Activities.Default) {}
 
-	readonly ISelect<object, ConcurrentBag<object>> _store;
+	readonly ISelect<object, Stack<object>> _store;
 
-	public ClearActivities(ISelect<object, ConcurrentBag<object>> store) => _store = store;
+	public ClearActivities(ISelect<object, Stack<object>> store) => _store = store;
 
 	public void Execute(object parameter)
 	{

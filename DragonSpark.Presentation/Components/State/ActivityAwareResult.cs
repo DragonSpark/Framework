@@ -9,7 +9,7 @@ sealed class ActivityAwareResult<T> : IResulting<T?>
 {
 	readonly IResulting<T?>          _previous;
 	readonly object                  _subject;
-	readonly ActivityReaderInstance  _input;
+	readonly ActivityReceiver  _input;
 	readonly IUpdateActivityReceiver _activity;
 
 	public ActivityAwareResult(IResulting<T?> previous, object subject)
@@ -19,7 +19,7 @@ sealed class ActivityAwareResult<T> : IResulting<T?>
 		: this(previous, subject, new(previous, input), UpdateActivityReceiver.Default) {}
 
 	// ReSharper disable once TooManyDependencies
-	public ActivityAwareResult(IResulting<T?> previous, object subject, ActivityReaderInstance input,
+	public ActivityAwareResult(IResulting<T?> previous, object subject, ActivityReceiver input,
 	                           IUpdateActivityReceiver activity)
 	{
 		_previous = previous;

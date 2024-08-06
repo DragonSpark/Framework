@@ -9,7 +9,7 @@ sealed class ActivityAwareSelecting<TIn, TOut> : ISelecting<TIn, TOut>
 {
 	readonly ISelecting<TIn, TOut>   _previous;
 	readonly object                  _subject;
-	readonly ActivityReaderInstance  _input;
+	readonly ActivityReceiver  _input;
 	readonly IUpdateActivityReceiver _update;
 
 	public ActivityAwareSelecting(ISelecting<TIn, TOut> previous, object subject)
@@ -19,7 +19,7 @@ sealed class ActivityAwareSelecting<TIn, TOut> : ISelecting<TIn, TOut>
 		: this(previous, subject, new(previous, input), UpdateActivityReceiver.Default) {}
 
 	// ReSharper disable once TooManyDependencies
-	public ActivityAwareSelecting(ISelecting<TIn, TOut> previous, object subject, ActivityReaderInstance input,
+	public ActivityAwareSelecting(ISelecting<TIn, TOut> previous, object subject, ActivityReceiver input,
 	                              IUpdateActivityReceiver update)
 	{
 		_previous = previous;

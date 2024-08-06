@@ -1,0 +1,27 @@
+﻿@using DragonSpark.Compose
+@using DragonSpark.Model.Results
+<CallbackRenderGate>
+    <DragonSpark.Presentation.Components.Eventing.HandlerView T="ActivityUpdatedMessage" Received="@(context.Register<ActivityUpdatedMessage>(OnUpdate))" />
+</CallbackRenderGate>
+
+@ChildContent
+
+@code {
+    readonly Switch _active = new();
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+
+    [CascadingParameter] IActivityMonitor? Monitor { get; set; }
+
+    Task OnUpdate(ActivityUpdatedMessage parameter)
+    {
+        var (owner, active) = parameter;
+        if (owner == Monitor && _active.Assign(active))
+        {
+            StateHasChanged();
+        }
+        return Task.CompletedTask;
+    }
+
+}

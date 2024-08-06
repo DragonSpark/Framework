@@ -42,7 +42,7 @@ public sealed class CallbackContext : IResult<EventCallback>
 	public OperationCallbackContext UpdateActivity()
 	{
 		var receiver  = _receiver.Verify();
-		var body      = Start.A.Result(_method).Then().Structure().Out();
+		var body      = _method.Start().Then().Structure().Out();
 		var operation = new ActivityAwareOperation(body, receiver);
 		var result    = new OperationCallbackContext(receiver, operation);
 		return result;

@@ -115,4 +115,14 @@ public static partial class ExtensionMethods
 		}
 		return result;
 	}
+
+	public static bool Assign(this IMutable<bool> @this, bool parameter)
+	{
+		var result = @this.Get() != parameter;
+		if (result)
+		{
+			@this.Execute(parameter);
+		}
+		return result;
+	}
 }

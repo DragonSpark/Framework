@@ -1,0 +1,18 @@
+﻿@using DragonSpark.Presentation.Components.Eventing
+
+@inject IPublisher<ActivityUpdatedMessage> Publisher
+
+<CascadingValue Value="_monitor" IsFixed="true" ChildContent="@ChildContent" />
+
+@code {
+    IActivityMonitor _monitor = default!;
+
+    protected override void OnInitialized()
+    {
+        _monitor = new ActivityMonitor(Publisher);
+        base.OnInitialized();
+    }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+}

@@ -21,7 +21,7 @@ public sealed class UpdateActivityReceiver : IUpdateActivityReceiver
 		_active   = active;
 	}
 
-	public ValueTask Get(Pair<object, ActivityReaderInstance> parameter)
+	public ValueTask Get(Pair<object, ActivityReceiver> parameter)
 	{
 		var (key, (instance, input)) = parameter;
 

@@ -41,6 +41,12 @@
     readonly Switch _allowed = new(), _restore = new(), _displaying = new();
     ActivityReceiverInput? _display;
 
+    protected override void OnInitialized()
+    {
+        Monitor?.Execute(this);
+        base.OnInitialized();
+    }
+
     [Parameter]
     public string CssClass { get; set; } = string.Empty;
 
@@ -52,6 +58,8 @@
 
     [Parameter]
     public RenderFragment<object> ChildContent { get; set; } = default!;
+
+    [CascadingParameter] IActivityMonitor? Monitor { get; set; }
 
     string? Class()
     {
@@ -94,6 +102,10 @@
             {
                 await Focus.Store.Get();
             }
+            if (Monitor is not null)
+            {
+                await Monitor.Await();
+            }
         }
     }
 
@@ -101,7 +113,7 @@
     {
         _displaying.Down();
         _restore.Execute(Update());
-        return ValueTask.CompletedTask;
+        return _restore && Monitor is not null ? Monitor.Get() : ValueTask.CompletedTask;
     }
 
     Task OnCancel()

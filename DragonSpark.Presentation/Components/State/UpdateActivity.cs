@@ -2,7 +2,7 @@
 using DragonSpark.Model;
 using DragonSpark.Model.Properties;
 using System;
-using System.Collections.Concurrent;
+using System.Collections.Generic;
 
 namespace DragonSpark.Presentation.Components.State;
 
@@ -12,10 +12,10 @@ sealed class UpdateActivity : IUpdateActivity
 
 	UpdateActivity() : this(Activities.Default.Get, ActiveState.Default) {}
 
-	readonly Func<object, ConcurrentBag<object>> _activities;
-	readonly IProperty<object, bool>             _active;
+	readonly Func<object, Stack<object>> _activities;
+	readonly IProperty<object, bool>     _active;
 
-	public UpdateActivity(Func<object, ConcurrentBag<object>> activities, IProperty<object, bool> active)
+	public UpdateActivity(Func<object, Stack<object>> activities, IProperty<object, bool> active)
 	{
 		_activities = activities;
 		_active     = active;
@@ -25,14 +25,13 @@ sealed class UpdateActivity : IUpdateActivity
 	{
 		var (key, value) = parameter;
 		_active.Assign(key, true);
-		_activities(key).Add(value);
+		_activities(key).Push(value);
 	}
 
 	public void Execute(object parameter)
 	{
 		var store = _activities(parameter);
-		store.TryTake(out _);
-		if (store.IsEmpty)
+		if (store.TryPop(out _) && store.Count == 0)
 		{
 			_active.Assign(parameter, false);
 		}

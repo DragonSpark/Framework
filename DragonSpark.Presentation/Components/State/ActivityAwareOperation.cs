@@ -9,7 +9,7 @@ sealed class ActivityAwareOperation : IOperation
 {
 	readonly IOperation              _operation;
 	readonly object                  _subject;
-	readonly ActivityReaderInstance  _input;
+	readonly ActivityReceiver        _input;
 	readonly IUpdateActivityReceiver _update;
 
 	public ActivityAwareOperation(IOperation operation, object subject)
@@ -19,18 +19,18 @@ sealed class ActivityAwareOperation : IOperation
 		: this(operation, subject, new(operation, input), UpdateActivityReceiver.Default) {}
 
 	// ReSharper disable once TooManyDependencies
-	public ActivityAwareOperation(IOperation operation, object subject, ActivityReaderInstance input,
+	public ActivityAwareOperation(IOperation operation, object subject, ActivityReceiver input,
 	                              IUpdateActivityReceiver update)
 	{
-		_operation  = operation;
-		_subject    = subject;
-		_input = input;
-		_update     = update;
+		_operation = operation;
+		_subject   = subject;
+		_input     = input;
+		_update    = update;
 	}
 
 	public async ValueTask Get()
 	{
-		await _update.Get(Pairs.Create(_subject, _input));
+		await _update.Get((_subject, _input));
 		try
 		{
 			await _operation.Get();
@@ -46,7 +46,7 @@ sealed class ActivityAwareOperation<T> : IOperation<T>
 {
 	readonly IOperation<T>           _operation;
 	readonly object                  _subject;
-	readonly ActivityReaderInstance  _input;
+	readonly ActivityReceiver        _input;
 	readonly IUpdateActivityReceiver _update;
 
 	public ActivityAwareOperation(IOperation<T> operation, object subject)
@@ -56,13 +56,13 @@ sealed class ActivityAwareOperation<T> : IOperation<T>
 		: this(operation, subject, new(operation, input), UpdateActivityReceiver.Default) {}
 
 	// ReSharper disable once TooManyDependencies
-	public ActivityAwareOperation(IOperation<T> operation, object subject, ActivityReaderInstance input,
+	public ActivityAwareOperation(IOperation<T> operation, object subject, ActivityReceiver input,
 	                              IUpdateActivityReceiver update)
 	{
-		_operation  = operation;
-		_subject    = subject;
-		_input = input;
-		_update     = update;
+		_operation = operation;
+		_subject   = subject;
+		_input     = input;
+		_update    = update;
 	}
 
 	public async ValueTask Get(T parameter)
