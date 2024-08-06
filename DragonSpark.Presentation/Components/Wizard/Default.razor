@@ -23,46 +23,47 @@
                     <CascadingValue Value="@_steps[Value]" ChildContent="@_steps[Value].ChildContent"/>
                 }
             </div>
-
-            <div class="fluent-wizard-buttons"
-                 border-inside=@Border.HasFlag(WizardBorder.Inside)>
-                @if (ButtonTemplate == null)
-                {
-                    string buttonWidth = "80px;";
-
-                    @if (Value > 0)
+            <DragonSpark.Presentation.Components.Forms.RefreshDisplayModelMonitor>
+                <div class="fluent-wizard-buttons"
+                     border-inside=@Border.HasFlag(WizardBorder.Inside)>
+                    @if (ButtonTemplate == null)
                     {
-                        <FluentButton Appearance="Appearance.Neutral"
-                                      Style="@($"width: {buttonWidth};")"
-                                      OnClick="@callbacks.Register(OnPreviousHandlerAsync)" Disabled="@Receiver.Active">
-                            @LabelButtonPrevious
-                        </FluentButton>
-                    }
+                        string buttonWidth = "80px;";
 
-                    <span style="margin-right: 10px"></span>
+                        @if (Value > 0)
+                        {
+                            <FluentButton Appearance="Appearance.Neutral"
+                                          Style="@($"width: {buttonWidth};")"
+                                          OnClick="@callbacks.Register(OnPreviousHandlerAsync)" Disabled="@Receiver.Active">
+                                @LabelButtonPrevious
+                            </FluentButton>
+                        }
 
-                    @if (Value < _steps.Count - 1)
-                    {
-                        <FluentButton Appearance="Appearance.Accent"
-                                      Style="@($"width: {buttonWidth};")"
-                                      OnClick="@callbacks.Register(OnNextHandlerAsync)" Disabled="@Receiver.Active">
-                            @LabelButtonNext
-                        </FluentButton>
+                        <span style="margin-right: 10px"></span>
+
+                        @if (Value < _steps.Count - 1)
+                        {
+                            <FluentButton Appearance="Appearance.Accent"
+                                          Style="@($"width: {buttonWidth};")"
+                                          OnClick="@callbacks.Register(OnNextHandlerAsync)" Disabled="@Receiver.Active">
+                                @LabelButtonNext
+                            </FluentButton>
+                        }
+                        else
+                        {
+                            <FluentButton Appearance="Appearance.Accent"
+                                          Style="@($"width: {buttonWidth};")"
+                                          OnClick="callbacks.Register(OnFinishHandlerAsync)" Disabled="@Receiver.Active">
+                                @LabelButtonDone
+                            </FluentButton>
+                        }
                     }
                     else
                     {
-                        <FluentButton Appearance="Appearance.Accent"
-                                      Style="@($"width: {buttonWidth};")"
-                                      OnClick="callbacks.Register(OnFinishHandlerAsync)" Disabled="@Receiver.Active">
-                            @LabelButtonDone
-                        </FluentButton>
+                        @ButtonTemplate(Value)
                     }
-                }
-                else
-                {
-                    @ButtonTemplate(Value)
-                }
-            </div>
+                </div>
+            </DragonSpark.Presentation.Components.Forms.RefreshDisplayModelMonitor>
         </div>
     </CascadingValue>
 </ProtectedCallbacks>

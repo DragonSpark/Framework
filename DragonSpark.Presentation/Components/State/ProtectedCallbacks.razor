@@ -3,14 +3,19 @@
 @using DragonSpark.Model.Commands
 @using DragonSpark.Model.Operations.Allocated
 @using DragonSpark.Model.Results
+@using DragonSpark.Model.Selection
 @using DragonSpark.Model.Selection.Stores
 
 @ChildContent(this)
 
 @code {
-    readonly HashSet<Switch> _monitored = new();
-    readonly AllocatedTable  _monitors  = new();
-    readonly ActionTable     _actions   = new();
+    readonly HashSet<Switch>                _monitored = new();
+    readonly AllocatedTable                 _monitors  = new();
+    readonly ActionTable                    _actions   = new();
+    readonly ISelect<EventCallback, Switch> _callbacks = new StandardTable<EventCallback, Switch>(x => new Callback(x));
+
+    [Parameter]
+    public string Identifier { get; set; } = string.Empty;
 
     [Parameter]
     public RenderFragment<ProtectedCallbacks> ChildContent { get; set; } = default!;
@@ -45,18 +50,23 @@
 
     public EventCallback Register(EventCallback parameter)
     {
-        var callback = new Callback(parameter);
+        var callback = _callbacks.Get(parameter);
         _monitored.Add(callback);
         return parameter;
     }
 
     public override Task SetParametersAsync(ParameterView parameters)
     {
+
         _monitored.Clear();
         return base.SetParametersAsync(parameters);
     }
 
-    protected override bool ShouldRender() => _monitored.All(x => x || !x.Up());
+    protected override bool ShouldRender()
+    {
+        var shouldRender = _monitored.All(x => x || !x.Up());
+        return shouldRender;
+    }
 
     sealed class Monitors<T> : ReferenceValueStore<object, AllocatedTable<T>>
     {
@@ -115,7 +125,6 @@
             _action(parameter);
         }
     }
-
 
     sealed class Action : Switch, ICommand
     {

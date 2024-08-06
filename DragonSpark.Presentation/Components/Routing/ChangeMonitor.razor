@@ -3,7 +3,7 @@
 
 @inherits EditorComponent
 
-<FieldModelMonitor Changed="@Updated" />
+<FieldModelMonitor Changed="@OnUpdated" />
 
 <ConfirmResultContext T="None" @ref="_confirm" Title="@Title" PrimaryClass="primary button fit" SecondaryClass="button fit">
     @ChildContent
@@ -18,12 +18,6 @@
 {
     readonly Switch            _enabled = new();
     ConfirmResultContext<None> _confirm = default!;
-
-    protected override void OnParametersSet()
-    {
-        _enabled.Execute(EnableBrowserMonitor && HasChanges());
-        base.OnParametersSet();
-    }
 
     [Parameter]
 	public string Title { get; set; } = "Changes Detected";
@@ -53,4 +47,9 @@
         => !Enabled || await base.Allow(parameter) || await _confirm.Confirm(None.Default) == DialogResult.Ok;
 
     protected override bool HasChanges() => Enabled && base.HasChanges();
+
+    void OnUpdated()
+    {
+        _enabled.Execute(EnableBrowserMonitor && HasChanges());
+    }
 }
