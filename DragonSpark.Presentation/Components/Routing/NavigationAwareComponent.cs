@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using DragonSpark.Compose;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
 using System;
 using System.Threading.Tasks;
@@ -19,12 +20,12 @@ public abstract class NavigationAwareComponent : ComponentBase, IAsyncDisposable
 	{
 		if (await Allow(parameter))
 		{
-			await Exit().ConfigureAwait(false);
+			await Exit().Await();
 		}
 		else
 		{
 			parameter.PreventNavigation();
-			await OnNavigationCanceled().ConfigureAwait(false);
+			await OnNavigationCanceled().Await();
 		}
 	}
 
@@ -51,7 +52,7 @@ public abstract class NavigationAwareComponent : ComponentBase, IAsyncDisposable
 
 	public async ValueTask DisposeAsync()
 	{
-		await OnDisposing().ConfigureAwait(false);
+		await OnDisposing().Await();
 		GC.SuppressFinalize(this);
 	}
 

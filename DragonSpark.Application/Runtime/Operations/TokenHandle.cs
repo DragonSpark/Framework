@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Results;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Results;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -25,7 +26,7 @@ public sealed class TokenHandle : ITokenHandle
 		if (source is not null)
 		{
 			_store.Execute(null);
-			await source.CancelAsync().ConfigureAwait(false);
+			await source.CancelAsync().Await();
 		}
 	}
 

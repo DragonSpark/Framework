@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Selection;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Selection;
 using System;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -25,7 +26,7 @@ sealed class GetAccessToken : IAccessToken
 	public async ValueTask<AccessToken> Get()
 	{
 		using var client = _clients.CreateClient();
-		var response = await client.GetFromJsonAsync<AccessTokenResponse>(_location).ConfigureAwait(false)
+		var response = await client.GetFromJsonAsync<AccessTokenResponse>(_location).Await()
 		               ??
 		               throw new InvalidOperationException();
 		var result = _token.Get(response);

@@ -1,4 +1,5 @@
-﻿@using DragonSpark.Presentation.Environment.Browser.Window
+﻿@using DragonSpark.Compose
+@using DragonSpark.Presentation.Environment.Browser.Window
 
 @implements IAsyncDisposable
 
@@ -18,7 +19,7 @@
         if (firstRender)
         {
             _element = await Create.Get(new (this));
-            await _element.Start().ConfigureAwait(false);
+            await _element.Start().Await();
         }
     }
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DragonSpark.Compose;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Threading.Tasks;
 
@@ -14,7 +15,7 @@ public sealed class ServiceScopedDatabaseTransactions : ITransactions
 	{
 		var previous = _boundaries.Get();
 		var context  = previous.Provider.GetRequiredService<DbContext>();
-		await context.Database.BeginTransactionAsync().ConfigureAwait(false);
+		await context.Database.BeginTransactionAsync().Await();
 		var result = new ServiceScopedDatabaseTransaction(previous, new DatabaseTransaction(context));
 		return result;
 	}

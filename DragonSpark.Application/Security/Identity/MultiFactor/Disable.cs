@@ -12,7 +12,7 @@ sealed class Disable<T> : IDisable<T> where T : IdentityUser
 	public async ValueTask Get(T parameter)
 	{
 		using var users = _users.Get();
-		var       user  = await users.Subject.FindByIdAsync(parameter.Id.ToString()).ConfigureAwait(false);
+		var       user  = await users.Subject.FindByIdAsync(parameter.Id.ToString()).Await();
 		await users.Subject.SetTwoFactorEnabledAsync(user.Verify(), false);
 	}
 }

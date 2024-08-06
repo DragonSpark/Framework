@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using DragonSpark.Compose;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Entities.Editing;
 
@@ -20,7 +21,7 @@ public class EditExisting<T> : IEdit<T> where T : class
 		editor.Attach(parameter);
 		if (_reload)
 		{
-			await context.Entry(parameter).ReloadAsync().ConfigureAwait(false);
+			await context.Entry(parameter).ReloadAsync().Await();
 		}
 
 		return new(editor, parameter);

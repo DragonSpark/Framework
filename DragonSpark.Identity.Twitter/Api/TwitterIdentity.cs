@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using DragonSpark.Compose;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Tweetinvi;
 using Tweetinvi.Client.V2;
@@ -29,7 +30,7 @@ sealed class TwitterIdentity : ITwitterIdentity
 			TweetFields = _expansions,
 			UserFields  = _fields
 		};
-		var response = await _client.GetUserByNameAsync(parameters).ConfigureAwait(false);
+		var response = await _client.GetUserByNameAsync(parameters).Await();
 		var result   = response?.User?.Id;
 		return result;
 	}

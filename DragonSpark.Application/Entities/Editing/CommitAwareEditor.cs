@@ -20,8 +20,8 @@ sealed class CommitAwareEditor : IEditor
 		await _previous.Await();
 		if (_facade.CurrentTransaction is not null)
 		{
-			await _facade.CurrentTransaction.CommitAsync().ConfigureAwait(false);
-			await _facade.BeginTransactionAsync().ConfigureAwait(false);
+			await _facade.CurrentTransaction.CommitAsync().Await();
+			await _facade.BeginTransactionAsync().Await();
 		}
 	}
 

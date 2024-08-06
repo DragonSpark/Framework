@@ -19,7 +19,7 @@ public class Delay<T> : IOperation<T>
 
 	public async ValueTask Get(T parameter)
 	{
-		await Task.Delay(_wait).ConfigureAwait(false);
+		await Task.Delay(_wait).Await();
 		await _previous.Await(parameter);
 	}
 }

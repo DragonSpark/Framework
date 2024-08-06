@@ -25,7 +25,7 @@ public sealed class ProcessEvent : IAllocated<ProcessMessageEventArgs>
 		if (entry is not null)
 		{
 			var (key, handlers) = entry;
-			var message = await parameter.Message.Body.Verify().ToObjectAsync(key).ConfigureAwait(false);
+			var message = await parameter.Message.Body.Verify().ToObjectAsync(key).Await();
 			if (message is not null)
 			{
 				await _process.Await(new(message, handlers));

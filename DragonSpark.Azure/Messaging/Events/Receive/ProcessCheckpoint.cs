@@ -33,7 +33,7 @@ public sealed class ProcessCheckpoint : IOperation<ProcessEventArgs>
 		{
 			if (subject.HasValue)
 			{
-				await subject.Value.UpdateCheckpointAsync().ConfigureAwait(false);
+				await subject.Value.UpdateCheckpointAsync().Await();
 			}
 		}
 		catch
@@ -56,7 +56,7 @@ public sealed class ProcessCheckpoint : IOperation<ProcessEventArgs>
 		if (now - last >= TimeSpan.FromMinutes(1))
 		{
 			_store.Execute(new(now, parameter));
-			await parameter.UpdateCheckpointAsync().ConfigureAwait(false);
+			await parameter.UpdateCheckpointAsync().Await();
 		}
 		else
 		{

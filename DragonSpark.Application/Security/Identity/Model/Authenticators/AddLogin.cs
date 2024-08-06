@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using DragonSpark.Compose;
+using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Model.Authenticators;
@@ -13,7 +14,7 @@ sealed class AddLogin<T> : IAddLogin<T> where T : IdentityUser
 	{
 		var (information, subject) = parameter;
 		using var users  = _users.Get();
-		var       result = await users.Subject.AddLoginAsync(subject, information).ConfigureAwait(false);
+		var       result = await users.Subject.AddLoginAsync(subject, information).Await();
 		return result;
 	}
 }

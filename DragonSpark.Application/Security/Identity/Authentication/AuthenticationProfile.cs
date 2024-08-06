@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using DragonSpark.Compose;
+using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Authentication;
@@ -12,7 +13,7 @@ sealed class AuthenticationProfile<T> : IAuthenticationProfile where T : class
 	public async ValueTask<ExternalLoginInfo?> Get()
 	{
 		using var authentication = _authentications.Get();
-		var       result         = await authentication.Subject.GetExternalLoginInfoAsync().ConfigureAwait(false);
+		var       result         = await authentication.Subject.GetExternalLoginInfoAsync().Await();
 		return result;
 	}
 }

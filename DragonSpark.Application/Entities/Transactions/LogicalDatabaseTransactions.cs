@@ -18,7 +18,7 @@ public sealed class LogicalDatabaseTransactions : ITransactions
 	public async ValueTask<ITransaction> Get()
 	{
 		var context = _context.Get().Verify();
-		await context.Database.BeginTransactionAsync().ConfigureAwait(false);
+		await context.Database.BeginTransactionAsync().Await();
 		return new RequiredDatabaseTransaction(context);
 	}
 }

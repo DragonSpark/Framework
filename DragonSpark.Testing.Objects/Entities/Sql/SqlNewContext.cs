@@ -26,12 +26,12 @@ public sealed class SqlNewContext<T> : INewContext<T>, IAsyncDisposable where T 
 		if (!await context.Database.GetService<IDatabaseCreator>()
 		                  .To<RelationalDatabaseCreator>()
 		                  .ExistsAsync()
-		                  .ConfigureAwait(false))
+		                  .Await())
 		{
-			await context.Database.EnsureDeletedAsync().ConfigureAwait(false);
+			await context.Database.EnsureDeletedAsync().Await();
 		}
 
-		await context.Database.EnsureCreatedAsync().ConfigureAwait(false);
+		await context.Database.EnsureCreatedAsync().Await();
 		return this;
 	}
 

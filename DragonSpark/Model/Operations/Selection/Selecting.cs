@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Selection;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Selection;
 using System;
 using System.Threading.Tasks;
 
@@ -28,9 +29,9 @@ public class Selecting<TIn, TFrom, TTo> : ISelecting<TIn, TTo>
 	public async ValueTask<TTo> Get(TIn parameter)
 	{
 		var from   = _from(parameter);
-		var first  = from.IsCompletedSuccessfully ? from.Result : await from.ConfigureAwait(false);
+		var first  = from.IsCompletedSuccessfully ? from.Result : await from.Await();
 		var to     = _to(first);
-		var result = to.IsCompletedSuccessfully ? to.Result : await to.ConfigureAwait(false);
+		var result = to.IsCompletedSuccessfully ? to.Result : await to.Await();
 		return result;
 	}
 }

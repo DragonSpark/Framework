@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Operations.Allocated;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations.Allocated;
 using DragonSpark.Model.Sequences;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -15,6 +16,6 @@ sealed class DefaultToArray<T> : IToArray<T>
 	public async ValueTask<Array<T>> Get(Token<IQueryable<T>> parameter)
 	{
 		var (queryable, token) = parameter;
-		return await queryable.ToArrayAsync(token).ConfigureAwait(false);
+		return await queryable.ToArrayAsync(token).Await();
 	}
 }

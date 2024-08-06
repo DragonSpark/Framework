@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DragonSpark.Compose;
+using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations.Allocated;
@@ -16,6 +17,6 @@ public class AllocatedAppended : IAllocated
 	public async Task Get()
 	{
 		await _previous();
-		await _current().ConfigureAwait(false);
+		await _current().Await();
 	}
 }

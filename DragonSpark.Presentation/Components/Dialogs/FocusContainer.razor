@@ -1,4 +1,5 @@
-﻿@inject IJSRuntime Runtime
+﻿@using DragonSpark.Compose
+@inject IJSRuntime Runtime
 
 <div @attributes="@AdditionalAttributes" @onclick="@OnClick">
     @ChildContent(Identifier)
@@ -19,7 +20,7 @@
         if (!string.IsNullOrEmpty(Identifier))
         {
             var element = await Runtime.InvokeAsync<IJSObjectReference>("document.getElementById", Identifier);
-            await element.InvokeVoidAsync("focus").ConfigureAwait(false);
+            await element.InvokeVoidAsync("focus").Await();
         }
     }
 

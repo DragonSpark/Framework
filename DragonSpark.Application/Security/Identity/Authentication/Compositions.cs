@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Application.Security.Identity.Claims.Compile;
+using DragonSpark.Compose;
 using DragonSpark.Model.Operations.Results;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
@@ -30,7 +31,7 @@ sealed class Compositions : IResulting<Composition?>
 	{
 		var authentication = await _accessor.Get()
 		                                    .AuthenticateAsync(IdentityConstants.ApplicationScheme)
-		                                    .ConfigureAwait(false);
+		                                    .Await();
 		var identity = authentication.Principal;
 		var result = identity is not null
 			             ? new(authentication.Properties,

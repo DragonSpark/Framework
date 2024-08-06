@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Operations.Results;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations.Results;
 using DragonSpark.Model.Sequences;
 using NetFabric.Hyperlinq;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ public class Schemes<T> : IResulting<Array<string>> where T : class
 	public async ValueTask<Array<string>> Get()
 	{
 		using var authentication = _authentication.Get();
-		var       schemes = await authentication.Subject.GetExternalAuthenticationSchemesAsync().ConfigureAwait(false);
+		var       schemes = await authentication.Subject.GetExternalAuthenticationSchemesAsync().Await();
 		var       result = schemes.AsValueEnumerable().Select(x => x.Name).ToArray();
 		return result;
 	}

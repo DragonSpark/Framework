@@ -113,7 +113,7 @@ public class Validating : ComponentBase, IDisposable
 			{
 				var task = StartUpdate();
 				_list.Execute(task);
-				await task.ConfigureAwait(false);
+				await task.Await();
 			}
 		}
 	}
@@ -138,7 +138,7 @@ public class Validating : ComponentBase, IDisposable
 			context.NotifyValidationStateChanged();
 
 			var callback = IsEmpty() ? Valid : Invalid;
-			await callback.Invoke().ConfigureAwait(false);
+			await callback.Invoke().Await();
 		}
 	}
 

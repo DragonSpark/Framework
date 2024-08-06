@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Sequences;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Sequences;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
@@ -16,7 +17,7 @@ public class EntityInitializer<T> : IInitializer where T : class
 		foreach (var entity in _entities.Open())
 		{
 			set.Add(entity);
-			await parameter.SaveChangesAsync().ConfigureAwait(false);
+			await parameter.SaveChangesAsync().Await();
 		}
 	}
 }

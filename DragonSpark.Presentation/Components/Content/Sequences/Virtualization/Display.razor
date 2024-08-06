@@ -111,7 +111,7 @@
 
         if (_items.Count < (int)page.Total.Value())
         {
-            await Notify().ConfigureAwait(false);
+            await Notify().Await();
         }
         else
         {
@@ -123,7 +123,7 @@
     {
         if (_instance is not null)
         {
-            await _instance.InvokeVoidAsync("onNewItems").ConfigureAwait(false);
+            await _instance.InvokeVoidAsync("onNewItems").Await();
         }
         else
         {
@@ -138,12 +138,12 @@
         {
             if(_notify.Down())
             {
-                await Notify().ConfigureAwait(false);
+                await Notify().Await();
             }
 
             if (_reload.Down())
             {
-                await LoadMoreItems().ConfigureAwait(false);
+                await LoadMoreItems().Await();
             }
         }
     }

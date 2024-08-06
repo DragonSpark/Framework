@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Operations.Selection;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations.Selection;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Authentication.State;
@@ -14,7 +15,7 @@ sealed class Stamp<T> : ISelecting<T, string?> where T : IdentityUser
 		using var users   = _users.Get();
 		var       manager = users.Subject;
 		return manager.SupportsUserSecurityStamp
-			       ? await manager.GetSecurityStampAsync(parameter).ConfigureAwait(false)
+			       ? await manager.GetSecurityStampAsync(parameter).Await()
 			       : null;
 	}
 }

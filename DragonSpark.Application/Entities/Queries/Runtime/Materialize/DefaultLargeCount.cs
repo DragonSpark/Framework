@@ -15,7 +15,7 @@ sealed class DefaultLargeCount<T> : ILargeCount<T>
 	public async ValueTask<ulong> Get(Token<IQueryable<T>> parameter)
 	{
 		var (subject, token) = parameter;
-		var count  = await subject.LongCountAsync(token).ConfigureAwait(false);
+		var count  = await subject.LongCountAsync(token).Await();
 		var result = count.Grade();
 		return result;
 	}

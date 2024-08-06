@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using DragonSpark.Compose;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Radzen;
 using System.Threading.Tasks;
@@ -21,7 +22,7 @@ public sealed class EditContextPublisher : ComponentBase
 
 		if (change)
 		{
-			await Updated.Invoke(EditContext).ConfigureAwait(false);
+			await Updated.Invoke(EditContext).Await();
 		}
 	}
 }

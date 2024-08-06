@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Runtime.Operations.Execution;
@@ -13,7 +14,7 @@ sealed class ProcessOperations : IOperation
 	{
 		while (_queue.TryDequeue(out var operation))
 		{
-			await operation().ConfigureAwait(false);
+			await operation().Await();
 		}
 
 		_queue.Clear();

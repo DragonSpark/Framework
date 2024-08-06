@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using DragonSpark.Compose;
+using JetBrains.Annotations;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -14,7 +15,7 @@ sealed class StateUser<T> : IStateUser<T> where T : IdentityUser
 	public async ValueTask<T?> Get(ClaimsPrincipal parameter)
 	{
 		using var users  = _users.Get();
-		var       result = await users.Subject.GetUserAsync(parameter).ConfigureAwait(false);
+		var       result = await users.Subject.GetUserAsync(parameter).Await();
 		return result;
 	}
 }

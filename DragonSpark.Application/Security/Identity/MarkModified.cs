@@ -20,9 +20,9 @@ sealed class MarkModified<T> : IMarkModified<T> where T : IdentityUser
 	public async ValueTask Get(T parameter)
 	{
 		using var users   = _users.Get();
-		var       subject = await users.Subject.FindByIdAsync(parameter.Id.ToString()).ConfigureAwait(false);
+		var       subject = await users.Subject.FindByIdAsync(parameter.Id.ToString()).Await();
 		var       user    = subject.Verify();
 		user.Modified = _time.Get();
-		await users.Subject.UpdateAsync(user).ConfigureAwait(false);
+		await users.Subject.UpdateAsync(user).Await();
 	}
 }

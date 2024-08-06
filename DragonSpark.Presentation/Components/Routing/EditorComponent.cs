@@ -49,7 +49,7 @@ public class EditorComponent : NavigationAwareComponent
 		var focused = await Focus.GetFocusedElementAsync();
 		if (focused.Account() is not null)
 		{
-			await focused.InvokeVoidAsync("blur").ConfigureAwait(false);
+			await focused.InvokeVoidAsync("blur").Await();
 		}
 		return !HasChanges();
 	}

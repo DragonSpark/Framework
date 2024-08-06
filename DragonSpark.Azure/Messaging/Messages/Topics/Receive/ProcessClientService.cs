@@ -1,4 +1,5 @@
 ﻿using Azure.Messaging.ServiceBus;
+using DragonSpark.Compose;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading;
@@ -32,7 +33,7 @@ public class ProcessClientService : IHostedService
 
 	public async Task StopAsync(CancellationToken cancellationToken)
 	{
-		await _client.StopProcessingAsync(cancellationToken).ConfigureAwait(false);
+		await _client.StopProcessingAsync(cancellationToken).Await();
 		_client.ProcessMessageAsync -= _process;
 		_client.ProcessErrorAsync   -= _error;
 	}

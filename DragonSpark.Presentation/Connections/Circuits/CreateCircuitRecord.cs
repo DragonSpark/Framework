@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Operations.Selection;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations.Selection;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.Circuits;
@@ -19,7 +20,7 @@ sealed class CreateCircuitRecord : ISelecting<Circuit, CircuitRecord>
 
 	public async ValueTask<CircuitRecord> Get(Circuit parameter)
 	{
-		var state = await _authentication.GetAuthenticationStateAsync().ConfigureAwait(false);
+		var state = await _authentication.GetAuthenticationStateAsync().Await();
 		return new(parameter, _navigation, state.User);
 	}
 }

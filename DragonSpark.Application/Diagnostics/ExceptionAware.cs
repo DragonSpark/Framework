@@ -26,7 +26,7 @@ public class ExceptionAware<T> : IOperation<T>
 	{
 		try
 		{
-			await _previous(parameter).ConfigureAwait(false);
+			await _previous(parameter).Await();
 		}
 		catch (Exception e)
 		{

@@ -31,7 +31,7 @@ sealed class ValidContext : IDepending<EditContext>
 		var list = _list(parameter);
 		if (parameter.Validate())
 		{
-			await Process(list).ConfigureAwait(false);
+			await Process(list).Await();
 
 			return parameter.IsValid();
 		}

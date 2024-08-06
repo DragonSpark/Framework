@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using DragonSpark.Compose;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Authentication.Persist;
 
@@ -18,6 +19,6 @@ sealed class PersistSignIn<T> : IPersistSignIn<T> where T : IdentityUser
 		var (user, claims) = parameter;
 
 		using var authentication = _authentication.Get();
-		await authentication.Subject.SignInWithClaimsAsync(user, _persist, claims).ConfigureAwait(false);	
+		await authentication.Subject.SignInWithClaimsAsync(user, _persist, claims).Await();	
 	}
 }

@@ -30,7 +30,7 @@ sealed class RefreshUser<T> : IRefreshUser where T : IdentityUser
 				_clear.Execute(number.Value);
 			}
 			var user = await authentication.Users.FindByIdAsync(authentication.Users.GetUserId(parameter).Verify())
-			                               .ConfigureAwait(false);
+			                               .Await();
 			await _refresh.Await(user.Verify());
 		}
 	}

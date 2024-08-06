@@ -30,7 +30,7 @@ sealed class RadzenPaging<T> : IRadzenPaging<T>
 
 		var current      = _pages.Get(input);
 		var successfully = current.IsCompletedSuccessfully;
-		var evaluate     = successfully ? current.Result : await current.ConfigureAwait(false);
+		var evaluate     = successfully ? current.Result : await current.Await();
 		Current = evaluate;
 		Count   = evaluate.Total ?? evaluate.Count.Grade();
 	}

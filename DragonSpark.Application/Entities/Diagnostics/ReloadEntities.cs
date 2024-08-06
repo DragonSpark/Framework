@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ sealed class ReloadEntities : IOperation<(DbUpdateConcurrencyException, TimeSpan
 		var (exception, _) = parameter;
 		foreach (var entry in exception.Entries)
 		{
-			await entry.ReloadAsync().ConfigureAwait(false);
+			await entry.ReloadAsync().Await();
 		}
 	}
 }

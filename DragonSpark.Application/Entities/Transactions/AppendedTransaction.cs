@@ -29,7 +29,7 @@ public class AppendedTransaction : ITransaction
 
 	public async ValueTask DisposeAsync()
 	{
-		await _first.DisposeAsync().ConfigureAwait(false);
-		await _second.DisposeAsync().ConfigureAwait(false);
+		await _first.DisposeAsync().Await();
+		await _second.DisposeAsync().Await();
 	}
 }

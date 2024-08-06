@@ -16,5 +16,5 @@ sealed class DetermineClientEntry : ISelecting<BlobClient, IStorageEntry?>
 	public DetermineClientEntry(ISelecting<BlobClient, DefaultStorageEntry> previous) => _previous = previous;
 
 	public async ValueTask<IStorageEntry?> Get(BlobClient parameter)
-		=> await parameter.ExistsAsync().ConfigureAwait(false) ? await _previous.Await(parameter) : default;
+		=> await parameter.ExistsAsync().Await() ? await _previous.Await(parameter) : default;
 }

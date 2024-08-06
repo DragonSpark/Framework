@@ -17,7 +17,7 @@ sealed class Adapters<T> : IAdapters where T : IdentityUser
 
 	public async Task<AuthenticationState> Get(Task<AuthenticationState> parameter)
 	{
-		var previous = await parameter.ConfigureAwait(false);
+		var previous = await parameter.Await();
 		var user     = previous.User;
 		var (state, _) = await _views.Await(user);
 		var result = _state.Get(state);

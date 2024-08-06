@@ -33,7 +33,7 @@ public class ProcessClientService : IHostedService
 
 	public async Task StopAsync(CancellationToken cancellationToken)
 	{
-		await _client.StopProcessingAsync(cancellationToken).ConfigureAwait(false);
+		await _client.StopProcessingAsync(cancellationToken).Await();
 		_client.ProcessEventAsync -= _process;
 		_client.ProcessErrorAsync -= _error;
 	}

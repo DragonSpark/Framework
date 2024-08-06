@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Allocated;
 using System;
 using System.Threading.Tasks;
@@ -63,7 +64,7 @@ sealed class WorkerOperation<T> : IOperation
 		}
 		finally
 		{
-			await _complete().ConfigureAwait(false);
+			await _complete().Await();
 		}
 	}
 }

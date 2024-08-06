@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using DragonSpark.Compose;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Runtime;
@@ -13,6 +14,6 @@ public sealed class CopyToFile : ICopyToFile
 	{
 		var (source, destination) = parameter;
 		await using var result = File.OpenWrite(destination);
-		await source.CopyToAsync(result).ConfigureAwait(false);
+		await source.CopyToAsync(result).Await();
 	}
 }

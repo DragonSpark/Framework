@@ -23,7 +23,7 @@ public class Storing<TIn, TOut> : ISelecting<TIn, TOut>
 			return result;
 		}
 
-		var source = await _source(parameter).ConfigureAwait(false);
+		var source = await _source(parameter).Await();
 		_store.Assign(parameter, source);
 		return source;
 	}

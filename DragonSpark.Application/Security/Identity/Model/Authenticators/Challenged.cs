@@ -20,11 +20,11 @@ sealed class Challenged<T> : IChallenged<T> where T : IdentityUser
 	public async ValueTask<ChallengeResult<T>?> Get(ClaimsPrincipal parameter)
 	{
 		using var authentication = _authentications.Get();
-		var       user           = await authentication.Users.GetUserAsync(parameter).ConfigureAwait(false);
+		var       user           = await authentication.Users.GetUserAsync(parameter).Await();
 		if (user != null)
 		{
 			var name = authentication.Users.GetUserId(parameter);
-			var login = await authentication.Subject.GetExternalLoginInfoAsync(name).ConfigureAwait(false)
+			var login = await authentication.Subject.GetExternalLoginInfoAsync(name).Await()
 			            ?? throw new
 				            InvalidOperationException($"Unexpected error occurred loading external login info for user with ID '{user.Id}'.");
 			var result = await _add.Await(new(login, user));

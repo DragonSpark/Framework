@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Operations.Selection;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations.Selection;
 using DragonSpark.Model.Selection;
 using Microsoft.Extensions.Caching.Distributed;
 using System.Threading.Tasks;
@@ -20,7 +21,7 @@ sealed class Read<T> : ISelecting<string, T?>
 
 	public async ValueTask<T?> Get(string parameter)
 	{
-		var content = await _store.GetStringAsync(parameter).ConfigureAwait(false);
+		var content = await _store.GetStringAsync(parameter).Await();
 		return content is not null ? _deserialize.Get(content) : default;
 	}
 }

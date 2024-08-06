@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Sequences;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Sequences;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
@@ -13,6 +14,6 @@ public class EntityRangeInitializer<T> : IInitializer where T : class
 	public async ValueTask Get(DbContext parameter)
 	{
 		parameter.Set<T>().AddRange(_entities);
-		await parameter.SaveChangesAsync().ConfigureAwait(false);
+		await parameter.SaveChangesAsync().Await();
 	}
 }

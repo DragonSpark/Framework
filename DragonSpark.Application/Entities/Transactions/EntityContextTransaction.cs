@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
@@ -14,7 +15,7 @@ sealed class EntityContextTransaction : ITransaction
 
 	public async ValueTask Get()
 	{
-		await _context.SaveChangesAsync().ConfigureAwait(false);
+		await _context.SaveChangesAsync().Await();
 	}
 
 	public ValueTask DisposeAsync() => ValueTask.CompletedTask;

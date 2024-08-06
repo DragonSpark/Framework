@@ -27,7 +27,7 @@ sealed class ExistAwareSettingAccessor : ISettingAccessor
 	{
 		try
 		{
-			return await _previous.Get(parameter).ConfigureAwait(false);
+			return await _previous.Get(parameter).Await();
 		}
 		catch (SqlException e) when (e.Message.StartsWith($"Invalid object name '{nameof(Setting)}'"))
 		{

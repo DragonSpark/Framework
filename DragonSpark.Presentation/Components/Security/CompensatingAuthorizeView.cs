@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components.Authorization;
+﻿using DragonSpark.Compose;
+using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Rendering;
 using System.Threading.Tasks;
 
@@ -11,7 +12,7 @@ public sealed class CompensatingAuthorizeView : AuthorizeView
 	protected override async Task OnParametersSetAsync()
 	{
 		Ready = false;
-		await base.OnParametersSetAsync().ConfigureAwait(false);
+		await base.OnParametersSetAsync().Await();
 		Ready = true;
 	}
 

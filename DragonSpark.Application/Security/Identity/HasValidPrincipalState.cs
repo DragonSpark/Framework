@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Application.Security.Identity.Authentication;
+using DragonSpark.Compose;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -13,7 +14,7 @@ sealed class HasValidPrincipalState<T> : IHasValidPrincipalState where T : class
 	public async ValueTask<bool> Get(ClaimsPrincipal parameter)
 	{
 		using var session = _authentications.Get();
-		var       user    = await session.Subject.ValidateSecurityStampAsync(parameter).ConfigureAwait(false);
+		var       user    = await session.Subject.ValidateSecurityStampAsync(parameter).Await();
 		var       result  = user != null;
 		return result;
 	}

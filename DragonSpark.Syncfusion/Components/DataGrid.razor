@@ -116,7 +116,7 @@
         _empty = EmptyElementsTemplate.Accept;
         if (_subject?.IsEmpty() ?? false)
         {
-            await Empty.Invoke().ConfigureAwait(false);
+            await Empty.Invoke().Await();
         }
     }
 
@@ -126,15 +126,15 @@
         {
             case Action.BeginEdit:
                 var allow = new Allow<T>(parameter.Data);
-                await Editing.Invoke(allow).ConfigureAwait(false);
+                await Editing.Invoke(allow).Await();
                 parameter.Cancel = !allow.Get();
                 break;
             case Action.Add:
-                await Created.Invoke(parameter.Data).ConfigureAwait(false);
+                await Created.Invoke(parameter.Data).Await();
                 break;
             case Action.Save:
             case Action.Delete:
-                await Updated.Invoke(new(parameter.Data, parameter.Action)).ConfigureAwait(false);
+                await Updated.Invoke(new(parameter.Data, parameter.Action)).Await();
                 break;
         }
     }
@@ -143,7 +143,7 @@
     {
         _empty = ProblemTemplate.Accept;
         await Exceptions.Get(new(ReportedType ?? GetType(), parameter.Error));
-        await Error.Invoke(parameter.Error).ConfigureAwait(false);
+        await Error.Invoke(parameter.Error).Await();
     }
 
 }

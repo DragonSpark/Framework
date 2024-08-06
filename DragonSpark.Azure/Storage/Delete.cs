@@ -1,4 +1,5 @@
 ﻿using Azure.Storage.Blobs;
+using DragonSpark.Compose;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Storage;
@@ -12,7 +13,7 @@ sealed class Delete : IDelete
 	public async ValueTask<bool> Get(string parameter)
 	{
 		var client   = _client.GetBlobClient(parameter);
-		var response = await client.DeleteIfExistsAsync().ConfigureAwait(false);
+		var response = await client.DeleteIfExistsAsync().Await();
 		return response.Value;
 	}
 }

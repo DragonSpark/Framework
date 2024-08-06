@@ -33,7 +33,7 @@
         if (firstRender)
         {
             _element = await Create.Await();
-            await Apply().ConfigureAwait(false);
+            await Apply().Await();
         }
     }
 

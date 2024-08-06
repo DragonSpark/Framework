@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DragonSpark.Compose;
+using System;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -29,7 +30,7 @@ sealed class ResourceQuery : IResourceQuery
 		try
 		{
 			var response = await client.SendAsync(new(HttpMethod.Head, parameter))
-			                           .ConfigureAwait(false);
+			                           .Await();
 			return response.IsSuccessStatusCode
 				       ? new ResourceQueryRecord(parameter, response.StatusCode, response.Content.Headers.ContentType)
 				       : null;

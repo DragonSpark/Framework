@@ -28,7 +28,7 @@ public sealed class StorageInitializer<T> : IHostInitializer where T : DbContext
 	{
 		await using var context = await parameter.Services.GetRequiredService<IDbContextFactory<T>>()
 		                                         .CreateDbContextAsync()
-		                                         .ConfigureAwait(false);
+		                                         .Await();
 
 		using var _ = _services.Assigned(parameter.Services);
 		foreach (var initializer in _initializers.Open())

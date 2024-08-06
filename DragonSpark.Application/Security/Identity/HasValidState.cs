@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Application.Security.Identity.Authentication;
+using DragonSpark.Compose;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity;
@@ -13,9 +14,9 @@ sealed class HasValidState<T> : IHasValidState<T> where T : IdentityUser
 	{
 		using var session = _authentications.Get();
 		var (authentication, users) = session;
-		var user = await users.FindByIdAsync(parameter.Id.ToString()).ConfigureAwait(false);
+		var user = await users.FindByIdAsync(parameter.Id.ToString()).Await();
 		var result = await authentication.ValidateSecurityStampAsync(user, parameter.SecurityStamp)
-		                                 .ConfigureAwait(false);
+		                                 .Await();
 		return result;
 	}
 }

@@ -28,7 +28,7 @@ public class OutputsAware<T> : IOperation<T> where T : IUserIdentity
 		await _previous.Await(parameter);
 		foreach (var key in _keys.Open())
 		{
-			await _output.EvictByTagAsync(key.Get(parameter), CancellationToken.None).ConfigureAwait(false);
+			await _output.EvictByTagAsync(key.Get(parameter), CancellationToken.None).Await();
 		}
 	}
 }
@@ -60,7 +60,7 @@ public class OutputsAware<TIn, T> : ISelecting<TIn, T> where TIn : IUserIdentity
 		{
 			foreach (var key in _keys.Open())
 			{
-				await _output.EvictByTagAsync(key.Get(parameter), CancellationToken.None).ConfigureAwait(false);
+				await _output.EvictByTagAsync(key.Get(parameter), CancellationToken.None).Await();
 			}
 		}
 

@@ -1,4 +1,5 @@
-﻿@using Microsoft.FluentUI.AspNetCore.Components
+﻿@using DragonSpark.Compose
+@using Microsoft.FluentUI.AspNetCore.Components
 @using Microsoft.FluentUI.AspNetCore.Components.Utilities
 
 @inherits FluentComponentBase
@@ -215,7 +216,7 @@
 
         if (isCanceled)
         {
-            await ValueChanged.Invoke(Value).ConfigureAwait(false);
+            await ValueChanged.Invoke(Value).Await();
         }
         else
         {
@@ -240,7 +241,7 @@
 
         if (isCanceled)
         {
-            await ValueChanged.Invoke(Value).ConfigureAwait(false);
+            await ValueChanged.Invoke(Value).Await();
         }
         else
         {
@@ -269,7 +270,7 @@
 
         await ValueChanged.InvokeAsync(targetIndex);
 
-        return await OnStepChangeHandlerAsync(args).ConfigureAwait(false);
+        return await OnStepChangeHandlerAsync(args).Await();
     }
 
     /// <summary />

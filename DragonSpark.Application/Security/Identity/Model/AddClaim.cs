@@ -29,7 +29,7 @@ public class AddClaim<T> : ISelecting<T, IdentityResult> where T : IdentityUser
 		using var edit   = await _edit.Get(parameter);
 		using var users  = _users.Get();
 		var       claim  = _claim(parameter);
-		var       result = await users.Subject.AddClaimAsync(parameter, claim).ConfigureAwait(false);
+		var       result = await users.Subject.AddClaimAsync(parameter, claim).Await();
 		return result;
 	}
 }

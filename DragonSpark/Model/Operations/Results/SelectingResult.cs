@@ -20,7 +20,7 @@ public class SelectingResult<TIn, TOut> : IResulting<TOut>
 	public async ValueTask<TOut> Get()
 	{
 		var previous = await _in();
-		var result   = await _select(previous).ConfigureAwait(false);
+		var result   = await _select(previous).Await();
 		return result;
 	}
 }

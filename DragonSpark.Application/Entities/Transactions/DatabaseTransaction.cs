@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System.Threading.Tasks;
@@ -22,11 +23,11 @@ sealed class DatabaseTransaction : ITransaction
 
 	public async ValueTask Get()
 	{
-		await _context.SaveChangesAsync().ConfigureAwait(false);
+		await _context.SaveChangesAsync().Await();
 		var transaction = _facade.CurrentTransaction;
 		if (transaction is not null)
 		{
-			await transaction.CommitAsync().ConfigureAwait(false);
+			await transaction.CommitAsync().Await();
 		}
 	}
 

@@ -36,7 +36,7 @@ sealed class BlockingEntryOperation : IOperation
 				var elapsed = DateTimeOffset.Now - captured;
 				if (elapsed < _duration)
 				{
-					await Task.Delay(_duration - elapsed).ConfigureAwait(false);
+					await Task.Delay(_duration - elapsed).Await();
 				}
 			}
 			finally
@@ -76,7 +76,7 @@ sealed class BlockingEntryOperation<T> : IOperation<T>
 				var elapsed = DateTimeOffset.Now - captured;
 				if (elapsed < _duration)
 				{
-					await Task.Delay(_duration - elapsed).ConfigureAwait(false);
+					await Task.Delay(_duration - elapsed).Await();
 				}
 			}
 			finally

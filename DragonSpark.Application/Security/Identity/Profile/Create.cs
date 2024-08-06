@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using DragonSpark.Compose;
+using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Profile;
@@ -13,7 +14,7 @@ sealed class Create<T> : ICreate<T> where T : class
 	{
 		var (_, user) = parameter;
 		using var users  = _users.Get();
-		var       result = await users.Subject.CreateAsync(user).ConfigureAwait(false);
+		var       result = await users.Subject.CreateAsync(user).Await();
 		return result;
 	}
 }

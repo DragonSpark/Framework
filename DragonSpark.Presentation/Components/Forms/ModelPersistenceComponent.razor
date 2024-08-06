@@ -43,12 +43,12 @@
             {
                 await ModelChanging.Invoke(Model);
                 Target.Execute(new(Model, content));
-                await ModelChanged.Invoke(Model).ConfigureAwait(false);
+                await ModelChanged.Invoke(Model).Await();
             }
             catch (Exception e)
             {
                 ProblemLoading.Execute(new(e, content));
-                await ErrorOccurred.Invoke().ConfigureAwait(false);
+                await ErrorOccurred.Invoke().Await();
             }
         }
     }
@@ -64,7 +64,7 @@
         catch (Exception e)
         {
             ProblemSaving.Execute(e);
-            await ErrorOccurred.Invoke().ConfigureAwait(false);
+            await ErrorOccurred.Invoke().Await();
         }
     }
 

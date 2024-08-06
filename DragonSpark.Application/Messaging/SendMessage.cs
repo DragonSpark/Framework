@@ -20,6 +20,6 @@ public class SendMessage<T> : IOperation<T>
 	{
 		var (to, title, body) = await _template.Await(parameter);
 
-		await _sender.SendEmailAsync(to, title, body).ConfigureAwait(false);
+		await _sender.SendEmailAsync(to, title, body).Await();
 	}
 }

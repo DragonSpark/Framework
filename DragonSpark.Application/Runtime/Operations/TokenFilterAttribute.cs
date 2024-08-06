@@ -19,7 +19,7 @@ public sealed class TokenFilterAttribute : ActionFilterAttribute
 	{
 		using (_store.Assigned(context.HttpContext.RequestAborted))
 		{
-			await base.OnActionExecutionAsync(context, next).ConfigureAwait(false);
+			await base.OnActionExecutionAsync(context, next).Await();
 		}
 	}
 }

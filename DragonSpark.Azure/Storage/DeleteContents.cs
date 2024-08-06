@@ -1,5 +1,6 @@
 ﻿using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
+using DragonSpark.Compose;
 using NetFabric.Hyperlinq;
 using System.Threading.Tasks;
 
@@ -20,7 +21,7 @@ sealed class DeleteContents : IDeleteContents
 			{
 				var response = await _client.GetBlobClient(item!.Name)
 				                            .DeleteIfExistsAsync(DeleteSnapshotsOption.IncludeSnapshots)
-				                            .ConfigureAwait(false);
+				                            .Await();
 				if (!response.Value)
 				{
 					return false;

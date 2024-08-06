@@ -22,8 +22,8 @@ sealed class AddLoginAwareCreate<T> : ICreate<T> where T : IdentityUser
 		{
 			var (login, user) = parameter;
 			using var users  = _users.Get();
-			var       local  = await users.Subject.FindByIdAsync(user.Id.ToString()).ConfigureAwait(false);
-			var       result = await users.Subject.AddLoginAsync(local.Verify(), login).ConfigureAwait(false);
+			var       local  = await users.Subject.FindByIdAsync(user.Id.ToString()).Await();
+			var       result = await users.Subject.AddLoginAsync(local.Verify(), login).Await();
 			return result;
 		}
 

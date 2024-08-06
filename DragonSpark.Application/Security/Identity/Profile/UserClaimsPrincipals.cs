@@ -17,8 +17,8 @@ public class UserClaimsPrincipals<T> : UserClaimsPrincipalFactory<T> where T : c
 
 	protected override async Task<ClaimsIdentity> GenerateClaimsAsync(T user)
 	{
-		var userId   = await UserManager.GetUserIdAsync(user).ConfigureAwait(false);
-		var userName = await UserManager.GetUserNameAsync(user).ConfigureAwait(false);
+		var userId   = await UserManager.GetUserIdAsync(user).Await();
+		var userName = await UserManager.GetUserNameAsync(user).Await();
 		var result = new ClaimsIdentity(_applicationName, Options.ClaimsIdentity.UserNameClaimType,
 		                                Options.ClaimsIdentity.RoleClaimType);
 		result.AddClaim(new(ClaimTypes.NameIdentifier, userId));
@@ -26,12 +26,12 @@ public class UserClaimsPrincipals<T> : UserClaimsPrincipalFactory<T> where T : c
 		if (UserManager.SupportsUserSecurityStamp)
 		{
 			result.AddClaim(new(Options.ClaimsIdentity.SecurityStampClaimType,
-			                    await UserManager.GetSecurityStampAsync(user).ConfigureAwait(false)));
+			                    await UserManager.GetSecurityStampAsync(user).Await()));
 		}
 
 		if (UserManager.SupportsUserClaim)
 		{
-			result.AddClaims(await UserManager.GetClaimsAsync(user).ConfigureAwait(false));
+			result.AddClaims(await UserManager.GetClaimsAsync(user).Await());
 		}
 
 		return result;

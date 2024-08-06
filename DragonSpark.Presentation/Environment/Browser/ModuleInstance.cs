@@ -1,4 +1,5 @@
-﻿using Microsoft.JSInterop;
+﻿using DragonSpark.Compose;
+using Microsoft.JSInterop;
 using System;
 using System.Threading.Tasks;
 
@@ -19,8 +20,8 @@ public class ModuleInstance : IAsyncDisposable
 
 	public async ValueTask DisposeAsync()
 	{
-		await _instance.InvokeVoidAsync(_method).ConfigureAwait(false);
-		await _instance.DisposeAsync().ConfigureAwait(false);
-		await _module.DisposeAsync().ConfigureAwait(false);
+		await _instance.InvokeVoidAsync(_method).Await();
+		await _instance.DisposeAsync().Await();
+		await _module.DisposeAsync().Await();
 	}
 }

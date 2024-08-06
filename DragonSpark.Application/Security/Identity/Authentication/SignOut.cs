@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Application.Security.Identity.Model;
+using DragonSpark.Compose;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -24,6 +25,6 @@ public sealed class SignOut<T> : ISignOut where T : class
 			_state.Execute(number.Value);
 		}
 
-		await authentication.Subject.SignOutAsync().ConfigureAwait(false);
+		await authentication.Subject.SignOutAsync().Await();
 	}
 }

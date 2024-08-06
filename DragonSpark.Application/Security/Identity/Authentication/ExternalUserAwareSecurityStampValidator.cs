@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Selection.Conditions;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Selection.Conditions;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -28,7 +29,7 @@ public sealed class ExternalUserAwareSecurityStampValidator : ISecurityStampVali
 		{
 			try
 			{
-				await _previous.ValidateAsync(context).ConfigureAwait(false);
+				await _previous.ValidateAsync(context).Await();
 			}
 			catch (ArgumentException)
 			{
@@ -38,6 +39,6 @@ public sealed class ExternalUserAwareSecurityStampValidator : ISecurityStampVali
 			return;
 		}
 
-		await _previous.ValidateAsync(context).ConfigureAwait(false);
+		await _previous.ValidateAsync(context).Await();
 	}
 }

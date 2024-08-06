@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Commands;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
 using System;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ public sealed class DisposingAny : IOperation<object>
 	{
 		if (parameter is IAsyncDisposable disposable)
 		{
-			await disposable.DisposeAsync().ConfigureAwait(false);
+			await disposable.DisposeAsync().Await();
 		}
 		else
 		{

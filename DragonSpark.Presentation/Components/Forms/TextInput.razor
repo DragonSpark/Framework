@@ -171,7 +171,7 @@
         if (_focus.Down())
         {
             await Task.Delay(250);
-            await Focus.FocusElementAsync(RefBack.Current).ConfigureAwait(false);
+            await Focus.FocusElementAsync(RefBack.Current).Await();
         }
     }
 
@@ -206,7 +206,7 @@
             _timer.Stop();
         }
 
-        await OnFocusOut.Invoke(parameter).ConfigureAwait(false);
+        await OnFocusOut.Invoke(parameter).Await();
     }
 
     public void Dispose()
