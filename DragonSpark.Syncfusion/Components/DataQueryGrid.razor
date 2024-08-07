@@ -35,6 +35,8 @@
           Updated="@Updated"
           Editing="@Editing"
           Created="@Created"
+          Ready="@Ready"
+          Empty="@Empty"
           @attributes="@AdditionalAttributes">
     <ChildContent>
         <Syncfusion.Blazor.Data.SfDataManager Adaptor="Adaptors.CustomAdaptor">
@@ -90,6 +92,12 @@
 
     [Parameter]
     public EventCallback<T> Created { get; set; }
+
+    [Parameter]
+    public EventCallback Ready { get; set; }
+
+    [Parameter]
+    public EventCallback Empty { get; set; }
 
     public Task Refresh() => _subject?.Refresh() ?? Task.CompletedTask;
 

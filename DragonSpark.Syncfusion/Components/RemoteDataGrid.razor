@@ -29,8 +29,9 @@
           Updated="@Updated"
           Editing="@Editing"
           Created="@Created"
+          Ready="@Ready"
           Empty="@Empty"
-                                                     @attributes="@AdditionalAttributes">
+          @attributes="@AdditionalAttributes">
     <ChildContent>
         <Syncfusion.Blazor.Data.SfDataManager HttpClientInstance="@Client" Url="@Address" Adaptor="Adaptors.ODataV4Adaptor" />
 
@@ -116,6 +117,9 @@
 
     [Parameter]
     public EventCallback<T> Created { get; set; }
+
+    [Parameter]
+    public EventCallback Ready { get; set; }
 
     [Parameter]
     public EventCallback Empty { get; set; }

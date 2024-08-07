@@ -1,0 +1,21 @@
+﻿@using DragonSpark.Presentation.Components.Content.Templates
+<div class="@($"d-{(Enabled ? "none" : "block")}")">
+    @ChildContent
+</div>
+
+@if (Enabled)
+{
+    @LoadingTemplate
+}
+
+@code {
+
+    [Parameter]
+    public bool Enabled { get; set; }
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
+}

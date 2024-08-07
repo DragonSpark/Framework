@@ -1,6 +1,7 @@
 ﻿@using BlazorPro.BlazorSize
 @using DragonSpark.Compose
 @using DragonSpark.Presentation
+@using DragonSpark.Presentation.Components
 @using DragonSpark.Presentation.Components.Content.Templates
 @using DragonSpark.SyncfusionRendering.Entities
 @using Syncfusion.Blazor.Grids
@@ -28,7 +29,7 @@
               LoadingTemplate="@LoadingTemplate"
               @attributes="@AdditionalAttributes">
 
-    <GridTemplates EmptyRecordTemplate="@_empty" />
+    <GridTemplates EmptyRecordTemplate="@_fragment" />
     <GridEvents TValue="T" DataBound="@OnDataBound" OnActionBegin="@OnActionBegin" OnActionFailure="@OnFailure" />
 
     @if (ChildContent is not null)
@@ -38,13 +39,15 @@
 </AdaptiveGrid>
 
 @code {
-    readonly Model.Results.Switch _update = new(true);
-    RenderFragment<EmptyRecordTemplateContext>? _empty;
+    readonly Model.Results.Switch _update = new(true), _ready = new();
+    RenderFragment<EmptyRecordTemplateContext>? _fragment;
     AdaptiveGrid<T>? _subject;
+    EventCallback _empty;
 
     protected override void OnInitialized()
     {
-        _empty = LoadingTemplate.Accept;
+        _empty = EmptyCallback.Default.Get(this);
+        _fragment = LoadingTemplate.Accept;
         base.OnInitialized();
     }
 
@@ -107,17 +110,19 @@
     public EventCallback<Exception> Error { get; set; }
 
     [Parameter]
+    public EventCallback Ready { get; set; }
+
+    [Parameter]
     public EventCallback Empty { get; set; }
 
     public Task Refresh() => _subject?.Refresh() ?? Task.CompletedTask;
 
-    async Task OnDataBound(object parameter)
+    Task OnDataBound(object parameter)
     {
-        _empty = EmptyElementsTemplate.Accept;
-        if (_subject?.IsEmpty() ?? false)
-        {
-            await Empty.Invoke().Await();
-        }
+        _fragment = EmptyElementsTemplate.Accept;
+        var subject  = _subject.Verify();
+        var callback = subject.IsEmpty() ? Empty : _ready.Up() ? Ready : _empty;
+        return callback.Invoke();
     }
 
     async Task OnActionBegin(ActionEventArgs<T> parameter)
@@ -141,7 +146,7 @@
 
     async Task OnFailure(FailureEventArgs parameter)
     {
-        _empty = ProblemTemplate.Accept;
+        _fragment = ProblemTemplate.Accept;
         await Exceptions.Get(new(ReportedType ?? GetType(), parameter.Error));
         await Error.Invoke(parameter.Error).Await();
     }

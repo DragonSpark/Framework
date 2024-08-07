@@ -1,13 +1,6 @@
-﻿@if (Enabled)
-{
-    @ChildContent
-}
-else
-{
-<fieldset disabled="true">
+﻿<fieldset disabled="@(!Enabled)">
     @ChildContent
 </fieldset>
-}
 
 @code {
 

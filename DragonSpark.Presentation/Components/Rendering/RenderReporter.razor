@@ -6,6 +6,9 @@
     [Parameter]
     public string Identifier { get; set; } = string.Empty;
 
+    [Parameter]
+    public DateTimeOffset Tag { get; set; }
+
     protected override void OnParametersSet()
     {
         Logger.LogDebug("{Method}: {Identifier}", nameof(OnParametersSet), Identifier);

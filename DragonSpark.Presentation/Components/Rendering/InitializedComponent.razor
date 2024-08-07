@@ -1,0 +1,7 @@
+﻿@code {
+    protected override Task OnInitializedAsync()
+        => Initialized.HasDelegate ? Initialized.InvokeAsync() : base.OnInitializedAsync();
+
+    [Parameter]
+    public EventCallback Initialized { get; set; }
+}
