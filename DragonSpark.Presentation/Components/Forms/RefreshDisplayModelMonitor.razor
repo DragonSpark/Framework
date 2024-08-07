@@ -1,6 +1,4 @@
-﻿<CallbackRenderGate Context="callbacks">
-    <FieldModelMonitor Model="@Model" Changed="@callbacks.Register(_empty)" />
-</CallbackRenderGate>
+﻿<FieldModelMonitor Model="@Model" AssumeEditContextModel="false" Changed="@_empty" />
 
 @ChildContent
 

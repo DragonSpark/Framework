@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Forms;
 
-public sealed class FieldMonitor<T> : FieldMonitorBase
+public sealed class FieldValueMonitor<T> : FieldNameMonitorBase
 {
 	[Parameter]
 	public EventCallback<T> Changed { get; set; }

@@ -1,6 +1,4 @@
-﻿<CallbackRenderGate Context="callbacks">
-    <DragonSpark.Presentation.Components.Forms.FieldNameMonitor Model="@Model" Updated="@callbacks.Register(_empty)" />
-</CallbackRenderGate>
+﻿<FieldNameMonitor Model="@Model" FieldName="@FieldName" Updated="@_empty" />
 
 @ChildContent
 
@@ -15,6 +13,9 @@
 
     [Parameter]
     public object? Model { get; set; }
+
+    [Parameter]
+    public string FieldName { get; set; } = string.Empty;
 
     [Parameter]
     public RenderFragment ChildContent { get; set; } = default!;

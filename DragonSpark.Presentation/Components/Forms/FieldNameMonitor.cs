@@ -1,3 +1,3 @@
 ﻿namespace DragonSpark.Presentation.Components.Forms;
 
-public sealed class FieldNameMonitor : FieldMonitorBase;
+public sealed class FieldNameMonitor : FieldNameMonitorBase;

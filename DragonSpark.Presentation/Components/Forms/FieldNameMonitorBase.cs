@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Forms;
 
-public abstract class FieldMonitorBase : ComponentBase, IDisposable
+public abstract class FieldNameMonitorBase : ComponentBase, IDisposable
 {
 	readonly Switch _update = new();
 
