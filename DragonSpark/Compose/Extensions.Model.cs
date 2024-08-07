@@ -106,6 +106,12 @@ public static partial class ExtensionMethods
 		return result;
 	}
 
+	public static Switch Switched(this Switch @this)
+	{
+		@this.Execute(!@this.Get());
+		return @this;
+	}
+
 	public static bool Up(this IMutable<bool> @this)
 	{
 		var result = !@this.Get();

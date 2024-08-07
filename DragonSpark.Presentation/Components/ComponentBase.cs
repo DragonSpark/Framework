@@ -15,7 +15,7 @@ public class ComponentBase : Microsoft.AspNetCore.Components.ComponentBase
 
 	protected override Task OnInitializedAsync() => Execute.Get(GetType(), Initialize()).AsTask();
 
-	protected virtual ValueTask Initialize() => Task.CompletedTask.ToOperation();
+	protected virtual ValueTask Initialize() => ValueTask.CompletedTask;
 
 	protected virtual ValueTask RefreshState() => DefaultRefreshState();
 

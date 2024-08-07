@@ -25,43 +25,44 @@
                 }
             </div>
             <DragonSpark.Presentation.Components.State.RedrawWhenActivityMonitorUpdates>
+                @*TODO*@
+                <RenderReporter Identifier="@(GetType().FullName)" Tag="@DateTimeOffset.Now" />
                 <div class="fluent-wizard-buttons"
                      border-inside=@Border.HasFlag(WizardBorder.Inside)>
-                    @if (ButtonTemplate == null)
+                    @if (ButtonTemplate is not null)
                     {
-                        string buttonWidth = "80px;";
-
+                        @ButtonTemplate(Value)
+                    }
+                    else
+                    {
+                        const string width = "width: 80px;";
                         @if (Value > 0)
                         {
-                            <FluentButton Appearance="Appearance.Neutral"
-                                          Style="@($"width: {buttonWidth};")"
-                                          OnClick="@callbacks.Register(OnPreviousHandlerAsync)" Disabled="@Active">
+                            <FluentButton Appearance="Appearance.Neutral" Style="@width" OnClick="@callbacks.Register(OnPreviousHandlerAsync)">
                                 @LabelButtonPrevious
                             </FluentButton>
                         }
 
                         <span style="margin-right: 10px"></span>
 
-                        @if (Value < _steps.Count - 1)
+                        @if (!Active)
                         {
-                            <FluentButton Appearance="Appearance.Accent"
-                                          Style="@($"width: {buttonWidth};")"
-                                          OnClick="@callbacks.Register(OnNextHandlerAsync)" Disabled="@Active">
-                                @LabelButtonNext
-                            </FluentButton>
+                            <ForcedRedrawComponent>
+                                @if (Value < _steps.Count - 1)
+                                {
+                                    <FluentButton Appearance="@Appearance.Accent" Style="@width" OnClick="@callbacks.Register(OnNextHandlerAsync)" Disabled="@Active">
+                                        @LabelButtonNext
+                                    </FluentButton>
+                                }
+                                else
+                                {
+                                    <FluentButton Appearance="Appearance.Accent" Style="@width"
+                                                  OnClick="callbacks.Register(OnFinishHandlerAsync)" Disabled="@Active">
+                                        @LabelButtonDone
+                                    </FluentButton>
+                                }
+                            </ForcedRedrawComponent>
                         }
-                        else
-                        {
-                            <FluentButton Appearance="Appearance.Accent"
-                                          Style="@($"width: {buttonWidth};")"
-                                          OnClick="callbacks.Register(OnFinishHandlerAsync)" Disabled="@Active">
-                                @LabelButtonDone
-                            </FluentButton>
-                        }
-                    }
-                    else
-                    {
-                        @ButtonTemplate(Value)
                     }
                 </div>
             </DragonSpark.Presentation.Components.State.RedrawWhenActivityMonitorUpdates>
@@ -386,4 +387,10 @@
 
         return null;
     }
+
+    Task OnClick()
+    {
+        return Task.CompletedTask;
+    }
+
 }

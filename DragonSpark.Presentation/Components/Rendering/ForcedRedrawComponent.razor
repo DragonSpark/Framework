@@ -1,0 +1,21 @@
+﻿@using DragonSpark.Compose
+@using DragonSpark.Model.Results
+
+@if (Input.Switched())
+{
+    @ChildContent
+}
+else
+{
+    @ChildContent
+}
+
+@code {
+    [Parameter]
+    public Switch Input { get; set; } = new();
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+
+
+}
