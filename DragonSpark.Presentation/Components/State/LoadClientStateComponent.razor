@@ -1,0 +1,26 @@
+﻿@using DragonSpark.Compose
+@using DragonSpark.Presentation.Components.Content.Templates
+@using DragonSpark.Presentation.Environment.Browser
+@using DragonSpark.Text
+
+@typeparam T where T : class
+
+<DragonSpark.Presentation.Components.Client.ClientVariableContentComponent Input="@Store" NotFoundTemplate="@NotFoundTemplate">
+    @ChildContent(Parser.Get(context.Verify()))
+
+</DragonSpark.Presentation.Components.Client.ClientVariableContentComponent>
+
+@code {
+    
+    [Parameter]
+    public IClientVariable<string> Store { get; set; } = default!;
+
+    [Parameter]
+    public IParser<T> Parser { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment<T> ChildContent { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment NotFoundTemplate { get; set; } = DefaultNotFoundTemplate.Default;
+}
