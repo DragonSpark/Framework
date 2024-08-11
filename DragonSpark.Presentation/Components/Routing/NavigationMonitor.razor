@@ -1,14 +1,19 @@
-﻿@inherits Components.ComponentBase
+﻿@using DragonSpark.Compose
+@using DragonSpark.Model.Results
+
+@inherits Components.ComponentBase
 @implements IDisposable
+
 @inject NavigationManager Manager
 
 @code {
-	[Parameter]
-	public EventCallback Changed { get; set; }
-
+    readonly Switch                                 _update = new();
 	readonly EventHandler<LocationChangedEventArgs> _changed;
 
 	public NavigationMonitor() => _changed = OnChanged;
+
+    [Parameter]
+    public EventCallback Changed { get; set; }
 
 	protected override Task OnInitializedAsync()
 	{
@@ -18,8 +23,12 @@
 
 	void OnChanged(object? sender, EventArgs e)
 	{
-	    InvokeAsync(() => Changed.Invoke());
+        _update.Up();
+	    StateHasChanged();
 	}
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+        => _update.Down() ? Changed.Invoke() : base.OnAfterRenderAsync(firstRender);
 
     public void Dispose()
     {
