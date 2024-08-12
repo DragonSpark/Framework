@@ -1,6 +1,4 @@
-﻿using DragonSpark.Model;
-using DragonSpark.Runtime;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 
@@ -25,15 +23,4 @@ sealed class Queries<TIn, TOut> : IQueries<TOut>
 		var query   = _compiled(context, _parameter);
 		return new(query, disposable);
 	}
-}
-
-// TODO
-
-public sealed class EmptyQueries<T> : IQueries<T>
-{
-	public static EmptyQueries<T> Default { get; } = new();
-
-	EmptyQueries() {}
-
-	public Query<T> Get() => new(Empty.Queryable<T>(), EmptyDisposable.Default);
 }
