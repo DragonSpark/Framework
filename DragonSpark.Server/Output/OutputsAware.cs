@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Application.Model;
 using DragonSpark.Compose;
+using DragonSpark.Model;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Selection;
 using DragonSpark.Model.Sequences;
@@ -12,11 +13,11 @@ namespace DragonSpark.Server.Output;
 
 public class OutputsAware<T> : IOperation<T> where T : IUserIdentity
 {
-	readonly IOperation<T>         _previous;
-	readonly IOutputCacheStore     _output;
-	readonly Array<IUserOutputKey> _keys;
+	readonly IOperation<T>     _previous;
+	readonly IOutputCacheStore _output;
+	readonly Array<IOutputKey> _keys;
 
-	protected OutputsAware(IOperation<T> previous, IOutputCacheStore output, params IUserOutputKey[] keys)
+	protected OutputsAware(IOperation<T> previous, IOutputCacheStore output, params IOutputKey[] keys)
 	{
 		_previous = previous;
 		_output   = output;
@@ -28,24 +29,25 @@ public class OutputsAware<T> : IOperation<T> where T : IUserIdentity
 		await _previous.Await(parameter);
 		foreach (var key in _keys.Open())
 		{
-			await _output.EvictByTagAsync(key.Get(parameter), CancellationToken.None).Await();
+			var tag = key is IUserOutputKey user ? user.Get(parameter) : key.Get(None.Default);
+			await _output.EvictByTagAsync(tag, CancellationToken.None).Await();
 		}
 	}
 }
 
 public class OutputsAware<TIn, T> : ISelecting<TIn, T> where TIn : IUserIdentity
 {
-	readonly ISelecting<TIn, T>    _previous;
-	readonly IOutputCacheStore     _output;
-	readonly Func<T, bool>         _when;
-	readonly Array<IUserOutputKey> _keys;
+	readonly ISelecting<TIn, T> _previous;
+	readonly IOutputCacheStore  _output;
+	readonly Func<T, bool>      _when;
+	readonly Array<IOutputKey>  _keys;
 
-	protected OutputsAware(ISelecting<TIn, T> previous, IOutputCacheStore output, params IUserOutputKey[] keys)
+	protected OutputsAware(ISelecting<TIn, T> previous, IOutputCacheStore output, params IOutputKey[] keys)
 		: this(previous, output, _ => true, keys) {}
 
 	// ReSharper disable once TooManyDependencies
 	protected OutputsAware(ISelecting<TIn, T> previous, IOutputCacheStore output, Func<T, bool> when,
-	                       params IUserOutputKey[] keys)
+	                       params IOutputKey[] keys)
 	{
 		_previous = previous;
 		_output   = output;
@@ -60,7 +62,8 @@ public class OutputsAware<TIn, T> : ISelecting<TIn, T> where TIn : IUserIdentity
 		{
 			foreach (var key in _keys.Open())
 			{
-				await _output.EvictByTagAsync(key.Get(parameter), CancellationToken.None).Await();
+				var tag = key is IUserOutputKey user ? user.Get(parameter) : key.Get(None.Default);
+				await _output.EvictByTagAsync(tag, CancellationToken.None).Await();
 			}
 		}
 

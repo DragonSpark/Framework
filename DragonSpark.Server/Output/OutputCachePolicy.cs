@@ -10,7 +10,7 @@ namespace DragonSpark.Server.Output;
 public class OutputCachePolicy : Text.Text, IOutputsPolicy
 {
 	readonly IOutputKey _key;
-	readonly TimeSpan       _for;
+	readonly TimeSpan   _for;
 
 	protected OutputCachePolicy(IOutputKey key) : this(key, DefaultExpiration.Default) {}
 
