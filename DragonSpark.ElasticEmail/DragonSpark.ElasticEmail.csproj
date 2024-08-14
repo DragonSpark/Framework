@@ -2,6 +2,8 @@
 
   <ItemGroup>
     <PackageReference Include="ElasticEmail.WebApiClient" />
+    <PackageReference Include="System.Net.Http" />
+    <PackageReference Include="System.Text.RegularExpressions" />
   </ItemGroup>
 
   <ItemGroup>

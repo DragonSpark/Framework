@@ -1,11 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+	<PackageReference Include="Azure.Identity" />
 	<PackageReference Include="Flurl" />
 	<PackageReference Include="Humanizer" />
 	<PackageReference Include="LinqKit.Microsoft.EntityFrameworkCore" />
 	<PackageReference Include="Markdig" />
 	<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+	<PackageReference Include="System.Formats.Asn1" />
 	<PackageReference Include="System.IdentityModel.Tokens.Jwt" />
 	<PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" />
 	<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" />
