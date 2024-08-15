@@ -36,8 +36,6 @@
     [CascadingParameter]
     ISpecialColumnContainer Columns { get; set; } = default!;
 
-	RenderFragment<object>? ActualTemplate { get; set; }
-
 	[Parameter]
 	public RenderFragment<T>? Template { get; set; }
 
@@ -63,7 +61,7 @@
     public string? HeaderText { get; set; }
 
     [Parameter]
-    public RenderFragment<T>? HeaderTemplate { get; set; } = default!;
+    public RenderFragment<T>? HeaderTemplate { get; set; }
 
 	[Parameter]
 	public string Field { get; set; } = string.Empty;

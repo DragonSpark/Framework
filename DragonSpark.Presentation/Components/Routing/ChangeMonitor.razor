@@ -41,9 +41,7 @@
 	[CascadingParameter]
 	IActivityReceiver DefaultReceiver { get; set; } = default!;
 
-	object ActualReceiver => Receiver ?? DefaultReceiver;
-
-    protected override async ValueTask<bool> Allow(LocationChangingContext parameter)
+	protected override async ValueTask<bool> Allow(LocationChangingContext parameter)
         => !Enabled || await base.Allow(parameter) || await _confirm.Confirm(None.Default) == DialogResult.Ok;
 
     protected override bool HasChanges() => Enabled && base.HasChanges();
