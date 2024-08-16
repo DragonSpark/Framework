@@ -23,5 +23,7 @@ public static partial class ExtensionMethods
 
 	public static string OrNone<T>(this T @this) => @this?.ToString() ?? None.Default;
 
-	public static string OrNone<T>(this T? @this) where T : struct => @this?.ToString() ?? None.Default;
+	public static string OrNone<T>(this T? @this) where T : struct => @this.OrNone(None.Default);
+
+	public static string OrNone<T>(this T? @this, string none) where T : struct => @this?.ToString() ?? none;
 }

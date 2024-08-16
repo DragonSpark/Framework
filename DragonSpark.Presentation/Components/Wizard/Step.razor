@@ -12,8 +12,7 @@
     @if (StepTemplate is null)
     {
         <div class="fluent-wizard-icon">
-            <FluentIcon Value="@StepIcon"
-                        Style="@IconStyle" />
+            <FluentIcon Value="@StepIcon" Style="@IconStyle" />
 
             @if (DisplayStepNumber ?? FluentWizard.DisplayStepNumber.HasFlag(Status))
             {
