@@ -15,9 +15,5 @@ sealed class CurrentPrincipal : ICurrentPrincipal
 		_accessor = accessor;
 	}
 
-	public ClaimsPrincipal Get()
-	{
-		var result = _state.Get() ?? _accessor.Get().User;
-		return result;
-	}
+	public ClaimsPrincipal Get() => _state.Get() ?? _accessor.Get().User;
 }
