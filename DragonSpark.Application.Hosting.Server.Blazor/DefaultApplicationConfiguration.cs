@@ -14,6 +14,7 @@ sealed class DefaultApplicationConfiguration : ICommand<IApplicationBuilder>
 		         .UseStaticFiles()
 		         .UseRouting()
 		         .UseAuthentication()
+				 .UseCors()
 		         .UseAuthorization()
 		         .UseAntiforgery();
 	}
