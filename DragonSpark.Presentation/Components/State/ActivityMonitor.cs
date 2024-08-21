@@ -23,7 +23,7 @@ sealed class ActivityMonitor : IActivityMonitor
 		_receivers.Add(parameter);
 	}
 
-	public ValueTask Get() => _publisher.Get(new (this));
+	public ValueTask Get() => _publisher.Get(new(this));
 
 	public bool Active => _receivers.Any(x => x.Active);
 }

@@ -70,10 +70,17 @@
 
     object ActualReceiver => Receiver ?? this;
 
-    protected override Task OnAfterRenderAsync(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         _allowed.Up();
-        return _restore.Down() ? Focus.Restore.Allocate() : Task.CompletedTask;
+        if (_restore.Down())
+        {
+            await Focus.Restore.Get();
+            if (_display?.ForceRefresh ?? false)
+            {
+                StateHasChanged();
+            }
+        }
     }
 
     public bool Active { get; private set; }
@@ -122,7 +129,7 @@
         if (handle is not null)
         {
             _displaying.Up();
-            return handle.Get().AsTask();
+            return handle.Allocate();
         }
         return Task.CompletedTask;
     }

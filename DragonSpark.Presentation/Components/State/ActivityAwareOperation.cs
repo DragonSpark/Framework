@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Model;
 using DragonSpark.Model.Operations;
 using System.Threading.Tasks;
 
@@ -67,7 +66,7 @@ sealed class ActivityAwareOperation<T> : IOperation<T>
 
 	public async ValueTask Get(T parameter)
 	{
-		await _update.Get(Pairs.Create(_subject, _input));
+		await _update.Get((_subject, _input));
 		try
 		{
 			await _operation.Get(parameter);
