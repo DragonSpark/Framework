@@ -20,6 +20,8 @@ sealed class Registrations : ICommand<IServiceCollection>
 		         .Then.Start<CircuitHandler>()
 		         .Forward<RenderAwareCircuitHandler>()
 		         .Scoped()
-			;
+		         //
+		         .Then.Start<PropagatedClient>()
+		         .Scoped();
 	}
 }

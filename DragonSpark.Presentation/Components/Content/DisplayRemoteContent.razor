@@ -1,0 +1,29 @@
+﻿@using DragonSpark.Compose
+@using DragonSpark.Presentation.Environment
+
+@inherits ContentComponentBase<MarkupString>
+
+@inject PropagatedClient Clients
+
+<ApplicationContentView Content="@Content">
+    @context
+</ApplicationContentView>
+
+@code {
+    HttpClient _client = default!;
+
+    protected override void OnInitialized()
+    {
+        _client = Client ?? Clients.Get();
+        base.OnInitialized();
+    }
+
+    [Parameter]
+    public HttpClient? Client { get; set; }
+
+    [Parameter]
+    public string Address { get; set; } = default!;
+
+    protected override async ValueTask<MarkupString> GetContent() => new(await _client.GetStringAsync(Address).Await());
+
+}
