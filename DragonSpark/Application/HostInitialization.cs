@@ -12,7 +12,7 @@ sealed class HostInitialization : IHostInitializer
 
 	HostInitialization() {}
 
-	public async ValueTask Get(IHost parameter)
+	public async Task Get(IHost parameter)
 	{
 		foreach (var initializer in parameter.Services.GetServices<IHostInitializer>().AsValueEnumerable())
 		{

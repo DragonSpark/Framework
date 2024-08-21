@@ -24,7 +24,7 @@ public sealed class StorageInitializer<T> : IHostInitializer where T : DbContext
 		_initializers = initializers;
 	}
 
-	public async ValueTask Get(IHost parameter)
+	public async Task Get(IHost parameter)
 	{
 		await using var context = await parameter.Services.GetRequiredService<IDbContextFactory<T>>()
 		                                         .CreateDbContextAsync()

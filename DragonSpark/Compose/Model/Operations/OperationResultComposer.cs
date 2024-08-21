@@ -60,9 +60,11 @@ public class OperationResultComposer<_, T> : Selector<_, ValueTask<T>>
 {
 	public static implicit operator Operate<_, T>(OperationResultComposer<_, T> instance) => instance.Get().Get;
 
-	public static implicit operator Await<_, T>(OperationResultComposer<_, T> instance) => instance.Get().Await;
+	public static implicit operator DragonSpark.Model.Operations.Await<_, T>(OperationResultComposer<_, T> instance)
+		=> instance.Get().Await;
 
-	public static implicit operator Await<_>(OperationResultComposer<_, T> instance) => instance.Terminate();
+	public static implicit operator DragonSpark.Model.Operations.Await<_>(OperationResultComposer<_, T> instance)
+		=> instance.Terminate();
 
 	public OperationResultComposer(ISelect<_, ValueTask<T>> subject) : base(subject) {}
 
@@ -81,7 +83,7 @@ public class OperationResultComposer<_, T> : Selector<_, ValueTask<T>>
 
 	public OperationResultComposer<_, TTo> Select<TTo>(Func<T, TTo> select)
 		=> new(Get().Select(new OperationSelect<T, TTo>(select)));
-	
+
 	public new OperationResultComposer<_, (_ In, T Out)> Introduce()
 		=> new DragonSpark.Model.Operations.Selection.Introduce<_, T>(Get()).Then();
 

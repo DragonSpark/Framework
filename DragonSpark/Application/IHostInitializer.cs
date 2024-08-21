@@ -1,6 +1,6 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model.Operations.Allocated;
 using Microsoft.Extensions.Hosting;
 
 namespace DragonSpark.Application;
 
-public interface IHostInitializer : IOperation<IHost>;
+public interface IHostInitializer : IAllocated<IHost>;

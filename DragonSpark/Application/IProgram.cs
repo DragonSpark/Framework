@@ -1,7 +1,6 @@
-﻿using DragonSpark.Model.Selection;
+﻿using DragonSpark.Model.Operations.Allocated;
 using Microsoft.Extensions.Hosting;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application;
 
-public interface IProgram : ISelect<IHostBuilder, Task>;
+public interface IProgram : IAllocated<IHostBuilder>;

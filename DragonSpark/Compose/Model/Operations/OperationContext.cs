@@ -9,6 +9,7 @@ using DragonSpark.Model.Selection;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Await = DragonSpark.Model.Operations.Await;
 
 namespace DragonSpark.Compose.Model.Operations;
 
@@ -16,7 +17,8 @@ public class OperationContext<T> : Selector<T, ValueTask>
 {
 	public static implicit operator Operate<T>(OperationContext<T> instance) => instance.Get().Get;
 
-	public static implicit operator Await<T>(OperationContext<T> instance) => instance.Get().Await;
+	public static implicit operator DragonSpark.Model.Operations.Await<T>(OperationContext<T> instance)
+		=> instance.Get().Await;
 
 	readonly ISelect<T, ValueTask> _subject;
 
@@ -25,10 +27,14 @@ public class OperationContext<T> : Selector<T, ValueTask>
 	public OperationContext<T> Append(ISelect<T, ValueTask> command) => Append(command.Await);
 
 	public OperationContext<T> Append(ICommand<T> command) => Append(command.Execute);
+
 	public OperationContext<T> Append(Action<T> command) => Append(Start.A.Command(command).Operation());
-	public OperationContext<T> Append(Await<T> command) => new(new Appending<T>(Get().Await, command));
+
+	public OperationContext<T> Append(DragonSpark.Model.Operations.Await<T> command)
+		=> new(new DragonSpark.Model.Operations.Appending<T>(Get().Await, command));
 
 	public OperationContext<T> Append(IOperation command) => Append(command.Await);
+
 	public OperationContext<T> Append(Await command) => new(new Termination<T>(Get().Await, command));
 
 	public LogOperationContext<T, TParameter> Bind<TParameter>(ILogMessage<TParameter> log) => new(_subject, log);
@@ -36,7 +42,6 @@ public class OperationContext<T> : Selector<T, ValueTask>
 	public OperationSelector Bind(IResult<ValueTask<T>> parameter) => Bind(parameter.Get);
 
 	public OperationSelector Bind(Func<ValueTask<T>> parameter) => new(new Binding<T>(this.Out(), parameter));
-
 
 	public SelectedLogOperationExceptionContext<T, TOther> Use<TOther>(ILogException<TOther> log) => new(_subject, log);
 

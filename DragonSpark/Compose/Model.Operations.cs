@@ -21,7 +21,7 @@ public static partial class ExtensionMethods
 		where TOut : class => @this.Or(second.Await);
 
 	public static OperationResultComposer<TIn, TOut> Or<TIn, TOut>(this OperationResultComposer<TIn, TOut?> @this,
-	                                                               Await<TIn, TOut> next)
+	                                                               DragonSpark.Model.Operations.Await<TIn, TOut> next)
 		where TOut : class
 		=> new DragonSpark.Model.Operations.Selection.Coalesce<TIn, TOut>(@this, next).Then();
 
@@ -30,7 +30,7 @@ public static partial class ExtensionMethods
 		where TOut : class => @this.OrMaybe(second.Await);
 
 	public static OperationResultComposer<TIn, TOut?> OrMaybe<TIn, TOut>(this OperationResultComposer<TIn, TOut?> @this,
-	                                                                     Await<TIn, TOut?> next)
+	                                                                     DragonSpark.Model.Operations.Await<TIn, TOut?> next)
 		where TOut : class
 		=> new DragonSpark.Model.Operations.Selection.Maybe<TIn, TOut>(@this, next).Then();
 
