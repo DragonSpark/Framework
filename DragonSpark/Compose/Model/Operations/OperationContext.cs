@@ -35,7 +35,8 @@ public class OperationContext<T> : Selector<T, ValueTask>
 
 	public OperationContext<T> Append(IOperation command) => Append(command.Await);
 
-	public OperationContext<T> Append(Await command) => new(new Termination<T>(Get().Await, command));
+	public OperationContext<T> Append(Await command)
+		=> new(new DragonSpark.Model.Operations.Termination<T>(Get().Await, command));
 
 	public LogOperationContext<T, TParameter> Bind<TParameter>(ILogMessage<TParameter> log) => new(_subject, log);
 

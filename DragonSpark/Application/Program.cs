@@ -20,6 +20,9 @@ public class Program : IProgram
 	protected Program(Func<string[], IHostBuilder> create, Func<IHostBuilder, IHostBuilder> select)
 		: this(create, select, RunInitializedProgram.Default) {}
 
+	protected Program(Func<IHostBuilder, IHostBuilder> select, IAllocated<IHost> run)
+		: this(Host.CreateDefaultBuilder, select, run) {}
+
 	protected Program(Func<string[], IHostBuilder> create, Func<IHostBuilder, IHostBuilder> select,
 	                  IAllocated<IHost> run)
 	{
