@@ -1,4 +1,6 @@
 ﻿@using DragonSpark.Compose
+@using DragonSpark.Model.Selection
+@using DragonSpark.Model.Selection.Alterations
 @using DragonSpark.Presentation.Environment
 
 @inherits ContentComponentBase<MarkupString>
@@ -24,6 +26,14 @@
     [Parameter]
     public string Address { get; set; } = default!;
 
-    protected override async ValueTask<MarkupString> GetContent() => new(await _client.GetStringAsync(Address).Await());
+    [Parameter]
+    public IAlteration<string> Alteration { get; set; } = Self<string>.Default;
+
+    protected override async ValueTask<MarkupString> GetContent()
+    {
+        var response = await _client.GetStringAsync(Address).Await();
+        var content  = Alteration.Get(response);
+        return new(content);
+    }
 
 }
