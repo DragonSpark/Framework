@@ -70,6 +70,7 @@
     <PackageVersion Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.8" />
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
     <PackageVersion Include="Microsoft.Extensions.Http.Polly" Version="8.0.8" />
+    <PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="8.1.0" />
     <PackageVersion Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.9.3" />
     <PackageVersion Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.9.3" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.10.0" />
@@ -111,6 +112,7 @@
     <PackageVersion Include="xunit.extensibility.execution" Version="2.9.0" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.8.2" />
     <PackageVersion Include="Microsoft.Net.Compilers.Razor.Toolset" Version="9.0.0-preview.24359.2" />
+    <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="8.8.0" />
   </ItemGroup>
   <ItemGroup>
     <GlobalPackageReference Include="Nerdbank.GitVersioning" Version="3.6.133" Condition="'$(Configuration)'=='Release'" />
