@@ -22,7 +22,7 @@ public sealed class ApplyState : ICommand<HttpRequestHeaders>
 	public void Execute(HttpRequestHeaders parameter)
 	{
 		var state = _state.Get();
-		if (state.Success && state.Value is not null)
+		if (state is { Success: true, Value: not null })
 		{
 			parameter.Add(_name, state.Value);
 		}

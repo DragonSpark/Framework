@@ -4,13 +4,13 @@
     <DragonSpark.Presentation.Components.Eventing.HandlerView T="ActivityUpdatedMessage" Received="@(context.Register<ActivityUpdatedMessage>(OnUpdate))" />
 </CallbackRenderGate>
 
-@ChildContent
+@ChildContent(Monitor?.Active ?? false)
 
 @code {
     readonly Switch _active = new();
 
     [Parameter]
-    public RenderFragment ChildContent { get; set; } = default!;
+    public RenderFragment<bool> ChildContent { get; set; } = default!;
 
     [CascadingParameter] IActivityMonitor? Monitor { get; set; }
 
