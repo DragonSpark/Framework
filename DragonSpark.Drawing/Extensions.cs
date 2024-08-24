@@ -6,10 +6,15 @@ namespace DragonSpark.Drawing;
 
 public static class Extensions
 {
-	public static Image ResizeToRatio(this Image @this, Image source) => ResizeToRatio(@this, source.Size);
+	public static Image ResizeToRatioMaximum(this Image @this, Image source) => ResizeToRatioMaximum(@this, source.Size);
 
-	public static Image ResizeToRatio(this Image @this, Size size)
-		=> Drawing.ResizeToRatio.Default.Parameter(new(@this, size)).Subject;
+	public static Image ResizeToRatioMaximum(this Image @this, Size size)
+		=> Drawing.ResizeToRatioMaximum.Default.Parameter(new(@this, size)).Subject;
+
+	public static Image ResizeToRatioMinimum(this Image @this, Image source) => ResizeToRatioMinimum(@this, source.Size);
+
+	public static Image ResizeToRatioMinimum(this Image @this, Size size)
+		=> Drawing.ResizeToRatioMinimum.Default.Parameter(new(@this, size)).Subject;
 
 	public static Point Center(this Image @this, Image reference) => @this.Size.Center(reference);
 
