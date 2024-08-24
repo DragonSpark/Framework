@@ -1,7 +1,7 @@
 ﻿@using DragonSpark.Compose
 @using DragonSpark.Model.Results
 @using DragonSpark.Presentation.Environment.Browser.Document
-
+@rendermode InteractiveServer
 @inherits Components.ComponentBase
 
 @implements IActivityReceiver
@@ -37,8 +37,8 @@
 
 @code
 {
-    string? _class, _outer;
-    readonly Switch _allowed = new(), _restore = new(), _displaying = new();
+    readonly Switch        _allowed = new(), _restore = new(), _displaying = new();
+    string?                _class,           _outer;
     ActivityReceiverInput? _display;
 
     protected override void OnInitialized()

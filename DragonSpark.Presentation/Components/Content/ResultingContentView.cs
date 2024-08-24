@@ -101,11 +101,6 @@ partial class ResultingContentView<T>
 					return callback.InvokeAsync(result);
 				}
 			}
-
-			/*if (update)
-			{
-				StateHasChanged();
-			}*/
 		}
 
 		return Task.CompletedTask;
