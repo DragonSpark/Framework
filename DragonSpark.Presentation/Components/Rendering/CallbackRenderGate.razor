@@ -55,6 +55,13 @@
         return parameter;
     }
 
+    public EventCallback<T> Register<T>(EventCallback<T> parameter)
+    {
+        var monitor = Callbacks<T>.Default.Get(this).Get(parameter);
+        _monitored.Add(monitor);
+        return parameter;
+    }
+
     public override Task SetParametersAsync(ParameterView parameters)
     {
 
@@ -149,6 +156,30 @@
         {
             this.Down();
             return _previous();
+        }
+    }
+
+    sealed class CallbackTable<T> : StandardTable<EventCallback<T>, Switch>
+    {
+        public CallbackTable() : base(x => new Callback<T>(x)) { }
+    }
+
+    sealed class Callbacks<T> : ReferenceValueStore<object, CallbackTable<T>>
+    {
+        public static Callbacks<T> Default { get; } = new();
+
+        Callbacks() : base(_ => new()) { }
+    }
+    sealed class Callback<T> : Switch, IAllocated<T>
+    {
+        readonly EventCallback<T> _subject;
+
+        public Callback(EventCallback<T> subject) : base(true) => _subject = subject;
+
+        Task ISelect<T, Task>.Get(T parameter)
+        {
+            this.Down();
+            return _subject.Invoke(parameter);
         }
     }
 

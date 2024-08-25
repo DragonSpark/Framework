@@ -7,8 +7,8 @@ namespace DragonSpark.Application.Runtime.Operations;
 
 public sealed class WorkingResult<T> : IWorkingResult<T>
 {
-	readonly IResulting<T>    _previous;
-	readonly Func<Task>       _complete;
+	readonly IResulting<T> _previous;
+	readonly Func<Task>    _complete;
 
 	public WorkingResult(IResulting<T> previous, Func<Task> complete)
 	{
@@ -19,13 +19,14 @@ public sealed class WorkingResult<T> : IWorkingResult<T>
 	public Worker<T> Get()
 	{
 		var previous = _previous.Get();
+		var task     = previous.AsTask();
 		if (previous.IsCompletedSuccessfully)
 		{
-			return new(Task.CompletedTask, previous.AsTask());
+			return new(Task.CompletedTask, task);
 		}
 
 		var source = new TaskCompletionSource<T>();
-		var worker = new WorkerOperation<T>(previous.AsTask(), source, _complete).Allocate();
+		var worker = new WorkerOperation<T>(task, source, _complete).Allocate();
 		return new(worker, source.Task);
 	}
 }

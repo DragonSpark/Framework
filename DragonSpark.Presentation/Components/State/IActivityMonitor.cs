@@ -1,9 +1,9 @@
-﻿using DragonSpark.Model.Commands;
-using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model.Operations;
+using DragonSpark.Model.Sequences.Collections;
 
 namespace DragonSpark.Presentation.Components.State;
 
-public interface IActivityMonitor : ICommand<IActivityReceiver>, IOperation
+public interface IActivityMonitor : IMembership<IActivityReceiver>, IOperation
 {
 	bool Active { get; }
 }
