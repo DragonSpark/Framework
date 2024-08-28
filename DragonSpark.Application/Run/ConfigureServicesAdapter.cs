@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Application.Run;
 
-public sealed class ConfigureServicesAdapter : ICommand<IHostedApplicationBuilder>
+sealed class ConfigureServicesAdapter : ICommand<IHostedApplicationBuilder>
 {
 	readonly ICommand<IServiceCollection> _previous;
 

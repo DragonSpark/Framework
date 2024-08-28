@@ -32,6 +32,17 @@ namespace DragonSpark.Application;
 // ReSharper disable once MismatchedFileName
 public static partial class Extensions
 {
+	public static StorageConfigurationBuilder WithSqlServer(this StorageConfigurationBuilder @this, string name)
+		=> @this.WithSqlServer(name, _ => {});
+
+	public static StorageConfigurationBuilder WithSqlServer(this StorageConfigurationBuilder @this, string name,
+	                                                        Action<SqlServerDbContextOptionsBuilder> configure)
+		=> @this.Append(new ConfigureSqlServer(name, configure));
+
+	public static StorageConfigurationBuilder WithSqlServer(this StorageConfigurationBuilder @this, string name,
+	                                                        string migrations)
+		=> @this.Append(new ConfigureSqlServerWithMigration(name, migrations));
+
 	public static StorageConfigurationBuilder WithSqlServer<T>(this StorageConfigurationBuilder @this)
 		where T : DbContext => @this.WithSqlServer<T>(_ => {});
 

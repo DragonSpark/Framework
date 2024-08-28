@@ -8,13 +8,31 @@ using System;
 
 namespace DragonSpark.Application.Entities.Configure;
 
-public sealed class ConfigureSqlServer<T> : IStorageConfiguration where T : DbContext
+sealed class ConfigureSqlServer<T> : IStorageConfiguration where T : DbContext
 {
 	readonly IFormatter<IConfiguration>               _connection;
 	readonly Action<SqlServerDbContextOptionsBuilder> _configure;
 
 	public ConfigureSqlServer(Action<SqlServerDbContextOptionsBuilder> configure)
 		: this(ConnectionString<T>.Default, configure) {}
+
+	public ConfigureSqlServer(IFormatter<IConfiguration> connection, Action<SqlServerDbContextOptionsBuilder> configure)
+	{
+		_connection = connection;
+		_configure  = configure;
+	}
+
+	public Action<DbContextOptionsBuilder> Get(IServiceCollection parameter)
+		=> new UseSqlServer(_connection.Get(parameter.Configuration()), _configure).Execute;
+}
+
+class ConfigureSqlServer : IStorageConfiguration
+{
+	readonly IFormatter<IConfiguration>               _connection;
+	readonly Action<SqlServerDbContextOptionsBuilder> _configure;
+
+	public ConfigureSqlServer(string name, Action<SqlServerDbContextOptionsBuilder> configure)
+		: this(new ConnectionString(name), configure) {}
 
 	public ConfigureSqlServer(IFormatter<IConfiguration> connection, Action<SqlServerDbContextOptionsBuilder> configure)
 	{

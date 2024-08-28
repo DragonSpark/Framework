@@ -3,12 +3,15 @@ using Microsoft.Extensions.Configuration;
 
 namespace DragonSpark.Application.Entities.Configure;
 
-sealed class ConnectionString<T> : IFormatter<IConfiguration>
+sealed class ConnectionString<T> : ConnectionString
 {
 	public static ConnectionString<T> Default { get; } = new();
 
-	ConnectionString() : this(ConnectionName<T>.Default) {}
+	ConnectionString() : base(ConnectionName<T>.Default) {}
+}
 
+class ConnectionString : IFormatter<IConfiguration>
+{
 	readonly string _name;
 
 	public ConnectionString(string name) => _name = name;

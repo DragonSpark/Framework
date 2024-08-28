@@ -14,5 +14,6 @@ sealed class EnvironmentalConfiguration : Result<IConfiguration>
 		: base(new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())
 		                                 .AddJsonFile("appsettings.json")
 		                                 .AddJsonFile($"appsettings.{environment}.json", true)
+		                                 .AddEnvironmentVariables()
 		                                 .Build) {}
 }
