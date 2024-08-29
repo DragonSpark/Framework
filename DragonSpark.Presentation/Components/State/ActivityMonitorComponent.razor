@@ -2,7 +2,7 @@
 
 @inject IPublisher<ActivityUpdatedMessage> Publisher
 
-<CascadingValue Value="_monitor" IsFixed="true" ChildContent="@ChildContent" />
+<CascadingValue Value="_monitor" ChildContent="@ChildContent" IsFixed="true" />
 
 @code {
     IActivityMonitor _monitor = default!;

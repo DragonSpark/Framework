@@ -24,5 +24,5 @@ public interface IEventAggregator
 	/// </summary>
 	/// <param name = "message">The message instance.</param>
 	/// <returns>A task that represents the asynchronous operation.</returns>
-	Task PublishAsync(object message);
+	Task Publish<T>(T message) where T : class;
 }

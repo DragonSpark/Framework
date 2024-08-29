@@ -10,8 +10,8 @@
 @inject ProblemSavingState ProblemSaving
 @inject SavedContentMessage Saved
 
-<HandlerView T="LoadModelMessage" Received="@HandleAsync" />
-<HandlerView T="SaveModelMessage" Received="@HandleAsync" />
+<HandlerView T="LoadModelMessage" Received="@Handle" />
+<HandlerView T="SaveModelMessage" Received="@Handle" />
 
 @code {
 
@@ -68,7 +68,7 @@
         }
     }
 
-    Task HandleAsync(SaveModelMessage message) => message.Subject == Model ? SaveContent() : Task.CompletedTask;
+    Task Handle(SaveModelMessage message) => message.Subject == Model ? SaveContent() : Task.CompletedTask;
 
-    Task HandleAsync(LoadModelMessage message) => message.Subject == Model ? _load.Invoke() : Task.CompletedTask;
+    Task Handle(LoadModelMessage message) => message.Subject == Model ? _load.Invoke() : Task.CompletedTask;
 }

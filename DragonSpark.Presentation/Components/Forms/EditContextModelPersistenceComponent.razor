@@ -1,7 +1,6 @@
 ﻿@typeparam T where T : class
 
 @using DragonSpark.Application.Diagnostics
-@using DragonSpark.Application.Runtime
 @using DragonSpark.Compose
 @using DragonSpark.Model
 @using DragonSpark.Model.Operations
@@ -17,8 +16,8 @@
 
 <ModelPersistenceComponent Model="@_model" Formatter="@Formatter" Target="@Target" ModelChanging="@ModelChanging" ModelChanged="@ModelChanged" Store="@Store" ErrorOccurred="@ErrorOccurred" />
 
-<HandlerView T="LoadEditContextMessage" Received="@HandleAsync" />
-<HandlerView T="SaveEditContextMessage" Received="@HandleAsync" />
+<HandlerView T="LoadEditContextMessage" Received="@Handle" />
+<HandlerView T="SaveEditContextMessage" Received="@Handle" />
 
 @code {
     readonly Switch  _save = new();
@@ -29,8 +28,7 @@
 
     protected override void OnInitialized()
     {
-        var operate = new ExceptionAware<None>(OnSave, Exceptions, GetType()).Then();
-        _call = new ThrottleOperation<None>(operate, TimeSpan.FromMilliseconds(100)).Then().Out();
+        _call = new ExceptionAware<None>(OnSave, Exceptions, GetType());
         base.OnInitialized();
     }
 
@@ -55,7 +53,7 @@
     }
 
     EditContext ResolvedContext
-        => (EditContext ?? ParentEditContext).Verify("Edit Context is required for EditContextModelPersistenceComponent");
+        => (EditContext ?? ParentEditContext).Verify($"Edit Context is required for {GetType().Name}");
 
     [Parameter]
     public bool Enabled { get; set; } = true;
@@ -94,13 +92,13 @@
     ValueTask OnSave(None _) => Save.Get(new(_model));
 
     protected override Task OnAfterRenderAsync(bool firstRender)
-        => _save.Down() ? _call.Get().AsTask() : base.OnAfterRenderAsync(firstRender);
+        => _save.Down() ? _call.Allocate() : base.OnAfterRenderAsync(firstRender);
 
-    public Task HandleAsync(SaveEditContextMessage message)
-        => message.Subject == ResolvedContext ?  _call.Get().AsTask(): Task.CompletedTask;
+    Task Handle(SaveEditContextMessage message)
+        => message.Subject == ResolvedContext ? _call.Allocate() : Task.CompletedTask;
 
-    public Task HandleAsync(LoadEditContextMessage message)
-        => message.Subject == ResolvedContext ? Load.Get(new(_model)).AsTask() : Task.CompletedTask;
+    Task Handle(LoadEditContextMessage message)
+        => message.Subject == ResolvedContext ? Load.Allocate(new(_model)) : Task.CompletedTask;
 
     public void Dispose()
     {

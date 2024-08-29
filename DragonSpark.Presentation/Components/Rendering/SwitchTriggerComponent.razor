@@ -8,6 +8,13 @@
     [Parameter]
     public EventCallback Updated { get; set; }
 
+    protected override Task OnParametersSetAsync() => Input.Down() ? Updated.Invoke() : base.OnParametersSetAsync();
+
+    /*
     protected override Task OnAfterRenderAsync(bool firstRender)
         => Input.Down() ? Updated.Invoke() : base.OnAfterRenderAsync(firstRender);
+        */
+
+    protected override bool ShouldRender() => false;
+
 }

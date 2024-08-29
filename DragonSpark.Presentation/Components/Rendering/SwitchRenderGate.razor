@@ -1,0 +1,15 @@
+﻿@using DragonSpark.Compose
+@using DragonSpark.Model.Results
+
+@ChildContent
+
+@code {
+    [Parameter]
+    public Switch Allowed { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+
+    protected override bool ShouldRender() => Allowed || !Allowed.Up();
+
+}

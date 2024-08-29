@@ -12,10 +12,7 @@
 <div class="@_outer">
     <div class="@_class">
         <fieldset disabled="@Active">
-            @*<ShouldRenderComponent Enabled="@(!Active)">
-                <CascadingValue TValue="IActivityReceiver" Value="@(this)" IsFixed="true" ChildContent="@ChildContent(ActualReceiver)" />
-            </ShouldRenderComponent>*@
-            <CascadingValue TValue="IActivityReceiver" Value="@this" IsFixed="true" ChildContent="@ChildContent(ActualReceiver)" />
+            <CascadingValue TValue="IActivityReceiver" Value="@this" ChildContent="@_content" IsFixed="true" />
         </fieldset>
     </div>
     @if (Active && _display?.Message is not null)
@@ -37,13 +34,15 @@
 
 @code
 {
-    readonly Switch        _allowed = new(), _restore = new(), _displaying = new();
-    string?                _class,           _outer;
+    readonly Switch        _rendered = new(), _restore = new(), _displaying = new();
+    string?                _class,               _outer;
     ActivityReceiverInput? _display;
+    RenderFragment         _content = default!;
 
     protected override void OnInitialized()
     {
-        Monitor?.Execute(this);
+        Monitor?.Add.Execute(this);
+        _content = ChildContent(this);
         base.OnInitialized();
     }
 
@@ -54,10 +53,7 @@
     public string ActiveStyle { get; set; } = "dragonspark-activity-active";
 
     [Parameter]
-    public object? Receiver { get; set; }
-
-    [Parameter]
-    public RenderFragment<object> ChildContent { get; set; } = default!;
+    public RenderFragment<IActivityReceiver> ChildContent { get; set; } = default!;
 
     [CascadingParameter] IActivityMonitor? Monitor { get; set; }
 
@@ -68,17 +64,15 @@
         return result;
     }
 
-    object ActualReceiver => Receiver ?? this;
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        _allowed.Up();
+        _rendered.Up();
         if (_restore.Down())
         {
             await Focus.Restore.Get();
-            if (_display?.ForceRefresh ?? false)
+            if (Monitor is not null)
             {
-                StateHasChanged();
+                await Monitor.Await();
             }
         }
     }
@@ -89,7 +83,7 @@
 
     bool Update(ActivityReceiverInput? parameter)
     {
-        var active = ActiveState.Default.Get(ActualReceiver);
+        var active = ActiveState.Default.Get(this);
         var result = active != Active;
         if (result)
         {
@@ -105,7 +99,8 @@
         if (Update(parameter))
         {
             _display = parameter;
-            if (_allowed)
+
+            if (_rendered)
             {
                 await Focus.Store.Get();
             }
@@ -116,11 +111,19 @@
         }
     }
 
-    public ValueTask Complete()
+    public async ValueTask Complete()
     {
-        _displaying.Down();
-        _restore.Execute(Update());
-        return _restore && Monitor is not null ? Monitor.Get() : ValueTask.CompletedTask;
+        var update = Update();
+        _restore.Execute(update);
+        if (update)
+        {
+            _displaying.Down();
+
+            if (Monitor is not null)
+            {
+                await Monitor.Await();
+            }
+        }
     }
 
     Task OnCancel()
@@ -134,5 +137,9 @@
         return Task.CompletedTask;
     }
 
-    public ValueTask DisposeAsync() => Focus.DisposeAsync();
+    public ValueTask DisposeAsync()
+    {
+        Monitor?.Remove.Execute(this);
+        return Focus.DisposeAsync();
+    }
 }

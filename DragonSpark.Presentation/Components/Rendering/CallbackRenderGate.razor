@@ -9,10 +9,10 @@
 @ChildContent(this)
 
 @code {
-    readonly HashSet<Switch>                _monitored = new();
-    readonly AllocatedTable                 _monitors  = new();
-    readonly ActionTable                    _actions   = new();
-    readonly ISelect<EventCallback, Switch> _callbacks = new StandardTable<EventCallback, Switch>(x => new Callback(x));
+    readonly HashSet<Switch> _monitored = new();
+    readonly AllocatedTable  _monitors  = new();
+    readonly ActionTable     _actions   = new();
+    readonly CallbackTable   _callbacks = new();
 
     [Parameter]
     public string Identifier { get; set; } = string.Empty;
@@ -50,24 +50,23 @@
 
     public EventCallback Register(EventCallback parameter)
     {
-        var callback = _callbacks.Get(parameter);
-        _monitored.Add(callback);
-        return parameter;
+        var (@switch, callback) = _callbacks.Get(parameter);
+        _monitored.Add(@switch);
+        return callback;
     }
 
     public EventCallback<T> Register<T>(EventCallback<T> parameter)
     {
-        var monitor = Callbacks<T>.Default.Get(this).Get(parameter);
-        _monitored.Add(monitor);
-        return parameter;
+        var (@switch, callback) = Callbacks<T>.Default.Get(this).Get(parameter);
+        _monitored.Add(@switch);
+        return callback;
     }
 
-    public override Task SetParametersAsync(ParameterView parameters)
+    /*public override Task SetParametersAsync(ParameterView parameters)
     {
-
-        _monitored.Clear();
+        //_monitored.Clear();
         return base.SetParametersAsync(parameters);
-    }
+    }*/
 
     protected override bool ShouldRender()
     {
@@ -104,6 +103,7 @@
             return _previous(parameter);
         }
     }
+
     sealed class Actions<T> : ReferenceValueStore<object, ActionTable<T>>
     {
         public static Actions<T> Default { get; } = new();
@@ -120,6 +120,7 @@
     {
         public ActionTable() : base(x => new Action<T>(x).Execute) {}
     }
+
     sealed class Action<T> : Switch, ICommand<T>
     {
         readonly System.Action<T> _action;
@@ -159,17 +160,37 @@
         }
     }
 
-    sealed class CallbackTable<T> : StandardTable<EventCallback<T>, Switch>
+    sealed class CallbackTable : StandardTable<EventCallback, CallbackContext>
     {
-        public CallbackTable() : base(x => new Callback<T>(x)) { }
+        public CallbackTable() : base(x => new(x)) {}
+    }
+
+    sealed class CallbackTable<T> : StandardTable<EventCallback<T>, CallbackContext<T>>
+    {
+        public CallbackTable() : base(x => new CallbackContext<T>(x)) {}
+    }
+
+    readonly record struct CallbackContext(Switch Instance, EventCallback Subject)
+    {
+        public CallbackContext(EventCallback callback) : this(new Callback(callback)) {}
+
+        public CallbackContext(Callback instance) : this(instance, An.Operation(instance).Then().Callback()) {}
+    }
+
+    readonly record struct CallbackContext<T>(Switch Instance, EventCallback<T> Subject)
+    {
+        public CallbackContext(EventCallback<T> callback) : this(new Callback<T>(callback)) {}
+
+        public CallbackContext(Callback<T> instance) : this(instance, An.Operation(instance).Then().Callback()) {}
     }
 
     sealed class Callbacks<T> : ReferenceValueStore<object, CallbackTable<T>>
     {
         public static Callbacks<T> Default { get; } = new();
 
-        Callbacks() : base(_ => new()) { }
+        Callbacks() : base(_ => new()) {}
     }
+
     sealed class Callback<T> : Switch, IAllocated<T>
     {
         readonly EventCallback<T> _subject;

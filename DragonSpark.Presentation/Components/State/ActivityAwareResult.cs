@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Model;
 using DragonSpark.Model.Operations.Results;
 using System.Threading.Tasks;
 
@@ -12,8 +11,8 @@ sealed class ActivityAwareResult<T> : IResulting<T?>
 	readonly ActivityReceiver  _input;
 	readonly IUpdateActivityReceiver _activity;
 
-	public ActivityAwareResult(IResulting<T?> previous, object subject)
-		: this(previous, subject, ActivityReceiverInput.Default) {}
+	/*public ActivityAwareResult(IResulting<T?> previous, object subject)
+		: this(previous, subject, ActivityReceiverInput.Default) {}*/
 
 	public ActivityAwareResult(IResulting<T?> previous, object subject, ActivityReceiverInput input)
 		: this(previous, subject, new(previous, input), UpdateActivityReceiver.Default) {}
@@ -30,10 +29,10 @@ sealed class ActivityAwareResult<T> : IResulting<T?>
 
 	public async ValueTask<T?> Get()
 	{
-		await _activity.Await(Pairs.Create(_subject, _input));
+		await _activity.Get((_subject, _input));
 		try
 		{
-			return await _previous.Await();
+			return await _previous.Get();
 		}
 		finally
 		{

@@ -10,11 +10,13 @@
 
 @code
 {
-	[Parameter]
+    readonly static IDepending<T> Default = Is.Always<T>().Operation().Out();
+
+    [Parameter]
 	public bool Enabled { get; set; } = true;
 
 	[Parameter]
-	public IDepending<T> Condition { get; set; } = Is.Always<T>().Operation().Out();
+	public IDepending<T> Condition { get; set; } = Default;
 
 	[Parameter]
 	public EventCallback<T> Received { get; set; }

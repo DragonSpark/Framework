@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Compose;
 
-public class SubmitCallbackContext : CallbackContext<EditContext>
+public sealed class SubmitCallbackContext : CallbackContext<EditContext>
 {
 	public SubmitCallbackContext(Func<EditContext, Task> valid) : this(valid, _ => Task.CompletedTask) {}
 

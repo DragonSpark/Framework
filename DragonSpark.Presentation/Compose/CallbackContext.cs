@@ -97,8 +97,7 @@ public class CallbackContext<T> : IResult<EventCallback<T>>
 		var receiver  = _receiver.Verify();
 		var body      = Start.A.Selection(_method).Then().Structure().Out();
 		var operation = new ActivityAwareOperation<T>(body, receiver);
-		var result    = new OperationCallbackContext<T>(receiver, operation);
-		return result;
+		return new (receiver, operation);
 	}
 
 	public OperationCallbackContext<T> Handle<TReported>(IExceptions exceptions)

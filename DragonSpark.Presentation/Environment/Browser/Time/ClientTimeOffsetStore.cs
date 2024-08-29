@@ -35,6 +35,6 @@ sealed class ClientTimeOffsetStore : IOperation<TimeSpan>, IResult<TimeSpan>, IC
 	public ValueTask Get(TimeSpan parameter)
 	{
 		_previous.Execute(parameter);
-		return _aggregator.PublishAsync(new ClientOffsetAssignedMessage(parameter)).ToOperation();
+		return _aggregator.Publish(new ClientOffsetAssignedMessage(parameter)).ToOperation();
 	}
 }

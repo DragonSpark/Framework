@@ -25,15 +25,15 @@
 
 @code
 {
-    Func<object, EventCallback<MouseEventArgs>> _click = default!;
+    Func<IActivityReceiver, EventCallback<MouseEventArgs>> _click = default!;
 
     protected override Task OnInitializedAsync()
     {
-        _click = Start.A.Selection<object>().By.Calling(Create).Stores().New().Get;
+        _click = Start.A.Selection<IActivityReceiver>().By.Calling(Create).Stores().New().Get;
         return Opened.Invoke();
     }
 
-    EventCallback<MouseEventArgs> Create(object parameter) => Start.A.Callback<MouseEventArgs>(OnAccept).Handle(Exceptions, ReportedType ?? GetType()).Using(parameter).UpdateActivity().Block();
+    EventCallback<MouseEventArgs> Create(IActivityReceiver parameter) => Start.A.Callback<MouseEventArgs>(OnAccept).Handle(Exceptions, ReportedType ?? GetType()).Using(parameter).UpdateActivity().Block();
 
     async Task OnAccept(MouseEventArgs parameter)
 	{

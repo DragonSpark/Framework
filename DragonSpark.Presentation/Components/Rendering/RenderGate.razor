@@ -1,0 +1,43 @@
+﻿@using DragonSpark.Compose
+@using DragonSpark.Model.Results
+@using System.Timers
+
+@ChildContent
+
+@code {
+    readonly Switch _active = new();
+    readonly Timer  _timer  = new() { Enabled = false, AutoReset = false, Interval = 100 };
+    Action          _update = default!;
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+
+    protected override void OnInitialized()
+    {
+        _timer.Elapsed += OnTick;
+        _update = StateHasChanged;
+        base.OnInitialized();
+    }
+
+
+    void OnTick(object? sender, ElapsedEventArgs e)
+    {
+        if(_active.Up())
+        {
+            InvokeAsync(_update);
+        }
+    }
+
+    protected override bool ShouldRender()
+    {
+        if (_active.Down())
+        {
+            return true;
+        }
+
+        _timer.Stop();
+        _timer.Start();
+        return false;
+    }
+
+}

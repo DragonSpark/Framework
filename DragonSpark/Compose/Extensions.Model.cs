@@ -5,14 +5,17 @@ using DragonSpark.Compose.Extents.Results;
 using DragonSpark.Compose.Extents.Selections;
 using DragonSpark.Compose.Model.Commands;
 using DragonSpark.Compose.Model.Operations;
+using DragonSpark.Compose.Model.Operations.Allocated;
 using DragonSpark.Compose.Model.Selection;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Allocated;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Runtime.Activation;
 using System;
+using System.Threading.Tasks;
 using Action = System.Action;
 using CommandContext = DragonSpark.Compose.Extents.Commands.CommandContext;
 using ValueTask = System.Threading.Tasks.ValueTask;
@@ -28,11 +31,14 @@ public static partial class ExtensionMethods
 
 	public static T Instance<T>(this VowelContext _) => Extents.Instance<T>.Implementation.Activate();
 
-	public static OperationContext<T> Operation<T>(this VowelContext _, Await<T> start)
+	public static OperationContext<T> Operation<T>(this VowelContext _, DragonSpark.Model.Operations.Await<T> start)
 		=> new(new Awaiting<T>(start));
 
 	public static OperationContext<T> Operation<T>(this VowelContext _, Func<T, ValueTask> start)
 		=> new(new Operation<T>(start));
+
+	public static TaskSelector<T> Allocated<T>(this VowelContext _, Func<T, Task> start)
+		=> (start.Target as IAllocated<T> ?? new Allocated<T>(start)).Then();
 
 	public static T Instance<T>(this VowelContext _, T instance) => instance;
 
