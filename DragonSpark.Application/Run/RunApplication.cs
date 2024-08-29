@@ -15,8 +15,8 @@ public abstract class RunApplication(
 	readonly ConfigureNewApplication      _application = application;
 	readonly IAllocated<IHost>            _run         = run;
 
-	protected RunApplication(Func<string[], IHostBuilder> builder, ConfigureNewApplication application) :
-		this(builder, application, RunInitializedProgram.Default) {}
+	protected RunApplication(Func<string[], IHostBuilder> builder, ConfigureNewApplication application)
+		: this(builder, application, RunInitializedProgram.Default) {}
 
 	public Task Get(string[] parameter)
 	{

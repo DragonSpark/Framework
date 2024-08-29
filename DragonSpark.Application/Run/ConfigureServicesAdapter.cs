@@ -14,17 +14,3 @@ sealed class ConfigureServicesAdapter : ICommand<IHostedApplicationBuilder>
 		_previous.Execute(parameter.Services);
 	}
 }
-
-// TODO
-
-sealed class ConfigureApplicationAdapter : ICommand<IServiceCollection>
-{
-	readonly ICommand<IHostedApplicationBuilder> _previous;
-
-	public ConfigureApplicationAdapter(ICommand<IHostedApplicationBuilder> previous) => _previous = previous;
-
-	public void Execute(IServiceCollection parameter)
-	{
-		_previous.Execute(parameter.Application());
-	}
-}
