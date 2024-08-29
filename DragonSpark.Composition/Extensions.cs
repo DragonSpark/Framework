@@ -27,6 +27,7 @@ public static class Extensions
 
 	public static IConfigurationRoot ConfigurationRoot(this IServiceCollection @this)
 		=> @this.Configuration().To<IConfigurationRoot>();
+	
 	public static IConfiguration Configuration(this IServiceCollection @this)
 		=> @this.Single(x => x.ServiceType == typeof(IConfiguration))
 		        .ImplementationFactory?.Invoke(null!)

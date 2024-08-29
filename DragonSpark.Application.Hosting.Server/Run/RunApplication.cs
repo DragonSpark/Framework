@@ -11,7 +11,7 @@ public abstract class RunApplication(
 	ICommand<IHostedApplicationBuilder> builder,
 	ICommand<IApplication> application)
 	: DragonSpark.Application.Run.RunApplication(Start.A.Selection<string[]>()
-	                                                  .By.Calling(x => new ApplicationBuilder(x))
+	                                                  .By.Calling(InitializeBuilder.Default.Get)
 	                                                  .Select(new SelectBuilder(select, builder)),
 	                                             new ConfigureNewApplication(application))
 {

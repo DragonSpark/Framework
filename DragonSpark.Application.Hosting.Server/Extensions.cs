@@ -7,7 +7,7 @@ using System;
 
 namespace DragonSpark.Application.Hosting.Server;
 
-public static class Extension
+public static class Extensions
 {
 	public static ApplicationProfileContext WithServerApplication(this BuildHostContext @this)
 		=> @this.Apply(ServerApplicationProfile.Default);

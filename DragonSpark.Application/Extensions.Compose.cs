@@ -182,4 +182,5 @@ public static partial class Extensions
 
 	public static ApplicationProfileContext WithEnvironmentalConfiguredSender(this ApplicationProfileContext @this)
 		=> @this.Append(Messaging.Registrations.Default);
+
 }
