@@ -83,15 +83,6 @@ public class CallbackContext<T> : IResult<EventCallback<T>>
 
 	public CallbackContext<T> Using(object receiver) => new(receiver, _method);
 
-	/*public OperationCallbackContext<T> Throttle() => Throttle(TimeSpan.FromSeconds(1));
-
-	public OperationCallbackContext<T> Throttle(TimeSpan window)
-	{
-		var operation = new ThrottleOperation<T>(window, Start.A.Selection(_method).Then().Structure());
-		var result    = new OperationCallbackContext<T>(_receiver.Verify(), operation);
-		return result;
-	}*/
-
 	public OperationCallbackContext<T> UpdateActivity()
 	{
 		var receiver  = _receiver.Verify();
@@ -111,5 +102,7 @@ public class CallbackContext<T> : IResult<EventCallback<T>>
 		return result;
 	}
 
-	public EventCallback<T> Get() => EventCallback.Factory.Create(_receiver!, _method);
+	public EventCallback<T> Get() => EventCallback.Factory.Create(_receiver.Verify(), _method);
+
+	public CallbackContext<T> Hide() => new(EmptyReceiver.Default, Start.A.Selection(_method).Then());
 }

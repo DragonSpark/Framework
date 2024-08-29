@@ -5,7 +5,7 @@
 @inherits FluentComponentBase
 
 <CallbackRenderGate Context="callbacks">
-    <CascadingValue Value="this">
+    <CascadingValue Value="this" IsFixed="true">
         <div id="@Id"
              style="@StyleValue"
              class="@ClassValue"
@@ -21,7 +21,7 @@
                  border-inside=@Border.HasFlag(WizardBorder.Inside)>
                 @if (_steps.Count > 0)
                 {
-                    <CascadingValue Value="@_steps[Value]" ChildContent="@_steps[Value].ChildContent"/>
+                    <CascadingValue Value="@_steps[Value]" ChildContent="@_steps[Value].ChildContent" IsFixed="true" />
                 }
             </div>
             <DragonSpark.Presentation.Components.State.RedrawWhenActivityMonitorUpdates>
