@@ -37,6 +37,7 @@
     readonly Switch        _rendered = new(), _restore = new(), _displaying = new();
     string?                _class,               _outer;
     ActivityReceiverInput? _display;
+    RenderFragment         _content = default!;
 
     protected override void OnInitialized()
     {
