@@ -24,6 +24,7 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -36,6 +37,9 @@ partial class Extensions
 {
 	public static BuildHostContext WithFrameworkConfigurations(this BuildHostContext @this)
 		=> Configure.Default.Get(@this);
+
+	public static IHostBuilder WithAmbientConfiguration(this IHostBuilder @this)
+		=> @this.To(Configuration.WithAmbientConfiguration.Default);
 
 	public static BuildHostContext WithAmbientConfiguration(this BuildHostContext @this)
 		=> @this.Select(Configuration.WithAmbientConfiguration.Default);

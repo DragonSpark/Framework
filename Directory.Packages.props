@@ -4,6 +4,13 @@
     <CentralPackageTransitivePinningEnabled>false</CentralPackageTransitivePinningEnabled>
   </PropertyGroup>
   <ItemGroup>
+  <PackageVersion Include="Aspire.Azure.Security.KeyVault" Version="8.2.0" />
+    <PackageVersion Include="Aspire.Hosting.Azure.KeyVault" Version="8.2.0" />
+    <PackageVersion Include="Aspire.Hosting.Azure.Sql" Version="8.1.0" />
+    <PackageVersion Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="8.1.0" />
+	<PackageVersion Include="Aspire.Hosting.AppHost" Version="8.1.0" />
+    <PackageVersion Include="Aspire.Hosting.Redis" Version="8.1.0" />
+    <PackageVersion Include="Aspire.StackExchange.Redis.OutputCaching" Version="8.0.0" />
     <PackageVersion Include="AspNet.Security.OAuth.Amazon" Version="8.1.0" />
     <PackageVersion Include="AspNet.Security.OAuth.Coinbase" Version="8.1.0" />
     <PackageVersion Include="AspNet.Security.OAuth.DeviantArt" Version="8.1.0" />

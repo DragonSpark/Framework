@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<ItemGroup>
+		<ProjectReference Include="..\DragonSpark.Aspire\DragonSpark.Aspire.csproj" />
+		<ProjectReference Include="..\DragonSpark.Server\DragonSpark.Server.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Aspire.Hosting.AppHost" />
+		<PackageReference Include="Aspire.Hosting.Azure.KeyVault" />
+		<PackageReference Include="Aspire.Hosting.Azure.Sql" />
+		<PackageReference Include="Aspire.Hosting.Redis" />
+	</ItemGroup>
+</Project>

@@ -1,23 +1,32 @@
 ﻿using DragonSpark.Model.Commands;
+using DragonSpark.Model.Selection;
+using DragonSpark.Model.Sequences.Memory;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration.Json;
 using Microsoft.Extensions.Hosting;
 
 namespace DragonSpark.Application.Configuration;
 
-sealed class ApplyAmbientConfiguration : ICommand<(HostBuilderContext Context, IConfigurationBuilder Builder)>
+public sealed class ApplyAmbientConfiguration : ICommand<(IHostEnvironment Environment, IConfigurationBuilder Builder)>
 {
 	public static ApplyAmbientConfiguration Default { get; } = new();
 
 	ApplyAmbientConfiguration() : this(AmbientConfigurationSources.Default) {}
 
-	readonly AmbientConfigurationSources _sources;
+	readonly ISelect<IHostEnvironment, Leasing<JsonConfigurationSource>> _sources;
 
-	public ApplyAmbientConfiguration(AmbientConfigurationSources sources) => _sources = sources;
+	public ApplyAmbientConfiguration(ISelect<IHostEnvironment, Leasing<JsonConfigurationSource>> sources)
+		=> _sources = sources;
 
-	public void Execute((HostBuilderContext Context, IConfigurationBuilder Builder) parameter)
+	public void Execute(HostBuilderContext context, IConfigurationBuilder builder)
 	{
-		var (context, builder) = parameter;
-		using var sources = _sources.Get(context.HostingEnvironment);
+		Execute((context.HostingEnvironment, builder));
+	}
+
+	public void Execute((IHostEnvironment Environment, IConfigurationBuilder Builder) parameter)
+	{
+		var (environment, builder) = parameter;
+		using var sources = _sources.Get(environment);
 		if (builder.Sources.Count > 0)
 		{
 			var span = sources.AsSpan();
