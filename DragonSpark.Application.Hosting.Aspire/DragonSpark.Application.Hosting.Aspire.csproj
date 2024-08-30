@@ -5,7 +5,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Aspire.Hosting.AppHost" />
 		<PackageReference Include="Aspire.Hosting.Azure.KeyVault" />
 		<PackageReference Include="Aspire.Hosting.Azure.Sql" />
 		<PackageReference Include="Aspire.Hosting.Redis" />
