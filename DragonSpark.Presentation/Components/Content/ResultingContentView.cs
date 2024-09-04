@@ -31,8 +31,9 @@ partial class ResultingContentView<T>
 				_subject = null;
 			}
 		}
-	}	IResulting<T?>? _content;
+	}
 
+	IResulting<T?>? _content;
 
 	[Parameter]
 	public ICondition<None>? UpdateMonitor { get; set; }
@@ -65,24 +66,20 @@ partial class ResultingContentView<T>
 			_loaded.Down();
 			_subject = null;
 		}
-
-		_subject ??= Working();
 	}
 
 	Worker<T?> Working() => new WorkingResult<T?>(Content ?? Defaulting<T>.Default, _update).Get();
 
 	protected override Task OnParametersSetAsync()
 	{
-		if (_subject is not null)
-		{
-			var task         = _subject.Value.AsTask();
-			var successfully = task.IsCompletedSuccessfully;
-			var forceRender  = ForceRender || Render.Get() > RenderState.Default;
-			var result       = successfully ? Update() : forceRender ? task : base.OnParametersSetAsync();
-			return result;
-		}
-
-		return base.OnParametersSetAsync();
+		var first   = _subject is null;
+		_subject ??= Working();
+		var task = _subject.Value.AsTask();
+		return task.IsCompletedSuccessfully
+			       ? Update()
+			       : first && (ForceRender || Render.Get() > RenderState.Default) && !(_fragment is null ? Rendered : Refreshed).HasDelegate
+				       ? task
+				       : base.OnParametersSetAsync();
 	}
 
 	Task Update()
