@@ -74,8 +74,9 @@ partial class ResultingContentView<T>
 	{
 		var first   = _subject is null;
 		_subject ??= Working();
-		var task = _subject.Value.AsTask();
-		return task.IsCompletedSuccessfully
+		var task         = _subject.Value.AsTask();
+		var successfully = task.IsCompletedSuccessfully;
+		return successfully
 			       ? Update()
 			       : first && (ForceRender || Render.Get() > RenderState.Default) && !(_fragment is null ? Rendered : Refreshed).HasDelegate
 				       ? task

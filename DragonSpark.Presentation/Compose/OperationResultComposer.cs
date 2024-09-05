@@ -9,6 +9,6 @@ public class OperationResultComposer<_, T> : Application.Compose.OperationResult
 
 	public OperationResultComposer(ISelecting<_, T> subject) : base(subject) => _subject = subject;
 
-	public OperationResultComposer<_, T> UpdateActivity(object receiver)
+	public OperationResultComposer<_, T> UpdateActivity(IActivityReceiver receiver)
 		=> new(new ActivityAwareSelecting<_, T>(_subject, receiver));
 }

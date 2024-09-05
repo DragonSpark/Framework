@@ -12,7 +12,10 @@
 <div class="@_outer">
     <div class="@_class">
         <fieldset disabled="@Active">
-            <CascadingValue TValue="IActivityReceiver" Value="@this" ChildContent="@_content" IsFixed="true" />
+            @*<CascadingValue TValue="IActivityReceiver" Value="@this" ChildContent="@_content" IsFixed="true" />*@
+            <ShouldRenderComponent Enabled="@(!Active)">
+                <CascadingValue TValue="IActivityReceiver" Value="@(this)" IsFixed="true" ChildContent="@_content" />
+            </ShouldRenderComponent>
         </fieldset>
     </div>
     @if (Active && _display?.Message is not null)
@@ -111,7 +114,7 @@
         }
     }
 
-    public async ValueTask Complete()
+    public async ValueTask Complete(bool refresh = false)
     {
         var update = Update();
         _restore.Execute(update);
@@ -121,7 +124,11 @@
 
             if (Monitor is not null)
             {
-                await Monitor.Await();
+                await Monitor.Get();
+            }
+            if (refresh)
+            {
+                StateHasChanged();
             }
         }
     }
