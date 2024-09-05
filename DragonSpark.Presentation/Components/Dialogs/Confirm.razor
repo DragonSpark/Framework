@@ -33,7 +33,7 @@
         return Opened.Invoke();
     }
 
-    EventCallback<MouseEventArgs> Create(IActivityReceiver parameter) => Start.A.Callback<MouseEventArgs>(OnAccept).Handle(Exceptions, ReportedType ?? GetType()).Using(parameter).UpdateActivity().Block();
+    EventCallback<MouseEventArgs> Create(IActivityReceiver parameter) => Start.A.Callback<MouseEventArgs>(OnAccept).Handle(Exceptions, ReportedType ?? GetType()).UpdateActivity(parameter).Block();
 
     async Task OnAccept(MouseEventArgs parameter)
 	{

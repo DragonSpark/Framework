@@ -15,44 +15,39 @@ public sealed class OperationCallbackContext : IResult<EventCallback>
 
 	readonly object             _receiver;
 	readonly IOperation         _operation;
-	readonly IActivityReceiver? _activity;
 
-	public OperationCallbackContext(object receiver, IOperation operation, IActivityReceiver? activity = null)
+	public OperationCallbackContext(object receiver, IOperation operation)
 	{
 		_receiver  = receiver;
 		_operation = operation;
-		_activity  = activity;
 	}
-
-	// TODO: Move to UpdateActivity
-	public OperationCallbackContext Using(IActivityReceiver receiver) => new(_receiver, _operation, receiver);
 
 	public OperationCallbackContext Block() => Block(TimeSpan.FromSeconds(1));
 
 	public OperationCallbackContext Block(TimeSpan duration)
-		=> new(_receiver, new BlockingEntryOperation(_operation, duration), _activity);
+		=> new(_receiver, new BlockingEntryOperation(_operation, duration));
 
 	public OperationCallbackContext Monitoring(Switch subject)
-		=> new(_receiver, new MonitoredOperation(_operation, subject), _activity);
+		=> new(_receiver, new MonitoredOperation(_operation, subject));
 
-	public OperationCallbackContext UpdateActivity() => UpdateActivity(ActivityReceiverInput.Default);
+	public OperationCallbackContext UpdateActivity(IActivityReceiver receiver)
+		=> UpdateActivity(receiver, ActivityReceiverInput.Default);
 
-	public OperationCallbackContext UpdateActivity(ActivityReceiverInput input)
-		=> new(_receiver, new ActivityAwareOperation(_operation, _activity ?? _receiver, input), _activity);
+	public OperationCallbackContext UpdateActivity(IActivityReceiver receiver, ActivityReceiverInput input)
+		=> new(receiver, new ActivityAwareOperation(_operation, receiver, input));
 
 	public OperationCallbackContext Watching(IRenderState parameter)
-		=> new(_receiver, new ActiveRenderAwareOperation(_operation, parameter), _activity);
+		=> new(_receiver, new ActiveRenderAwareOperation(_operation, parameter));
 
-	public EventCallback Get()
-		=> EventCallback.Factory.Create(_activity ?? _receiver, _operation.Allocate);
+	public EventCallback Get() => EventCallback.Factory.Create(_receiver, _operation.Allocate);
 }
 
 public sealed class OperationCallbackContext<T> : IResult<EventCallback<T>>
 {
 	public static implicit operator EventCallback<T>(OperationCallbackContext<T> instance) => instance.Get();
 
-	readonly object             _receiver;
-	readonly IOperation<T>      _operation;
+	readonly object        _receiver;
+	readonly IOperation<T> _operation;
 
 	public OperationCallbackContext(object receiver, IOperation<T> operation)
 	{
@@ -65,16 +60,11 @@ public sealed class OperationCallbackContext<T> : IResult<EventCallback<T>>
 	public OperationCallbackContext<T> Block(TimeSpan duration)
 		=> new(_receiver, new BlockingEntryOperation<T>(_operation, duration));
 
-	// TODO:
-	public OperationCallbackContext<T> UpdateActivityWithRefresh() => UpdateActivity(ActivityReceiverInput.WithRefresh);
+	public OperationCallbackContext<T> UpdateActivity(IActivityReceiver receiver)
+		=> UpdateActivity(receiver, ActivityReceiverInput.Default);
 
-	// TODO: Move to UpdateActivity
-	public OperationCallbackContext<T> Using(IActivityReceiver receiver) => new(receiver, _operation);
-
-	public OperationCallbackContext<T> UpdateActivity() => UpdateActivity(ActivityReceiverInput.Default);
-
-	public OperationCallbackContext<T> UpdateActivity(ActivityReceiverInput input)
-		=> new(_receiver, new ActivityAwareOperation<T>(_operation, _receiver, input));
+	public OperationCallbackContext<T> UpdateActivity(IActivityReceiver receiver, ActivityReceiverInput input)
+		=> new(receiver, new ActivityAwareOperation<T>(_operation, receiver, input));
 
 	public EventCallback<T> Get()
 		=> EventCallback.Factory.Create(_receiver, new Func<T, Task>(_operation.Allocate));

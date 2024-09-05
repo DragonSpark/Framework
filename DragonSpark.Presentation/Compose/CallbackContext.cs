@@ -27,8 +27,6 @@ public sealed class CallbackContext : IResult<EventCallback>
 		_method   = method;
 	}
 
-	public CallbackContext Using(object receiver) => new(receiver, _method);
-
 	public OperationCallbackContext Handle<T>(IExceptions exceptions) => Handle(exceptions, A.Type<T>());
 
 	public OperationCallbackContext Handle(IExceptions exceptions, Type? reportedType = null)
@@ -39,13 +37,11 @@ public sealed class CallbackContext : IResult<EventCallback>
 		return result;
 	}
 
-	public OperationCallbackContext UpdateActivity()
+	public OperationCallbackContext UpdateActivity(IActivityReceiver receiver)
 	{
-		var receiver  = _receiver.Verify();
 		var body      = _method.Start().Then().Structure().Out();
 		var operation = new ActivityAwareOperation(body, receiver);
-		var result    = new OperationCallbackContext(receiver, operation);
-		return result;
+		return new(receiver, operation);
 	}
 
 	public OperationCallbackContext BlockFor(TimeSpan duration)
@@ -55,13 +51,13 @@ public sealed class CallbackContext : IResult<EventCallback>
 	public CallbackContext Append(Action next) => Append(Start.A.Command(next).Operation().Allocate());
 
 	public CallbackContext Append(Func<Task> next)
-		=> new (_receiver ?? next.Target, _method.Start().Then().Append(next));
+		=> new(_receiver ?? next.Target, _method.Start().Then().Append(next));
 
 	public CallbackContext Append(Operate next)
-		=> new (_receiver ?? next.Target, _method.Start().Then().Structure().Append(next).Allocate());
+		=> new(_receiver ?? next.Target, _method.Start().Then().Structure().Append(next).Allocate());
 
 	public CallbackContext Watching(IRenderState parameter)
-		=> new (new ActiveRenderAwareOperation(_method.Start().Then().Structure().Out(), parameter).Allocate);
+		=> new(new ActiveRenderAwareOperation(_method.Start().Then().Structure().Out(), parameter).Allocate);
 
 	public EventCallback Get() => EventCallback.Factory.Create(_receiver!, _method);
 }
@@ -81,14 +77,11 @@ public class CallbackContext<T> : IResult<EventCallback<T>>
 		_method   = method;
 	}
 
-	public CallbackContext<T> Using(object receiver) => new(receiver, _method);
-
-	public OperationCallbackContext<T> UpdateActivity()
+	public OperationCallbackContext<T> UpdateActivity(IActivityReceiver receiver)
 	{
-		var receiver  = _receiver.Verify();
 		var body      = Start.A.Selection(_method).Then().Structure().Out();
 		var operation = new ActivityAwareOperation<T>(body, receiver);
-		return new (receiver, operation);
+		return new(receiver, operation);
 	}
 
 	public OperationCallbackContext<T> Handle<TReported>(IExceptions exceptions)

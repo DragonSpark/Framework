@@ -18,7 +18,7 @@
     EventCallback _load;
     protected override void OnInitialized()
     {
-        _load = Start.A.Callback(LoadContent).Using(Receiver).UpdateActivity();
+        _load = Start.A.Callback(LoadContent).UpdateActivity(Receiver);
         base.OnInitialized();
     }
 
