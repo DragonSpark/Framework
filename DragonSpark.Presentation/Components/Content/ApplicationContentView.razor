@@ -4,17 +4,17 @@
 
 @inherits Templates.ActiveContentTemplateComponentBase<TValue>
 <DragonSpark.Presentation.Components.Content.ApplicationPrincipalAwareContentView ForceRender="@ForceRender">
-    <ActivityContainer CssClass="@CssClass">
-        <ActivityContainerContent Input="@_contents"
-                                  ForceRender="@ForceRender" ChildContent="@ChildContent" LoadingTemplate="@LoadingTemplate"
-                                  NotFoundTemplate="@NotFoundTemplate" ExceptionTemplate="@ExceptionTemplate" Rendered="@Rendered" Refreshed="@Refreshed"
-        />
-    </ActivityContainer>
+	<ActivityContainer CssClass="@CssClass">
+		<ActivityContainerContent Input="@_contents"
+								  ForceRender="@ForceRender" ChildContent="@ChildContent" LoadingTemplate="@LoadingTemplate"
+								  NotFoundTemplate="@NotFoundTemplate" ExceptionTemplate="@ExceptionTemplate" Rendered="@Rendered" Refreshed="@Refreshed"
+		/>
+	</ActivityContainer>
 </DragonSpark.Presentation.Components.Content.ApplicationPrincipalAwareContentView>
 
 @code
 {
-    ISelect<object, IActiveContent<TValue>> _contents = default!;
+	ISelect<object, IActiveContent<TValue>> _contents = default!;
 
 	[Parameter]
 	public IActiveContent<TValue> Content
@@ -25,13 +25,13 @@
 			if (_content != value)
 			{
 				_content  = value;
-                _contents = new ActivityContents<TValue>(_content).Then().Stores().New();
+				_contents = new ActivityContents<TValue>(_content).Then().Stores().New();
 			}
 		}
 	}   IActiveContent<TValue> _content = default!;
 
-    [Parameter]
-    public bool ForceRender { get; set; }
+	[Parameter]
+	public bool ForceRender { get; set; }
 
 	[Parameter]
 	public string CssClass { get; set; } = string.Empty;

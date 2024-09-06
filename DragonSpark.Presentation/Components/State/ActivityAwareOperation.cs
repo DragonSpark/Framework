@@ -29,14 +29,18 @@ sealed class ActivityAwareOperation : IOperation
 
 	public async ValueTask Get()
 	{
-		await _update.Get((_subject, _input));
-		try
+		var operation = _operation.Get();
+		if (!operation.IsCompleted)
 		{
-			await _operation.Get();
-		}
-		finally
-		{
-			await _update.Await(_subject);
+			await _update.Get((_subject, _input));
+			try
+			{
+				await operation;
+			}
+			finally
+			{
+				await _update.Await(_subject);
+			}
 		}
 	}
 }
@@ -66,14 +70,18 @@ sealed class ActivityAwareOperation<T> : IOperation<T>
 
 	public async ValueTask Get(T parameter)
 	{
-		await _update.Get((_subject, _input));
-		try
+		var operation = _operation.Get(parameter);
+		if (!operation.IsCompleted)
 		{
-			await _operation.Get(parameter);
-		}
-		finally
-		{
-			await _update.Await(_subject);
+			await _update.Get((_subject, _input));
+			try
+			{
+				await operation;
+			}
+			finally
+			{
+				await _update.Await(_subject);
+			}
 		}
 	}
 }

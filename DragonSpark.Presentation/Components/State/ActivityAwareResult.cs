@@ -29,10 +29,16 @@ sealed class ActivityAwareResult<T> : IResulting<T?>
 
 	public async ValueTask<T?> Get()
 	{
+		var previous = _previous.Get();
+		if (previous.IsCompleted)
+		{
+			return previous.Result;
+		}
+
 		await _activity.Get((_subject, _input));
 		try
 		{
-			return await _previous.Get();
+			return await previous;
 		}
 		finally
 		{

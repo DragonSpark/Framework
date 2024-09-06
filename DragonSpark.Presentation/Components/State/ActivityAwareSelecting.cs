@@ -9,7 +9,7 @@ sealed class ActivityAwareSelecting<TIn, TOut> : ISelecting<TIn, TOut>
 {
 	readonly ISelecting<TIn, TOut>   _previous;
 	readonly object                  _subject;
-	readonly ActivityReceiver  _input;
+	readonly ActivityReceiver        _input;
 	readonly IUpdateActivityReceiver _update;
 
 	public ActivityAwareSelecting(ISelecting<TIn, TOut> previous, object subject)
@@ -30,10 +30,16 @@ sealed class ActivityAwareSelecting<TIn, TOut> : ISelecting<TIn, TOut>
 
 	public async ValueTask<TOut> Get(TIn parameter)
 	{
+		var previous = _previous.Get(parameter);
+		if (previous.IsCompleted)
+		{
+			return previous.Result;
+		}
+
 		await _update.Get(Pairs.Create(_subject, _input));
 		try
 		{
-			return await _previous.Get(parameter);
+			return await previous;
 		}
 		finally
 		{
