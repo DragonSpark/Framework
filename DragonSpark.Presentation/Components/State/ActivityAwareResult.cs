@@ -14,7 +14,7 @@ sealed class ActivityAwareResult<T> : IResulting<T?>
 	/*public ActivityAwareResult(IResulting<T?> previous, object subject)
 		: this(previous, subject, ActivityReceiverInput.Default) {}*/
 
-	public ActivityAwareResult(IResulting<T?> previous, object subject, ActivityReceiverInput input)
+	public ActivityAwareResult(IResulting<T?> previous, object subject, ActivityOptions input)
 		: this(previous, subject, new(previous, input), UpdateActivityReceiverWithRedraw.Default) {}
 
 	// ReSharper disable once TooManyDependencies

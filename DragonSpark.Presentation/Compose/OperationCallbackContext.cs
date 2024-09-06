@@ -31,9 +31,9 @@ public sealed class OperationCallbackContext : IResult<EventCallback>
 		=> new(_receiver, new MonitoredOperation(_operation, subject));
 
 	public OperationCallbackContext UpdateActivity(IActivityReceiver receiver)
-		=> UpdateActivity(receiver, ActivityReceiverInput.Default);
+		=> UpdateActivity(receiver, ActivityOptions.Default);
 
-	public OperationCallbackContext UpdateActivity(IActivityReceiver receiver, ActivityReceiverInput input)
+	public OperationCallbackContext UpdateActivity(IActivityReceiver receiver, ActivityOptions input)
 		=> new(receiver, new ActivityAwareOperation(_operation, receiver, input));
 
 	public OperationCallbackContext Watching(IRenderState parameter)
@@ -61,10 +61,10 @@ public sealed class OperationCallbackContext<T> : IResult<EventCallback<T>>
 		=> new(_receiver, new BlockingEntryOperation<T>(_operation, duration));
 
 	public OperationCallbackContext<T> UpdateActivity(IActivityReceiver receiver)
-		=> UpdateActivity(receiver, ActivityReceiverInput.Default);
+		=> UpdateActivity(receiver, ActivityOptions.Default);
 
-	public OperationCallbackContext<T> UpdateActivity(IActivityReceiver receiver, ActivityReceiverInput input)
-		=> new(receiver, new ActivityAwareOperation<T>(_operation, receiver, input));
+	public OperationCallbackContext<T> UpdateActivity(IActivityReceiver receiver, ActivityOptions options)
+		=> new(receiver, new ActivityAwareOperation<T>(_operation, receiver, options));
 
 	public EventCallback<T> Get()
 		=> EventCallback.Factory.Create(_receiver, new Func<T, Task>(_operation.Allocate));

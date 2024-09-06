@@ -12,20 +12,19 @@
 <div class="@_outer">
     <div class="@_class">
         <fieldset disabled="@Active">
-            @*<CascadingValue TValue="IActivityReceiver" Value="@this" ChildContent="@_content" IsFixed="true" />*@
-            <ShouldRenderComponent Enabled="@(!Active)">
+            <ShouldRenderComponent Enabled="@Render">
                 <CascadingValue TValue="IActivityReceiver" Value="@(this)" IsFixed="true" ChildContent="@_content" />
             </ShouldRenderComponent>
         </fieldset>
     </div>
-    @if (Active && _display?.Message is not null)
+    @if (Active && _options.Message is not null)
     {
         <div class="position-absolute top-0 d-flex w-100 h-100 flex-column align-items-center justify-content-center">
             <div class="d-flex gap-2">
                 <div class="spinner-border" role="status"></div>
-                <div>@(_displaying ? "Please wait..." : _display?.Message)</div>
+                <div>@(_displaying ? "Please wait..." : _options.Message)</div>
             </div>
-            @if (_display?.Handle is not null && !_displaying)
+            @if (_options.Handle is not null && !_displaying)
             {
                 <ul class="actions">
                     <li><button class="small button" disabled="@_displaying" @onclick="@OnCancel">Cancel</button></li>
@@ -37,10 +36,10 @@
 
 @code
 {
-    readonly Switch        _rendered = new(), _restore = new(), _displaying = new();
-    string?                _class,               _outer;
-    ActivityReceiverInput? _display;
-    RenderFragment         _content = default!;
+    readonly Switch _rendered = new(), _restore = new(), _displaying = new(), _active = new(), _render = new(true);
+    string?         _class,            _outer;
+    ActivityOptions _options = ActivityOptions.Default;
+    RenderFragment  _content = default!;
 
     protected override void OnInitialized()
     {
@@ -80,28 +79,29 @@
         }
     }
 
-    public bool Active { get; private set; }
+    bool Render => !_active && (_render || !_render.Up());
 
-    bool Update() => Update(_display);
+    public bool Active => _active;
 
-    bool Update(ActivityReceiverInput? parameter)
+    bool Update() => Update(_options);
+
+    bool Update(ActivityOptions? parameter)
     {
         var active = ActiveState.Default.Get(this);
-        var result = active != Active;
+        var result = _active.Assign(active);
         if (result)
         {
-            Active = active;
             _class = Class();
             _outer = active && parameter?.Message is not null ? "position-relative" : string.Empty;
         }
         return result;
     }
 
-    public async ValueTask Start(ActivityReceiverInput parameter)
+    public async ValueTask Start(ActivityOptions parameter)
     {
         if (Update(parameter))
         {
-            _display = parameter;
+            _options = parameter;
 
             if (_rendered)
             {
@@ -130,12 +130,16 @@
             {
                 StateHasChanged();
             }
+            else if (!_options.RenderOnCompletion)
+            {
+                _render.Down();
+            }
         }
     }
 
     Task OnCancel()
     {
-        var handle = _display?.Handle;
+        var handle = _options.Handle;
         if (handle is not null)
         {
             _displaying.Up();

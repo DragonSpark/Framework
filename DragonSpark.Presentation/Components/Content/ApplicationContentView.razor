@@ -5,7 +5,7 @@
 @inherits Templates.ActiveContentTemplateComponentBase<TValue>
 <DragonSpark.Presentation.Components.Content.ApplicationPrincipalAwareContentView ForceRender="@ForceRender">
     <ActivityContainer CssClass="@CssClass">
-        <ActivityContainerContent Input="@Contents"
+        <ActivityContainerContent Input="@_contents"
                                   ForceRender="@ForceRender" ChildContent="@ChildContent" LoadingTemplate="@LoadingTemplate"
                                   NotFoundTemplate="@NotFoundTemplate" ExceptionTemplate="@ExceptionTemplate" Rendered="@Rendered" Refreshed="@Refreshed"
         />
@@ -14,7 +14,7 @@
 
 @code
 {
-	ISelect<object, IActiveContent<TValue>> Contents { get; set; } = default!;
+    ISelect<object, IActiveContent<TValue>> _contents = default!;
 
 	[Parameter]
 	public IActiveContent<TValue> Content
@@ -24,8 +24,8 @@
 		{
 			if (_content != value)
 			{
-				_content = value;
-				Contents = new ActivityContents<TValue>(_content).Then().Stores().New();
+				_content  = value;
+                _contents = new ActivityContents<TValue>(_content).Then().Stores().New();
 			}
 		}
 	}   IActiveContent<TValue> _content = default!;

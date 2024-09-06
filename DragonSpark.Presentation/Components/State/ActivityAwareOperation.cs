@@ -12,9 +12,9 @@ sealed class ActivityAwareOperation : IOperation
 	readonly IUpdateActivityReceiver _update;
 
 	public ActivityAwareOperation(IOperation operation, object subject)
-		: this(operation, subject, ActivityReceiverInput.Default) {}
+		: this(operation, subject, ActivityOptions.Default) {}
 
-	public ActivityAwareOperation(IOperation operation, object subject, ActivityReceiverInput input)
+	public ActivityAwareOperation(IOperation operation, object subject, ActivityOptions input)
 		: this(operation, subject, new(operation, input), UpdateActivityReceiver.Default) {}
 
 	// ReSharper disable once TooManyDependencies
@@ -49,10 +49,10 @@ sealed class ActivityAwareOperation<T> : IOperation<T>
 	readonly IUpdateActivityReceiver _update;
 
 	public ActivityAwareOperation(IOperation<T> operation, object subject)
-		: this(operation, subject, ActivityReceiverInput.Default) {}
+		: this(operation, subject, ActivityOptions.Default) {}
 
-	public ActivityAwareOperation(IOperation<T> operation, object subject, ActivityReceiverInput input)
-		: this(operation, subject, new(operation, input), UpdateActivityReceiver.Default) {}
+	public ActivityAwareOperation(IOperation<T> operation, object subject, ActivityOptions options)
+		: this(operation, subject, new(operation, options), UpdateActivityReceiver.Default) {}
 
 	// ReSharper disable once TooManyDependencies
 	public ActivityAwareOperation(IOperation<T> operation, object subject, ActivityReceiver input,

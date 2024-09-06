@@ -62,7 +62,7 @@ public sealed class CallbackContext : IResult<EventCallback>
 	public EventCallback Get() => EventCallback.Factory.Create(_receiver!, _method);
 }
 
-public class CallbackContext<T> : IResult<EventCallback<T>>
+public class CallbackContext<T> : IResult<EventCallback<T>> // TODO: Rename
 {
 	public static implicit operator EventCallback<T>(CallbackContext<T> instance) => instance.Get();
 

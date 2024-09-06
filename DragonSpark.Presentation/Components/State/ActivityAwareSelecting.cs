@@ -13,9 +13,9 @@ sealed class ActivityAwareSelecting<TIn, TOut> : ISelecting<TIn, TOut>
 	readonly IUpdateActivityReceiver _update;
 
 	public ActivityAwareSelecting(ISelecting<TIn, TOut> previous, object subject)
-		: this(previous, subject, ActivityReceiverInput.Default) {}
+		: this(previous, subject, ActivityOptions.Default) {}
 
-	public ActivityAwareSelecting(ISelecting<TIn, TOut> previous, object subject, ActivityReceiverInput input)
+	public ActivityAwareSelecting(ISelecting<TIn, TOut> previous, object subject, ActivityOptions input)
 		: this(previous, subject, new(previous, input), UpdateActivityReceiver.Default) {}
 
 	// ReSharper disable once TooManyDependencies

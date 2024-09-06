@@ -158,5 +158,5 @@ public static class Extensions
 	public static Task Invoke(this EventCallback @this) => @this.HasDelegate ? @this.InvokeAsync() : Task.CompletedTask;
 
 /**/
-	public static ActivityReceiverInput Get(this ITokenHandle @this, string message) => new(message, @this);
+	public static ActivityOptions Get(this ITokenHandle @this, string message) => new(message, @this);
 }

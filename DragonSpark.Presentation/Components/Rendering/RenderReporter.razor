@@ -17,7 +17,7 @@
 
     protected override void OnAfterRender(bool firstRender)
     {
-        Logger.LogDebug("{Method}: {Identifier}", nameof(OnAfterRender), Identifier);
+        Logger.LogDebug("{Method}: {Identifier} - {Frist}", nameof(OnAfterRender), Identifier, firstRender);
         base.OnAfterRender(firstRender);
     }
 }
