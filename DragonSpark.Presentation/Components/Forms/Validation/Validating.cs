@@ -12,7 +12,6 @@ public class Validating : ComponentBase, IDisposable
 {
 	readonly Switch           _requested = new(), _active = new();
 	readonly IOperationsStore _store;
-	readonly Func<Task>       _update;
 
 	ValidationMessageStore _messages = default!;
 	IOperations            _list     = default!;
@@ -20,11 +19,7 @@ public class Validating : ComponentBase, IDisposable
 
 	public Validating() : this(OperationsStore.Default) {}
 
-	public Validating(IOperationsStore store)
-	{
-		_store  = store;
-		_update = Update;
-	}
+	public Validating(IOperationsStore store) => _store  = store;
 
 	[Parameter]
 	public FieldIdentifier Identifier { get; set; }
@@ -111,7 +106,7 @@ public class Validating : ComponentBase, IDisposable
 		{
 			using (_active.Assigned(true))
 			{
-				var task = StartUpdate();
+				var task = Update();
 				_list.Execute(task);
 				await task.Await();
 			}
@@ -126,8 +121,6 @@ public class Validating : ComponentBase, IDisposable
 		}
 	}
 
-	Task StartUpdate() => InvokeAsync(_update);
-
 	async Task Update()
 	{
 		_messages.Clear(Identifier);
@@ -135,6 +128,7 @@ public class Validating : ComponentBase, IDisposable
 		if (context is not null && IsValid())
 		{
 			await Validate.Invoke(new(new(context, Identifier), _messages, Message));
+
 			context.NotifyValidationStateChanged();
 
 			var callback = IsEmpty() ? Valid : Invalid;

@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Operations.Selection.Conditions;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations.Selection.Conditions;
 using DragonSpark.Model.Selection;
 using JetBrains.Annotations;
 using System;
@@ -25,5 +26,10 @@ public class ValidatingValue<TFrom, TTo> : IValidatingValue<TFrom>
 		_select   = @select;
 	}
 
-	public ValueTask<bool> Get(TFrom parameter) => _existing.Get(_select(parameter));
+	public async ValueTask<bool> Get(TFrom parameter)
+	{
+		var select = _select(parameter);
+		var result  = await _existing.Await(select);
+		return result;
+	}
 }

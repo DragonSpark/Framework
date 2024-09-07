@@ -1,19 +1,21 @@
-﻿<FieldModelMonitor Model="@Model" AssumeEditContextModel="false" Changed="@_empty" />
+﻿@using DragonSpark.Compose
+@using DragonSpark.Model.Results
 
-@ChildContent
+<ValidationStateMonitor Changed="@Render" />
+
+<ShouldRenderComponent Enabled="@_render" ChildContent="@ChildContent" />
 
 @code {
-    EventCallback _empty;
-
-    protected override void OnInitialized()
-    {
-        _empty = EmptyCallback.Default.Get(this);
-        base.OnInitialized();
-    }
-
-    [Parameter]
-    public object? Model { get; set; }
+    readonly Switch _render = new();
 
     [Parameter]
     public RenderFragment ChildContent { get; set; } = default!;
+
+    void Render()
+    {
+        using (_render.Assigned(true))
+        {
+            StateHasChanged();
+        }
+    }
 }

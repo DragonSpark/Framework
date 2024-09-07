@@ -23,7 +23,8 @@ sealed class Submit : IOperation<EditContext>
 
 	public async ValueTask Get(EditContext parameter)
 	{
-		if (await _validate(parameter))
+		var validate = await _validate(parameter);
+		if (validate)
 		{
 			await _valid.Get(parameter);
 			parameter.MarkAsUnmodified();
