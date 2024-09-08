@@ -41,7 +41,6 @@
 
     async Task OnAccept(MouseEventArgs parameter)
 	{
-        await Task.Delay(500); // TODO
         if (await Confirmation())
 		{
 			await Accept.Invoke(parameter);

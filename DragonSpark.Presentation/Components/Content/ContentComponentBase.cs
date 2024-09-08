@@ -28,9 +28,13 @@ public abstract class ContentComponentBase<T> : ComponentBase
 
 	protected abstract ValueTask<T?> GetContent();
 
-	protected virtual void RequestNewContent()
+	protected virtual void RequestNewContent(bool redraw = false)
 	{
 		Content.Execute();
+		if (redraw)
+		{
+			StateHasChanged();
+		}
 	}
 
 	protected override ValueTask RefreshState()

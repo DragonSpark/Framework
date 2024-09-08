@@ -21,5 +21,5 @@ public sealed class SubmitCallbackContext : CallbackContext<EditContext>
 		: this(valid.Target, valid.Start().Then().Structure().Out(), invalid.Start().Then().Structure().Out()) {}
 
 	public SubmitCallbackContext(object? target, IOperation<EditContext> valid, IOperation<EditContext> invalid)
-		: base(target, new Submit(valid, invalid).Then().Allocate()) {}
+		: base(target, new SubmittingAwareOperation(valid, invalid).Then().Allocate()) {}
 }
