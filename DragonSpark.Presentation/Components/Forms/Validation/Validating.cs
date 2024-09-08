@@ -10,16 +10,17 @@ namespace DragonSpark.Presentation.Components.Forms.Validation;
 
 public class Validating : ComponentBase, IDisposable
 {
-	readonly Switch           _requested = new(), _active = new();
+	readonly Switch           _requested = new();
 	readonly IOperationsStore _store;
 
+	Task?                  _current;
 	ValidationMessageStore _messages = default!;
 	IOperations            _list     = default!;
 	EditContext?           _context;
 
 	public Validating() : this(OperationsStore.Default) {}
 
-	public Validating(IOperationsStore store) => _store  = store;
+	public Validating(IOperationsStore store) => _store = store;
 
 	[Parameter]
 	public FieldIdentifier Identifier { get; set; }
@@ -94,21 +95,33 @@ public class Validating : ComponentBase, IDisposable
 
 	void Request()
 	{
-		if (Enabled && !_active && _requested.Up())
+		if (Enabled && _current is null)
 		{
-			StateHasChanged();
+			_list.Execute(_current = Update());
 		}
+	}
+
+	protected override void OnParametersSet()
+	{
+		if (_requested.Down())
+		{
+			Request();
+		}
+
+		base.OnParametersSet();
 	}
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
-		if (_requested.Down())
+		if (_current is not null)
 		{
-			using (_active.Assigned(true))
+			try
 			{
-				var task = Update();
-				_list.Execute(task);
-				await task.Await();
+				await _current.Await();
+			}
+			finally
+			{
+				_current = null;
 			}
 		}
 	}
@@ -118,6 +131,7 @@ public class Validating : ComponentBase, IDisposable
 		if (e.FieldIdentifier.Equals(Identifier))
 		{
 			Request();
+			StateHasChanged();
 		}
 	}
 

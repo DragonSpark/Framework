@@ -11,9 +11,9 @@ public class ThreadAwareFirst : FirstBase
 public sealed class ThreadAwareFirst<T> : Condition<T> where T : notnull
 {
 	public ThreadAwareFirst() : base(Start.A.Selection<T>()
-	                           .AndOf<ThreadAwareFirst>()
-	                           .By.Activation()
-	                           .Get()
-	                           .ToTable()
-	                           .Select(ConditionSelector.Default)) {}
+	                                      .AndOf<ThreadAwareFirst>()
+	                                      .By.Activation()
+	                                      .Get()
+	                                      .ToTable()
+	                                      .Select(ConditionSelector.Default)) {}
 }

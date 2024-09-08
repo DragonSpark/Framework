@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
-using DragonSpark.Runtime.Execution;
+using DragonSpark.Model.Operations.Selection.Conditions;
 using System;
 using System.Threading.Tasks;
 
@@ -9,80 +9,48 @@ namespace DragonSpark.Presentation.Components.State;
 sealed class BlockingEntryOperation : IOperation
 {
 	readonly IOperation _operation;
-	readonly FirstBase  _active;
-	readonly TimeSpan   _duration;
+	readonly IDepending _allowed;
 
 	public BlockingEntryOperation(IOperation operation) : this(operation, TimeSpan.FromSeconds(1)) {}
 
-	public BlockingEntryOperation(IOperation operation, TimeSpan duration)
-		: this(operation, new ThreadAwareFirst(), duration) {}
+	public BlockingEntryOperation(IOperation operation, TimeSpan duration) : this(operation, new Blocker(duration)) {}
 
-	public BlockingEntryOperation(IOperation operation, FirstBase active, TimeSpan duration)
+	public BlockingEntryOperation(IOperation operation, IDepending allowed)
 	{
 		_operation = operation;
-		_active    = active;
-		_duration  = duration;
+		_allowed   = allowed;
 	}
 
 	public async ValueTask Get()
 	{
-		if (_active.Get())
+		if (await _allowed.Get())
 		{
-			try
-			{
-				var captured = DateTimeOffset.Now;
-				await _operation.Get();
-
-				var elapsed = DateTimeOffset.Now - captured;
-				if (elapsed < _duration)
-				{
-					await Task.Delay(_duration - elapsed).Await();
-				}
-			}
-			finally
-			{
-				_active.Execute();
-			}
+			await _operation.Await();
 		}
 	}
 }
 
 sealed class BlockingEntryOperation<T> : IOperation<T>
 {
-	readonly IOperation<T>    _operation;
-	readonly ThreadAwareFirst _active;
-	readonly TimeSpan         _duration;
+	readonly IOperation<T> _operation;
+	readonly IDepending    _allowed;
 
 	public BlockingEntryOperation(IOperation<T> operation) : this(operation, TimeSpan.FromSeconds(1)) {}
 
-	public BlockingEntryOperation(IOperation<T> operation, TimeSpan duration) : this(operation, new(), duration) {}
+	public BlockingEntryOperation(IOperation<T> operation, TimeSpan duration)
+		: this(operation, new Blocker(duration)) {}
 
-	public BlockingEntryOperation(IOperation<T> operation, ThreadAwareFirst active, TimeSpan duration)
+	public BlockingEntryOperation(IOperation<T> operation, IDepending allowed)
 	{
 		_operation = operation;
-		_active    = active;
-		_duration  = duration;
+		_allowed   = allowed;
 	}
 
 	public async ValueTask Get(T parameter)
 	{
-		if (_active.Get())
+		if (await _allowed.Get())
 		{
-			try
-			{
-				var captured = DateTimeOffset.Now;
-				await _operation.Get(parameter);
-
-				var elapsed = DateTimeOffset.Now - captured;
-				if (elapsed < _duration)
-				{
-					await Task.Delay(_duration - elapsed).Await();
-				}
-			}
-			finally
-			{
-				_active.Execute();
-			}
+			await _operation.Await(parameter);
 		}
 	}
 }

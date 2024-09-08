@@ -59,6 +59,8 @@ public sealed class CallbackContext : IResult<EventCallback>
 	public CallbackContext Watching(IRenderState parameter)
 		=> new(new ActiveRenderAwareOperation(_method.Start().Then().Structure().Out(), parameter).Allocate);
 
+	public CallbackContext Hide() => new(EmptyReceiver.Default, _method.Start());
+
 	public EventCallback Get() => EventCallback.Factory.Create(_receiver!, _method);
 }
 
@@ -78,9 +80,12 @@ public class CallbackContext<T> : IResult<EventCallback<T>> // TODO: Rename
 	}
 
 	public OperationCallbackContext<T> UpdateActivity(IActivityReceiver receiver)
+		=> UpdateActivity(receiver, ActivityOptions.Default);
+
+	public OperationCallbackContext<T> UpdateActivity(IActivityReceiver receiver, ActivityOptions options)
 	{
 		var body      = Start.A.Selection(_method).Then().Structure().Out();
-		var operation = new ActivityAwareOperation<T>(body, receiver);
+		var operation = new ActivityAwareOperation<T>(body, receiver, options);
 		return new(receiver, operation);
 	}
 
@@ -97,5 +102,5 @@ public class CallbackContext<T> : IResult<EventCallback<T>> // TODO: Rename
 
 	public EventCallback<T> Get() => EventCallback.Factory.Create(_receiver.Verify(), _method);
 
-	public CallbackContext<T> Hide() => new(EmptyReceiver.Default, Start.A.Selection(_method).Then());
+	public CallbackContext<T> Hide() => new(EmptyReceiver.Default, Start.A.Selection(_method).Get);
 }

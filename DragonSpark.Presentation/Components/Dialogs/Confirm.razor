@@ -33,11 +33,16 @@
         return Opened.Invoke();
     }
 
-    EventCallback<MouseEventArgs> Create(IActivityReceiver parameter) => Start.A.Callback<MouseEventArgs>(OnAccept).Handle(Exceptions, ReportedType ?? GetType()).UpdateActivity(parameter).Block();
+    EventCallback<MouseEventArgs> Create(IActivityReceiver parameter)
+        => Start.A.Callback<MouseEventArgs>(OnAccept)
+                .Handle(Exceptions, ReportedType ?? GetType())
+                .UpdateActivity(parameter)
+                .Block();
 
     async Task OnAccept(MouseEventArgs parameter)
 	{
-		if (await Confirmation())
+        await Task.Delay(500); // TODO
+        if (await Confirmation())
 		{
 			await Accept.Invoke(parameter);
 			Dialogs.Close();

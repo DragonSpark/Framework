@@ -23,4 +23,8 @@
     <ProjectReference Include="..\DragonSpark.Testing.Objects\DragonSpark.Testing.Objects.csproj" />
     <ProjectReference Include="..\DragonSpark.Testing.Server\DragonSpark.Testing.Server.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Components\State\" />
+  </ItemGroup>
 </Project>

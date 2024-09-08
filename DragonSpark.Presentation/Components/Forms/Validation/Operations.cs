@@ -1,5 +1,4 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model;
+﻿using DragonSpark.Model;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -18,7 +17,7 @@ sealed class Operations : IOperations
 		_tasks.Add(parameter);
 	}
 
-	public ValueTask Get() => Task.WhenAll(_tasks).ToOperation();
+	public Task Get() => _tasks.Count > 1 ? Task.WhenAll(_tasks) : _tasks[0];
 
 	public void Execute(None parameter)
 	{

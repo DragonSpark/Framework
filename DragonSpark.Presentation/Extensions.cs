@@ -70,6 +70,9 @@ public static class Extensions
 
 	public static CallbackContext<T> Callback<T>(this ModelContext _, Func<T, Task> method) => new(method);
 
+	public static CallbackContext<T> Callback<T>(this ModelContext @this, Action<T> callback)
+		=> @this.Callback<T>(Start.A.Command(callback).Operation().Allocate());
+
 	public static CallbackContext<T> Callback<T>(this ModelContext @this, Action callback)
 		=> @this.Callback<T>(Start.A.Command(callback).Accept<T>().Operation().Allocate());
 

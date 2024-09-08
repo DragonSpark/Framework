@@ -1,4 +1,5 @@
 ﻿@using DragonSpark.Compose
+@using DragonSpark.Model.Commands
 @using DragonSpark.Model.Results
 @using DragonSpark.Presentation.Environment.Browser.Document
 @rendermode InteractiveServer
@@ -13,7 +14,7 @@
     <div class="@_class">
         <fieldset disabled="@Active">
             <ShouldRenderComponent Enabled="@Render">
-                <CascadingValue TValue="IActivityReceiver" Value="@(this)" IsFixed="true" ChildContent="@_content" />
+                <CascadingValue TValue="IActivityReceiver" Value="@this" IsFixed="true" ChildContent="@_content" />
             </ShouldRenderComponent>
         </fieldset>
     </div>
@@ -36,15 +37,18 @@
 
 @code
 {
-    readonly Switch _rendered = new(), _restore = new(), _displaying = new(), _active = new(), _render = new(true);
-    string?         _class,            _outer;
-    ActivityOptions _options = ActivityOptions.Default;
-    RenderFragment  _content = default!;
+    readonly List<IRenderAware> _renderings = new();
+    readonly Switch             _rendered   = new(), _restore = new(), _displaying = new(), _active = new(), _render = new(true);
+    Renderings                  _membership = default!;
+    ActivityOptions             _options    = ActivityOptions.Default;
+    RenderFragment              _content    = default!;
+    string?                     _class, _outer;
 
     protected override void OnInitialized()
     {
+        _membership = new(_renderings);
+        _content    = ChildContent(this);
         Monitor?.Add.Execute(this);
-        _content = ChildContent(this);
         base.OnInitialized();
     }
 
@@ -85,14 +89,14 @@
 
     bool Update() => Update(_options);
 
-    bool Update(ActivityOptions? parameter)
+    bool Update(ActivityOptions parameter)
     {
         var active = ActiveState.Default.Get(this);
         var result = _active.Assign(active);
         if (result)
         {
             _class = Class();
-            _outer = active && parameter?.Message is not null ? "position-relative" : string.Empty;
+            _outer = active && parameter.Message is not null ? "position-relative" : string.Empty;
         }
         return result;
     }
@@ -110,6 +114,11 @@
             if (Monitor is not null)
             {
                 await Monitor.Await();
+            }
+
+            foreach (var i in _renderings)
+            {
+                i.Execute();
             }
         }
     }
@@ -153,4 +162,8 @@
         Monitor?.Remove.Execute(this);
         return Focus.DisposeAsync();
     }
+
+    public ICommand<IRenderAware> Add => _membership.Add;
+
+    public ICommand<IRenderAware> Remove => _membership.Remove;
 }

@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Application.Diagnostics;
+using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using System;
 using System.Threading.Tasks;
@@ -49,12 +50,12 @@ sealed class ExceptionAwareOperation<T> : IOperation<T>
 	{
 		try
 		{
-			await _callback(parameter);
+			await _callback(parameter).Await();
 		}
 		// ReSharper disable once CatchAllClause
 		catch (Exception e)
 		{
-			await _exceptions.Get(new(_owner, e));
+			await _exceptions.Await(new(_owner, e));
 		}
 	}
 }

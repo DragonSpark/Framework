@@ -12,11 +12,10 @@ sealed class ExceptionAwareValidationOperation : IOperation<ValidationContext>
 	readonly IOperation<ValidationContext> _previous;
 	readonly ITemplate<(Type, string)>     _template;
 
-	public ExceptionAwareValidationOperation(IOperation<ValidationContext> previous) :
-		this(previous, Template.Default) {}
+	public ExceptionAwareValidationOperation(IOperation<ValidationContext> previous)
+		: this(previous, Template.Default) {}
 
-	public ExceptionAwareValidationOperation(IOperation<ValidationContext> previous,
-	                                         ITemplate<(Type, string)> template)
+	public ExceptionAwareValidationOperation(IOperation<ValidationContext> previous, ITemplate<(Type, string)> template)
 	{
 		_previous = previous;
 		_template = template;

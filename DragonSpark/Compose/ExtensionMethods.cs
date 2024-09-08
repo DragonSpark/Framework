@@ -207,38 +207,38 @@ public static partial class ExtensionMethods
 	public static void Execute(this ICommand<ExceptionParameter<Array<object>>> @this,
 	                           Exception exception, params object[] arguments)
 	{
-		@this.Execute(new ExceptionParameter<Array<object>>(exception, arguments));
+		@this.Execute(new(exception, arguments));
 	}
 
 	public static void Execute<T>(this ICommand<ExceptionParameter<T>> @this, Exception exception, T argument)
 	{
-		@this.Execute(new ExceptionParameter<T>(exception, argument));
+		@this.Execute(new(exception, argument));
 	}
 
 	public static void Execute<T1, T2>(this ICommand<ExceptionParameter<ValueTuple<T1, T2>>> @this,
 	                                   Exception exception, T1 first, T2 second)
 	{
-		@this.Execute(new ExceptionParameter<ValueTuple<T1, T2>>(exception, (first, second)));
+		@this.Execute(new(exception, (first, second)));
 	}
 
 	public static void Execute<T1, T2, T3>(this ICommand<ExceptionParameter<ValueTuple<T1, T2, T3>>> @this,
 	                                       Exception exception, T1 first, T2 second, T3 third)
 	{
-		@this.Execute(new ExceptionParameter<ValueTuple<T1, T2, T3>>(exception, (first, second, third)));
+		@this.Execute(new(exception, (first, second, third)));
 	}
 
 	public static TemplateException Get<T>(this ITemplate<T> @this, T parameter)
 		=> @this.Get(new InvalidOperationException(), parameter);
 
 	public static TemplateException Get<T>(this ITemplate<T> @this, Exception exception, T parameter)
-		=> @this.Get(new ExceptionParameter<T>(exception, parameter));
+		=> @this.Get(new(exception, parameter));
 
 	public static TemplateException Get<T1, T2>(this ITemplate<(T1, T2)> @this, T1 first, T2 second)
 		=> @this.Get(new InvalidOperationException(), first, second);
 
 	public static TemplateException Get<T1, T2>(this ITemplate<(T1, T2)> @this,
 	                                            Exception exception, T1 first, T2 second)
-		=> @this.Get(new ExceptionParameter<(T1, T2)>(exception, (first, second)));
+		=> @this.Get(new(exception, (first, second)));
 
 	public static TemplateException Get<T1, T2, T3>(this ITemplate<(T1, T2, T3)> @this,
 	                                                T1 first, T2 second, T3 third)
@@ -246,5 +246,5 @@ public static partial class ExtensionMethods
 
 	public static TemplateException Get<T1, T2, T3>(this ITemplate<(T1, T2, T3)> @this,
 	                                                Exception exception, T1 first, T2 second, T3 third)
-		=> @this.Get(new ExceptionParameter<(T1, T2, T3)>(exception, (first, second, third)));
+		=> @this.Get(new(exception, (first, second, third)));
 }

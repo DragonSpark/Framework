@@ -1,0 +1,30 @@
+﻿@using DragonSpark.Model
+@implements IRenderAware
+@implements IDisposable
+
+@ChildContent
+
+@code {
+
+    [Parameter]
+    public RenderFragment ChildContent { get; set; } = default!;
+
+    [CascadingParameter] IActivityReceiver? Receiver { get; set; }
+
+    protected override void OnInitialized()
+    {
+        Receiver?.Add.Execute(this);
+        base.OnInitialized();
+    }
+
+    public void Execute(None parameter)
+    {
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        Receiver?.Remove.Execute(this);
+    }
+
+}
