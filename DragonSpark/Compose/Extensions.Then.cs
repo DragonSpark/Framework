@@ -194,8 +194,7 @@ public static partial class ExtensionMethods
 	public static IAlteration<T> Out<T>(this CommandComposer<T> @this) => @this.ToConfiguration().Out();
 
 	public static ICondition<T> Out<T>(this Composer<T, bool> @this)
-		=> @this.Get()
-		        .To(x => x as ICondition<T> ?? new DragonSpark.Model.Selection.Conditions.Condition<T>(x.Get));
+		=> @this.Get().To(x => x as ICondition<T> ?? new Condition<T>(x.Get));
 
 	public static ICondition Out(this ConditionComposer<None> @this) => @this.Get().To(x => new Condition(x.Get));
 	public static ICondition Out(this ResultComposer<bool> @this) => @this.Get().To(x => new Condition(x.Get));

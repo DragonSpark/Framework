@@ -20,7 +20,7 @@ sealed class IsAssigned<T> : Select<T, bool>, ICondition<T>
 	IsAssigned() : base(IsAssignedConditions<T>.Default.Get(typeof(T))) {}
 }
 
-public class IsAssigned<TIn, TOut> : Model.Selection.Conditions.Condition<TIn> where TOut : class
+public class IsAssigned<TIn, TOut> : Condition<TIn> where TOut : class
 {
 	protected IsAssigned(Func<TIn, TOut> select) : this(select.Start()) {}
 
