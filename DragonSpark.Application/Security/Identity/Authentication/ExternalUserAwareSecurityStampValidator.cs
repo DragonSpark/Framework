@@ -13,7 +13,7 @@ public sealed class ExternalUserAwareSecurityStampValidator : ISecurityStampVali
 	readonly ISecurityStampValidator     _previous;
 	readonly ICondition<ClaimsPrincipal> _external;
 
-	public ExternalUserAwareSecurityStampValidator(ISecurityStampValidator previous) 
+	public ExternalUserAwareSecurityStampValidator(ISecurityStampValidator previous)
 		: this(previous, IsExternalPrincipal.Default) {}
 
 	public ExternalUserAwareSecurityStampValidator(ISecurityStampValidator previous,
@@ -31,6 +31,7 @@ public sealed class ExternalUserAwareSecurityStampValidator : ISecurityStampVali
 			{
 				await _previous.ValidateAsync(context).Await();
 			}
+			// ReSharper disable once UncatchableException
 			catch (ArgumentException)
 			{
 				context.RejectPrincipal();

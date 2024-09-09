@@ -84,7 +84,7 @@ else
 
             if (_result?.Success ?? false)
             {
-                var value = _result.Value.Value ?? (AssignedValue is not null ? AssignedValue.Invoke() : Value);
+                var value = _result.Value.Value ?? (AssignedValue is not null ? AssignedValue() : Value);
                 Binding = new Binding<T>(value, RequestUpdate, Comparer);
                 await Loaded.Invoke(Binding);
                 await ValueChanged.Invoke(Value = Binding.Value);
