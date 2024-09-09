@@ -4,75 +4,82 @@
 
 @inherits FluentComponentBase
 
-<CallbackRenderGate Context="callbacks">
-    <CascadingValue Value="this" IsFixed="true">
-        <div id="@Id"
-             style="@StyleValue"
-             class="@ClassValue"
-             border-outside=@Border.HasFlag(WizardBorder.Outside)
-             position="@(StepperPosition == StepperPosition.Top ? "top" : "left")"
-             @attributes="@AdditionalAttributes">
-            <ol style=@GetStepperWidthOrHeight()
-                border-inside=@Border.HasFlag(WizardBorder.Inside)>
-                @Steps
-            </ol>
+<CascadingValue Value="this" IsFixed="true">
+    <div id="@Id"
+         style="@StyleValue"
+         class="@ClassValue"
+         border-outside=@Border.HasFlag(WizardBorder.Outside)
+         position="@(StepperPosition == StepperPosition.Top ? "top" : "left")"
+         @attributes="@AdditionalAttributes">
+        <ol style=@GetStepperWidthOrHeight()
+            border-inside=@Border.HasFlag(WizardBorder.Inside)>
+            @Steps
+        </ol>
 
-            <div class="fluent-wizard-content"
+        <div class="fluent-wizard-content"
+             border-inside=@Border.HasFlag(WizardBorder.Inside)>
+            @if (_steps.Count > 0)
+            {
+                <CascadingValue Value="@_steps[Value]" ChildContent="@_steps[Value].ChildContent" IsFixed="true" />
+            }
+        </div>
+        <DragonSpark.Presentation.Components.State.RedrawWhenActivityMonitorUpdates>
+            <div class="fluent-wizard-buttons"
                  border-inside=@Border.HasFlag(WizardBorder.Inside)>
-                @if (_steps.Count > 0)
+                @if (ButtonTemplate is not null)
                 {
-                    <CascadingValue Value="@_steps[Value]" ChildContent="@_steps[Value].ChildContent" IsFixed="true" />
+                    @ButtonTemplate(Value)
+                }
+                else
+                {
+                    const string width = "width: 80px;";
+                    @if (Value > 0)
+                    {
+                        <FluentButton Appearance="Appearance.Neutral" Style="@width" OnClick="@_previous">
+                            @LabelButtonPrevious
+                        </FluentButton>
+                    }
+
+                    <span style="margin-right: 10px"></span>
+
+                    @if (!Active)
+                    {
+                        <ForcedRedrawComponent>
+                            @if (Value < _steps.Count - 1)
+                            {
+                                <FluentButton Appearance="@Appearance.Accent" Style="@width" OnClick="@_next" Disabled="@Active">
+                                    @LabelButtonNext
+                                </FluentButton>
+                            }
+                            else
+                            {
+                                <FluentButton Appearance="Appearance.Accent" Style="@width" OnClick="@_finish" Disabled="@Active">
+                                    @LabelButtonDone
+                                </FluentButton>
+                            }
+                        </ForcedRedrawComponent>
+                    }
                 }
             </div>
-            <DragonSpark.Presentation.Components.State.RedrawWhenActivityMonitorUpdates>
-                <div class="fluent-wizard-buttons"
-                     border-inside=@Border.HasFlag(WizardBorder.Inside)>
-                    @if (ButtonTemplate is not null)
-                    {
-                        @ButtonTemplate(Value)
-                    }
-                    else
-                    {
-                        const string width = "width: 80px;";
-                        @if (Value > 0)
-                        {
-                            <FluentButton Appearance="Appearance.Neutral" Style="@width" OnClick="@callbacks.Register(OnPreviousHandlerAsync)">
-                                @LabelButtonPrevious
-                            </FluentButton>
-                        }
-
-                        <span style="margin-right: 10px"></span>
-
-                        @if (!Active)
-                        {
-                            <ForcedRedrawComponent>
-                                @if (Value < _steps.Count - 1)
-                                {
-                                    <FluentButton Appearance="@Appearance.Accent" Style="@width" OnClick="@callbacks.Register(OnNextHandlerAsync)" Disabled="@Active">
-                                        @LabelButtonNext
-                                    </FluentButton>
-                                }
-                                else
-                                {
-                                    <FluentButton Appearance="Appearance.Accent" Style="@width"
-                                                  OnClick="callbacks.Register(OnFinishHandlerAsync)" Disabled="@Active">
-                                        @LabelButtonDone
-                                    </FluentButton>
-                                }
-                            </ForcedRedrawComponent>
-                        }
-                    }
-                </div>
-            </DragonSpark.Presentation.Components.State.RedrawWhenActivityMonitorUpdates>
-        </div>
-    </CascadingValue>
-</CallbackRenderGate>
+        </DragonSpark.Presentation.Components.State.RedrawWhenActivityMonitorUpdates>
+    </div>
+</CascadingValue>
 
 @code {
     static   string     LabelButtonPrevious = "Previous", LabelButtonNext = "Next", LabelButtonDone = "Done";
     readonly List<Step> _steps              = new();
     int                 _value;
     internal int        _maxStepVisited;
+
+    EventCallback _previous, _next, _finish;
+
+    protected override void OnInitialized()
+    {
+        _previous = Start.A.Callback(OnPreviousHandlerAsync).Hide();
+        _next     = Start.A.Callback(OnNextHandlerAsync).Hide();
+        _finish   = Start.A.Callback(OnFinishHandlerAsync).Hide();
+        base.OnInitialized();
+    }
 
     /// <summary />
     protected string? ClassValue => new CssBuilder(Class).AddClass("fluent-wizard").Build();

@@ -1,13 +1,20 @@
 ﻿@using DragonSpark.Compose
 @using DragonSpark.Model.Results
-<CallbackRenderGate>
-    <DragonSpark.Presentation.Components.Eventing.HandlerView T="ActivityUpdatedMessage" Received="@(context.Register<ActivityUpdatedMessage>(OnUpdate))" />
-</CallbackRenderGate>
+
+<DragonSpark.Presentation.Components.Eventing.HandlerView T="ActivityUpdatedMessage" Received="@_update" />
 
 @ChildContent(Monitor?.Active ?? false)
 
 @code {
     readonly Switch _active = new();
+
+    EventCallback<ActivityUpdatedMessage> _update;
+
+    protected override void OnInitialized()
+    {
+        _update = Start.A.Callback<ActivityUpdatedMessage>(OnUpdate).Hide();
+        base.OnInitialized();
+    }
 
     [Parameter]
     public RenderFragment<bool> ChildContent { get; set; } = default!;
