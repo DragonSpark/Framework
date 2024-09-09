@@ -11,11 +11,11 @@ public sealed class ExtentSelection<T>
 
 	ExtentSelection() {}
 
-	public ResultContext<T> Result => ResultContext<T>.Instance;
+	public ResultComposer<T> Result => ResultComposer<T>.Instance;
 
 	public ConditionContext<T> Condition => ConditionContext<T>.Instance;
 
-	public CommandContext<T> Command => CommandContext<T>.Instance;
+	public CommandComposer<T> Command => CommandComposer<T>.Instance;
 
 	public SelectionContext<T> Selection => SelectionContext<T>.Instance;
 }

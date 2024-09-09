@@ -39,7 +39,7 @@ public class ResultExtent<T>
 
 	public Selections As => Selections.Instance;
 
-	public ResultContext<T> By => ResultContext<T>.Instance;
+	public ResultComposer<T> By => ResultComposer<T>.Instance;
 
 	public class Selections
 	{

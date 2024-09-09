@@ -39,7 +39,7 @@ public class CommandExtent<T>
 
 	public Selections As => Selections.Instance;
 
-	public CommandContext<T> By => CommandContext<T>.Instance;
+	public CommandComposer<T> By => CommandComposer<T>.Instance;
 
 	public class Selections
 	{

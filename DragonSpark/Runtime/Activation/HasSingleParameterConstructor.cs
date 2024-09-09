@@ -11,7 +11,7 @@ sealed class HasSingleParameterConstructor<T> : Model.Selection.Conditions.Condi
 
 	HasSingleParameterConstructor() : this(Parameters.Default.Then()) {}
 
-	public HasSingleParameterConstructor(ArraySelector<ConstructorInfo, ParameterInfo> parameters)
+	public HasSingleParameterConstructor(ArrayComposer<ConstructorInfo, ParameterInfo> parameters)
 		: base(parameters.FirstAssigned()
 		                 .Select(Start.An.Instance(ParameterType.Default)
 		                              .Then()

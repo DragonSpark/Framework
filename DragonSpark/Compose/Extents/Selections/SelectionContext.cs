@@ -27,52 +27,52 @@ public sealed class SelectionContext<T>
 
 	SelectionContext() {}
 
-	public AlterationSelector<T> Self => new(Self<T>.Default);
+	public AlterationComposer<T> Self => new(Self<T>.Default);
 
-	public Selector<T, TypeInfo> Metadata => InstanceMetadata<T>.Default.Then();
+	public Composer<T, TypeInfo> Metadata => InstanceMetadata<T>.Default.Then();
 
-	public Selector<T, Type> Type => InstanceType<T>.Default.Then();
+	public Composer<T, Type> Type => InstanceType<T>.Default.Then();
 
-	public Selector<T, T> Default() => DragonSpark.Model.Selection.Default<T>.Instance.Then();
+	public Composer<T, T> Default() => DragonSpark.Model.Selection.Default<T>.Instance.Then();
 
-	public Selector<T, TOut> Calling<TOut>(Func<T, TOut> select)
+	public Composer<T, TOut> Calling<TOut>(Func<T, TOut> select)
 		=> new(select.Target as ISelect<T, TOut> ?? new Select<T, TOut>(select));
 
-	public Selector<T, TOut> Calling<TOut>(IResult<TOut> result) => Calling(result.Get);
+	public Composer<T, TOut> Calling<TOut>(IResult<TOut> result) => Calling(result.Get);
 
-	public Selector<T, TOut> Calling<TOut>(Func<TOut> result) => new DelegatedResult<T, TOut>(result).Then();
+	public Composer<T, TOut> Calling<TOut>(Func<TOut> result) => new DelegatedResult<T, TOut>(result).Then();
 
-	public AlterationSelector<T> Calling(Func<T, T> result) => new(new Alteration<T>(result));
+	public AlterationComposer<T> Calling(Func<T, T> result) => new(new Alteration<T>(result));
 
-	public Selector<T, TOut> Returning<TOut>(TOut result) => new FixedResult<T, TOut>(result).Then();
+	public Composer<T, TOut> Returning<TOut>(TOut result) => new FixedResult<T, TOut>(result).Then();
 
-	public Selector<T, TOut> Returning<TOut>(IResult<TOut> result) => Calling(result.Get);
+	public Composer<T, TOut> Returning<TOut>(IResult<TOut> result) => Calling(result.Get);
 
-	public ConditionSelector<T> Returning(IResult<bool> condition) => Calling(condition.Get).Out().Then();
+	public ConditionComposer<T> Returning(IResult<bool> condition) => Calling(condition.Get).Out().Then();
 
-	public AlterationSelector<T> Returning(T result) => Calling(new FixedResult<T, T>(result).Get);
+	public AlterationComposer<T> Returning(T result) => Calling(new FixedResult<T, T>(result).Get);
 
-	public Selector<T, TOut> Default<TOut>() => Default<T, TOut>.Instance.Then();
+	public Composer<T, TOut> Default<TOut>() => Default<T, TOut>.Instance.Then();
 
-	public Selector<T, TOut> Cast<TOut>() where TOut : T => CastOrDefault<T, TOut>.Default.Then();
+	public Composer<T, TOut> Cast<TOut>() where TOut : T => CastOrDefault<T, TOut>.Default.Then();
 
-	public Selector<T, TOut> CastDown<TOut>() => CastOrDefault<T, TOut>.Default.Then();
+	public Composer<T, TOut> CastDown<TOut>() => CastOrDefault<T, TOut>.Default.Then();
 
 
-	public Selector<T, Array<T>> Array() => Self.Yield().Result();
+	public Composer<T, Array<T>> Array() => Self.Yield().Result();
 
-	public Selector<T, Func<TIn, TOut>> Delegate<TIn, TOut>(Func<T, Func<TIn, TOut>> select)
+	public Composer<T, Func<TIn, TOut>> Delegate<TIn, TOut>(Func<T, Func<TIn, TOut>> select)
 		=> new Select<T, Func<TIn, TOut>>(select).Then();
 
-	public Selector<T, TOut> Activation<TOut>() => Activator<TOut>.Default.Then().Accept<T>();
+	public Composer<T, TOut> Activation<TOut>() => Activator<TOut>.Default.Then().Accept<T>();
 
-	public Selector<T, TOut> StoredActivation<TOut>() where TOut : IActivateUsing<T>
+	public Composer<T, TOut> StoredActivation<TOut>() where TOut : IActivateUsing<T>
 		=> Activations<T, TOut>.Default.Then();
 
-	public Selector<T, TOut> Singleton<TOut>()
+	public Composer<T, TOut> Singleton<TOut>()
 		=> Runtime.Activation.Singleton<TOut>.Default.Then().Accept<T>();
 
-	public Selector<T, TOut> Instantiation<TOut>() => New<T, TOut>.Default.Then();
+	public Composer<T, TOut> Instantiation<TOut>() => New<T, TOut>.Default.Then();
 }
 
 public sealed class SelectionContext<TIn, TOut>
@@ -81,15 +81,15 @@ public sealed class SelectionContext<TIn, TOut>
 
 	SelectionContext() {}
 
-	public Selector<TIn, TOut> Instantiation => New<TIn, TOut>.Default.Then();
+	public Composer<TIn, TOut> Instantiation => New<TIn, TOut>.Default.Then();
 
 	public Cast<TIn, TOut> Cast => Cast<TIn, TOut>.Default;
 
-	public Selector<TIn, TOut> Activation() => Activator<TOut>.Default.Then().Accept<TIn>().Return().Then();
+	public Composer<TIn, TOut> Activation() => Activator<TOut>.Default.Then().Accept<TIn>().Return().Then();
 
-	public Selector<TIn, TOut> Singleton() => Singleton<TOut>.Default.Then().Accept<TIn>().Return().Then();
+	public Composer<TIn, TOut> Singleton() => Singleton<TOut>.Default.Then().Accept<TIn>().Return().Then();
 
-	public Selector<TIn, TOut> Returning(TOut result) => new FixedResult<TIn, TOut>(result).Then();
+	public Composer<TIn, TOut> Returning(TOut result) => new FixedResult<TIn, TOut>(result).Then();
 
-	public Selector<TIn, TOut> Returning(Func<TOut> result) => new DelegatedResult<TIn, TOut>(result).Then();
+	public Composer<TIn, TOut> Returning(Func<TOut> result) => new DelegatedResult<TIn, TOut>(result).Then();
 }

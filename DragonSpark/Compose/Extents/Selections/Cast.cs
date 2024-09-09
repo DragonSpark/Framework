@@ -19,14 +19,14 @@ public sealed class Cast<TIn, TOut> : Select<TIn, TOut>
 
 		Alternatives() {}
 
-		public Selector<TIn, TOut> Throw => CastOrDefault<TIn, TOut>.Default.Then();
+		public Composer<TIn, TOut> Throw => CastOrDefault<TIn, TOut>.Default.Then();
 
-		public Selector<TIn, TOut> Result => ResultAwareCast<TIn, TOut>.Default.Then();
+		public Composer<TIn, TOut> Result => ResultAwareCast<TIn, TOut>.Default.Then();
 
-		public Selector<TIn, TOut> Return(TOut result)
+		public Composer<TIn, TOut> Return(TOut result)
 			=> new CastOrDefault<TIn, TOut>(new FixedResult<TIn, TOut>(result).Get).Then();
 
-		public Selector<TIn, TOut> Return(Func<TOut> result)
+		public Composer<TIn, TOut> Return(Func<TOut> result)
 			=> new CastOrDefault<TIn, TOut>(new DelegatedResult<TIn, TOut>(result).Get).Then();
 	}
 }

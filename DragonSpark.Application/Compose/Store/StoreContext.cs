@@ -5,9 +5,9 @@ namespace DragonSpark.Application.Compose.Store;
 
 public sealed class StoreContext<TIn, TOut>
 {
-	readonly Selector<TIn, TOut> _subject;
+	readonly Composer<TIn, TOut> _subject;
 
-	public StoreContext(Selector<TIn, TOut> subject) => _subject = subject;
+	public StoreContext(Composer<TIn, TOut> subject) => _subject = subject;
 
 	public MemoryStoreContext<TIn, TOut> In(IMemoryCache memory) => new(_subject.Get(), memory);
 }

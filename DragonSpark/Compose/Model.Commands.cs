@@ -78,9 +78,9 @@ public static partial class ExtensionMethods
 	public static void Assign<TKey, TValue>(this IAssign<TKey, TValue> @this, (TKey key, TValue value) parameter)
 		=> @this.Execute(Pairs.Create(parameter.key, parameter.value));
 
-	public static CommandContext<(T, T1)> Add<T, T1>(this ICommand<(T, T1)> @this, ICommand<T> other)
+	public static CommandComposer<(T, T1)> Add<T, T1>(this ICommand<(T, T1)> @this, ICommand<T> other)
 		=> @this.Then().Append(new SelectedParameterCommand<(T, T1), T>(other.Execute, x => x.Item1));
 
-	public static CommandContext<(T, T2)> Add<T, T2>(this ICommand<(T, T2)> @this, ICommand<T2> other)
+	public static CommandComposer<(T, T2)> Add<T, T2>(this ICommand<(T, T2)> @this, ICommand<T2> other)
 		=> @this.Then().Append(new SelectedParameterCommand<(T, T2), T2>(other.Execute, x => x.Item2));
 }

@@ -4,7 +4,6 @@ using DragonSpark.Application.Compose;
 using DragonSpark.Application.Model.Interaction;
 using DragonSpark.Application.Runtime.Operations;
 using DragonSpark.Compose;
-using DragonSpark.Compose.Model.Operations;
 using DragonSpark.Compose.Model.Operations.Allocated;
 using DragonSpark.Compose.Model.Results;
 using DragonSpark.Composition.Compose;
@@ -40,56 +39,56 @@ public static class Extensions
 		=> @this.Configure(CircuitDiagnosticRegistrations.Default);
 
 	/**/
-	public static CallbackContext<ValidationContext> Callback<T>(this ModelContext context, IValidateValue<T> validate)
+	public static CallbackComposer<ValidationContext> Callback<T>(this ModelContext context, IValidateValue<T> validate)
 		=> context.Callback(validate.Adapt());
 
-	public static CallbackContext<ValidationContext> Callback<T>(this ModelContext _, IValidatingValue<T> validating)
+	public static CallbackComposer<ValidationContext> Callback<T>(this ModelContext _, IValidatingValue<T> validating)
 		=> validating.Callback();
 
-	public static CallbackContext<ValidationContext> Callback<T>(this IValidationMessage<T> @this)
-		=> new ValidationOperationContext(new ValidationMessageOperation<T>(@this)).DenoteExceptions().Get();
+	public static CallbackComposer<ValidationContext> Callback<T>(this IValidationMessage<T> @this)
+		=> new ValidationOperationComposer(new ValidationMessageOperation<T>(@this)).DenoteExceptions().Get();
 
-	public static CallbackContext<ValidationContext> Callback<T>(this IValidatingValue<T> @this)
-		=> new ValidationOperationContext(new ValidationOperation<T>(@this)).DenoteExceptions().Get();
+	public static CallbackComposer<ValidationContext> Callback<T>(this IValidatingValue<T> @this)
+		=> new ValidationOperationComposer(new ValidationOperation<T>(@this)).DenoteExceptions().Get();
 
 	public static IValidatingValue<string> AllowUnassigned(this IValidatingValue<string> @this)
 		=> new AllowUnassignedTextAwareValidatingValue(@this);
 
 	/**/
-	public static CallbackContext Callback(this ModelContext @this, EventCallback callback)
+	public static CallbackComposer Callback(this ModelContext @this, EventCallback callback)
 		=> @this.Callback(() => callback.Invoke());
 
-	public static CallbackContext Callback(this ModelContext @this, Func<ValueTask> method)
+	public static CallbackComposer Callback(this ModelContext @this, Func<ValueTask> method)
 		=> @this.Callback(method.Start().Select(x => x.AsTask()));
 
-	public static CallbackContext Callback(this ModelContext _, Func<Task> method) => new(method);
+	public static CallbackComposer Callback(this ModelContext _, Func<Task> method) => new(method);
 
-	public static SubmitCallbackContext Callback(this ModelContext _, Func<EditContext, Task> submit) => new(submit);
+	public static SubmitCallbackComposer Callback(this ModelContext _, Func<EditContext, Task> submit) => new(submit);
 
-	public static CallbackContext<object> Callback(this ModelContext _, Func<object, Task> method) => new(method);
+	public static CallbackComposer<object> Callback(this ModelContext _, Func<object, Task> method) => new(method);
 
-	public static CallbackContext<T> Callback<T>(this ModelContext _, Func<T, Task> method) => new(method);
+	public static CallbackComposer<T> Callback<T>(this ModelContext _, Func<T, Task> method) => new(method);
 
-	public static CallbackContext<T> Callback<T>(this ModelContext @this, Action<T> callback)
+	public static CallbackComposer<T> Callback<T>(this ModelContext @this, Action<T> callback)
 		=> @this.Callback<T>(Start.A.Command(callback).Operation().Allocate());
 
-	public static CallbackContext<T> Callback<T>(this ModelContext @this, Action callback)
+	public static CallbackComposer<T> Callback<T>(this ModelContext @this, Action callback)
 		=> @this.Callback<T>(Start.A.Command(callback).Accept<T>().Operation().Allocate());
 
-	public static CallbackContext Callback(this ModelContext @this, ICommand<None> command)
+	public static CallbackComposer Callback(this ModelContext @this, ICommand<None> command)
 		=> @this.Callback(command.Execute);
 
-	public static CallbackContext Callback(this ModelContext @this, Action callback)
+	public static CallbackComposer Callback(this ModelContext @this, Action callback)
 		=> @this.Callback(Start.A.Command(callback).Operation());
 
-	public static EditContextCallbackContext Callback(this ModelContext _, EditContext context) => new(context);
+	public static EditContextCallbackComposer Callback(this ModelContext _, EditContext context) => new(context);
 
-	public static CallbackContext Callback(this ResultContext<ValueTask> @this) => new(@this.Then().Allocate());
-	public static CallbackContext Callback(this ResultContext<Task> @this) => new(@this);
+	public static CallbackComposer Callback(this ResultComposer<ValueTask> @this) => new(@this.Then().Allocate());
+	public static CallbackComposer Callback(this ResultComposer<Task> @this) => new(@this);
 
-	public static CallbackContext<T> Callback<T>(this TaskSelector<T> @this) => new(@this);
+	public static CallbackComposer<T> Callback<T>(this TaskComposer<T> @this) => new(@this);
 
-	public static OperationContext<T> Then<T>(this EventCallback<T> @this)
+	public static DragonSpark.Compose.Model.Operations.OperationComposer<T> Then<T>(this EventCallback<T> @this)
 		=> Start.A.Selection<T>().By.Calling(x => @this.Invoke(x)).Then().Structure();
 
 	/**/

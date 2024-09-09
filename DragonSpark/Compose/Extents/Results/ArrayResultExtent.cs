@@ -8,9 +8,9 @@ public sealed class ArrayResultExtent<T> : ResultExtent<T[]>
 
 	ArrayResultExtent() : this(Start.A.Selection.Of.Type<int>().AndOf<T[]>().By.Instantiation.Get().Then()) {}
 
-	readonly OpenArraySelector<int, T> _select;
+	readonly OpenArrayComposer<int, T> _select;
 
-	public ArrayResultExtent(OpenArraySelector<int, T> select) => _select = select;
+	public ArrayResultExtent(OpenArrayComposer<int, T> select) => _select = select;
 
-	public Model.Results.ResultContext<T[]> New(uint size) => _select.Subject.Bind((int)size);
+	public Model.Results.ResultComposer<T[]> New(uint size) => _select.Subject.Bind((int)size);
 }

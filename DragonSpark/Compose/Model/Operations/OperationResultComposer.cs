@@ -15,7 +15,7 @@ using ValueTask = System.Threading.Tasks.ValueTask;
 
 namespace DragonSpark.Compose.Model.Operations;
 
-public class OperationResultComposer<T> : ResultContext<ValueTask<T>>
+public class OperationResultComposer<T> : ResultComposer<ValueTask<T>>
 {
 	public static implicit operator OperateOf<T>(OperationResultComposer<T> instance) => instance.Get().Get;
 
@@ -24,13 +24,13 @@ public class OperationResultComposer<T> : ResultContext<ValueTask<T>>
 
 	public OperationResultComposer(IResult<ValueTask<T>> instance) : base(instance) {}
 
-	public OperationSelector Terminate(ISelect<T, ValueTask> command) => Terminate(command.Get);
+	public OperationComposer Terminate(ISelect<T, ValueTask> command) => Terminate(command.Get);
 
-	public OperationSelector Terminate() => Terminate(_ => ValueTask.CompletedTask);
+	public OperationComposer Terminate() => Terminate(_ => ValueTask.CompletedTask);
 
-	public OperationSelector Terminate(Func<T, ValueTask> command) => new(new ConfiguredTermination<T>(Get(), command));
+	public OperationComposer Terminate(Func<T, ValueTask> command) => new(new ConfiguredTermination<T>(Get(), command));
 
-	public OperationSelector Terminate(Action<T> command)
+	public OperationComposer Terminate(Action<T> command)
 		=> new(new ConfiguredTermination<T>(Get(), Start.A.Command(command).Operation()));
 
 	public OperationResultComposer<T> Watching(CancellationToken token) => Watching(Start.A.Result(token));
@@ -56,7 +56,7 @@ public class OperationResultComposer<T> : ResultContext<ValueTask<T>>
 		=> new(new DragonSpark.Model.Operations.Results.Protecting<T>(Get(), @lock));
 }
 
-public class OperationResultComposer<_, T> : Selector<_, ValueTask<T>>
+public class OperationResultComposer<_, T> : Composer<_, ValueTask<T>>
 {
 	public static implicit operator Operate<_, T>(OperationResultComposer<_, T> instance) => instance.Get().Get;
 
@@ -68,7 +68,7 @@ public class OperationResultComposer<_, T> : Selector<_, ValueTask<T>>
 
 	public OperationResultComposer(ISelect<_, ValueTask<T>> subject) : base(subject) {}
 
-	public TaskSelector<_, T> Allocate() => new(Get().Select(SelectTask<T>.Default));
+	public TaskComposer<_, T> Allocate() => new(Get().Select(SelectTask<T>.Default));
 
 	public OperationResultComposer<_, TTo> Select<TTo>(ISelect<T, TTo> select) => Select(select.Get);
 
@@ -104,14 +104,14 @@ public class OperationResultComposer<_, T> : Selector<_, ValueTask<T>>
 	public OperationResultComposer<_, T> Configure(Action<T> configure)
 		=> new(Get().Select(new Configure<T>(configure)));
 
-	public OperationContext<_> Terminate(ISelect<T, ValueTask> command) => Terminate(command.Get);
+	public OperationComposer<_> Terminate(ISelect<T, ValueTask> command) => Terminate(command.Get);
 
-	public new OperationContext<_> Terminate() => Terminate(_ => ValueTask.CompletedTask);
+	public new OperationComposer<_> Terminate() => Terminate(_ => ValueTask.CompletedTask);
 
-	public OperationContext<_> Terminate(Func<T, ValueTask> command)
+	public OperationComposer<_> Terminate(Func<T, ValueTask> command)
 		=> new(Get().Select(new OperationSelect<T>(command)));
 
-	public OperationContext<_> Terminate(Action<T> command) => new(Get().Select(new InvokingParameter<T>(command)));
+	public OperationComposer<_> Terminate(Action<T> command) => new(Get().Select(new InvokingParameter<T>(command)));
 
 	public OperationResultComposer<_, T> Watching(CancellationToken token) => Watching(Start.A.Result(token));
 

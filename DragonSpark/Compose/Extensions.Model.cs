@@ -17,7 +17,7 @@ using DragonSpark.Runtime.Activation;
 using System;
 using System.Threading.Tasks;
 using Action = System.Action;
-using CommandContext = DragonSpark.Compose.Extents.Commands.CommandContext;
+using CommandComposer = DragonSpark.Compose.Extents.Commands.CommandComposer;
 using ValueTask = System.Threading.Tasks.ValueTask;
 
 namespace DragonSpark.Compose;
@@ -31,54 +31,54 @@ public static partial class ExtensionMethods
 
 	public static T Instance<T>(this VowelContext _) => Extents.Instance<T>.Implementation.Activate();
 
-	public static OperationContext<T> Operation<T>(this VowelContext _, DragonSpark.Model.Operations.Await<T> start)
+	public static OperationComposer<T> Operation<T>(this VowelContext _, DragonSpark.Model.Operations.Await<T> start)
 		=> new(new Awaiting<T>(start));
 
-	public static OperationContext<T> Operation<T>(this VowelContext _, Func<T, ValueTask> start)
+	public static OperationComposer<T> Operation<T>(this VowelContext _, Func<T, ValueTask> start)
 		=> new(new Operation<T>(start));
 
-	public static TaskSelector<T> Allocated<T>(this VowelContext _, Func<T, Task> start)
+	public static TaskComposer<T> Allocated<T>(this VowelContext _, Func<T, Task> start)
 		=> (start.Target as IAllocated<T> ?? new Allocated<T>(start)).Then();
 
 	public static T Instance<T>(this VowelContext _, T instance) => instance;
 
-	public static ResultExtent<T> Of<T>(this ResultContext @this) => @this.Of.Type<T>();
+	public static ResultExtent<T> Of<T>(this ResultComposer @this) => @this.Of.Type<T>();
 
 	public static ResultExtent<T> Result<T>(this ModelContext @this) => @this.Result.Of.Type<T>();
 
-	public static Model.Results.ResultContext<T> Result<T>(this ModelContext @this, T instance)
+	public static Model.Results.ResultComposer<T> Result<T>(this ModelContext @this, T instance)
 		=> @this.Result<T>().By.Using(instance);
 
-	public static Model.Results.ResultContext<T> Result<T>(this ModelContext @this, Func<T> result)
+	public static Model.Results.ResultComposer<T> Result<T>(this ModelContext @this, Func<T> result)
 		=> @this.Result<T>().By.Calling(result);
 
 	public static ConditionExtent<T> Of<T>(this ConditionContext @this) => @this.Of.Type<T>();
 
 	public static ConditionExtent<T> Condition<T>(this ModelContext @this) => @this.Condition.Of.Type<T>();
 
-	public static ConditionSelector<T> Condition<T>(this ModelContext _, Func<T, bool> condition)
+	public static ConditionComposer<T> Condition<T>(this ModelContext _, Func<T, bool> condition)
 		=> Compose.Start.A.Condition<T>().By.Calling(condition);
 
 	public static ICondition<T> Condition<T>(this ModelContext _, ICondition<T> result) => result;
 
-	public static CommandExtent<T> Of<T>(this CommandContext @this) => @this.Of.Type<T>();
+	public static CommandExtent<T> Of<T>(this CommandComposer @this) => @this.Of.Type<T>();
 
 	public static CommandExtent<T> Command<T>(this ModelContext @this) => @this.Command.Of.Type<T>();
 
-	public static Model.Commands.CommandContext<T> Command<T>(this ModelContext @this, System.Action<T> action)
+	public static Model.Commands.CommandComposer<T> Command<T>(this ModelContext @this, System.Action<T> action)
 		=> @this.Command.Of.Type<T>().By.Calling(action);
 
-	public static Model.Commands.CommandContext<(T1, T2)> Command<T1, T2>(this ModelContext @this,
+	public static Model.Commands.CommandComposer<(T1, T2)> Command<T1, T2>(this ModelContext @this,
 	                                                                      Action<T1, T2> action)
 		=> @this.Command.Of.Type<(T1, T2)>().By.Calling(action.Invoke);
 
-	public static Model.Commands.CommandContext Command(this ModelContext _, Action action)
+	public static Model.Commands.CommandComposer Command(this ModelContext _, Action action)
 		=> new(new Command(action));
 
-	public static CommandResultContext<T> Command<T>(this ModelContext _, Func<ICommand<T>> action)
+	public static CommandResultComposer<T> Command<T>(this ModelContext _, Func<ICommand<T>> action)
 		=> new(action.Start().Get());
 
-	public static CommandResultContext Command(this ModelContext _, Func<ICommand> action)
+	public static CommandResultComposer Command(this ModelContext _, Func<ICommand> action)
 		=> new(action.Start().Get());
 
 	public static SelectionExtent<T> Of<T>(this SelectionContext @this) => @this.Of.Type<T>();

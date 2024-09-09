@@ -98,7 +98,7 @@ public static partial class Extensions
 		=> new(new InitializationAwareHostBuilder<T>(@this));
 
 	/**/
-	public static StoreContext<TIn, TOut> Store<TIn, TOut>(this Selector<TIn, TOut> @this) => new(@this);
+	public static StoreContext<TIn, TOut> Store<TIn, TOut>(this Composer<TIn, TOut> @this) => new(@this);
 
 	public static Compose.Store.Operations.StoreContext<TIn, TOut> Store<TIn, TOut>(
 		this DragonSpark.Compose.Model.Operations.OperationResultComposer<TIn, TOut> @this)

@@ -18,7 +18,7 @@ public static partial class ExtensionMethods
 		return result;
 	}
 
-	public static Selector<T, string> Intern<T>(this Selector<T, string> @this)
+	public static Composer<T, string> Intern<T>(this Composer<T, string> @this)
 		=> @this.Select(Text.Intern.Default);
 
 	public static string OrNone<T>(this T @this) => @this?.ToString() ?? None.Default;

@@ -13,7 +13,7 @@ sealed class GenericInterfaceImplementations : Store<Type, IConditional<Type, Ar
 
 	GenericInterfaceImplementations() : this(GenericTypeDefinition.Default.Then()) {}
 
-	public GenericInterfaceImplementations(Selector<Type, Type> definition)
+	public GenericInterfaceImplementations(Composer<Type, Type> definition)
 		: base(GenericInterfaces.Default.Then()
 		                        .GroupMap(definition.Get().Get)
 		                        .Select(definition.Unless.Input.Is(IsGenericTypeDefinition.Default)

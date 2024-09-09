@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Compose.Model.Operations.Allocated;
 
-public class AllocatedResultComposer<T> : ResultContext<Task<T>>
+public class AllocatedResultComposer<T> : ResultComposer<Task<T>>
 {
 	public static implicit operator AwaitOf<T>(AllocatedResultComposer<T> instance) => instance.Get().Await;
 

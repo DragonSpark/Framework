@@ -10,7 +10,7 @@ namespace DragonSpark.Compose;
 // ReSharper disable once MismatchedFileName
 public static partial class ExtensionMethods
 {
-	public static Selector<TIn, TOut> Start<TIn, TOut>(this Func<TIn, TOut> @this)
+	public static Composer<TIn, TOut> Start<TIn, TOut>(this Func<TIn, TOut> @this)
 		=> Compose.Start.A.Selection<TIn>().By.Calling(@this);
 
 	/**/
@@ -58,23 +58,23 @@ public static partial class ExtensionMethods
 
 	/**/
 
-	public static Selector<TIn?, TOut> VerifyIn<TIn, TOut>(this Selector<TIn?, TOut> @this)
+	public static Composer<TIn?, TOut> VerifyIn<TIn, TOut>(this Composer<TIn?, TOut> @this)
 		=> new(new VerifyInput<TIn, TOut>(@this.Get()));
 
-	public static Selector<TIn?, TOut> AccountInStructure<TIn, TOut>(this Selector<TIn, TOut> @this)
+	public static Composer<TIn?, TOut> AccountInStructure<TIn, TOut>(this Composer<TIn, TOut> @this)
 		where TIn : struct => new(new AccountedStructure<TIn, TOut>(@this.Get()));
 
-	public static Selector<TIn?, TOut> AccountIn<TIn, TOut>(this Selector<TIn, TOut> @this)
+	public static Composer<TIn?, TOut> AccountIn<TIn, TOut>(this Composer<TIn, TOut> @this)
 		=> new(new Accounted<TIn, TOut>(@this.Get()));
 
-	public static Selector<TIn, TOut?> AccountOut<TIn, TOut>(this Selector<TIn, TOut> @this)
+	public static Composer<TIn, TOut?> AccountOut<TIn, TOut>(this Composer<TIn, TOut> @this)
 		=> @this.Select(x => x.Account());
 
 	public static OperationResultComposer<TIn, TOut?> AccountOut<TIn, TOut>(
 		this OperationResultComposer<TIn, TOut> @this)
 		=> @this.Select(x => x.Account());
 
-	public static Selector<_, T> Verified<_, T>(this Selector<_, T?> @this) where T : class
+	public static Composer<_, T> Verified<_, T>(this Composer<_, T?> @this) where T : class
 		=> new Verified<_, T>(@this.Get()).Then();
 	/**/
 

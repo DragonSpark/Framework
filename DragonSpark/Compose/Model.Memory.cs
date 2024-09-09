@@ -27,9 +27,9 @@ public static partial class ExtensionMethods
 
 	public static Leasing<T> Then<T>(this Lease<T> @this) => new(@this);
 
-	public static LeaseSelector<T> Then<T>(this Leasing<T> @this) => new(@this);
+	public static LeaseComposer<T> Then<T>(this Leasing<T> @this) => new(@this);
 
-	public static MemorySelector<T> Then<T>(this Memory<T> @this) => new(@this);
+	public static MemoryComposer<T> Then<T>(this Memory<T> @this) => new(@this);
 
 	public static Leasing<T> AsLease<T>(this T @this)
 	{

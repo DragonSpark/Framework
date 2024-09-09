@@ -18,12 +18,12 @@ public sealed class ConditionContext<T>
 
 	ConditionContext() {}
 
-	public ConditionSelector<T> Always => Is.Always<T>();
+	public ConditionComposer<T> Always => Is.Always<T>();
 
-	public ConditionSelector<T> Never => Is.Never<T>();
+	public ConditionComposer<T> Never => Is.Never<T>();
 
-	public ConditionSelector<T> Assigned => Is.Assigned<T>();
+	public ConditionComposer<T> Assigned => Is.Assigned<T>();
 
-	public ConditionSelector<T> Calling(Func<T, bool> condition)
+	public ConditionComposer<T> Calling(Func<T, bool> condition)
 		=> new DragonSpark.Model.Selection.Conditions.Condition<T>(condition).Then();
 }

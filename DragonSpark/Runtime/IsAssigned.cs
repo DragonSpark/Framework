@@ -24,5 +24,5 @@ public class IsAssigned<TIn, TOut> : Model.Selection.Conditions.Condition<TIn> w
 {
 	protected IsAssigned(Func<TIn, TOut> select) : this(select.Start()) {}
 
-	protected IsAssigned(Selector<TIn, TOut> source) : base(source.Select<bool>(Is.Assigned())) {}
+	protected IsAssigned(Composer<TIn, TOut> source) : base(source.Select<bool>(Is.Assigned())) {}
 }

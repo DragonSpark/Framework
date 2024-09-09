@@ -18,7 +18,7 @@ public sealed class ApplicationProfileContext
 	: ISelect<ICommand<IWebHostBuilder>, ApplicationProfileContext>,
 	  ISelect<Func<IApplicationProfile, IApplicationProfile>, ApplicationProfileContext>
 {
-	readonly CommandContext<IWebHostBuilder> _configure;
+	readonly CommandComposer<IWebHostBuilder> _configure;
 	readonly BuildHostContext                _context;
 	readonly IApplicationProfile             _profile;
 
@@ -26,7 +26,7 @@ public sealed class ApplicationProfileContext
 		: this(context, profile, Start.A.Command<IWebHostBuilder>().By.Empty) {}
 
 	public ApplicationProfileContext(BuildHostContext context, IApplicationProfile profile,
-	                                 CommandContext<IWebHostBuilder> configure)
+	                                 CommandComposer<IWebHostBuilder> configure)
 	{
 		_context   = context;
 		_profile   = profile;

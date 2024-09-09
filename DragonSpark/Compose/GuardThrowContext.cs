@@ -11,7 +11,7 @@ public sealed class GuardThrowContext<T, TException> where TException : Exceptio
 
 	public GuardThrowContext(Func<T, string> message) => _message = message;
 
-	public CommandContext<T> WhenUnassigned() => When(Is.Assigned<T>().Inverse().Out());
+	public CommandComposer<T> WhenUnassigned() => When(Is.Assigned<T>().Inverse().Out());
 
-	public CommandContext<T> When(ICondition<T> condition) => new Guard<T, TException>(condition, _message).Then();
+	public CommandComposer<T> When(ICondition<T> condition) => new Guard<T, TException>(condition, _message).Then();
 }

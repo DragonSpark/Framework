@@ -16,6 +16,6 @@ sealed class IsWarmupAddress : AnyCondition<HttpContext>
 	IsWarmupAddress(SelectionExtent<HttpContext> extent)
 		: this(extent.By.Calling(x => x.Connection.RemoteIpAddress.Verify())) {}
 
-	IsWarmupAddress(Selector<HttpContext, IPAddress> address)
+	IsWarmupAddress(Composer<HttpContext, IPAddress> address)
 		: base(address.Select(IsLocalHostConnection.Default), address.Select(IsInternalAddress.Default)) {}
 }

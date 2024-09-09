@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Compose.Model.Selection;
 using FluentAssertions;
 using Xunit;
 
@@ -16,7 +15,7 @@ public sealed class ThenElseTests
 		Subject.Default.Get(null!).Should().BeFalse();
 	}
 
-	sealed class Subject : Condition<object>
+	sealed class Subject : DragonSpark.Model.Selection.Conditions.Condition<object>
 	{
 		public static Subject Default { get; } = new();
 

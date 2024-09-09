@@ -17,12 +17,12 @@ public static partial class ExtensionMethods
 
 	/**/
 
-	public static Selector<_, T[]> Open<_, T>(this Selector<_, IEnumerable<T>> @this)
+	public static Composer<_, T[]> Open<_, T>(this Composer<_, IEnumerable<T>> @this)
 		=> @this.Select(x => x.Open());
 
-	public static Selector<_, T[]> Open<_, T>(this Selector<_, Array<T>> @this) => @this.Select(x => x.Open());
+	public static Composer<_, T[]> Open<_, T>(this Composer<_, Array<T>> @this) => @this.Select(x => x.Open());
 
-	public static Selector<_, TTo> Select<_, T, TTo>(this Selector<_, Array<T>> @this, ISelect<T[], TTo> select)
+	public static Composer<_, TTo> Select<_, T, TTo>(this Composer<_, Array<T>> @this, ISelect<T[], TTo> select)
 		=> @this.Open().Select(select);
 
 	/**/

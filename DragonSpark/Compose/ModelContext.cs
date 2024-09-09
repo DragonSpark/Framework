@@ -15,9 +15,9 @@ public sealed class ModelContext
 
 	public ConditionContext Condition => ConditionContext.Default;
 
-	public ResultContext Result => ResultContext.Default;
+	public ResultComposer Result => ResultComposer.Default;
 
-	public CommandContext Command => CommandContext.Default;
+	public CommandComposer Command => CommandComposer.Default;
 
 	public SelectionContext Selection => SelectionContext.Default;
 

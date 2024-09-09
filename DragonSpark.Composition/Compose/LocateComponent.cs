@@ -10,7 +10,7 @@ public class LocateComponent<TIn, TOut> : Select<TIn, TOut>
 {
 	public LocateComponent(Func<TIn, IComponentType> select) : this(select.Start()) {}
 
-	public LocateComponent(Selector<TIn, IComponentType> select)
+	public LocateComponent(Composer<TIn, IComponentType> select)
 		: base(select.Select(x => x.Get(A.Type<TOut>()))
 		             .Select(Start.A.Selection.Of.System.Type.By.Self.Then()
 		                          .Activate<TOut>()

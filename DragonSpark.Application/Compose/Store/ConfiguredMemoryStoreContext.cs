@@ -16,14 +16,14 @@ public sealed class ConfiguredMemoryStoreContext<TIn, TOut> : MemoryStoreContext
 		: base(subject, memory)
 		=> _configure = configure;
 
-	public Selector<TIn, TOut> Using<T>() => Using(A.Type<T>().AssemblyQualifiedName.Verify().Accept);
+	public Composer<TIn, TOut> Using<T>() => Using(A.Type<T>().AssemblyQualifiedName.Verify().Accept);
 
-	public Selector<TIn, TOut> Using(ISelect<TIn, string> key) => Using(key.Get);
+	public Composer<TIn, TOut> Using(ISelect<TIn, string> key) => Using(key.Get);
 
-	public Selector<TIn, TOut> Using<T>(Func<TIn, string> key)
+	public Composer<TIn, TOut> Using<T>(Func<TIn, string> key)
 		=> Using(new Key<TIn>(A.Type<T>().AssemblyQualifiedName.Verify(), key).Get);
 
-	public Selector<TIn, TOut> Using(Func<TIn, object> key)
+	public Composer<TIn, TOut> Using(Func<TIn, object> key)
 		=> new Access<TIn, TOut>(Memory,
 		                         key,
 		                         new ConfiguredMemoryResult<TIn, TOut>(Memory, Subject.Get, _configure.Execute).Get)

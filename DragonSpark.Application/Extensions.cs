@@ -13,7 +13,6 @@ using DragonSpark.Application.Security.Identity.Authentication;
 using DragonSpark.Application.Security.Identity.Bearer;
 using DragonSpark.Application.Security.Identity.Claims.Access;
 using DragonSpark.Compose;
-using DragonSpark.Compose.Model.Operations;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
@@ -72,6 +71,7 @@ partial class Extensions
 
 	public static ProviderIdentity AuthenticatedIdentity(this ClaimsPrincipal @this)
 		=> Security.Identity.AuthenticatedIdentity.Default.Get(@this);
+
 	public static ProviderIdentity Identity(this ClaimsPrincipal @this) => Identities.Default.Get(@this);
 
 	public static string DisplayName(this ClaimsPrincipal @this) => UserDisplayName.Default.Get(@this);
@@ -170,11 +170,10 @@ partial class Extensions
 		@this.Attach(parameter);
 		return parameter;
 	}
+
 /**/
 	public static string? Read(this IReadClaim @this, ClaimsPrincipal parameter)
 		=> @this.Get(parameter).To<Accessed, string?>(x => x.Exists ? x.Value : null);
-
-	
 
 /**/
 	public static string Ordinalize(this in byte @this) => ((int)@this).Ordinalize();
@@ -184,12 +183,16 @@ partial class Extensions
 	public static string Ordinalize(this in uint @this) => ((int)@this).Ordinalize();
 
 /**/
-	public static OperationComposer<T> Then<T>(this OperationContext<T> @this) => new(@this.Get());
+	public static OperationComposer<T> Then<T>(this DragonSpark.Compose.Model.Operations.OperationComposer<T> @this)
+		=> new(@this.Get());
 
 /**/
 	public static ITransactions Ambient(this ITransactions @this) => new AmbientAwareTransactions(@this);
+
 	public static IOperation<T> Ambient<T>(this IOperation<T> @this) => new DeferredOperation<T>(@this);
+
 	public static IOperation<T> ReloadAware<T>(this IOperation<T> @this) => new ReloadAware<T>(@this);
+
 /**/
 	public static DragonSpark.Compose.Model.Operations.OperationResultComposer<TIn, TOut> Using<TIn, TOut>(
 		this Compose.Store.Operations.StoreContext<TIn, TOut> @this, StoreProfile<TIn> profile)

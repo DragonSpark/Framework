@@ -11,9 +11,9 @@ sealed class Generator<T> : IGenerator<T> where T : class
 
 	Generator() : this(Configure<T>.Default.Then()) {}
 
-	readonly CommandContext<IAutoGenerateConfigBuilder> _configure;
+	readonly CommandComposer<IAutoGenerateConfigBuilder> _configure;
 
-	public Generator(CommandContext<IAutoGenerateConfigBuilder> configure) => _configure = configure;
+	public Generator(CommandComposer<IAutoGenerateConfigBuilder> configure) => _configure = configure;
 
 	public AutoFaker<T> Get(Configuration parameter)
 	{
