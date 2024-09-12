@@ -1,9 +1,4 @@
-﻿@using JetBrains.Annotations
-@inject IApplyQueryStringValues Apply
-
-<ScrollIntoView Identifier="@Identifier" Enabled="@Enabled" @attributes="@AdditionalAttributes">
-    @ChildContent
-</ScrollIntoView>
+﻿<ScrollIntoView Identifier="@Identifier" Enabled="@Enabled" @attributes="@AdditionalAttributes" ChildContent="@ChildContent" />
 
 @code {
 
@@ -16,7 +11,7 @@
     [Parameter]
     public RenderFragment ChildContent { get; set; } = default!;
 
-    [QueryStringParameter, UsedImplicitly]
+    [Parameter, SupplyParameterFromQuery]
     public string? ScrollToSection { get; set; }
 
 	[Parameter(CaptureUnmatchedValues = true)]
@@ -24,7 +19,6 @@
 
     protected override void OnInitialized()
     {
-        Apply.Execute(this);
         Enabled = ScrollToSection == Identifier;
         base.OnInitialized();
     }

@@ -10,7 +10,6 @@ using DragonSpark.Presentation.Components.Content.Rendering.Sequences;
 using DragonSpark.Presentation.Components.Diagnostics;
 using DragonSpark.Presentation.Components.Eventing;
 using DragonSpark.Presentation.Components.Forms.Validation;
-using DragonSpark.Presentation.Components.Navigation;
 using DragonSpark.Presentation.Components.Routing;
 using DragonSpark.Presentation.Connections;
 using DragonSpark.Presentation.Environment;
@@ -18,9 +17,8 @@ using DragonSpark.Presentation.Environment.Browser.Document;
 using DragonSpark.Presentation.Security.Identity;
 using Majorsoft.Blazor.Components.Common.JsInterop;
 using Microsoft.Extensions.DependencyInjection;
-using Radzen;
-
 using Microsoft.FluentUI.AspNetCore.Components;
+using Radzen;
 
 namespace DragonSpark.Presentation;
 
@@ -86,10 +84,6 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         //
 		         .Then.Start<IRenderState>()
 		         .Forward<CurrentRenderState>()
-		         .Scoped()
-		         //
-		         .Then.Start<IApplyQueryStringValues>()
-		         .Forward<ApplyQueryStringValues>()
 		         .Scoped()
 		         //
 		         .Then.Start<ICurrentPrincipal>()

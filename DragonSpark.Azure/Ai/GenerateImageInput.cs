@@ -7,6 +7,6 @@ public readonly record struct GenerateImageInput(
 	GeneratedImageSize Size,
 	GeneratedImageFormat Format = GeneratedImageFormat.Bytes)
 {
-	public GenerateImageInput(string Prompt, GeneratedImageFormat Format = GeneratedImageFormat.Bytes)
-		: this(Prompt, GeneratedImageSize.W1024xH1024, Format) {}
+	public GenerateImageInput(string prompt, GeneratedImageFormat format = GeneratedImageFormat.Bytes)
+		: this(prompt, GeneratedImageSize.W1024xH1024, format) {}
 }
