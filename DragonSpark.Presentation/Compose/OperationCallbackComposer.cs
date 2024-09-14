@@ -13,8 +13,8 @@ public sealed class OperationCallbackComposer : IResult<EventCallback>
 {
 	public static implicit operator EventCallback(OperationCallbackComposer instance) => instance.Get();
 
-	readonly object             _receiver;
-	readonly IOperation         _operation;
+	readonly object     _receiver;
+	readonly IOperation _operation;
 
 	public OperationCallbackComposer(object receiver, IOperation operation)
 	{

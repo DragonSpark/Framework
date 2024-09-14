@@ -146,19 +146,7 @@
         get => _value;
         set
         {
-            if (value < 0 || _steps.Count <= 0)
-            {
-                _value = 0;
-            }
-            else if (value > _steps.Count - 1)
-            {
-                _value = _steps.Count - 1;
-            }
-            else
-            {
-                _value = value;
-            }
-
+            _value          = value;
             _maxStepVisited = Math.Max(_value, _maxStepVisited);
 
             SetCurrentStatusToStep(_value);

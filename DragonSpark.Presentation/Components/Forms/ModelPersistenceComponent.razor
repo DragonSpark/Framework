@@ -1,74 +1,34 @@
 ﻿@using DragonSpark.Compose
-@using DragonSpark.Presentation.Components.Eventing
-@using Humanizer
+@using DragonSpark.Model.Results
+@using DragonSpark.Presentation.Components.Content.Templates
 
 @typeparam T where T : class
 
 @inherits ModelPersistenceComponentBase<T>
 
-@inject ProblemLoadingState ProblemLoading
-@inject ProblemSavingState ProblemSaving
-@inject SavedContentMessage Saved
-
-<HandlerView T="LoadModelMessage" Received="@Handle" />
-<HandlerView T="SaveModelMessage" Received="@Handle" />
-
+@if (!Load && !_active)
+{
+    @ChildContent(DetermineModel())
+}
+else
+{
+    @DefaultLoadingTemplate.Default
+}
 @code {
-
+    readonly Switch _active = new();
     EventCallback _load;
     protected override void OnInitialized()
     {
-        _load = Start.A.Callback(LoadContent).UpdateActivity(Receiver);
+        _load = Start.A.Callback(LoadContent).UpdateActivity(Receiver).Monitoring(_active);
         base.OnInitialized();
     }
 
     [Parameter]
-    public T Model { get; set; } = default!;
+    public Switch Load { get; set; } = new();
 
     [Parameter]
-    public EventCallback Loaded { get; set; }
+    public RenderFragment<T> ChildContent { get; set; } = default!;
 
-    [CascadingParameter] IActivityReceiver Receiver { get; set; } = default!;
+    protected override Task OnAfterRenderAsync(bool firstRender) => Load.Down() ? _load.Invoke() : base.OnParametersSetAsync();
 
-    /*protected override Task OnAfterRenderAsync(bool firstRender)
-        => Load.Down() ? _load.Invoke() : Save.Down() ? SaveContent() : base.OnAfterRenderAsync(firstRender);*/
-
-    async Task LoadContent()
-    {
-        var current = await Store.Get();
-        if (current.Success)
-        {
-            var content = current.Value.Verify();
-            try
-            {
-                await ModelChanging.Invoke(Model);
-                Target.Execute(new(Model, content));
-                await ModelChanged.Invoke(Model).Await();
-            }
-            catch (Exception e)
-            {
-                ProblemLoading.Execute(new(e, content));
-                await ErrorOccurred.Invoke().Await();
-            }
-        }
-    }
-
-    async Task SaveContent()
-    {
-        try
-        {
-            var content = Formatter.Get(Model);
-            await Store.Await(content);
-            Saved.Execute(content.Length.Bytes().Humanize());
-        }
-        catch (Exception e)
-        {
-            ProblemSaving.Execute(e);
-            await ErrorOccurred.Invoke().Await();
-        }
-    }
-
-    Task Handle(SaveModelMessage message) => message.Subject == Model ? SaveContent() : Task.CompletedTask;
-
-    Task Handle(LoadModelMessage message) => message.Subject == Model ? _load.Invoke() : Task.CompletedTask;
 }

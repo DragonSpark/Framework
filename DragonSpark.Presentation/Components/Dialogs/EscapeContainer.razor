@@ -1,18 +1,22 @@
-﻿<div @onkeyup="LogKeyPressed" @attributes="@AdditionalAttributes">
+﻿@using DragonSpark.Compose
+<div @onkeyup="@_press" @attributes="@AdditionalAttributes">
     @if (EnableFocus)
     {
-        <input id="@Identifier" class="@FocusClass" inputmode="none" />
+        <input id="@Identifier" class="@FocusClass" inputmode="none"/>
     }
 
     @ChildContent
-
-    @*@if (EnableFocus)
-    {
-        <Evaluate>document.getElementById("@Identifier").focus();</Evaluate>
-    }*@
 </div>
 
 @code {
+    EventCallback<KeyboardEventArgs> _press;
+
+    protected override void OnInitialized()
+    {
+        _press = Start.A.Callback<KeyboardEventArgs>(OnPress).Hide();
+        base.OnInitialized();
+    }
+
     [Parameter]
     public bool EnableFocus { get; set; } = true;
 
@@ -31,12 +35,9 @@
     [Parameter(CaptureUnmatchedValues = true)]
     public Dictionary<string, object?> AdditionalAttributes { get; set; } = default!;
 
-    Task LogKeyPressed(KeyboardEventArgs eventArgs)
+    Task OnPress(KeyboardEventArgs parameter) => parameter.Code switch
     {
-        return eventArgs.Code switch
-               {
-               "Escape" => Escaped.Invoke(),
-               _ => Task.CompletedTask
-               };
-    }
+        "Escape" => Escaped.Invoke(),
+        _ => Task.CompletedTask
+    };
 }
