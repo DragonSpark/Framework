@@ -32,10 +32,9 @@
                 }
                 else
                 {
-                    const string width = "width: 80px;";
                     @if (Value > 0)
                     {
-                        <FluentButton Appearance="Appearance.Neutral" Style="@width" OnClick="@_previous">
+                        <FluentButton Appearance="Appearance.Neutral" OnClick="@_previous">
                             @LabelButtonPrevious
                         </FluentButton>
                     }
@@ -47,13 +46,13 @@
                         <ForcedRedrawComponent>
                             @if (Value < _steps.Count - 1)
                             {
-                                <FluentButton Appearance="@Appearance.Accent" Style="@width" OnClick="@_next" Disabled="@Active">
+                                <FluentButton Appearance="@Appearance.Accent" OnClick="@_next" Disabled="@Active">
                                     @LabelButtonNext
                                 </FluentButton>
                             }
                             else
                             {
-                                <FluentButton Appearance="Appearance.Accent" Style="@width" OnClick="@_finish" Disabled="@Active">
+                                <FluentButton Appearance="Appearance.Accent" OnClick="@_finish" Disabled="@Active">
                                     @LabelButtonDone
                                 </FluentButton>
                             }
@@ -66,7 +65,7 @@
 </CascadingValue>
 
 @code {
-    static   string     LabelButtonPrevious = "Previous", LabelButtonNext = "Next", LabelButtonDone = "Done";
+    static   string     LabelButtonPrevious = "Previous", LabelButtonNext = "Next";
     readonly List<Step> _steps              = new();
     int                 _value;
     internal int        _maxStepVisited;
@@ -86,6 +85,9 @@
 
     /// <summary />
     protected string? StyleValue => new StyleBuilder(Style).AddStyle("width", Width).AddStyle("height", Height).Build();
+
+    [Parameter]
+    public string LabelButtonDone { get; set; } = "Complete";
 
     /// <summary>
     /// Gets or sets the height of the wizard.
