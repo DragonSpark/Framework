@@ -16,51 +16,51 @@
             @Steps
         </ol>
 
-        <div class="fluent-wizard-content"
-             border-inside=@Border.HasFlag(WizardBorder.Inside)>
+        @if (ButtonsDisplay.HasFlag(WizardButtonsLocation.Top) && ButtonTemplate is not null)
+        {
+            <div class="fluent-wizard-buttons" border-inside="@Border.HasFlag(WizardBorder.Inside)">
+                @ButtonTemplate(new(Value.Contract().Contract(), Value > 0 ? _previous : null,
+                                    !Active ? Value < _steps.Count - 1 ? _next : _finish : null))
+            </div>
+        }
+
+        <div class="fluent-wizard-content" border-inside=@Border.HasFlag(WizardBorder.Inside)>
             @if (_steps.Count > 0)
             {
                 <CascadingValue Value="@_steps[Value]" ChildContent="@_steps[Value].ChildContent" IsFixed="true" />
             }
         </div>
-        <DragonSpark.Presentation.Components.State.RedrawWhenActivityMonitorUpdates>
-            <div class="fluent-wizard-buttons"
-                 border-inside=@Border.HasFlag(WizardBorder.Inside)>
+        @if (ButtonsDisplay.HasFlag(WizardButtonsLocation.Bottom))
+        {
+            <div class="fluent-wizard-buttons" border-inside="@Border.HasFlag(WizardBorder.Inside)">
                 @if (ButtonTemplate is not null)
                 {
-                    @ButtonTemplate(Value)
+                    @ButtonTemplate(new(Value.Contract().Contract(), Value > 0 ? _previous : null,
+                                        !Active ? Value < _steps.Count - 1 ? _next : _finish : null))
                 }
                 else
                 {
                     @if (Value > 0)
                     {
-                        <FluentButton Appearance="Appearance.Neutral" OnClick="@_previous">
-                            @LabelButtonPrevious
-                        </FluentButton>
+                        <FluentButton Appearance="Appearance.Neutral" OnClick="@_previous.Action">@_previous.Text</FluentButton>
                     }
 
                     <span style="margin-right: 10px"></span>
 
                     @if (!Active)
                     {
-                        <ForcedRedrawComponent>
-                            @if (Value < _steps.Count - 1)
-                            {
-                                <FluentButton Appearance="@Appearance.Accent" OnClick="@_next" Disabled="@Active">
-                                    @LabelButtonNext
-                                </FluentButton>
-                            }
-                            else
-                            {
-                                <FluentButton Appearance="Appearance.Accent" OnClick="@_finish" Disabled="@Active">
-                                    @LabelButtonDone
-                                </FluentButton>
-                            }
-                        </ForcedRedrawComponent>
+                        @if (Value < _steps.Count - 1)
+                        {
+                            <FluentButton Appearance="@Appearance.Accent" OnClick="@_next.Action" Disabled="@Active">@_next.Text</FluentButton>
+                        }
+                        else
+                        {
+                            <FluentButton Appearance="Appearance.Accent" OnClick="@_finish.Action" Disabled="@Active">@_finish.Text</FluentButton>
+                        }
                     }
                 }
             </div>
-        </DragonSpark.Presentation.Components.State.RedrawWhenActivityMonitorUpdates>
+        }
     </div>
 </CascadingValue>
 
@@ -69,14 +69,13 @@
     readonly List<Step> _steps              = new();
     int                 _value;
     internal int        _maxStepVisited;
-
-    EventCallback _previous, _next, _finish;
+    WizardButtonInput         _previous = default!, _next = default!, _finish = default!;
 
     protected override void OnInitialized()
     {
-        _previous = Start.A.Callback(OnPreviousHandlerAsync).Hide();
-        _next     = Start.A.Callback(OnNextHandlerAsync).Hide();
-        _finish   = Start.A.Callback(OnFinishHandlerAsync).Hide();
+        _previous = new(LabelButtonPrevious, Start.A.Callback(OnPreviousHandlerAsync).Hide());
+        _next     = new (LabelButtonNext, Start.A.Callback(OnNextHandlerAsync).Hide());
+        _finish   = new(LabelButtonDone, Start.A.Callback(OnFinishHandlerAsync).Hide());
         base.OnInitialized();
     }
 
@@ -88,6 +87,8 @@
 
     [Parameter]
     public string LabelButtonDone { get; set; } = "Complete";
+
+    public WizardButtonsLocation ButtonsDisplay { get; set; } = WizardButtonsLocation.Both;
 
     /// <summary>
     /// Gets or sets the height of the wizard.
@@ -168,7 +169,7 @@
     /// Custom Wizard buttons do not trigger the component OnChange and OnFinish events.
     /// </summary>
     [Parameter]
-    public RenderFragment<int>? ButtonTemplate { get; set; }
+    public RenderFragment<WizardButtonTemplateInput>? ButtonTemplate { get; set; }
 
     /// <summary>
     /// Gets or sets the wizard steps. Add WizardStep tags inside this tag.
