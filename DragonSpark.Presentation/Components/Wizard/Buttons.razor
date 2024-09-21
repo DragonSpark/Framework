@@ -1,0 +1,34 @@
+﻿@using Microsoft.FluentUI.AspNetCore.Components
+
+<div class="fluent-wizard-buttons" border-inside="@Border.HasFlag(WizardBorder.Inside)">
+    @if (ButtonTemplate is not null)
+    {
+        @ButtonTemplate(Input)
+    }
+    else
+    {
+        @if (Input.Previous is not null)
+        {
+            <FluentButton Appearance="Appearance.Neutral" OnClick="@Input.Previous.Action" Disabled="@Input.Active">@Input.Previous.Text</FluentButton>
+        }
+
+        <span style="margin-right: 10px"></span>
+
+        @if (Input.Next is not null)
+        {
+            <FluentButton Appearance="@Appearance.Accent" OnClick="@Input.Next.Action" Disabled="@Input.Active">@Input.Next.Text</FluentButton>
+        }
+    }
+</div>
+
+@code {
+    [Parameter]
+    public WizardBorder Border { get; set; } = WizardBorder.None;
+
+    [Parameter]
+    public WizardButtonTemplateInput Input { get; set; } = default!;
+
+    [Parameter]
+    public RenderFragment<WizardButtonTemplateInput>? ButtonTemplate { get; set; }
+
+}

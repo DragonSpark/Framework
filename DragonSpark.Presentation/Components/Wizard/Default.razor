@@ -8,58 +8,32 @@
     <div id="@Id"
          style="@StyleValue"
          class="@ClassValue"
-         border-outside=@Border.HasFlag(WizardBorder.Outside)
+         border-outside="@Border.HasFlag(WizardBorder.Outside)"
          position="@(StepperPosition == StepperPosition.Top ? "top" : "left")"
          @attributes="@AdditionalAttributes">
-        <ol style=@GetStepperWidthOrHeight()
-            border-inside=@Border.HasFlag(WizardBorder.Inside)>
+        <ol style="@GetStepperWidthOrHeight()"
+            border-inside="@Border.HasFlag(WizardBorder.Inside)">
             @Steps
         </ol>
 
-        @if (ButtonsDisplay.HasFlag(WizardButtonsLocation.Top) && ButtonTemplate is not null)
-        {
-            <div class="fluent-wizard-buttons" border-inside="@Border.HasFlag(WizardBorder.Inside)">
-                @ButtonTemplate(new(Value.Contract().Contract(), Value > 0 ? _previous : null,
-                                    !Active ? Value < _steps.Count - 1 ? _next : _finish : null))
-            </div>
+        @{
+            var display = CurrentButtonDisplay;
+            var input   = new WizardButtonTemplateInput(Value.Contract().Contract(), Active, Value > 0 ? _previous : null, !Active ? Value < _steps.Count - 1 ? _next : _finish : null);
+            if (display.HasFlag(WizardButtonsLocation.Top))
+            {
+                <Buttons Input="@input" Border="@Border" ButtonTemplate="@ButtonTemplate"/>
+            }
         }
 
-        <div class="fluent-wizard-content" border-inside=@Border.HasFlag(WizardBorder.Inside)>
+        <div class="fluent-wizard-content" border-inside="@Border.HasFlag(WizardBorder.Inside)">
             @if (_steps.Count > 0)
             {
                 <CascadingValue Value="@_steps[Value]" ChildContent="@_steps[Value].ChildContent" IsFixed="true" />
             }
         </div>
-        @if (ButtonsDisplay.HasFlag(WizardButtonsLocation.Bottom))
+        @if (display.HasFlag(WizardButtonsLocation.Bottom))
         {
-            <div class="fluent-wizard-buttons" border-inside="@Border.HasFlag(WizardBorder.Inside)">
-                @if (ButtonTemplate is not null)
-                {
-                    @ButtonTemplate(new(Value.Contract().Contract(), Value > 0 ? _previous : null,
-                                        !Active ? Value < _steps.Count - 1 ? _next : _finish : null))
-                }
-                else
-                {
-                    @if (Value > 0)
-                    {
-                        <FluentButton Appearance="Appearance.Neutral" OnClick="@_previous.Action">@_previous.Text</FluentButton>
-                    }
-
-                    <span style="margin-right: 10px"></span>
-
-                    @if (!Active)
-                    {
-                        @if (Value < _steps.Count - 1)
-                        {
-                            <FluentButton Appearance="@Appearance.Accent" OnClick="@_next.Action" Disabled="@Active">@_next.Text</FluentButton>
-                        }
-                        else
-                        {
-                            <FluentButton Appearance="Appearance.Accent" OnClick="@_finish.Action" Disabled="@Active">@_finish.Text</FluentButton>
-                        }
-                    }
-                }
-            </div>
+            <Buttons Input="@input" Border="@Border" ButtonTemplate="@ButtonTemplate" />
         }
     </div>
 </CascadingValue>
@@ -69,12 +43,12 @@
     readonly List<Step> _steps              = new();
     int                 _value;
     internal int        _maxStepVisited;
-    WizardButtonInput         _previous = default!, _next = default!, _finish = default!;
+    WizardButtonInput   _previous = default!, _next = default!, _finish = default!;
 
     protected override void OnInitialized()
     {
         _previous = new(LabelButtonPrevious, Start.A.Callback(OnPreviousHandlerAsync).Hide());
-        _next     = new (LabelButtonNext, Start.A.Callback(OnNextHandlerAsync).Hide());
+        _next     = new(LabelButtonNext, Start.A.Callback(OnNextHandlerAsync).Hide());
         _finish   = new(LabelButtonDone, Start.A.Callback(OnFinishHandlerAsync).Hide());
         base.OnInitialized();
     }
@@ -85,9 +59,12 @@
     /// <summary />
     protected string? StyleValue => new StyleBuilder(Style).AddStyle("width", Width).AddStyle("height", Height).Build();
 
+    WizardButtonsLocation CurrentButtonDisplay => (_steps.Count > 0 ? _steps[Value].ButtonsDisplay : null) ?? ButtonsDisplay;
+
     [Parameter]
     public string LabelButtonDone { get; set; } = "Complete";
 
+    [Parameter]
     public WizardButtonsLocation ButtonsDisplay { get; set; } = WizardButtonsLocation.Both;
 
     /// <summary>

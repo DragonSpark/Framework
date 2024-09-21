@@ -44,6 +44,9 @@
         .AddStyle("cursor", "pointer", when: IsStepClickable)
         .Build();
 
+    [Parameter]
+    public WizardButtonsLocation? ButtonsDisplay { get; set; }
+
     /// <summary>
     /// Gets or sets the content of the step.
     /// </summary>
