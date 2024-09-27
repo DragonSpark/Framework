@@ -40,6 +40,7 @@ public sealed class CombineTests
 	public async Task VerifySql()
 	{
 		await using var factory = await new SqlLiteNewContext<Context>().Initialize();
+
 		{
 			await using var context = factory.Get();
 			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },

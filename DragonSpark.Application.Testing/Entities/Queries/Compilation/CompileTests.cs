@@ -19,6 +19,7 @@ public class CompileTests
 	public async Task Verify()
 	{
 		await using var contexts = await new SqlLiteNewContext<ContextWithData>().Initialize();
+		
 		{
 			await using var context = contexts.Get();
 

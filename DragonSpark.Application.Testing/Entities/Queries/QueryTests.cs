@@ -161,6 +161,7 @@ public sealed class QueryTests
 	public async Task VerifyParameterSql()
 	{
 		await using var factory = await new SqlLiteNewContext<Context>().Initialize();
+
 		{
 			await using var context = factory.Get();
 			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },

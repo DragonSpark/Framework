@@ -8,6 +8,4 @@ public class IdentityUser : IdentityUser<int>
 	public DateTimeOffset Created { get; set; }
 
 	public DateTimeOffset? Modified { get; set; }
-
-	public object Reference() => MemberwiseClone();
 }

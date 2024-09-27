@@ -24,6 +24,7 @@ public sealed class SaveTests
 		             expected = "Updated Name";
 
 		await using var contexts = await new SqlLiteNewContext<Context>().Initialize();
+
 		{
 			await using var data = contexts.Get();
 			data.Subjects.Add(new Subject { Name = original });
@@ -49,6 +50,7 @@ public sealed class SaveTests
 	public async Task VerifyRelationship()
 	{
 		await using var contexts = await new SqlLiteNewContext<ContextWithRelationship>().Initialize();
+
 		{
 			await using var data = contexts.Get();
 			data.Update(new First());

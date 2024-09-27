@@ -76,6 +76,7 @@ public sealed class InputQueryTests
 	public async Task VerifyExternalParameterSql()
 	{
 		await using var contexts = await new SqlLiteNewContext<Context>().Initialize();
+		
 		{
 			await using var context = contexts.Get();
 			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
@@ -100,6 +101,7 @@ public sealed class InputQueryTests
 	public async Task VerifySelectedSql()
 	{
 		await using var factory = await new SqlLiteNewContext<Context>().Initialize();
+		
 		{
 			await using var context = factory.Get();
 			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
@@ -155,6 +157,7 @@ public sealed class InputQueryTests
 	public async Task VerifyComplexSelectedSql()
 	{
 		await using var contexts = await new SqlLiteNewContext<ContextWithData>().Initialize();
+		
 		{
 			await using var context = contexts.Get();
 			await context.Database.EnsureCreatedAsync();
@@ -201,6 +204,7 @@ public sealed class InputQueryTests
 	public async Task VerifyWhereWithParameterSql()
 	{
 		await using var contexts = await new SqlLiteNewContext<ContextWithData>().Initialize();
+		
 		{
 			await using var data = contexts.Get();
 			await data.Database.EnsureCreatedAsync();

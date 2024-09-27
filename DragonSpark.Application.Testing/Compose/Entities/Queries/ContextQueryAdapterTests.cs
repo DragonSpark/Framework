@@ -39,6 +39,7 @@ public sealed class ContextQueryAdapterTests
 	public async Task VerifySql()
 	{
 		await using var contexts = await new SqlLiteNewContext<Context>().Initialize();
+
 		{
 			await using var context = contexts.Get();
 			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
