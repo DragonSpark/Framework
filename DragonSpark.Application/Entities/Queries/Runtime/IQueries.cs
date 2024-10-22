@@ -1,5 +1,5 @@
-﻿using DragonSpark.Model.Results;
+﻿using DragonSpark.Model.Operations.Results;
 
 namespace DragonSpark.Application.Entities.Queries.Runtime;
 
-public interface IQueries<T> : IResult<Query<T>>;
+public interface IQueries<T> : IResulting<Query<T>>;
