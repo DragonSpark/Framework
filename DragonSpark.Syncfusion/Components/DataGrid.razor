@@ -16,6 +16,7 @@
               Enabled="@Enabled"
               FilterType="@FilterType"
               Columns="@Columns"
+              DataSource="@DataSource"
               AllowSelection="@AllowSelection"
               AllowPaging="@AllowPaging"
               AllowFiltering="@AllowFiltering"
@@ -81,6 +82,9 @@
 
     [Parameter]
     public RenderFragment Columns { get; set; } = default!;
+
+    [Parameter]
+    public IEnumerable<T>? DataSource { get; set; }
 
     [Parameter]
     public string Breakpoint { get; set; } = Breakpoints.SmallUp;
