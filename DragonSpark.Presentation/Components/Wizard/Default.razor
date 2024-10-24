@@ -18,7 +18,7 @@
 
         @{
             var display = CurrentButtonDisplay;
-            var input   = new WizardButtonTemplateInput(Value.Contract().Contract(), Active, Value > 0 ? _previous : null, !Active ? Value < _steps.Count - 1 ? _next : _finish : null);
+            var input   = new WizardButtonTemplateInput(Value.Contract().Contract(), false, Value > 0 ? _previous : null, !Active ? Value < _steps.Count - 1 ? _next : _finish : null);
             if (display.HasFlag(WizardButtonsLocation.Top))
             {
                 <Buttons Input="@input" Border="@Border" ButtonTemplate="@ButtonTemplate"/>

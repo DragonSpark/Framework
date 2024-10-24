@@ -1,0 +1,17 @@
+.fluent-wizard .fluent-wizard-buttons {
+    display: flex;
+    justify-content: end;
+}
+
+    .fluent-wizard .fluent-wizard-buttons[border-inside] {
+        border-top: 1px solid var(--neutral-stroke-hover);
+    }
+.fluent-wizard[position="left"] .fluent-wizard-buttons {
+    grid-column: 2;
+    grid-row: 2;
+    text-align-last: end;
+    padding: 10px;
+}
+.fluent-wizard[position="top"] .fluent-wizard-buttons {
+    padding: 10px;
+}
