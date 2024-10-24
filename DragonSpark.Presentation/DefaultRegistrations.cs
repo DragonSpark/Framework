@@ -118,7 +118,7 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Then.Start<IResourceQuery>()
 		         .Forward<ResourceQuery>()
 		         .Decorate<StoreAwareResourceQuery>()
-		         .Scoped()
+		         .Singleton()
 		         //
 		         .Then.Start<IFocusedElement>()
 		         .Forward<FocusedElement>()
