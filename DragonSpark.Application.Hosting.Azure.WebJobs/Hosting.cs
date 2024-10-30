@@ -9,13 +9,13 @@ namespace DragonSpark.Application.Hosting.Azure.WebJobs;
 
 sealed class Hosting : ICommand<IHostBuilder>
 {
-	readonly Action<ServiceBusOptions> _bus;
+	readonly Func<IServiceCollection, Action<ServiceBusOptions>> _options;
 
-	public Hosting(Action<ServiceBusOptions> bus) => _bus = bus;
+	public Hosting(Func<IServiceCollection, Action<ServiceBusOptions>> options) => _options = options;
 
 	public void Execute(IHostBuilder parameter)
 	{
 		parameter.ConfigureServices(x => x.AddSingleton<INameResolver, NameResolver>())
-		         .ConfigureWebJobs(x => x.AddAzureStorageBlobs().AddServiceBus(_bus));
+		         .ConfigureWebJobs(x => x.AddAzureStorageBlobs().AddServiceBus(_options(x.Services)));
 	}
 }

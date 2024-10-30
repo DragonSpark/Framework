@@ -15,9 +15,9 @@ sealed class DeleteContents : IDeleteContents
 	public async ValueTask<bool> Get(string parameter)
 	{
 		// Enumerate the blobs returned for each page.
-		await foreach (var blobPage in _client.GetBlobsAsync(prefix: parameter).AsPages().ConfigureAwait(false))
+		await foreach (var page in _client.GetBlobsAsync(prefix: parameter).AsPages().ConfigureAwait(false))
 		{
-			foreach (var item in blobPage.Values.AsValueEnumerable())
+			foreach (var item in page.Values.AsValueEnumerable())
 			{
 				var response = await _client.GetBlobClient(item!.Name)
 				                            .DeleteIfExistsAsync(DeleteSnapshotsOption.IncludeSnapshots)

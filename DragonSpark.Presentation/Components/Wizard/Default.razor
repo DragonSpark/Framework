@@ -230,7 +230,7 @@
         if (validateEditContexts)
         {
             var step = _steps[Value];
-            args.IsCancelled = !step.ValidateEditContexts();
+            args.IsCancelled = !await step.ValidateEditContexts();
 
             if (args.IsCancelled)
             {
@@ -262,8 +262,8 @@
     protected virtual async Task OnFinishHandlerAsync()
     {
         // Validate any form edit contexts
-        var allEditContextsAreValid = _steps[Value].ValidateEditContexts();
-        if (!allEditContextsAreValid)
+        var valid = await _steps[Value].ValidateEditContexts();
+        if (!valid)
         {
             // Invoke the 'OnInvalidSubmit' handlers for the edit forms.
             await _steps[Value].InvokeOnInValidSubmitForEditFormsAsync();

@@ -1,6 +1,9 @@
 ﻿using DragonSpark.Application.Compose;
+using DragonSpark.Compose;
+using DragonSpark.Composition;
 using DragonSpark.Composition.Compose;
 using Microsoft.Azure.WebJobs.ServiceBus;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 
 namespace DragonSpark.Application.Hosting.Azure.WebJobs;
@@ -8,9 +11,12 @@ namespace DragonSpark.Application.Hosting.Azure.WebJobs;
 public static class Extensions
 {
 	public static ApplicationProfileContext AsAzureApplication(this BuildHostContext @this)
-		=> @this.AsAzureApplication(DefaultServiceBusConfiguration.Default.Execute);
+		=> @this.AsAzureApplication(x => x.AddSingleton<DefaultServiceBusConfiguration>()
+		                                  .Deferred<DefaultServiceBusConfiguration>()
+		                                  .Assume());
 
 	public static ApplicationProfileContext AsAzureApplication(this BuildHostContext @this,
-	                                                           Action<ServiceBusOptions> bus)
-		=> @this.Configure(new Hosting(bus)).Apply(DefaultApplicationProfile.Default);
+	                                                           Func<IServiceCollection, Action<ServiceBusOptions>>
+		                                                           options)
+		=> @this.Configure(new Hosting(options)).Apply(DefaultApplicationProfile.Default);
 }
