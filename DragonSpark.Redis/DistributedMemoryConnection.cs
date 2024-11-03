@@ -1,4 +1,4 @@
-﻿using DragonSpark.Server.Communication;
+﻿using DragonSpark.Application.Communication;
 using Microsoft.Extensions.Configuration;
 
 namespace DragonSpark.Redis;

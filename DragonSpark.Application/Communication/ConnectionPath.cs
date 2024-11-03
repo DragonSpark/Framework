@@ -4,7 +4,7 @@ using DragonSpark.Model.Selection;
 using Microsoft.Extensions.Configuration;
 using System;
 
-namespace DragonSpark.Server.Communication;
+namespace DragonSpark.Application.Communication;
 
 public class ConnectionPath : Instance<Uri>, ISelect<string, Uri>
 {
