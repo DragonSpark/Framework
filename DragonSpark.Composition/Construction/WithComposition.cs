@@ -12,15 +12,20 @@ sealed class WithComposition : IAlteration<IHostBuilder>
 {
 	public static WithComposition Default { get; } = new();
 
-	WithComposition() : this(ConstructionInfoProvider.Default) {}
+	WithComposition() : this(ContainerOptions.Default.Clone, ConstructionInfoProvider.Default) {}
 
-	readonly FieldInfo _provider;
+	readonly Func<ContainerOptions> _options;
+	readonly FieldInfo              _provider;
 
-	public WithComposition(FieldInfo provider) => _provider = provider;
+	public WithComposition(Func<ContainerOptions> options, FieldInfo provider)
+	{
+		_options  = options;
+		_provider = provider;
+	}
 
 	public IHostBuilder Get(IHostBuilder parameter)
 	{
-		var options = ContainerOptions.Default.Clone().WithMicrosoftSettings().WithAspNetCoreSettings();
+		var options = _options().WithMicrosoftSettings().WithAspNetCoreSettings().With(x => x.EnableVariance = false);
 		var root    = new ServiceContainer(options);
 		root.ConstructorSelector = new ConstructorSelector(new CanSelectDependency(root, options).Get);
 
