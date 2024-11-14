@@ -116,7 +116,11 @@
     <PackageVersion Include="xunit" Version="2.9.2" />
     <PackageVersion Include="xunit.extensibility.execution" Version="2.9.2" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="2.8.2" />
-    <PackageVersion Include="Microsoft.Net.Compilers.Razor.Toolset" Version="9.0.0-preview.24359.2" />
+    <!--
+	<PackageVersion Include="Microsoft.Net.Compilers.Razor.Toolset" Version="9.0.0-preview.24562.3" />
+	-->
+	<PackageVersion Include="Microsoft.Net.Compilers.Razor.Toolset" Version="9.0.0-preview.24359.2" />
+	<PackageVersion Include="Microsoft.Net.Compilers.Toolset" Version="4.13.0-2.24561.4" />
   </ItemGroup>
   <ItemGroup>
     <GlobalPackageReference Include="Nerdbank.GitVersioning" Version="3.6.133" Condition="'$(Configuration)'=='Release'" />
