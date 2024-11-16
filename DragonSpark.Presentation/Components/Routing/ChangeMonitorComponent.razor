@@ -35,9 +35,4 @@
 
 	protected override async ValueTask<bool> Allow(LocationChangingContext parameter)
         => !Enabled || await _confirm.Confirm(None.Default) == DialogResult.Ok;
-
-    void OnUpdated()
-    {
-        _enabled.Execute(EnableBrowserMonitor && Enabled);
-    }
 }
