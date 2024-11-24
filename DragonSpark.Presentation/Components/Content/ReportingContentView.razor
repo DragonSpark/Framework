@@ -13,7 +13,7 @@ else
 	{
 		@CurrentLoadingTemplate
 	}
-	<ContentView ChildContent="@ChildContent" Content="@Subject" NotFoundTemplate="@NotFoundTemplate" />
+	<ContentView TValue="TOut" ChildContent="@ChildContent" Content="@Subject" NotFoundTemplate="@NotFoundTemplate" />
 }
 
 @code

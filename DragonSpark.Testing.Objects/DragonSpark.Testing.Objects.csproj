@@ -3,6 +3,7 @@
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" />
 	  <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" />
     <PackageReference Include="AutoBogus.Conventions" />
+    <PackageReference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DragonSpark.Application.Hosting.xUnit\DragonSpark.Application.Hosting.xUnit.csproj" />
