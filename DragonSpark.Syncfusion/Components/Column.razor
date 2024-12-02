@@ -5,7 +5,7 @@
 	AllowFiltering="@AllowFiltering"
 	AllowSorting="@AllowSorting"
 	Format="@Format"
-	HeaderText="@HeaderText"
+	HeaderText="@Header"
 	Field="@Field"
 	Width="@Width"
 	FilterTemplate="@FilterTemplate"
@@ -33,7 +33,9 @@
     [CascadingParameter]
     ISpecialColumnContainer Columns { get; set; } = default!;
 
-	RenderFragment<object>? ActualTemplate { get; set; }
+    RenderFragment<object>? ActualTemplate { get; set; }
+
+    string Header => HeaderText ?? Field; // ISSUE: https://www.syncfusion.com/forums/195365/sfgrid-setvaluesrecursively-results-in-nullreferenceexception
 
 	[Parameter]
 	public RenderFragment<T>? Template { get; set; }
@@ -57,7 +59,7 @@
 	public string Width { get; set; } = string.Empty;
 
 	[Parameter]
-	public string? HeaderText { get; set; }
+    public string? HeaderText { get; set; }
 
 	[Parameter]
 	public string Field { get; set; } = string.Empty;
