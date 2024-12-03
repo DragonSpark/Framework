@@ -2,19 +2,19 @@
 @using Syncfusion.Blazor.Grids
 
 <GridColumn AutoFit="@AutoFit"
-	AllowFiltering="@AllowFiltering"
-	AllowSorting="@AllowSorting"
-	Format="@Format"
-	HeaderText="@Header"
-	Field="@Field"
-	Width="@Width"
-	FilterTemplate="@FilterTemplate"
-	Template="@ActualTemplate"
-    ClipMode="@ClipMode"
-	Type="@Type"
-	HeaderTextAlign="@HeaderTextAlign"
-	TextAlign="@TextAlign"
-	FilterSettings="@FilterSettings"
+            AllowFiltering="@AllowFiltering"
+            AllowSorting="@AllowSorting"
+            Format="@Format"
+            HeaderText="@HeaderText"
+            Field="@Field"
+            Width="@Width"
+            FilterTemplate="@FilterTemplate"
+            Template="@ActualTemplate"
+            ClipMode="@ClipMode"
+            Type="@Type"
+            HeaderTextAlign="@HeaderTextAlign"
+            TextAlign="@TextAlign"
+            FilterSettings="@FilterSettings"
 />
 
 @code {
@@ -35,49 +35,47 @@
 
     RenderFragment<object>? ActualTemplate { get; set; }
 
-    string Header => HeaderText ?? Field; // ISSUE: https://www.syncfusion.com/forums/195365/sfgrid-setvaluesrecursively-results-in-nullreferenceexception
+    [Parameter]
+    public RenderFragment<T>? Template { get; set; }
 
-	[Parameter]
-	public RenderFragment<T>? Template { get; set; }
+    [Parameter]
+    public bool AutoFit { get; set; }
 
-	[Parameter]
-	public bool AutoFit { get; set; }
+    [Parameter]
+    public bool AllowFiltering { get; set; } = true;
 
-	[Parameter]
-	public bool AllowFiltering { get; set; } = true;
-
-	[Parameter]
-	public bool AllowSorting { get; set; } = true;
+    [Parameter]
+    public bool AllowSorting { get; set; } = true;
 
     [Parameter]
     public bool DisplayFilter { get; set; } = true;
 
-	[Parameter]
-	public string Format { get; set; } = default!;
+    [Parameter]
+    public string Format { get; set; } = default!;
 
-	[Parameter]
-	public string Width { get; set; } = string.Empty;
+    [Parameter]
+    public string Width { get; set; } = string.Empty;
 
-	[Parameter]
+    [Parameter]
     public string? HeaderText { get; set; }
 
-	[Parameter]
-	public string Field { get; set; } = string.Empty;
+    [Parameter]
+    public string Field { get; set; } = string.Empty;
 
-	[Parameter]
-	public ColumnType Type { get; set; }
+    [Parameter]
+    public ColumnType Type { get; set; }
 
-	[Parameter]
-	public FilterSettings? FilterSettings { get; set; }
+    [Parameter]
+    public FilterSettings? FilterSettings { get; set; }
 
-	[Parameter]
-	public TextAlign HeaderTextAlign { get; set; } = TextAlign.Left;
+    [Parameter]
+    public TextAlign HeaderTextAlign { get; set; } = TextAlign.Left;
 
-	[Parameter]
-	public TextAlign TextAlign { get; set; } = TextAlign.Left;
+    [Parameter]
+    public TextAlign TextAlign { get; set; } = TextAlign.Left;
 
-	[Parameter]
-	public ClipMode ClipMode { get; set; } = ClipMode.Ellipsis;
+    [Parameter]
+    public ClipMode ClipMode { get; set; } = ClipMode.Ellipsis;
 
     [Parameter]
     public RenderFragment<object> FilterTemplate { get; set; } = default!;
