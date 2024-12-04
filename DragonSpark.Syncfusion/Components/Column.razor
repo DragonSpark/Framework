@@ -6,11 +6,11 @@
 	AllowSorting="@AllowSorting"
 	Format="@Format"
 	HeaderText="@HeaderText"
-            HeaderTemplate="@_header"
+    HeaderTemplate="@_header"
 	Field="@Field"
 	Width="@Width"
 	FilterTemplate="@FilterTemplate"
-            Template="@_template"
+    Template="@_template"
     ClipMode="@ClipMode"
 	Type="@Type"
 	HeaderTextAlign="@HeaderTextAlign"
@@ -35,8 +35,6 @@
 
     [CascadingParameter]
     ISpecialColumnContainer Columns { get; set; } = default!;
-
-	RenderFragment<object>? ActualTemplate { get; set; }
 
 	[Parameter]
 	public RenderFragment<T>? Template { get; set; }
