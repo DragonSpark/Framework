@@ -109,6 +109,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.Application.Hos
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.SyncfusionRendering", "DragonSpark.Syncfusion\DragonSpark.SyncfusionRendering.csproj", "{871F6654-850C-4BE9-8E36-3FD65E70C6E9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Application.AspNet", "DragonSpark.Application.AspNet\DragonSpark.Application.AspNet.csproj", "{DC026244-C88B-49C1-A8F9-07A586C7D796}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -291,6 +293,10 @@ Global
 		{871F6654-850C-4BE9-8E36-3FD65E70C6E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{871F6654-850C-4BE9-8E36-3FD65E70C6E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{871F6654-850C-4BE9-8E36-3FD65E70C6E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC026244-C88B-49C1-A8F9-07A586C7D796}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC026244-C88B-49C1-A8F9-07A586C7D796}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC026244-C88B-49C1-A8F9-07A586C7D796}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC026244-C88B-49C1-A8F9-07A586C7D796}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

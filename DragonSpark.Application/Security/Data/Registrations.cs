@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.DependencyInjection;
 using System.Security.Cryptography.X509Certificates;
 
@@ -19,29 +18,7 @@ sealed class Registrations : ICommand<IServiceCollection>
 		         .Start<X509Certificate2>()
 		         .Use<EncryptionCertificate>()
 		         .Singleton()
-		         //
-		         .Then.Start<IDataProtector>()
-		         .Use<DataProtectorInstance>()
-		         .Singleton()
-		         //
-		         .Then.Start<CertificateBasedDataProtector>()
-		         .Singleton()
-		         //
-		         .Then.Start<IEncrypt>()
-		         .Forward<Encrypt>()
-		         .Singleton()
-		         //
-		         .Then.Start<IEncryptText>()
-		         .Forward<EncryptText>()
-		         .Singleton()
-		         //
-		         .Then.Start<IDecrypt>()
-		         .Forward<Decrypt>()
-		         .Singleton()
-		         //
-		         .Then.Start<IDecryptText>()
-		         .Forward<DecryptText>()
-		         .Singleton()
+		         
 			;
 	}
 }

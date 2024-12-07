@@ -19,10 +19,3 @@ public class ValidatorKey<T> : IValidatorKey<T> where T : class
 		key.Items[_key] = value;
 	}
 }
-
-sealed class ValidatorKey : ValidatorKey<ObjectGraphValidator>
-{
-	public static ValidatorKey Default { get; } = new();
-
-	ValidatorKey() : base(new object()) {}
-}

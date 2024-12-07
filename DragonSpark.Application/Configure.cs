@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Application.Model.Interaction;
-using DragonSpark.Composition;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Selection.Alterations;
 
@@ -12,7 +11,5 @@ sealed class Configure : IAlteration<BuildHostContext>
 	Configure() {}
 
 	public BuildHostContext Get(BuildHostContext parameter)
-		=> parameter.Configure(DefaultRegistrations.Default, Components.Registrations.Default,
-		                       Registrations.Default)
-		            .ComposeUsing(Entities.Compose.Default);
+		=> parameter.Configure(DefaultRegistrations.Default, Components.Registrations.Default, Registrations.Default);
 }

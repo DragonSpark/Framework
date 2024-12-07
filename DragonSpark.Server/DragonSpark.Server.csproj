@@ -4,10 +4,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DragonSpark.Application\DragonSpark.Application.csproj" />
+    <PackageReference Include="LightInject.Microsoft.AspNetCore.Hosting" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="LightInject.Microsoft.AspNetCore.Hosting" />
+    <ProjectReference Include="..\DragonSpark.Application.AspNet\DragonSpark.Application.AspNet.csproj" />
   </ItemGroup>
 </Project>

@@ -1,0 +1,69 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<ItemGroup>
+	  <Compile Remove="Components\Validation\Expressions\**" />
+	  <Compile Remove="Compose\Store\**" />
+	  <Compile Remove="Configuration\**" />
+	  <Compile Remove="Connections\**" />
+	  <Compile Remove="Model\Sequences\**" />
+	  <Compile Remove="Runtime\**" />
+	  <EmbeddedResource Remove="Components\Validation\Expressions\**" />
+	  <EmbeddedResource Remove="Compose\Store\**" />
+	  <EmbeddedResource Remove="Configuration\**" />
+	  <EmbeddedResource Remove="Connections\**" />
+	  <EmbeddedResource Remove="Model\Sequences\**" />
+	  <EmbeddedResource Remove="Runtime\**" />
+	  <None Remove="Components\Validation\Expressions\**" />
+	  <None Remove="Compose\Store\**" />
+	  <None Remove="Configuration\**" />
+	  <None Remove="Connections\**" />
+	  <None Remove="Model\Sequences\**" />
+	  <None Remove="Runtime\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Remove="Compose\OperationComposer.cs" />
+	  <Compile Remove="Compose\OperationResultComposer.cs" />
+	  <Compile Remove="Model\Interaction\Adapter.cs" />
+	  <Compile Remove="Model\Interaction\GeneralProblemEncounteredResult.cs" />
+	  <Compile Remove="Model\Interaction\IInteractionResult.cs" />
+	  <Compile Remove="Model\Interaction\IInteractionResultHandler.cs" />
+	  <Compile Remove="Model\Interaction\InteractionResult.cs" />
+	  <Compile Remove="Model\Interaction\InvalidResult.cs" />
+	  <Compile Remove="Model\Interaction\ISuccessResult.cs" />
+	  <Compile Remove="Model\Interaction\IUnsuccessfulResult.cs" />
+	  <Compile Remove="Model\Interaction\NoActionResult.cs" />
+	  <Compile Remove="Model\Interaction\Registrations.cs" />
+	  <Compile Remove="Model\Interaction\SuccessResult.cs" />
+	  <Compile Remove="Model\Interaction\SuccessResultBase.cs" />
+	  <Compile Remove="Model\Interaction\UniqueIdentityResult.cs" />
+	  <Compile Remove="Model\Interaction\UnsuccessfulResultBase.cs" />
+	  <Compile Remove="Model\Interaction\ValidatingAwareResultHandler.cs" />
+	  <Compile Remove="Model\Interaction\ValidationResult.cs" />
+	</ItemGroup>
+
+	<!--<ItemGroup>
+	  <EditorConfigFiles Include=".editorconfig" />
+	</ItemGroup>-->
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
+		<PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" />
+		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" />
+		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" />
+		<PackageReference Include="Microsoft.AspNetCore.Identity.UI" />
+		<PackageReference Include="LinqKit.Microsoft.EntityFrameworkCore" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
+		<PackageReference Include="System.Linq.Async" />
+		<PackageReference Include="System.Linq.Dynamic.Core" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\DragonSpark.Application\DragonSpark.Application.csproj" />
+		<ProjectReference Include="..\DragonSpark\DragonSpark.csproj" />
+		<ProjectReference Include="..\DragonSpark.Composition\DragonSpark.Composition.csproj" />
+		<ProjectReference Include="..\DragonSpark.Diagnostics\DragonSpark.Diagnostics.csproj" />
+	</ItemGroup>
+
+</Project>

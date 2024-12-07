@@ -2,33 +2,18 @@
 using DragonSpark.Application.Compose;
 using DragonSpark.Application.Compose.Runtime;
 using DragonSpark.Application.Compose.Store.Operations.Memory;
-using DragonSpark.Application.Entities.Diagnostics;
-using DragonSpark.Application.Entities.Editing;
-using DragonSpark.Application.Entities.Transactions;
 using DragonSpark.Application.Model.Sequences;
 using DragonSpark.Application.Runtime;
 using DragonSpark.Application.Runtime.Operations.Execution;
-using DragonSpark.Application.Security.Identity;
-using DragonSpark.Application.Security.Identity.Authentication;
-using DragonSpark.Application.Security.Identity.Bearer;
-using DragonSpark.Application.Security.Identity.Claims.Access;
 using DragonSpark.Compose;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
-using DragonSpark.Model.Selection;
 using Humanizer;
-using Microsoft.AspNetCore.Components.Authorization;
-using Microsoft.AspNetCore.Components.Forms;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
-using System.Threading.Tasks;
-using IdentityUser = DragonSpark.Application.Security.Identity.IdentityUser;
 
 namespace DragonSpark.Application;
 
@@ -43,61 +28,15 @@ partial class Extensions
 	public static BuildHostContext WithAmbientConfiguration(this BuildHostContext @this)
 		=> @this.Select(Configuration.WithAmbientConfiguration.Default);
 
-	public static ApplicationProfileContext Apply(this BuildHostContext @this, IApplicationProfile profile)
-		=> new(@this, profile);
-
-	public static ApplicationProfileContext WithIdentityClaimsRelay(this ApplicationProfileContext @this)
-		=> @this.Append(Security.Identity.Authentication.Persist.WithIdentityClaimsRelay.Default);
-
 	/**/
-
-	public static string ValueOrDefault(this Accessed @this) => @this.ValueOrDefault(string.Empty);
-
-	public static string ValueOrDefault(this Accessed @this, string @default)
-		=> @this.Exists ? @this.Value.Verify() : @default;
-
-	public static string Value(this Accessed @this)
-		=> @this.Exists ? @this.Value.Verify() : throw new InvalidOperationException($"{@this.Claim} not found.");
-
-	public static Claim? Claim(this Accessed @this) => @this.Exists ? new(@this.Claim, @this.Value.Verify()) : null;
 
 	public static bool HasClaim(this ClaimsPrincipal @this, string claim) => @this.HasClaim(x => x.Type == claim);
 
 	public static Claim Claim(this Text.Text @this, string value) => new(@this, value);
 
-	public static uint? Number(this ClaimsPrincipal @this) => UserNumber.Default.Get(@this);
-
-	/*public static string? Identifier(this ClaimsPrincipal @this) => UserIdentifier.Default.Get(@this);*/
-
-	public static ProviderIdentity AuthenticatedIdentity(this ClaimsPrincipal @this)
-		=> Security.Identity.AuthenticatedIdentity.Default.Get(@this);
-
-	public static ProviderIdentity Identity(this ClaimsPrincipal @this) => Identities.Default.Get(@this);
-
-	public static string DisplayName(this ClaimsPrincipal @this) => UserDisplayName.Default.Get(@this);
-
-	public static string UserName(this ClaimsPrincipal @this) => Security.Identity.UserName.Default.Get(@this);
+	
 
 	public static bool IsAuthenticated(this ClaimsPrincipal @this) => @this.Identity?.IsAuthenticated ?? false;
-
-	public static T Get<T>(this ISelect<ClaimsIdentity, T> @this, ClaimsPrincipal parameter)
-		=> @this.Get(PrincipalIdentity.Default.Get(parameter));
-
-	public static string? Get(this IValueProvider @this, string key)
-	{
-		var value  = @this.GetValue(key);
-		var result = value != ValueProviderResult.None ? value.FirstValue : null;
-		return result;
-	}
-
-	public static T User<T>(this AuthenticationState @this) where T : IdentityUser
-		=> @this.To<AuthenticationState<T>>().Profile.Verify();
-
-	public static ProviderIdentity AsIdentity(this ExternalLoginInfo @this)
-		=> ExternalLoginIdentity.Default.Get(@this);
-
-	public static T Get<T>(this ISelect<ClaimsPrincipal, T> @this, AuthenticationState parameter)
-		=> @this.Get(parameter.User);
 
 	/**/
 
@@ -126,11 +65,6 @@ partial class Extensions
 
 	public static string Smart<T>(this IResult<string> @this, T parameter) where T : notnull
 		=> SmartFormat.Smart.Format(@this.Get(), parameter);
-
-	/**/
-
-	public static (Type Owner, string Name) Key(this FieldIdentifier @this)
-		=> (@this.Model.GetType(), @this.FieldName);
 
 	/**/
 
@@ -163,18 +97,6 @@ partial class Extensions
 		return result;
 	}
 
-	public static Task<int> Save(this DbContext @this) => @this.SaveChangesAsync();
-
-	public static T Attached<T>(this IEditor @this, T parameter) where T : class
-	{
-		@this.Attach(parameter);
-		return parameter;
-	}
-
-/**/
-	public static string? Read(this IReadClaim @this, ClaimsPrincipal parameter)
-		=> @this.Get(parameter).To<Accessed, string?>(x => x.Exists ? x.Value : null);
-
 /**/
 	public static string Ordinalize(this in byte @this) => ((int)@this).Ordinalize();
 
@@ -187,11 +109,8 @@ partial class Extensions
 		=> new(@this.Get());
 
 /**/
-	public static ITransactions Ambient(this ITransactions @this) => new AmbientAwareTransactions(@this);
-
+	
 	public static IOperation<T> Ambient<T>(this IOperation<T> @this) => new DeferredOperation<T>(@this);
-
-	public static IOperation<T> ReloadAware<T>(this IOperation<T> @this) => new ReloadAware<T>(@this);
 
 /**/
 	public static DragonSpark.Compose.Model.Operations.OperationResultComposer<TIn, TOut> Using<TIn, TOut>(

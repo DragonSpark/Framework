@@ -3,11 +3,9 @@ using System.Net;
 
 namespace DragonSpark.Application.Navigation;
 
-public class TemplatedPath : IAlteration<string>
+public class TemplatedPath(string template) : IAlteration<string>
 {
-	readonly string _template;
-
-	public TemplatedPath(string template) => _template = template;
+	readonly string _template = template;
 
 	public string Get(string parameter)
 	{

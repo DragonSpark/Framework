@@ -1,6 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <ItemGroup>
-    <ProjectReference Include="..\DragonSpark.Application\DragonSpark.Application.csproj" />
+    <ProjectReference Include="..\DragonSpark.Application.AspNet\DragonSpark.Application.AspNet.csproj" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="SendGrid.Extensions.DependencyInjection" />

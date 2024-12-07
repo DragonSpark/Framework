@@ -16,10 +16,6 @@ sealed class Registrations<T> : ICommand<IServiceCollection> where T : IdentityU
 		         .Forward<KeyCode<T>>()
 		         .Decorate<FormatAwareKeyCode<T>>()
 		         .Singleton()
-		         //
-		         .Then.Start<IDisable<T>>()
-		         .Forward<Disable<T>>()
-		         .Singleton()
 			;
 	}
 }

@@ -1,38 +1,19 @@
 ﻿using DragonSpark.Application.Compose;
-using DragonSpark.Application.Compose.Entities;
-using DragonSpark.Application.Compose.Entities.Queries;
-using DragonSpark.Application.Compose.Entities.Queries.Composition.Runtime;
 using DragonSpark.Application.Compose.Store;
-using DragonSpark.Application.Diagnostics;
 using DragonSpark.Application.Diagnostics.Time;
-using DragonSpark.Application.Entities;
-using DragonSpark.Application.Entities.Configure;
-using DragonSpark.Application.Entities.Queries.Composition;
 using DragonSpark.Application.Model;
 using DragonSpark.Compose;
-using DragonSpark.Compose.Model.Operations;
 using DragonSpark.Compose.Model.Selection;
 using DragonSpark.Composition.Compose;
-using DragonSpark.Model;
-using DragonSpark.Model.Commands;
 using DragonSpark.Runtime;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using System;
-using System.Linq;
-using System.Linq.Expressions;
-using IdentityUser = DragonSpark.Application.Security.Identity.IdentityUser;
 
 namespace DragonSpark.Application;
 
 // ReSharper disable once MismatchedFileName
 public static partial class Extensions
 {
-	public static StorageConfigurationBuilder WithSqlServer(this StorageConfigurationBuilder @this, string name)
+	/*public static StorageConfigurationBuilder WithSqlServer(this StorageConfigurationBuilder @this, string name)
 		=> @this.WithSqlServer(name, _ => {});
 
 	public static StorageConfigurationBuilder WithSqlServer(this StorageConfigurationBuilder @this, string name,
@@ -61,7 +42,7 @@ public static partial class Extensions
 	public static StorageConfigurationBuilder WithModel(this StorageConfigurationBuilder @this, IModel model)
 		=> @this.Append(new RuntimeModelConfiguration(model));
 
-	/**/
+	/*#1#
 
 	public static IdentityStorage<T> WithIdentity<T>(this ApplicationProfileContext @this) where T : IdentityUser
 		=> new(@this);
@@ -88,7 +69,7 @@ public static partial class Extensions
 	public static ApplicationProfileContext AuthorizeUsing<T>(this ApplicationProfileContext @this,
 	                                                          Action<AuthorizationOptions, T> policy)
 		where T : class
-		=> @this.Append(new SelectedAuthorizeConfiguration<T>(policy));
+		=> @this.Append(new SelectedAuthorizeConfiguration<T>(policy));*/
 	/**/
 
 	public static BuildHostContext WithDataSecurity(this BuildHostContext @this)
@@ -122,7 +103,7 @@ public static partial class Extensions
 
 	/**/
 
-	public static QueryComposer<T> Query<T>(this ModelContext _) where T : class => Set<T>.Default.Then();
+	/*public static QueryComposer<T> Query<T>(this ModelContext _) where T : class => Set<T>.Default.Then();
 
 	public static ComposeComposer<T> Compose<T>(this ModelContext _) where T : class => new();
 
@@ -142,13 +123,13 @@ public static partial class Extensions
 	public static PlaceholderParameterExpressionComposer<T> Then<T>(this Expression<Func<DbContext, None, T>> @this)
 		=> new(@this);
 
-	public static ElidedParameterExpressionComposer<T> Then<T>(this Expression<Func<DbContext, T>> @this) => new(@this);
+	public static ElidedParameterExpressionComposer<T> Then<T>(this Expression<Func<DbContext, T>> @this) => new(@this);*/
 
-	public static In<None> Subject<T>(this In<T> @this) => new(@this.Context, None.Default);
+	/*public static In<None> Subject<T>(this In<T> @this) => new(@this.Context, None.Default);
 
-	public static In<TTo> Subject<T, TTo>(this In<T> @this, TTo subject) => new(@this.Context, subject);
+	public static In<TTo> Subject<T, TTo>(this In<T> @this, TTo subject) => new(@this.Context, subject);*/
 
-	public static QueryComposer<TIn, T?> Account<TIn, T>(this QueryComposer<TIn, T> @this) where T : struct
+	/*public static QueryComposer<TIn, T?> Account<TIn, T>(this QueryComposer<TIn, T> @this) where T : struct
 		=> @this.Select(x => new T?(x));
 
 	public static QueryComposer<TIn, TEntity> Include<TIn, TEntity, TOther>(this QueryComposer<TIn, TEntity> source,
@@ -164,25 +145,25 @@ public static partial class Extensions
 	public static QueryComposer<TIn, TEntity> Includes<TIn, TEntity>(this QueryComposer<TIn, TEntity> source,
 	                                                                 params string[] includes)
 		where TEntity : class
-		=> includes.Aggregate(source, (current, include) => current.Include(include));
+		=> includes.Aggregate(source, (current, include) => current.Include(include));*/
 
 	/**/
 	public static Compose.OperationResultComposer<_, T> Then<_, T>(this DragonSpark.Compose.Model.Operations.OperationResultComposer<_,T> @this)
 		=> new(@this.Out());
 
-	public static InstanceComposer<TIn, T> Then<TIn, T>(this IInstance<TIn, T> @this) => new(@this);
+	/*public static InstanceComposer<TIn, T> Then<TIn, T>(this IInstance<TIn, T> @this) => new(@this);
 
 	public static InstanceComposer<T> Then<T>(this IInstance<T> @this) => new(@this);
 
-	public static IQuery<T> Then<T>(this QueryComposer<None, T> @this) => new Query<T>(@this.Instance());
+	public static IQuery<T> Then<T>(this QueryComposer<None, T> @this) => new Query<T>(@this.Instance());*/
 
-	public static OperationResultComposer<T?> Handle<T>(this OperationResultComposer<T?> @this,
+	/*public static OperationResultComposer<T?> Handle<T>(this OperationResultComposer<T?> @this,
 	                                                    IExceptions exceptions, Type? reportedType = null)
-		=> new(new ExceptionAwareResult<T>(@this, exceptions, reportedType));
+		=> new(new ExceptionAwareResult<T>(@this, exceptions, reportedType));*/
 
 	/**/
 
-	public static ApplicationProfileContext WithEnvironmentalConfiguredSender(this ApplicationProfileContext @this)
-		=> @this.Append(Messaging.Registrations.Default);
+	/*public static ApplicationProfileContext WithEnvironmentalConfiguredSender(this ApplicationProfileContext @this)
+		=> @this.Append(Messaging.Registrations.Default);*/
 
 }

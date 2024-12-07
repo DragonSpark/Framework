@@ -22,7 +22,6 @@ public sealed class Registrations<T> : ICommand<IServiceCollection> where T : Id
 		         .Scoped()
 		         //
 		         .Then.Start<ExternalLoginChallengingModelBinder>()
-		         .And<ReturnOrRoot>()
 		         .And<ExternalLoginModel<T>>()
 		         .Include(x => x.Dependencies)
 		         .Scoped()
