@@ -1,5 +1,4 @@
-﻿using DragonSpark.Composition;
-using DragonSpark.Model.Commands;
+﻿using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Application.Components;
@@ -10,8 +9,5 @@ sealed class Registrations : ICommand<IServiceCollection>
 
 	Registrations() {}
 
-	public void Execute(IServiceCollection parameter)
-	{
-		parameter.Start<ConnectionStartTime>().Scoped();
-	}
+	public void Execute(IServiceCollection parameter) {}
 }

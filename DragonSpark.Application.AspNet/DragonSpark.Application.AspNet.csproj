@@ -40,6 +40,22 @@
 	  <Compile Remove="Model\Interaction\UnsuccessfulResultBase.cs" />
 	  <Compile Remove="Model\Interaction\ValidatingAwareResultHandler.cs" />
 	  <Compile Remove="Model\Interaction\ValidationResult.cs" />
+	  <Compile Remove="Model\MemoryAssignment.cs" />
+	  <Compile Remove="Model\Reference.cs" />
+	  <Compile Remove="Model\RemoveFromMemory.cs" />
+	  <Compile Remove="Model\RemoveKeys.cs" />
+	  <Compile Remove="Model\Removing.cs" />
+	  <Compile Remove="Navigation\UrlDecode.cs" />
+	  <Compile Remove="Navigation\UrlDecrypt.cs" />
+	  <Compile Remove="Navigation\UrlEncode.cs" />
+	  <Compile Remove="Navigation\UrlEncrypt.cs" />
+	  <Compile Remove="Security\Data\EncryptionCertificate.cs" />
+	  <Compile Remove="Security\Data\EncryptionSettings.cs" />
+	  <Compile Remove="Security\Hash.cs" />
+	  <Compile Remove="Security\HashInput.cs" />
+	  <Compile Remove="Security\Salt.cs" />
+	  <Compile Remove="Security\SaltedHash.cs" />
+	  <Compile Remove="Security\ValidHash.cs" />
 	</ItemGroup>
 
 	<!--<ItemGroup>

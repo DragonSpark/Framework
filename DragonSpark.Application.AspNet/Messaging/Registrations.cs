@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Commands;
+﻿using DragonSpark.Composition;
+using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,6 +13,11 @@ sealed class Registrations : ICommand<IServiceCollection>
 
 	public void Execute(IServiceCollection parameter)
 	{
-		parameter.TryDecorate<IEmailSender, EmailSender>();
+		parameter.Register<EmailMessagingSettings>()
+		         .Start<IAllowSend>()
+		         .Forward<AllowSend>()
+		         .Singleton()
+				 //
+		         .Then.TryDecorate<IEmailSender, EmailSender>();
 	}
 }

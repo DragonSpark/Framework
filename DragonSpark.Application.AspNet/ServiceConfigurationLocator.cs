@@ -9,6 +9,5 @@ sealed class ServiceConfigurationLocator : LocateComponent<IApplicationBuilder, 
 {
 	public static ServiceConfigurationLocator Default { get; } = new();
 
-	ServiceConfigurationLocator()
-		: base(x => x.ApplicationServices.GetRequiredService<IComponentType>()) {}
+	ServiceConfigurationLocator() : base(x => x.ApplicationServices.GetRequiredService<IComponentType>()) {}
 }
