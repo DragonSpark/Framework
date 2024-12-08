@@ -10,7 +10,7 @@ namespace DragonSpark.Application;
 
 sealed class DefaultRegistrationsUndo : ICommand<IServiceCollection>
 {
-	public static DefaultRegistrationsUndo Default { get; } = new(); // TODO
+	public static DefaultRegistrationsUndo Default { get; } = new();
 
 	DefaultRegistrationsUndo() {}
 

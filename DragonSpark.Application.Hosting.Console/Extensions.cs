@@ -1,8 +1,10 @@
-﻿namespace DragonSpark.Application.Hosting.Console;
+﻿using DragonSpark.Application.Compose;
+using DragonSpark.Composition.Compose;
+
+namespace DragonSpark.Application.Hosting.Console;
 
 public static class Extensions
 {
-	/* TODO: [UsedImplicitly]
 	public static ApplicationProfileContext WithConsoleApplication(this BuildHostContext @this)
-		=> @this.Apply(ConsoleApplicationProfile.Default);*/
+		=> @this.Apply(ConsoleApplicationProfile.Default);
 }
