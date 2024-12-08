@@ -22,6 +22,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Remove="Communication\ConnectionPath.cs" />
 	  <Compile Remove="Compose\OperationComposer.cs" />
 	  <Compile Remove="Compose\OperationResultComposer.cs" />
 	  <Compile Remove="Model\Interaction\Adapter.cs" />
@@ -54,8 +55,6 @@
 	  <Compile Remove="Security\Hash.cs" />
 	  <Compile Remove="Security\HashInput.cs" />
 	  <Compile Remove="Security\Salt.cs" />
-	  <Compile Remove="Security\SaltedHash.cs" />
-	  <Compile Remove="Security\ValidHash.cs" />
 	</ItemGroup>
 
 	<!--<ItemGroup>
