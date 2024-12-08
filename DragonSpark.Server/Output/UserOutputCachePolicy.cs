@@ -1,5 +1,4 @@
-﻿using DragonSpark.Application;
-using DragonSpark.Application.AspNet;
+﻿using DragonSpark.Application.AspNet;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.OutputCaching;
 using System;

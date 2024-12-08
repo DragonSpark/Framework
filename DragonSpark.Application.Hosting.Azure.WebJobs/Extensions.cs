@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Application.AspNet;
 using DragonSpark.Application.AspNet.Compose;
-using DragonSpark.Application.Compose;
 using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Composition.Compose;

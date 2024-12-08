@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Application.AspNet.Compose;
-using DragonSpark.Application.Compose;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;

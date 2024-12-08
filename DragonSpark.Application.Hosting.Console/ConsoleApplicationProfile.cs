@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Application.AspNet.Compose;
-using DragonSpark.Application.Compose;
 
 namespace DragonSpark.Application.Hosting.Console;
 

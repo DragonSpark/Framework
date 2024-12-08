@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Application.AspNet.Security;
-using DragonSpark.Application.Security;
 using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.Http;
 

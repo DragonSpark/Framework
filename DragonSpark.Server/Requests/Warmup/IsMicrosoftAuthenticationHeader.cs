@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Application.AspNet.Communication;
-using DragonSpark.Application.Communication;
 using DragonSpark.Model.Selection.Conditions;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Http;

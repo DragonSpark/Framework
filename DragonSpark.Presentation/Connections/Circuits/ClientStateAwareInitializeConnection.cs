@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Application.AspNet.Communication;
-using DragonSpark.Application.Communication;
 using DragonSpark.Model;
 
 namespace DragonSpark.Presentation.Connections.Circuits;

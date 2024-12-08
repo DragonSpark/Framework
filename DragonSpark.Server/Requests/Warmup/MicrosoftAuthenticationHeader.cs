@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Application.AspNet.Communication;
-using DragonSpark.Application.Communication;
 
 namespace DragonSpark.Server.Requests.Warmup;
 
