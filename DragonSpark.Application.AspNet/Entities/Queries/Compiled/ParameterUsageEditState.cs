@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Model.Sequences.Collections;
 using NetFabric.Hyperlinq;
 using System;
 using System.Collections.Generic;
@@ -12,7 +11,7 @@ sealed class ParameterUsageEditState
 {
 	readonly IReadOnlyCollection<ParameterExpression> _parameters;
 	readonly ParameterExpression                      _parameter;
-	readonly IOrderedDictionary<string, Replacement>  _located;
+	readonly OrderedDictionary<string, Replacement>   _located;
 
 	public ParameterUsageEditState(IReadOnlyCollection<ParameterExpression> parameters)
 		: this(parameters, parameters.Last()) {}
@@ -23,7 +22,7 @@ sealed class ParameterUsageEditState
 
 	public ParameterUsageEditState(IReadOnlyCollection<ParameterExpression> parameters,
 	                               ParameterExpression parameter,
-	                               IOrderedDictionary<string, Replacement> located)
+	                               OrderedDictionary<string, Replacement> located)
 	{
 		_parameters = parameters;
 		_parameter  = parameter;

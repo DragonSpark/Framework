@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Model;
 using DragonSpark.Model.Selection;
-using DragonSpark.Model.Sequences.Collections;
 using DragonSpark.Runtime;
 using System;
 using System.Collections.Generic;
@@ -50,7 +49,7 @@ public static partial class ExtensionMethods
 		where TKey : notnull
 		=> @this.ToDictionary(x => x.Key, x => x.Value, comparer);
 
-	public static OrderedDictionary<TKey, TValue> ToOrderedDictionary<TKey, TValue>(
+	public static IDictionary<TKey, TValue> ToOrderedDictionary<TKey, TValue>(
 		this IEnumerable<Pair<TKey, TValue>> @this,
 		IEqualityComparer<TKey>? comparer = default)
 		where TKey : notnull

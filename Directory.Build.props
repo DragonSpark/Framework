@@ -1,7 +1,7 @@
 <Project>
   <PropertyGroup>
 	<Features>enable-generator-cache</Features>
-	<TargetFramework>net8.0</TargetFramework>
+	<TargetFramework>net9.0</TargetFramework>
 	<LangVersion>latest</LangVersion>
 	<Nullable>enable</Nullable>
 	<RunAnalyzersDuringLiveAnalysis>false</RunAnalyzersDuringLiveAnalysis>
@@ -9,7 +9,7 @@
 	<DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>	
 	 <GitVersionBaseDirectory>$(MSBuildThisFileDirectory)</GitVersionBaseDirectory>
 	 <Company>DragonSpark Technologies Incorporated</Company>
-	 <Copyright>Copyright © 2024 DragonSpark Technologies Incorporated</Copyright>
+	 <Copyright>Copyright © 2025 DragonSpark Technologies Incorporated</Copyright>
 	 <Trademark>DragonSpark Technologies Incorporated</Trademark>
 	  <AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
   </PropertyGroup>
