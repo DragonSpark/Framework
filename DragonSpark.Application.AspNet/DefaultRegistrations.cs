@@ -28,6 +28,10 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Forward<CurrentContext>()
 		         .Scoped()
 		         //
+		         .Then.Start<INavigateToSignOut>()
+		         .Forward<NavigateToSignOut>()
+		         .Scoped()
+		         //
 		         .Then.Start<Base64UrlEncrypt>()
 		         .And<Base64UrlDecrypt>()
 		         .Singleton()
