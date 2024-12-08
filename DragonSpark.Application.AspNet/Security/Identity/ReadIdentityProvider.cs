@@ -1,7 +1,7 @@
-﻿using DragonSpark.Application.Security.Identity.Claims.Access;
+﻿using DragonSpark.Application.AspNet.Security.Identity.Claims.Access;
 using System.Security.Claims;
 
-namespace DragonSpark.Application.Security.Identity;
+namespace DragonSpark.Application.AspNet.Security.Identity;
 
 sealed class ReadIdentityProvider : ReadClaim
 {

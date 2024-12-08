@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace DragonSpark.Application.Security.Identity.Claims.Compile;
+namespace DragonSpark.Application.AspNet.Security.Identity.Claims.Compile;
 
 sealed class ClaimNames : IEnumerable<string>
 {

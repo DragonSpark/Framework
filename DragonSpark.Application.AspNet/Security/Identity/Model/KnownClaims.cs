@@ -1,8 +1,8 @@
-﻿using DragonSpark.Application.Security.Identity.Claims.Compile;
+﻿using DragonSpark.Application.AspNet.Security.Identity.Claims.Compile;
 using System.Collections.Generic;
 using System.Security.Claims;
 
-namespace DragonSpark.Application.Security.Identity.Model;
+namespace DragonSpark.Application.AspNet.Security.Identity.Model;
 
 sealed class KnownClaims : IKnownClaims
 {

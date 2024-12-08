@@ -1,10 +1,10 @@
-﻿using DragonSpark.Application.Security.Identity.Authentication.Persist;
-using DragonSpark.Application.Security.Identity.Claims.Compile;
+﻿using DragonSpark.Application.AspNet.Security.Identity.Authentication.Persist;
+using DragonSpark.Application.AspNet.Security.Identity.Claims.Compile;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Application.Security.Identity.Claims;
+namespace DragonSpark.Application.AspNet.Security.Identity.Claims;
 
 public sealed class Registrations<T> : ICommand<IServiceCollection> where T : IdentityUser
 {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace DragonSpark.Application.Security.Identity.Claims.Compile;
+namespace DragonSpark.Application.AspNet.Security.Identity.Claims.Compile;
 
 public class CopyClaims : ICommand<Transfer>
 {

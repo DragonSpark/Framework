@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Application.Entities.Diagnostics;
+﻿namespace DragonSpark.Application.AspNet.Entities.Diagnostics;
 
 sealed class DefaultReloadPolicyBuilder : ReloadPolicyBuilder
 {

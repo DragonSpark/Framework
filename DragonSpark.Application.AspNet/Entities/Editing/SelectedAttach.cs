@@ -2,7 +2,7 @@
 using DragonSpark.Model.Operations;
 using System;
 
-namespace DragonSpark.Application.Entities.Editing;
+namespace DragonSpark.Application.AspNet.Entities.Editing;
 
 public class SelectedAttach<TFrom, TTo> : Modify<TFrom> where TTo : class
 {

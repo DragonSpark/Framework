@@ -3,7 +3,7 @@ using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Run;
+namespace DragonSpark.Application.AspNet.Run;
 
 public abstract class RunApplication(
 	Func<string[], IHostBuilder> builder,

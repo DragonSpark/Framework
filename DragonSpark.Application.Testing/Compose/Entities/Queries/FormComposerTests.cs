@@ -1,5 +1,6 @@
 ﻿using BenchmarkDotNet.Attributes;
-using DragonSpark.Application.Entities;
+using DragonSpark.Application.AspNet;
+using DragonSpark.Application.AspNet.Entities;
 using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Operations.Selection;

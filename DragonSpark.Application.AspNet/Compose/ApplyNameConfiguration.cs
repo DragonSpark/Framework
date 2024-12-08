@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Reflection;
 
-namespace DragonSpark.Application.Compose;
+namespace DragonSpark.Application.AspNet.Compose;
 
 sealed class ApplyNameConfiguration : ICommand<IWebHostBuilder>
 {

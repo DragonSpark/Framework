@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Entities.Queries.Runtime.Shape;
+﻿using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Shape;
 
 namespace DragonSpark.SyncfusionRendering.Queries;
 

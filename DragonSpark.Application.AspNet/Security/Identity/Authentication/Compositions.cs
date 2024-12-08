@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Security.Identity.Claims.Compile;
+﻿using DragonSpark.Application.AspNet.Security.Identity.Claims.Compile;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations.Results;
 using Microsoft.AspNetCore.Authentication;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity.Authentication;
+namespace DragonSpark.Application.AspNet.Security.Identity.Authentication;
 
 sealed class Compositions : IResulting<Composition?>
 {

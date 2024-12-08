@@ -1,9 +1,10 @@
-﻿using DragonSpark.Application.Entities.Configuration;
-using DragonSpark.Application.Entities.Initialization;
+﻿using DragonSpark.Application.AspNet.Entities.Configuration;
+using DragonSpark.Application.AspNet.Entities.Initialization;
+using DragonSpark.Application.AspNet.Security.Identity;
 using DragonSpark.Model.Commands;
 using Microsoft.EntityFrameworkCore;
 
-namespace DragonSpark.Application.Entities;
+namespace DragonSpark.Application.AspNet.Entities;
 
 public class Entities : DbContext
 {
@@ -22,7 +23,7 @@ public class Entities : DbContext
 	}
 }
 
-public class Entities<T> : Security.Identity.IdentityDbContext<T> where T : Security.Identity.IdentityUser
+public class Entities<T> : IdentityDbContext<T> where T : IdentityUser
 {
 	readonly ICommand<ModelCreating> _configure;
 

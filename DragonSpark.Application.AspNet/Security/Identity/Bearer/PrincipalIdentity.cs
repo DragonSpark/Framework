@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Security.Claims;
 
-namespace DragonSpark.Application.Security.Identity.Bearer;
+namespace DragonSpark.Application.AspNet.Security.Identity.Bearer;
 
 public sealed class PrincipalIdentity : Select<ClaimsPrincipal, ClaimsIdentity>
 {

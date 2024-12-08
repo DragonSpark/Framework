@@ -3,7 +3,7 @@ using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Selection;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Editing;
+namespace DragonSpark.Application.AspNet.Entities.Editing;
 
 public class Modifying<TIn, T> : ISelecting<TIn, T>
 {

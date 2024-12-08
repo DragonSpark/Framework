@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity.Profile;
+namespace DragonSpark.Application.AspNet.Security.Identity.Profile;
 
 public sealed class New<T> : INew<T> where T : IdentityUser
 {

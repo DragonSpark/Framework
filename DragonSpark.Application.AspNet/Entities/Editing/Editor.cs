@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Editing;
+namespace DragonSpark.Application.AspNet.Entities.Editing;
 
 sealed class Editor : DragonSpark.Model.Operations.Allocated.Terminating<int>, IEditor
 {

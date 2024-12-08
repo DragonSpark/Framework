@@ -2,7 +2,7 @@
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations.Selection;
 
-namespace DragonSpark.Application.Entities.Queries.Runtime.Pagination.Memory;
+namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination.Memory;
 
 public sealed class MemoryAwarePages<T> : Selecting<PageInput, Page<T>>, IPages<T>
 {

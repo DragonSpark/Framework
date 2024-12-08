@@ -5,7 +5,7 @@ using System;
 using System.Globalization;
 using System.Text.Encodings.Web;
 
-namespace DragonSpark.Application.Security.Identity.MultiFactor;
+namespace DragonSpark.Application.AspNet.Security.Identity.MultiFactor;
 
 sealed class KeyApplicationLocation : ISelect<KeyApplicationLocationInput, Uri>
 {

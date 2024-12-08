@@ -1,10 +1,10 @@
-﻿using DragonSpark.Application.Navigation;
-using DragonSpark.Application.Navigation.Security;
+﻿using DragonSpark.Application.AspNet.Navigation;
+using DragonSpark.Application.AspNet.Navigation.Security;
 using DragonSpark.Compose;
 using DragonSpark.Model;
 using Microsoft.AspNetCore.Components;
 
-namespace DragonSpark.Application.Security.Identity.Model;
+namespace DragonSpark.Application.AspNet.Security.Identity.Model;
 
 public sealed class NavigateToSignIn : Navigation<None>
 {

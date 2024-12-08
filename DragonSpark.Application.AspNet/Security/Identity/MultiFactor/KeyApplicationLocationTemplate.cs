@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Application.Security.Identity.MultiFactor;
+﻿namespace DragonSpark.Application.AspNet.Security.Identity.MultiFactor;
 
 sealed class KeyApplicationLocationTemplate : Text.Text
 {

@@ -1,10 +1,10 @@
-﻿using DragonSpark.Application.Navigation.Security;
+﻿using DragonSpark.Application.AspNet.Navigation.Security;
 using DragonSpark.Model.Operations.Allocated;
 using DragonSpark.Text;
 using Microsoft.AspNetCore.Authentication;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity.Authentication;
+namespace DragonSpark.Application.AspNet.Security.Identity.Authentication;
 
 public sealed class RemoteFailure : IAllocated<RemoteFailureContext>
 {

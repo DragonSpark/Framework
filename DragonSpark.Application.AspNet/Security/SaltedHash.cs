@@ -1,11 +1,12 @@
-﻿using DragonSpark.Compose;
+﻿using DragonSpark.Application.Security;
+using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Text;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System;
 
-namespace DragonSpark.Application.Security;
+namespace DragonSpark.Application.AspNet.Security;
 
 /// <summary>
 /// Attribution: https://www.devtrends.co.uk/blog/hashing-encryption-and-random-in-asp.net-core

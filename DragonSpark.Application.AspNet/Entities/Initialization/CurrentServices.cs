@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Runtime.Execution;
 using System;
 
-namespace DragonSpark.Application.Entities.Initialization;
+namespace DragonSpark.Application.AspNet.Entities.Initialization;
 
 sealed class CurrentServices : Logical<IServiceProvider>
 {

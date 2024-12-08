@@ -5,7 +5,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity.Authentication;
+namespace DragonSpark.Application.AspNet.Security.Identity.Authentication;
 
 sealed class Revalidation : RevalidatingServerAuthenticationStateProvider
 {

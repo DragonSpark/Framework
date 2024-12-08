@@ -2,7 +2,7 @@
 using DragonSpark.Model.Selection.Conditions;
 using System.Security.Claims;
 
-namespace DragonSpark.Application.Security.Identity.Authentication;
+namespace DragonSpark.Application.AspNet.Security.Identity.Authentication;
 
 public sealed class GetProfileStatus : ISelect<CurrentProfileStateInput, ProfileStatus>
 {

@@ -1,6 +1,6 @@
-﻿using DragonSpark.Application.Security;
+﻿using DragonSpark.Application.AspNet.Security;
 
-namespace DragonSpark.Application.Communication;
+namespace DragonSpark.Application.AspNet.Communication;
 
 public sealed class CurrentCookie : CurrentHeader
 {

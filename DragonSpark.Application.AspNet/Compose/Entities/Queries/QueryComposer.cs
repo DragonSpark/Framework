@@ -1,6 +1,6 @@
-﻿using DragonSpark.Application.Entities;
-using DragonSpark.Application.Entities.Queries.Compiled;
-using DragonSpark.Application.Entities.Queries.Composition;
+﻿using DragonSpark.Application.AspNet.Entities;
+using DragonSpark.Application.AspNet.Entities.Queries.Compiled;
+using DragonSpark.Application.AspNet.Entities.Queries.Composition;
 using DragonSpark.Compose;
 using DragonSpark.Model;
 using LinqKit;
@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace DragonSpark.Application.Compose.Entities.Queries;
+namespace DragonSpark.Application.AspNet.Compose.Entities.Queries;
 
 public sealed class QueryComposer<T> : QueryComposer<None, T>
 {

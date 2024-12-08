@@ -1,11 +1,11 @@
-﻿using DragonSpark.Application.Entities.Queries.Composition;
+﻿using DragonSpark.Application.AspNet.Entities.Queries.Composition;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace DragonSpark.Application.Entities.Queries.Compiled;
+namespace DragonSpark.Application.AspNet.Entities.Queries.Compiled;
 
 sealed class Elements<TIn, T> : DragonSpark.Model.Selection.Select<In<TIn>, IAsyncEnumerable<T>>, IElements<TIn, T>
 {

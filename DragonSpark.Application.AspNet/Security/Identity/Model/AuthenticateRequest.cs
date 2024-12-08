@@ -1,9 +1,9 @@
-﻿using DragonSpark.Application.Security.Identity.Authentication;
+﻿using DragonSpark.Application.AspNet.Security.Identity.Authentication;
 using DragonSpark.Compose;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity.Model;
+namespace DragonSpark.Application.AspNet.Security.Identity.Model;
 
 sealed class AuthenticateRequest : IAuthenticateRequest
 {

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace DragonSpark.Application.Security.Identity;
+namespace DragonSpark.Application.AspNet.Security.Identity;
 
 sealed class AmbientAwareUsers<T> : IUsers<T> where T : class
 {

@@ -2,7 +2,7 @@
 using DragonSpark.Model.Sequences;
 using System.Collections.Generic;
 
-namespace DragonSpark.Application.Security.Identity.Claims.Compile;
+namespace DragonSpark.Application.AspNet.Security.Identity.Claims.Compile;
 
 public class AdditionalClaims : IKnownClaims
 {

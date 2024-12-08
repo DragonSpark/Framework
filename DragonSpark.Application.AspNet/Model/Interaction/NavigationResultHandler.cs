@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Model.Interaction;
+namespace DragonSpark.Application.AspNet.Model.Interaction;
 
 public sealed class NavigationResultHandler : IOperation<NavigationResult>
 {

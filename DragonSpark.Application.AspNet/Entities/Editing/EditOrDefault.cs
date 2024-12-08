@@ -1,6 +1,6 @@
-﻿using DragonSpark.Application.Entities.Queries.Composition;
+﻿using DragonSpark.Application.AspNet.Entities.Queries.Composition;
 
-namespace DragonSpark.Application.Entities.Editing;
+namespace DragonSpark.Application.AspNet.Entities.Editing;
 
 public class EditOrDefault<TIn, T> : Edit<TIn, T?>
 {

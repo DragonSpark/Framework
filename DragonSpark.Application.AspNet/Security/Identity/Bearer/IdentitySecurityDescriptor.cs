@@ -4,7 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Security.Claims;
 
-namespace DragonSpark.Application.Security.Identity.Bearer;
+namespace DragonSpark.Application.AspNet.Security.Identity.Bearer;
 
 sealed class IdentitySecurityDescriptor : ISelect<ClaimsIdentity, SecurityTokenDescriptor>
 {

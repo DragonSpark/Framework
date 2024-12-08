@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using System;
 
-namespace DragonSpark.Application.Security.Identity.Claims.Policy;
+namespace DragonSpark.Application.AspNet.Security.Identity.Claims.Policy;
 
 public class AddPolicyConfiguration : ICommand<AuthorizationOptions>
 {

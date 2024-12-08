@@ -3,7 +3,7 @@ using NetFabric.Hyperlinq;
 using System;
 using System.Security.Claims;
 
-namespace DragonSpark.Application.Security.Identity.Claims.Access;
+namespace DragonSpark.Application.AspNet.Security.Identity.Claims.Access;
 
 public class CoalescedAccessClaim<T> : IAccessClaim<T>
 {

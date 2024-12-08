@@ -2,7 +2,7 @@
 using DragonSpark.Model.Results;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Application.Entities.Transactions;
+namespace DragonSpark.Application.AspNet.Entities.Transactions;
 
 sealed class ServiceScopedTransactions : IServiceScopedTransactions
 {

@@ -2,7 +2,7 @@
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Selection;
 
-namespace DragonSpark.Application.Entities.Configuration;
+namespace DragonSpark.Application.AspNet.Entities.Configuration;
 
 public interface ISettingAccessor : ISelecting<string, string?>, IOperation<Pair<string, string?>>
 {

@@ -2,7 +2,7 @@
 using DragonSpark.Model.Operations;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity.Authentication;
+namespace DragonSpark.Application.AspNet.Security.Identity.Authentication;
 
 sealed class AuthenticateUser<T> : IOperation<Login<T>>
 {

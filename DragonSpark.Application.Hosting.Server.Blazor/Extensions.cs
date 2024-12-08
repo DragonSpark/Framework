@@ -1,4 +1,6 @@
-﻿using DragonSpark.Application.Compose;
+﻿using DragonSpark.Application.AspNet;
+using DragonSpark.Application.AspNet.Compose;
+using DragonSpark.Application.Compose;
 using DragonSpark.Composition.Compose;
 using Microsoft.AspNetCore.Builder;
 using System;

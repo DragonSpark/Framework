@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace DragonSpark.Application.Compose;
+namespace DragonSpark.Application.AspNet.Compose;
 
-public class ApplicationProfile : Undo.ApplicationProfile, IApplicationProfile
+public class ApplicationProfile : Application.Compose.Undo.ApplicationProfile, IApplicationProfile
 {
 	readonly Action<IApplicationBuilder> _application;
 

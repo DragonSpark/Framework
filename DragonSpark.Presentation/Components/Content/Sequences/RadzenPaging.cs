@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Entities.Queries.Runtime.Pagination;
+﻿using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
 using DragonSpark.Compose;
 using Radzen;
 using System.Collections.Generic;

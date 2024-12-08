@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Compose;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Transactions;
+namespace DragonSpark.Application.AspNet.Entities.Transactions;
 
 public class AppendedTransactions : ITransactions
 {

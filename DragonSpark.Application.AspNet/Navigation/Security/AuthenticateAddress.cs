@@ -1,8 +1,9 @@
-﻿using DragonSpark.Model.Selection.Alterations;
+﻿using DragonSpark.Application.Navigation;
+using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Text;
 using Humanizer;
 
-namespace DragonSpark.Application.Navigation.Security;
+namespace DragonSpark.Application.AspNet.Navigation.Security;
 
 public sealed class AuthenticateAddress : IFormatter<AuthenticateAddressInput>
 {

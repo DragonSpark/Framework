@@ -1,9 +1,9 @@
-﻿using DragonSpark.Application.Security.Identity.Model;
+﻿using DragonSpark.Application.AspNet.Security.Identity.Model;
 using DragonSpark.Compose;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity.Authentication;
+namespace DragonSpark.Application.AspNet.Security.Identity.Authentication;
 
 public sealed class SignOut<T> : ISignOut where T : class
 {

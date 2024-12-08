@@ -6,7 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace DragonSpark.Application.Entities.Configure;
+namespace DragonSpark.Application.AspNet.Entities.Configure;
 
 sealed class SqlStorageConfiguration<T> : IStorageConfiguration where T : DbContext
 {

@@ -1,11 +1,11 @@
-﻿using DragonSpark.Application.Entities.Queries.Composition;
+﻿using DragonSpark.Application.AspNet.Entities.Queries.Composition;
 using DragonSpark.Model;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace DragonSpark.Application.Compose.Entities.Queries;
+namespace DragonSpark.Application.AspNet.Compose.Entities.Queries;
 
 public sealed class InstanceComposer<T>
 {

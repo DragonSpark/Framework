@@ -1,7 +1,8 @@
-﻿using DragonSpark.Model.Commands;
+﻿using DragonSpark.Application.Model.Interaction;
+using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Components;
 
-namespace DragonSpark.Application.Model.Interaction;
+namespace DragonSpark.Application.AspNet.Model.Interaction;
 
 public class NavigationResult : InteractionResult, ICommand<NavigationManager>
 {

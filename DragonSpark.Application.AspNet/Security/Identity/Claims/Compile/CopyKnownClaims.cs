@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Application.Security.Identity.Claims.Compile;
+﻿namespace DragonSpark.Application.AspNet.Security.Identity.Claims.Compile;
 
 public sealed class CopyKnownClaims : CopyClaims
 {

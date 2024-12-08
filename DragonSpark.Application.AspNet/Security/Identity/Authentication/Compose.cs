@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model.Commands;
 using LightInject;
 
-namespace DragonSpark.Application.Security.Identity.Authentication;
+namespace DragonSpark.Application.AspNet.Security.Identity.Authentication;
 
 sealed class Compose : ICommand<IServiceContainer>
 {

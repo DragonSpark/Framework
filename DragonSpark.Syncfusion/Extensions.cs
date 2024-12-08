@@ -1,4 +1,5 @@
-﻿using DragonSpark.Application.Compose;
+﻿using DragonSpark.Application.AspNet.Compose;
+using DragonSpark.Application.Compose;
 using DragonSpark.Compose;
 
 namespace DragonSpark.SyncfusionRendering;

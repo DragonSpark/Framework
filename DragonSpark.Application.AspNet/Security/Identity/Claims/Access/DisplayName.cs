@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Application.Security.Identity.Claims.Access;
+﻿namespace DragonSpark.Application.AspNet.Security.Identity.Claims.Access;
 
 public sealed class DisplayName : ReadClaim
 {

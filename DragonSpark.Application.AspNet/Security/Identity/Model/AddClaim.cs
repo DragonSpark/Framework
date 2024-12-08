@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Entities.Editing;
+﻿using DragonSpark.Application.AspNet.Entities.Editing;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations.Selection;
 using Microsoft.AspNetCore.Identity;
@@ -6,7 +6,7 @@ using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity.Model;
+namespace DragonSpark.Application.AspNet.Security.Identity.Model;
 
 public class AddClaim<T> : ISelecting<T, IdentityResult> where T : IdentityUser
 {

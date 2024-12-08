@@ -1,9 +1,9 @@
-﻿using DragonSpark.Application.Entities.Queries.Composition;
+﻿using DragonSpark.Application.AspNet.Entities.Queries.Composition;
 using DragonSpark.Compose;
 using DragonSpark.Model.Sequences.Memory;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Editing;
+namespace DragonSpark.Application.AspNet.Entities.Editing;
 
 public class EditMany<TIn, T> : IEditMany<TIn, T>
 {

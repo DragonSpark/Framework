@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Diagnostics;
+namespace DragonSpark.Application.AspNet.Entities.Diagnostics;
 
 public class DiagnosticAwareEntityOperation<T> : IOperation<T>
 {

@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Model.Selection.Conditions;
 
-namespace DragonSpark.Application.Messaging;
+namespace DragonSpark.Application.AspNet.Messaging;
 
 sealed class AllowSend : FixedResultCondition<AllowSendInput>, IAllowSend
 {

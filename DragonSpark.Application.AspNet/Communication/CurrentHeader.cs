@@ -1,9 +1,9 @@
-﻿using DragonSpark.Application.Security;
+﻿using DragonSpark.Application.AspNet.Security;
 using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.Http;
 
-namespace DragonSpark.Application.Communication;
+namespace DragonSpark.Application.AspNet.Communication;
 
 public class CurrentHeader : SelectedResult<IHeaderDictionary, string?>
 {

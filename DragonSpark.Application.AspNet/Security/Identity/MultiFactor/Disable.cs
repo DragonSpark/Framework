@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Compose;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity.MultiFactor;
+namespace DragonSpark.Application.AspNet.Security.Identity.MultiFactor;
 
 sealed class Disable<T> : IDisable<T> where T : IdentityUser
 {

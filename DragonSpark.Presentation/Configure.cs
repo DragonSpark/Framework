@@ -1,4 +1,5 @@
-﻿using DragonSpark.Application.Entities.Queries.Runtime.Pagination;
+﻿using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
+using DragonSpark.Application.AspNet.Security;
 using DragonSpark.Application.Security;
 using DragonSpark.Composition;
 using DragonSpark.Composition.Compose;

@@ -2,7 +2,7 @@
 using System;
 using System.Text;
 
-namespace DragonSpark.Application.Security.Identity.MultiFactor;
+namespace DragonSpark.Application.AspNet.Security.Identity.MultiFactor;
 
 sealed class FormatKey : IAlteration<string>
 {

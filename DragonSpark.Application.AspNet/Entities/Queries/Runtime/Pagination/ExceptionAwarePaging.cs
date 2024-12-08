@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Application.Diagnostics;
 using System;
 
-namespace DragonSpark.Application.Entities.Queries.Runtime.Pagination;
+namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
 
 sealed class ExceptionAwarePaging<T> : IPaging<T>
 {

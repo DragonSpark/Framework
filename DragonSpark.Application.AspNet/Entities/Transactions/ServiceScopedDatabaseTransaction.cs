@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DragonSpark.Application.Entities.Transactions;
+namespace DragonSpark.Application.AspNet.Entities.Transactions;
 
 sealed class ServiceScopedDatabaseTransaction : AppendedTransaction, IScopedTransaction
 {

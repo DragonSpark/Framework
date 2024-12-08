@@ -1,10 +1,10 @@
-﻿using DragonSpark.Application.Entities.Editing;
+﻿using DragonSpark.Application.AspNet.Entities.Editing;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Application.Entities;
+namespace DragonSpark.Application.AspNet.Entities;
 
 sealed class Registrations<T> : ICommand<IServiceCollection> where T : DbContext
 {

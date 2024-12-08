@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Composition.Compose;
 
-namespace DragonSpark.Application.Communication;
+namespace DragonSpark.Application.AspNet.Communication;
 
 public static class Extensions
 {

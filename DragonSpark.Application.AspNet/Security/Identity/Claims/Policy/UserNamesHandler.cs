@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity.Claims.Policy;
+namespace DragonSpark.Application.AspNet.Security.Identity.Claims.Policy;
 
 public sealed class UserNamesHandler : AuthorizationHandler<UserNamesRequirement>
 {

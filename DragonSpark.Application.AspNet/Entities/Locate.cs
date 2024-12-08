@@ -1,8 +1,8 @@
-﻿using DragonSpark.Application.Entities.Queries.Composition;
+﻿using DragonSpark.Application.AspNet.Entities.Queries.Composition;
 using DragonSpark.Model.Operations.Selection;
 using System;
 
-namespace DragonSpark.Application.Entities;
+namespace DragonSpark.Application.AspNet.Entities;
 
 public class Locate<TKey, T> : Coalesce<TKey, T> where T : class
 {

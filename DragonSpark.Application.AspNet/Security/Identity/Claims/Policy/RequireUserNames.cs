@@ -2,7 +2,7 @@
 using DragonSpark.Model.Sequences;
 using Microsoft.AspNetCore.Authorization;
 
-namespace DragonSpark.Application.Security.Identity.Claims.Policy;
+namespace DragonSpark.Application.AspNet.Security.Identity.Claims.Policy;
 
 sealed class RequireUserNames : ICommand<AuthorizationPolicyBuilder>
 {

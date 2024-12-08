@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Diagnostics;
 using System;
 
-namespace DragonSpark.Application.Entities.Diagnostics;
+namespace DragonSpark.Application.AspNet.Entities.Diagnostics;
 
 public sealed class ApplicationContentRetryPolicyBuilder : RetryPolicy
 {

@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Model;
 
-namespace DragonSpark.Application.Security.Identity.Model;
+namespace DragonSpark.Application.AspNet.Security.Identity.Model;
 
 public record ErrorRedirect(string Location, Pair<string, string> Message, string Origin)
 {

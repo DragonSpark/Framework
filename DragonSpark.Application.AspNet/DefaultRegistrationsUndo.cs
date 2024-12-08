@@ -1,12 +1,12 @@
-﻿using DragonSpark.Application.Navigation;
-using DragonSpark.Application.Navigation.Security;
-using DragonSpark.Application.Security;
-using DragonSpark.Application.Security.Identity;
+﻿using DragonSpark.Application.AspNet.Navigation;
+using DragonSpark.Application.AspNet.Navigation.Security;
+using DragonSpark.Application.AspNet.Security;
+using DragonSpark.Application.AspNet.Security.Identity;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Application;
+namespace DragonSpark.Application.AspNet;
 
 sealed class DefaultRegistrationsUndo : ICommand<IServiceCollection>
 {

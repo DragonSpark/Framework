@@ -2,7 +2,7 @@
 using DragonSpark.Model.Operations.Selection;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
+namespace DragonSpark.Application.AspNet.Entities.Queries.Compiled.Evaluation;
 
 public class Evaluate<TIn, T, TResult> : ISelecting<TIn, TResult>
 {

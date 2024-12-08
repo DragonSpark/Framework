@@ -1,11 +1,11 @@
-﻿using DragonSpark.Application.Security.Identity.Authentication;
-using DragonSpark.Application.Security.Identity.Claims.Compile;
-using DragonSpark.Application.Security.Identity.Model;
+﻿using DragonSpark.Application.AspNet.Security.Identity.Authentication;
+using DragonSpark.Application.AspNet.Security.Identity.Claims.Compile;
+using DragonSpark.Application.AspNet.Security.Identity.Model;
 using DragonSpark.Model.Commands;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Application.Security.Identity;
+namespace DragonSpark.Application.AspNet.Security.Identity;
 
 sealed class CommonRegistrations<TContext, T> : ICommand<IServiceCollection>
 	where TContext : DbContext

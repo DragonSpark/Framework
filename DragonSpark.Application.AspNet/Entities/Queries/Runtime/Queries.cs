@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Queries.Runtime;
+namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime;
 
 sealed class Queries<TIn, TOut> : IQueries<TOut>
 {

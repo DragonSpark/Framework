@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace DragonSpark.Application.Entities.Queries.Composition;
+namespace DragonSpark.Application.AspNet.Entities.Queries.Composition;
 
 public class StartWhereSelection<T, TTo> : StartWhereSelection<None, T, TTo> where T : class
 {

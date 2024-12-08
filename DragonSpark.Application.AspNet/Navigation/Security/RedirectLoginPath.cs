@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Model.Results;
 
-namespace DragonSpark.Application.Navigation.Security;
+namespace DragonSpark.Application.AspNet.Navigation.Security;
 
 public sealed class RedirectLoginPath : SelectedResult<string, string>
 {

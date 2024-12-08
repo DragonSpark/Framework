@@ -3,7 +3,7 @@ using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Queries.Runtime.Shape;
+namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Shape;
 
 public sealed class Filter<T> : IBody<T>
 {

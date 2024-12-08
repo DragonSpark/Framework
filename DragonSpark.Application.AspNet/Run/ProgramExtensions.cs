@@ -2,7 +2,7 @@
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Application.Run;
+namespace DragonSpark.Application.AspNet.Run;
 
 public static class ProgramExtensions
 {

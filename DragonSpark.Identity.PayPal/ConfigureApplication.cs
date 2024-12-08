@@ -1,5 +1,5 @@
 ﻿using AspNet.Security.OAuth.Paypal;
-using DragonSpark.Application.Security.Identity.Claims.Compile;
+using DragonSpark.Application.AspNet.Security.Identity.Claims.Compile;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Authentication;

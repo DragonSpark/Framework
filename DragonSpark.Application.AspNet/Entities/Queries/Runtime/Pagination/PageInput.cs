@@ -1,7 +1,7 @@
-﻿using DragonSpark.Application.Entities.Queries.Runtime.Shape;
+﻿using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Shape;
 using System.Threading;
 
-namespace DragonSpark.Application.Entities.Queries.Runtime.Pagination;
+namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
 
 public record PageInput(
 	bool IncludeTotalCount,

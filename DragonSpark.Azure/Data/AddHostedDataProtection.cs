@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Security.Identity.State;
+﻿using DragonSpark.Application.AspNet.Security.Identity.State;
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Alterations;
 using Microsoft.AspNetCore.DataProtection;

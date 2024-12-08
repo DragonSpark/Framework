@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Selection;
 
-namespace DragonSpark.Application.Entities.Editing;
+namespace DragonSpark.Application.AspNet.Entities.Editing;
 
 public class Saving<TIn, TOut> : ConfiguringResult<TIn, TOut> where TOut : class
 {

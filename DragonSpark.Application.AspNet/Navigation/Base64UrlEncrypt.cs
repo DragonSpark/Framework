@@ -1,8 +1,8 @@
-﻿using DragonSpark.Application.Security.Data;
+﻿using DragonSpark.Application.AspNet.Security.Data;
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Alterations;
 
-namespace DragonSpark.Application.Navigation;
+namespace DragonSpark.Application.AspNet.Navigation;
 
 public sealed class Base64UrlEncrypt : Alteration<string>
 {

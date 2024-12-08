@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
-namespace DragonSpark.Application.Components.Validation;
+namespace DragonSpark.Application.AspNet.Components.Validation;
 
 sealed class Messages : ICommand<IEnumerable<ValidationResultMessage>>,
 						ICommand<(FieldIdentifier Field, IEnumerable<ValidationResult> Results)>,

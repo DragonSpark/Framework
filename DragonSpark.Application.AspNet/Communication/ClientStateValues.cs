@@ -1,9 +1,9 @@
-﻿using DragonSpark.Application.Security;
+﻿using DragonSpark.Application.AspNet.Security;
 using DragonSpark.Model.Sequences;
 using Microsoft.Extensions.Primitives;
 using NetFabric.Hyperlinq;
 
-namespace DragonSpark.Application.Communication;
+namespace DragonSpark.Application.AspNet.Communication;
 
 sealed class ClientStateValues : IClientStateValues
 {

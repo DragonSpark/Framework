@@ -1,10 +1,10 @@
-﻿using DragonSpark.Application.Security.Identity.Authentication.Persist;
-using DragonSpark.Application.Security.Identity.Claims.Access;
-using DragonSpark.Application.Security.Identity.Claims.Compile;
+﻿using DragonSpark.Application.AspNet.Security.Identity.Authentication.Persist;
+using DragonSpark.Application.AspNet.Security.Identity.Claims.Access;
+using DragonSpark.Application.AspNet.Security.Identity.Claims.Compile;
 using DragonSpark.Compose;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity.Authentication;
+namespace DragonSpark.Application.AspNet.Security.Identity.Authentication;
 
 sealed class Authenticate<T> : IAuthenticate<T> where T : IdentityUser
 {

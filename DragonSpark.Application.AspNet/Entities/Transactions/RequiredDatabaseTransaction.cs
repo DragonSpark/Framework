@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Transactions;
+namespace DragonSpark.Application.AspNet.Entities.Transactions;
 
 sealed class RequiredDatabaseTransaction : ITransaction, IContextAware
 {

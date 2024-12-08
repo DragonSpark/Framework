@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace DragonSpark.Application.Entities.Configure;
+namespace DragonSpark.Application.AspNet.Entities.Configure;
 
 public sealed class EmptyStorageConfiguration : IStorageConfiguration
 {

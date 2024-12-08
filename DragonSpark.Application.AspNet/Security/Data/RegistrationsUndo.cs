@@ -3,7 +3,7 @@ using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Application.Security.Data;
+namespace DragonSpark.Application.AspNet.Security.Data;
 
 sealed class RegistrationsUndo : ICommand<IServiceCollection>
 {

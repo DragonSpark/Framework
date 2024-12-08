@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Text;
 using System.Security.Claims;
 
-namespace DragonSpark.Application.Security.Identity;
+namespace DragonSpark.Application.AspNet.Security.Identity;
 
 sealed class UserDisplayName : IFormatter<ClaimsPrincipal>
 {

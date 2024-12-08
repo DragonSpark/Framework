@@ -1,3 +1,3 @@
-﻿namespace DragonSpark.Application.Security.Identity.Model;
+﻿namespace DragonSpark.Application.AspNet.Security.Identity.Model;
 
 public sealed record Challenging(string Provider, string ReturnUrl);

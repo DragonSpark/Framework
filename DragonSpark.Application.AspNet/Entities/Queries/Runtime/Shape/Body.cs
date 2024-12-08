@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Application.Entities.Queries.Runtime.Shape;
+﻿namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Shape;
 
 sealed class Body<T> : AppendedBody<T>
 {

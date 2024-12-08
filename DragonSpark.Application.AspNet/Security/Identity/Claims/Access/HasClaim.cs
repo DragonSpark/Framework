@@ -3,7 +3,7 @@ using DragonSpark.Model.Operations.Selection.Conditions;
 using NetFabric.Hyperlinq;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity.Claims.Access;
+namespace DragonSpark.Application.AspNet.Security.Identity.Claims.Access;
 
 public class HasClaim<T> : IDepending<T> where T : IdentityUser
 {

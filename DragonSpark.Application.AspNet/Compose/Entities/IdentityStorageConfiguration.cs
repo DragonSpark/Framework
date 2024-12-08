@@ -1,10 +1,10 @@
-﻿using DragonSpark.Application.Entities.Configure;
+﻿using DragonSpark.Application.AspNet.Entities.Configure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
 
-namespace DragonSpark.Application.Compose.Entities;
+namespace DragonSpark.Application.AspNet.Compose.Entities;
 
 public sealed class IdentityStorageConfiguration<T, TContext> where TContext : DbContext where T : class
 {

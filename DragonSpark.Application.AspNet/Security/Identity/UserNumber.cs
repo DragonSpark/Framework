@@ -1,9 +1,9 @@
-﻿using DragonSpark.Application.Security.Identity.Authentication;
+﻿using DragonSpark.Application.AspNet.Security.Identity.Authentication;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
 using System.Security.Claims;
 
-namespace DragonSpark.Application.Security.Identity;
+namespace DragonSpark.Application.AspNet.Security.Identity;
 
 sealed class UserNumber : ISelect<ClaimsPrincipal, uint?>
 {

@@ -2,7 +2,7 @@
 using NetFabric.Hyperlinq;
 using System;
 
-namespace DragonSpark.Application.Entities.Queries.Compiled;
+namespace DragonSpark.Application.AspNet.Entities.Queries.Compiled;
 
 sealed class ManyCandidates<TIn, TOut> : Instances<ManyGeneric<TIn, TOut>>
 {

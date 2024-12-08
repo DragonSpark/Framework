@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Entities;
+﻿using DragonSpark.Application.AspNet.Entities;
 using DragonSpark.Application.Runtime;
 using Microsoft.EntityFrameworkCore;
 

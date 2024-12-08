@@ -1,8 +1,8 @@
-﻿using DragonSpark.Application.Entities.Queries.Runtime.Materialize;
+﻿using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Materialize;
 using DragonSpark.Compose;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Queries.Runtime.Shape;
+namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Shape;
 
 public class Compose<T> : ICompose<T>
 {

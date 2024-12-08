@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace DragonSpark.Application.Entities.Queries.Runtime.Shape;
+namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Shape;
 
 public readonly record struct Partition<T>(IQueryable<T> Subject, Partition Input);
 

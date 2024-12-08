@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace DragonSpark.Application.Compose;
+namespace DragonSpark.Application.AspNet.Compose;
 
 sealed class AuthorizeConfiguration : ICommand<IServiceCollection>
 {

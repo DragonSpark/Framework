@@ -4,7 +4,7 @@ using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Security.Claims;
 
-namespace DragonSpark.Application.Security.Identity.Authentication.State;
+namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.State;
 
 sealed class MemoryAwareStateViews<T> : Selecting<ClaimsPrincipal, StateView<T>>, IStateViews<T> where T : IdentityUser
 {

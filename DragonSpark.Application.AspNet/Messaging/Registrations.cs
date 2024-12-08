@@ -3,7 +3,7 @@ using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Application.Messaging;
+namespace DragonSpark.Application.AspNet.Messaging;
 
 sealed class Registrations : ICommand<IServiceCollection>
 {

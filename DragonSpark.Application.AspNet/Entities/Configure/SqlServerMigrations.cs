@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
 
-namespace DragonSpark.Application.Entities.Configure;
+namespace DragonSpark.Application.AspNet.Entities.Configure;
 
 public sealed class SqlServerMigrations<T> : SqlServerMigrations
 {

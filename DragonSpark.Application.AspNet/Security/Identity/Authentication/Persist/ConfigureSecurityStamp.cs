@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity.Authentication.Persist;
+namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.Persist;
 
 sealed class ConfigureSecurityStamp : ICommand<SecurityStampValidatorOptions>
 {

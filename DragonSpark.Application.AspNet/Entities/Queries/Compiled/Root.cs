@@ -1,7 +1,7 @@
-using System.Linq.Expressions;
 using DragonSpark.Model.Selection;
+using System.Linq.Expressions;
 
-namespace DragonSpark.Application.Entities.Queries.Compiled;
+namespace DragonSpark.Application.AspNet.Entities.Queries.Compiled;
 
 sealed class Root : ISelect<MemberExpression, Expression?>
 {

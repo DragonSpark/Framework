@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model.Results;
 using Microsoft.EntityFrameworkCore;
 
-namespace DragonSpark.Application.Entities;
+namespace DragonSpark.Application.AspNet.Entities;
 
 sealed class AmbientContext : Result<DbContext?>, IAmbientContext
 {

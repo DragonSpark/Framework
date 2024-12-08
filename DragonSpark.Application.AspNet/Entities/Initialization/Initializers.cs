@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Initialization;
+namespace DragonSpark.Application.AspNet.Entities.Initialization;
 
 public class Initializers : IInitializer
 {

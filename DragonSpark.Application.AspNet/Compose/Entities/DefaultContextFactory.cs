@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace DragonSpark.Application.Compose.Entities;
+namespace DragonSpark.Application.AspNet.Compose.Entities;
 
 sealed class DefaultContextFactory<T> : ISelect<IServiceProvider, T> where T : DbContext
 {

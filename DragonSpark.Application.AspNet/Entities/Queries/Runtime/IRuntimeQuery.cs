@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model;
 using DragonSpark.Model.Selection;
 
-namespace DragonSpark.Application.Entities.Queries.Runtime;
+namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime;
 
 public interface IRuntimeQuery<in TIn, TOut> : ISelect<TIn, IQueries<TOut>>;
 

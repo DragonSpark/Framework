@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities;
+namespace DragonSpark.Application.AspNet.Entities;
 
 public sealed class Local<TKey, T> : ISelecting<TKey, T?> where T : class
 {

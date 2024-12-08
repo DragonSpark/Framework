@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Diagnostics;
+namespace DragonSpark.Application.AspNet.Entities.Diagnostics;
 
 sealed class ReloadEntities : IOperation<(DbUpdateConcurrencyException, TimeSpan)>
 {

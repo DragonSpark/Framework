@@ -1,6 +1,6 @@
-﻿using DragonSpark.Application.Navigation;
+﻿using DragonSpark.Application.AspNet.Navigation;
 
-namespace DragonSpark.Application.Security.Identity.Model;
+namespace DragonSpark.Application.AspNet.Security.Identity.Model;
 
 public sealed class SignOutReturnPath : ReturnPath
 {

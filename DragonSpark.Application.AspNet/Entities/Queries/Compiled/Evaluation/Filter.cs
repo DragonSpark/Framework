@@ -3,7 +3,7 @@ using System.Linq;
 using System.Linq.Dynamic.Core;
 using System.Text.Json;
 
-namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
+namespace DragonSpark.Application.AspNet.Entities.Queries.Compiled.Evaluation;
 
 sealed class Filter<T> : IFilter<T>
 {

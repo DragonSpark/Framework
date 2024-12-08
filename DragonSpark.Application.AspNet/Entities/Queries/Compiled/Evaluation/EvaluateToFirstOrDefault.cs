@@ -5,7 +5,7 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
+namespace DragonSpark.Application.AspNet.Entities.Queries.Compiled.Evaluation;
 
 public class EvaluateToFirstOrDefault<T> : EvaluateToFirstOrDefault<None, T>
 {

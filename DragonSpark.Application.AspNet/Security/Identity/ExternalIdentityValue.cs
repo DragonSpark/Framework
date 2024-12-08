@@ -1,6 +1,6 @@
-﻿using DragonSpark.Application.Security.Identity.Claims.Access;
+﻿using DragonSpark.Application.AspNet.Security.Identity.Claims.Access;
 
-namespace DragonSpark.Application.Security.Identity;
+namespace DragonSpark.Application.AspNet.Security.Identity;
 
 public sealed class ExternalIdentityValue : RequiredClaim
 {

@@ -1,6 +1,6 @@
 ﻿using AspNet.Security.OAuth.Twitter;
-using DragonSpark.Application.Compose;
-using DragonSpark.Application.Security.Identity.Claims.Actions;
+using DragonSpark.Application.AspNet.Compose;
+using DragonSpark.Application.AspNet.Security.Identity.Claims.Actions;
 using DragonSpark.Identity.Twitter.Api;
 using DragonSpark.Identity.Twitter.Claims;
 using System;

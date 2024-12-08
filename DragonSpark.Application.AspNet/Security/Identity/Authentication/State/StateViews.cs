@@ -3,7 +3,7 @@ using DragonSpark.Model.Selection.Conditions;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity.Authentication.State;
+namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.State;
 
 sealed class StateViews<T> : IStateViews<T> where T : IdentityUser
 {

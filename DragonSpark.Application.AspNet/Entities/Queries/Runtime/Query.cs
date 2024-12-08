@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace DragonSpark.Application.Entities.Queries.Runtime;
+namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime;
 
 public readonly struct Query<T> : IDisposable
 {

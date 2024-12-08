@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Application.Compose.Store.Operations.Memory;
 
-namespace DragonSpark.Application.Entities.Queries.Runtime.Pagination.Memory;
+namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination.Memory;
 
 public class MemoryAwarePagination<T> : IPagination<T>
 {

@@ -2,7 +2,7 @@
 using DragonSpark.Model.Operations.Selection;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Editing;
+namespace DragonSpark.Application.AspNet.Entities.Editing;
 
 public class Session<TIn, TOut, TSave> : ISession<TIn, TOut, TSave>
 {

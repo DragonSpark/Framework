@@ -2,7 +2,7 @@
 using DragonSpark.Model.Operations.Selection;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity.MultiFactor;
+namespace DragonSpark.Application.AspNet.Security.Identity.MultiFactor;
 
 sealed class KeyCode<T> : IKeyCode<T> where T : IdentityUser
 {

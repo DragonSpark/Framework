@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using System;
 
-namespace DragonSpark.Application.Navigation;
+namespace DragonSpark.Application.AspNet.Navigation;
 
 public sealed class CurrentPath : IResult<string>
 {

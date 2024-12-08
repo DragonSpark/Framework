@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
+namespace DragonSpark.Application.AspNet.Entities.Queries.Compiled.Evaluation;
 
 sealed class ToNumber : IEvaluate<int, uint>
 {

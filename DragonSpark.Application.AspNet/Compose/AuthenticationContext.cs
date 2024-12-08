@@ -4,7 +4,7 @@ using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.Authentication;
 
-namespace DragonSpark.Application.Compose;
+namespace DragonSpark.Application.AspNet.Compose;
 
 public sealed class AuthenticationContext : IResult<ApplicationProfileContext>
 {

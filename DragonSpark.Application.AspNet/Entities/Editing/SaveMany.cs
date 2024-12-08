@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Compose;
 using System;
 
-namespace DragonSpark.Application.Entities.Editing;
+namespace DragonSpark.Application.AspNet.Entities.Editing;
 
 public class SaveMany<T> : Modify<Memory<T>> where T : class
 {

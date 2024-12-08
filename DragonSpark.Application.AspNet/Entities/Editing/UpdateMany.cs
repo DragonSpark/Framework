@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace DragonSpark.Application.Entities.Editing;
+namespace DragonSpark.Application.AspNet.Entities.Editing;
 
 sealed class UpdateMany<T> : IModify<Memory<T>> where T : class
 {

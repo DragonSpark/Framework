@@ -2,7 +2,7 @@
 using DragonSpark.Model.Results;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Transactions;
+namespace DragonSpark.Application.AspNet.Entities.Transactions;
 
 class StoreTransaction<T> : ITransaction
 {

@@ -1,5 +1,5 @@
 ﻿
-using DragonSpark.Application.Security.Identity;
+using DragonSpark.Application.AspNet.Security.Identity;
 
 namespace DragonSpark.Application.Testing.Objects;
 

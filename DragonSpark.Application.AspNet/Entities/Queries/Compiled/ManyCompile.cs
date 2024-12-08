@@ -6,7 +6,7 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace DragonSpark.Application.Entities.Queries.Compiled;
+namespace DragonSpark.Application.AspNet.Entities.Queries.Compiled;
 
 sealed class ManyCompile<TIn, TOut>
 	: ISelect<Expression<Func<DbContext, TIn, IQueryable<TOut>>>, IElements<TIn, TOut>>

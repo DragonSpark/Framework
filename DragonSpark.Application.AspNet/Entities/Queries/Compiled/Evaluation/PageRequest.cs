@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
+namespace DragonSpark.Application.AspNet.Entities.Queries.Compiled.Evaluation;
 
 public record PageRequest<T>(
 	T Subject,

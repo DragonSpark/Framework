@@ -2,7 +2,7 @@ using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using System;
 
-namespace DragonSpark.Application.Security.Identity.State;
+namespace DragonSpark.Application.AspNet.Security.Identity.State;
 
 public abstract class ConfigureCookie<T> : ICommand<CookieAuthenticationOptions> where T : SystemServerSettings
 {

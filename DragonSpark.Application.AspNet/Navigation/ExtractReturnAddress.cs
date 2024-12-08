@@ -1,9 +1,9 @@
-﻿using DragonSpark.Application.Security.Identity.Model;
+﻿using DragonSpark.Application.AspNet.Security.Identity.Model;
 using DragonSpark.Model.Selection;
 using System.Linq;
 using System.Web;
 
-namespace DragonSpark.Application.Navigation;
+namespace DragonSpark.Application.AspNet.Navigation;
 
 public sealed class ExtractReturnAddress : ISelect<string, string?>
 {

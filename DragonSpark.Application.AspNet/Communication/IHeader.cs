@@ -3,7 +3,7 @@ using DragonSpark.Model.Selection;
 using Microsoft.AspNetCore.Http;
 using System.Net.Http.Headers;
 
-namespace DragonSpark.Application.Communication;
+namespace DragonSpark.Application.AspNet.Communication;
 
 public interface IHeader : ISelect<IHeaderDictionary, string?>,
                            IAssign<IHeaderDictionary, string>,

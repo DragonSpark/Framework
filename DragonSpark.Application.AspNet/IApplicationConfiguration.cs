@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Builder;
 
-namespace DragonSpark.Application;
+namespace DragonSpark.Application.AspNet;
 
 public interface IApplicationConfiguration : ICommand<IApplicationBuilder>;

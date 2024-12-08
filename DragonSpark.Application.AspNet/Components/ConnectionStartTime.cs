@@ -3,7 +3,7 @@ using DragonSpark.Runtime;
 using JetBrains.Annotations;
 using System;
 
-namespace DragonSpark.Application.Components;
+namespace DragonSpark.Application.AspNet.Components;
 
 public sealed class ConnectionStartTime : Instance<DateTimeOffset>
 {

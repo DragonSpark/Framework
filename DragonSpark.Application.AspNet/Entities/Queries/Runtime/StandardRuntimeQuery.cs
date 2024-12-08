@@ -1,6 +1,6 @@
-﻿using DragonSpark.Application.Entities.Queries.Composition;
+﻿using DragonSpark.Application.AspNet.Entities.Queries.Composition;
 
-namespace DragonSpark.Application.Entities.Queries.Runtime;
+namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime;
 
 public class StandardRuntimeQuery<TIn, TOut> : RuntimeQuery<TIn, TOut>
 {

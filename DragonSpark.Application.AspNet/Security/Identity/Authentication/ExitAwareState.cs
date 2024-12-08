@@ -1,9 +1,9 @@
-﻿using DragonSpark.Application.Security.Identity.Model;
+﻿using DragonSpark.Application.AspNet.Security.Identity.Model;
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace DragonSpark.Application.Security.Identity.Authentication;
+namespace DragonSpark.Application.AspNet.Security.Identity.Authentication;
 
 sealed class ExitAwareState<T> : ISelect<AuthenticationState<T>, AuthenticationState> where T : IdentityUser
 {
@@ -26,7 +26,7 @@ sealed class ExitAwareState<T> : ISelect<AuthenticationState<T>, AuthenticationS
 	{
 		if (_state.Get(parameter) is ProfileStatus.Invalid)
 		{
-			_exit.Execute();
+			ExtensionMethods.Execute(_exit);
 			return _default;
 		}
 

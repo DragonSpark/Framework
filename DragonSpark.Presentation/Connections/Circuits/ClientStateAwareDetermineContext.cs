@@ -1,4 +1,5 @@
-﻿using DragonSpark.Application.Communication;
+﻿using DragonSpark.Application.AspNet.Communication;
+using DragonSpark.Application.Communication;
 using DragonSpark.Compose;
 using DragonSpark.Presentation.Environment;
 using Microsoft.AspNetCore.Http;

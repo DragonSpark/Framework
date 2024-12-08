@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Entities.Queries.Runtime;
+﻿using DragonSpark.Application.AspNet.Entities.Queries.Runtime;
 using DragonSpark.Compose;
 using DragonSpark.Presentation.Components.Eventing;
 using Microsoft.AspNetCore.Components;

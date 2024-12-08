@@ -3,7 +3,7 @@ using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Text;
 using Microsoft.AspNetCore.WebUtilities;
 
-namespace DragonSpark.Application.Navigation;
+namespace DragonSpark.Application.AspNet.Navigation;
 
 public sealed class Base64UrlEncode : Alteration<string>
 {

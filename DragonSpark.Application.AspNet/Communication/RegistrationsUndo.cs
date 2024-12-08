@@ -2,7 +2,7 @@
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Application.Communication;
+namespace DragonSpark.Application.AspNet.Communication;
 
 sealed class RegistrationsUndo : ICommand<IServiceCollection>
 {

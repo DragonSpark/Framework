@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Queries.Runtime.Materialize;
+namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Materialize;
 
 sealed class DefaultLargeCount<T> : ILargeCount<T>
 {

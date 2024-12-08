@@ -2,7 +2,7 @@
 using DragonSpark.Model.Sequences;
 using System;
 
-namespace DragonSpark.Application.Entities.Diagnostics;
+namespace DragonSpark.Application.AspNet.Entities.Diagnostics;
 
 sealed class IsApplicationContentException : ICondition<InvalidOperationException>
 {

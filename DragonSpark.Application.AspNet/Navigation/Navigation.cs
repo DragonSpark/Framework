@@ -3,7 +3,7 @@ using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Components;
 using System;
 
-namespace DragonSpark.Application.Navigation;
+namespace DragonSpark.Application.AspNet.Navigation;
 
 public class Navigation : Command
 {

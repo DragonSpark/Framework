@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Compose;
 using Microsoft.AspNetCore.Http;
 
-namespace DragonSpark.Application.Security;
+namespace DragonSpark.Application.AspNet.Security;
 
 sealed class CurrentContext : ICurrentContext
 {

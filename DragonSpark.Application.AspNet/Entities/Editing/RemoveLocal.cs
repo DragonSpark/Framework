@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Model.Commands;
 
-namespace DragonSpark.Application.Entities.Editing;
+namespace DragonSpark.Application.AspNet.Entities.Editing;
 
 public sealed class RemoveLocal<T> : Command<Edit<T>>, IModify<T> where T : class
 {

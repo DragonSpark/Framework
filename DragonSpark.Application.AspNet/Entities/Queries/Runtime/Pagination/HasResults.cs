@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Model.Selection.Conditions;
 
-namespace DragonSpark.Application.Entities.Queries.Runtime.Pagination;
+namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
 
 public sealed class HasResults : ICondition<bool?>
 {

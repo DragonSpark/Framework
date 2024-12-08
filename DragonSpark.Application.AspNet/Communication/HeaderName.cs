@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace DragonSpark.Application.Communication;
+namespace DragonSpark.Application.AspNet.Communication;
 
 public class HeaderName : Text.Text
 {

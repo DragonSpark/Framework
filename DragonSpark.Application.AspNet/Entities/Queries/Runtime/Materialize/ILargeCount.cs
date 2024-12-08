@@ -1,3 +1,3 @@
-﻿namespace DragonSpark.Application.Entities.Queries.Runtime.Materialize;
+﻿namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Materialize;
 
 public interface ILargeCount<T> : IMaterializer<T, ulong>;

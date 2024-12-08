@@ -2,6 +2,6 @@
 using DragonSpark.Model.Operations;
 using System;
 
-namespace DragonSpark.Application.Entities.Transactions;
+namespace DragonSpark.Application.AspNet.Entities.Transactions;
 
 public interface ITransaction : ICommand, IOperation, IAsyncDisposable;

@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Text;
 
-namespace DragonSpark.Application.Security.Identity.Bearer;
+namespace DragonSpark.Application.AspNet.Security.Identity.Bearer;
 
 public interface ICurrentBearer : IText;

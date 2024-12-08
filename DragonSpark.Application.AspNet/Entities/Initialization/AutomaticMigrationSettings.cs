@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Application.Entities.Initialization;
+﻿namespace DragonSpark.Application.AspNet.Entities.Initialization;
 
 public sealed class AutomaticMigrationSettings
 {

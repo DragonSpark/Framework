@@ -1,9 +1,9 @@
-﻿using DragonSpark.Application.Security.Identity.Claims.Access;
+﻿using DragonSpark.Application.AspNet.Security.Identity.Claims.Access;
 using DragonSpark.Text;
 using System;
 using System.Security.Claims;
 
-namespace DragonSpark.Application.Security.Identity;
+namespace DragonSpark.Application.AspNet.Security.Identity;
 
 public sealed class IdentityProvider : IFormatter<ClaimsPrincipal>
 {

@@ -1,5 +1,5 @@
 ﻿using AspNet.Security.OAuth.Patreon;
-using DragonSpark.Application.Security.Identity.Authentication;
+using DragonSpark.Application.AspNet.Security.Identity.Authentication;
 
 namespace DragonSpark.Identity.Patreon;
 

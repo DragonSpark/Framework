@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model;
 using DragonSpark.Model.Selection;
 
-namespace DragonSpark.Application.Entities.Editing;
+namespace DragonSpark.Application.AspNet.Entities.Editing;
 
 public sealed class Editors : Editors<None>
 {

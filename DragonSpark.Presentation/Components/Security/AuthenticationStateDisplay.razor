@@ -1,10 +1,11 @@
-﻿@using DragonSpark.Application.Security.Identity.Authentication
-@using DragonSpark.Compose
+﻿@using DragonSpark.Compose
 @using DragonSpark.Application
-@using DragonSpark.Application.Security.Identity.Model
+@using DragonSpark.Application.AspNet.Security.Identity
+@using DragonSpark.Application.AspNet.Security.Identity.Authentication
+@using DragonSpark.Application.AspNet.Security.Identity.Model
 @using DragonSpark.Model.Results
 
-@typeparam T where T : DragonSpark.Application.Security.Identity.IdentityUser
+@typeparam T where T : IdentityUser
 
 @inject IValidationServices Validation
 @inject AuthenticationStore Set

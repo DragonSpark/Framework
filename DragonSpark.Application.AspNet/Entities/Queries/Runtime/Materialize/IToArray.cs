@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Model.Sequences;
 
-namespace DragonSpark.Application.Entities.Queries.Runtime.Materialize;
+namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Materialize;
 
 public interface IToArray<T> : IMaterializer<T, Array<T>>;

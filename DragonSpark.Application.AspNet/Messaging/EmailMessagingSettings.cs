@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Application.Messaging;
+﻿namespace DragonSpark.Application.AspNet.Messaging;
 
 public sealed class EmailMessagingSettings
 {

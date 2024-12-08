@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity.Authentication.State;
+namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.State;
 
 sealed class StateUser<T> : IStateUser<T> where T : IdentityUser
 {

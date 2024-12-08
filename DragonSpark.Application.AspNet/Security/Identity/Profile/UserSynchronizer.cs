@@ -2,7 +2,7 @@
 using JetBrains.Annotations;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity.Profile;
+namespace DragonSpark.Application.AspNet.Security.Identity.Profile;
 
 [UsedImplicitly]
 sealed class UserSynchronizer<T> : IUserSynchronizer<T> where T : IdentityUser

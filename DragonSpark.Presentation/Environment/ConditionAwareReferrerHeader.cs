@@ -1,4 +1,5 @@
-﻿using DragonSpark.Application.Communication;
+﻿using DragonSpark.Application.AspNet.Communication;
+using DragonSpark.Application.Communication;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
 using Microsoft.AspNetCore.Http;

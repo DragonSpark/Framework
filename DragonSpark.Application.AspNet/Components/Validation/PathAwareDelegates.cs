@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components.Forms;
 using System;
 
-namespace DragonSpark.Application.Components.Validation;
+namespace DragonSpark.Application.AspNet.Components.Validation;
 
 sealed class PathAwareDelegates : IDelegates
 {

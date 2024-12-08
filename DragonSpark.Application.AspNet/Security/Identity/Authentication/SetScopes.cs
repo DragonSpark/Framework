@@ -2,7 +2,7 @@
 using DragonSpark.Model.Sequences;
 using Microsoft.AspNetCore.Authentication.OAuth;
 
-namespace DragonSpark.Application.Security.Identity.Authentication;
+namespace DragonSpark.Application.AspNet.Security.Identity.Authentication;
 
 public class SetScopes<T> : ICommand<T> where T : OAuthOptions
 {

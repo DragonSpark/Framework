@@ -4,7 +4,7 @@ using DragonSpark.Text;
 using JetBrains.Annotations;
 using System.Text;
 
-namespace DragonSpark.Application.Security.Data;
+namespace DragonSpark.Application.AspNet.Security.Data;
 
 [UsedImplicitly]
 public sealed class DecryptDataAsText : Alteration<string>

@@ -2,7 +2,7 @@
 using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.DataProtection;
 
-namespace DragonSpark.Application.Security.Data;
+namespace DragonSpark.Application.AspNet.Security.Data;
 
 sealed class DataProtectorInstance : IResult<IDataProtector>
 {

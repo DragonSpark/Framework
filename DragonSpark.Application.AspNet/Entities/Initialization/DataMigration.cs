@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Initialization;
+namespace DragonSpark.Application.AspNet.Entities.Initialization;
 
 /// <summary>
 /// This is not very good, but the best we have for now:

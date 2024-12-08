@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Model.Results;
 
-namespace DragonSpark.Application.Security.Identity.State;
+namespace DragonSpark.Application.AspNet.Security.Identity.State;
 
 sealed class SharedAccessStateKeyName : Instance<string>
 {

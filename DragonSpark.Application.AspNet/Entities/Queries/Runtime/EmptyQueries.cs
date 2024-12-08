@@ -3,7 +3,7 @@ using DragonSpark.Model;
 using DragonSpark.Runtime;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Queries.Runtime;
+namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime;
 
 public sealed class EmptyQueries<T> : IQueries<T>
 {

@@ -5,7 +5,7 @@ using System;
 using System.Buffers;
 using System.Linq;
 
-namespace DragonSpark.Application.Entities.Diagnostics;
+namespace DragonSpark.Application.AspNet.Entities.Diagnostics;
 
 sealed class ClearEntityStores : ICommand<(DbUpdateConcurrencyException, TimeSpan)>
 {

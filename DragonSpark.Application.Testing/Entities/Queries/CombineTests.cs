@@ -1,5 +1,6 @@
-﻿using DragonSpark.Application.Entities;
-using DragonSpark.Application.Entities.Queries.Composition;
+﻿using DragonSpark.Application.AspNet;
+using DragonSpark.Application.AspNet.Entities;
+using DragonSpark.Application.AspNet.Entities.Queries.Composition;
 using DragonSpark.Compose;
 using DragonSpark.Testing.Objects.Entities;
 using DragonSpark.Testing.Objects.Entities.SqlLite;

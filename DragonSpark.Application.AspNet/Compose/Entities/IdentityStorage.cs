@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
-using IdentityUser = DragonSpark.Application.Security.Identity.IdentityUser;
+using IdentityUser = DragonSpark.Application.AspNet.Security.Identity.IdentityUser;
 
-namespace DragonSpark.Application.Compose.Entities;
+namespace DragonSpark.Application.AspNet.Compose.Entities;
 
 public sealed class IdentityStorage<T> where T : IdentityUser
 {

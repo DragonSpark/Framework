@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace DragonSpark.Application.Entities.Configuration;
+namespace DragonSpark.Application.AspNet.Entities.Configuration;
 
 public sealed class Setting
 {

@@ -1,11 +1,13 @@
-﻿using DragonSpark.Application.Security.Identity;
+﻿using DragonSpark.Application.AspNet.Entities;
+using DragonSpark.Application.AspNet.Entities.Transactions;
+using DragonSpark.Application.AspNet.Security.Identity;
 using DragonSpark.Composition;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
-using IdentityUser = DragonSpark.Application.Security.Identity.IdentityUser;
+using IdentityUser = DragonSpark.Application.AspNet.Security.Identity.IdentityUser;
 
-namespace DragonSpark.Application.Compose.Entities;
+namespace DragonSpark.Application.AspNet.Compose.Entities;
 
 public sealed class IdentityStorageType<T, TContext> where TContext : DbContext where T : IdentityUser
 {
@@ -23,17 +25,17 @@ public sealed class IdentityStorageType<T, TContext> where TContext : DbContext 
 		               .Configure(x => x.ComposeUsing(Security.Identity.Compose.Default)
 		                                .ComposeUsing(Security.Identity.Authentication.Compose.Default))
 		               .Append(AddIdentityComponents<T>.Default)
-		               .Append(DragonSpark.Application.Entities.Registrations<TContext>.Default)
-		               .Append(DragonSpark.Application.Entities.Transactions.Registrations.Default)
-		               .Configure(x => x.ComposeUsing(DragonSpark.Application.Entities.Queries.Runtime.Pagination.Compose
-		                                                         .Default)),
+		               .Append(Registrations<TContext>.Default)
+		               .Append(Registrations.Default)
+		               .Configure(x => x.ComposeUsing(AspNet.Entities.Queries.Runtime.Pagination.Compose
+		                                                    .Default)),
 		       _configure);
 
 	public IdentityStorageUsing<T, TContext> Is
 		=> new(_subject.Append(CommonRegistrations<TContext, T>.Default)
 		               .Configure(x => x.ComposeUsing(Security.Identity.Compose.Default)
 		                                .ComposeUsing(Security.Identity.Authentication.Compose.Default))
-		               .Append(DragonSpark.Application.Entities.Registrations<TContext>.Default)
-		               .Append(DragonSpark.Application.Entities.Transactions.Registrations.Default),
+		               .Append(Registrations<TContext>.Default)
+		               .Append(Registrations.Default),
 		       _configure);
 }

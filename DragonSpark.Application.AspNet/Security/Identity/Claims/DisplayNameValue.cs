@@ -2,7 +2,7 @@
 using DragonSpark.Text;
 using System.Security.Claims;
 
-namespace DragonSpark.Application.Security.Identity.Claims;
+namespace DragonSpark.Application.AspNet.Security.Identity.Claims;
 
 sealed class DisplayNameValue : IFormatter<(ClaimsPrincipal Principal, string Provider)>
 {

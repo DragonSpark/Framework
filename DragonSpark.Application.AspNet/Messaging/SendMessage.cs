@@ -3,7 +3,7 @@ using DragonSpark.Model.Operations;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Messaging;
+namespace DragonSpark.Application.AspNet.Messaging;
 
 public class SendMessage<T> : IOperation<T>
 {

@@ -1,9 +1,9 @@
-﻿using DragonSpark.Application.Security.Identity.Authentication;
+﻿using DragonSpark.Application.AspNet.Security.Identity.Authentication;
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using System.Security.Claims;
 
-namespace DragonSpark.Application.Security.Identity.Bearer;
+namespace DragonSpark.Application.AspNet.Security.Identity.Bearer;
 
 public sealed class ApplicationUserAwareBearer : Validated<ClaimsPrincipal, string?>
 {

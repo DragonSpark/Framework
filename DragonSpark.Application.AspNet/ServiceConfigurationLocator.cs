@@ -3,7 +3,7 @@ using DragonSpark.Runtime.Environment;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Application;
+namespace DragonSpark.Application.AspNet;
 
 sealed class ServiceConfigurationLocator : LocateComponent<IApplicationBuilder, IApplicationConfiguration>
 {

@@ -1,7 +1,7 @@
-﻿using DragonSpark.Application.Entities.Transactions;
+﻿using DragonSpark.Application.AspNet.Entities.Transactions;
 using Microsoft.AspNetCore.Identity;
 
-namespace DragonSpark.Application.Security.Identity.Profile;
+namespace DragonSpark.Application.AspNet.Security.Identity.Profile;
 
 sealed class CreateExternal<T> : Transacting<ExternalLoginInfo, CreateUserResult<T>>, ICreateExternal<T>
 	where T : IdentityUser

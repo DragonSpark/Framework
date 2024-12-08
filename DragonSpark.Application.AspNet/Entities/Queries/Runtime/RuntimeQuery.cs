@@ -1,11 +1,11 @@
-﻿using DragonSpark.Application.Entities.Queries.Composition;
+﻿using DragonSpark.Application.AspNet.Entities.Queries.Composition;
 using DragonSpark.Model;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 
-namespace DragonSpark.Application.Entities.Queries.Runtime;
+namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime;
 
 public class RuntimeQuery<T> : RuntimeQuery<None, T>, IRuntimeQuery<T>
 {

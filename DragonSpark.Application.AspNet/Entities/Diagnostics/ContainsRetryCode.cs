@@ -2,7 +2,7 @@
 using DragonSpark.Model.Selection.Conditions;
 using Microsoft.Data.SqlClient;
 
-namespace DragonSpark.Application.Entities.Diagnostics;
+namespace DragonSpark.Application.AspNet.Entities.Diagnostics;
 
 sealed class ContainsRetryCode : Condition<SqlException>
 {

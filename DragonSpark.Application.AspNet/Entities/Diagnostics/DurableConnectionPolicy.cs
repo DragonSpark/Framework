@@ -6,7 +6,7 @@ using Polly;
 using System;
 using Policy = Polly.Policy;
 
-namespace DragonSpark.Application.Entities.Diagnostics;
+namespace DragonSpark.Application.AspNet.Entities.Diagnostics;
 
 public sealed class DurableConnectionPolicy : Deferred<IAsyncPolicy>
 {

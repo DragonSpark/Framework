@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
 
-namespace DragonSpark.Application.Security.Identity.Model;
+namespace DragonSpark.Application.AspNet.Security.Identity.Model;
 
-sealed class NavigateToSignOut : Navigation.Navigation, INavigateToSignOut
+sealed class NavigateToSignOut : Application.AspNet.Navigation.Navigation, INavigateToSignOut
 {
 	public NavigateToSignOut(NavigationManager navigation) : base(navigation, SignOutPath.Default, true) {}
 }

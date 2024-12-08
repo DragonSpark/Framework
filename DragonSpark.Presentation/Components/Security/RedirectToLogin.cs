@@ -1,5 +1,6 @@
-﻿using DragonSpark.Application.Navigation;
-using DragonSpark.Application.Navigation.Security;
+﻿using DragonSpark.Application.AspNet.Navigation;
+using DragonSpark.Application.AspNet.Navigation.Security;
+using DragonSpark.Application.Navigation;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;

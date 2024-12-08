@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model.Commands;
 using LightInject;
 
-namespace DragonSpark.Application.Entities;
+namespace DragonSpark.Application.AspNet.Entities;
 
 sealed class Compose : ICommand<IServiceContainer>
 {

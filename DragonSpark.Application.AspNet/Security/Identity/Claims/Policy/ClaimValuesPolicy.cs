@@ -3,7 +3,7 @@ using DragonSpark.Model.Sequences;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Authorization;
 
-namespace DragonSpark.Application.Security.Identity.Claims.Policy;
+namespace DragonSpark.Application.AspNet.Security.Identity.Claims.Policy;
 
 [UsedImplicitly]
 public class ClaimValuesPolicy : ICommand<AuthorizationOptions>

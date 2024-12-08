@@ -1,11 +1,11 @@
-﻿using DragonSpark.Application.Compose;
+﻿using DragonSpark.Application.AspNet.Compose;
 using DragonSpark.Compose;
 using DragonSpark.Composition;
 using Humanizer;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Application.Security.Identity.Bearer;
+namespace DragonSpark.Application.AspNet.Security.Identity.Bearer;
 
 public static class Extensions
 {

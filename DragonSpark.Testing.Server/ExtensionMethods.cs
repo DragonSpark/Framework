@@ -1,5 +1,5 @@
-﻿using DragonSpark.Application.Compose.Entities;
-using DragonSpark.Application.Security.Identity;
+﻿using DragonSpark.Application.AspNet.Compose.Entities;
+using DragonSpark.Application.AspNet.Security.Identity;
 using DragonSpark.Composition.Compose;
 using Microsoft.EntityFrameworkCore;
 

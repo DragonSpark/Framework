@@ -1,12 +1,12 @@
-﻿using DragonSpark.Application.Entities.Queries.Compiled;
-using DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
+﻿using DragonSpark.Application.AspNet.Entities.Queries.Compiled;
+using DragonSpark.Application.AspNet.Entities.Queries.Compiled.Evaluation;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations.Selection;
 using DragonSpark.Model.Selection;
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Editing;
+namespace DragonSpark.Application.AspNet.Entities.Editing;
 
 public sealed class Edit<TIn, T, TResult> : IEdit<TIn, TResult>
 {

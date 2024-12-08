@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace DragonSpark.Application.Entities.Configure;
+namespace DragonSpark.Application.AspNet.Entities.Configure;
 
 public class StorageBuilderConfiguration<T> : AppendedCommand<DbContextOptionsBuilder<T>> where T : DbContext
 {

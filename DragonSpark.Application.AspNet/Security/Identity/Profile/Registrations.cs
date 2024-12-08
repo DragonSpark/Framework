@@ -2,7 +2,7 @@
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Application.Security.Identity.Profile;
+namespace DragonSpark.Application.AspNet.Security.Identity.Profile;
 
 sealed class Registrations<T> : ICommand<IServiceCollection> where T : IdentityUser
 {

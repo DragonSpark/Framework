@@ -5,7 +5,7 @@ using DragonSpark.Model.Selection.Conditions;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace DragonSpark.Application.Components.Validation;
+namespace DragonSpark.Application.AspNet.Components.Validation;
 
 public sealed class GraphValidationContext : Collection<ValidationResultMessage>,
 											 ICondition<object>,

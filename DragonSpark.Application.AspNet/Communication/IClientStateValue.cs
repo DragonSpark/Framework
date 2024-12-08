@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Text;
 
-namespace DragonSpark.Application.Communication;
+namespace DragonSpark.Application.AspNet.Communication;
 
 public interface IClientStateValue : IText;

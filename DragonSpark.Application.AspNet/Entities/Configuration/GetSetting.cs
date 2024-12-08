@@ -1,6 +1,6 @@
-﻿using DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
+﻿using DragonSpark.Application.AspNet.Entities.Queries.Compiled.Evaluation;
 
-namespace DragonSpark.Application.Entities.Configuration;
+namespace DragonSpark.Application.AspNet.Entities.Configuration;
 
 sealed class GetSetting : EvaluateToSingleOrDefault<string, Setting>
 {

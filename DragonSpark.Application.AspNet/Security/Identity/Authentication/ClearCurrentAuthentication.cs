@@ -1,8 +1,8 @@
-﻿using DragonSpark.Application.Security.Identity.Model;
+﻿using DragonSpark.Application.AspNet.Security.Identity.Model;
 using DragonSpark.Model.Commands;
 using System.Security.Claims;
 
-namespace DragonSpark.Application.Security.Identity.Authentication;
+namespace DragonSpark.Application.AspNet.Security.Identity.Authentication;
 
 sealed class ClearCurrentAuthentication : ICommand<ClaimsPrincipal>
 {

@@ -2,7 +2,7 @@
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Application.Components;
+namespace DragonSpark.Application.AspNet.Components;
 
 sealed class Registrations : ICommand<IServiceCollection>
 {

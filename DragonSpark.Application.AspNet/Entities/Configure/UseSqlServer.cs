@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
 
-namespace DragonSpark.Application.Entities.Configure;
+namespace DragonSpark.Application.AspNet.Entities.Configure;
 
 public sealed class UseSqlServer<T> : UseSqlServer
 {

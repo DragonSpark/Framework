@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq.Expressions;
 
-namespace DragonSpark.Application.Compose.Entities.Queries;
+namespace DragonSpark.Application.AspNet.Compose.Entities.Queries;
 
 public sealed class ElidedParameterExpressionComposer<T>
 	: DragonSpark.Model.Results.Instance<Expression<Func<DbContext, T>>>

@@ -1,11 +1,11 @@
-﻿using DragonSpark.Application.Compose;
-using DragonSpark.Application.Entities.Diagnostics;
-using DragonSpark.Application.Entities.Editing;
-using DragonSpark.Application.Entities.Transactions;
-using DragonSpark.Application.Security.Identity;
-using DragonSpark.Application.Security.Identity.Authentication;
-using DragonSpark.Application.Security.Identity.Bearer;
-using DragonSpark.Application.Security.Identity.Claims.Access;
+﻿using DragonSpark.Application.AspNet.Compose;
+using DragonSpark.Application.AspNet.Entities.Diagnostics;
+using DragonSpark.Application.AspNet.Entities.Editing;
+using DragonSpark.Application.AspNet.Entities.Transactions;
+using DragonSpark.Application.AspNet.Security.Identity;
+using DragonSpark.Application.AspNet.Security.Identity.Authentication;
+using DragonSpark.Application.AspNet.Security.Identity.Bearer;
+using DragonSpark.Application.AspNet.Security.Identity.Claims.Access;
 using DragonSpark.Compose;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Operations;
@@ -18,9 +18,9 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using IdentityUser = DragonSpark.Application.Security.Identity.IdentityUser;
+using IdentityUser = DragonSpark.Application.AspNet.Security.Identity.IdentityUser;
 
-namespace DragonSpark.Application;
+namespace DragonSpark.Application.AspNet;
 
 partial class Extensions
 {

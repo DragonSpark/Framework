@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Application.Security.Identity.Model;
+﻿namespace DragonSpark.Application.AspNet.Security.Identity.Model;
 
 sealed class ExternalLoginChallengingModelBinder : ChallengingModelBinder
 {

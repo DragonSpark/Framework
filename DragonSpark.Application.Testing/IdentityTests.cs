@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Entities.Design;
+﻿using DragonSpark.Application.AspNet.Entities.Design;
 using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Testing.Server;

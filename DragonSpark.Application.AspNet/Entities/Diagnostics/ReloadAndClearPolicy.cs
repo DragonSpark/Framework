@@ -3,7 +3,7 @@ using DragonSpark.Model.Results;
 using Microsoft.EntityFrameworkCore;
 using Polly;
 
-namespace DragonSpark.Application.Entities.Diagnostics;
+namespace DragonSpark.Application.AspNet.Entities.Diagnostics;
 
 sealed class ReloadAndClearPolicy : Deferred<IAsyncPolicy>
 {

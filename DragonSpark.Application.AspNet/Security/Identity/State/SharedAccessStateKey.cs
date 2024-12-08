@@ -3,7 +3,7 @@ using Humanizer;
 using Microsoft.Extensions.Hosting;
 using System;
 
-namespace DragonSpark.Application.Security.Identity.State;
+namespace DragonSpark.Application.AspNet.Security.Identity.State;
 
 public abstract class SharedAccessStateKey<T> : IFormatter<IHostEnvironment> where T : SystemServerSettings
 {

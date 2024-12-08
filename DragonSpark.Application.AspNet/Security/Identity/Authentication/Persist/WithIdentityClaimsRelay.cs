@@ -3,7 +3,7 @@ using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Application.Security.Identity.Authentication.Persist;
+namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.Persist;
 
 sealed class WithIdentityClaimsRelay : ICommand<IServiceCollection>
 {

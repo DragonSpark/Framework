@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Text;
 
-namespace DragonSpark.Application.Security.Identity;
+namespace DragonSpark.Application.AspNet.Security.Identity;
 
 public sealed class IdentityFormatter : IFormatter<ProviderIdentity>
 {

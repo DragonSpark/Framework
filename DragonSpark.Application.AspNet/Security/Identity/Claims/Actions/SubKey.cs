@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Application.Security.Identity.Claims.Actions;
+﻿namespace DragonSpark.Application.AspNet.Security.Identity.Claims.Actions;
 
 public readonly struct SubKey
 {

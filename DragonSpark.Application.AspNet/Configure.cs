@@ -2,7 +2,7 @@
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Selection.Alterations;
 
-namespace DragonSpark.Application;
+namespace DragonSpark.Application.AspNet;
 
 sealed class Configure : IAlteration<BuildHostContext>
 {

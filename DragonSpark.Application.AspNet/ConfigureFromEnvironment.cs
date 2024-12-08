@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Builder;
 
-namespace DragonSpark.Application;
+namespace DragonSpark.Application.AspNet;
 
 sealed class ConfigureFromEnvironment : SelectedCommand<IApplicationBuilder>
 {

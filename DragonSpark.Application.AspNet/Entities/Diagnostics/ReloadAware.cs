@@ -3,7 +3,7 @@ using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Selection;
 using JetBrains.Annotations;
 
-namespace DragonSpark.Application.Entities.Diagnostics;
+namespace DragonSpark.Application.AspNet.Entities.Diagnostics;
 
 public class ReloadAware<T> : PolicyAwareOperation<T>
 {

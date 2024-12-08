@@ -1,14 +1,14 @@
-﻿using DragonSpark.Application.Security.Identity.Authentication;
-using DragonSpark.Application.Security.Identity.Authentication.State;
-using DragonSpark.Application.Security.Identity.Profile;
+﻿using DragonSpark.Application.AspNet.Security.Identity.Authentication;
+using DragonSpark.Application.AspNet.Security.Identity.Authentication.State;
+using DragonSpark.Application.AspNet.Security.Identity.Profile;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using IdentityUser = DragonSpark.Application.Security.Identity.IdentityUser;
+using IdentityUser = DragonSpark.Application.AspNet.Security.Identity.IdentityUser;
 
-namespace DragonSpark.Application.Compose.Entities;
+namespace DragonSpark.Application.AspNet.Compose.Entities;
 
 sealed class AddIdentityComponents<T> : ICommand<IServiceCollection> where T : IdentityUser
 {

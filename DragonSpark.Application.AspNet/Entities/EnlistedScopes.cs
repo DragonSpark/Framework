@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Runtime;
 
-namespace DragonSpark.Application.Entities;
+namespace DragonSpark.Application.AspNet.Entities;
 
 public sealed class EnlistedScopes : IEnlistedScopes
 {

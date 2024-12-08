@@ -1,7 +1,7 @@
 ﻿using Polly;
 using System;
 
-namespace DragonSpark.Application.Entities.Diagnostics;
+namespace DragonSpark.Application.AspNet.Entities.Diagnostics;
 
 public sealed class ApplicationContentBuilder : DragonSpark.Diagnostics.Builder
 {

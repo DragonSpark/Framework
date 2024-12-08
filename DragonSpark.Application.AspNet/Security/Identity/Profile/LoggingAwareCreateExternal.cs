@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity.Profile;
+namespace DragonSpark.Application.AspNet.Security.Identity.Profile;
 
 sealed class LoggingAwareCreateExternal<T> : ICreateExternal<T> where T : IdentityUser
 {

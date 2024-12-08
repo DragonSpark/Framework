@@ -3,7 +3,7 @@ using DragonSpark.Runtime.Activation;
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace DragonSpark.Application.Entities.Configure;
+namespace DragonSpark.Application.AspNet.Entities.Configure;
 
 public class ConfigureApplicationServices : ICommand<DbContextOptionsBuilder>
 {

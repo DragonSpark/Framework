@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Text;
 using Microsoft.Extensions.Configuration;
 
-namespace DragonSpark.Application.Entities.Configure;
+namespace DragonSpark.Application.AspNet.Entities.Configure;
 
 sealed class ConnectionString<T> : ConnectionString
 {

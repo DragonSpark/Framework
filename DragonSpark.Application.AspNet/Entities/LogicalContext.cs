@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Runtime.Execution;
 using Microsoft.EntityFrameworkCore;
 
-namespace DragonSpark.Application.Entities;
+namespace DragonSpark.Application.AspNet.Entities;
 
 public sealed class LogicalContext : Logical<DbContext>
 {

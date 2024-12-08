@@ -3,7 +3,7 @@ using DragonSpark.Model.Sequences;
 using System.Collections.Generic;
 using System.Security.Claims;
 
-namespace DragonSpark.Application.Security.Identity.Claims.Compile;
+namespace DragonSpark.Application.AspNet.Security.Identity.Claims.Compile;
 
 public class ClaimExtractor : IExtractClaims
 {

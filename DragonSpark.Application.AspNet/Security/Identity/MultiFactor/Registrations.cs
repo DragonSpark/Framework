@@ -2,7 +2,7 @@
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Application.Security.Identity.MultiFactor;
+namespace DragonSpark.Application.AspNet.Security.Identity.MultiFactor;
 
 sealed class Registrations<T> : ICommand<IServiceCollection> where T : IdentityUser
 {

@@ -5,7 +5,7 @@ using DragonSpark.Text;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Hosting;
 
-namespace DragonSpark.Application.Security.Identity.State;
+namespace DragonSpark.Application.AspNet.Security.Identity.State;
 
 public class SetApplicationName : IAlteration<IDataProtectionBuilder>
 {

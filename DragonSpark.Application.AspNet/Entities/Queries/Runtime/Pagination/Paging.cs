@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Application.Entities.Queries.Runtime.Pagination;
+﻿namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
 
 sealed class Paging<T> : IPaging<T>
 {

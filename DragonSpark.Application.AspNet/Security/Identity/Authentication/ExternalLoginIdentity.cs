@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model.Selection;
 using Microsoft.AspNetCore.Identity;
 
-namespace DragonSpark.Application.Security.Identity.Authentication;
+namespace DragonSpark.Application.AspNet.Security.Identity.Authentication;
 
 public sealed class ExternalLoginIdentity : Select<ExternalLoginInfo, ProviderIdentity>
 {

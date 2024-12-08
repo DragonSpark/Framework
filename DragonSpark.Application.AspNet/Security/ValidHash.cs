@@ -1,8 +1,9 @@
-﻿using DragonSpark.Model.Selection.Conditions;
+﻿using DragonSpark.Application.Security;
+using DragonSpark.Model.Selection.Conditions;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System;
 
-namespace DragonSpark.Application.Security;
+namespace DragonSpark.Application.AspNet.Security;
 
 /// <summary>
 /// Attribution: https://www.devtrends.co.uk/blog/hashing-encryption-and-random-in-asp.net-core

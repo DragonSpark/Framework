@@ -4,7 +4,7 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace DragonSpark.Application.Entities.Queries.Composition;
+namespace DragonSpark.Application.AspNet.Entities.Queries.Composition;
 
 public class IntroduceThree<TIn, TFrom, T1, T2, T3, TTo> : Query<TIn, TTo>
 {

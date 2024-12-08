@@ -1,8 +1,8 @@
-﻿using DragonSpark.Application.Security.Identity.Authentication.Persist;
+﻿using DragonSpark.Application.AspNet.Security.Identity.Authentication.Persist;
 using DragonSpark.Compose;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity.Authentication;
+namespace DragonSpark.Application.AspNet.Security.Identity.Authentication;
 
 sealed class RefreshAuthentication<T> : IRefreshAuthentication<T> where T : IdentityUser
 {

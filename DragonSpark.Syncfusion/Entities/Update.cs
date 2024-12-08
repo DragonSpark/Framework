@@ -1,8 +1,8 @@
-﻿using DragonSpark.Application.Entities;
+﻿using DragonSpark.Application.AspNet.Entities;
 
 namespace DragonSpark.SyncfusionRendering.Entities;
 
-public sealed class Update<T> : DragonSpark.Application.Entities.Editing.Update<T> where T : class
+public sealed class Update<T> : Application.AspNet.Entities.Editing.Update<T> where T : class
 {
 	public Update(IEnlistedScopes scopes) : base(scopes) {}
 }

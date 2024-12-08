@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.Components;
 
-namespace DragonSpark.Application.Navigation;
+namespace DragonSpark.Application.AspNet.Navigation;
 
 public sealed class CurrentRootPath : IResult<string>
 {

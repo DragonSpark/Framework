@@ -3,7 +3,7 @@ using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Text;
 
-namespace DragonSpark.Application.Navigation.Security;
+namespace DragonSpark.Application.AspNet.Navigation.Security;
 
 public class ExternalLogin : IAlteration<string>
 {

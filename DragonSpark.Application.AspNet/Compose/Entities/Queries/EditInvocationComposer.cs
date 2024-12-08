@@ -1,12 +1,12 @@
-﻿using DragonSpark.Application.Entities.Editing;
-using DragonSpark.Application.Entities.Queries.Compiled;
-using DragonSpark.Application.Entities.Queries.Compiled.Evaluation;
+﻿using DragonSpark.Application.AspNet.Entities.Editing;
+using DragonSpark.Application.AspNet.Entities.Queries.Compiled;
+using DragonSpark.Application.AspNet.Entities.Queries.Compiled.Evaluation;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Model.Sequences.Memory;
 using System;
 using System.Collections.Generic;
 
-namespace DragonSpark.Application.Compose.Entities.Queries;
+namespace DragonSpark.Application.AspNet.Compose.Entities.Queries;
 
 public sealed class EditInvocationComposer<TIn, T>
 {

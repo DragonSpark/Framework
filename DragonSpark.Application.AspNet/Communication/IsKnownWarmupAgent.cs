@@ -2,7 +2,7 @@
 using DragonSpark.Model.Sequences;
 using Microsoft.AspNetCore.Http;
 
-namespace DragonSpark.Application.Communication;
+namespace DragonSpark.Application.AspNet.Communication;
 
 public sealed class IsKnownWarmupAgent : ICondition<IHeaderDictionary>
 {

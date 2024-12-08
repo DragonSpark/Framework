@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Queries.Runtime.Shape;
+namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Shape;
 
 public class AppendedBody<T> : IBody<T>
 {

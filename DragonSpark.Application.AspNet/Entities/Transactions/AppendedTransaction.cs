@@ -2,7 +2,7 @@
 using DragonSpark.Model;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Transactions;
+namespace DragonSpark.Application.AspNet.Entities.Transactions;
 
 public class AppendedTransaction : ITransaction
 {

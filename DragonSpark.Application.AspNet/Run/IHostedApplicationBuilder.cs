@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Hosting;
 
-namespace DragonSpark.Application.Run;
+namespace DragonSpark.Application.AspNet.Run;
 
 public interface IHostedApplicationBuilder : IHostApplicationBuilder
 {

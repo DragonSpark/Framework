@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Polly;
 using Policy = Polly.Policy;
 
-namespace DragonSpark.Application.Entities.Diagnostics;
+namespace DragonSpark.Application.AspNet.Entities.Diagnostics;
 
 sealed class RapidReloadPolicy : Deferred<IAsyncPolicy>
 {

@@ -12,7 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Reflection;
 
-namespace DragonSpark.Application.Compose;
+namespace DragonSpark.Application.AspNet.Compose;
 
 public sealed class ApplicationProfileContext
 	: ISelect<ICommand<IWebHostBuilder>, ApplicationProfileContext>,

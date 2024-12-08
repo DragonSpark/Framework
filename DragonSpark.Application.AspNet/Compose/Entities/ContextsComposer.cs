@@ -1,11 +1,10 @@
-﻿
-using DragonSpark.Application.Compose.Entities.Queries;
-using DragonSpark.Application.Entities;
-using DragonSpark.Application.Entities.Queries.Composition;
+﻿using DragonSpark.Application.AspNet.Compose.Entities.Queries;
+using DragonSpark.Application.AspNet.Entities;
+using DragonSpark.Application.AspNet.Entities.Queries.Composition;
 using DragonSpark.Model;
 using Microsoft.EntityFrameworkCore;
 
-namespace DragonSpark.Application.Compose.Entities;
+namespace DragonSpark.Application.AspNet.Compose.Entities;
 
 public sealed class ContextsComposer<T> where T : DbContext
 {

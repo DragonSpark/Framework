@@ -4,7 +4,7 @@ using DragonSpark.Model;
 using DragonSpark.Model.Results;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Transactions;
+namespace DragonSpark.Application.AspNet.Entities.Transactions;
 
 public sealed class AmbientAwareTransaction : ITransaction
 {

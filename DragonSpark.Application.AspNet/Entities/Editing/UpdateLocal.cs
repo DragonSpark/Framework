@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Application.Entities.Editing;
+﻿namespace DragonSpark.Application.AspNet.Entities.Editing;
 
 public sealed class UpdateLocal<T> : IModify<T> where T : class
 {

@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Compose;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity.Authentication.Persist;
+namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.Persist;
 
 sealed class PersistSignInWithMetadata<T> : IPersistSignInWithMetadata<T> where T : IdentityUser
 {

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-namespace DragonSpark.Application.Compose.Entities.Queries;
+namespace DragonSpark.Application.AspNet.Compose.Entities.Queries;
 
 public sealed class TrackingComposer<TIn, T> where T : class
 {

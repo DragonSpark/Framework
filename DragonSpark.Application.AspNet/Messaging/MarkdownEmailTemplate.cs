@@ -5,7 +5,7 @@ using SmartFormat;
 using System.IO;
 using System.Text;
 
-namespace DragonSpark.Application.Messaging;
+namespace DragonSpark.Application.AspNet.Messaging;
 
 public class MarkdownEmailTemplate<T> : IFormatter<T> where T : notnull
 {

@@ -3,7 +3,7 @@ using DragonSpark.Diagnostics;
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace DragonSpark.Application.Entities.Diagnostics;
+namespace DragonSpark.Application.AspNet.Entities.Diagnostics;
 
 sealed class RapidReloadPolicyBuilder : RetryPolicy
 {

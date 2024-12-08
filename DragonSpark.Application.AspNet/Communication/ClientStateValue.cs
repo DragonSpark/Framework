@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Application.Communication;
+﻿namespace DragonSpark.Application.AspNet.Communication;
 
 sealed class ClientStateValue : IClientStateValue
 {

@@ -2,7 +2,7 @@
 using DragonSpark.Runtime;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity;
+namespace DragonSpark.Application.AspNet.Security.Identity;
 
 sealed class MarkModified<T> : IMarkModified<T> where T : IdentityUser
 {

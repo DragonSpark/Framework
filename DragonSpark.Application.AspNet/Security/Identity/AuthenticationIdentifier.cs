@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model.Selection;
 using System.Security.Claims;
 
-namespace DragonSpark.Application.Security.Identity;
+namespace DragonSpark.Application.AspNet.Security.Identity;
 
 sealed class AuthenticationIdentifier : ISelect<ClaimsPrincipal, string?>
 {

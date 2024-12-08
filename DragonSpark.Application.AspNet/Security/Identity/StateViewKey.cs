@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Application.Compose.Store;
 
-namespace DragonSpark.Application.Security.Identity;
+namespace DragonSpark.Application.AspNet.Security.Identity;
 
 sealed class StateViewKey : Key<uint>
 {

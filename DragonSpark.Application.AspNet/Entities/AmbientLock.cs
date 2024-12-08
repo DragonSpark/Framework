@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Runtime.Execution;
 using System;
 
-namespace DragonSpark.Application.Entities;
+namespace DragonSpark.Application.AspNet.Entities;
 
 sealed class AmbientLock : Logical<IDisposable?>
 {

@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Application.Compose.Store;
 using DragonSpark.Compose;
 
-namespace DragonSpark.Application.Entities.Queries.Runtime.Pagination.Memory;
+namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination.Memory;
 
 public sealed class PageKey<T> : Key<PageInput>
 {

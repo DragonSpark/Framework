@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace DragonSpark.Application.Components.Validation;
+namespace DragonSpark.Application.AspNet.Components.Validation;
 
 public sealed class ObjectGraphValidator
 {

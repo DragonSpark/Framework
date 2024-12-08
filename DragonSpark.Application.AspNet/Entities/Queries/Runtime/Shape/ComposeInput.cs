@@ -1,6 +1,6 @@
-﻿using DragonSpark.Application.Entities.Queries.Runtime.Pagination;
+﻿using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
 using System.Linq;
 
-namespace DragonSpark.Application.Entities.Queries.Runtime.Shape;
+namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Shape;
 
 public readonly record struct ComposeInput<T>(PageInput Input, IQueryable<T> Current);

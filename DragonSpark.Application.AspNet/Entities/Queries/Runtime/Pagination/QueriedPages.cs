@@ -1,9 +1,9 @@
-﻿using DragonSpark.Application.Entities.Queries.Runtime.Materialize;
-using DragonSpark.Application.Entities.Queries.Runtime.Shape;
+﻿using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Materialize;
+using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Shape;
 using DragonSpark.Compose;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Queries.Runtime.Pagination;
+namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
 
 sealed class QueriedPages<T> : IPages<T>
 {

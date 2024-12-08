@@ -3,7 +3,7 @@ using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Selection;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Transactions;
+namespace DragonSpark.Application.AspNet.Entities.Transactions;
 
 public class Transacting<T> : IOperation<T>
 {

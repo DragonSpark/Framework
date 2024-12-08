@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace DragonSpark.Application.Environment;
 
-public sealed class StorageConfiguration : Entities.Configure.StorageConfiguration
+public sealed class StorageConfiguration : AspNet.Entities.Configure.StorageConfiguration
 {
 	[UsedImplicitly]
 	public static StorageConfiguration Default { get; } = new();

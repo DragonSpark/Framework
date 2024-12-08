@@ -1,5 +1,5 @@
 ﻿using AspNet.Security.OAuth.Reddit;
-using DragonSpark.Application.Security.Identity.Claims.Actions;
+using DragonSpark.Application.AspNet.Security.Identity.Claims.Actions;
 using DragonSpark.Composition;
 using DragonSpark.Identity.Reddit.Claims;
 using DragonSpark.Model.Commands;

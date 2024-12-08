@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq.Expressions;
 
-namespace DragonSpark.Application.Entities.Queries.Composition;
+namespace DragonSpark.Application.AspNet.Entities.Queries.Composition;
 
 public class Instance<T> : Instance<None, T>, IInstance<T>
 {

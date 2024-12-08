@@ -1,6 +1,6 @@
-﻿@using DragonSpark.Application.Security.Identity.Authentication
-
-@typeparam T where T : DragonSpark.Application.Security.Identity.IdentityUser
+﻿@using DragonSpark.Application.AspNet.Security.Identity
+@using DragonSpark.Application.AspNet.Security.Identity.Authentication
+@typeparam T where T : IdentityUser
 <DragonSpark.Presentation.Components.Security.CascadingAuthenticationState>
 	<DragonSpark.Presentation.Components.Security.AuthenticationStateDisplay T="T">
 		<CascadingValue TValue="AuthenticationState<T>" Value="@context">

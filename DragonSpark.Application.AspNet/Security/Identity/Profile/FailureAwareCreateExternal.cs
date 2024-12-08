@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 using NetFabric.Hyperlinq;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity.Profile;
+namespace DragonSpark.Application.AspNet.Security.Identity.Profile;
 
 sealed class FailureAwareCreateExternal<T> : ICreateExternal<T> where T : IdentityUser
 {

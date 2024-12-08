@@ -1,6 +1,6 @@
-﻿using DragonSpark.Application.Entities.Queries.Composition;
+﻿using DragonSpark.Application.AspNet.Entities.Queries.Composition;
 
-namespace DragonSpark.Application.Entities.Configuration;
+namespace DragonSpark.Application.AspNet.Entities.Configuration;
 
 sealed class SelectSetting : StartWhere<string, Setting>
 {

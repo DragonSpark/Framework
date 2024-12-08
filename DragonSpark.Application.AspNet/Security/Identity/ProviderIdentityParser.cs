@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Text;
 using System.Linq;
 
-namespace DragonSpark.Application.Security.Identity;
+namespace DragonSpark.Application.AspNet.Security.Identity;
 
 sealed class ProviderIdentityParser : IParser<ProviderIdentity>
 {

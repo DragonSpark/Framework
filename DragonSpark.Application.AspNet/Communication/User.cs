@@ -1,11 +1,11 @@
-﻿using DragonSpark.Application.Security.Identity.Bearer;
+﻿using DragonSpark.Application.AspNet.Security.Identity.Bearer;
 using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using System;
 using System.Security.Claims;
 
-namespace DragonSpark.Application.Communication;
+namespace DragonSpark.Application.AspNet.Communication;
 
 public abstract class User<T> : ISelect<ClaimsPrincipal, T>
 {

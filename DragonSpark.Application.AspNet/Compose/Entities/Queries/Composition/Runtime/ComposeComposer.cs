@@ -1,8 +1,8 @@
-﻿using DragonSpark.Application.Entities.Queries.Runtime.Materialize;
-using DragonSpark.Application.Entities.Queries.Runtime.Shape;
+﻿using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Materialize;
+using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Shape;
 using DragonSpark.Model.Results;
 
-namespace DragonSpark.Application.Compose.Entities.Queries.Composition.Runtime;
+namespace DragonSpark.Application.AspNet.Compose.Entities.Queries.Composition.Runtime;
 
 public sealed class ComposeComposer<T> : IResult<ICompose<T>>
 {

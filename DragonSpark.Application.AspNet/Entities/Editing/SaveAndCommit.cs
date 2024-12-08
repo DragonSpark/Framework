@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Compose;
 
-namespace DragonSpark.Application.Entities.Editing;
+namespace DragonSpark.Application.AspNet.Entities.Editing;
 
 public sealed class SaveAndCommit<T> : Update<T> where T : class
 {

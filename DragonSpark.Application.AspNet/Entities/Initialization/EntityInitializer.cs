@@ -3,7 +3,7 @@ using DragonSpark.Model.Sequences;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Initialization;
+namespace DragonSpark.Application.AspNet.Entities.Initialization;
 
 public class EntityInitializer<T> : IInitializer where T : class
 {

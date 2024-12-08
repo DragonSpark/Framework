@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 
-namespace DragonSpark.Application.Run;
+namespace DragonSpark.Application.AspNet.Run;
 
 public interface IApplication : IHost, IApplicationBuilder, IEndpointRouteBuilder, IAsyncDisposable
 {

@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Model.Operations.Selection;
 
-namespace DragonSpark.Application.Entities.Editing;
+namespace DragonSpark.Application.AspNet.Entities.Editing;
 
 public interface IEdit<T> : IEdit<T, T>;
 

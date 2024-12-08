@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Application.Entities.Editing;
+﻿namespace DragonSpark.Application.AspNet.Entities.Editing;
 
 public class Save<T> : Update<T> where T : class
 {

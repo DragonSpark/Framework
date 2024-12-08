@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Application.Navigation.Security;
+﻿namespace DragonSpark.Application.AspNet.Navigation.Security;
 
 public sealed class ExternalLoginPath : DragonSpark.Text.Text
 {

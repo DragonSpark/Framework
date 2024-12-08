@@ -1,10 +1,10 @@
-﻿using DragonSpark.Application.Entities.Configure;
+﻿using DragonSpark.Application.AspNet.Entities.Configure;
 using DragonSpark.Model.Results;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace DragonSpark.Application.Compose.Entities;
+namespace DragonSpark.Application.AspNet.Compose.Entities;
 
 public sealed class StorageConfigurationBuilder : IResult<IStorageConfiguration>
 {

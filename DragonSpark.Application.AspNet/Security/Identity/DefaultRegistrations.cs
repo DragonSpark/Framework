@@ -3,7 +3,7 @@ using DragonSpark.Model.Commands;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Application.Security.Identity;
+namespace DragonSpark.Application.AspNet.Security.Identity;
 
 sealed class DefaultRegistrations<TContext, T> : ICommand<IServiceCollection>
 	where T : IdentityUser where TContext : DbContext

@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Queries.Runtime.Pagination;
+namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
 
 public sealed class Pages<T> : Selecting<PageInput, Page<T>>, IPages<T>
 {

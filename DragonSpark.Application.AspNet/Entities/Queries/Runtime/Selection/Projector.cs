@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace DragonSpark.Application.Entities.Queries.Runtime.Selection;
+namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Selection;
 
 public class Projector<TIn, TOut> : Selector<IQueryable<TIn>, IQueryable<TOut>>
 {

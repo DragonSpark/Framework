@@ -8,7 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Initialization;
+namespace DragonSpark.Application.AspNet.Entities.Initialization;
 
 public sealed class StorageInitializer<T> : IHostInitializer where T : DbContext
 {

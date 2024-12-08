@@ -1,6 +1,6 @@
 ﻿using JetBrains.Annotations;
 
-namespace DragonSpark.Application.Security.Identity.Claims.Policy;
+namespace DragonSpark.Application.AspNet.Security.Identity.Claims.Policy;
 
 [UsedImplicitly]
 public class ClaimsPolicy : AddPolicyConfiguration

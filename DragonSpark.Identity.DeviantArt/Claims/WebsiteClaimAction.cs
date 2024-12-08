@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Security.Identity.Claims.Actions;
+﻿using DragonSpark.Application.AspNet.Security.Identity.Claims.Actions;
 using JetBrains.Annotations;
 
 namespace DragonSpark.Identity.DeviantArt.Claims;

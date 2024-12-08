@@ -1,10 +1,10 @@
-﻿using DragonSpark.Application.Security.Identity.Claims.Compile;
+﻿using DragonSpark.Application.AspNet.Security.Identity.Claims.Compile;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations.Allocated;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity.Authentication.Persist;
+namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.Persist;
 
 sealed class RefreshPrincipal : IAllocated<SecurityStampRefreshingPrincipalContext>
 {

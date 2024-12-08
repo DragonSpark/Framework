@@ -5,7 +5,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Configuration;
+namespace DragonSpark.Application.AspNet.Entities.Configuration;
 
 sealed class ExistAwareSettingAccessor : ISettingAccessor
 {

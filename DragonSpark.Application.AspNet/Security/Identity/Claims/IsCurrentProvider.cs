@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Conditions;
 
-namespace DragonSpark.Application.Security.Identity.Claims;
+namespace DragonSpark.Application.AspNet.Security.Identity.Claims;
 
 public sealed class IsCurrentProvider : Equaling<ProviderIdentity>
 {

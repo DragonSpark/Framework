@@ -3,7 +3,7 @@ using DragonSpark.Model.Selection;
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Messaging;
+namespace DragonSpark.Application.AspNet.Messaging;
 
 public class MessageTemplate<T> : IMessageTemplate<T>
 {

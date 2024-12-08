@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Model.Operations;
 using Microsoft.EntityFrameworkCore;
 
-namespace DragonSpark.Application.Entities.Initialization;
+namespace DragonSpark.Application.AspNet.Entities.Initialization;
 
 public interface IInitialize : IOperation<DbContext>;

@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Security.Identity.Authentication;
+﻿using DragonSpark.Application.AspNet.Security.Identity.Authentication;
 using Microsoft.AspNetCore.Authentication.Facebook;
 
 namespace DragonSpark.Identity.Facebook;

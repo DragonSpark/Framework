@@ -1,8 +1,9 @@
-﻿using DragonSpark.Compose;
+﻿using DragonSpark.Application.Components.Validation;
+using DragonSpark.Compose;
 using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace DragonSpark.Application.Components.Validation;
+namespace DragonSpark.Application.AspNet.Components.Validation;
 
 public sealed class ValidationContexts : IValidationContexts
 {

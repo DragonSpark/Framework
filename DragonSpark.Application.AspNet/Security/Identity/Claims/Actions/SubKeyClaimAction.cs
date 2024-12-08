@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth.Claims;
 
-namespace DragonSpark.Application.Security.Identity.Claims.Actions;
+namespace DragonSpark.Application.AspNet.Security.Identity.Claims.Actions;
 
 public class SubKeyClaimAction : IClaimAction
 {

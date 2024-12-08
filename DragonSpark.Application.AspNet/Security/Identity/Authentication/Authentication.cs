@@ -1,10 +1,10 @@
-﻿using DragonSpark.Application.Security.Identity.Profile;
+﻿using DragonSpark.Application.AspNet.Security.Identity.Profile;
 using DragonSpark.Compose;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity.Authentication;
+namespace DragonSpark.Application.AspNet.Security.Identity.Authentication;
 
 sealed class Authentication : IAuthentication
 {

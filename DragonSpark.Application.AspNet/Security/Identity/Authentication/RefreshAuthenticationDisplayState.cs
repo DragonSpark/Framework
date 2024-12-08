@@ -1,10 +1,10 @@
-﻿using DragonSpark.Application.Security.Identity.Model;
+﻿using DragonSpark.Application.AspNet.Security.Identity.Model;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations.Selection.Conditions;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity.Authentication;
+namespace DragonSpark.Application.AspNet.Security.Identity.Authentication;
 
 public sealed class RefreshAuthenticationDisplayState<T> : IDepending<ClaimsPrincipal> where T : IdentityUser
 {

@@ -1,4 +1,5 @@
-﻿using DragonSpark.Application.Compose;
+﻿using DragonSpark.Application.AspNet.Compose;
+using DragonSpark.Application.Compose;
 using DragonSpark.Model.Selection.Alterations;
 
 namespace DragonSpark.SyncfusionRendering;

@@ -4,7 +4,7 @@ using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Selection;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Editing;
+namespace DragonSpark.Application.AspNet.Entities.Editing;
 
 public class Removal<TIn, T> : IOperation<TIn> where T : class
 {

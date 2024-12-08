@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Compose;
+﻿using DragonSpark.Application.AspNet.Compose;
 using DragonSpark.Compose;
 using JetBrains.Annotations;
 

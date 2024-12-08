@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Text;
 using Microsoft.AspNetCore.Authentication;
 
-namespace DragonSpark.Application.Security.Identity;
+namespace DragonSpark.Application.AspNet.Security.Identity;
 
 public sealed class AccessToken : IFormatter<AuthenticationProperties>
 {

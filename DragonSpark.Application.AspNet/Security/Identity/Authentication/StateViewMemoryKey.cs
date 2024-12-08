@@ -4,7 +4,7 @@ using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Text;
 using System.Security.Claims;
 
-namespace DragonSpark.Application.Security.Identity.Authentication;
+namespace DragonSpark.Application.AspNet.Security.Identity.Authentication;
 
 sealed class StateViewMemoryKey : IFormatter<ClaimsPrincipal>
 {

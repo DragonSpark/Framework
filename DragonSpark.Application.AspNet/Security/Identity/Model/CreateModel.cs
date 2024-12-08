@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Model.Selection;
 
-namespace DragonSpark.Application.Security.Identity.Model;
+namespace DragonSpark.Application.AspNet.Security.Identity.Model;
 
 public sealed class CreateModel : ISelect<CreateModelInput, CreateModelView>
 {

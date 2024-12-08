@@ -1,6 +1,6 @@
-﻿using DragonSpark.Application.Entities.Editing;
+﻿using DragonSpark.Application.AspNet.Entities.Editing;
 
-namespace DragonSpark.Application.Entities.Configuration;
+namespace DragonSpark.Application.AspNet.Entities.Configuration;
 
 sealed class EditSetting : EditOrDefault<string, Setting>
 {

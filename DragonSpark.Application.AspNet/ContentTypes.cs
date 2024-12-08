@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model.Selection.Alterations;
 using Microsoft.AspNetCore.StaticFiles;
 
-namespace DragonSpark.Application;
+namespace DragonSpark.Application.AspNet;
 
 public sealed class ContentTypes : IAlteration<string>
 {

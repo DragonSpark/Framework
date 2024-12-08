@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity.Model.Authenticators;
+namespace DragonSpark.Application.AspNet.Security.Identity.Model.Authenticators;
 
 sealed class AddLogin<T> : IAddLogin<T> where T : IdentityUser
 {

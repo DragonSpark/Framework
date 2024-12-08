@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Compose;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Editing;
+namespace DragonSpark.Application.AspNet.Entities.Editing;
 
 public class EditExisting<T> : IEdit<T> where T : class
 {

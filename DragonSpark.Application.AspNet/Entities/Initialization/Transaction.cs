@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Entities.Transactions;
+﻿using DragonSpark.Application.AspNet.Entities.Transactions;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using Microsoft.EntityFrameworkCore;
@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Initialization;
+namespace DragonSpark.Application.AspNet.Entities.Initialization;
 
 sealed class Transaction<T> : IOperation where T : DbContext
 {

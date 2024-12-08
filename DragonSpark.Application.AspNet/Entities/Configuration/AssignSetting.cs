@@ -3,7 +3,7 @@ using DragonSpark.Model;
 using DragonSpark.Model.Operations;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Configuration;
+namespace DragonSpark.Application.AspNet.Entities.Configuration;
 
 sealed class AssignSetting : IOperation<Pair<string, string?>>
 {

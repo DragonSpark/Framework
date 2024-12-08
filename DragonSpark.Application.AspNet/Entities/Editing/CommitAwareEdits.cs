@@ -3,7 +3,7 @@ using DragonSpark.Model.Operations.Selection;
 using JetBrains.Annotations;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Editing;
+namespace DragonSpark.Application.AspNet.Entities.Editing;
 
 [UsedImplicitly]
 public class CommitAwareEdits<T> : CommitAwareEdits<T, T>

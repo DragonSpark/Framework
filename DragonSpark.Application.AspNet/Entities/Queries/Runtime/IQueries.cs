@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Model.Operations.Results;
 
-namespace DragonSpark.Application.Entities.Queries.Runtime;
+namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime;
 
 public interface IQueries<T> : IResulting<Query<T>>;

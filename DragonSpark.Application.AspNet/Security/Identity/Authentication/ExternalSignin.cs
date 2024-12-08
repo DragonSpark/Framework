@@ -1,9 +1,9 @@
-﻿using DragonSpark.Application.Security.Identity.Profile;
+﻿using DragonSpark.Application.AspNet.Security.Identity.Profile;
 using DragonSpark.Compose;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity.Authentication;
+namespace DragonSpark.Application.AspNet.Security.Identity.Authentication;
 
 sealed class ExternalSignin<T> : IExternalSignin where T : IdentityUser
 {

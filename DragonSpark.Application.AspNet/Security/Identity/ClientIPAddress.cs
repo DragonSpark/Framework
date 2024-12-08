@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 
-namespace DragonSpark.Application.Security.Identity;
+namespace DragonSpark.Application.AspNet.Security.Identity;
 
 public sealed class ClientIPAddress : IResult<System.Net.IPAddress>
 {

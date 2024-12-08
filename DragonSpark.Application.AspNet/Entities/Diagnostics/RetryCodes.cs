@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model.Selection.Conditions;
 using System.Linq;
 
-namespace DragonSpark.Application.Entities.Diagnostics;
+namespace DragonSpark.Application.AspNet.Entities.Diagnostics;
 
 sealed class RetryCodes : Condition<int>
 {

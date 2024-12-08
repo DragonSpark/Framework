@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Application.Security.Identity.Claims.Policy;
+﻿namespace DragonSpark.Application.AspNet.Security.Identity.Claims.Policy;
 
 public class ClaimPolicy : AddPolicyConfiguration
 {

@@ -1,4 +1,4 @@
-namespace DragonSpark.Application.Security.Identity.State;
+namespace DragonSpark.Application.AspNet.Security.Identity.State;
 
 public abstract class SystemServerSettings(string name, string domain)
 {

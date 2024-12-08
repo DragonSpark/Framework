@@ -1,11 +1,12 @@
-﻿using DragonSpark.Application.Compose;
-using DragonSpark.Application.Compose.Entities;
-using DragonSpark.Application.Compose.Entities.Queries;
-using DragonSpark.Application.Compose.Entities.Queries.Composition.Runtime;
+﻿using DragonSpark.Application.AspNet.Compose;
+using DragonSpark.Application.AspNet.Compose.Entities;
+using DragonSpark.Application.AspNet.Compose.Entities.Queries;
+using DragonSpark.Application.AspNet.Compose.Entities.Queries.Composition.Runtime;
+using DragonSpark.Application.AspNet.Entities;
+using DragonSpark.Application.AspNet.Entities.Configure;
+using DragonSpark.Application.AspNet.Entities.Queries.Composition;
+using DragonSpark.Application.AspNet.Security.Data;
 using DragonSpark.Application.Diagnostics;
-using DragonSpark.Application.Entities;
-using DragonSpark.Application.Entities.Configure;
-using DragonSpark.Application.Entities.Queries.Composition;
 using DragonSpark.Compose;
 using DragonSpark.Compose.Model.Operations;
 using DragonSpark.Composition.Compose;
@@ -20,9 +21,9 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
-using IdentityUser = DragonSpark.Application.Security.Identity.IdentityUser;
+using IdentityUser = DragonSpark.Application.AspNet.Security.Identity.IdentityUser;
 
-namespace DragonSpark.Application;
+namespace DragonSpark.Application.AspNet;
 
 // ReSharper disable once MismatchedFileName
 public static partial class Extensions
@@ -87,7 +88,7 @@ public static partial class Extensions
 	/**/
 
 	public static BuildHostContext WithDataSecurity(this BuildHostContext @this)
-		=> @this.Configure(Security.Data.Registrations.Default).Configure(Security.Data.RegistrationsUndo.Default);
+		=> @this.Configure(Application.Security.Data.Registrations.Default).Configure(RegistrationsUndo.Default);
 
 	/*public static BuildHostContext WithInitializationLogging<T>(this BuildHostContext @this)
 		=> new(new InitializationAwareHostBuilder<T>(@this));*/

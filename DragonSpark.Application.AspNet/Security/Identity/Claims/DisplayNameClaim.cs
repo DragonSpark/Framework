@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace DragonSpark.Application.Security.Identity.Claims;
+namespace DragonSpark.Application.AspNet.Security.Identity.Claims;
 
 sealed class DisplayNameClaim : IDisplayNameClaim
 {

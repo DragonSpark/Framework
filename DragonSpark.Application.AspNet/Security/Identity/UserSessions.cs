@@ -3,7 +3,7 @@ using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Application.Security.Identity;
+namespace DragonSpark.Application.AspNet.Security.Identity;
 
 public class UserSessions<T> : IResult<UsersSession<T>> where T : class
 {

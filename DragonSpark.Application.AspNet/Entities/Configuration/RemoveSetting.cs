@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Compose;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Entities.Configuration;
+namespace DragonSpark.Application.AspNet.Entities.Configuration;
 
 sealed class RemoveSetting : IRemove
 {

@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Application.Compose;
+﻿namespace DragonSpark.Application.AspNet.Compose;
 
 public sealed class DefaultApplicationProfile : ApplicationProfile
 {

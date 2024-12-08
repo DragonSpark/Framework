@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Run;
+﻿using DragonSpark.Application.AspNet.Run;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

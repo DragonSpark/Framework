@@ -5,7 +5,7 @@ using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity.Model.Authenticators;
+namespace DragonSpark.Application.AspNet.Security.Identity.Model.Authenticators;
 
 sealed class ExceptionAwareAddExternalLogin : IAddExternalSignin
 {

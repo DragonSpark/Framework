@@ -4,7 +4,7 @@ using DragonSpark.Text;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 
-namespace DragonSpark.Application.Security.Identity.Bearer;
+namespace DragonSpark.Application.AspNet.Security.Identity.Bearer;
 
 public sealed class TokenValidation : Instance<TokenValidationParameters>
 {

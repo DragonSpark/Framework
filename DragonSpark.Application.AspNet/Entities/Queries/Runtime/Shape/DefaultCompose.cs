@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Application.Entities.Queries.Runtime.Shape;
+﻿namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Shape;
 
 public sealed class DefaultCompose<T> : Compose<T>
 {

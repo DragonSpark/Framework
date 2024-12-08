@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Security.Identity;
+﻿using DragonSpark.Application.AspNet.Security.Identity;
 
 namespace DragonSpark.Presentation.Components.Content.Rendering;
 

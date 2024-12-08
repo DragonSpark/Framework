@@ -2,7 +2,7 @@
 using DragonSpark.Model.Operations.Selection;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity.Authentication.State;
+namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.State;
 
 sealed class Stamp<T> : ISelecting<T, string?> where T : IdentityUser
 {

@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Model.Sequences;
 
-namespace DragonSpark.Application.Communication;
+namespace DragonSpark.Application.AspNet.Communication;
 
 sealed class KnownUserAgents : Instances<string>
 {

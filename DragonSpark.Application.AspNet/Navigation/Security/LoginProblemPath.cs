@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Application.Model.Text;
 
-namespace DragonSpark.Application.Navigation.Security;
+namespace DragonSpark.Application.AspNet.Navigation.Security;
 
 public sealed class LoginProblemPath : Formatted<string>
 {

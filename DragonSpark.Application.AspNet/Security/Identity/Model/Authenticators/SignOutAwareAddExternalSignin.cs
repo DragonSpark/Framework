@@ -1,10 +1,10 @@
-﻿using DragonSpark.Application.Security.Identity.Authentication;
+﻿using DragonSpark.Application.AspNet.Security.Identity.Authentication;
 using DragonSpark.Compose;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity.Model.Authenticators;
+namespace DragonSpark.Application.AspNet.Security.Identity.Model.Authenticators;
 
 sealed class SignOutAwareAddExternalSignin : IAddExternalSignin
 {

@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Compose;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Application.Entities.Initialization;
+namespace DragonSpark.Application.AspNet.Entities.Initialization;
 
 public static class Extensions
 {

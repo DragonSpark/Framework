@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Model.Selection;
 
-namespace DragonSpark.Application.Security.Identity;
+namespace DragonSpark.Application.AspNet.Security.Identity;
 
 public sealed class IdentityParser : ISelect<string, ProviderIdentity>
 {

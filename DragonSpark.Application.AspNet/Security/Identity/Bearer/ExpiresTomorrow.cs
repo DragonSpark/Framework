@@ -2,7 +2,7 @@
 using DragonSpark.Model.Results;
 using System;
 
-namespace DragonSpark.Application.Security.Identity.Bearer;
+namespace DragonSpark.Application.AspNet.Security.Identity.Bearer;
 
 sealed class ExpiresTomorrow : Result<DateTime>
 {

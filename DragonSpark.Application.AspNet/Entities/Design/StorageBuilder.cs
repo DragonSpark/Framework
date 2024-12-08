@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using System;
 
-namespace DragonSpark.Application.Entities.Design;
+namespace DragonSpark.Application.AspNet.Entities.Design;
 
 public class StorageBuilder<T> : IResult<T>, IDesignTimeDbContextFactory<T> where T : DbContext
 {

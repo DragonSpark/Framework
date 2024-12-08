@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Application.Model;
 using Microsoft.Extensions.Caching.Memory;
 
-namespace DragonSpark.Application.Security.Identity.Model;
+namespace DragonSpark.Application.AspNet.Security.Identity.Model;
 
 sealed class ClearAuthenticationState : RemoveFromMemory<uint>, IClearAuthenticationState
 {

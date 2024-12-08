@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authentication.OAuth.Claims;
 using System;
 using System.Text.Json;
 
-namespace DragonSpark.Application.Security.Identity.Claims.Actions;
+namespace DragonSpark.Application.AspNet.Security.Identity.Claims.Actions;
 
 public class CustomClaimAction : IClaimAction
 {

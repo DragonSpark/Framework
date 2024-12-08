@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Compose;
 
-namespace DragonSpark.Application.Entities.Configure;
+namespace DragonSpark.Application.AspNet.Entities.Configure;
 
 sealed class ConnectionName<T> : Text.Text
 {

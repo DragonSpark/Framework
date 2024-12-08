@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace DragonSpark.Application.Entities.Queries.Compiled;
+namespace DragonSpark.Application.AspNet.Entities.Queries.Compiled;
 
 public readonly record struct Reading<T>(DbContext Context, IDisposable Disposable, IAsyncEnumerable<T> Elements) : IDisposable
 {

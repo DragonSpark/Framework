@@ -4,7 +4,7 @@ using DragonSpark.Model.Selection.Conditions;
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace DragonSpark.Application.Entities.Initialization;
+namespace DragonSpark.Application.AspNet.Entities.Initialization;
 
 public class ModifySchema : IModifySchema
 {

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace DragonSpark.Application.Security.Identity.Profile;
+namespace DragonSpark.Application.AspNet.Security.Identity.Profile;
 
 public sealed class UserEqualityComparer : IEqualityComparer<IdentityUser>
 {

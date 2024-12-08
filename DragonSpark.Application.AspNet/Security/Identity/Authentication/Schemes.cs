@@ -4,7 +4,7 @@ using DragonSpark.Model.Sequences;
 using NetFabric.Hyperlinq;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Security.Identity.Authentication;
+namespace DragonSpark.Application.AspNet.Security.Identity.Authentication;
 
 public class Schemes<T> : IResulting<Array<string>> where T : class
 {

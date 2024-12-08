@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Application.Entities.Queries.Composition;
+﻿namespace DragonSpark.Application.AspNet.Entities.Queries.Composition;
 
 public sealed class Set<T> : Query<T> where T : class
 {

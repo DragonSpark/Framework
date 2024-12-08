@@ -1,7 +1,8 @@
-﻿using DragonSpark.Model.Selection.Alterations;
+﻿using DragonSpark.Application.Security;
+using DragonSpark.Model.Selection.Alterations;
 using System;
 
-namespace DragonSpark.Application.Security.Identity.Profile;
+namespace DragonSpark.Application.AspNet.Security.Identity.Profile;
 
 public sealed class GravatarImagePath : IAlteration<string>
 {
