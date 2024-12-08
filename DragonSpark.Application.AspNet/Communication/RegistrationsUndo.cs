@@ -4,11 +4,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Application.Communication;
 
-sealed class Registrations : ICommand<IServiceCollection>
+sealed class RegistrationsUndo : ICommand<IServiceCollection>
 {
-	public static Registrations Default { get; } = new();
+	public static RegistrationsUndo Default { get; } = new();
 
-	Registrations() {}
+	RegistrationsUndo() {}
 
 	public void Execute(IServiceCollection parameter)
 	{

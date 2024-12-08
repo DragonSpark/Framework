@@ -72,8 +72,8 @@ public static partial class Extensions
 		=> @this.Append(new SelectedAuthorizeConfiguration<T>(policy));*/
 	/**/
 
-	public static BuildHostContext WithDataSecurity(this BuildHostContext @this)
-		=> @this.Configure(Security.Data.Registrations.Default);
+	/*public static BuildHostContext WithDataSecurity(this BuildHostContext @this)
+		=> @this.Configure(Security.Data.Registrations.Default);*/
 
 	public static BuildHostContext WithInitializationLogging<T>(this BuildHostContext @this)
 		=> new(new InitializationAwareHostBuilder<T>(@this));
@@ -148,7 +148,7 @@ public static partial class Extensions
 		=> includes.Aggregate(source, (current, include) => current.Include(include));*/
 
 	/**/
-	public static Compose.OperationResultComposer<_, T> Then<_, T>(this DragonSpark.Compose.Model.Operations.OperationResultComposer<_,T> @this)
+	public static OperationResultComposer<_, T> Then<_, T>(this DragonSpark.Compose.Model.Operations.OperationResultComposer<_,T> @this)
 		=> new(@this.Out());
 
 	/*public static InstanceComposer<TIn, T> Then<TIn, T>(this IInstance<TIn, T> @this) => new(@this);

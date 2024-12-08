@@ -7,7 +7,7 @@ public class ValidatorKey<T> : IValidatorKey<T> where T : class
 {
 	readonly object _key;
 
-	public ValidatorKey(object key) => _key = key;
+	protected ValidatorKey(object key) => _key = key;
 
 	public T? Get(ValidationContext parameter)
 		=> parameter.Items.TryGetValue(_key, out var item) && item is T result ? result : default;

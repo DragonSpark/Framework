@@ -10,5 +10,8 @@ sealed class Configure : IAlteration<BuildHostContext>
 
 	Configure() {}
 
-	public BuildHostContext Get(BuildHostContext parameter) => parameter.ComposeUsing(Entities.Compose.Default);
+	public BuildHostContext Get(BuildHostContext parameter)
+		=> parameter.Configure(DefaultRegistrations.Default)
+		            .Configure(DefaultRegistrationsUndo.Default)
+		            .ComposeUsing(Entities.Compose.Default);
 }

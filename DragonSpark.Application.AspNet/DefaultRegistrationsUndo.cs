@@ -2,18 +2,17 @@
 using DragonSpark.Application.Navigation.Security;
 using DragonSpark.Application.Security;
 using DragonSpark.Application.Security.Identity;
-using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Application;
 
-sealed class DefaultRegistrations : ICommand<IServiceCollection>
+sealed class DefaultRegistrationsUndo : ICommand<IServiceCollection>
 {
-	public static DefaultRegistrations Default { get; } = new();
+	public static DefaultRegistrationsUndo Default { get; } = new(); // TODO
 
-	DefaultRegistrations() {}
+	DefaultRegistrationsUndo() {}
 
 	public void Execute(IServiceCollection parameter)
 	{

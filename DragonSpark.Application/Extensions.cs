@@ -19,9 +19,6 @@ namespace DragonSpark.Application;
 
 partial class Extensions
 {
-	public static BuildHostContext WithFrameworkConfigurations(this BuildHostContext @this)
-		=> Configure.Default.Get(@this);
-
 	public static IHostBuilder WithAmbientConfiguration(this IHostBuilder @this)
 		=> @this.To(Configuration.WithAmbientConfiguration.Default);
 
