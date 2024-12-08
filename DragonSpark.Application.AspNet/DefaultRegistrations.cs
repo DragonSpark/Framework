@@ -2,6 +2,7 @@
 using DragonSpark.Application.AspNet.Navigation.Security;
 using DragonSpark.Application.AspNet.Security;
 using DragonSpark.Application.AspNet.Security.Identity;
+using DragonSpark.Application.AspNet.Security.Identity.Model;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,6 +20,7 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		parameter.Start<CurrentRootPath>()
 		         .And<RedirectLoginPath>()
 		         .And<RefreshCurrentPath>()
+		         .And<SignOutCurrentPath>()
 		         .And<CurrentPath>()
 		         .Scoped()
 		         //
