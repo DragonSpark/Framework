@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Application.Compose.Undo;
+﻿namespace DragonSpark.Application.Compose;
 
 public sealed class DefaultApplicationProfile : ApplicationProfile
 {

@@ -88,7 +88,7 @@ public static partial class Extensions
 	/**/
 
 	public static BuildHostContext WithDataSecurity(this BuildHostContext @this)
-		=> @this.Configure(Application.Security.Data.Registrations.Default).Configure(RegistrationsUndo.Default);
+		=> @this.Configure(Application.Security.Data.Registrations.Default).Configure(Registrations.Default);
 
 	/*public static BuildHostContext WithInitializationLogging<T>(this BuildHostContext @this)
 		=> new(new InitializationAwareHostBuilder<T>(@this));*/

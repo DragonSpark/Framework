@@ -2,7 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
-namespace DragonSpark.Application.Compose.Undo;
+namespace DragonSpark.Application.Compose;
 
 public class ApplicationProfile : Command<IServiceCollection>, IApplicationProfile
 {

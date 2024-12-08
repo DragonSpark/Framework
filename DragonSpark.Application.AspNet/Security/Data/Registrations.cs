@@ -5,11 +5,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Application.AspNet.Security.Data;
 
-sealed class RegistrationsUndo : ICommand<IServiceCollection>
+sealed class Registrations : ICommand<IServiceCollection>
 {
-	public static RegistrationsUndo Default { get; } = new();
+	public static Registrations Default { get; } = new();
 
-	RegistrationsUndo() {}
+	Registrations() {}
 
 	public void Execute(IServiceCollection parameter)
 	{

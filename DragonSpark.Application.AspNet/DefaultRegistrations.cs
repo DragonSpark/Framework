@@ -8,11 +8,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Application.AspNet;
 
-sealed class DefaultRegistrationsUndo : ICommand<IServiceCollection>
+sealed class DefaultRegistrations : ICommand<IServiceCollection>
 {
-	public static DefaultRegistrationsUndo Default { get; } = new();
+	public static DefaultRegistrations Default { get; } = new();
 
-	DefaultRegistrationsUndo() {}
+	DefaultRegistrations() {}
 
 	public void Execute(IServiceCollection parameter)
 	{

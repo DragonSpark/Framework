@@ -5,7 +5,7 @@ using System;
 
 namespace DragonSpark.Application.AspNet.Compose;
 
-public class ApplicationProfile : Application.Compose.Undo.ApplicationProfile, IApplicationProfile
+public class ApplicationProfile : Application.Compose.ApplicationProfile, IApplicationProfile
 {
 	readonly Action<IApplicationBuilder> _application;
 
