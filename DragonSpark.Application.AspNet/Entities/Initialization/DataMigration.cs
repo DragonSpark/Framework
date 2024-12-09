@@ -1,9 +1,15 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Commands;
+using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Allocated;
 using DragonSpark.Model.Results;
+using DragonSpark.Runtime.Execution;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using System;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Initialization;
@@ -13,30 +19,76 @@ namespace DragonSpark.Application.AspNet.Entities.Initialization;
 /// https://github.com/dotnet/efcore/issues/24710#issuecomment-993242982
 /// </summary>
 [UsedImplicitly]
-public abstract class DataMigration<T> : Migration where T : DbContext
+public abstract class DataMigration : Migration
 {
-	readonly IResult<IServiceProvider?> _services;
-	readonly Type                       _initializer;
+	readonly IResult<IDataMigrationRegistry?> _registry;
+	readonly ISeed                            _initializer;
 
-	protected DataMigration(Type initializer) : this(CurrentServices.Default, initializer) {}
+	protected DataMigration(Type initializer)
+		: this(LogicalMigrationRegistry.Default, new Seed(initializer)) {}
 
-	protected DataMigration(IResult<IServiceProvider?> services, Type initializer)
+	protected DataMigration(IResult<IDataMigrationRegistry?> registry, ISeed initializer)
 	{
-		_services    = services;
+		_registry    = registry;
 		_initializer = initializer;
 	}
 
 	protected override void Up(MigrationBuilder migrationBuilder)
 	{
-		var services = _services.Get();
-		if (services is not null)
-		{
-			Task.Run(new Transaction<T>(services, _initializer).Then().Allocate()).GetAwaiter().GetResult();
-		}
+		var registry = _registry.Get();
+		registry?.Execute(_initializer);
 	}
 
-	protected override void Down(MigrationBuilder migrationBuilder)
+	protected override void Down(MigrationBuilder migrationBuilder) {}
+}
+
+sealed class LogicalMigrationRegistry : Logical<IDataMigrationRegistry>
+{
+	public static LogicalMigrationRegistry Default { get; } = new();
+
+	LogicalMigrationRegistry() {}
+}
+
+public interface IDataMigrationRegistry : ICommand<ISeed>, IOperation<DbContext>;
+
+sealed class DataMigrationRegistry : IDataMigrationRegistry
+{
+	readonly IServiceProvider _services;
+	readonly HashSet<ISeed>   _initializers;
+
+	public DataMigrationRegistry(IServiceProvider services) : this(services, new()) {}
+
+	public DataMigrationRegistry(IServiceProvider services, HashSet<ISeed> initializers)
 	{
-		//base.Down(migrationBuilder);
+		_services     = services;
+		_initializers = initializers;
 	}
+
+	public void Execute(ISeed parameter)
+	{
+		_initializers.Add(parameter);
+	}
+
+	public async ValueTask Get(DbContext parameter)
+	{
+		foreach (var initializer in _initializers)
+		{
+			await initializer.Await(new(_services, parameter));
+		}
+	}
+}
+
+public sealed class ApplyMigrationRegistry : IAllocated<DbContext>
+{
+	public static ApplyMigrationRegistry Default { get; } = new();
+
+	ApplyMigrationRegistry() : this(LogicalMigrationRegistry.Default) {}
+
+	readonly IResult<IDataMigrationRegistry?> _registry;
+
+	public ApplyMigrationRegistry(IResult<IDataMigrationRegistry?> registry) => _registry = registry;
+
+	public Task Get(DbContext parameter) => _registry.Get().Verify("Migration registry not found").Allocate(parameter);
+
+	public Task Get(DbContext parameter, bool seeded, CancellationToken _) => Get(parameter);
 }

@@ -15,8 +15,8 @@ sealed class DatabaseTransaction : ITransaction
 
 	public DatabaseTransaction(DbContext context, DatabaseFacade facade)
 	{
-		_context     = context;
-		_facade = facade;
+		_context = context;
+		_facade  = facade;
 	}
 
 	public void Execute(None parameter) {}

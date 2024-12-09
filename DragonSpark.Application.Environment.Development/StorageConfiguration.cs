@@ -12,5 +12,7 @@ public sealed class StorageConfiguration : AspNet.Entities.Configure.StorageConf
 		: base(x => x.AddInterceptors(AzureAdAuthenticationDbConnectionInterceptor.Default)
 		             .EnableSensitiveDataLogging()
 		             .EnableDetailedErrors()
-		             .ConfigureWarnings(y => y.Throw(RelationalEventId.MultipleCollectionIncludeWarning))) {}
+		             .ConfigureWarnings(y => y.Throw(RelationalEventId.MultipleCollectionIncludeWarning)
+		                                      .Ignore(RelationalEventId.PendingModelChangesWarning) // TODO: move to centralized area
+		                               )) {}
 }

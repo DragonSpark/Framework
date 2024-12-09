@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Commands;
+﻿using DragonSpark.Application.AspNet.Entities.Initialization;
+using DragonSpark.Model.Commands;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
@@ -30,6 +31,6 @@ public class UseSqlServer : ICommand<DbContextOptionsBuilder>
 
 	public void Execute(DbContextOptionsBuilder parameter)
 	{
-		parameter.UseSqlServer(_connection, _configuration);
+		parameter.UseSqlServer(_connection, _configuration).UseAsyncSeeding(ApplyMigrationRegistry.Default.Get); // TODO: move to centralized area
 	}
 }

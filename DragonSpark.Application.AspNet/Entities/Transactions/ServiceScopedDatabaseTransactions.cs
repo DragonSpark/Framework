@@ -7,16 +7,15 @@ namespace DragonSpark.Application.AspNet.Entities.Transactions;
 
 public sealed class ServiceScopedDatabaseTransactions : ITransactions
 {
-	readonly IServiceScopedTransactions _boundaries;
+	readonly IServiceScopedTransactions _transactions;
 
-	public ServiceScopedDatabaseTransactions(IServiceScopedTransactions boundaries) => _boundaries = boundaries;
+	public ServiceScopedDatabaseTransactions(IServiceScopedTransactions transactions) => _transactions = transactions;
 
 	public async ValueTask<ITransaction> Get()
 	{
-		var previous = _boundaries.Get();
+		var previous = _transactions.Get();
 		var context  = previous.Provider.GetRequiredService<DbContext>();
 		await context.Database.BeginTransactionAsync().Await();
-		var result = new ServiceScopedDatabaseTransaction(previous, new DatabaseTransaction(context));
-		return result;
+		return new ServiceScopedDatabaseTransaction(previous, new DatabaseTransaction(context));
 	}
 }

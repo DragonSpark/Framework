@@ -12,10 +12,7 @@ public class StorageBuilder<T> : IResult<T>, IDesignTimeDbContextFactory<T> wher
 	readonly Func<DbContextOptions<T>, T>       _create;
 
 	protected StorageBuilder(Action<DbContextOptionsBuilder<T>> configure)
-		: this(configure, Start.A.Selection<DbContextOptions<T>>()
-		                       .AndOf<T>()
-		                       .By.Instantiation.Get()
-		                       .Get) {}
+		: this(configure, Start.A.Selection<DbContextOptions<T>>().AndOf<T>().By.Instantiation.Get().Get) {}
 
 	protected StorageBuilder(Action<DbContextOptionsBuilder<T>> configure, Func<DbContextOptions<T>, T> create)
 	{

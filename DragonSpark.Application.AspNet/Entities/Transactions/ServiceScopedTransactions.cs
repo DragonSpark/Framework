@@ -6,16 +6,16 @@ namespace DragonSpark.Application.AspNet.Entities.Transactions;
 
 sealed class ServiceScopedTransactions : IServiceScopedTransactions
 {
+	readonly IMutable<AsyncServiceScope?> _scope;
 	readonly IScoping                     _scoping;
-	readonly IMutable<AsyncServiceScope?> _store;
 
-	public ServiceScopedTransactions(IScoping scoping) : this(scoping, LogicalScope.Default) {}
+	public ServiceScopedTransactions(IScoping scoping) : this(LogicalScope.Default, scoping) {}
 
-	public ServiceScopedTransactions(IScoping scoping, IMutable<AsyncServiceScope?> store)
+	public ServiceScopedTransactions(IMutable<AsyncServiceScope?> scope, IScoping scoping)
 	{
+		_scope   = scope;
 		_scoping = scoping;
-		_store   = store;
 	}
 
-	public IScopedTransaction Get() => new ServiceScopedTransaction(_store, _scoping.Get());
+	public IScopedTransaction Get() => new ServiceScopedTransaction(_scope, _scoping.Get());
 }
