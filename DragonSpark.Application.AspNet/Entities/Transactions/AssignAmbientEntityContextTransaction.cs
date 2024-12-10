@@ -1,8 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+using JetBrains.Annotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Application.AspNet.Entities.Transactions;
 
-sealed class AssignAmbientEntityContextTransaction : StoreTransaction<DbContext>
-{
-	public AssignAmbientEntityContextTransaction(DbContext context) : base(context, LogicalContext.Default) {}
-}
+[MustDisposeResource]
+sealed class AssignAmbientEntityContextTransaction(DbContext context)
+	: StoreTransaction<DbContext>(context, LogicalContext.Default);

@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<ItemGroup>
 	  <Compile Remove="Components\Validation\Expressions\**" />
@@ -76,9 +76,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\DragonSpark.Application\DragonSpark.Application.csproj" />
-		<ProjectReference Include="..\DragonSpark\DragonSpark.csproj" />
-		<ProjectReference Include="..\DragonSpark.Composition\DragonSpark.Composition.csproj" />
-		<ProjectReference Include="..\DragonSpark.Diagnostics\DragonSpark.Diagnostics.csproj" />
 	</ItemGroup>
 
 </Project>

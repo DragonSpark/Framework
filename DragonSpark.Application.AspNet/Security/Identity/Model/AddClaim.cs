@@ -1,10 +1,10 @@
-﻿using DragonSpark.Application.AspNet.Entities.Editing;
-using DragonSpark.Compose;
-using DragonSpark.Model.Operations.Selection;
-using Microsoft.AspNetCore.Identity;
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using DragonSpark.Application.AspNet.Entities.Editing;
+using DragonSpark.Compose;
+using DragonSpark.Model.Operations.Selection;
+using Microsoft.AspNetCore.Identity;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Model;
 
@@ -26,7 +26,7 @@ public class AddClaim<T> : ISelecting<T, IdentityResult> where T : IdentityUser
 
 	public async ValueTask<IdentityResult> Get(T parameter)
 	{
-		using var edit   = await _edit.Get(parameter);
+		using var edit   = await _edit.Get(parameter).ConfigureAwait(true);
 		using var users  = _users.Get();
 		var       claim  = _claim(parameter);
 		var       result = await users.Subject.AddClaimAsync(parameter, claim).Await();

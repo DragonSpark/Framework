@@ -1,10 +1,12 @@
-﻿using DragonSpark.Compose;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
+using DragonSpark.Compose;
+using JetBrains.Annotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Application.AspNet.Entities.Editing;
 
+[MustDisposeResource]
 sealed class Editor : DragonSpark.Model.Operations.Allocated.Terminating<int>, IEditor
 {
 	readonly DbContext   _context;

@@ -1,5 +1,6 @@
-﻿using DragonSpark.Compose;
 using System.Threading.Tasks;
+using DragonSpark.Compose;
+using JetBrains.Annotations;
 
 namespace DragonSpark.Application.AspNet.Entities.Transactions;
 
@@ -14,6 +15,6 @@ public class AppendedTransactions : ITransactions
 		_second = second;
 	}
 
-	public async ValueTask<ITransaction> Get()
-		=> new AppendedTransaction(await _first.Await(), await _second.Await());
+	[MustDisposeResource]
+	public async ValueTask<ITransaction> Get() => new AppendedTransaction(await _first.Await(), await _second.Await());
 }

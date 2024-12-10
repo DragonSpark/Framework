@@ -1,8 +1,8 @@
-﻿using DragonSpark.Compose;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime;
 
@@ -19,10 +19,11 @@ sealed class Queries<TIn, TOut> : IQueries<TOut>
 		_compiled  = compiled;
 	}
 
+	[MustDisposeResource]
 	public ValueTask<Query<TOut>> Get()
 	{
 		var (context, disposable) = _scopes.Get();
 		var query   = _compiled(context, _parameter);
-		return new Query<TOut>(query, disposable).ToOperation();
+		return new(new Query<TOut>(query, disposable));
 	}
 }

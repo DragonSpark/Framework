@@ -1,5 +1,6 @@
-﻿using DragonSpark.Compose;
 using System.Threading.Tasks;
+using DragonSpark.Compose;
+using JetBrains.Annotations;
 
 namespace DragonSpark.Application.AspNet.Entities.Transactions;
 
@@ -9,6 +10,7 @@ public sealed class AmbientAwareTransactions : ITransactions
 
 	public AmbientAwareTransactions(ITransactions previous) => _previous = previous;
 
+	[MustDisposeResource]
 	public async ValueTask<ITransaction> Get()
 	{
 		var previous = await _previous.Await();

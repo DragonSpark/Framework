@@ -12,7 +12,7 @@ public readonly struct LeaseComposer<T>
     /*public Concatenation<T> Concat(EnumerableExtensions.ValueEnumerable<T> memory)
 		=> Concatenate<T>.Default.Get(_subject, memory);*/
 
-    [MustDisposeResource]
+    [MustDisposeResource(false)]
     public Concatenation<T> Concat(Memory<T> memory) => ConcatenateLeases<T>.Default.Get(_subject, memory);
 
     [MustDisposeResource]

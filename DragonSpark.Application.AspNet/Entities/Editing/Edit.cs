@@ -1,10 +1,11 @@
-﻿using DragonSpark.Application.AspNet.Entities.Queries.Compiled;
+using System;
+using System.Threading.Tasks;
+using DragonSpark.Application.AspNet.Entities.Queries.Compiled;
 using DragonSpark.Application.AspNet.Entities.Queries.Compiled.Evaluation;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations.Selection;
 using DragonSpark.Model.Selection;
-using System;
-using System.Threading.Tasks;
+using JetBrains.Annotations;
 
 namespace DragonSpark.Application.AspNet.Entities.Editing;
 
@@ -19,6 +20,7 @@ public sealed class Edit<TIn, T, TResult> : IEdit<TIn, TResult>
 		_evaluate = evaluate;
 	}
 
+	[MustDisposeResource]
 	public async ValueTask<Edit<TResult>> Get(TIn parameter)
 	{
 		var (context, disposable, elements) = _reading.Get(parameter);
@@ -27,55 +29,48 @@ public sealed class Edit<TIn, T, TResult> : IEdit<TIn, TResult>
 	}
 }
 
-public readonly struct Edit<T> : IEditor
+[method: MustDisposeResource]
+public readonly struct Edit<T>(IEditor editor, T subject) : IEditor
 {
-	readonly IEditor _editor;
+	public T Subject { get; } = subject;
 
-	public Edit(IEditor editor, T subject)
-	{
-		Subject = subject;
-		_editor = editor;
-	}
-
-	public T Subject { get; }
-
-	public ValueTask Get() => _editor.Get();
+	public ValueTask Get() => editor.Get();
 
 	public void Add(object entity)
 	{
-		_editor.Add(entity);
+		editor.Add(entity);
 	}
 
 	public void Attach(object entity)
 	{
-		_editor.Attach(entity);
+		editor.Attach(entity);
 	}
 
 	public void Update(object entity)
 	{
-		_editor.Update(entity);
+		editor.Update(entity);
 	}
 
 	public void Remove(object entity)
 	{
-		_editor.Remove(entity);
+		editor.Remove(entity);
 	}
 
 	public void Clear()
 	{
-		_editor.Clear();
+		editor.Clear();
 	}
 
-	public ValueTask Refresh(object entity) => _editor.Refresh(entity);
+	public ValueTask Refresh(object entity) => editor.Refresh(entity);
 
 	public void Dispose()
 	{
-		_editor.Dispose();
+		editor.Dispose();
 	}
 
-	public void Deconstruct(out IEditor context, out T subject)
+	public void Deconstruct([MustDisposeResource(false)] out IEditor context, out T subject)
 	{
-		context = _editor;
+		context = editor;
 		subject = Subject;
 	}
 }

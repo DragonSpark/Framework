@@ -1,7 +1,7 @@
-﻿using DragonSpark.Compose;
+using System.Threading.Tasks;
 using DragonSpark.Model;
 using DragonSpark.Runtime;
-using System.Threading.Tasks;
+using JetBrains.Annotations;
 
 namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime;
 
@@ -11,5 +11,6 @@ public sealed class EmptyQueries<T> : IQueries<T>
 
 	EmptyQueries() {}
 
-	public ValueTask<Query<T>> Get() => new Query<T>(Empty.Queryable<T>(), EmptyDisposable.Default).ToOperation();
+	[MustDisposeResource]
+	public ValueTask<Query<T>> Get() => new(new Query<T>(Empty.Queryable<T>(), EmptyDisposable.Default));
 }

@@ -1,7 +1,7 @@
-﻿using DragonSpark.Compose;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
+using JetBrains.Annotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Application.AspNet.Entities.Transactions;
 
@@ -16,5 +16,6 @@ public sealed class ScopedAmbientComponentsTransaction : ITransactions
 		_second = second;
 	}
 
-	public ValueTask<ITransaction> Get() => new AssignAmbientComponentsTransaction(_first, _second).ToOperation<ITransaction>();
+	[MustDisposeResource]
+	public ValueTask<ITransaction> Get() => new(new AssignAmbientComponentsTransaction(_first, _second));
 }

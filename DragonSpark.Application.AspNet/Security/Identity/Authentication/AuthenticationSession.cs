@@ -1,27 +1,23 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
 using System;
+using JetBrains.Annotations;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Authentication;
 
-public readonly struct AuthenticationSession<T> : IDisposable where T : class
+[method: MustDisposeResource]
+public readonly struct AuthenticationSession<T>(SignInManager<T> subject, UserManager<T> users, IServiceScope? scope)
+	: IDisposable
+	where T : class
 {
-	readonly IServiceScope? _scope;
-
+	[MustDisposeResource]
 	public AuthenticationSession(SignInManager<T> subject, IServiceScope? scope = null)
 		: this(subject, subject.UserManager, scope) {}
 
-	public AuthenticationSession(SignInManager<T> subject, UserManager<T> users, IServiceScope? scope)
-	{
-		Subject = subject;
-		Users   = users;
-		_scope  = scope;
-	}
+	public SignInManager<T> Subject { get; } = subject;
+	public UserManager<T> Users { get; } = users;
 
-	public SignInManager<T> Subject { get; }
-	public UserManager<T> Users { get; }
-
-	public void Deconstruct(out SignInManager<T> subject, out UserManager<T> users)
+	public void Deconstruct(out SignInManager<T> subject, [MustDisposeResource(false)] out UserManager<T> users)
 	{
 		subject = Subject;
 		users   = Users;
@@ -29,6 +25,6 @@ public readonly struct AuthenticationSession<T> : IDisposable where T : class
 
 	public void Dispose()
 	{
-		_scope?.Dispose();
+		scope?.Dispose();
 	}
 }

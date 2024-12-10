@@ -1,7 +1,7 @@
-﻿using DragonSpark.Compose;
+using System.Threading.Tasks;
+using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Selection;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Editing;
 
@@ -24,7 +24,7 @@ public class Modifying<TIn, T> : ISelecting<TIn, T>
 
 	public async ValueTask<T> Get(TIn parameter)
 	{
-		using var edit = await _select.Get(parameter);
+		using var edit = await _select.Get(parameter).ConfigureAwait(true);
 		await _configure(edit);
 		await edit.Await();
 		return edit.Subject;

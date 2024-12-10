@@ -1,7 +1,8 @@
-﻿using DragonSpark.Application.AspNet.Entities.Queries.Composition;
+using System.Threading.Tasks;
+using DragonSpark.Application.AspNet.Entities.Queries.Composition;
 using DragonSpark.Compose;
 using DragonSpark.Model.Sequences.Memory;
-using System.Threading.Tasks;
+using JetBrains.Annotations;
 
 namespace DragonSpark.Application.AspNet.Entities.Editing;
 
@@ -18,6 +19,7 @@ public class EditCombined<TIn, T> : IEditMany<TIn, T>
 		_second = second;
 	}
 
+	[MustDisposeResource]
 	public async ValueTask<ManyEdit<T>> Get(TIn parameter)
 	{
 		var (editor, first) = await _first.Await(parameter);

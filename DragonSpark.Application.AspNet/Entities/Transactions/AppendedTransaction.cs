@@ -1,35 +1,28 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model;
 using System.Threading.Tasks;
+using DragonSpark.Compose;
+using DragonSpark.Model;
+using JetBrains.Annotations;
 
 namespace DragonSpark.Application.AspNet.Entities.Transactions;
 
-public class AppendedTransaction : ITransaction
+[MustDisposeResource]
+public class AppendedTransaction(ITransaction first, ITransaction second) : ITransaction
 {
-	readonly ITransaction _first;
-	readonly ITransaction _second;
-
-	public AppendedTransaction(ITransaction first, ITransaction second)
-	{
-		_first  = first;
-		_second = second;
-	}
-
 	public void Execute(None parameter)
 	{
-		_first.Execute(parameter);
-		_second.Execute(parameter);
+		first.Execute(parameter);
+		second.Execute(parameter);
 	}
 
 	public async ValueTask Get()
 	{
-		await _first.Await();
-		await _second.Await();
+		await first.Await();
+		await second.Await();
 	}
 
 	public async ValueTask DisposeAsync()
 	{
-		await _first.DisposeAsync().Await();
-		await _second.DisposeAsync().Await();
+		await first.DisposeAsync().Await();
+		await second.DisposeAsync().Await();
 	}
 }

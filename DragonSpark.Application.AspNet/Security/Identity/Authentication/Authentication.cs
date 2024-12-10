@@ -1,34 +1,24 @@
-﻿using DragonSpark.Application.AspNet.Security.Identity.Profile;
+using System.Threading.Tasks;
+using DragonSpark.Application.AspNet.Security.Identity.Profile;
 using DragonSpark.Compose;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Authentication;
 
-sealed class Authentication : IAuthentication
+sealed class Authentication(IExternalSignin signin, IUserSynchronization synchronization, ILogger<Authentication> log)
+	: IAuthentication
 {
-	readonly IExternalSignin         _signin;
-	readonly IUserSynchronization    _synchronization;
-	readonly ILogger<Authentication> _log;
-
-	public Authentication(IExternalSignin signin, IUserSynchronization synchronization, ILogger<Authentication> log)
-	{
-		_signin          = signin;
-		_synchronization = synchronization;
-		_log             = log;
-	}
-
 	public async ValueTask<SignInResult> Get(ExternalLoginInfo parameter)
 	{
-		var result = await _signin.Get(parameter);
+		var result = await signin.Get(parameter).ConfigureAwait(true);
 
 		if (result.Succeeded)
 		{
-			_log.LogInformation("[{Id}] {LoginProvider} user with key {Key} logged in",
+			log.LogInformation("[{Id}] {LoginProvider} user with key {Key} logged in",
 			                    parameter.Principal.Number(), parameter.LoginProvider, parameter.ProviderKey);
 
-			await _synchronization.Await(parameter);
+			await synchronization.Await(parameter);
 		}
 
 		return result;

@@ -1,7 +1,8 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Results;
-using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using DragonSpark.Compose;
+using DragonSpark.Model.Results;
+using JetBrains.Annotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Application.AspNet.Entities.Transactions;
 
@@ -15,6 +16,7 @@ public sealed class LogicalDatabaseTransactions : ITransactions
 
 	public LogicalDatabaseTransactions(IResult<DbContext?> context) => _context = context;
 
+	[MustDisposeResource]
 	public async ValueTask<ITransaction> Get()
 	{
 		var context = _context.Get().Verify();

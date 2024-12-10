@@ -1,14 +1,17 @@
-﻿using DragonSpark.Compose;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using System.Threading.Tasks;
+using DragonSpark.Compose;
+using JetBrains.Annotations;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace DragonSpark.Application.AspNet.Entities.Editing;
 
+[MustDisposeResource]
 sealed class CommitAwareEditor : IEditor
 {
 	readonly DatabaseFacade _facade;
 	readonly IEditor        _previous;
 
+	[MustDisposeResource(false)]
 	public CommitAwareEditor(DatabaseFacade facade, IEditor previous)
 	{
 		_facade   = facade;

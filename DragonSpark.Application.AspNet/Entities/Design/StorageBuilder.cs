@@ -1,8 +1,9 @@
-﻿using DragonSpark.Compose;
+using System;
+using DragonSpark.Compose;
 using DragonSpark.Model.Results;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using System;
 
 namespace DragonSpark.Application.AspNet.Entities.Design;
 
@@ -20,8 +21,10 @@ public class StorageBuilder<T> : IResult<T>, IDesignTimeDbContextFactory<T> wher
 		_create    = create;
 	}
 
+	[MustDisposeResource]
 	T IDesignTimeDbContextFactory<T>.CreateDbContext(string[] args) => Get();
 
+	[MustDisposeResource]
 	public T Get()
 	{
 		var builder = new DbContextOptionsBuilder<T>();

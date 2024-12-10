@@ -1,9 +1,9 @@
-﻿using DragonSpark.Application.AspNet.Entities.Queries.Composition;
+using System;
+using System.Threading.Tasks;
+using DragonSpark.Application.AspNet.Entities.Queries.Composition;
 using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
-using System;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Editing;
 
@@ -64,7 +64,7 @@ public class Modify<TIn, T> : IOperation<TIn>
 
 	public async ValueTask Get(TIn parameter)
 	{
-		using var edit = await _select.Get(parameter);
+		using var edit = await _select.Get(parameter).ConfigureAwait(true);
 		await _configure(edit);
 		await edit.Await();
 	}

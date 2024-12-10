@@ -1,5 +1,6 @@
-﻿using DragonSpark.Compose;
 using System.Threading.Tasks;
+using DragonSpark.Compose;
+using JetBrains.Annotations;
 
 namespace DragonSpark.Application.AspNet.Entities.Editing;
 
@@ -14,6 +15,7 @@ public class EditExisting<T> : IEdit<T> where T : class
 		_reload = reload;
 	}
 
+	[MustDisposeResource]
 	public async ValueTask<Edit<T>> Get(T parameter)
 	{
 		var (context, disposable) = _scopes.Get();

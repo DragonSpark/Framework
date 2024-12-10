@@ -1,19 +1,17 @@
-﻿using DragonSpark.Compose;
+using System.Threading.Tasks;
+using DragonSpark.Compose;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Transactions;
 
-public sealed class ServiceScopedDatabaseTransactions : ITransactions
+public sealed class ServiceScopedDatabaseTransactions(IServiceScopedTransactions transactions) : ITransactions
 {
-	readonly IServiceScopedTransactions _transactions;
-
-	public ServiceScopedDatabaseTransactions(IServiceScopedTransactions transactions) => _transactions = transactions;
-
+	[MustDisposeResource]
 	public async ValueTask<ITransaction> Get()
 	{
-		var previous = _transactions.Get();
+		var previous = transactions.Get();
 		var context  = previous.Provider.GetRequiredService<DbContext>();
 		await context.Database.BeginTransactionAsync().Await();
 		return new ServiceScopedDatabaseTransaction(previous, new DatabaseTransaction(context));

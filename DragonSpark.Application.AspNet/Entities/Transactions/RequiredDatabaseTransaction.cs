@@ -1,34 +1,28 @@
-﻿using DragonSpark.Compose;
+using System.Threading.Tasks;
+using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Results;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Transactions;
 
-sealed class RequiredDatabaseTransaction : ITransaction, IContextAware
+[MustDisposeResource]
+sealed class RequiredDatabaseTransaction(DbContext context, DatabaseFacade facade) : ITransaction, IContextAware
 {
-	readonly DbContext      _context;
-	readonly DatabaseFacade _facade;
-
 	public RequiredDatabaseTransaction(DbContext context) : this(context, context.Database) {}
-
-	public RequiredDatabaseTransaction(DbContext context, DatabaseFacade facade)
-	{
-		_context = context;
-		_facade  = facade;
-	}
 
 	public void Execute(None parameter) {}
 
 	public async ValueTask Get()
 	{
-		await _context.SaveChangesAsync().Await();
-		await _facade.CurrentTransaction.Verify().CommitAsync().Await();
+		await context.SaveChangesAsync().Await();
+		await facade.CurrentTransaction.Verify().CommitAsync().Await();
 	}
 
-	public ValueTask DisposeAsync() => _facade.CurrentTransaction?.DisposeAsync() ?? ValueTask.CompletedTask;
+	public ValueTask DisposeAsync() => facade.CurrentTransaction?.DisposeAsync() ?? ValueTask.CompletedTask;
 
-	DbContext IResult<DbContext>.Get() => _context;
+	[MustDisposeResource(false)]
+	DbContext IResult<DbContext>.Get() => context;
 }

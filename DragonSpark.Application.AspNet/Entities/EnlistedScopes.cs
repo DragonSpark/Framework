@@ -1,4 +1,5 @@
-﻿using DragonSpark.Runtime;
+using DragonSpark.Runtime;
+using JetBrains.Annotations;
 
 namespace DragonSpark.Application.AspNet.Entities;
 
@@ -13,6 +14,7 @@ public sealed class EnlistedScopes : IEnlistedScopes
 		_context  = context;
 	}
 
+	[MustDisposeResource]
 	public Scope Get()
 	{
 		var enlisted = _context.Get();

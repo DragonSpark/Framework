@@ -1,7 +1,8 @@
-﻿using DragonSpark.Model.Selection;
+using System;
+using DragonSpark.Model.Selection;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace DragonSpark.Application.AspNet.Compose.Entities;
 
@@ -11,6 +12,7 @@ sealed class DefaultContextFactory<T> : ISelect<IServiceProvider, T> where T : D
 
 	DefaultContextFactory() {}
 
+	[MustDisposeResource(false)]
 	public T Get(IServiceProvider parameter)
 		=> parameter.GetRequiredService<IDbContextFactory<T>>().CreateDbContext();
 }

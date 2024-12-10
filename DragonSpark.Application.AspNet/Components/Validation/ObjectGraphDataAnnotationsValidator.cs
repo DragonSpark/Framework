@@ -1,16 +1,18 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Selection.Conditions;
-using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Forms;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using DragonSpark.Compose;
+using DragonSpark.Model.Selection.Conditions;
+using JetBrains.Annotations;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace DragonSpark.Application.AspNet.Components.Validation;
 
 /// <summary>
 /// Attribution: https://www.nuget.org/packages/Microsoft.AspNetCore.Components.DataAnnotations.Validation
 /// </summary>
+[MustDisposeResource(false)]
 public sealed class ObjectGraphDataAnnotationsValidator : ComponentBase, IDisposable
 {
 	readonly IDelegates          _delegates;
@@ -18,8 +20,10 @@ public sealed class ObjectGraphDataAnnotationsValidator : ComponentBase, IDispos
 	Messages                     _messages = default!;
 	ObjectGraphValidator         _validator = default!;
 
+	[MustDisposeResource(false)]
 	public ObjectGraphDataAnnotationsValidator() : this(new Delegates(), ValidationContexts.Default) {}
 
+	[MustDisposeResource(false)]
 	public ObjectGraphDataAnnotationsValidator(IDelegates delegates, IValidationContexts contexts)
 	{
 		_delegates = delegates;

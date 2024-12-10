@@ -1,26 +1,25 @@
-﻿using DragonSpark.Application.Runtime.Operations.Execution;
+using System.Threading.Tasks;
+using DragonSpark.Application.Runtime.Operations.Execution;
 using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Results;
-using System.Threading.Tasks;
+using JetBrains.Annotations;
 
 namespace DragonSpark.Application.AspNet.Entities.Transactions;
 
-public sealed class AmbientAwareTransaction : ITransaction
+[MustDisposeResource]
+public sealed class AmbientAwareTransaction(
+	ITransaction previous,
+	IMutable<IOperations?> store,
+	IResult<IOperations> instance)
+	: ITransaction
 {
-	readonly ITransaction           _previous;
-	readonly IMutable<IOperations?> _store;
-	readonly IResult<IOperations>   _instance;
+	readonly ITransaction           _previous = previous;
+	readonly IMutable<IOperations?> _store    = store;
+	readonly IResult<IOperations>   _instance = instance;
 
 	public AmbientAwareTransaction(ITransaction previous)
 		: this(previous, OperationsStore.Default, NewOperations.Default) {}
-
-	public AmbientAwareTransaction(ITransaction previous, IMutable<IOperations?> store, IResult<IOperations> instance)
-	{
-		_previous = previous;
-		_store    = store;
-		_instance = instance;
-	}
 
 	public void Execute(None parameter)
 	{

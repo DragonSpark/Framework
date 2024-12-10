@@ -1,30 +1,23 @@
-﻿using DragonSpark.Model;
-using DragonSpark.Model.Results;
 using System.Threading.Tasks;
+using DragonSpark.Model;
+using DragonSpark.Model.Results;
+using JetBrains.Annotations;
 
 namespace DragonSpark.Application.AspNet.Entities.Transactions;
 
-class StoreTransaction<T> : ITransaction
+[MustDisposeResource]
+abstract class StoreTransaction<T>(T value, IMutable<T?> store) : ITransaction
 {
-	readonly T            _value;
-	readonly IMutable<T?> _store;
-
-	protected StoreTransaction(T value, IMutable<T?> store)
-	{
-		_value = value;
-		_store = store;
-	}
-
 	public void Execute(None parameter)
 	{
-		_store.Execute(_value);
+		store.Execute(value);
 	}
 
 	public ValueTask Get() => ValueTask.CompletedTask;
 
 	public ValueTask DisposeAsync()
 	{
-		_store.Execute(default);
+		store.Execute(default);
 		return ValueTask.CompletedTask;
 	}
 }

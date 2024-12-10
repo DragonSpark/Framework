@@ -1,7 +1,8 @@
-﻿using DragonSpark.Application.AspNet.Entities.Queries.Composition;
+using System.Threading.Tasks;
+using DragonSpark.Application.AspNet.Entities.Queries.Composition;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations.Selection;
-using System.Threading.Tasks;
+using JetBrains.Annotations;
 
 namespace DragonSpark.Application.AspNet.Entities.Editing;
 
@@ -19,6 +20,7 @@ public class EditingOrNew<TIn, T> : IEdit<TIn, T> where T : class
 		_create   = create;
 	}
 
+	[MustDisposeResource]
 	public async ValueTask<Edit<T>> Get(TIn parameter)
 	{
 		var (context, current) = await _previous.Await(parameter);

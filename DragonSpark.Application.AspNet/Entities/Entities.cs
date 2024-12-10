@@ -1,11 +1,13 @@
-﻿using DragonSpark.Application.AspNet.Entities.Configuration;
+using DragonSpark.Application.AspNet.Entities.Configuration;
 using DragonSpark.Application.AspNet.Entities.Initialization;
 using DragonSpark.Application.AspNet.Security.Identity;
 using DragonSpark.Model.Commands;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Application.AspNet.Entities;
 
+[MustDisposeResource]
 public class Entities : DbContext
 {
 	readonly ICommand<ModelCreating> _configure;
@@ -23,6 +25,7 @@ public class Entities : DbContext
 	}
 }
 
+[MustDisposeResource]
 public class Entities<T> : IdentityDbContext<T> where T : IdentityUser
 {
 	readonly ICommand<ModelCreating> _configure;

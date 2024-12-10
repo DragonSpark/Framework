@@ -1,7 +1,7 @@
-﻿using DragonSpark.Compose;
+using System.Threading.Tasks;
+using DragonSpark.Compose;
 using DragonSpark.Model.Operations.Selection;
 using JetBrains.Annotations;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Editing;
 
@@ -22,6 +22,7 @@ public class CommitAwareEdits<TIn, T> : IEdit<TIn, T>
 		_select   = select;
 	}
 
+	[MustDisposeResource]
 	public async ValueTask<Edit<T>> Get(TIn parameter)
 	{
 		var (context, disposable) = _scopes.Get();

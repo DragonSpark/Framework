@@ -1,6 +1,7 @@
-﻿using DragonSpark.Application.AspNet.Entities.Transactions;
-using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using DragonSpark.Application.AspNet.Entities.Transactions;
+using JetBrains.Annotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Application.AspNet.Entities.Initialization;
 
@@ -15,10 +16,10 @@ sealed class SeedingTransactions : ITransactions
 		_transactions = transactions;
 	}
 
+	[MustDisposeResource]
 	public ValueTask<ITransaction> Get()
 	{
-		var previous    = _transactions.Get();
-		var transaction = new ServiceScopedDatabaseTransaction(previous, new EntityContextTransaction(_context));
-		return new(transaction);
+		var previous = _transactions.Get();
+		return new(new ServiceScopedDatabaseTransaction(previous, new EntityContextTransaction(_context)));
 	}
 }

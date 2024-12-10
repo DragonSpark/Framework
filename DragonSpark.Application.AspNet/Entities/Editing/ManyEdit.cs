@@ -1,55 +1,49 @@
-﻿using DragonSpark.Model.Sequences.Memory;
 using System;
 using System.Threading.Tasks;
+using DragonSpark.Model.Sequences.Memory;
+using JetBrains.Annotations;
 
 namespace DragonSpark.Application.AspNet.Entities.Editing;
 
-public readonly struct ManyEdit<T> : IEditor
+[method: MustDisposeResource]
+public readonly struct ManyEdit<T>(IEditor editor, Leasing<T> subject) : IEditor
 {
-	readonly IEditor _editor;
-
 	public static implicit operator Memory<T>(ManyEdit<T> instance) => instance.Subject;
 
-	public ManyEdit(IEditor editor, Leasing<T> subject)
-	{
-		Subject  = subject;
-		_editor = editor;
-	}
-
-	public Leasing<T> Subject { get; }
+	public Leasing<T> Subject { get; } = subject;
 
 	public void Dispose()
 	{
-		_editor.Dispose();
+		editor.Dispose();
 		Subject.Dispose();
 	}
 
-	public ValueTask Get() => _editor.Get();
+	public ValueTask Get() => editor.Get();
 
 	public void Add(object entity)
 	{
-		_editor.Add(entity);
+		editor.Add(entity);
 	}
 
 	public void Attach(object entity)
 	{
-		_editor.Attach(entity);
+		editor.Attach(entity);
 	}
 
 	public void Update(object entity)
 	{
-		_editor.Update(entity);
+		editor.Update(entity);
 	}
 
 	public void Remove(object entity)
 	{
-		_editor.Remove(entity);
+		editor.Remove(entity);
 	}
 
 	public void Clear()
 	{
-		_editor.Clear();
+		editor.Clear();
 	}
 
-	public ValueTask Refresh(object entity) => _editor.Refresh(entity);
+	public ValueTask Refresh(object entity) => editor.Refresh(entity);
 }

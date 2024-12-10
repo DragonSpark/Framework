@@ -1,8 +1,9 @@
-﻿using DragonSpark.Composition.Scopes;
+using System;
+using DragonSpark.Composition.Scopes;
 using DragonSpark.Model.Results;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace DragonSpark.Application.AspNet.Entities;
 
@@ -16,5 +17,6 @@ sealed class AmbientProvidedContext : IResult<DbContext?>
 
 	public AmbientProvidedContext(IResult<IServiceProvider?> provider) => _provider = provider;
 
+	[MustDisposeResource(false)]
 	public DbContext? Get() => _provider.Get()?.GetRequiredService<DbContext>();
 }

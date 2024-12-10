@@ -1,9 +1,9 @@
-﻿using DragonSpark.Composition.Scopes;
 using System;
+using DragonSpark.Composition.Scopes;
+using JetBrains.Annotations;
 
 namespace DragonSpark.Application.AspNet.Entities.Transactions;
 
-sealed class AssignAmbientProviderTransaction : StoreTransaction<IServiceProvider>
-{
-	public AssignAmbientProviderTransaction(IServiceProvider value) : base(value, LogicalProvider.Default) {}
-}
+[MustDisposeResource]
+sealed class AssignAmbientProviderTransaction(IServiceProvider value)
+    : StoreTransaction<IServiceProvider>(value, LogicalProvider.Default);
