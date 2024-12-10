@@ -1,30 +1,31 @@
-﻿using DragonSpark.Runtime.Activation;
 using System;
+using DragonSpark.Runtime.Activation;
+using JetBrains.Annotations;
 
 namespace DragonSpark.Runtime;
 
+[MustDisposeResource]
 public class Disposable : IDisposable, IActivateUsing<Action>
 {
-	readonly Action _callback;
+    readonly Action _callback;
 
-	public Disposable(Action callback) => _callback = callback;
+    public Disposable(Action callback) => _callback = callback;
 
-	public void Dispose()
-	{
-		GC.SuppressFinalize(this);
-		_callback();
-	}
+    public void Dispose()
+    {
+        GC.SuppressFinalize(this);
+        _callback();
+    }
 }
 
-public class Disposable<T> : IDisposable where T : IDisposable
+[MustDisposeResource]
+public class Disposable<T>(T disposable) : IDisposable where T : IDisposable
 {
-	readonly T _disposable;
+    readonly T _disposable = disposable;
 
-	public Disposable(T disposable) => _disposable = disposable;
-
-	public void Dispose()
-	{
-		GC.SuppressFinalize(this);
-		_disposable.Dispose();
-	}
+    public void Dispose()
+    {
+        GC.SuppressFinalize(this);
+        _disposable.Dispose();
+    }
 }

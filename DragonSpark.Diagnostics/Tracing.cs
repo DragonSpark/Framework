@@ -1,23 +1,17 @@
-﻿using SerilogTracing;
 using System;
+using JetBrains.Annotations;
+using SerilogTracing;
 
 namespace DragonSpark.Diagnostics;
 
-public readonly struct Tracing : IDisposable
+[method: MustDisposeResource]
+public readonly struct Tracing(IDisposable disposable, LoggerActivity activity) : IDisposable
 {
-	readonly IDisposable    _disposable;
+    public LoggerActivity Activity { get; } = activity;
 
-	public Tracing(IDisposable disposable, LoggerActivity activity)
-	{
-		Activity   = activity;
-		_disposable = disposable;
-	}
-
-	public LoggerActivity Activity { get; }
-
-	public void Dispose()
-	{
-		Activity.Dispose();
-		_disposable.Dispose();
-	}
+    public void Dispose()
+    {
+        Activity.Dispose();
+        disposable.Dispose();
+    }
 }

@@ -1,66 +1,60 @@
-﻿using NetFabric.Hyperlinq;
 using System;
 using System.Runtime.CompilerServices;
+using JetBrains.Annotations;
+using NetFabric.Hyperlinq;
 
 namespace DragonSpark.Model.Sequences.Memory;
 
-public readonly struct Leasing<T> : IDisposable
+[method: MustDisposeResource]
+public readonly struct Leasing<T>(Lease<T> owner, Memory<T> reference, uint length) : IDisposable
 {
-	public static implicit operator Memory<T>(Leasing<T> instance) => instance.AsMemory();
+    public static implicit operator Memory<T>(Leasing<T> instance) => instance.AsMemory();
 
-	public static Leasing<T> Default { get; } = new(Lease.Empty<T>(), Memory<T>.Empty, 0);
+    public static Leasing<T> Default { get; } = new(Lease.Empty<T>(), Memory<T>.Empty, 0);
 
-	readonly Lease<T>  _owner;
-	readonly Memory<T> _reference;
+    [MustDisposeResource]
+    public Leasing(Lease<T> owner) : this(owner, (uint)owner.Memory.Length) { }
 
-	public Leasing(Lease<T> owner) : this(owner, (uint)owner.Memory.Length) {}
+    [MustDisposeResource]
+    public Leasing(Lease<T> owner, uint length) : this(owner, owner.Memory, length) { }
 
-	public Leasing(Lease<T> owner, uint length) : this(owner, owner.Memory, length) {}
+    [MethodImpl(MethodImplOptions.AggressiveInlining), MustDisposeResource]
+    public Leasing<T> Size(int size) => new(owner, reference, (uint)size);
 
-	public Leasing(Lease<T> owner, Memory<T> reference, uint length)
-	{
-		_owner     = owner;
-		_reference = reference;
-		Length     = length;
-	}
+    [MethodImpl(MethodImplOptions.AggressiveInlining), MustDisposeResource]
+    public Leasing<T> Size(uint size) => new(owner, reference, size);
 
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public Leasing<T> Size(int size) => new(_owner, _reference, (uint)size);
+    public Memory<T> Remaining => reference[(int)Length..];
 
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public Leasing<T> Size(uint size) => new(_owner, _reference, size);
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Memory<T> AsMemory() => reference[..(int)Length];
 
-	public Memory<T> Remaining => _reference[(int)Length..];
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Span<T> AsSpan() => reference.Span[..(int)Length];
 
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public Memory<T> AsMemory() => _reference[..(int)Length];
-	
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public Span<T> AsSpan() => _reference.Span[..(int)Length];
+    public uint Length { get; } = length;
 
-	public uint Length { get; }
+    public uint ActualLength => (uint)reference.Length;
 
-	public uint ActualLength => (uint)_reference.Length;
+    public T[] ToArray()
+    {
+        var result = AsSpan().ToArray();
+        Dispose();
+        return result;
+    }
 
-	public T[] ToArray()
-	{
-		var result = AsSpan().ToArray();
-		Dispose();
-		return result;
-	}
+    public void Dispose()
+    {
+        var owner1 = owner;
+        owner1.Dispose();
+    }
 
-	public void Dispose()
-	{
-		var owner = _owner;
-		owner.Dispose();
-	}
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public Lease<T>.Enumerator GetEnumerator() => owner.GetEnumerator();
 
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public Lease<T>.Enumerator GetEnumerator() => _owner.GetEnumerator();
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public ArrayExtensions.ArraySegmentValueEnumerable<T> AsValueEnumerable() => owner.AsValueEnumerable();
 
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public ArrayExtensions.ArraySegmentValueEnumerable<T> AsValueEnumerable() => _owner.AsValueEnumerable();
-
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public Lease<T> AsEnumerable() => _owner;
+    [MethodImpl(MethodImplOptions.AggressiveInlining), MustDisposeResource(false)]
+    public Lease<T> AsEnumerable() => owner;
 }

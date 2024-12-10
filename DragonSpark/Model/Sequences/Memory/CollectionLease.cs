@@ -1,22 +1,24 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
+using JetBrains.Annotations;
 
 namespace DragonSpark.Model.Sequences.Memory;
 
 sealed class CollectionLease<T> : ILease<ICollection<T>, T>
 {
-	public static CollectionLease<T> Default { get; } = new();
+    public static CollectionLease<T> Default { get; } = new();
 
-	CollectionLease() : this(ListLease<T>.Default, GenericCollectionLease<T>.Default) {}
+    CollectionLease() : this(ListLease<T>.Default, GenericCollectionLease<T>.Default) { }
 
-	readonly ILease<List<T>, T>        _list;
-	readonly ILease<ICollection<T>, T> _other;
+    readonly ILease<List<T>, T> _list;
+    readonly ILease<ICollection<T>, T> _other;
 
-	public CollectionLease(ILease<List<T>, T> list, ILease<ICollection<T>, T> other)
-	{
-		_list  = list;
-		_other = other;
-	}
+    public CollectionLease(ILease<List<T>, T> list, ILease<ICollection<T>, T> other)
+    {
+        _list = list;
+        _other = other;
+    }
 
-	public Leasing<T> Get(ICollection<T> parameter)
-		=> parameter is List<T> list ? _list.Get(list) : _other.Get(parameter);
+    [MustDisposeResource]
+    public Leasing<T> Get(ICollection<T> parameter)
+        => parameter is List<T> list ? _list.Get(list) : _other.Get(parameter);
 }
