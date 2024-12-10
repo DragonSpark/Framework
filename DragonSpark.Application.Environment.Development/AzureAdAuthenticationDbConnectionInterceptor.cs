@@ -1,11 +1,12 @@
-﻿using Azure.Core;
-using Azure.Identity;
-using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore.Diagnostics;
 using System;
 using System.Data.Common;
 using System.Threading;
 using System.Threading.Tasks;
+using Azure.Core;
+using Azure.Identity;
+using DragonSpark.Compose;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace DragonSpark.Application.Environment.Development;
 
@@ -51,11 +52,11 @@ sealed class AzureAdAuthenticationDbConnectionInterceptor : DbConnectionIntercep
 		var sql = (SqlConnection)connection;
 		if (Access(sql))
 		{
-			var token = await _credential.GetTokenAsync(_context, cancellationToken);
+			var token = await _credential.GetTokenAsync(_context, cancellationToken).Await();
 			sql.AccessToken = token.Token;
 		}
 
-		return await base.ConnectionOpeningAsync(connection, eventData, result, cancellationToken);
+		return await base.ConnectionOpeningAsync(connection, eventData, result, cancellationToken).Await();
 	}
 
 	static bool Access(SqlConnection connection)

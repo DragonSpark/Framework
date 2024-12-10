@@ -1,15 +1,15 @@
-﻿using DragonSpark.Application.AspNet.Entities;
+using System;
+using System.Threading.Tasks;
+using DragonSpark.Application.AspNet.Entities;
 using DragonSpark.Compose;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
-using System;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Testing.Objects.Entities.Sql;
 
-[UsedImplicitly]
+[UsedImplicitly, MustDisposeResource]
 public sealed class SqlNewContext<T> : INewContext<T>, IAsyncDisposable where T : DbContext
 {
 	readonly INewContext<T> _new;
@@ -20,6 +20,7 @@ public sealed class SqlNewContext<T> : INewContext<T>, IAsyncDisposable where T 
 
 	public SqlNewContext(INewContext<T> @new) => _new = @new;
 
+	[MustDisposeResource]
 	public async ValueTask<SqlNewContext<T>> Initialize()
 	{
 		await using var context = _new.Get();
@@ -35,11 +36,12 @@ public sealed class SqlNewContext<T> : INewContext<T>, IAsyncDisposable where T 
 		return this;
 	}
 
+	[MustDisposeResource]
 	public T Get() => _new.Get();
 
 	public async ValueTask DisposeAsync()
 	{
 		await using var context = _new.Get();
-		await context.Database.EnsureDeletedAsync();
+		await context.Database.EnsureDeletedAsync().Await();
 	}
 }

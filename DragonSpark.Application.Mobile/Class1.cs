@@ -1,6 +1,14 @@
-﻿namespace DragonSpark.Application.Mobile;
+using DragonSpark.Composition.Compose;
+using DragonSpark.Model.Selection.Alterations;
 
-public class Class1
+namespace DragonSpark.Application.Mobile;
+
+sealed class Configure : IAlteration<BuildHostContext>
 {
+	public static Configure Default { get; } = new();
 
+	Configure() {}
+
+	public BuildHostContext Get(BuildHostContext parameter)
+		=> parameter.Configure(Application.DefaultRegistrations.Default, DefaultRegistrations.Default);
 }

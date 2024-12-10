@@ -15,7 +15,7 @@ public readonly struct Concatenation<T> : IDisposable
         Instance = instance;
     }
 
-    [MustDisposeResource]
+    [MustDisposeResource(false)]
     public Leasing<T> Result()
     {
         _first.Dispose();

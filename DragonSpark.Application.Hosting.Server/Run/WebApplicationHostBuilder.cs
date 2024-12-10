@@ -1,11 +1,12 @@
-﻿using Microsoft.AspNetCore.Builder;
+using System;
+using System.Collections.Generic;
+using JetBrains.Annotations;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
 
 namespace DragonSpark.Application.Hosting.Server.Run;
 
@@ -29,6 +30,7 @@ sealed class WebApplicationHostBuilder : IHostBuilder, ISupportsConfigureWebHost
 		_configurations = configurations;
 	}
 
+	[MustDisposeResource]
 	public IHost Build()
 	{
 		var result    = _application.Build();

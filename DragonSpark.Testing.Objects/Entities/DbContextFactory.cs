@@ -1,7 +1,8 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Results;
-using Microsoft.EntityFrameworkCore;
 using System;
+using DragonSpark.Compose;
+using DragonSpark.Model.Results;
+using JetBrains.Annotations;
+using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Testing.Objects.Entities;
 
@@ -12,5 +13,6 @@ public class DbContextFactory<T> : Result<T>, IDbContextFactory<T> where T : DbC
 
 	protected DbContextFactory(Func<T> create) : base(create) {}
 
+	[MustDisposeResource]
 	public T CreateDbContext() => Get();
 }

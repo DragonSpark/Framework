@@ -1,8 +1,8 @@
-﻿using AutoFixture;
+using System.Collections.Generic;
+using AutoFixture;
 using AutoFixture.Kernel;
 using JetBrains.Annotations;
 using NetFabric.Hyperlinq;
-using System.Collections.Generic;
 
 namespace DragonSpark.Application.Hosting.xUnit;
 
@@ -18,6 +18,7 @@ public sealed class EngineParts : DefaultEngineParts
 	public EngineParts(IEnumerable<ISpecimenBuilderTransformation> transformers)
 		=> _transformers = transformers;
 
+	[MustDisposeResource]
 	public override IEnumerator<ISpecimenBuilder> GetEnumerator()
 	{
 		using var enumerator = base.GetEnumerator();

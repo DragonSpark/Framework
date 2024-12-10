@@ -15,6 +15,6 @@ public readonly struct LeaseComposer<T>
     [MustDisposeResource(false)]
     public Concatenation<T> Concat(Memory<T> memory) => ConcatenateLeases<T>.Default.Get(_subject, memory);
 
-    [MustDisposeResource]
+    [MustDisposeResource(false)]
     public DragonSpark.Model.Sequences.Memory.Leasing<TTo> OfType<TTo>() => OfType<T, TTo>.Default.Get(_subject);
 }

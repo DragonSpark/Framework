@@ -1,13 +1,14 @@
-﻿using DragonSpark.Compose;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using DragonSpark.Reflection.Collections;
 using FluentAssertions;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+using JetBrains.Annotations;
 using Xunit;
 
 namespace DragonSpark.Testing.Reflection.Collections;
@@ -29,6 +30,7 @@ public class ImplementsGenericEnumerableTests
 
 	sealed class Subject : IEnumerable<object>
 	{
+		[MustDisposeResource]
 		public IEnumerator<object> GetEnumerator() => throw new NotSupportedException();
 
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
@@ -36,6 +38,7 @@ public class ImplementsGenericEnumerableTests
 
 	sealed class Subject<T> : IEnumerable<T>
 	{
+		[MustDisposeResource]
 		public IEnumerator<T> GetEnumerator() => throw new NotSupportedException();
 
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
@@ -43,6 +46,7 @@ public class ImplementsGenericEnumerableTests
 
 	sealed class Integers : IEnumerable<int>
 	{
+		[MustDisposeResource]
 		public IEnumerator<int> GetEnumerator() => throw new NotSupportedException();
 
 		IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();

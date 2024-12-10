@@ -1,4 +1,9 @@
-﻿using DragonSpark.Application.AspNet.Run;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using DragonSpark.Application.AspNet.Run;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
@@ -6,13 +11,10 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Hosting.Server.Run;
 
+[MustDisposeResource]
 public sealed class Application : IApplication
 {
 	readonly WebApplication        _previous;

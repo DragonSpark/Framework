@@ -20,7 +20,7 @@ public static partial class ExtensionMethods
 
     public static Span<T> AsSpan<T>(this List<T> @this) => CollectionsMarshal.AsSpan(@this);
 
-    [MustDisposeResource]
+    [MustDisposeResource(false)]
     public static Leasing<T> Then<T>(this EnumerableExtensions.ValueEnumerable<T> @this)
         => EnumerableLease<T>.Default.Get(@this);
 
@@ -28,7 +28,7 @@ public static partial class ExtensionMethods
     public static Leasing<T> Then<T>(this ArrayExtensions.SpanValueEnumerable<T> @this)
         => SpanLeases<T>.Default.Get(@this);
 
-    [MustDisposeResource]
+    [MustDisposeResource(false)]
     public static Leasing<T> Then<T>(this ArrayExtensions.ArraySegmentValueEnumerable<T> @this)
         => EnumerableListLease<T>.Default.Get(@this);
 

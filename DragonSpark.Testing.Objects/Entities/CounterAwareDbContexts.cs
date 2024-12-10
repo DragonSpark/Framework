@@ -1,5 +1,6 @@
-﻿using DragonSpark.Compose;
+using DragonSpark.Compose;
 using DragonSpark.Runtime.Execution;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Testing.Objects.Entities;
@@ -15,6 +16,7 @@ public sealed class CounterAwareDbContexts<T> : IDbContextFactory<T> where T : D
 		_counter  = counter;
 	}
 
+	[MustDisposeResource]
 	public T CreateDbContext()
 	{
 		_counter.Execute();

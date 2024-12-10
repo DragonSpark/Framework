@@ -1,10 +1,11 @@
-﻿using DragonSpark.Compose;
+using System;
+using DragonSpark.Compose;
+using JetBrains.Annotations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Infrastructure;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace DragonSpark.Application.Hosting.Server.Run;
 
@@ -14,6 +15,7 @@ sealed class WebHostBuilder : IWebHostBuilder, ISupportsStartup
 
 	public WebHostBuilder(WebApplication application) => _application = application;
 
+	[MustDisposeResource]
 	public IWebHost Build() => throw new InvalidOperationException();
 
 	public IWebHostBuilder ConfigureAppConfiguration(

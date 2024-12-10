@@ -1,0 +1,5 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<ItemGroup>
+		<ProjectReference Include="..\DragonSpark.Application.Mobile\DragonSpark.Application.Mobile.csproj" />
+	</ItemGroup>
+</Project>

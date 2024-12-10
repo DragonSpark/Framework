@@ -1,13 +1,15 @@
-﻿using DragonSpark.Application.AspNet.Entities;
+using System;
+using System.Threading.Tasks;
+using DragonSpark.Application.AspNet.Entities;
 using DragonSpark.Compose;
+using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
-using System;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Testing.Objects.Entities.SqlLite;
 
+[MustDisposeResource]
 public sealed class SqlLiteNewContext<T> : INewContext<T>, IAsyncDisposable where T : DbContext
 {
 	public SqlLiteNewContext() : this(NewSqlLiteOptions<T>.Default.Get()) {}
@@ -18,6 +20,7 @@ public sealed class SqlLiteNewContext<T> : INewContext<T>, IAsyncDisposable wher
 
 	public INewContext<T> NewContext { get; }
 
+	[MustDisposeResource]
 	public async ValueTask<SqlLiteNewContext<T>> Initialize()
 	{
 		await using var context = NewContext.Get();
@@ -33,11 +36,12 @@ public sealed class SqlLiteNewContext<T> : INewContext<T>, IAsyncDisposable wher
 		return this;
 	}
 
+	[MustDisposeResource]
 	public T Get() => NewContext.Get();
 
 	public async ValueTask DisposeAsync()
 	{
 		await using var context = NewContext.Get();
-		await context.Database.EnsureDeletedAsync();
+		await context.Database.EnsureDeletedAsync().Await();
 	}
 }

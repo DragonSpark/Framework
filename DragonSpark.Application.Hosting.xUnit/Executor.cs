@@ -1,12 +1,14 @@
-﻿using DragonSpark.Runtime.Environment;
-using DragonSpark.Runtime.Execution;
 using System.Collections.Generic;
 using System.Reflection;
+using DragonSpark.Runtime.Environment;
+using DragonSpark.Runtime.Execution;
+using JetBrains.Annotations;
 using Xunit.Abstractions;
 using Xunit.Sdk;
 
 namespace DragonSpark.Application.Hosting.xUnit;
 
+[MustDisposeResource]
 public class Executor : XunitTestFrameworkExecutor
 {
 	public Executor(AssemblyName assemblyName,
