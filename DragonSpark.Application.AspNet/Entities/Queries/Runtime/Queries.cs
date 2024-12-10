@@ -6,24 +6,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime;
 
-sealed class Queries<TIn, TOut> : IQueries<TOut>
+sealed class Queries<TIn, TOut>(IScopes scopes, TIn parameter, Func<DbContext, TIn, IQueryable<TOut>> compiled)
+	: IQueries<TOut>
 {
-	readonly IScopes                                _scopes;
-	readonly TIn                                    _parameter;
-	readonly Func<DbContext, TIn, IQueryable<TOut>> _compiled;
-
-	public Queries(IScopes scopes, TIn parameter, Func<DbContext, TIn, IQueryable<TOut>> compiled)
-	{
-		_scopes    = scopes;
-		_parameter = parameter;
-		_compiled  = compiled;
-	}
-
 	[MustDisposeResource]
 	public ValueTask<Query<TOut>> Get()
 	{
-		var (context, disposable) = _scopes.Get();
-		var query   = _compiled(context, _parameter);
+		var (context, disposable) = scopes.Get();
+		var query = compiled(context, parameter);
 		return new(new Query<TOut>(query, disposable));
 	}
 }

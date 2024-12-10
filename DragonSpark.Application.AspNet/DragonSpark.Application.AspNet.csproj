@@ -6,19 +6,16 @@
 	  <Compile Remove="Configuration\**" />
 	  <Compile Remove="Connections\**" />
 	  <Compile Remove="Model\Sequences\**" />
-	  <Compile Remove="Runtime\**" />
 	  <EmbeddedResource Remove="Components\Validation\Expressions\**" />
 	  <EmbeddedResource Remove="Compose\Store\**" />
 	  <EmbeddedResource Remove="Configuration\**" />
 	  <EmbeddedResource Remove="Connections\**" />
 	  <EmbeddedResource Remove="Model\Sequences\**" />
-	  <EmbeddedResource Remove="Runtime\**" />
 	  <None Remove="Components\Validation\Expressions\**" />
 	  <None Remove="Compose\Store\**" />
 	  <None Remove="Configuration\**" />
 	  <None Remove="Connections\**" />
 	  <None Remove="Model\Sequences\**" />
-	  <None Remove="Runtime\**" />
 	</ItemGroup>
 
 	<ItemGroup>

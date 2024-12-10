@@ -1,5 +1,4 @@
-﻿using DragonSpark.Application.Diagnostics;
-using DragonSpark.Application.Runtime.Operations;
+using DragonSpark.Application.Diagnostics;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,12 +13,7 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 
 	public void Execute(IServiceCollection parameter)
 	{
-		parameter.Start<IScopedToken>()
-		         .Forward<ScopedToken>()
-		         .Decorate<AmbientAwareToken>()
-		         .Scoped()
-		         //
-		         .Then.Start<ILogException>()
+		parameter.Start<ILogException>()
 		         .Forward<LogException>()
 		         .Decorate<TemplateAwareLogException>()
 		         .Singleton()

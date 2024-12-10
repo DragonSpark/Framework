@@ -1,7 +1,7 @@
-﻿using DragonSpark.Model.Operations;
 using System.Threading;
+using DragonSpark.Model.Operations;
 
-namespace DragonSpark.Application.Runtime.Operations;
+namespace DragonSpark.Application.AspNet.Runtime.Operations;
 
 sealed class AmbientAwareToken : DragonSpark.Model.Results.Coalesce<CancellationToken>, IScopedToken
 {
