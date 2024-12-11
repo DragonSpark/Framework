@@ -2,6 +2,8 @@
 @using DragonSpark.Model.Commands
 @using DragonSpark.Model.Results
 @using DragonSpark.Presentation.Environment.Browser.Document
+@using NetFabric.Hyperlinq
+@using System.Buffers
 @rendermode InteractiveServer
 @inherits Components.ComponentBase
 
@@ -116,7 +118,8 @@
                 await Monitor.Await();
             }
 
-            foreach (var i in _renderings)
+            using var renderings = _renderings.AsValueEnumerable().ToArray(ArrayPool<IRenderAware>.Shared);
+            foreach (var i in renderings)
             {
                 i.Execute();
             }
