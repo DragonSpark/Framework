@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnoApp1", "UnoApp1\UnoApp1.csproj", "{2FC4AC23-35B3-4C71-BB72-DAB134AE218B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{98B0FE65-AEF8-4CF6-9330-E247612782AF}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
+		Directory.Packages.props = Directory.Packages.props
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark", "..\DragonSpark\DragonSpark.csproj", "{808077F5-1B86-4F66-AD9E-6561AA5B272F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Application", "..\DragonSpark.Application\DragonSpark.Application.csproj", "{191700C4-6ACE-4B54-89BA-D30A0F86004C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Application.Mobile", "..\DragonSpark.Application.Mobile\DragonSpark.Application.Mobile.csproj", "{7B2594B5-36A3-4718-8AA2-5EB1119549D7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2FC4AC23-35B3-4C71-BB72-DAB134AE218B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FC4AC23-35B3-4C71-BB72-DAB134AE218B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FC4AC23-35B3-4C71-BB72-DAB134AE218B}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{2FC4AC23-35B3-4C71-BB72-DAB134AE218B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FC4AC23-35B3-4C71-BB72-DAB134AE218B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FC4AC23-35B3-4C71-BB72-DAB134AE218B}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{808077F5-1B86-4F66-AD9E-6561AA5B272F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{808077F5-1B86-4F66-AD9E-6561AA5B272F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{808077F5-1B86-4F66-AD9E-6561AA5B272F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{808077F5-1B86-4F66-AD9E-6561AA5B272F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{191700C4-6ACE-4B54-89BA-D30A0F86004C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{191700C4-6ACE-4B54-89BA-D30A0F86004C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{191700C4-6ACE-4B54-89BA-D30A0F86004C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{191700C4-6ACE-4B54-89BA-D30A0F86004C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B2594B5-36A3-4718-8AA2-5EB1119549D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B2594B5-36A3-4718-8AA2-5EB1119549D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B2594B5-36A3-4718-8AA2-5EB1119549D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B2594B5-36A3-4718-8AA2-5EB1119549D7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
