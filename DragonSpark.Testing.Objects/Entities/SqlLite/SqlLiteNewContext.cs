@@ -1,15 +1,15 @@
-using System;
-using System.Threading.Tasks;
 using DragonSpark.Application.AspNet.Entities;
 using DragonSpark.Compose;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
+using System;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Testing.Objects.Entities.SqlLite;
 
-[MustDisposeResource]
+[MustDisposeResource(false)]
 public sealed class SqlLiteNewContext<T> : INewContext<T>, IAsyncDisposable where T : DbContext
 {
 	public SqlLiteNewContext() : this(NewSqlLiteOptions<T>.Default.Get()) {}

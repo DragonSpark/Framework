@@ -1,6 +1,6 @@
-using System.Threading.Tasks;
 using DragonSpark.Model.Selection;
 using JetBrains.Annotations;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Runtime.Operations;
 
@@ -10,7 +10,7 @@ public sealed class Workers : ISelect<WorkerInput, Worker>
 
     Workers() { }
 
-    [MustDisposeResource]
+    [MustDisposeResource(false)]
     public Worker Get(WorkerInput parameter)
     {
         var (subject, complete) = parameter;

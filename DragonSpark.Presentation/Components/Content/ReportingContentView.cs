@@ -36,7 +36,7 @@ partial class ReportingContentView<TIn, TOut> where TIn : class
 
 	[Parameter]
 	public IReporter<TIn, TOut> Reporter { get; set; } = default!;
-	
+
 	bool Loaded { get; set; } = true;
 
 	RenderFragment? CurrentLoadingTemplate { get; set; }
