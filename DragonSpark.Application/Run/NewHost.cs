@@ -1,8 +1,8 @@
-﻿using DragonSpark.Model.Selection.Alterations;
-using Microsoft.Extensions.Hosting;
 using System;
+using DragonSpark.Model.Selection.Alterations;
+using Microsoft.Extensions.Hosting;
 
-namespace DragonSpark.Application.Hosting.Server.Run;
+namespace DragonSpark.Application.Run;
 
 public abstract class NewHost(Func<IHostBuilder, IHostBuilder> alteration) : Alteration<IHostBuilder>(alteration)
 {

@@ -1,7 +1,7 @@
-﻿using DragonSpark.Model.Operations.Allocated;
-using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading.Tasks;
+using DragonSpark.Model.Operations.Allocated;
+using Microsoft.Extensions.Hosting;
 
 namespace DragonSpark.Application.AspNet.Run;
 
@@ -20,10 +20,11 @@ public abstract class RunApplication(
 
 	public Task Get(string[] parameter)
 	{
-		var builder     = _builder(parameter);
-		var host        = builder.Build();
-		var application = _application.New(host);
-		_application.Configure.Execute(application);
+		var builder = _builder(parameter);
+		var host    = builder.Build();
+		var (@new, configure) = _application;
+		var application = @new(host);
+		configure.Execute(application);
 		return _run.Get(application);
 	}
 

@@ -1,7 +1,9 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Uno.Sdk">
 
 	<ItemGroup>
 		<ProjectReference Include="..\DragonSpark.Application\DragonSpark.Application.csproj" />
 	</ItemGroup>
-
+	<ItemGroup>
+		<PackageReference Include="Uno.Extensions.Hosting.WinUI" />
+	</ItemGroup>
 </Project>

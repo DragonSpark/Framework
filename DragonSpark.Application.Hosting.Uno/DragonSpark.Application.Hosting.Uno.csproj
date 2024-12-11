@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Uno.Sdk">
 	<ItemGroup>
 		<ProjectReference Include="..\DragonSpark.Application.Mobile\DragonSpark.Application.Mobile.csproj" />
 	</ItemGroup>
