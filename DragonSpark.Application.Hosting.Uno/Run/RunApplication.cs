@@ -1,8 +1,5 @@
-using System;
-using System.Threading.Tasks;
 using DragonSpark.Application.Mobile.Run;
 using Microsoft.Extensions.Hosting;
-using Uno.Extensions.Hosting;
 
 namespace DragonSpark.Application.Hosting.Uno.Run;
 

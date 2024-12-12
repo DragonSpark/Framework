@@ -1,7 +1,7 @@
 <Project>
   <PropertyGroup>
 	<Features>enable-generator-cache</Features>
-	<TargetFramework>net9.0</TargetFramework>
+	<DefaultTargetFramework>net9.0</DefaultTargetFramework>
 	<LangVersion>latest</LangVersion>
 	<Nullable>enable</Nullable>
 	<RunAnalyzersDuringLiveAnalysis>false</RunAnalyzersDuringLiveAnalysis>

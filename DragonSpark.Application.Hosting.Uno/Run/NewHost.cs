@@ -1,4 +1,3 @@
-using System;
 using DragonSpark.Model.Selection.Alterations;
 using Microsoft.Extensions.Hosting;
 

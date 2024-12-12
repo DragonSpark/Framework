@@ -1,8 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+	<TargetFramework>$(DefaultTargetFramework)</TargetFramework>
+  </PropertyGroup>
 
-<ItemGroup>
-	<PackageReference Include="Aspire.Azure.Security.KeyVault" />
-	<PackageReference Include="Aspire.StackExchange.Redis.OutputCaching" />
-	<PackageReference Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" />
-</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Aspire.Azure.Security.KeyVault" />
+		<PackageReference Include="Aspire.StackExchange.Redis.OutputCaching" />
+		<PackageReference Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" />
+	</ItemGroup>
 </Project>

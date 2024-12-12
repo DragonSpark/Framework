@@ -1,4 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
+  <PropertyGroup>
+	<TargetFramework>$(DefaultTargetFramework)</TargetFramework>
+  </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Components\ClipMode.cs" />
     <Compile Remove="Components\ComboBoxTemplates.cs" />
