@@ -12,3 +12,4 @@ public abstract class RunApplication(
 	                         Func<IApplicationBuilder, Task<IHost>> host)
 		: this(new InitializeBuilder(select, configure).Get, host) {}
 }
+

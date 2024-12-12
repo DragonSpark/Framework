@@ -5,7 +5,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace DragonSpark.Application;
 
-public abstract class ProgramBase(Func<IHostBuilder, IHostBuilder> select, IAllocated<IHost> run) : IProgram // TODO
+public abstract class ProgramBase(Func<IHostBuilder, IHostBuilder> select, IAllocated<IHost> run) : IProgram
 {
 	protected ProgramBase(Func<IHostBuilder, IHostBuilder> select) : this(select, RunInitializedProgram.Default) {}
 
