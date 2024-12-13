@@ -20,7 +20,6 @@ using DragonSpark.Presentation.Model;
 using DragonSpark.Presentation.Text;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using NetFabric.Hyperlinq;
 using Radzen;
 using System;
 using System.Collections.Generic;
@@ -104,7 +103,9 @@ public static class Extensions
 	public static bool CanSubmit(this EditContext @this, object receiver)
 		=> @this.CanSubmit() && !IsActive.Default.Get(receiver);
 
-	public static bool IsValid(this EditContext @this) => !@this.GetValidationMessages().AsValueEnumerable().Any();
+	public static ValueTask<bool> Validating(this EditContext @this) => ValidateCompletely.Default.Get(@this);
+
+	public static bool IsValid(this EditContext @this) => Components.Forms.Validation.IsValid.Default.Get(@this);
 
 	public static bool IsValid(this EditContext @this, object receiver)
 		=> @this.IsValid() && !IsActive.Default.Get(receiver);
@@ -153,13 +154,13 @@ public static class Extensions
 	public static Compose.OperationComposer<T> Then<T>(this Application.Compose.OperationComposer<T> @this)
 		=> new(@this.Get());
 
-/**/
+	/**/
 
 	public static Task Invoke<T>(this EventCallback<T> @this, T? parameter)
 		=> @this.HasDelegate ? @this.InvokeAsync(parameter) : Task.CompletedTask;
 
 	public static Task Invoke(this EventCallback @this) => @this.HasDelegate ? @this.InvokeAsync() : Task.CompletedTask;
 
-/**/
+	/**/
 	public static ActivityOptions Get(this ITokenHandle @this, string message) => new(message, @this);
 }

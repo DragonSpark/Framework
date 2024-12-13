@@ -10,15 +10,15 @@ namespace DragonSpark.Presentation.Components.Forms.Validation;
 
 public class Validating : ComponentBase, IDisposable
 {
-	readonly Switch           _requested = new();
+	readonly Switch _requested = new();
 	readonly IOperationsStore _store;
 
-	Task?                  _current;
+	Task? _current;
 	ValidationMessageStore _messages = default!;
-	IOperations            _list     = default!;
-	EditContext?           _context;
+	IOperations _list = default!;
+	EditContext? _context;
 
-	public Validating() : this(OperationsStore.Default) {}
+	public Validating() : this(OperationsStore.Default) { }
 
 	public Validating(IOperationsStore store) => _store = store;
 
@@ -68,16 +68,16 @@ public class Validating : ComponentBase, IDisposable
 				{
 					_list.Execute();
 					_messages.Clear();
-					_context.OnFieldChanged        -= FieldChanged;
+					_context.OnFieldChanged -= FieldChanged;
 					_context.OnValidationRequested -= ValidationRequested;
 				}
 
 				if ((_context = value) != null)
 				{
 					_messages = new ValidationMessageStore(_context);
-					_list     = _store.Get(_context);
+					_list = _store.Get(_context);
 
-					_context.OnFieldChanged        += FieldChanged;
+					_context.OnFieldChanged += FieldChanged;
 					_context.OnValidationRequested += ValidationRequested;
 				}
 			}
@@ -90,8 +90,6 @@ public class Validating : ComponentBase, IDisposable
 	}
 
 	bool IsEmpty() => !_messages[Identifier].AsValueEnumerable().Any();
-
-	bool IsValid() => !_context.Verify().GetValidationMessages(Identifier).AsValueEnumerable().Any();
 
 	void Request()
 	{
@@ -139,7 +137,7 @@ public class Validating : ComponentBase, IDisposable
 	{
 		_messages.Clear(Identifier);
 		var context = _context;
-		if (context is not null && IsValid())
+		if (context is not null && context.IsValid())
 		{
 			await Validate.Invoke(new(new(context, Identifier), _messages, Message));
 
