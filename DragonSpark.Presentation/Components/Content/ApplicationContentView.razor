@@ -14,8 +14,6 @@
 
 @code
 {
-	ISelect<object, IActiveContent<TValue>> _contents = default!;
-
 	[Parameter]
 	public IActiveContent<TValue> Content
 	{
@@ -28,7 +26,8 @@
 				_contents = new ActivityContents<TValue>(_content).Then().Stores().New();
 			}
 		}
-	}   IActiveContent<TValue> _content = default!;
+	}   IActiveContent<TValue>              _content  = default!;
+    ISelect<object, IActiveContent<TValue>> _contents = default!;
 
 	[Parameter]
 	public bool ForceRender { get; set; }

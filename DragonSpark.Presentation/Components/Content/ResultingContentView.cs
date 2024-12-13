@@ -15,8 +15,8 @@ partial class ResultingContentView<T>
 {
 	RenderFragment? _fragment;
 	readonly Switch _loaded = new();
-	Func<Task>      _update = default!;
-	Worker<T?>?     _subject;
+	Func<Task> _update = default!;
+	Worker<T?>? _subject;
 
 	[Parameter]
 	public IResulting<T?>? Content
@@ -72,15 +72,15 @@ partial class ResultingContentView<T>
 
 	protected override Task OnParametersSetAsync()
 	{
-		var first   = _subject is null;
+		var first = _subject is null;
 		_subject ??= Working();
-		var task         = _subject.Value.AsTask();
+		var task = _subject.Value.AsTask();
 		var successfully = task.IsCompletedSuccessfully;
 		return successfully
-			       ? Update()
-			       : first && (ForceRender || Render.Get() > RenderState.Default) && !(_fragment is null ? Rendered : Refreshed).HasDelegate
-				       ? task
-				       : base.OnParametersSetAsync();
+				   ? Update()
+				   : first && (ForceRender || Render.Get() > RenderState.Default) && !(_fragment is null ? Rendered : Refreshed).HasDelegate
+					   ? task
+					   : base.OnParametersSetAsync();
 	}
 
 	Task Update()
@@ -88,16 +88,13 @@ partial class ResultingContentView<T>
 		if (_subject is { Status.IsCompletedSuccessfully: true } && _loaded.Up())
 		{
 			// ReSharper disable once AsyncApostle.AsyncWait
-			var result  = _subject.Value().Status.Result;
+			var result = _subject.Value().Status.Result;
 			var refresh = _fragment is not null;
 			_fragment = result is not null ? ChildContent(result) : NotFoundTemplate;
 			if (result is not null)
 			{
 				var callback = refresh ? Refreshed : Rendered;
-				if (callback.HasDelegate)
-				{
-					return callback.InvokeAsync(result);
-				}
+				return callback.Invoke(result);
 			}
 		}
 
