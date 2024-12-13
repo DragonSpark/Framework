@@ -4,6 +4,7 @@ using DragonSpark.Application.AspNet.Compose.Entities.Queries;
 using DragonSpark.Application.AspNet.Compose.Entities.Queries.Composition.Runtime;
 using DragonSpark.Application.AspNet.Entities;
 using DragonSpark.Application.AspNet.Entities.Configure;
+using DragonSpark.Application.AspNet.Entities.Initialization;
 using DragonSpark.Application.AspNet.Entities.Queries.Composition;
 using DragonSpark.Application.AspNet.Security.Data;
 using DragonSpark.Application.Diagnostics;
@@ -21,6 +22,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using IdentityUser = DragonSpark.Application.AspNet.Security.Identity.IdentityUser;
 
 namespace DragonSpark.Application.AspNet;
@@ -50,6 +52,12 @@ public static partial class Extensions
 	public static StorageConfigurationBuilder WithSqlServer<T>(this StorageConfigurationBuilder @this, string name)
 		where T : DbContext
 		=> @this.Append(new ConfigureSqlServerWithMigration<T>(name));
+
+	public static StorageConfigurationBuilder ApplySeeding(this StorageConfigurationBuilder @this)
+		=> ApplySeeding(@this, ApplyMigrationRegistry.Default.Get);
+
+	public static StorageConfigurationBuilder ApplySeeding(this StorageConfigurationBuilder @this, Func<DbContext, Task> configure)
+		=> @this.Append(_ => new ApplySeeding(configure).Execute);
 
 	public static StorageConfigurationBuilder WithEnvironmentalConfiguration(this StorageConfigurationBuilder @this)
 		=> @this.Append(EnvironmentalStorageConfiguration.Default);

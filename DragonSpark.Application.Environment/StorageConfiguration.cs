@@ -9,5 +9,6 @@ public sealed class StorageConfiguration : AspNet.Entities.Configure.StorageConf
 	public static StorageConfiguration Default { get; } = new();
 
 	StorageConfiguration()
-		: base(x => x.ConfigureWarnings(y => y.Ignore(CoreEventId.DistinctAfterOrderByWithoutRowLimitingOperatorWarning))) {}
+		: base(x => x.ConfigureWarnings(y => y.Ignore(CoreEventId.DistinctAfterOrderByWithoutRowLimitingOperatorWarning)
+		                                      .Ignore(RelationalEventId.PendingModelChangesWarning))) {}
 }
