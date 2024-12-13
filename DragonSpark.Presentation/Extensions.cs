@@ -103,7 +103,7 @@ public static class Extensions
 	public static bool CanSubmit(this EditContext @this, object receiver)
 		=> @this.CanSubmit() && !IsActive.Default.Get(receiver);
 
-	public static ValueTask<bool> Validating(this EditContext @this) => ValidateCompletely.Default.Get(@this);
+	public static ValueTask<bool> Validating(this EditContext @this) => ValidContext.Default.Get(@this);
 
 	public static bool IsValid(this EditContext @this) => Components.Forms.Validation.IsValid.Default.Get(@this);
 
