@@ -1,8 +1,8 @@
-using System;
-using System.Threading.Tasks;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Allocated;
+using System;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Runtime.Operations;
 
@@ -23,7 +23,7 @@ sealed class WorkerOperation : IAllocated
     {
         try
         {
-            await _subject.ConfigureAwait(false);
+            await _subject.ConfigureAwait(true);
             _source.SetResult();
         }
         // ReSharper disable once CatchAllClause
@@ -55,7 +55,7 @@ sealed class WorkerOperation<T> : IOperation
     {
         try
         {
-            var content = await _subject.ConfigureAwait(false);
+            var content = await _subject.ConfigureAwait(true);
             _source.SetResult(content);
         }
         catch (Exception e)
