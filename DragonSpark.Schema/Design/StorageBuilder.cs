@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Entities.Design;
+﻿using DragonSpark.Application.AspNet.Entities.Design;
 using JetBrains.Annotations;
 
 namespace DragonSpark.Schema.Design

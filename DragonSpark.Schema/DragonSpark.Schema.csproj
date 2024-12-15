@@ -1,10 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>$(DefaultTargetFramework)</TargetFramework>
+	</PropertyGroup>
 
   <ItemGroup>
     <None Remove="appsettings.json" />
@@ -17,15 +14,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DragonSpark.Application\DragonSpark.Application.csproj" />
+    <ProjectReference Include="..\DragonSpark.Application.AspNet\DragonSpark.Application.AspNet.csproj" />
   </ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="EntityFrameworkCore.Exceptions.SqlServer" Version="3.1.4" />
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.0-rc.1.21416.1">
+		<PackageReference Include="EntityFrameworkCore.Exceptions.SqlServer" />
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Design">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.0-rc.1.21416.1">
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>

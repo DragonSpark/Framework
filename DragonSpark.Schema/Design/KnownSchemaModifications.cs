@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Entities;
+﻿using DragonSpark.Application.AspNet.Entities.Initialization;
 
 namespace DragonSpark.Schema.Design
 {
@@ -6,6 +6,6 @@ namespace DragonSpark.Schema.Design
 	{
 		public static KnownSchemaModifications Default { get; } = new KnownSchemaModifications();
 
-		KnownSchemaModifications() : base() {}
+		KnownSchemaModifications() {}
 	}
 }

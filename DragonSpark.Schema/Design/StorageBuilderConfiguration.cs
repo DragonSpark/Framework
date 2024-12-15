@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Entities.Configure;
+﻿using DragonSpark.Application.AspNet.Entities.Configure;
 using DragonSpark.Compose;
 
 namespace DragonSpark.Schema.Design

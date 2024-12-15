@@ -1,6 +1,7 @@
-﻿using DragonSpark.Application.Entities;
+﻿using DragonSpark.Application.AspNet.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace DragonSpark.Schema
 {
@@ -19,6 +20,7 @@ namespace DragonSpark.Schema
 
 		public DateTimeOffset Created { get; set; }
 
+		[MaxLength(256)]
 		public string Message { get; set; } = default!;
 	}
 }

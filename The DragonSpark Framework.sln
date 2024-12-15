@@ -111,9 +111,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DragonSpark.SyncfusionRende
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Application.AspNet", "DragonSpark.Application.AspNet\DragonSpark.Application.AspNet.csproj", "{DC026244-C88B-49C1-A8F9-07A586C7D796}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Application.Mobile", "DragonSpark.Application.Mobile\DragonSpark.Application.Mobile.csproj", "{A4B67CA2-AC6A-4FE9-BCB6-E8FD553809A1}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Application.Hosting.Uno", "DragonSpark.Application.Hosting.Uno\DragonSpark.Application.Hosting.Uno.csproj", "{EE355DCC-38F7-488B-8E9F-9420796E9BED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Schema", "DragonSpark.Schema\DragonSpark.Schema.csproj", "{5F80D23B-F0F0-9AA9-2193-F891393AF867}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -301,14 +299,10 @@ Global
 		{DC026244-C88B-49C1-A8F9-07A586C7D796}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC026244-C88B-49C1-A8F9-07A586C7D796}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC026244-C88B-49C1-A8F9-07A586C7D796}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A4B67CA2-AC6A-4FE9-BCB6-E8FD553809A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A4B67CA2-AC6A-4FE9-BCB6-E8FD553809A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A4B67CA2-AC6A-4FE9-BCB6-E8FD553809A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A4B67CA2-AC6A-4FE9-BCB6-E8FD553809A1}.Release|Any CPU.Build.0 = Release|Any CPU
-		{EE355DCC-38F7-488B-8E9F-9420796E9BED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{EE355DCC-38F7-488B-8E9F-9420796E9BED}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EE355DCC-38F7-488B-8E9F-9420796E9BED}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{EE355DCC-38F7-488B-8E9F-9420796E9BED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F80D23B-F0F0-9AA9-2193-F891393AF867}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F80D23B-F0F0-9AA9-2193-F891393AF867}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F80D23B-F0F0-9AA9-2193-F891393AF867}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F80D23B-F0F0-9AA9-2193-F891393AF867}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -354,7 +348,6 @@ Global
 		{22A0C85E-BB47-40AC-B050-9A8F9162E8A9} = {D7340C89-0B20-4B69-A0BB-2291B5FBCF4E}
 		{5E3AD459-0D1F-4DFC-A13A-D4A263FDB97C} = {D273BAB9-2B15-4EB3-905F-FE0D291BE1DE}
 		{871F6654-850C-4BE9-8E36-3FD65E70C6E9} = {D7340C89-0B20-4B69-A0BB-2291B5FBCF4E}
-		{EE355DCC-38F7-488B-8E9F-9420796E9BED} = {D273BAB9-2B15-4EB3-905F-FE0D291BE1DE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D7E910BA-B9EE-40A8-9C18-08D091DA997F}
