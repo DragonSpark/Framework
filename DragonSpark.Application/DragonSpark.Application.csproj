@@ -26,14 +26,12 @@
   </ItemGroup>
 
   <ItemGroup>
-	<PackageReference Include="Azure.Identity" />
 	<PackageReference Include="Flurl" />
 	<PackageReference Include="Humanizer" />
 	<PackageReference Include="Markdig" />
 	<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" />
 	<PackageReference Include="System.Formats.Asn1" />
 	<PackageReference Include="System.IdentityModel.Tokens.Jwt" />
-	<PackageReference Include="Microsoft.Extensions.Http.Polly" />
 	<PackageReference Include="SluggyUnidecode" />
 	<PackageReference Include="SmartFormat.NET" />
 	

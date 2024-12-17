@@ -1,4 +1,6 @@
-﻿using DragonSpark.Compose;
+using System;
+using System.Linq;
+using DragonSpark.Compose;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Composition.Compose.Deferred;
 using DragonSpark.Model.Commands;
@@ -7,8 +9,6 @@ using LightInject;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using System;
-using System.Linq;
 
 namespace DragonSpark.Composition;
 
@@ -27,7 +27,7 @@ public static class Extensions
 
 	public static IConfigurationRoot ConfigurationRoot(this IServiceCollection @this)
 		=> @this.Configuration().To<IConfigurationRoot>();
-	
+
 	public static IConfiguration Configuration(this IServiceCollection @this)
 		=> @this.Single(x => x.ServiceType == typeof(IConfiguration))
 		        .ImplementationFactory?.Invoke(null!)
@@ -116,7 +116,8 @@ public static class Extensions
 		=> @this.Configure(new RegisterModularity(new CreateModularity(TypeSelection<T>.Default.Get)));*/
 
 	public static BuildHostContext ConfigureFromEnvironment(this BuildHostContext @this)
-		=> @this.WithComposition().Configure(Compose.ConfigureFromEnvironment.Default);
+		=> @this.Configure(Compose.ConfigureFromEnvironment.Default)
+		        .Configure(ConfigureHostBuilderFromEnvironment.Default);
 
 	public static ICommand<IServiceCollection> ConfigureFromEnvironment(
 		this ICommand<IServiceCollection> @this)

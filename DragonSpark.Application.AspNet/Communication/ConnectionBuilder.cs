@@ -1,8 +1,8 @@
-﻿using DragonSpark.Diagnostics;
-using Polly.Extensions.Http;
 using System.Net.Http;
+using DragonSpark.Diagnostics;
+using Polly.Extensions.Http;
 
-namespace DragonSpark.Application.Communication;
+namespace DragonSpark.Application.AspNet.Communication;
 
 sealed class ConnectionBuilder : Builder<HttpResponseMessage>
 {

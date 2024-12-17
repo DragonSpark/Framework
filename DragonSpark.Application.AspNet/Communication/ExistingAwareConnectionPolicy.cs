@@ -1,10 +1,10 @@
-﻿using DragonSpark.Compose;
+using System.Net.Http;
+using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 using JetBrains.Annotations;
 using Polly;
-using System.Net.Http;
 
-namespace DragonSpark.Application.Communication;
+namespace DragonSpark.Application.AspNet.Communication;
 
 sealed class ExistingAwareConnectionPolicy : Instance<PolicyBuilder<HttpResponseMessage>>
 {
