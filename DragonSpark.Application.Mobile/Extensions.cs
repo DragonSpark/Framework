@@ -1,3 +1,4 @@
+using DragonSpark.Application.Mobile.Diagnostics;
 using DragonSpark.Application.Mobile.Run;
 using DragonSpark.Composition.Compose;
 
@@ -13,4 +14,7 @@ public static class Extensions
 
 	public static IRunApplication WithEnvironmentalConfigurations(this IRunApplication @this)
 		=> new EnvironmentalConfigurationAwareRunApplication(@this);
+
+	public static BuildHostContext WithOpenTelemetry(this BuildHostContext @this, params string[] sources)
+		=> @this.Configure(new ConfigureOpenTelemetry(sources));
 }

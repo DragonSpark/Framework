@@ -1,8 +1,8 @@
-﻿using DragonSpark.Diagnostics.Logging;
+using System;
+using DragonSpark.Diagnostics.Logging;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Sequences;
 using Microsoft.Extensions.Logging;
-using System;
 using Exception = System.Exception;
 
 namespace DragonSpark.Compose;
@@ -247,4 +247,7 @@ public static partial class ExtensionMethods
 	public static TemplateException Get<T1, T2, T3>(this ITemplate<(T1, T2, T3)> @this,
 	                                                Exception exception, T1 first, T2 second, T3 third)
 		=> @this.Get(new(exception, (first, second, third)));
+
+	public static bool IsNullOrEmpty(this string? @this) => string.IsNullOrEmpty(@this);
+	public static bool IsNullOrWhiteSpace(this string? @this) => string.IsNullOrWhiteSpace(@this);
 }
