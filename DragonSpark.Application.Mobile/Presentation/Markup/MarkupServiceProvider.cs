@@ -2,7 +2,7 @@ using System;
 using DragonSpark.Compose;
 using Microsoft.UI.Xaml;
 
-namespace DragonSpark.Application.Mobile.Presentation;
+namespace DragonSpark.Application.Mobile.Presentation.Markup;
 
 sealed class MarkupServiceProvider : IServiceProvider
 {

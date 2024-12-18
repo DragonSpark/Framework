@@ -1,7 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection;
 using System;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Application.Mobile.Presentation;
+namespace DragonSpark.Application.Mobile.Presentation.Markup;
 
 public readonly record struct MarkupExtensionContext<T>(IServiceProvider Provider, T Subject) where T : notnull
 {

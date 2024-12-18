@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Localization;
+using Microsoft.Extensions.Localization;
 
-namespace DragonSpark.Application.Mobile.Presentation;
+namespace DragonSpark.Application.Mobile.Presentation.Markup;
 
 public sealed class Localized : MarkupExtension<IStringLocalizer>
 {

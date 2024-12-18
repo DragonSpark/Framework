@@ -1,9 +1,9 @@
-﻿using DragonSpark.Model.Selection;
+using System;
+using DragonSpark.Model.Selection;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Markup;
-using System;
 
-namespace DragonSpark.Application.Mobile.Presentation;
+namespace DragonSpark.Application.Mobile.Presentation.Markup;
 
 public abstract class MarkupExtension<T> : MarkupExtension, ISelect<MarkupExtensionContext<T>, object> where T : notnull
 {

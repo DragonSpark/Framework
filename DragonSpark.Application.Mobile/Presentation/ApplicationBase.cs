@@ -4,7 +4,8 @@ using Microsoft.UI.Xaml;
 namespace DragonSpark.Application.Mobile.Presentation;
 
 
-public abstract class ApplicationBase : Microsoft.UI.Xaml.Application, IApplication
+// ReSharper disable once MissingAnnotation
+public class ApplicationBase : Microsoft.UI.Xaml.Application, IApplication
 {
 	public void Execute(Run.Application parameter)
 	{

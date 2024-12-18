@@ -1,8 +1,8 @@
-﻿using DragonSpark.Model.Selection.Stores;
-using Microsoft.UI.Xaml;
 using System;
+using DragonSpark.Model.Selection.Stores;
+using Microsoft.UI.Xaml;
 
-namespace DragonSpark.Application.Mobile.Presentation;
+namespace DragonSpark.Application.Mobile.Presentation.Markup;
 
 sealed class MarkupServiceProviders : ReferenceValueStore<IXamlServiceProvider, IServiceProvider>
 {
