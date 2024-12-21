@@ -2,6 +2,7 @@
 using DragonSpark.Application.AspNet.Entities.Diagnostics;
 using DragonSpark.Application.AspNet.Entities.Editing;
 using DragonSpark.Application.AspNet.Entities.Transactions;
+using DragonSpark.Application.AspNet.Model.Content;
 using DragonSpark.Application.AspNet.Security.Identity;
 using DragonSpark.Application.AspNet.Security.Identity.Authentication;
 using DragonSpark.Application.AspNet.Security.Identity.Bearer;
@@ -10,6 +11,7 @@ using DragonSpark.Compose;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Identity;
@@ -91,6 +93,10 @@ partial class Extensions
 		@this.Attach(parameter);
 		return parameter;
 	}
+
+	/**/
+
+	public static MarkupString AsMarkup(this string? @this) => AsMarkdown.Default.Get(@this);
 
 	/**/
 	
