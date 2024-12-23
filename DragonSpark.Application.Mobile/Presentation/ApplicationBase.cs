@@ -1,7 +1,5 @@
-using System;
 using DragonSpark.Application.Mobile.Run;
 using DragonSpark.Compose;
-using DragonSpark.Model.Results;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
 
@@ -32,15 +30,4 @@ public abstract class ApplicationBase : Microsoft.UI.Xaml.Application, IApplicat
 		// ReSharper disable once AsyncApostle.AsyncAwaitMayBeElidedHighlighting
 		await _run.Await(new(this, args));
 	}
-}
-
-// TODO
-
-sealed class CurrentServices : Result<IServiceProvider>, IServiceProvider
-{
-	public static CurrentServices Default { get; } = new();
-
-	CurrentServices() : base(() => Microsoft.UI.Xaml.Application.Current.To<ApplicationBase>().Host.Services) {}
-
-	public object? GetService(Type serviceType) => Get().GetService(serviceType);
 }

@@ -11,8 +11,7 @@ sealed class MarkupServiceProvider : IServiceProvider
 	readonly Type                 _type;
 
 	public MarkupServiceProvider(IXamlServiceProvider previous)
-		: this(previous, Microsoft.UI.Xaml.Application.Current.To<IApplication>().Host.Services,
-		       A.Type<IXamlServiceProvider>()) {}
+		: this(previous, CurrentServices.Default, A.Type<IXamlServiceProvider>()) {}
 
 	public MarkupServiceProvider(IXamlServiceProvider previous, IServiceProvider services, Type type)
 	{
