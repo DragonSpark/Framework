@@ -2,6 +2,9 @@
   <PropertyGroup>
 	  <!--<TargetFramework>$(DefaultTargetFramework)</TargetFramework>-->
 	  <TargetFrameworks>net9.0-desktop;net9.0;net9.0-ios;net9.0-maccatalyst;net9.0-android;net9.0-windows10.0.26100</TargetFrameworks>
+	  <UnoFeatures>
+		  MVUX;
+	  </UnoFeatures>
   </PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\DragonSpark.Application\DragonSpark.Application.csproj" />

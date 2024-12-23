@@ -1,10 +1,10 @@
-﻿using DragonSpark.Composition;
+using System;
+using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using SerilogTracing;
-using System;
 using ILogger = Serilog.ILogger;
 
 namespace DragonSpark.Diagnostics;
@@ -18,9 +18,10 @@ sealed class ConfigureSerilog : ICommand<IServiceCollection>
 	public void Execute(IServiceCollection parameter)
 	{
 		var configuration = new LoggerConfiguration().ReadFrom.Configuration(parameter.Configuration());
+		var logger        = configuration.CreateLogger();
 		parameter.AddSingleton(new ActivityListenerConfiguration())
 		         .AddSingleton(configuration)
-		         .AddSingleton<ILogger>(_ => configuration.CreateLogger())
+		         .AddSingleton<ILogger>(_ => logger)
 		         .AddScoped(_provider);
 	}
 }

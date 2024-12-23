@@ -15,6 +15,9 @@ public static class Extensions
 	public static IRunApplication WithEnvironmentalConfigurations(this IRunApplication @this)
 		=> new EnvironmentalConfigurationAwareRunApplication(@this);
 
+	public static IRunApplication WithInitialization(this IRunApplication @this)
+		=> new RunInitializedApplication(@this);
+
 	public static BuildHostContext WithOpenTelemetry(this BuildHostContext @this, params string[] sources)
 		=> @this.Configure(new ConfigureOpenTelemetry(sources));
 }
