@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using DragonSpark.Application.Diagnostics;
-using DragonSpark.Application.Mobile.Presentation;
 using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
@@ -60,15 +59,7 @@ sealed class DefaultInitializeApplication : IInitializeApplication
 {
 	public static DefaultInitializeApplication Default { get; } = new();
 
-	DefaultInitializeApplication()
-        : this(x => CurrentServices.Default.GetRequiredService<IApplicationErrorHandler>().Execute(x)) {}
-
-	readonly Action<Exception> _handler;
-
-	public DefaultInitializeApplication(Action<Exception> handler) => _handler = handler;
-
-	public ValueTask Get(Application parameter)
-	{
-		return ValueTask.CompletedTask;
-	}
+	DefaultInitializeApplication() {}
+	
+	public ValueTask Get(Application parameter) => ValueTask.CompletedTask;
 }
