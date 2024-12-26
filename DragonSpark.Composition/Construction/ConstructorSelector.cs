@@ -1,8 +1,8 @@
-﻿using DragonSpark.Model.Sequences.Memory;
-using LightInject;
-using NetFabric.Hyperlinq;
 using System;
+using System.Linq;
 using System.Reflection;
+using DragonSpark.Model.Sequences.Memory;
+using LightInject;
 
 namespace DragonSpark.Composition.Construction;
 
@@ -36,7 +36,7 @@ sealed class ConstructorSelector : IConstructorSelector
 		for (var index = 0; index < length; index++)
 		{
 			var (candidate, parameters) = span[index];
-			if (parameters.AsValueEnumerable().All(_specification))
+			if (parameters.All(_specification))
 			{
 				return candidate;
 			}

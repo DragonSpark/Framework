@@ -1,5 +1,5 @@
-﻿using System;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 namespace DragonSpark.Model.Results;
 
@@ -12,24 +12,15 @@ public class Variable<T> : IMutable<T?>
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public T Get()
 	{
-		// ATTRIBUTION: https://twitter.com/SergioPedri/status/1228752877604265985
-		var     view   = Unsafe.As<RawData>(_store);
-		ref var item   = ref Unsafe.As<byte, T>(ref view.Data);
-		ref var result = ref Unsafe.Add(ref item, 0);
-		return result;
+		// ATTRIBUTION: https://x.com/SergioPedri/status/1228752877604265985
+		// https://github.com/CommunityToolkit/dotnet/blob/657c6971a8d42655c648336b781639ed96c2c49f/src/CommunityToolkit.HighPerformance/Extensions/ArrayExtensions.1D.cs#L52
+		ref var reference = ref MemoryMarshal.GetArrayDataReference(_store);
+		ref var result    = ref Unsafe.Add(ref reference, (nint)0);
+		return result!;
 	}
 
 	public void Execute(T? parameter)
 	{
 		_store[0] = parameter;
-	}
-
-	sealed class RawData
-	{
-#pragma warning disable 649
-		public IntPtr Length;
-#pragma warning restore 649
-
-		public byte Data;
 	}
 }
