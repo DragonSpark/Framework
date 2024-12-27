@@ -115,6 +115,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Application.Mob
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DragonSpark.Application.Hosting.Uno", "DragonSpark.Application.Hosting.Uno\DragonSpark.Application.Hosting.Uno.csproj", "{EE355DCC-38F7-488B-8E9F-9420796E9BED}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnoApp1", "UnoApp1\UnoApp1\UnoApp1.csproj", "{F44EBB2E-E292-46B7-A8B5-67221D9B7CB5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -309,6 +311,12 @@ Global
 		{EE355DCC-38F7-488B-8E9F-9420796E9BED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE355DCC-38F7-488B-8E9F-9420796E9BED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE355DCC-38F7-488B-8E9F-9420796E9BED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F44EBB2E-E292-46B7-A8B5-67221D9B7CB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F44EBB2E-E292-46B7-A8B5-67221D9B7CB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F44EBB2E-E292-46B7-A8B5-67221D9B7CB5}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{F44EBB2E-E292-46B7-A8B5-67221D9B7CB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F44EBB2E-E292-46B7-A8B5-67221D9B7CB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F44EBB2E-E292-46B7-A8B5-67221D9B7CB5}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
