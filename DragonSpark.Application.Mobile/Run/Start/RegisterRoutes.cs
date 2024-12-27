@@ -29,5 +29,3 @@ public class RegisterRoutes : ICommand<RoutesInput>
 		Execute(new(views, routes));
 	}
 }
-
-public readonly record struct RoutesInput(IViewRegistry Views, IRouteRegistry Routes);

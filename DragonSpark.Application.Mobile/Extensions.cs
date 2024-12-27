@@ -12,9 +12,6 @@ public static class Extensions
 	public static IRunApplication ForSynchronousExecution(this IRunApplication @this)
 		=> new SynchronousAwareRunApplication(@this);
 
-	public static IRunApplication WithEnvironmentalConfigurations(this IRunApplication @this)
-		=> new EnvironmentalConfigurationAwareRunApplication(@this);
-
 	public static IRunApplication WithInitialization(this IRunApplication @this)
 		=> new RunInitializedApplication(@this);
 

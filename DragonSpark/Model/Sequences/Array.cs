@@ -44,7 +44,7 @@ public readonly struct Array<T> : IResult<ImmutableArray<T>>
 			// https://github.com/CommunityToolkit/dotnet/blob/657c6971a8d42655c648336b781639ed96c2c49f/src/CommunityToolkit.HighPerformance/Extensions/ArrayExtensions.1D.cs#L52
 			ref var reference = ref MemoryMarshal.GetArrayDataReference(_reference);
 			ref var result    = ref Unsafe.Add(ref reference, (nint)(uint)index);
-			return ref result;
+			return ref result!;
 		}
 	}
 
