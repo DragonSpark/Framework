@@ -1,6 +1,6 @@
 <Project Sdk="Uno.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>net9.0-maccatalyst;net9.0-windows10.0.26100;net9.0-desktop</TargetFrameworks>
+	  <TargetFrameworks>net9.0-desktop;net9.0-android;net9.0-maccatalyst;net9.0</TargetFrameworks>
 
     <OutputType>Exe</OutputType>
     <UnoSingleProject>true</UnoSingleProject>
@@ -49,6 +49,7 @@
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\DragonSpark.Application.Hosting.Uno\DragonSpark.Application.Hosting.Uno.csproj" />
+    <ProjectReference Include="..\..\DragonSpark.Application.Mobile\DragonSpark.Application.Mobile.csproj" />
   </ItemGroup>
 
 </Project>
