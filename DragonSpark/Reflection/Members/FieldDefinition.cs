@@ -1,7 +1,7 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Results;
 using System;
 using System.Reflection;
+using DragonSpark.Compose;
+using DragonSpark.Model.Results;
 
 namespace DragonSpark.Reflection.Members;
 
@@ -12,6 +12,5 @@ public class FieldDefinition<T> : FieldDefinition
 
 public class FieldDefinition : Instance<FieldInfo>
 {
-	protected FieldDefinition(Type type, string name)
-		: base(type.GetField(name, PrivateInstanceFlags.Default).Verify()) {}
+	protected FieldDefinition(Type type, string name) : base(type.GetField(name, PrivateInstanceFlags.Default).Verify()) {}
 }
