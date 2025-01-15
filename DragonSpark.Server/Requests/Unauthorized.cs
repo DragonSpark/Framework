@@ -12,7 +12,7 @@ public class Unauthorized<T> : IRequesting<T>
 	readonly Template _template;
 	readonly string   _type;
 
-	public Unauthorized(Template template, string type)
+	protected Unauthorized(Template template, string type)
 	{
 		_template = template;
 		_type     = type;
