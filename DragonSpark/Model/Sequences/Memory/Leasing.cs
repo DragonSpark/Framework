@@ -36,6 +36,8 @@ public readonly struct Leasing<T>(Lease<T> owner, Memory<T> reference, uint leng
 
     public uint ActualLength => (uint)reference.Length;
 
+    public T[] Store => owner.Rented;
+
     public T[] ToArray()
     {
         var result = AsSpan().ToArray();
