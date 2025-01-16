@@ -1,9 +1,9 @@
-﻿using DragonSpark.Compose;
+using System.Threading.Tasks;
+using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
 using DragonSpark.Presentation.Environment.Browser;
 using Syncfusion.Blazor;
-using System.Threading.Tasks;
 
 namespace DragonSpark.SyncfusionRendering.Queries;
 
@@ -28,7 +28,7 @@ sealed class StateAwareDataRequest : IDataRequest
 		try
 		{
 			_active.Up();
-			return await _previous.Get(parameter);
+			return await _previous.Await(parameter);
 		}
 		catch
 		{
