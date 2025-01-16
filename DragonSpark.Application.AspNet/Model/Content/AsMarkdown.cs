@@ -5,10 +5,6 @@ using Microsoft.AspNetCore.Components;
 
 namespace DragonSpark.Application.AspNet.Model.Content;
 
-class Class1;
-
-// TODO
-
 sealed class AsMarkdown : ISelect<string?, MarkupString>
 {
 	public static AsMarkdown Default { get; } = new();
