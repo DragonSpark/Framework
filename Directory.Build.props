@@ -16,4 +16,7 @@
   <ItemGroup>
 		<PackageReference Include="Microsoft.Net.Compilers.Razor.Toolset" Condition=" '$(UsingMicrosoftNETSdkRazor)' == 'true' " />
 	</ItemGroup>
+	<ItemGroup>
+	  <NuGetAuditSuppress Include="https://github.com/advisories/GHSA-4cv2-4hjh-77rx" />
+	</ItemGroup>
 </Project>
