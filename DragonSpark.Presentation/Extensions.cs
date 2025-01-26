@@ -23,6 +23,7 @@ using Microsoft.AspNetCore.Components.Forms;
 using Radzen;
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Action = System.Action;
 using ComponentBase = Microsoft.AspNetCore.Components.ComponentBase;
@@ -160,6 +161,11 @@ public static class Extensions
 		=> @this.HasDelegate ? @this.InvokeAsync(parameter) : Task.CompletedTask;
 
 	public static Task Invoke(this EventCallback @this) => @this.HasDelegate ? @this.InvokeAsync() : Task.CompletedTask;
+
+	public static ConfiguredTaskAwaitable Await(this EventCallback @this) => @this.Invoke().Await();
+
+	public static ConfiguredTaskAwaitable Await<T>(this EventCallback<T> @this, T parameter)
+		=> @this.Invoke(parameter).Await();
 
 	/**/
 	public static ActivityOptions Get(this ITokenHandle @this, string message) => new(message, @this);
