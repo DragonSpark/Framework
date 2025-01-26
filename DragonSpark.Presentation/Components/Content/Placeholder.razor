@@ -5,7 +5,7 @@
     string _address = string.Empty;
     protected override void OnInitialized()
     {
-        _address = $"//via.placeholder.com/{Width}x{Height}.png/{Background}/{Foreground}?text={WebUtility.UrlEncode(Text)}";
+        _address = $"//placehold.co/{Width}x{Height}.png/{Background}/{Foreground}?text={WebUtility.UrlEncode(Text)}";
         base.OnInitialized();       
     }
 
