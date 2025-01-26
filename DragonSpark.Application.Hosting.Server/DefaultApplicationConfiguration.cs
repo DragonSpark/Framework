@@ -19,8 +19,8 @@ sealed class DefaultApplicationConfiguration : ICommand<IApplicationBuilder>
 	public void Execute(IApplicationBuilder parameter)
 	{
 		parameter.UseWarmupAwareHttpsRedirection()
-		         .UseRouting()
 		         .UseAuthentication()
+		         .UseRouting()
 		         .UseAuthorization()
 		         .UseEndpoints(_endpoints);
 	}
