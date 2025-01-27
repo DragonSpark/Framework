@@ -17,6 +17,9 @@ sealed class ComponentAssemblyNames : ISelect<AssemblyName, IEnumerable<Assembly
 	readonly Func<AssemblyName, IEnumerable<AssemblyName>> _expand;
 	readonly Array<IAlteration<AssemblyName>>              _names;
 
+	public ComponentAssemblyNames(string environment)
+		: this(new SpecificEnvironmentAssemblyName(environment), EnvironmentAssemblyName.Default) {}
+
 	public ComponentAssemblyNames(params IAlteration<AssemblyName>[] names)
 		: this(ComponentAssemblyCandidates.Default.Get, names) {}
 

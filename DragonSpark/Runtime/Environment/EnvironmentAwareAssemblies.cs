@@ -11,8 +11,7 @@ sealed class EnvironmentAwareAssemblies : IArray<string, Assembly>
 
 	public Array<Assembly> Get(string parameter)
 	{
-		var names = new ComponentAssemblyNames(new SpecificEnvironmentAssemblyName(parameter),
-		                                       EnvironmentAssemblyName.Default);
+		var names    = new ComponentAssemblyNames(parameter);
 		var selector = new AssemblySelector(names);
 		var result   = new Assemblies(selector).Get();
 		return result;
