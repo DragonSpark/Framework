@@ -20,6 +20,9 @@ sealed class Builder : IApplicationBuilder
 		_delegates = delegates;
 	}
 
+	public IApplicationBuilder Configure(Action<IHostBuilder, Window> configureHost)
+		=> _previous.Configure(configureHost);
+
 	[MustDisposeResource(false)]
 	public IHost Build()
 	{

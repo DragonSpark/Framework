@@ -21,6 +21,9 @@ sealed class ConfigureAwareBuilder : IApplicationBuilder
 
 	public IApplicationBuilder Configure(Action<IHostBuilder> configureHost) => _previous.Configure(configureHost);
 
+	public IApplicationBuilder Configure(Action<IHostBuilder, Window> configureHost)
+		=> _previous.Configure(configureHost);
+
 	[MustDisposeResource]
 	public IHost Build()
 	{
