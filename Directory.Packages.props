@@ -70,7 +70,7 @@
     <PackageVersion Include="Microsoft.Azure.WebJobs" Version="3.0.41" />
     <PackageVersion Include="Microsoft.Azure.WebJobs.Extensions.ServiceBus" Version="5.16.4" />
     <PackageVersion Include="Microsoft.Azure.WebJobs.Extensions.Storage" Version="5.3.3" />
-    <PackageVersion Include="Microsoft.Data.SqlClient.AlwaysEncrypted.AzureKeyVaultProvider" Version="5.1.0" />
+    <PackageVersion Include="Microsoft.Data.SqlClient.AlwaysEncrypted.AzureKeyVaultProvider" Version="6.0.0" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.1" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.1" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.1" />
@@ -89,7 +89,7 @@
     <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.11.0" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.11.0" />
     <PackageVersion Include="Polly" Version="8.5.2" />
-    <PackageVersion Include="Radzen.Blazor" Version="5.8.0" />
+    <PackageVersion Include="Radzen.Blazor" Version="5.9.7" />
     <PackageVersion Include="Refit" Version="7.0.0" />
     <PackageVersion Include="Scrutor" Version="6.0.1" />
     <PackageVersion Include="SendGrid.Extensions.DependencyInjection" Version="1.0.1" />
