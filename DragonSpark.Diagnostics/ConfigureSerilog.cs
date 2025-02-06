@@ -22,6 +22,7 @@ sealed class ConfigureSerilog : ICommand<IServiceCollection>
 		parameter.AddSingleton(new ActivityListenerConfiguration())
 		         .AddSingleton(configuration)
 		         .AddSingleton<ILogger>(_ => logger)
-		         .AddScoped(_provider);
+		         .AddScoped(_provider)
+		         .AddSerilog(logger);
 	}
 }

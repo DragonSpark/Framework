@@ -5,11 +5,11 @@ using Microsoft.Extensions.Hosting;
 
 namespace DragonSpark.Application.AspNet.Run;
 
-public abstract class RunApplication(
+public abstract class RunApplication( // TODO: Rename Program
 	Func<string[], IHostBuilder> builder,
 	ConfigureNewApplication application,
 	IAllocated<IHost> run)
-	: IAllocated<string[]>
+	: IProgram
 {
 	readonly Func<string[], IHostBuilder> _builder     = builder;
 	readonly ConfigureNewApplication      _application = application;

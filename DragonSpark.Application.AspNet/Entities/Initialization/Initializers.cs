@@ -1,6 +1,6 @@
-﻿using DragonSpark.Compose;
-using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+using DragonSpark.Compose;
+using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Application.AspNet.Entities.Initialization;
 

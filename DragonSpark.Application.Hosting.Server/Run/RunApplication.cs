@@ -1,8 +1,8 @@
-﻿using DragonSpark.Application.AspNet.Run;
+using System;
+using DragonSpark.Application.AspNet.Run;
 using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.Hosting;
-using System;
 
 namespace DragonSpark.Application.Hosting.Server.Run;
 

@@ -1,22 +1,22 @@
-﻿using DragonSpark.Compose;
+using System;
+using System.Diagnostics;
+using DragonSpark.Compose;
 using DragonSpark.Diagnostics.Logging;
 using DragonSpark.Model;
 using DragonSpark.Model.Commands;
 using DragonSpark.Reflection.Assemblies;
 using DragonSpark.Runtime.Environment;
-using System;
-using System.Diagnostics;
 
 namespace DragonSpark.Application.Diagnostics.Initialization;
 
-public sealed class EmitRunningLog<T> : EmitRunningLog
+sealed class EmitRunningLog<T> : EmitRunningLog
 {
 	public static EmitRunningLog<T> Default { get; } = new();
 
 	EmitRunningLog() : base(LogRunningMessage<T>.Default) {}
 }
 
-public class EmitRunningLog : ICommand
+class EmitRunningLog : ICommand
 {
 	readonly ILogMessage<(string, Version, int)> _message;
 	readonly AssemblyDetails                     _details;

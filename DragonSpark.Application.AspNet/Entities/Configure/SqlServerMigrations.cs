@@ -1,6 +1,6 @@
-﻿using DragonSpark.Compose;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
+using DragonSpark.Compose;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace DragonSpark.Application.AspNet.Entities.Configure;
 
