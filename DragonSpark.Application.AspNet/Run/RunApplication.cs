@@ -1,7 +1,8 @@
+using DragonSpark.Model.Operations.Allocated;
+using DragonSpark.Model.Sequences;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading.Tasks;
-using DragonSpark.Model.Operations.Allocated;
-using Microsoft.Extensions.Hosting;
 
 namespace DragonSpark.Application.AspNet.Run;
 
@@ -18,7 +19,7 @@ public abstract class RunApplication( // TODO: Rename Program
 	protected RunApplication(Func<string[], IHostBuilder> builder, ConfigureNewApplication application)
 		: this(builder, application, RunInitializedProgram.Default) {}
 
-	public Task Get(string[] parameter)
+	public Task Get(Array<string> parameter)
 	{
 		var builder = _builder(parameter);
 		var host    = builder.Build();

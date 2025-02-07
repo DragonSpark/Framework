@@ -1,5 +1,6 @@
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Alterations;
+using DragonSpark.Model.Sequences;
 using Microsoft.Extensions.Hosting;
 using Serilog;
 using System;
@@ -18,7 +19,7 @@ sealed class BootstrappedProgram : IProgram
 		_configuration = configuration;
 	}
 
-	public async Task Get(string[] parameter)
+	public async Task Get(Array<string> parameter)
 	{
 		ILogger logger = _configuration(new LoggerConfiguration()).CreateBootstrapLogger();
 
