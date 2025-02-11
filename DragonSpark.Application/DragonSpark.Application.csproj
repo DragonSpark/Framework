@@ -8,17 +8,14 @@
     <Compile Remove="Entities\**" />
     <Compile Remove="Messaging\**" />
     <Compile Remove="Navigation\Security\**" />
-    <Compile Remove="Security\Identity\**" />
     <EmbeddedResource Remove="Compose\Entities\**" />
     <EmbeddedResource Remove="Entities\**" />
     <EmbeddedResource Remove="Messaging\**" />
     <EmbeddedResource Remove="Navigation\Security\**" />
-    <EmbeddedResource Remove="Security\Identity\**" />
     <None Remove="Compose\Entities\**" />
     <None Remove="Entities\**" />
     <None Remove="Messaging\**" />
     <None Remove="Navigation\Security\**" />
-    <None Remove="Security\Identity\**" />
   </ItemGroup>
 
   <ItemGroup>
