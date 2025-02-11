@@ -1,16 +1,8 @@
-﻿using System;
-using System.Security.Claims;
+﻿namespace DragonSpark.Application.AspNet.Security.Identity.Claims.Access;
 
-namespace DragonSpark.Application.AspNet.Security.Identity.Claims.Access;
-
-public class RequiredClaim : IRequiredClaim
+public class RequiredClaim : Application.Security.Identity.Claims.RequiredClaim
 {
-	readonly string _claim;
-
-	protected RequiredClaim(string claim) => _claim = claim;
-
-	public string Get(ClaimsPrincipal parameter)
-		=> parameter.FindFirstValue(_claim) ??
-		   throw new
-			   InvalidOperationException($"Content not found for claim '{_claim}' in user #'{parameter.Number()}' {parameter.Identity?.AuthenticationType}-{parameter.Identity?.Name}.");
+	protected RequiredClaim(string claim)
+		: base(claim,
+		       x => $"Content not found for claim '{claim}' in user #'{x.Number()}' {x.Identity?.AuthenticationType}-{x.Identity?.Name}.") {}
 }

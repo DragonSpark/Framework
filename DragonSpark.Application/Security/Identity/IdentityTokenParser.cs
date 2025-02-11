@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Text;
 using System.IdentityModel.Tokens.Jwt;
 
-namespace DragonSpark.Application.AspNet.Security.Identity.Bearer;
+namespace DragonSpark.Application.Security.Identity;
 
 public sealed class IdentityTokenParser : Parser<JwtSecurityToken>
 {

@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.AspNet.Security.Identity.Claims.Access;
+﻿using DragonSpark.Application.Security.Identity.Claims;
 using DragonSpark.Text;
 using System;
 using System.Security.Claims;

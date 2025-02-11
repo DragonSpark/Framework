@@ -1,15 +1,15 @@
 ﻿using System;
 
-namespace DragonSpark.Application.AspNet.Security.Identity.Claims.Access;
+namespace DragonSpark.Application.Security.Identity.Claims;
 
-public readonly struct Claim<T>
+public readonly struct Read<T>
 {
 	readonly T _value;
-	public static Claim<T> Default { get; } = new(false, default!);
+	public static Read<T> Default { get; } = new(false, default!);
 
-	public Claim(T value) : this(true, value) {}
+	public Read(T value) : this(true, value) {}
 
-	public Claim(bool exists, T value)
+	public Read(bool exists, T value)
 	{
 		_value = value;
 		Exists = exists;

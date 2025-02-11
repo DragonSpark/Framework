@@ -6,7 +6,7 @@ using DragonSpark.Application.AspNet.Model.Content;
 using DragonSpark.Application.AspNet.Security.Identity;
 using DragonSpark.Application.AspNet.Security.Identity.Authentication;
 using DragonSpark.Application.AspNet.Security.Identity.Bearer;
-using DragonSpark.Application.AspNet.Security.Identity.Claims.Access;
+using DragonSpark.Application.Security.Identity.Claims;
 using DragonSpark.Compose;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Operations;

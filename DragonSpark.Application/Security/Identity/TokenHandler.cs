@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model.Results;
 using System.IdentityModel.Tokens.Jwt;
 
-namespace DragonSpark.Application.AspNet.Security.Identity.Bearer;
+namespace DragonSpark.Application.Security.Identity;
 
 sealed class TokenHandler : Instance<JwtSecurityTokenHandler>
 {

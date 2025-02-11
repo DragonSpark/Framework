@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Model.Selection;
 using System.Security.Claims;
 
-namespace DragonSpark.Application.AspNet.Security.Identity.Claims.Access;
+namespace DragonSpark.Application.Security.Identity.Claims;
 
 public interface IReadClaim : ISelect<ClaimsPrincipal, Accessed>;
