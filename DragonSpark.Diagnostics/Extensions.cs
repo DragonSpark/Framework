@@ -9,12 +9,12 @@ namespace DragonSpark.Diagnostics;
 
 public static class Extensions
 {
-	public static BuildHostContext WithSerilog(this BuildHostContext @this)
-		=> @this.WithSerilog(CreateLoggingProvider.Default.Get);
+	public static BuildHostContext WithSerilog(this BuildHostContext @this, bool configure = false)
+		=> @this.WithSerilog(CreateLoggingProvider.Default.Get, configure);
 
 	public static BuildHostContext WithSerilog(this BuildHostContext @this,
-	                                           Func<IServiceProvider, ILoggerProvider> provider)
-		=> @this.Configure(new ConfigureSerilog(provider));
+	                                           Func<IServiceProvider, ILoggerProvider> provider, bool configure = false) // TODO
+		=> @this.Configure(new ConfigureSerilog(provider, configure));
 
 	[UsedImplicitly]
 	public static LoggerConfiguration WithFrameworkEnrichers(this LoggerEnrichmentConfiguration @this)
