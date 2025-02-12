@@ -1,4 +1,7 @@
-﻿using DragonSpark.Compose.Model.Operations;
+using System;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using DragonSpark.Compose.Model.Operations;
 using DragonSpark.Model;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Allocated;
@@ -6,9 +9,6 @@ using DragonSpark.Model.Operations.Results;
 using DragonSpark.Model.Operations.Selection;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
-using System;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Compose;
 
@@ -109,6 +109,7 @@ public static partial class ExtensionMethods
 	public static Task Allocate(this IOperation<None> @this) => @this.Get().AsTask();
 
 	public static Task Allocate(this IResult<ValueTask> @this) => @this.Get().AsTask();
+	public static Task<T> Allocate<T>(this IResult<ValueTask<T>> @this) => @this.Get().AsTask();
 
 	public static Task Allocate(this Func<ValueTask> @this) => @this().AsTask();
 
