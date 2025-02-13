@@ -24,13 +24,6 @@ public class RequiredClaim : IRequiredClaim
 		=> parameter.FindFirstValue(_claim) ?? throw new InvalidOperationException(_message(parameter));
 }
 
-// TODO
-
-public class RequiredNumber : RequiredClaim<uint>
-{
-	protected RequiredNumber(string claim) : base(claim, uint.Parse) {}
-}
-
 public class RequiredClaim<T> : Select<ClaimsPrincipal, T>
 {
 	protected RequiredClaim(string claim, Func<string, T> parse) : this(new Implementation(claim), parse) {}

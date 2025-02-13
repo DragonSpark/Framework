@@ -1,9 +1,9 @@
-﻿using DragonSpark.Composition.Compose;
+using System;
+using DragonSpark.Composition.Compose;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Configuration;
-using System;
 
 namespace DragonSpark.Diagnostics;
 
@@ -13,7 +13,7 @@ public static class Extensions
 		=> @this.WithSerilog(CreateLoggingProvider.Default.Get, configure);
 
 	public static BuildHostContext WithSerilog(this BuildHostContext @this,
-	                                           Func<IServiceProvider, ILoggerProvider> provider, bool configure = false) // TODO
+	                                           Func<IServiceProvider, ILoggerProvider> provider, bool configure = false)
 		=> @this.Configure(new ConfigureSerilog(provider, configure));
 
 	[UsedImplicitly]

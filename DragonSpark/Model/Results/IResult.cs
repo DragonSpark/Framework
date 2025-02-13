@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Model.Results;
+namespace DragonSpark.Model.Results;
 
 public interface IResult<out T>
 {
