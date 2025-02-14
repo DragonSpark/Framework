@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Application.AspNet.Security.Identity.Authentication;
 using DragonSpark.Application.AspNet.Security.Identity.Claims.Access;
+using DragonSpark.Application.Security.Identity;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Claims;
 

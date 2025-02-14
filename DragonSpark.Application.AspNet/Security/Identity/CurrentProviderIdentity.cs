@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Results;
+﻿using DragonSpark.Application.Security.Identity;
+using DragonSpark.Model.Results;
 using System.Security.Claims;
 
 namespace DragonSpark.Application.AspNet.Security.Identity;

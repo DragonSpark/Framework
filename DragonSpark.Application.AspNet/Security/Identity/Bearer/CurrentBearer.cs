@@ -1,4 +1,5 @@
-﻿using DragonSpark.Compose;
+﻿using DragonSpark.Application.Security.Identity;
+using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Bearer;

@@ -1,4 +1,6 @@
-﻿namespace DragonSpark.Application.AspNet.Security.Identity;
+﻿using DragonSpark.Application.Security.Identity;
+
+namespace DragonSpark.Application.AspNet.Security.Identity;
 
 sealed class CurrentUserNumber : ICurrentUserNumber
 {
