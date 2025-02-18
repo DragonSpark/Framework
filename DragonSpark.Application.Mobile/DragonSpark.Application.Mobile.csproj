@@ -11,7 +11,6 @@
 	</ItemGroup>
 	<ItemGroup>
 		<PackageReference Include="Duende.IdentityModel" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Console" />
 		<PackageReference Include="Uno.Extensions.Authentication" />
 		<PackageReference Include="Uno.Extensions.Hosting.WinUI" />
 		<PackageReference Include="Uno.Extensions.Navigation" />
