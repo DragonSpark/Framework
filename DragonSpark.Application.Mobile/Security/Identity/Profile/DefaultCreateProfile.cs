@@ -1,11 +1,8 @@
 using System.Security.Claims;
 using DragonSpark.Application.Security.Identity.Claims;
-using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Application.Mobile.Security.Identity.Profile;
 
-// TODO
-public interface ICreateProfile : ISelect<ClaimsPrincipal, Profile>;
 sealed class DefaultCreateProfile : ICreateProfile
 {
 	public static DefaultCreateProfile Default { get; } = new();

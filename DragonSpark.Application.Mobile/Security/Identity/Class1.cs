@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security.Claims;
 using System.Threading;
@@ -18,6 +19,7 @@ using DragonSpark.Text;
 using Microsoft.Extensions.DependencyInjection;
 using Uno.Extensions;
 using Uno.Extensions.Authentication;
+using Uno.Extensions.Specialized;
 
 namespace DragonSpark.Application.Mobile.Security.Identity;
 
@@ -35,18 +37,53 @@ public sealed class Registrations : ICommand<IServiceCollection>
 		         .Then.AddSingleton<IPrincipalAccess, PrincipalAccess>()
 		         .AddSingleton<ICurrentPrincipal, CurrentPrincipal>()
 		         //
-		         .Decorate<IAuthenticationService, CurrentPrincipalAwareAuthenticationService>();
+		         .Decorate<ITokenCache, CompensatingTokenCache>()
+		         .Decorate<IAuthenticationService, CurrentPrincipalAwareAuthenticationService>()
+			;
+	}
+}
+
+sealed class CompensatingTokenCache : ITokenCache
+{
+	readonly ITokenCache _previous;
+
+	public CompensatingTokenCache(ITokenCache previous) => _previous = previous;
+
+	public ValueTask<string?> GetCurrentProviderAsync(CancellationToken ct) => _previous.GetCurrentProviderAsync(ct);
+
+	public ValueTask<bool> HasTokenAsync(CancellationToken cancellationToken)
+		=> _previous.HasTokenAsync(cancellationToken);
+
+	public ValueTask<IDictionary<string, string>> GetAsync(CancellationToken cancellationToken)
+		=> _previous.GetAsync(cancellationToken);
+
+	public async ValueTask SaveAsync(string provider, IDictionary<string, string>? tokens,
+	                                 CancellationToken cancellationToken)
+	{
+		var compensated = tokens?.Where(x => x.Value.Account() is not null).ToDictionary(x => x.Key, x => x.Value);
+		await _previous.SaveAsync(provider, compensated, cancellationToken).Await();
+	}
+
+	public ValueTask ClearAsync(CancellationToken cancellationToken) => _previous.ClearAsync(cancellationToken);
+
+	public event EventHandler? Cleared
+	{
+		add => _previous.Cleared += value;
+		remove => _previous.Cleared -= value;
 	}
 }
 
 sealed class CurrentPrincipalAwareAuthenticationService : IAuthenticationService
 {
 	readonly IAuthenticationService _previous;
+	readonly ITokenCache            _token;
 	readonly UpdateCurrentPrincipal _update;
 
-	public CurrentPrincipalAwareAuthenticationService(IAuthenticationService previous, UpdateCurrentPrincipal update)
+	public CurrentPrincipalAwareAuthenticationService(IAuthenticationService previous, ITokenCache token,
+	                                                  UpdateCurrentPrincipal update)
 	{
 		_previous = previous;
+		_token    = token;
 		_update   = update;
 	}
 
@@ -66,7 +103,9 @@ sealed class CurrentPrincipalAwareAuthenticationService : IAuthenticationService
 
 	public async ValueTask<bool> RefreshAsync(CancellationToken? cancellationToken = null)
 	{
+		var before = await _token.RefreshTokenAsync(cancellationToken).Await();
 		var result = await _previous.RefreshAsync(cancellationToken).Await();
+		var after  = await _token.RefreshTokenAsync(cancellationToken).Await();
 		await Update(cancellationToken, result).Await();
 		return result;
 	}

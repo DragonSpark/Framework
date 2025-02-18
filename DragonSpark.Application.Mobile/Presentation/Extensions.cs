@@ -12,4 +12,8 @@ public static class Extensions
 
 	public static IState<TOut> AsState<T, TOut>(this IToken<TOut> @this, T owner) where T : class where TOut : notnull
 		=> State<T, TOut>.Default.Get(new(owner, @this));
+
+	public static IFeed<T> AsFeed<T>(this IResulting<T> @this) where T : notnull => @this.AsToken().AsFeed();
+
+	public static IFeed<T> AsFeed<T>(this IToken<T> @this) where T : notnull => Feed<T>.Default.Get(@this);
 }
