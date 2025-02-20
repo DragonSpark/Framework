@@ -1,29 +1,24 @@
-﻿using DragonSpark.Compose;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Runtime.Activation;
 using JetBrains.Annotations;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 
 namespace DragonSpark.Runtime.Environment;
 
-sealed class AssemblySelector : IAlteration<Array<Assembly>>,
-                                IActivateUsing<ISelect<Array<Assembly>, Array<Assembly>>>
+sealed class AssemblySelector : IAlteration<Array<Assembly>>, IActivateUsing<ISelect<Array<Assembly>, Array<Assembly>>>
 {
-	public static AssemblySelector Default { get; } = new();
-
-	AssemblySelector() : this(ComponentAssemblyNames.Default) {}
-
 	readonly Func<Array<Assembly>, IEnumerable<Assembly>> _select;
 
 	[UsedImplicitly]
 	public AssemblySelector(ISelect<AssemblyName, IEnumerable<AssemblyName>> names)
 		: this(Start.A.Selection.Of.Type<Assembly>()
-		            .As.Sequence.Array.By.Self.Select(new AssemblySelectorQuery(names.Get))) {}
+					.As.Sequence.Array.By.Self.Select(new AssemblySelectorQuery(names.Get))) {}
 
 	public AssemblySelector(Func<Array<Assembly>, Assembly[]> select) => _select = select;
 

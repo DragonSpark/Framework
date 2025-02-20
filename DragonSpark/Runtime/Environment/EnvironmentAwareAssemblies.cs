@@ -1,19 +1,19 @@
-﻿using DragonSpark.Model.Sequences;
 using System.Reflection;
+using DragonSpark.Model.Sequences;
 
 namespace DragonSpark.Runtime.Environment;
 
-sealed class EnvironmentAwareAssemblies : IArray<string, Assembly>
+sealed class EnvironmentAwareAssemblies : IArray<ModularityInput, Assembly>
 {
-	public static EnvironmentAwareAssemblies Default { get; } = new();
+    public static EnvironmentAwareAssemblies Default { get; } = new();
 
-	EnvironmentAwareAssemblies() {}
+    EnvironmentAwareAssemblies() {}
 
-	public Array<Assembly> Get(string parameter)
-	{
-		var names    = new ComponentAssemblyNames(parameter);
-		var selector = new AssemblySelector(names);
-		var result   = new Assemblies(selector).Get();
-		return result;
-	}
+    public Array<Assembly> Get(ModularityInput parameter)
+    {
+        var names    = new ComponentAssemblyNames(parameter);
+        var selector = new AssemblySelector(names);
+        var result   = new Assemblies(selector).Get();
+        return result;
+    }
 }

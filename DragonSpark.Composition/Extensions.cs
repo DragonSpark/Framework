@@ -30,8 +30,8 @@ public static class Extensions
 
 	public static IConfiguration Configuration(this IServiceCollection @this)
 		=> @this.Single(x => x.ServiceType == typeof(IConfiguration))
-		        .ImplementationFactory?.Invoke(null!)
-		        .To<IConfiguration>() ?? throw new InvalidOperationException();
+				.ImplementationFactory?.Invoke(null!)
+				.To<IConfiguration>() ?? throw new InvalidOperationException();
 
 	public static ComponentRequest Component<T>(this IServiceCollection @this)
 	{
@@ -50,15 +50,15 @@ public static class Extensions
 		if (existing != null)
 		{
 			var instance = existing.ImplementationType != null
-				               ? ServiceDescriptor.Describe(existing.ServiceType,
-				                                            existing.ImplementationType,
-				                                            lifetime)
-				               : existing.ImplementationFactory != null
-					               ? ServiceDescriptor.Describe(existing.ServiceType,
-					                                            existing
-						                                            .ImplementationFactory,
-					                                            lifetime)
-					               : null;
+							   ? ServiceDescriptor.Describe(existing.ServiceType,
+															existing.ImplementationType,
+															lifetime)
+							   : existing.ImplementationFactory != null
+								   ? ServiceDescriptor.Describe(existing.ServiceType,
+																existing
+																	.ImplementationFactory,
+																lifetime)
+								   : null;
 			if (instance != null)
 			{
 				@this.Replace(instance);
@@ -70,12 +70,12 @@ public static class Extensions
 
 	public static T GetRequiredInstance<T>(this IServiceCollection @this) where T : class
 		=> (@this.Where(x => x.ServiceType == typeof(T))
-		         .Select(x => x.ImplementationInstance)
-		         .Only()
-		    ??
-		    @this.Select(x => x.ImplementationInstance)
-		         .OfType<T>()
-		         .FirstOrDefault()
+				 .Select(x => x.ImplementationInstance)
+				 .Only()
+			??
+			@this.Select(x => x.ImplementationInstance)
+				 .OfType<T>()
+				 .FirstOrDefault()
 		   )!
 			.To<T>();
 
@@ -109,6 +109,9 @@ public static class Extensions
 	public static BuildHostContext RegisterModularity(this BuildHostContext @this)
 		=> @this.Configure(Composition.RegisterModularity.Default);
 
+	public static BuildHostContext RegisterModularity(this BuildHostContext @this, string? platform)
+		=> @this.Configure(new RegisterModularity(platform));
+
 	public static ICommand<IServiceCollection> Deferred(this ICommand<IServiceCollection> @this) => new Deferred(@this);
 
 	/*public static BuildHostContext RegisterModularity<T>(this BuildHostContext @this)
@@ -117,7 +120,7 @@ public static class Extensions
 
 	public static BuildHostContext ConfigureFromEnvironment(this BuildHostContext @this)
 		=> @this.Configure(Compose.ConfigureFromEnvironment.Default)
-		        .Configure(ConfigureHostBuilderFromEnvironment.Default);
+				.Configure(ConfigureHostBuilderFromEnvironment.Default);
 
 	public static ICommand<IServiceCollection> ConfigureFromEnvironment(
 		this ICommand<IServiceCollection> @this)

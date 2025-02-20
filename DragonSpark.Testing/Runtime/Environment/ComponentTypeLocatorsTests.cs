@@ -1,9 +1,9 @@
-﻿using DragonSpark.Model.Sequences.Collections;
+using System;
+using System.Linq;
+using DragonSpark.Model.Sequences.Collections;
 using DragonSpark.Reflection.Selection;
 using DragonSpark.Runtime.Environment;
 using FluentAssertions;
-using System;
-using System.Linq;
 using Xunit;
 
 namespace DragonSpark.Testing.Runtime.Environment;
@@ -33,7 +33,7 @@ public sealed class ComponentTypeLocatorsTests
 		                                 .Get(typeof(IComponent))
 		                                 .Open();
 		types.Should().HaveCount(4);
-		types.Should().BeEquivalentTo(new []{typeof(First), typeof(Subject), typeof(AnotherSubject), typeof(Last)});
+		types.Should().BeEquivalentTo([typeof(First), typeof(Subject), typeof(AnotherSubject), typeof(Last)]);
 		types.First().Should().Be(typeof(First));
 		types.Last().Should().Be(typeof(Last));
 	}

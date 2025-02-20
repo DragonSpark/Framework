@@ -1,30 +1,39 @@
-﻿using DragonSpark.Model.Selection;
+using System;
+using System.Reflection;
+using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Reflection;
 
 namespace DragonSpark.Composition;
 
 sealed class RegisterModularity : IServiceConfiguration
 {
-	public static RegisterModularity Default { get; } = new();
+    public static RegisterModularity Default { get; } = new();
 
-	RegisterModularity() : this(ModularityComponents.Default) {}
+    RegisterModularity() : this(null) {}
 
-	readonly ISelect<HostBuilderContext, Modularity> _components;
+    readonly string?                                 _platform;
+    readonly ISelect<HostBuilderContext, Modularity> _components;
 
-	public RegisterModularity(ISelect<HostBuilderContext, Modularity> components) => _components = components;
+    public RegisterModularity(string? platform) : this(platform, ModularityComponents.Default) {}
 
-	public void Execute(IServiceCollection parameter)
-	{
-		var (assemblies, types, locator, componentType) =
-			_components.Get(parameter.GetRequiredInstance<HostBuilderContext>());
+    public RegisterModularity(string? platform, ISelect<HostBuilderContext, Modularity> components)
+    {
+        _platform   = platform;
+        _components = components;
+    }
 
-		parameter.AddSingleton<IArray<Assembly>>(new Instances<Assembly>(assemblies))
-		         .AddSingleton<IArray<Type>>(new Instances<Type>(types))
-		         .AddSingleton(locator)
-		         .AddSingleton(componentType);
-	}
+    public void Execute(IServiceCollection parameter)
+    {
+        var instance = parameter.GetRequiredInstance<HostBuilderContext>();
+        new AccessPlatform(instance).Execute(_platform);
+
+        var (assemblies, types, locator, componentType) = _components.Get(instance);
+
+        parameter.AddSingleton<IArray<Assembly>>(new Instances<Assembly>(assemblies))
+                 .AddSingleton<IArray<Type>>(new Instances<Type>(types))
+                 .AddSingleton(locator)
+                 .AddSingleton(componentType);
+    }
 }

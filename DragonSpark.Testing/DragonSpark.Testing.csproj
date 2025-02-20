@@ -44,6 +44,7 @@
     <ProjectReference Include="..\DragonSpark.Application.Hosting.xUnit\DragonSpark.Application.Hosting.xUnit.csproj" />
     <ProjectReference Include="..\DragonSpark.Composition\DragonSpark.Composition.csproj" />
     <ProjectReference Include="..\DragonSpark.Testing.Environment.Development\DragonSpark.Testing.Environment.Development.csproj" />
+    <ProjectReference Include="..\DragonSpark.Testing.Environment.Platform.Development\DragonSpark.Testing.Environment.Platform.Development.csproj" />
     <ProjectReference Include="..\DragonSpark.Testing.Environment\DragonSpark.Testing.Environment.csproj" />
     <ProjectReference Include="..\DragonSpark.Testing.Objects\DragonSpark.Testing.Objects.csproj" />
     <ProjectReference Include="..\DragonSpark\DragonSpark.csproj" />

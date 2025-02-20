@@ -1,7 +1,7 @@
-using DragonSpark.Model.Selection;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Runtime.Environment;
 
@@ -16,7 +16,7 @@ sealed class ComponentAssemblyCandidates : ISelect<AssemblyName, IEnumerable<Ass
 		var queue = new Stack<string>(parameter.Name!.Split('.'));
 		while (queue.Any())
 		{
-			yield return new AssemblyName(string.Join(".", queue.Reverse()));
+			yield return new(string.Join(".", queue.Reverse()));
 			queue.Pop();
 		}
 	}

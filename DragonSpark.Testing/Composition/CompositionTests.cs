@@ -1,4 +1,7 @@
-﻿using DragonSpark.Compose;
+using System;
+using System.Reflection;
+using System.Threading.Tasks;
+using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
@@ -8,9 +11,6 @@ using FluentAssertions;
 using JetBrains.Annotations;
 using LightInject;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Reflection;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace DragonSpark.Testing.Composition;
@@ -193,6 +193,19 @@ public sealed class CompositionTests
 		                            .Run();
 		host.Services.GetRequiredService<IHelloWorld>().Should().BeOfType<HelloWorld>();
 	}
+
+    [Fact]
+    public async Task VerifyPlatformDevelopmentEnvironmentalRegistration()
+    {
+        using var host = await Start.A.Host()
+                                    .WithEnvironment("Development")
+                                    .WithDefaultComposition()
+                                    .RegisterModularity("Platform")
+                                    .Configure(x => x.Start<IHelloWorld>().UseEnvironment().Singleton())
+                                    .Operations()
+                                    .Run();
+        host.Services.GetRequiredService<IHelloWorld>().Should().BeOfType<Environment.Platform.Development.HelloWorld>();
+    }
 
 	[Fact]
 	public async Task VerifyEnvironmentalRegistration()
