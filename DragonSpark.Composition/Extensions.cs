@@ -109,21 +109,16 @@ public static class Extensions
 	public static BuildHostContext RegisterModularity(this BuildHostContext @this)
 		=> @this.Configure(Composition.RegisterModularity.Default);
 
-	public static BuildHostContext RegisterModularity(this BuildHostContext @this, string? platform)
-		=> @this.Configure(new RegisterModularity(platform));
+    public static BuildHostContext WithPlatform(this BuildHostContext @this, string platform)
+        => @this.Configure(new AssignHostPlatform(platform));
 
 	public static ICommand<IServiceCollection> Deferred(this ICommand<IServiceCollection> @this) => new Deferred(@this);
-
-	/*public static BuildHostContext RegisterModularity<T>(this BuildHostContext @this)
-		where T : class, IActivateUsing<Assembly>, IArray<Type>
-		=> @this.Configure(new RegisterModularity(new CreateModularity(TypeSelection<T>.Default.Get)));*/
 
 	public static BuildHostContext ConfigureFromEnvironment(this BuildHostContext @this)
 		=> @this.Configure(Compose.ConfigureFromEnvironment.Default)
 				.Configure(ConfigureHostBuilderFromEnvironment.Default);
 
-	public static ICommand<IServiceCollection> ConfigureFromEnvironment(
-		this ICommand<IServiceCollection> @this)
+    public static ICommand<IServiceCollection> ConfigureFromEnvironment(this ICommand<IServiceCollection> @this)
 		=> Compose.ConfigureFromEnvironment.Default.Then().Append(@this).Get();
 
 	public static BuildHostContext ComposeUsingRoot<T>(this BuildHostContext @this)

@@ -1,4 +1,4 @@
-﻿using DragonSpark.Model.Commands;
+using DragonSpark.Model.Commands;
 using Microsoft.Extensions.Hosting;
 
 namespace DragonSpark.Composition.Compose;
@@ -17,5 +17,17 @@ public sealed class ConfigureHostBuilderFromEnvironment : ICommand<IHostBuilder>
 	public void Execute(IHostBuilder parameter)
 	{
 		parameter.ConfigureAppConfiguration((context, builder) => _configure.Execute(new(parameter, context, builder)));
+	}
+}
+
+sealed class AssignHostPlatform : ICommand<IHostBuilder>
+{
+	readonly string _platform;
+
+	public AssignHostPlatform(string platform) => _platform = platform;
+
+	public void Execute(IHostBuilder parameter)
+	{
+		parameter.ConfigureAppConfiguration((context, _) => new AccessPlatform(context).Execute(_platform));
 	}
 }

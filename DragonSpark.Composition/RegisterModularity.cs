@@ -11,23 +11,15 @@ sealed class RegisterModularity : IServiceConfiguration
 {
     public static RegisterModularity Default { get; } = new();
 
-    RegisterModularity() : this(null) {}
+    RegisterModularity() : this(ModularityComponents.Default) {}
 
-    readonly string?                                 _platform;
     readonly ISelect<HostBuilderContext, Modularity> _components;
 
-    public RegisterModularity(string? platform) : this(platform, ModularityComponents.Default) {}
-
-    public RegisterModularity(string? platform, ISelect<HostBuilderContext, Modularity> components)
-    {
-        _platform   = platform;
-        _components = components;
-    }
+    public RegisterModularity(ISelect<HostBuilderContext, Modularity> components) => _components = components;
 
     public void Execute(IServiceCollection parameter)
     {
         var instance = parameter.GetRequiredInstance<HostBuilderContext>();
-        new AccessPlatform(instance).Execute(_platform);
 
         var (assemblies, types, locator, componentType) = _components.Get(instance);
 
