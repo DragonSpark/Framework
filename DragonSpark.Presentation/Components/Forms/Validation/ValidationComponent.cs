@@ -2,16 +2,19 @@
 using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Radzen;
 using System;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Forms.Validation;
 
 public abstract class ValidationComponent : ComponentBase, IDisposable
 {
-	readonly Switch        _update   = new();
-	ValidationMessageStore _messages = default!;
-	EditContext?           _context;
-	bool                   _enabled = true;
+	readonly static FieldIdentifier DefaultIdentifier = new();
+	readonly        Switch          _update           = new();
+	ValidationMessageStore          _messages         = default!;
+	EditContext?                    _context;
+	bool                            _enabled = true;
 
 	[Parameter]
 	public bool Enabled
@@ -28,7 +31,7 @@ public abstract class ValidationComponent : ComponentBase, IDisposable
 	}
 
 	[Parameter]
-	public FieldIdentifier Identifier { get; set; }
+	public FieldIdentifier Identifier { get; set; } = DefaultIdentifier;
 
 	[Parameter]
 	public string ErrorMessage { get; set; } = "This field does not contain a valid value.";
@@ -74,6 +77,16 @@ public abstract class ValidationComponent : ComponentBase, IDisposable
 
 	protected abstract bool Validate();
 
+	public override Task SetParametersAsync(ParameterView parameters)
+	{
+		if (!Identifier.Equals(DefaultIdentifier) && parameters.DidParameterChange(nameof(Identifier), Identifier))
+		{
+			_messages.Clear(Identifier);
+		}
+
+		return base.SetParametersAsync(parameters);
+	}
+
 	protected override void OnParametersSet()
 	{
 		if (_update.Down())
@@ -90,6 +103,7 @@ public abstract class ValidationComponent : ComponentBase, IDisposable
 		{
 			_messages.Add(Identifier, ErrorMessage);
 		}
+
 		_context.Verify().NotifyValidationStateChanged();
 	}
 
