@@ -1,4 +1,4 @@
-﻿using DragonSpark.Model.Operations.Allocated;
+using DragonSpark.Model.Operations.Allocated;
 
 namespace DragonSpark.Model.Operations.Selection;
 
