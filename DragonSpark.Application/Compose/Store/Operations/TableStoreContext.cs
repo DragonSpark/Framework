@@ -47,7 +47,7 @@ public sealed class TableStoreContext<TIn, TOut>
                 return result;
             }
 
-            var source = await _source(parameter).ConfigureAwait(false);
+            var source = await _source(parameter).Await();
             _store.Assign(key, source!);
             return source;
 

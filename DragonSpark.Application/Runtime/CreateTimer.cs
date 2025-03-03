@@ -1,8 +1,9 @@
-using System.Collections.Generic;
-using System.Timers;
+using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
 using JetBrains.Annotations;
+using System.Collections.Generic;
+using System.Timers;
 
 namespace DragonSpark.Application.Runtime;
 
@@ -28,7 +29,7 @@ sealed class CreateTimer<T> : ISelect<T, Timer>
                           {
                               if (_store.Remove(parameter))
                               {
-                                  await _subject(parameter).ConfigureAwait(false);
+	                              await _subject(parameter).Await();
                               }
                           };
         return result;

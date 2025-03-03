@@ -1,3 +1,4 @@
+using DragonSpark.Compose;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations.Selection;
@@ -16,7 +17,7 @@ public class Configuring<TSource, TResult> : ISelecting<TSource, TResult>
     public async ValueTask<TResult> Get(TSource parameter)
     {
         var result = await _select(parameter);
-        await _configure((parameter, result)).ConfigureAwait(false);
+        await _configure((parameter, result)).Await();
         return result;
     }
 }

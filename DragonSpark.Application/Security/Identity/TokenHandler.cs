@@ -3,7 +3,7 @@ using System.IdentityModel.Tokens.Jwt;
 
 namespace DragonSpark.Application.Security.Identity;
 
-sealed class TokenHandler : Instance<JwtSecurityTokenHandler>
+public sealed class TokenHandler : Instance<JwtSecurityTokenHandler>
 {
 	public static TokenHandler Default { get; } = new();
 

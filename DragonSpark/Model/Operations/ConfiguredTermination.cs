@@ -1,6 +1,7 @@
+using DragonSpark.Compose;
+using DragonSpark.Model.Results;
 using System;
 using System.Threading.Tasks;
-using DragonSpark.Model.Results;
 
 namespace DragonSpark.Model.Operations;
 
@@ -17,7 +18,7 @@ public class ConfiguredTermination<T> : IOperation
 
     public async ValueTask Get()
     {
-        var parameter = await _result.Get().ConfigureAwait(false);
-        await _configure(parameter).ConfigureAwait(false);
+        var parameter = await _result.Get().Await();
+        await _configure(parameter).Await();
     }
 }

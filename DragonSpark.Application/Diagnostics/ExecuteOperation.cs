@@ -1,6 +1,6 @@
+using DragonSpark.Compose;
 using System;
 using System.Threading.Tasks;
-using DragonSpark.Compose;
 
 namespace DragonSpark.Application.Diagnostics;
 
@@ -17,7 +17,7 @@ sealed class ExecuteOperation : IExecuteOperation
         {
             if (!operation.IsCompleted)
             {
-                await operation.ConfigureAwait(false);
+                await operation.Await();
             }
             else if (operation.IsFaulted)
             {

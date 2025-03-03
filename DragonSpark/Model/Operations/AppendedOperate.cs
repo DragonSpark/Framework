@@ -1,3 +1,4 @@
+using DragonSpark.Compose;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations;
@@ -14,7 +15,7 @@ public class AppendedOperate : IOperation
 
     public async ValueTask Get()
     {
-        await _previous().ConfigureAwait(false);
-        await _current().ConfigureAwait(false);
+        await _previous().Await();
+        await _current().Await();
     }
 }
