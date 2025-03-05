@@ -40,6 +40,11 @@ public static partial class ExtensionMethods
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ValueTask<T> ToOperation<T>(this Task<T> @this) => new(@this);
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ValueTask<T> ToOperation<T>(this T @this) => new(@this);
+
+    /**/
+
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ConfiguredTaskAwaitable<T> Await<T>(this Task<T> @this) => @this.ConfigureAwait(false);
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -48,9 +53,6 @@ public static partial class ExtensionMethods
 	public static ConfiguredTaskAwaitable Await(this Task @this) => @this.ConfigureAwait(false);
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ConfiguredValueTaskAwaitable Await(this ValueTask @this) => @this.ConfigureAwait(false);
-
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static ValueTask<T> ToOperation<T>(this T @this) => new(@this);
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ConfiguredValueTaskAwaitable<TOut> Await<TIn, TOut>(this ISelect<TIn, ValueTask<TOut>> @this,
@@ -105,6 +107,70 @@ public static partial class ExtensionMethods
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ConfiguredTaskAwaitable<T> Await<T>(this IResult<Task<T>> @this)
 		=> @this.Get().ConfigureAwait(false);
+
+    /**/
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static ConfiguredTaskAwaitable<T> Go<T>(this Task<T> @this) => @this.ConfigureAwait(true);
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static ConfiguredValueTaskAwaitable<T> Go<T>(this ValueTask<T> @this) => @this.ConfigureAwait(true);
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static ConfiguredTaskAwaitable Go(this Task @this) => @this.ConfigureAwait(true);
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static ConfiguredValueTaskAwaitable Go(this ValueTask @this) => @this.ConfigureAwait(true);
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static ConfiguredValueTaskAwaitable<TOut> Go<TIn, TOut>(this ISelect<TIn, ValueTask<TOut>> @this,
+                                                                   TIn parameter)
+		=> @this.Get(parameter).ConfigureAwait(true);
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static ConfiguredValueTaskAwaitable<TOut> Go<TFirst, TSecond, TOut>(
+		this ISelect<(TFirst, TSecond), ValueTask<TOut>> @this, TFirst first, TSecond second)
+		=> @this.Get((first, second)).ConfigureAwait(true);
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static ConfiguredValueTaskAwaitable Go<TFirst, TSecond>(
+		this ISelect<(TFirst, TSecond), ValueTask> @this, TFirst first, TSecond second)
+		=> @this.Get((first, second)).ConfigureAwait(true);
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static ConfiguredTaskAwaitable Go<T>(this ISelect<T, Task> @this, T parameter)
+		=> @this.Get(parameter).ConfigureAwait(true);
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static ConfiguredTaskAwaitable Go(this IAllocated @this) => @this.Get().ConfigureAwait(true);
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static ConfiguredTaskAwaitable<TOut> Go<TIn, TOut>(this ISelect<TIn, Task<TOut>> @this, TIn parameter)
+		=> @this.Get(parameter).ConfigureAwait(true);
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static ConfiguredValueTaskAwaitable Go<T>(this ISelect<T, ValueTask> @this, T parameter)
+		=> @this.Get(parameter).ConfigureAwait(true);
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static ConfiguredValueTaskAwaitable Go(this ISelect<None, ValueTask> @this)
+		=> @this.Get(None.Default).ConfigureAwait(true);
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static ConfiguredValueTaskAwaitable<T> Go<T>(this ISelect<None, ValueTask<T>> @this)
+		=> @this.Get(None.Default).ConfigureAwait(true);
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static ConfiguredValueTaskAwaitable<T> Go<T>(this IAltering<T> @this, T parameter)
+		=> @this.Get(parameter).ConfigureAwait(true);
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static ConfiguredValueTaskAwaitable<T> Go<T>(this IResult<ValueTask<T>> @this)
+		=> @this.Get().ConfigureAwait(true);
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static ConfiguredValueTaskAwaitable Go<T>(this T @this) where T : IResult<ValueTask>
+		=> @this.Get().ConfigureAwait(true);
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static ConfiguredTaskAwaitable<T> Go<T>(this IResult<Task<T>> @this) => @this.Get().ConfigureAwait(true);
+    /**/
 
 	public static Task Allocate(this IOperation<None> @this) => @this.Get().AsTask();
 

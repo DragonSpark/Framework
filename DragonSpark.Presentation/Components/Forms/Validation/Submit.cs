@@ -1,7 +1,7 @@
-﻿using DragonSpark.Compose;
+using System.Threading.Tasks;
+using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using Microsoft.AspNetCore.Components.Forms;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Forms.Validation;
 
@@ -23,10 +23,10 @@ sealed class Submit : IOperation<EditContext>
 
 	public async ValueTask Get(EditContext parameter)
 	{
-		var validate = await _validate(parameter);
+		var validate = await _validate(parameter).Go();
 		if (validate)
 		{
-			await _valid.Get(parameter);
+			await _valid.Get(parameter).Go();
 			parameter.MarkAsUnmodified();
 		}
 		else

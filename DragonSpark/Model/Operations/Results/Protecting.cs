@@ -1,7 +1,7 @@
-﻿using AsyncUtilities;
+using System.Threading.Tasks;
+using AsyncUtilities;
 using DragonSpark.Compose;
 using DragonSpark.Model.Results;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations.Results;
 
@@ -20,7 +20,7 @@ public class Protecting<T> : IResulting<T>
 
 	public async ValueTask<T> Get()
 	{
-		using var @lock  = await _lock.LockAsync().ConfigureAwait(true);
+		using var @lock  = await _lock.LockAsync().Go();
 		var       result = await _previous.Await();
 		return result;
 	}

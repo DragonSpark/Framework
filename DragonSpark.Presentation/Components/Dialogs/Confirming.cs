@@ -1,7 +1,8 @@
-﻿using DragonSpark.Model;
+using System.Threading.Tasks;
+using DragonSpark.Compose;
+using DragonSpark.Model;
 using DragonSpark.Model.Operations;
 using Radzen;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Dialogs;
 
@@ -28,7 +29,7 @@ public class Confirming<T, TConfirm> : IConfirming<T> where TConfirm : ConfirmCo
 
 	public async ValueTask<DialogResult> Get(T parameter)
 	{
-		await _display.Get();
+		await _display.Get().Go();
 		return _result.Get();
 	}
 }

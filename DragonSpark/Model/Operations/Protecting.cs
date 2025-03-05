@@ -1,6 +1,6 @@
-﻿using AsyncUtilities;
-using DragonSpark.Compose;
 using System.Threading.Tasks;
+using AsyncUtilities;
+using DragonSpark.Compose;
 
 namespace DragonSpark.Model.Operations;
 
@@ -19,7 +19,7 @@ public class Protecting<T> : IOperation<T>
 
 	public async ValueTask Get(T parameter)
 	{
-		using var @lock = await _lock.LockAsync().ConfigureAwait(true);
+		using var @lock = await _lock.LockAsync().Go();
 		await _previous.Await(parameter);
 	}
 }

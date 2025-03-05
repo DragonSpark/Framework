@@ -23,7 +23,7 @@ sealed class StateAwareRemoveLogin<T>(
 		{
 			var (user, _) = parameter;
 			using var authentications = _authentications.Get();
-			var       principal = await authentications.Subject.CreateUserPrincipalAsync(user).ConfigureAwait(true);
+			var       principal = await authentications.Subject.CreateUserPrincipalAsync(user).Go();
 			var       number = principal.Number();
 			if (number is not null)
 			{

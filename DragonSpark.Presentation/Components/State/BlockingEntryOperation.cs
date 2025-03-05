@@ -1,8 +1,8 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Operations;
-using DragonSpark.Model.Operations.Selection.Conditions;
 using System;
 using System.Threading.Tasks;
+using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Selection.Conditions;
 
 namespace DragonSpark.Presentation.Components.State;
 
@@ -23,7 +23,7 @@ sealed class BlockingEntryOperation : IOperation
 
 	public async ValueTask Get()
 	{
-		if (await _allowed.Get())
+		if (await _allowed.Go())
 		{
 			await _operation.Await();
 		}
@@ -48,7 +48,7 @@ sealed class BlockingEntryOperation<T> : IOperation<T>
 
 	public async ValueTask Get(T parameter)
 	{
-		if (await _allowed.Get())
+		if (await _allowed.Go())
 		{
 			await _operation.Await(parameter);
 		}

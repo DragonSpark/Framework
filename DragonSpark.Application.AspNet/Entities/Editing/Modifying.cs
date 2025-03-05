@@ -24,7 +24,7 @@ public class Modifying<TIn, T> : ISelecting<TIn, T>
 
 	public async ValueTask<T> Get(TIn parameter)
 	{
-		using var edit = await _select.Get(parameter).ConfigureAwait(true);
+		using var edit = await _select.Get(parameter).Go();
 		await _configure(edit);
 		await edit.Await();
 		return edit.Subject;

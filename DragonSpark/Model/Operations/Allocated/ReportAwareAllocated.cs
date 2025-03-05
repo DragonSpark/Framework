@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using DragonSpark.Compose;
 using JetBrains.Annotations;
 
 namespace DragonSpark.Model.Operations.Allocated;
@@ -20,7 +21,7 @@ public class ReportAwareAllocated<T> : IAllocated<T>
     {
         try
         {
-            await _previous.Get(parameter).ConfigureAwait(true);
+            await _previous.Get(parameter).Go();
         }
         finally
         {

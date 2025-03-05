@@ -1,6 +1,6 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Operations.Results;
 using System.Threading.Tasks;
+using DragonSpark.Compose;
+using DragonSpark.Model.Operations.Results;
 
 namespace DragonSpark.Presentation.Components.State;
 
@@ -35,10 +35,10 @@ sealed class ActivityAwareResult<T> : IResulting<T?>
 			return previous.Result;
 		}
 
-		await _activity.Get((_subject, _input));
+		await _activity.Get((_subject, _input)).Go();
 		try
 		{
-			return await previous;
+			return await previous.Go();
 		}
 		finally
 		{

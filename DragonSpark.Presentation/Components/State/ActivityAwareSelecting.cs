@@ -1,7 +1,7 @@
-﻿using DragonSpark.Compose;
+using System.Threading.Tasks;
+using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Operations.Selection;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.State;
 
@@ -36,10 +36,10 @@ sealed class ActivityAwareSelecting<TIn, TOut> : ISelecting<TIn, TOut>
 			return previous.Result;
 		}
 
-		await _update.Get(Pairs.Create(_subject, _input));
+		await _update.Get(Pairs.Create(_subject, _input)).Go();
 		try
 		{
-			return await previous;
+			return await previous.Go();
 		}
 		finally
 		{

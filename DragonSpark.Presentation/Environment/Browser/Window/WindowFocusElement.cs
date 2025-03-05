@@ -1,9 +1,9 @@
-﻿using DragonSpark.Compose;
+using System;
+using System.Threading.Tasks;
+using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Presentation.Environment.Browser.Document;
 using Microsoft.JSInterop;
-using System;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Environment.Browser.Window;
 
@@ -24,7 +24,7 @@ sealed class WindowFocusElement : IAsyncDisposable
 
 	public async ValueTask DisposeAsync()
 	{
-		await _instance.InvokeVoidAsync("Stop");
+		await _instance.InvokeVoidAsync("Stop").Go();
 		await _dispose.Await();
 	}
 }

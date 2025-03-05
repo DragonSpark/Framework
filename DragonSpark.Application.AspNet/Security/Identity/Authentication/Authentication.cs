@@ -11,7 +11,7 @@ sealed class Authentication(IExternalSignin signin, IUserSynchronization synchro
 {
 	public async ValueTask<SignInResult> Get(ExternalLoginInfo parameter)
 	{
-		var result = await signin.Get(parameter).ConfigureAwait(true);
+		var result = await signin.Get(parameter).Go();
 
 		if (result.Succeeded)
 		{

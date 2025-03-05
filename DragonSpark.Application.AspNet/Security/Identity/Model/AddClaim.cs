@@ -26,9 +26,10 @@ public class AddClaim<T> : ISelecting<T, IdentityResult> where T : IdentityUser
 
 	public async ValueTask<IdentityResult> Get(T parameter)
 	{
-		using var edit   = await _edit.Get(parameter).ConfigureAwait(true);
-		using var users  = _users.Get();
-		var       claim  = _claim(parameter);
+        // ReSharper disable once NotDisposedResource
+        using var edit   = await _edit.Get(parameter).Go();
+        using var users  = _users.Get();
+        var       claim  = _claim(parameter);
 		var       result = await users.Subject.AddClaimAsync(parameter, claim).Await();
 		return result;
 	}

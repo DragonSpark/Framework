@@ -64,7 +64,7 @@ public class Modify<TIn, T> : IOperation<TIn>
 
 	public async ValueTask Get(TIn parameter)
 	{
-		using var edit = await _select.Get(parameter).ConfigureAwait(true);
+		using var edit = await _select.Get(parameter).Go();
 		await _configure(edit);
 		await edit.Await();
 	}

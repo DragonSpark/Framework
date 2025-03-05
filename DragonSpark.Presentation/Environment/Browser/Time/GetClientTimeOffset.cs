@@ -1,7 +1,8 @@
-﻿using DragonSpark.Model.Operations.Selection;
-using Microsoft.JSInterop;
 using System;
 using System.Threading.Tasks;
+using DragonSpark.Compose;
+using DragonSpark.Model.Operations.Selection;
+using Microsoft.JSInterop;
 
 namespace DragonSpark.Presentation.Environment.Browser.Time;
 
@@ -16,5 +17,5 @@ sealed class GetClientTimeOffset : ISelecting<IJSObjectReference, TimeSpan>
 	public GetClientTimeOffset(string name) => _name = name;
 
 	public async ValueTask<TimeSpan> Get(IJSObjectReference parameter)
-		=> TimeSpan.FromMinutes(await parameter.InvokeAsync<short>(_name));
+		=> TimeSpan.FromMinutes(await parameter.InvokeAsync<short>(_name).Go());
 }

@@ -1,11 +1,11 @@
-﻿using DragonSpark.Compose;
+using System;
+using System.Threading.Tasks;
+using System.Timers;
+using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
 using DragonSpark.Runtime.Execution;
-using System;
-using System.Threading.Tasks;
-using System.Timers;
 
 namespace DragonSpark.Presentation.Components.State;
 
@@ -48,7 +48,7 @@ sealed class IgnoreEntryOperation : IOperation, ICommand
 
 			try
 			{
-				await _operation.Get();
+				await _operation.Go();
 			}
 			finally
 			{

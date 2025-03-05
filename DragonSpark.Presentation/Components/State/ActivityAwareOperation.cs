@@ -1,6 +1,6 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Operations;
 using System.Threading.Tasks;
+using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 
 namespace DragonSpark.Presentation.Components.State;
 
@@ -32,10 +32,10 @@ sealed class ActivityAwareOperation : IOperation
 		var operation = _operation.Get();
 		if (!operation.IsCompleted)
 		{
-			await _update.Get((_subject, _input));
+			await _update.Get((_subject, _input)).Go();
 			try
 			{
-				await operation;
+				await operation.Go();
 			}
 			finally
 			{
@@ -73,10 +73,10 @@ sealed class ActivityAwareOperation<T> : IOperation<T>
 		var operation = _operation.Get(parameter);
 		if (!operation.IsCompleted)
 		{
-			await _update.Get((_subject, _input));
+			await _update.Get((_subject, _input)).Go();
 			try
 			{
-				await operation;
+				await operation.Go();
 			}
 			finally
 			{

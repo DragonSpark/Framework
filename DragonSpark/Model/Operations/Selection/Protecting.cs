@@ -1,7 +1,7 @@
-﻿using AsyncUtilities;
+using System.Threading.Tasks;
+using AsyncUtilities;
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations.Selection;
 
@@ -25,7 +25,7 @@ public class Protecting<TIn, TOut> : ISelecting<TIn, TOut>
 	public async ValueTask<TOut> Get(TIn parameter)
 	{
 		var @lock = _lock.Get(parameter);
-		using (await @lock.LockAsync().ConfigureAwait(true))
+		using (await @lock.LockAsync().Go())
 		{
 			return await _previous(parameter);
 		}

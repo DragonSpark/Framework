@@ -1,8 +1,9 @@
-﻿using DragonSpark.Model;
-using DragonSpark.Presentation.Components.State;
-using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
+using DragonSpark.Compose;
+using DragonSpark.Model;
+using DragonSpark.Presentation.Components.State;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 
 namespace DragonSpark.Presentation.Environment.Browser;
 
@@ -16,11 +17,11 @@ public sealed class CryptographicKeyAwareClientVariableAccessor<T> : IClientVari
 	{
 		try
 		{
-			return await _previous.Get(parameter);
+			return await _previous.Get(parameter).Go();
 		}
 		catch (CryptographicException)
 		{
-			await Remove.Get(parameter);
+			await Remove.Go(parameter);
 			return new();
 		}
 	}

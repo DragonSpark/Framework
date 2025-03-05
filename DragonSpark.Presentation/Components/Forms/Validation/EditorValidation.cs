@@ -1,8 +1,9 @@
-﻿using DragonSpark.Model.Operations.Results;
-using Microsoft.AspNetCore.Components.Forms;
-using NetFabric.Hyperlinq;
 using System;
 using System.Threading.Tasks;
+using DragonSpark.Compose;
+using DragonSpark.Model.Operations.Results;
+using Microsoft.AspNetCore.Components.Forms;
+using NetFabric.Hyperlinq;
 
 namespace DragonSpark.Presentation.Components.Forms.Validation;
 
@@ -29,7 +30,7 @@ public sealed class EditorValidation : IResulting<bool>
 			_validated()(_sender, args);
 			foreach (var callback in args.Callbacks.AsValueEnumerable())
 			{
-				await callback.Invoke();
+				await callback.Invoke().Go();
 			}
 		}
 
