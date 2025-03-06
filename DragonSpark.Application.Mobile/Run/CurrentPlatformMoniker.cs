@@ -16,8 +16,9 @@ public sealed class CurrentPlatformMoniker : IText
 
     public string Get()
     {
-        var span = _version.DeviceFamily.AsSpan();
-        var info = span[..span.IndexOf('.')];
-        return new(info);
+        var family  = _version.DeviceFamily.AsSpan();
+        var content = family[..family.IndexOf('.')];
+        var moniker = content is "Win32NT" ? "Windows" : content;
+        return new(moniker);
     }
 }
