@@ -27,6 +27,7 @@
 		<PackageReference Include="Microsoft.Data.SqlClient.AlwaysEncrypted.AzureKeyVaultProvider" />
 		<PackageReference Include="System.Security.Cryptography.Pkcs" />
 		<PackageReference Include="System.ServiceModel.Primitives" />
+		<PackageReference Include="System.Text.Encodings.Web" />
 	</ItemGroup>
 
 	<ItemGroup>
