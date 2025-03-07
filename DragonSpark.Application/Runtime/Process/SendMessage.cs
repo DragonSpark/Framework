@@ -16,7 +16,7 @@ public class SendMessage : ITokenOperation<string>
     readonly string   _name;
     readonly TimeSpan _timeout;
 
-    protected SendMessage(string name) : this(name, TimeSpan.FromSeconds(2)) {}
+    protected SendMessage(string name) : this(name, TimeSpan.FromMilliseconds(100)) {}
 
     protected SendMessage(string name, TimeSpan timeout)
     {

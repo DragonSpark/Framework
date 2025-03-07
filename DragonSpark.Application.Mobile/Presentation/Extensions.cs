@@ -1,5 +1,6 @@
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations.Results;
+using DragonSpark.Model.Results;
 using Uno.Extensions.Reactive;
 
 namespace DragonSpark.Application.Mobile.Presentation;
@@ -12,6 +13,12 @@ public static class Extensions
 
 	public static IState<TOut> AsState<T, TOut>(this IToken<TOut> @this, T owner) where T : class where TOut : notnull
 		=> State<T, TOut>.Default.Get(new(owner, @this));
+
+	public static IState<TOut> AsState<T, TOut>(this IResult<TOut> @this, T owner) where T : class where TOut : notnull
+		=> StateValue<T, TOut>.Default.Get(new(owner, @this));
+
+    public static IState<bool> AsStateAssigned<T, TOut>(this IResult<TOut?> @this, T owner) where T : class
+        => StateValue<T, bool>.Default.Get(new(owner, @this.Then().Select(x => x is not null)));
 
 	public static IFeed<T> AsFeed<T>(this IResulting<T> @this) where T : notnull => @this.AsToken().AsFeed();
 

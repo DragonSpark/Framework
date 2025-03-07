@@ -4,11 +4,11 @@ namespace DragonSpark.Application.Mobile.Presentation.Markup;
 
 public sealed class Localized : MarkupExtension<IStringLocalizer>
 {
-	public string Name { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
 
-	public override object Get(MarkupExtensionContext<IStringLocalizer> parameter)
-	{
-		var (_, subject) = parameter;
-		return subject[Name];
-	}
+    public override object Get(MarkupExtensionContext<IStringLocalizer> parameter)
+    {
+        var (_, subject) = parameter;
+        return subject[Name];
+    }
 }

@@ -5,10 +5,11 @@ namespace DragonSpark.Application.Mobile;
 
 sealed class Configure : IAlteration<BuildHostContext>
 {
-	public static Configure Default { get; } = new();
+    public static Configure Default { get; } = new();
 
-	Configure() {}
+    Configure() {}
 
-	public BuildHostContext Get(BuildHostContext parameter)
-		=> parameter.Configure(Application.DefaultRegistrations.Default, DefaultRegistrations.Default);
+    public BuildHostContext Get(BuildHostContext parameter)
+        => parameter.Configure(Application.DefaultRegistrations.Default, DefaultRegistrations.Default,
+                               Presentation.Models.Registrations.Default);
 }
