@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Results;
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Threading.Tasks;
 using System.Timers;
@@ -7,7 +9,8 @@ namespace DragonSpark.Presentation.Components.State;
 
 public class TimerComponent : Microsoft.AspNetCore.Components.ComponentBase, IDisposable
 {
-	Func<Task> _refresh = default!;
+	readonly Switch _update  = true;
+	Func<Task>      _refresh = default!;
 
 	[Parameter]
 	public Timer? Timer
@@ -26,7 +29,7 @@ public class TimerComponent : Microsoft.AspNetCore.Components.ComponentBase, IDi
 				if ((_timer = value) is not null)
 				{
 					_timer.Elapsed  += OnElapsed;
-					UpdateRequested =  true;
+					_update.Up();
 				}
 			}
 		}
@@ -40,8 +43,8 @@ public class TimerComponent : Microsoft.AspNetCore.Components.ComponentBase, IDi
 		{
 			if (_autoStart != value)
 			{
-				_autoStart      =  value;
-				UpdateRequested |= _autoStart;
+				_autoStart      = value;
+				_update.Execute(_update || _autoStart); 
 			}
 		}
 	}	bool _autoStart;
@@ -54,8 +57,8 @@ public class TimerComponent : Microsoft.AspNetCore.Components.ComponentBase, IDi
 		{
 			if (_enabled != value)
 			{
-				_enabled        =  value;
-				UpdateRequested |= _enabled;
+				_enabled = value;
+				_update.Execute(_update || _enabled);
 			}
 		}
 	}	bool _enabled = true;
@@ -69,8 +72,6 @@ public class TimerComponent : Microsoft.AspNetCore.Components.ComponentBase, IDi
 	[Parameter]
 	public EventCallback Updated { get; set; }
 
-	bool UpdateRequested { get; set; } = true;
-
 	protected override void OnInitialized()
 	{
 		base.OnInitialized();
@@ -78,9 +79,9 @@ public class TimerComponent : Microsoft.AspNetCore.Components.ComponentBase, IDi
 		Timer    = new Timer();
 	}
 
-	protected override void OnParametersSet()
+	protected override void OnAfterRender(bool firstRender)
 	{
-		if (UpdateRequested && !(UpdateRequested = false) && _timer is not null)
+		if (_update.Down() && _timer is not null)
 		{
 			_timer.Stop();
 			if (Enabled)
@@ -90,8 +91,7 @@ public class TimerComponent : Microsoft.AspNetCore.Components.ComponentBase, IDi
 				_timer.Start();
 			}
 		}
-
-		base.OnParametersSet();
+		base.OnAfterRender(firstRender);
 	}
 
 	void OnElapsed(object? sender, ElapsedEventArgs e)

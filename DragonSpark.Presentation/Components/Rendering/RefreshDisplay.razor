@@ -1,10 +1,21 @@
-﻿@using System.Timers
-<Refresher Timer="@Timer" Repeat="@Repeat" Interval="@Interval" Updated="@OnUpdate" />
+﻿@using DragonSpark.Compose
+@using System.Timers
+<Refresher Enabled="@Enabled" Timer="@Timer" Repeat="@Repeat" Interval="@Interval" Updated="@_update" />
 @ChildContent
 
 @code {
+    EventCallback _update;
+    protected override void OnInitialized()
+    {
+        _update = Start.A.Callback(OnUpdate).Hide();
+        base.OnInitialized();
+    }
+
     [Parameter]
     public Timer? Timer { get; set; } = new ();
+
+    [Parameter]
+    public bool Enabled { get; set; } = true;
 
     [Parameter]
     public TimeSpan Interval { get; set; } = TimeSpan.FromSeconds(30);
@@ -20,7 +31,11 @@
 
     Task OnUpdate()
     {
+        if (Updated.HasDelegate)
+        {
+            return Updated.Invoke();
+        }
         StateHasChanged();
-        return Updated.Invoke();
+        return Task.CompletedTask;
     }
 }
