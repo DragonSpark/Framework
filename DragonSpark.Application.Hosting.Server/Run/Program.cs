@@ -1,14 +1,20 @@
-﻿using DragonSpark.Model.Operations.Allocated;
-using Microsoft.Extensions.Hosting;
 using System;
+using DragonSpark.Application.AspNet.Run;
+using DragonSpark.Compose;
+using DragonSpark.Model.Commands;
+using Microsoft.Extensions.Hosting;
 
 namespace DragonSpark.Application.Hosting.Server.Run;
 
-public class Program : DragonSpark.Application.Program
+public abstract class Program(
+	Func<IHostBuilder, IHostBuilder> select,
+	ICommand<IHostedApplicationBuilder> builder,
+	ICommand<IApplication> application)
+	: AspNet.Run.Program(Start.A.Selection<string[]>()
+	                                 .By.Calling(InitializeBuilder.Default.Get)
+	                                 .Select(new SelectBuilder(select, builder)),
+	                            new ConfigureNewApplication(application))
 {
-	protected Program(Func<IHostBuilder, IHostBuilder> select)
-		: base(x => InitializeBuilder.Default.Get(x).Builder, select) {}
-
-	protected Program(Func<IHostBuilder, IHostBuilder> select, IAllocated<IHost> run)
-		: base(x => InitializeBuilder.Default.Get(x).Builder, select, run) {}
+	protected Program(ICommand<IHostedApplicationBuilder> builder, ICommand<IApplication> application)
+		: this(x => x, builder, application) {}
 }

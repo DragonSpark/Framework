@@ -1,12 +1,12 @@
+using System;
+using System.Threading.Tasks;
 using DragonSpark.Model.Operations.Allocated;
 using DragonSpark.Model.Sequences;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Run;
 
-public abstract class RunApplication( // TODO: Rename Program
+public abstract class Program(
 	Func<string[], IHostBuilder> builder,
 	ConfigureNewApplication application,
 	IAllocated<IHost> run)
@@ -16,7 +16,7 @@ public abstract class RunApplication( // TODO: Rename Program
 	readonly ConfigureNewApplication      _application = application;
 	readonly IAllocated<IHost>            _run         = run;
 
-	protected RunApplication(Func<string[], IHostBuilder> builder, ConfigureNewApplication application)
+	protected Program(Func<string[], IHostBuilder> builder, ConfigureNewApplication application)
 		: this(builder, application, RunInitializedProgram.Default) {}
 
 	public Task Get(Array<string> parameter)
