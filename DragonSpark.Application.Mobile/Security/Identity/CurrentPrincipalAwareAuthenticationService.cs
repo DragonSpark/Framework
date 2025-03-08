@@ -23,27 +23,27 @@ sealed class CurrentPrincipalAwareAuthenticationService : IAuthenticationService
 	public async ValueTask<bool> LoginAsync(IDispatcher? dispatcher, IDictionary<string, string>? credentials = null,
 	                                        string? provider = null, CancellationToken? cancellationToken = null)
 	{
-		var result = await _previous.LoginAsync(dispatcher, credentials, provider, cancellationToken).Await();
-		await Update(cancellationToken, result).Await();
+		var result = await _previous.LoginAsync(dispatcher, credentials, provider, cancellationToken).Off();
+		await Update(cancellationToken, result).Off();
 		return result;
 	}
 
 	async Task Update(CancellationToken? cancellationToken, bool result)
 	{
-		await _update.Await(await IsAuthenticated(cancellationToken).Await() && result);
+		await _update.Off(await IsAuthenticated(cancellationToken).Off() && result);
 	}
 
 	public async ValueTask<bool> RefreshAsync(CancellationToken? cancellationToken = null)
 	{
-		var result = await _previous.RefreshAsync(cancellationToken).Await();
-		await Update(cancellationToken, result).Await();
+		var result = await _previous.RefreshAsync(cancellationToken).Off();
+		await Update(cancellationToken, result).Off();
 		return result;
 	}
 
 	public async ValueTask<bool> LogoutAsync(IDispatcher? dispatcher, CancellationToken? cancellationToken = null)
 	{
-		var result = await _previous.LogoutAsync(dispatcher, cancellationToken).Await();
-		await Update(cancellationToken, result).Await();
+		var result = await _previous.LogoutAsync(dispatcher, cancellationToken).Off();
+		await Update(cancellationToken, result).Off();
 		return result;
 	}
 

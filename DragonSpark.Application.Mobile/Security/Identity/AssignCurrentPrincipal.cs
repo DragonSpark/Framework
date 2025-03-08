@@ -1,6 +1,6 @@
+using System.Threading.Tasks;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
-using System.Threading.Tasks;
 using Uno.Extensions.Authentication;
 
 namespace DragonSpark.Application.Mobile.Security.Identity;
@@ -23,8 +23,8 @@ sealed class AssignCurrentPrincipal : IOperation
 
 	public async ValueTask Get()
 	{
-		var access    = await _tokens.AccessTokenAsync().Await();
-		var identity  = await _tokens.TokenAsync(TokenCacheExtensions.IdTokenKey).Await();
+		var access    = await _tokens.AccessTokenAsync().Off();
+		var identity  = await _tokens.TokenAsync(TokenCacheExtensions.IdTokenKey).Off();
 		var valid     = access.Account() is not null && identity.Account() is not null;
 		var principal = valid ? _stores.Get(access).Get(identity) : AnonymousPrincipal.Default;
 		_store.Execute(principal);

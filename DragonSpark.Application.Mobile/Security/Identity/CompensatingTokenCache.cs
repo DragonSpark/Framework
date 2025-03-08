@@ -26,7 +26,7 @@ sealed class CompensatingTokenCache : ITokenCache
 	                                 CancellationToken cancellationToken)
 	{
 		var compensated = tokens?.Where(x => x.Value.Account() is not null).ToDictionary(x => x.Key, x => x.Value);
-		await _previous.SaveAsync(provider, compensated, cancellationToken).Await();
+		await _previous.SaveAsync(provider, compensated, cancellationToken).Off();
 	}
 
 	public ValueTask ClearAsync(CancellationToken cancellationToken) => _previous.ClearAsync(cancellationToken);

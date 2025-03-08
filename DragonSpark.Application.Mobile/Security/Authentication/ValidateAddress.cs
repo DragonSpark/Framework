@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations.Results;
@@ -23,7 +23,7 @@ public class ValidateAddress : ISelecting<ValidateAddressInput, Uri?>
     public async ValueTask<Uri?> Get(ValidateAddressInput parameter)
     {
         var (identifier, cancellationToken) = parameter;
-        var content = await _receive.Await(cancellationToken);
+        var content = await _receive.Off(cancellationToken);
         var result  = _address.Get(new(identifier, new(content)));
         return result;
     }

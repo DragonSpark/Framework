@@ -1,7 +1,7 @@
+using System.Threading.Tasks;
 using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Mobile.Security.Identity;
 
@@ -20,7 +20,7 @@ sealed class UpdateCurrentPrincipal : IOperation<bool>
 	{
 		if (parameter)
 		{
-			await _assign.Await();
+			await _assign.Off();
 		}
 		else
 		{

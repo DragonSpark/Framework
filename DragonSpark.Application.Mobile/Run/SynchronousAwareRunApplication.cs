@@ -15,7 +15,7 @@ sealed class SynchronousAwareRunApplication(IRunApplication previous, ILogger lo
 	{
 		try
 		{
-			return await previous.Await(parameter);
+			return await previous.Off(parameter);
 		}
 		catch (Exception e)
 		{

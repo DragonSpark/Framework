@@ -59,7 +59,7 @@ public class ActivityModel<TIn, TOut> : ISelecting<Token<TIn>, TOut>, ICommand
             var source = CancellationTokenSource.CreateLinkedTokenSource(item);
             _active.Execute(source);
             _update.Get();
-            return await _previous.Await(parameter with { Item = source.Token });
+            return await _previous.Off(parameter with { Item = source.Token });
         }
         finally
         {

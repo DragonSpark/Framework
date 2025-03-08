@@ -17,6 +17,6 @@ public abstract class RunApplication(
 	public async Task<Application> Get(InitializeInput parameter)
 	{
 		var builder = _builder(parameter);
-		return new(builder, await _host(builder).Await());
+		return new(builder, await _host(builder).Off());
 	}
 }

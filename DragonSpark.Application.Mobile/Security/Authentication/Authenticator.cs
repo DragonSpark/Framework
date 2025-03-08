@@ -32,6 +32,6 @@ public class Authenticator : IAuthenticator
             throw new InvalidOperationException("Could not launch oauth2 process");
         }
 
-        return await _address.Await(new(identifier, token));
+        return await _address.Off(new(identifier, token));
     }
 }

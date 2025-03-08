@@ -36,6 +36,6 @@ public abstract class ApplicationBase : Microsoft.UI.Xaml.Application, IApplicat
     protected async override void OnLaunched(LaunchActivatedEventArgs args)
     {
         // ReSharper disable once AsyncApostle.AsyncAwaitMayBeElidedHighlighting
-        await _run.Await(new(this, args));
+        await _run.Off(new(this, args));
     }
 }
