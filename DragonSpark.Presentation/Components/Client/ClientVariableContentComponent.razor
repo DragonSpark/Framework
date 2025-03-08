@@ -23,13 +23,13 @@ else
     ProtectedBrowserStorageResult<T>? _input;
 
     [Parameter]
-    public IClientVariable<T> Input { get; set; } = default!;
+    public IClientVariable<T> Input { get; set; } = null!;
 
     [Parameter]
     public RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
 
     [Parameter]
-    public RenderFragment<T?> ChildContent { get; set; } = default!;
+    public RenderFragment<T?> ChildContent { get; set; } = null!;
 
     [Parameter]
     public RenderFragment NotFoundTemplate { get; set; } = EmptyContentTemplate.Default;
@@ -38,7 +38,7 @@ else
     public EventCallback<ProtectedBrowserStorageResult<T>> Ready { get; set; }
 
     [CascadingParameter]
-    IActivityReceiver Receiver { get; set; } = default!;
+    IActivityReceiver Receiver { get; set; } = null!;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

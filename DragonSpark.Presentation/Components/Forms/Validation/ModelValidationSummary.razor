@@ -19,7 +19,7 @@
 				Messages = value.Account() == null ? Empty.Array<ValidationFieldMessage>() : value.Yield().ToArray();
 			}
 		}
-	}	ValidationFieldMessage _message = default!;
+	}	ValidationFieldMessage _message = null!;
 
 	[Parameter]
 	public ICollection<ValidationFieldMessage> Messages
@@ -42,7 +42,7 @@
 				}
 			}
 		}
-	}	ICollection<ValidationFieldMessage> _messages = default!;
+	}	ICollection<ValidationFieldMessage> _messages = null!;
 
 	[CascadingParameter]
 	EditContext? EditContext

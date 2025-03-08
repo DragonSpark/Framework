@@ -10,13 +10,13 @@
 />
 
 @code {
-    ConfirmResult _result = default!;
+    ConfirmResult _result = null!;
 
     [Parameter]
     public bool EnableFocus { get; set; } = true;
 
     [Parameter]
-    public ICommand<ConfirmResult?> Assignment { get; set; } = default!;
+    public ICommand<ConfirmResult?> Assignment { get; set; } = null!;
 
     protected override void OnAfterRender(bool firstRender)
     {

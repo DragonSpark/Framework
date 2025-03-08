@@ -15,7 +15,7 @@ partial class ResultingContentView<T>
 {
 	RenderFragment? _fragment;
 	readonly Switch _loaded = new();
-	Func<Task> _update = default!;
+	Func<Task> _update = null!;
 	Worker<T?>? _subject;
 
 	[Parameter]

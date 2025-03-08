@@ -15,7 +15,7 @@ public abstract class FieldNameMonitorBase : ComponentBase, IDisposable
 	public object? Model { get; set; }
 
 	[Parameter]
-	public string FieldName { get; set; } = default!;
+	public string FieldName { get; set; } = null!;
 
 	[Parameter]
 	public EventCallback Updated { get; set; }

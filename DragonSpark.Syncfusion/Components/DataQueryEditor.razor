@@ -54,19 +54,19 @@
 </DragonSpark.Presentation.Components.Dialogs.ConfirmResultContext>
 
 @code {
-    ConfirmResultContext<T> _prompt = default!;
+    ConfirmResultContext<T> _prompt = null!;
 
     [Parameter]
-    public IOperation<T> Add { get; set; } = default!;
+    public IOperation<T> Add { get; set; } = null!;
 
     [Parameter]
-    public IOperation<Updated<T>> Update { get; set; } = default!;
+    public IOperation<Updated<T>> Update { get; set; } = null!;
 
     [Parameter]
     public Guid Id { get; set; }
 
     [Parameter]
-    public IQueries<T> Content {get; set; } = default!;
+    public IQueries<T> Content {get; set; } = null!;
 
     [Parameter]
     public ICompose<T> Compose { get; set; } = SyncfusionCompose<T>.Default;
@@ -81,7 +81,7 @@
     public FilterType FilterType { get; set; } = FilterType.Excel;
 
     [Parameter]
-    public RenderFragment Columns { get; set; } = default!;
+    public RenderFragment Columns { get; set; } = null!;
 
     [Parameter]
     public RenderFragment? BodyHeaderTemplate { get; set; }
@@ -132,7 +132,7 @@
     public EventCallback<Updated<T>> Updated { get; set; }
 
     [Parameter(CaptureUnmatchedValues = true)]
-    public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
+    public Dictionary<string, object> AdditionalAttributes { get; set; } = null!;
 
     [Parameter]
     public string ConfirmTitle { get; set; } = "Confirm Delete?";

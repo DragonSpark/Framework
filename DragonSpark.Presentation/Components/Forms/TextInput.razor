@@ -56,12 +56,12 @@
 {
     readonly Switch _focus = new(), _active = new();
     readonly Timer _timer = new (750) { AutoReset = false };
-    Func<Task> _tick = default!;
+    Func<Task> _tick = null!;
     FieldIdentifier _identifier;
     string _stored = string.Empty, _current = string.Empty;
 
     [Parameter]
-    public string Value { get; set; } = default!;
+    public string Value { get; set; } = null!;
 
     [Parameter]
     public EventCallback<string> ValueChanged { get; set; }
@@ -81,7 +81,7 @@
                 _identifier = FieldIdentifier.Create(ValueExpression);
             }
         }
-    }	Expression<Func<string>> _valueExpression = default!;
+    }	Expression<Func<string>> _valueExpression = null!;
 
     [CascadingParameter]
     EditContext? EditContext { get; set; }

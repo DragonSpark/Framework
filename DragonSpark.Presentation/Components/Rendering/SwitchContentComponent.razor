@@ -14,7 +14,7 @@ else
     public bool Input { get; set; }
 
     [Parameter]
-    public RenderFragment ChildContent { get; set; } = default!;
+    public RenderFragment ChildContent { get; set; } = null!;
 
     [Parameter]
     public RenderFragment ActiveTemplate { get; set; } = DefaultLoadingTemplate.Default;

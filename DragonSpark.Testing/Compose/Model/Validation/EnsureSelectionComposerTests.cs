@@ -41,7 +41,7 @@ public sealed class EnsureSelectionComposerTests
 		                    .By.Self.Ensure.Output.Is(x => x > 3)
 		                    .Otherwise.UseDefault()
 		                    .Get();
-		selector.Get(3).Should().Be(default);
+		selector.Get(3).Should().Be(0);
 		selector.Get(4).Should().Be(4);
 	}
 }

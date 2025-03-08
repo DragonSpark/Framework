@@ -5,7 +5,7 @@
 <CascadingValue Value="_monitor" ChildContent="@ChildContent" IsFixed="true" />
 
 @code {
-    IActivityMonitor _monitor = default!;
+    IActivityMonitor _monitor = null!;
 
     protected override void OnInitialized()
     {
@@ -14,5 +14,5 @@
     }
 
     [Parameter]
-    public RenderFragment ChildContent { get; set; } = default!;
+    public RenderFragment ChildContent { get; set; } = null!;
 }

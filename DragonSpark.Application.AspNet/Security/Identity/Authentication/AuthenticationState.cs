@@ -16,7 +16,7 @@ public sealed class AuthenticationState<T> : AuthenticationState where T : Ident
 
 	public static AuthenticationState<T> Default { get; } = new();
 
-	AuthenticationState() : this(new(new ClaimsIdentity()), default) {}
+	AuthenticationState() : this(new(new ClaimsIdentity()), null) {}
 
 	public AuthenticationState(ClaimsPrincipal user, T? profile) : base(user) => Profile = profile;
 

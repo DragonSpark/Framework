@@ -11,10 +11,10 @@ else
 @code {
 
     [Parameter]
-    public RenderFragment Initial { get; set; } = default!;
+    public RenderFragment Initial { get; set; } = null!;
 
     [Parameter]
-    public RenderFragment Subsequent { get; set; } = default!;
+    public RenderFragment Subsequent { get; set; } = null!;
 
     [Parameter]
     public string Type { get; set; } = "text/javascript";

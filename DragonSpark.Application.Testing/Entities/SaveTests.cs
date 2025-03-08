@@ -77,7 +77,7 @@ public sealed class SaveTests
 	{
 		public static EmptyAmbientContext Default { get; } = new();
 
-		EmptyAmbientContext() : base(default) {}
+		EmptyAmbientContext() : base(null) {}
 	}
 
 	sealed class Context : DbContext
@@ -85,7 +85,7 @@ public sealed class SaveTests
 		public Context(DbContextOptions options) : base(options) {}
 
 		[UsedImplicitly]
-		public DbSet<Subject> Subjects { get; set; } = default!;
+		public DbSet<Subject> Subjects { get; set; } = null!;
 	}
 
 	sealed class ContextWithRelationship : DbContext
@@ -93,10 +93,10 @@ public sealed class SaveTests
 		public ContextWithRelationship(DbContextOptions options) : base(options) {}
 
 		[UsedImplicitly]
-		public DbSet<First> Firsts { get; set; } = default!;
+		public DbSet<First> Firsts { get; set; } = null!;
 
 		[UsedImplicitly]
-		public DbSet<Second> Seconds { get; set; } = default!;
+		public DbSet<Second> Seconds { get; set; } = null!;
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -115,7 +115,7 @@ public sealed class SaveTests
 		public virtual Guid Id { get; set; }
 
 		[MaxLength(64)]
-		public virtual string Name { [UsedImplicitly] get; set; } = default!;
+		public virtual string Name { [UsedImplicitly] get; set; } = null!;
 	}
 
 	class First

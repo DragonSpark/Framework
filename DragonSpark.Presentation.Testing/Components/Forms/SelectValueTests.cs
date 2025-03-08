@@ -36,12 +36,12 @@ public sealed class SelectValueTests
 
 	sealed class Subject
 	{
-		public string Message { get; set; } = default!;
+		public string Message { get; set; } = null!;
 	}
 
 	class BaseSubject
 	{
-		public string Message { get; set; } = default!;
+		public string Message { get; set; } = null!;
 	}
 
 	sealed class ExtendedSubject : BaseSubject;

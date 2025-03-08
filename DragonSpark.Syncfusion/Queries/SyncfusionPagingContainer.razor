@@ -31,7 +31,7 @@
                 _subject = null;
 			}
 		}
-	}	IPages<T> _content = default!;
+	}	IPages<T> _content = null!;
 
 	[Parameter]
 	public IDataRequests<T> Requests { get; set; } = DataRequests<T>.Default;

@@ -23,10 +23,10 @@ else
     public bool Enabled { get; set; }
 
     [Parameter]
-    public RenderFragment ChildContent { get; set; } = default!;
+    public RenderFragment ChildContent { get; set; } = null!;
 
     [Parameter]
-    public RenderFragment<EventCallback> ConfirmContent { get; set; } = default!;
+    public RenderFragment<EventCallback> ConfirmContent { get; set; } = null!;
 
     void OnPress()
     {

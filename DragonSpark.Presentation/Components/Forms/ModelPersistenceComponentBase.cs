@@ -11,11 +11,11 @@ namespace DragonSpark.Presentation.Components.Forms;
 
 public class ModelPersistenceComponentBase<T> : ComponentBase where T : class
 {
-	[Inject] ProblemLoadingState ProblemLoading { get; set; } = default!;
+	[Inject] ProblemLoadingState ProblemLoading { get; set; } = null!;
 
-	[Inject] ProblemSavingState ProblemSaving { get; set; } = default!;
+	[Inject] ProblemSavingState ProblemSaving { get; set; } = null!;
 
-	[Inject] SavedContentMessage Saved { get; set; } = default!;
+	[Inject] SavedContentMessage Saved { get; set; } = null!;
 	
 	[Parameter]
 	public EventCallback<T> ModelChanging { get; set; }
@@ -24,13 +24,13 @@ public class ModelPersistenceComponentBase<T> : ComponentBase where T : class
 	public EventCallback<T> ModelChanged { get; set; }
 
 	[Parameter]
-	public IClientVariable<string> Store { get; set; } = default!;
+	public IClientVariable<string> Store { get; set; } = null!;
 
 	[Parameter]
-	public IFormatter<T> Formatter { get; set; } = default!;
+	public IFormatter<T> Formatter { get; set; } = null!;
 
 	[Parameter]
-	public ITarget<T> Target { get; set; } = default!;
+	public ITarget<T> Target { get; set; } = null!;
 
 	[Parameter]
 	public EventCallback ErrorOccurred { get; set; }
@@ -38,7 +38,7 @@ public class ModelPersistenceComponentBase<T> : ComponentBase where T : class
 	[Parameter]
 	public T? Model { get; set; }
 
-	[CascadingParameter] protected IActivityReceiver Receiver { get; set; } = default!;
+	[CascadingParameter] protected IActivityReceiver Receiver { get; set; } = null!;
 
 	protected virtual T DetermineModel() => Model.Verify();
 

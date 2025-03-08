@@ -1,7 +1,7 @@
 ﻿<CascadingValue Value="@_registry" ChildContent="@_content" IsFixed="true" />
 
 @code {
-    FieldRegistry _registry = default!;
+    FieldRegistry _registry = null!;
     RenderFragment? _content;
 
     [CascadingParameter]
@@ -27,5 +27,5 @@
     }	EditContext? _context;
 
     [Parameter]
-    public RenderFragment<FieldRegistry> ChildContent { get; set; } = default!;
+    public RenderFragment<FieldRegistry> ChildContent { get; set; } = null!;
 }

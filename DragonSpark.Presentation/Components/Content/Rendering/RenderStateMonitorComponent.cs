@@ -9,13 +9,13 @@ namespace DragonSpark.Presentation.Components.Content.Rendering;
 public sealed class RenderStateMonitorComponent : Microsoft.AspNetCore.Components.ComponentBase, IDisposable
 {
 	readonly First                         _rendered = new();
-	EventHandler<LocationChangedEventArgs> _changed  = default!;
+	EventHandler<LocationChangedEventArgs> _changed  = null!;
 
 	[Inject]
-	NavigationManager Navigation { get; set; } = default!;
+	NavigationManager Navigation { get; set; } = null!;
 
 	[Inject]
-	RenderStateMonitor Monitor { get; set; } = default!;
+	RenderStateMonitor Monitor { get; set; } = null!;
 
 	protected override void OnInitialized()
 	{

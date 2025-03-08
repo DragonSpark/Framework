@@ -36,7 +36,7 @@ sealed class AzureAdAuthenticationDbConnectionInterceptor : DbConnectionIntercep
 		var sqlConnection = (SqlConnection)connection;
 		if (Access(sqlConnection))
 		{
-			sqlConnection.AccessToken = _credential.GetToken(_context, default).Token;
+			sqlConnection.AccessToken = _credential.GetToken(_context, CancellationToken.None).Token;
 		}
 
 		return base.ConnectionOpening(connection, eventData, result);

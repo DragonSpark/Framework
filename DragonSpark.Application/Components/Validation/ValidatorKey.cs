@@ -10,7 +10,7 @@ public class ValidatorKey<T> : IValidatorKey<T> where T : class
 	protected ValidatorKey(object key) => _key = key;
 
 	public T? Get(ValidationContext parameter)
-		=> parameter.Items.TryGetValue(_key, out var item) && item is T result ? result : default;
+		=> parameter.Items.TryGetValue(_key, out var item) && item is T result ? result : null;
 
 	public void Execute(Pair<ValidationContext, T> parameter)
 	{

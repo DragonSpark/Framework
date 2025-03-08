@@ -77,10 +77,10 @@
                 _update.Up();
             }
         }
-    }	string _qualifier = default!;
+    }	string _qualifier = null!;
 
     [Parameter]
-    public HttpClient Client { get; set; } = default!;
+    public HttpClient Client { get; set; } = null!;
 
     [Parameter]
     public string Address { get; set; } = string.Empty;
@@ -95,7 +95,7 @@
     public bool AllowSelection { get; set; }
 
     [Parameter]
-    public RenderFragment Columns { get; set; } = default!;
+    public RenderFragment Columns { get; set; } = null!;
 
     [Parameter]
     public string Breakpoint { get; set; } = Breakpoints.SmallUp;

@@ -15,8 +15,8 @@
 @code {
     readonly ISwitch  _save   = new Switch(), _active = new Switch();
     Array<string>    _skip   = Array<string>.Empty;
-    Action           _update = default!;
-    IOperation<None> _call   = default!;
+    Action           _update = null!;
+    IOperation<None> _call   = null!;
 
     protected override void OnInitialized()
     {
@@ -38,7 +38,7 @@
                 _save.Down();
             }
         }
-    }	T _model = default!;
+    }	T _model = null!;
 
 
     [Parameter]
@@ -48,22 +48,22 @@
     public EventCallback<T> ModelChanged { get; set; }
 
     [Parameter]
-    public IClientVariable<string> Store { get; set; } = default!;
+    public IClientVariable<string> Store { get; set; } = null!;
 
     [Parameter]
-    public IFormatter<T> Formatter { get; set; } = default!;
+    public IFormatter<T> Formatter { get; set; } = null!;
 
     [Parameter]
-    public ITarget<T> Target { get; set; } = default!;
+    public ITarget<T> Target { get; set; } = null!;
 
     [Parameter]
     public EventCallback ErrorOccurred { get; set; }
 
     [Inject]
-    ProblemLoadingState Loading { get; set; } = default!;
+    ProblemLoadingState Loading { get; set; } = null!;
 
     [Inject]
-    ProblemSavingState Saving { get; set; } = default!;
+    ProblemSavingState Saving { get; set; } = null!;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -114,7 +114,7 @@
                 _skip = _fieldsToSkip.Split(',');
             }
         }
-    }	string _fieldsToSkip = default!;
+    }	string _fieldsToSkip = null!;
 
     [CascadingParameter]
     EditContext? EditContext

@@ -17,7 +17,7 @@
     }
 
     [Parameter]
-    public RenderFragment<bool> ChildContent { get; set; } = default!;
+    public RenderFragment<bool> ChildContent { get; set; } = null!;
 
     [CascadingParameter] IActivityMonitor? Monitor { get; set; }
 

@@ -101,7 +101,7 @@
         Subject ??= Input.Then().Bind(new PageInput(IncludeTotalCount, OrderBy, Filter, Partition)).Out();
     }
 
-    IPages<T> _input = default!;
+    IPages<T> _input = null!;
     bool _includeTotalCount;
     string? _orderBy, _filter;
     Partition? _partition;

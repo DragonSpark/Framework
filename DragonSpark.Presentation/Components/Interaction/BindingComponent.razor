@@ -9,13 +9,13 @@
 @code {
     readonly Switch  _requested = new();
     string?          _content;
-    Binding<string?> _binding = default!;
+    Binding<string?> _binding = null!;
 
     [Parameter]
-    public ISelect<T, string> Formatter { get; set; } = default!;
+    public ISelect<T, string> Formatter { get; set; } = null!;
 
     [Parameter]
-    public ISelect<string, T> Parser { get; set; } = default!;
+    public ISelect<string, T> Parser { get; set; } = null!;
 
     [Parameter]
     public T? Value { get; set; }
@@ -27,7 +27,7 @@
     public IEqualityComparer<string?> Comparer { get; set; } = StringComparer.CurrentCulture;
 
     [Parameter]
-    public RenderFragment<Binding<string?>> ChildContent { get; set; } = default!;
+    public RenderFragment<Binding<string?>> ChildContent { get; set; } = null!;
 
     protected override void OnInitialized()
     {

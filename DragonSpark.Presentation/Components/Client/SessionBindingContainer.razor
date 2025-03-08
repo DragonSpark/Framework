@@ -22,7 +22,7 @@
     public EventCallback<T> ValueChanged { get; set; }
 
     [Parameter]
-    public RenderFragment<Binding<T>> ChildContent { get; set; } = default!;
+    public RenderFragment<Binding<T>> ChildContent { get; set; } = null!;
 
     [Parameter]
     public RenderFragment LoadingTemplate { get; set; } = MinimalLoadingTemplate.Default;

@@ -115,7 +115,7 @@ public sealed class ParameterUsageEditorTests
 		[UsedImplicitly]
 		public Guid Id { get; set; }
 
-		public string Name { get; set; } = default!;
+		public string Name { get; set; } = null!;
 
 		[UsedImplicitly]
 		public int Number { get; set; }
@@ -126,7 +126,7 @@ public sealed class ParameterUsageEditorTests
 		[UsedImplicitly]
 		public Guid Id { get; set; }
 
-		public string Name { get; set; } = default!;
+		public string Name { get; set; } = null!;
 
 		[UsedImplicitly]
 		public int Number { get; set; }

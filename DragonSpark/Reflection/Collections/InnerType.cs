@@ -65,7 +65,7 @@ public sealed class InnerType : Select<TypeInfo, TypeInfo?>
 				}
 			}
 
-			return default!;
+			return null!;
 		}
 	}
 }

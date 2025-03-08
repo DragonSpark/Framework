@@ -12,7 +12,7 @@ public abstract class OwningComponentBase : ComponentBase, IDisposable, IAsyncDi
 	IScopedServiceProvider? _services;
 
 	[Inject]
-	IScopedServices Services { get; set; } = default!;
+	IScopedServices Services { get; set; } = null!;
 
 	protected bool IsDisposed { get; private set; }
 

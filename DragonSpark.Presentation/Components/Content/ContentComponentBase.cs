@@ -7,9 +7,9 @@ namespace DragonSpark.Presentation.Components.Content;
 
 public abstract class ContentComponentBase<T> : ComponentBase
 {
-	[Inject] IActiveContents<T> Contents { get; set; } = default!;
+	[Inject] IActiveContents<T> Contents { get; set; } = null!;
 
-	[Inject] RenderStateStore Current { get; set; } = default!;
+	[Inject] RenderStateStore Current { get; set; } = null!;
 
 	protected override void OnInitialized()
 	{
@@ -24,7 +24,7 @@ public abstract class ContentComponentBase<T> : ComponentBase
 		Content = Contents.Get(new(this, start));
 	}
 
-	protected IActiveContent<T> Content { get; private set; } = default!;
+	protected IActiveContent<T> Content { get; private set; } = null!;
 
 	protected abstract ValueTask<T?> GetContent();
 

@@ -28,7 +28,7 @@ else
     Switch _rendered = new(), _requested = new(), _initialize = new();
 
     [Parameter]
-    public IClientVariable<T> Store { get; set; } = default!;
+    public IClientVariable<T> Store { get; set; } = null!;
 
     [Parameter]
     public T Value { get; set; } = default!;
@@ -49,7 +49,7 @@ else
     public ICondition<T> Allowed { get; set; } = Is.Always<T>().Out();
 
     [Parameter]
-    public RenderFragment<Binding<T>> ChildContent { get; set; } = default!;
+    public RenderFragment<Binding<T>> ChildContent { get; set; } = null!;
 
     [Parameter]
     public RenderFragment LoadingTemplate { get; set; } = MinimalLoadingTemplate.Default;

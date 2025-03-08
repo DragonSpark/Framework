@@ -22,7 +22,7 @@ sealed class StateViews<T> : IStateViews<T> where T : IdentityUser
 
 	public async ValueTask<StateView<T>> Get(ClaimsPrincipal parameter)
 	{
-		var user = _application.Get(parameter) ? await _user.Off(parameter) : default;
+		var user = _application.Get(parameter) ? await _user.Off(parameter) : null;
 		return new(new(parameter, user), user is not null ? user.SecurityStamp ?? await _stamp.Off(user) : null);
 	}
 }

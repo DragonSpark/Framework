@@ -52,7 +52,7 @@ public static partial class ExtensionMethods
 
     public static IDictionary<TKey, TValue> ToOrderedDictionary<TKey, TValue>(
         this IEnumerable<Pair<TKey, TValue>> @this,
-        IEqualityComparer<TKey>? comparer = default)
+        IEqualityComparer<TKey>? comparer = null)
         where TKey : notnull
         => @this.ToOrderedDictionary(x => x.Key, x => x.Value, comparer);
 
@@ -66,7 +66,7 @@ public static partial class ExtensionMethods
         => new ReadOnlyDictionary<TKey, TValue>(@this.ToDictionary());
 
     public static TOut AsTo<TSource, TOut>(this object target, Func<TSource, TOut> transform,
-                                           Func<TOut>? resolve = default)
+                                           Func<TOut>? resolve = null)
     {
         var @default = resolve ?? (() => default!);
         var result = target is TSource source ? transform(source) : @default();

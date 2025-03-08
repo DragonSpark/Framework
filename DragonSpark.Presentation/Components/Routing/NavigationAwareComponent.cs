@@ -32,7 +32,7 @@ public abstract class NavigationAwareComponent : ComponentBase, IAsyncDisposable
 	protected abstract ValueTask<bool> Allow(LocationChangingContext parameter);
 
 	[Inject]
-	protected NavigationManager Navigation { get; set; } = default!;
+	protected NavigationManager Navigation { get; set; } = null!;
 
 	[Parameter]
 	public EventCallback Exited { get; set; }

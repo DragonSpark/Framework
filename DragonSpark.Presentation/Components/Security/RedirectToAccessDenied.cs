@@ -17,10 +17,10 @@ public sealed class RedirectToAccessDenied : NavigateTo
 	public string FormatPath { get; set; } = AccessDeniedPathTemplate.Default;
 
 	[Inject, UsedImplicitly]
-	ILogger<RedirectToAccessDenied> Logger { get; set; } = default!;
+	ILogger<RedirectToAccessDenied> Logger { get; set; } = null!;
 
 	[Inject]
-	CurrentRootPath CurrentPath { get; set; } = default!;
+	CurrentRootPath CurrentPath { get; set; } = null!;
 
 	protected override void OnInitialized()
 	{

@@ -59,7 +59,7 @@ public class CompileTests
 		public ContextWithData(DbContextOptions options) : base(options) {}
 
 		[UsedImplicitly]
-		public DbSet<Subject> Subjects { get; set; } = default!;
+		public DbSet<Subject> Subjects { get; set; } = null!;
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -84,7 +84,7 @@ public class CompileTests
 
 		[UsedImplicitly]
 		[MaxLength(64)]
-		public string Name { get; set; } = default!;
+		public string Name { get; set; } = null!;
 
 		[UsedImplicitly]
 		public int Number { get; set; }

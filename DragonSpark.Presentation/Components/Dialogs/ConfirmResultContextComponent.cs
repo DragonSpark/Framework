@@ -6,12 +6,12 @@ namespace DragonSpark.Presentation.Components.Dialogs;
 
 public class ConfirmResultContextComponent<T> : ComponentBase
 {
-	protected DialogContext<T> _context = default!;
+	protected DialogContext<T> _context = null!;
 
 	protected Variable<ConfirmResult?> Store { get; } = new();
 
 	[Parameter]
-	public string Title { get; set; } = default!;
+	public string Title { get; set; } = null!;
 
 	[Parameter]
 	public string Width { get; set; } = "unset";

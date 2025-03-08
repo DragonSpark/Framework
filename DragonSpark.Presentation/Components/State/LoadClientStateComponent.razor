@@ -13,13 +13,13 @@
 @code {
     
     [Parameter]
-    public IClientVariable<string> Store { get; set; } = default!;
+    public IClientVariable<string> Store { get; set; } = null!;
 
     [Parameter]
-    public IParser<T> Parser { get; set; } = default!;
+    public IParser<T> Parser { get; set; } = null!;
 
     [Parameter]
-    public RenderFragment<T> ChildContent { get; set; } = default!;
+    public RenderFragment<T> ChildContent { get; set; } = null!;
 
     [Parameter]
     public RenderFragment NotFoundTemplate { get; set; } = DefaultNotFoundTemplate.Default;

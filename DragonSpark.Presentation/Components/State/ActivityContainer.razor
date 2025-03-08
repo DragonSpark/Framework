@@ -41,9 +41,9 @@
 {
     readonly List<IRenderAware> _renderings = new();
     readonly Switch             _rendered   = new(), _restore = new(), _displaying = new(), _active = new(), _render = new(true);
-    Renderings                  _membership = default!;
+    Renderings                  _membership = null!;
     ActivityOptions             _options    = ActivityOptions.Default;
-    RenderFragment              _content    = default!;
+    RenderFragment              _content    = null!;
     string?                     _class, _outer;
 
     protected override void OnInitialized()
@@ -61,7 +61,7 @@
     public string ActiveStyle { get; set; } = "dragonspark-activity-active";
 
     [Parameter]
-    public RenderFragment<IActivityReceiver> ChildContent { get; set; } = default!;
+    public RenderFragment<IActivityReceiver> ChildContent { get; set; } = null!;
 
     [CascadingParameter] IActivityMonitor? Monitor { get; set; }
 

@@ -33,8 +33,8 @@ public class DataComponent : DragonSpark.Presentation.Components.ComponentBase
 	public ushort PageSize { get; set; } = 10;
 
 	[Parameter(CaptureUnmatchedValues = true)]
-	public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
+	public Dictionary<string, object> AdditionalAttributes { get; set; } = null!;
 
 	[CascadingParameter]
-	protected IActivityReceiver Receiver { get; set; } = default!;
+	protected IActivityReceiver Receiver { get; set; } = null!;
 }

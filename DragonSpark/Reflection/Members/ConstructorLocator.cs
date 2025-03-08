@@ -39,6 +39,6 @@ sealed class ConstructorLocator : ISelect<TypeInfo, ConstructorInfo>
 			}
 		}
 
-		return default!;
+		return null!;
 	}
 }

@@ -24,9 +24,9 @@ public abstract class InjectedInteractionHandlerComponentBase<THandler, T> : Com
 	}	IInteractionResult _result = NoActionResult.Default;
 
 	[Inject]
-	THandler Operation { get; set; } = default!;
+	THandler Operation { get; set; } = null!;
 
-	IInteractionResultHandler Subject { get; set; } = default!;
+	IInteractionResultHandler Subject { get; set; } = null!;
 
 	Task? Current { get; set; }
 

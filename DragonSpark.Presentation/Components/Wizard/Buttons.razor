@@ -26,7 +26,7 @@
     public WizardBorder Border { get; set; } = WizardBorder.None;
 
     [Parameter]
-    public WizardButtonTemplateInput Input { get; set; } = default!;
+    public WizardButtonTemplateInput Input { get; set; } = null!;
 
     [Parameter]
     public RenderFragment<WizardButtonTemplateInput>? ButtonTemplate { get; set; }

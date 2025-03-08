@@ -15,7 +15,7 @@
     EditorValidation? _validation;
 
     [Parameter]
-    public RenderFragment<EditorValidation> ChildContent { get; set; } = default!;
+    public RenderFragment<EditorValidation> ChildContent { get; set; } = null!;
 
     [CascadingParameter]
     EditContext? EditContext

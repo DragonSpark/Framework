@@ -7,10 +7,10 @@
 @code {
     readonly Switch _active = new();
     readonly Timer  _timer  = new() { Enabled = false, AutoReset = false, Interval = 100 };
-    Action          _update = default!;
+    Action          _update = null!;
 
     [Parameter]
-    public RenderFragment ChildContent { get; set; } = default!;
+    public RenderFragment ChildContent { get; set; } = null!;
 
     protected override void OnInitialized()
     {

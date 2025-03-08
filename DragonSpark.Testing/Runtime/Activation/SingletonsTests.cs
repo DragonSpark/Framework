@@ -20,7 +20,7 @@ public class SingletonsTests
 	sealed class Not
 	{
 		[UsedImplicitly]
-		public object InvalidName { get; set; } = default!;
+		public object InvalidName { get; set; } = null!;
 	}
 
 	[Fact]

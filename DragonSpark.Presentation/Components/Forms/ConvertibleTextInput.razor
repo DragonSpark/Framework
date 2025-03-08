@@ -48,10 +48,10 @@
 
 @code {
     [Parameter]
-    public ISelect<T, string> Formatter { get; set; } = default!;
+    public ISelect<T, string> Formatter { get; set; } = null!;
 
     [Parameter]
-    public ISelect<string, T> Parser { get; set; } = default!;
+    public ISelect<string, T> Parser { get; set; } = null!;
 
     [Parameter]
     public IEqualityComparer<T> Comparer { get; set; } = EqualityComparer<T>.Default;

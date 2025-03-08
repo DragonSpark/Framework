@@ -34,7 +34,7 @@
     }
 
     [CascadingParameter]
-    ISpecialColumnContainer Columns { get; set; } = default!;
+    ISpecialColumnContainer Columns { get; set; } = null!;
 
 	[Parameter]
 	public RenderFragment<T>? Template { get; set; }
@@ -52,7 +52,7 @@
     public bool DisplayFilter { get; set; } = true;
 
 	[Parameter]
-	public string Format { get; set; } = default!;
+	public string Format { get; set; } = null!;
 
 	[Parameter]
 	public string Width { get; set; } = string.Empty;
@@ -82,5 +82,5 @@
 	public ClipMode ClipMode { get; set; } = ClipMode.Ellipsis;
 
     [Parameter]
-    public RenderFragment<object> FilterTemplate { get; set; } = default!;
+    public RenderFragment<object> FilterTemplate { get; set; } = null!;
 }

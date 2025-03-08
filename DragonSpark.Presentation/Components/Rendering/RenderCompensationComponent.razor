@@ -7,7 +7,7 @@
 @code {
 
     [Parameter]
-    public RenderFragment ChildContent { get; set; } = default!;
+    public RenderFragment ChildContent { get; set; } = null!;
 
     [CascadingParameter] IActivityReceiver? Receiver { get; set; }
 

@@ -8,10 +8,10 @@ namespace DragonSpark.Presentation.Components.Dialogs;
 public class ConfirmResultComponent : ComponentBase
 {
 	[Parameter]
-	public string PrimaryClass { get; set; } = default!;
+	public string PrimaryClass { get; set; } = null!;
 
 	[Parameter]
-	public string SecondaryClass { get; set; } = default!;
+	public string SecondaryClass { get; set; } = null!;
 
 	[Parameter]
 	public string PrimaryText { get; set; } = "OK";
@@ -26,6 +26,6 @@ public class ConfirmResultComponent : ComponentBase
 	public Func<ValueTask<bool>> Confirmation { get; set; } = () => true.ToOperation();
 
 	[Parameter]
-	public RenderFragment ChildContent { get; set; } = default!;
+	public RenderFragment ChildContent { get; set; } = null!;
 
 }

@@ -4,7 +4,7 @@
 @inject NavigationManager Navigation
 
 @code {
-	string _filter = default!;
+	string _filter = null!;
 	readonly EventHandler<LocationChangedEventArgs> _changed;
 
 	public NavigationAddressMonitor() => _changed = OnNavigation;
@@ -13,7 +13,7 @@
 	public EventCallback Navigated { get; set; }
 
 	[Parameter]
-	public string Address { get; set; } = default!;
+	public string Address { get; set; } = null!;
 
 	protected override void OnInitialized()
 	{

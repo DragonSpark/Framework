@@ -10,10 +10,10 @@
     public string Identifier { get; set; } = UniqueIdentifiers.Default.Get();
 
     [Parameter]
-    public RenderFragment<string> ChildContent { get; set; } = default!;
+    public RenderFragment<string> ChildContent { get; set; } = null!;
 
     [Parameter(CaptureUnmatchedValues = true)]
-    public Dictionary<string, object?> AdditionalAttributes { get; set; } = default!;
+    public Dictionary<string, object?> AdditionalAttributes { get; set; } = null!;
 
     async Task OnClick()
     {

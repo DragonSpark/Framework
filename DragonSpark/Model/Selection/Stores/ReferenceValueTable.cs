@@ -12,7 +12,7 @@ public class ReferenceValueTable<TIn, TOut> : ITable<TIn, TOut> where TIn : clas
 	public ReferenceValueTable() : this(new ConditionalWeakTable<TIn, TOut>()) {}
 
 	public ReferenceValueTable(ConditionalWeakTable<TIn, TOut> table)
-		: this(table, new ConditionalWeakTable<TIn, TOut>.CreateValueCallback(_ => default!)) {}
+		: this(table, new ConditionalWeakTable<TIn, TOut>.CreateValueCallback(_ => null!)) {}
 
 	public ReferenceValueTable(Func<TIn, TOut> factory) : this(new ConditionalWeakTable<TIn, TOut>(), factory) {}
 

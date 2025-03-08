@@ -17,7 +17,7 @@ public class MembershipTransactionTests
 	{
 		public Guid Id { get; set; }
 
-		public string Message { [UsedImplicitly] get; set; } = default!;
+		public string Message { [UsedImplicitly] get; set; } = null!;
 	}
 
 	sealed class Transactional : Transactional<Subject>

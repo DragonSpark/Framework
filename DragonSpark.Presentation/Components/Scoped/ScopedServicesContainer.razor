@@ -8,10 +8,10 @@
 
 @code {
     [Parameter]
-    public RenderFragment ChildContent { get; set; } = default!;
+    public RenderFragment ChildContent { get; set; } = null!;
 
     [Parameter]
-    public IServiceProvider Provider { get; set; } = default!;
+    public IServiceProvider Provider { get; set; } = null!;
 
     public new void Execute(ComponentBase parameter)
     {

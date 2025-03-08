@@ -288,13 +288,13 @@ public sealed class IntroduceTests
 	{
 		public Context(DbContextOptions options) : base(options) {}
 
-		public DbSet<Subject> Subjects { get; set; } = default!;
+		public DbSet<Subject> Subjects { get; set; } = null!;
 
-		public DbSet<Other> Others { get; set; } = default!;
+		public DbSet<Other> Others { get; set; } = null!;
 
-		public DbSet<Value> Values { get; set; } = default!;
+		public DbSet<Value> Values { get; set; } = null!;
 
-		public DbSet<Third> Thirds { get; set; } = default!;
+		public DbSet<Third> Thirds { get; set; } = null!;
 	}
 
 	sealed class Subject
@@ -303,7 +303,7 @@ public sealed class IntroduceTests
 		public Guid Id { get; set; }
 
 		[MaxLength(64)]
-		public string Name { get; set; } = default!;
+		public string Name { get; set; } = null!;
 
 		public uint Amount { get; set; }
 
@@ -316,7 +316,7 @@ public sealed class IntroduceTests
 		public Guid Id { get; set; }
 
 		[MaxLength(64)]
-		public string Name { get; set; } = default!;
+		public string Name { get; set; } = null!;
 	}
 
 	sealed class Value

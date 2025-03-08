@@ -6,7 +6,7 @@ namespace DragonSpark.Presentation.Components.Forms.Validation;
 public class FieldValidationMessage<T> : ValidationComponent
 {
 	[Parameter]
-	public IValidationMessage<T> Validator { get; set; } = default!;
+	public IValidationMessage<T> Validator { get; set; } = null!;
 
 	protected override bool Validate()
 	{

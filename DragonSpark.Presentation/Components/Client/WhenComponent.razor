@@ -33,7 +33,7 @@ else
     }	DateTimeOffset _when;
 
     [Parameter]
-    public RenderFragment<DateTimeOffset> ChildContent { get; set; } = default!;
+    public RenderFragment<DateTimeOffset> ChildContent { get; set; } = null!;
 
     [Parameter]
     public RenderFragment LoadingTemplate { get; set; } = MinimalLoadingTemplate.Default;

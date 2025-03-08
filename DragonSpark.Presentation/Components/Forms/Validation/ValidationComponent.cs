@@ -12,7 +12,7 @@ public abstract class ValidationComponent : ComponentBase, IDisposable
 {
 	readonly static FieldIdentifier DefaultIdentifier = new();
 	readonly        Switch          _update           = new();
-	ValidationMessageStore          _messages         = default!;
+	ValidationMessageStore          _messages         = null!;
 	EditContext?                    _context;
 	bool                            _enabled = true;
 

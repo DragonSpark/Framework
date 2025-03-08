@@ -18,7 +18,7 @@ else
 @code
 {
     [Parameter]
-    public IClientVariable<T> Definition { get; set; } = default!;
+    public IClientVariable<T> Definition { get; set; } = null!;
 
     [Parameter]
     public IResult<T> New { get; set; } = New<T>.Default;

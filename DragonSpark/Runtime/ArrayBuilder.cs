@@ -23,7 +23,7 @@ public struct ArrayBuilder<T>(ArrayPool<T> pool) : IDisposable
     const int maxCoreClrArrayLength = 0x7fefffff; // For byte arrays the limit is slightly larger
 
     readonly ArrayPool<T> pool = pool;
-    T[]? buffer = default; // Starts out null, initialized on first Add.
+    T[]? buffer = null; // Starts out null, initialized on first Add.
 
     [MustDisposeResource]
     public ArrayBuilder(int capacity) : this(capacity, ArrayPool<T>.Shared) { }

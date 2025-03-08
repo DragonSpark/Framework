@@ -21,8 +21,8 @@ public class ComponentBase : Microsoft.AspNetCore.Components.ComponentBase
 	protected ValueTask DefaultRefreshState() => InvokeAsync(_changed).ToOperation();
 
 	[Inject]
-	protected IExceptions Exceptions { get; set; } = default!;
+	protected IExceptions Exceptions { get; set; } = null!;
 
 	[Inject]
-	protected IExecuteOperation Execute { get; set; } = default!;
+	protected IExecuteOperation Execute { get; set; } = null!;
 }

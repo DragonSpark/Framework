@@ -11,7 +11,7 @@ public class FilteredSubscriberComponent<T> : FilteredSubscriptionComponent<T> w
 	public uint? Recipient { get; set; }
 
 	[Parameter]
-	public ISubscriber<T> Registration { get; set; } = default!;
+	public ISubscriber<T> Registration { get; set; } = null!;
 
 	protected override ISubscription DetermineSubscription() => Registration.Get(new(Recipient, OnReceive));
 }
@@ -22,7 +22,7 @@ public sealed class FilteredSubscriberComponent : FilteredSubscriptionComponent<
 	public uint? Recipient { get; set; }
 
 	[Parameter]
-	public ISubscriber Registration { get; set; } = default!;
+	public ISubscriber Registration { get; set; } = null!;
 
 	protected override ISubscription DetermineSubscription() => Registration.Get(new(Recipient, OnReceive));
 

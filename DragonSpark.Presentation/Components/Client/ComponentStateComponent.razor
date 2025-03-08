@@ -11,10 +11,10 @@
 
 @code
 {
-    IClientVariable<T> _store = default!;
+    IClientVariable<T> _store = null!;
 
     [Parameter]
-    public ProtectedBrowserStorage Storage { get; set; } = default!;
+    public ProtectedBrowserStorage Storage { get; set; } = null!;
 
     protected override void OnInitialized()
     {

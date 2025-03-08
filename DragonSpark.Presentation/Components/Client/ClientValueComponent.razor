@@ -16,7 +16,7 @@
     public bool Enabled { get; set; } = true;
 
     [Parameter]
-    public IClientVariable<T> Store { get; set; } = default!;
+    public IClientVariable<T> Store { get; set; } = null!;
 
     [Parameter]
     public T DefaultValue { get; set; } = default!;
@@ -25,7 +25,7 @@
     public EventCallback<T> Initialized { get; set; }
 
     [Parameter]
-    public IResulting<T> Source { get; set; } = default!;
+    public IResulting<T> Source { get; set; } = null!;
 
     ProtectedBrowserStorageResult<T>? Result { get; set; }
 

@@ -14,8 +14,8 @@ public class Validating : ComponentBase, IDisposable
 	readonly IOperationsStore _store;
 
 	Task? _current;
-	ValidationMessageStore _messages = default!;
-	IOperations _list = default!;
+	ValidationMessageStore _messages = null!;
+	IOperations _list = null!;
 	EditContext? _context;
 
 	public Validating() : this(OperationsStore.Default) { }

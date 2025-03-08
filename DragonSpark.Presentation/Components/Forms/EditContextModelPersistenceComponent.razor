@@ -12,7 +12,7 @@
 @code {
     readonly Switch _save  = new();
     Array<string>   _skip  = Array<string>.Empty;
-    T               _model = default!;
+    T               _model = null!;
     EditContext?    _current;
 
     protected override T DetermineModel() => _model;
@@ -58,7 +58,7 @@
                 _skip         = _fieldsToSkip.Split(',', StringSplitOptions.RemoveEmptyEntries);
             }
         }
-    }   string _fieldsToSkip = default!;
+    }   string _fieldsToSkip = null!;
 
     [CascadingParameter]
     EditContext? ParentEditContext { get; set; }

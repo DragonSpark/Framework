@@ -15,7 +15,7 @@
 @code
 { 
     readonly Switch            _enabled = new();
-    ConfirmResultContext<None> _confirm = default!;
+    ConfirmResultContext<None> _confirm = null!;
 
     [Parameter]
 	public string Title { get; set; } = "Changes Detected";

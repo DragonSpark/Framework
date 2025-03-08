@@ -10,5 +10,5 @@ sealed class LocateOnlyPrincipalProperty : ISelect<Memory<PropertyInfo>, Propert
 
 	LocateOnlyPrincipalProperty() {}
 
-	public PropertyInfo? Get(Memory<PropertyInfo> parameter) => parameter.Length == 1 ? parameter.Span[0] : default;
+	public PropertyInfo? Get(Memory<PropertyInfo> parameter) => parameter.Length == 1 ? parameter.Span[0] : null;
 }

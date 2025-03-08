@@ -10,7 +10,7 @@ namespace DragonSpark.Presentation.Components.State;
 public class TimerComponent : Microsoft.AspNetCore.Components.ComponentBase, IDisposable
 {
 	readonly Switch _update  = true;
-	Func<Task>      _refresh = default!;
+	Func<Task>      _refresh = null!;
 
 	[Parameter]
 	public Timer? Timer

@@ -5,8 +5,8 @@ namespace DragonSpark.Identity.DeviantArt.Api;
 sealed class AccessTokenResponse : ApiResponse
 {
 	[JsonPropertyName("access_token")]
-	public string Token { get; set; } = default!;
+	public string Token { get; set; } = null!;
 
 	[JsonPropertyName("expires_in")]
-	public int ExpirationInSeconds { get; set; } = default!;
+	public int ExpirationInSeconds { get; set; }
 }

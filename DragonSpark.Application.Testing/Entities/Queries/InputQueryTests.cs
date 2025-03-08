@@ -232,7 +232,7 @@ public sealed class InputQueryTests
 		public Context(DbContextOptions options) : base(options) {}
 
 		[UsedImplicitly]
-		public DbSet<Subject> Subjects { get; set; } = default!;
+		public DbSet<Subject> Subjects { get; set; } = null!;
 	}
 
 	sealed class ContextWithData : DbContext
@@ -240,7 +240,7 @@ public sealed class InputQueryTests
 		public ContextWithData(DbContextOptions options) : base(options) {}
 
 		[UsedImplicitly]
-		public DbSet<Subject> Subjects { get; set; } = default!;
+		public DbSet<Subject> Subjects { get; set; } = null!;
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -264,7 +264,7 @@ public sealed class InputQueryTests
 		public Guid Id { get; set; }
 
 		[MaxLength(64)]
-		public string Name { [UsedImplicitly] get; set; } = default!;
+		public string Name { [UsedImplicitly] get; set; } = null!;
 	}
 
 	sealed class Selected : StartInput<string, Subject, string>

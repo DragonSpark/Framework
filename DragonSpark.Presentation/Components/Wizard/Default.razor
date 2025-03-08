@@ -43,7 +43,7 @@
     readonly List<Step> _steps              = new();
     int                 _value;
     internal int        _maxStepVisited;
-    WizardButtonInput   _previous = default!, _next = default!, _finish = default!;
+    WizardButtonInput   _previous = null!, _next = null!, _finish = null!;
 
     protected override void OnInitialized()
     {

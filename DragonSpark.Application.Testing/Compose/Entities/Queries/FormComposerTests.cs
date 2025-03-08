@@ -239,7 +239,7 @@ public sealed class FormComposerTests
 		public Context(DbContextOptions options) : base(options) {}
 
 		[UsedImplicitly]
-		public DbSet<Subject> Subjects { get; set; } = default!;
+		public DbSet<Subject> Subjects { get; set; } = null!;
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -257,7 +257,7 @@ public sealed class FormComposerTests
 		public Guid Id { get; set; }
 
 		[MaxLength(64)]
-		public string Name { get; set; } = default!;
+		public string Name { get; set; } = null!;
 	}
 
 	public class Benchmarks

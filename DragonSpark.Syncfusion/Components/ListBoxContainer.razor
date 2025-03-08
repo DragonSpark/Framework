@@ -24,16 +24,16 @@
 </SfListBox>
 
 @code {
-    SfListBox<TValue[], TItem> _subject = default!;
+    SfListBox<TValue[], TItem> _subject = null!;
 
     [Parameter]
     public bool AllowDragDrop { get; set; }
 
     [Parameter]
-    public string Scope { get; set; } = default!;
+    public string Scope { get; set; } = null!;
 
     [Parameter]
-    public string CssClass { get; set; } = default!;
+    public string CssClass { get; set; } = null!;
 
     [Parameter]
     public string IdNameField { get; set; } = "Id";
@@ -42,7 +42,7 @@
     public string DisplayNameField { get; set; } = "Name";
 
     [Parameter]
-    public ObservedList<TItem> Items { get; set; } = default!;
+    public ObservedList<TItem> Items { get; set; } = null!;
 
     [Parameter]
     public TItem Value
@@ -61,7 +61,7 @@
                 }
             }
         }
-    }	TItem _value = default!;
+    }	TItem _value = null!;
 
     [Parameter]
     public EventCallback<TItem> ValueChanged { get; set; }
@@ -87,7 +87,7 @@
 
     bool _selecting;
 
-    Func<Task> _update = default!;
+    Func<Task> _update = null!;
 
     protected override void OnInitialized()
     {

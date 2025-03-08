@@ -23,7 +23,7 @@
     public EventCallback<Binding<T>> Loaded { get; set; }
 
     [Parameter]
-    public RenderFragment<Binding<T>> ChildContent { get; set; } = default!;
+    public RenderFragment<Binding<T>> ChildContent { get; set; } = null!;
 
     [Parameter]
     public ICondition<T> Allowed { get; set; } = Is.Always<T>().Out();

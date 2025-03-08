@@ -17,19 +17,19 @@ public class TextInputComponent : ComponentBase
     public string Id { get; set; } = IdGeneratorHelper.Generate("matBlazor_id_");
 
     [Parameter]
-    public IDictionary<string, object> InputAttributes { get; set; } = default!;
+    public IDictionary<string, object> InputAttributes { get; set; } = null!;
 
     [Parameter(CaptureUnmatchedValues = true)]
-    public Dictionary<string, object> Attributes { get; set; } = default!;
+    public Dictionary<string, object> Attributes { get; set; } = null!;
 
     [Parameter]
-    public string Class { get; set; } = default!;
+    public string Class { get; set; } = null!;
 
     [Parameter]
-    public string Style { get; set; } = default!;
+    public string Style { get; set; } = null!;
 
     [Parameter]
-    public RenderFragment ChildContent { get; set; } = default!;
+    public RenderFragment ChildContent { get; set; } = null!;
 
     [Parameter]
     public EventCallback<MouseEventArgs> IconOnClick { get; set; }
@@ -53,10 +53,10 @@ public class TextInputComponent : ComponentBase
     public EventCallback<ChangeEventArgs> OnInput { get; set; }
 
     [Parameter]
-    public string Label { get; set; } = default!;
+    public string Label { get; set; } = null!;
 
     [Parameter]
-    public string Icon { get; set; } = default!;
+    public string Icon { get; set; } = null!;
 
     [Parameter]
     public bool IconTrailing { get; set; }
@@ -86,7 +86,7 @@ public class TextInputComponent : ComponentBase
     public bool Required { get; set; }
 
     [Parameter]
-    public string HelperText { get; set; } = default!;
+    public string HelperText { get; set; } = null!;
 
     [Parameter]
     public bool HelperTextPersistent { get; set; }
@@ -95,7 +95,7 @@ public class TextInputComponent : ComponentBase
     public bool HelperTextValidation { get; set; }
 
     [Parameter]
-    public string PlaceHolder { get; set; } = default!;
+    public string PlaceHolder { get; set; } = null!;
 
     [Parameter]
     public bool HideClearButton { get; set; }
@@ -104,11 +104,11 @@ public class TextInputComponent : ComponentBase
     public string Type { get; set; } = "text";
 
     [Parameter]
-    public string InputClass { get; set; } = default!;
+    public string InputClass { get; set; } = null!;
 
     [Parameter]
-    public string InputStyle { get; set; } = default!;
+    public string InputStyle { get; set; } = null!;
 
     [Parameter]
-    public string Format { get; set; } = default!;
+    public string Format { get; set; } = null!;
 }

@@ -94,7 +94,7 @@
     public bool AllowSelection { get; set; }
 
     [Parameter]
-    public RenderFragment Columns { get; set; } = default!;
+    public RenderFragment Columns { get; set; } = null!;
 
     [Parameter]
     public IEnumerable<T>? DataSource { get; set; }

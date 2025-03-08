@@ -49,7 +49,7 @@
 
 @code {
 	[Parameter]
-	public IQueries<TItem> Content {get; set; } = default!;
+	public IQueries<TItem> Content {get; set; } = null!;
 
 	[Parameter]
 	public ICompose<TItem> Compose { get; set; } = SyncfusionCompose<TItem>.Default;
@@ -64,7 +64,7 @@
 	public FilterType FilterType { get; set; } = FilterType.Excel;
 
 	[Parameter]
-	public RenderFragment Columns { get; set; } = default!;
+	public RenderFragment Columns { get; set; } = null!;
 
 	[Parameter]
 	public RenderFragment? HeaderTemplate { get; set; }
@@ -91,14 +91,14 @@
 	public ushort PageSize { get; set; } = 10;
 
 	[Parameter]
-    public string Placeholder { get; set; } = default!;
+    public string Placeholder { get; set; } = null!;
 
     [Parameter]
-    public RenderFragment ControlHeaderTemplate { get; set; } = default!;
+    public RenderFragment ControlHeaderTemplate { get; set; } = null!;
 
     [Parameter]
-    public RenderFragment<TItem> ControlItemTemplate { get; set; } = default!;
+    public RenderFragment<TItem> ControlItemTemplate { get; set; } = null!;
 
 	[Parameter(CaptureUnmatchedValues = true)]
-	public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
+	public Dictionary<string, object> AdditionalAttributes { get; set; } = null!;
 }

@@ -25,7 +25,7 @@
 
 @code
 {
-    Func<IActivityReceiver, EventCallback<MouseEventArgs>> _click = default!;
+    Func<IActivityReceiver, EventCallback<MouseEventArgs>> _click = null!;
 
     protected override Task OnInitializedAsync()
     {
@@ -67,16 +67,16 @@
 	public string ContentClass { get; set; } = "ds-dialog-content card-body";
 
 	[Parameter]
-	public string PrimaryClass { get; set; } = default!;
+	public string PrimaryClass { get; set; } = null!;
 
 	[Parameter]
-	public string SecondaryClass { get; set; } = default!;
+	public string SecondaryClass { get; set; } = null!;
 
 	[Parameter]
 	public Func<ValueTask<bool>> Confirmation { get; set; } = () => true.ToOperation();
 
 	[Parameter]
-	public RenderFragment ChildContent { get; set; } = default!;
+	public RenderFragment ChildContent { get; set; } = null!;
 
 	[Parameter]
 	public EventCallback Opened { get; set; }

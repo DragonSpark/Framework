@@ -62,7 +62,7 @@ public sealed class CombineTests
 	{
 		public Context(DbContextOptions options) : base(options) {}
 
-		public DbSet<Subject> Subjects { get; set; } = default!;
+		public DbSet<Subject> Subjects { get; set; } = null!;
 	}
 
 	sealed class Subject
@@ -71,7 +71,7 @@ public sealed class CombineTests
 		public Guid Id { get; set; }
 
 		[MaxLength(64)]
-		public string Name { get; set; } = default!;
+		public string Name { get; set; } = null!;
 	}
 
 	sealed class Start : Start<Subject>

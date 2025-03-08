@@ -5,5 +5,5 @@ namespace DragonSpark.Identity.Twitter.Api;
 public sealed class TwitterResponseDocument
 {
 	[JsonPropertyName("data")]
-	public TwitterResponseData Data { get; init; } = default!;
+	public TwitterResponseData Data { get; init; } = null!;
 }

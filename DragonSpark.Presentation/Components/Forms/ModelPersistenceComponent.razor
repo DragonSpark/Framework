@@ -27,7 +27,7 @@ else
     public Switch Load { get; set; } = new();
 
     [Parameter]
-    public RenderFragment<T> ChildContent { get; set; } = default!;
+    public RenderFragment<T> ChildContent { get; set; } = null!;
 
     protected override Task OnAfterRenderAsync(bool firstRender) => Load.Down() ? _load.Invoke() : base.OnParametersSetAsync();
 

@@ -29,10 +29,10 @@ public class EditorComponent : NavigationAwareComponent
 				}
 			}
 		}
-	}	EditContext _editContext = default!;
+	}	EditContext _editContext = null!;
 
 	[Inject]
-	IFocusHandler Focus { get; set; } = default!;
+	IFocusHandler Focus { get; set; } = null!;
 
 	void OnChanged(object? sender, FieldChangedEventArgs e)
 	{

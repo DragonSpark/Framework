@@ -15,7 +15,7 @@ public sealed class TransactionalTests
 	{
 		public Guid Id { get; set; }
 
-		public string Message { get; set; } = default!;
+		public string Message { get; set; } = null!;
 	}
 
 	sealed class Transactional : Transactional<Subject>

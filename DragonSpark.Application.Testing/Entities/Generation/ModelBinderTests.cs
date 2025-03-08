@@ -67,7 +67,7 @@ public sealed class ModelBinderTests
 		public DateTimeOffset Created { get; set; }
 
 		[Required, MaxLength(128)]
-		public string Name { get; set; } = default!;
+		public string Name { get; set; } = null!;
 
 		[MaxLength(1024), UsedImplicitly]
 		public string? Description { get; set; } = string.Empty;
@@ -76,7 +76,7 @@ public sealed class ModelBinderTests
 		public decimal Price { get; set; }
 
 		[UsedImplicitly]
-		public Child Child { get; set; } = default!;
+		public Child Child { get; set; } = null!;
 	}
 
 	sealed class Child
@@ -91,7 +91,7 @@ public sealed class ModelBinderTests
 		public DateTimeOffset Created { get; set; }
 
 		[Required, MaxLength(128), UsedImplicitly]
-		public string Name { get; set; } = default!;
+		public string Name { get; set; } = null!;
 
 		[MaxLength(1024), UsedImplicitly]
 		public string? Description { get; set; } = string.Empty;
@@ -100,6 +100,6 @@ public sealed class ModelBinderTests
 		public decimal Price { get; set; }
 
 		[UsedImplicitly]
-		public Parent Parent { get; set; } = default!;
+		public Parent Parent { get; set; } = null!;
 	}
 }

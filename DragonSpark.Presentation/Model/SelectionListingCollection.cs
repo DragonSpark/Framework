@@ -36,7 +36,7 @@ public class SelectionListingCollection<T> : SelectedCollection<SelectionListing
 			}
 			else
 			{
-				Selected = default;
+				Selected = null;
 			}
 
 

@@ -2,7 +2,7 @@
 
 public sealed class HostedKeysConfiguration
 {
-	public string Location { get; set; } = default!;
+	public string Location { get; set; } = null!;
 
-	public string Vault { get; set; } = default!;
+	public string Vault { get; set; } = null!;
 }

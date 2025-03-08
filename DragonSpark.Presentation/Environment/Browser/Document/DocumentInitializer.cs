@@ -8,7 +8,7 @@ namespace DragonSpark.Presentation.Environment.Browser.Document;
 
 public class DocumentInitializer : RadzenComponent
 {
-	Func<Task> _execute = default!;
+	Func<Task> _execute = null!;
 
 	bool Rendered { get; set; }
 
@@ -16,7 +16,7 @@ public class DocumentInitializer : RadzenComponent
 	public string Method { get; set; } = "_initialize";
 
 	[Inject]
-	IJSRuntime Runtime { get; set; } = default!;
+	IJSRuntime Runtime { get; set; } = null!;
 
 	protected override void OnInitialized()
 	{

@@ -17,8 +17,8 @@ public sealed class ObjectGraphDataAnnotationsValidator : ComponentBase, IDispos
 {
 	readonly IDelegates          _delegates;
 	readonly IValidationContexts _contexts;
-	Messages                     _messages = default!;
-	ObjectGraphValidator         _validator = default!;
+	Messages                     _messages = null!;
+	ObjectGraphValidator         _validator = null!;
 
 	[MustDisposeResource(false)]
 	public ObjectGraphDataAnnotationsValidator() : this(new Delegates(), ValidationContexts.Default) {}

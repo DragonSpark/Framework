@@ -24,7 +24,7 @@ public sealed class WhereTests
 
 		uint _count = Total;
 
-		uint[] _source = default!;
+		uint[] _source = null!;
 
 		[Params(Total)]
 		public uint Count

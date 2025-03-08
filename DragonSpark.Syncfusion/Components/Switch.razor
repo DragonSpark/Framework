@@ -20,7 +20,7 @@
     public EventCallback<bool> ValueChanged { get; set; }
 
     [Parameter]
-    public Expression<Func<bool>> ValueExpression { get; set; } = default!;
+    public Expression<Func<bool>> ValueExpression { get; set; } = null!;
 
     [Parameter]
     public EventCallback Updated { get; set; }

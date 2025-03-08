@@ -95,7 +95,7 @@ public class DataList<T> : RadzenDataList<T>, IRefreshAware
 				_reload?.Execute();
 			}
 		}
-	}	object _tag = default!;
+	}	object _tag = null!;
 
 	public Task Get() => Reload();
 

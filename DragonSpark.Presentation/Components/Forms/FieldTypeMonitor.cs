@@ -10,7 +10,7 @@ public class FieldTypeMonitor<T> : ComponentBase, IDisposable
 	public object? Model { get; set; }
 
 	[Parameter]
-	public string FieldName { get; set; } = default!;
+	public string FieldName { get; set; } = null!;
 
 	/// <summary>Gets or sets a callback that updates the bound value.</summary>
 	[Parameter]

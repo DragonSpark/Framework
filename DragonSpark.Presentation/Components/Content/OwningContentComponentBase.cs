@@ -19,12 +19,12 @@ public abstract class OwningContentComponentBase<TService, TContent> : Scoped.Ow
 
 
 	[Inject]
-	IActiveContents<TContent> Contents { get; set; } = default!;
+	IActiveContents<TContent> Contents { get; set; } = null!;
 
 	[Inject]
-	RenderStateStore Current { get; set; } = default!;
+	RenderStateStore Current { get; set; } = null!;
 
-	protected IActiveContent<TContent> Content { get; private set; } = default!;
+	protected IActiveContent<TContent> Content { get; private set; } = null!;
 
 	protected abstract ValueTask<TContent?> GetContent();
 

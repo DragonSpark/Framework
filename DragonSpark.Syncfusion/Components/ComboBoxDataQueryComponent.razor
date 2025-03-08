@@ -26,19 +26,19 @@
 </SfComboBox>
 
 @code {
-    SfComboBox<TValue, TItem> _subject = default!;
+    SfComboBox<TValue, TItem> _subject = null!;
 
     [Parameter]
     public TValue? Value { get; set; }
 
     [Parameter]
-    public string Placeholder { get; set; } = default!;
+    public string Placeholder { get; set; } = null!;
 
     [Parameter]
-    public RenderFragment HeaderTemplate { get; set; } = default!;
+    public RenderFragment HeaderTemplate { get; set; } = null!;
 
     [Parameter]
-    public RenderFragment<TItem> ItemTemplate { get; set; } = default!;
+    public RenderFragment<TItem> ItemTemplate { get; set; } = null!;
 
     [Parameter]
     public EventCallback<DataRequestResult> Requested { get; set; }

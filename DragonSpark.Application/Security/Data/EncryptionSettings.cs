@@ -5,7 +5,7 @@ namespace DragonSpark.Application.Security.Data;
 
 public sealed class EncryptionSettings
 {
-	public string CertificatePath { get; set; } = default!;
+	public string CertificatePath { get; set; } = null!;
 
 	public string PasswordStored
 	{
@@ -13,6 +13,6 @@ public sealed class EncryptionSettings
 		set => Password = Secure.Default.Get(value);
 	}
 
-	public SecureString Password { get; private set; } = default!;
+	public SecureString Password { get; private set; } = null!;
 }
 

@@ -5,11 +5,11 @@ namespace DragonSpark.Identity.DeviantArt.Api;
 class ApiResponse
 {
 	[JsonPropertyName("status")]
-	public string Status { get; set; } = default!;
+	public string Status { get; set; } = null!;
 
 	[JsonPropertyName("error")]
-	public string? Error { get; set; } = default!;
+	public string? Error { get; set; } = null!;
 
 	[JsonPropertyName("error_description")]
-	public string? ErrorMessage { get; set; } = default!;
+	public string? ErrorMessage { get; set; } = null!;
 }

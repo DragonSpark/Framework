@@ -8,7 +8,7 @@ public class InteractiveComponentBase : ComponentBase
 	public EventCallback Updated { get; set; }
 
 	[CascadingParameter]
-	protected IActivityReceiver Receiver { get; set; } = default!;
+	protected IActivityReceiver Receiver { get; set; } = null!;
 
 	protected override bool ShouldRender() => !Receiver.Active;
 }

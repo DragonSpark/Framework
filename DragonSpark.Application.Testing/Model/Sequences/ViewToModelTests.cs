@@ -44,13 +44,13 @@ public sealed class ViewToModelTests
 	{
 		public byte Id { get; set; }
 
-		public string Name { get; set; } = default!;
+		public string Name { get; set; } = null!;
 	}
 
 	sealed class Model
 	{
 		public byte Id { get; set; }
 
-		public string Name { get; set; } = default!;
+		public string Name { get; set; } = null!;
 	}
 }

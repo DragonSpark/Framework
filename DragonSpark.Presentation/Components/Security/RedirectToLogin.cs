@@ -19,13 +19,13 @@ public sealed class RedirectToLogin : ComponentBase
 	public bool Force { get; set; } = true;
 
 	[Inject]
-	ILogger<RedirectToLogin> Logger { get; set; } = default!;
+	ILogger<RedirectToLogin> Logger { get; set; } = null!;
 
 	[Inject]
-	CurrentRootPath CurrentPath { get; set; } = default!;
+	CurrentRootPath CurrentPath { get; set; } = null!;
 
 	[Inject]
-	NavigationManager Navigation { get; set; } = default!;
+	NavigationManager Navigation { get; set; } = null!;
 
 	protected override Task OnAfterRenderAsync(bool firstRender)
 	{

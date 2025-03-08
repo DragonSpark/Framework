@@ -28,7 +28,7 @@ public static partial class ExtensionMethods
 	/**/
 
 	public static T? ValueOrDefault<T>(this Option<T> @this) where T : struct
-		=> @this.IsSome ? @this.Value : default(T?);
+		=> @this.IsSome ? @this.Value : null;
 
 	public static T? OrDefault<T>(this Option<T> @this) => @this.IsSome ? @this.Value : default;
 }

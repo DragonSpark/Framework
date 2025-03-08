@@ -9,10 +9,10 @@ public class MarkFieldModified : ComponentBase
 	public bool Enabled { get; set; } = true;
 
 	[Parameter]
-	public string FieldName { get; set; } = default!;
+	public string FieldName { get; set; } = null!;
 
 	[CascadingParameter]
-	EditContext EditContext { get; set; } = default!;
+	EditContext EditContext { get; set; } = null!;
 
 	protected override void OnInitialized()
 	{

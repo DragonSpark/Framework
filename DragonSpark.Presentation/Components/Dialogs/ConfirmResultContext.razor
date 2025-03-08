@@ -18,10 +18,10 @@
     public bool EnableFocus { get; set; } = true;
 
     [Parameter]
-    public string PrimaryClass { get; set; } = default!;
+    public string PrimaryClass { get; set; } = null!;
 
     [Parameter]
-    public string SecondaryClass { get; set; } = default!;
+    public string SecondaryClass { get; set; } = null!;
 
     [Parameter]
     public string PrimaryText { get; set; } = "OK";
@@ -36,5 +36,5 @@
     public Func<ValueTask<bool>> Confirmation { get; set; } = () => true.ToOperation();
 
     [Parameter]
-    public RenderFragment<DialogParameter<T>> ChildContent { get; set; } = default!;
+    public RenderFragment<DialogParameter<T>> ChildContent { get; set; } = null!;
 }

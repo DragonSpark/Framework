@@ -27,6 +27,6 @@ class PrincipalPropertyByName : IPrincipalProperty
 			}
 		}
 
-		return default;
+		return null;
 	}
 }

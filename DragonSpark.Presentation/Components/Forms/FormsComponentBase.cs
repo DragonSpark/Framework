@@ -9,7 +9,7 @@ namespace DragonSpark.Presentation.Components.Forms;
 
 public class FormsComponentBase : InteractiveComponentBase
 {
-	DragonSpark.Model.Results.Switch _submitting = default!;
+	DragonSpark.Model.Results.Switch _submitting = null!;
 
 	public override async Task SetParametersAsync(ParameterView parameters)
 	{
@@ -22,10 +22,10 @@ public class FormsComponentBase : InteractiveComponentBase
 	}
 
 	[CascadingParameter]
-	protected EditContext EditContext { get; set; } = default!;
+	protected EditContext EditContext { get; set; } = null!;
 
 	[CascadingParameter]
-	protected FieldRegistry Fields { get; set; } = default!;
+	protected FieldRegistry Fields { get; set; } = null!;
 
 	protected override bool ShouldRender() => base.ShouldRender() && !_submitting;
 }

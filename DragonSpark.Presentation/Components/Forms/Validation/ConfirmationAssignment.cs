@@ -6,7 +6,7 @@ namespace DragonSpark.Presentation.Components.Forms.Validation;
 public sealed class ConfirmationAssignment : ComponentBase
 {
 	[Parameter]
-	public ConfirmationVariable Subject { get; set; } = default!;
+	public ConfirmationVariable Subject { get; set; } = null!;
 
 	[Parameter]
 	public IResulting<bool> Assignment
@@ -22,5 +22,5 @@ public sealed class ConfirmationAssignment : ComponentBase
 		}
 	}
 
-	IResulting<bool> _assignment = default!;
+	IResulting<bool> _assignment = null!;
 }

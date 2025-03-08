@@ -24,7 +24,7 @@ public sealed class IdentityTests
 	{
 		[MaxLength(64)]
 		// ReSharper disable once UnusedMember.Local
-		public string DisplayName { get; set; } = default!;
+		public string DisplayName { get; set; } = null!;
 	}
 
 	sealed class StorageBuilder : StorageBuilder<ApplicationStorage>

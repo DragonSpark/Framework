@@ -51,7 +51,7 @@ else
 
 @code {
     SfGrid<T>?              _subject;
-    IClientVariable<string> _store = default!;
+    IClientVariable<string> _store = null!;
     bool?                   _state;
 
     protected override void OnInitialized()
@@ -70,7 +70,7 @@ else
     public bool AllowSelection { get; set; }
 
     [Parameter]
-    public RenderFragment Columns { get; set; } = default!;
+    public RenderFragment Columns { get; set; } = null!;
 
     [Parameter]
     public RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
@@ -118,7 +118,7 @@ else
     public bool Enabled { get; set; } = true;
 
     [Parameter(CaptureUnmatchedValues = true)]
-    public Dictionary<string, object> AdditionalAttributes { get; set; } = default!;
+    public Dictionary<string, object> AdditionalAttributes { get; set; } = null!;
 
     public bool IsEmpty() => !_subject?.CurrentViewData.Any() ?? true;
 

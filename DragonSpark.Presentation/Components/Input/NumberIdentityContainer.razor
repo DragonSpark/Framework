@@ -17,10 +17,10 @@ else{
 
 
     [Parameter]
-    public string Input { get; set; } = default!;
+    public string Input { get; set; } = null!;
 
     [Parameter]
-    public RenderFragment<uint> ChildContent { get; set; } = default!;
+    public RenderFragment<uint> ChildContent { get; set; } = null!;
 
     [Parameter]
     public RenderFragment NotFoundTemplate { get; set; } = @<div>The identity could not be determined</div>;

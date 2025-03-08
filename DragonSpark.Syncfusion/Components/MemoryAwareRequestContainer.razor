@@ -23,10 +23,10 @@
                 _context = new MemoryAwareDataRequest(_input, Memory, DetermineKey);
             }
         }
-    }	IDataRequest _input = default!, _context = default!;
+    }	IDataRequest _input = null!, _context = null!;
 
     [Parameter]
-    public RenderFragment<IDataRequest> ChildContent { get; set; } = default!;
+    public RenderFragment<IDataRequest> ChildContent { get; set; } = null!;
 
     string DetermineKey() => $"{Id}_{Key.Get(this)}";
 }

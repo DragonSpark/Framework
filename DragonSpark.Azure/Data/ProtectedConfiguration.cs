@@ -2,5 +2,5 @@
 
 public sealed class ProtectedConfiguration
 {
-	public string Location { get; set; } = default!;
+	public string Location { get; set; } = null!;
 }

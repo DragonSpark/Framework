@@ -3,19 +3,19 @@
 @code {
 
     [Parameter]
-    public string Identifier { get; set; } = default!;
+    public string Identifier { get; set; } = null!;
 
     [Parameter]
     public bool Enabled { get; set; } = true;
 
     [Parameter]
-    public RenderFragment ChildContent { get; set; } = default!;
+    public RenderFragment ChildContent { get; set; } = null!;
 
     [Parameter, SupplyParameterFromQuery]
     public string? ScrollToSection { get; set; }
 
 	[Parameter(CaptureUnmatchedValues = true)]
-	public Dictionary<string, object?> AdditionalAttributes { get; set; } = default!;
+	public Dictionary<string, object?> AdditionalAttributes { get; set; } = null!;
 
     protected override void OnInitialized()
     {

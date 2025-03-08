@@ -7,8 +7,8 @@ namespace DragonSpark.Presentation.Components.Content;
 
 partial class ReportingContentView<TIn, TOut> where TIn : class
 {
-	Action       _call   = default!;
-	Action<Task> _report = default!;
+	Action       _call   = null!;
+	Action<Task> _report = null!;
 
 	protected override ValueTask Initialize()
 	{
@@ -35,7 +35,7 @@ partial class ReportingContentView<TIn, TOut> where TIn : class
 	}	TIn? _content;
 
 	[Parameter]
-	public IReporter<TIn, TOut> Reporter { get; set; } = default!;
+	public IReporter<TIn, TOut> Reporter { get; set; } = null!;
 
 	bool Loaded { get; set; } = true;
 

@@ -8,7 +8,7 @@ namespace DragonSpark.Presentation.Components.State;
 
 public sealed class SubscriberComponent<T> : SubscriptionComponent<T> where T : notnull
 {
-	Func<T, Task> _body = default!;
+	Func<T, Task> _body = null!;
 
 	protected override void OnInitialized()
 	{
@@ -20,14 +20,14 @@ public sealed class SubscriberComponent<T> : SubscriptionComponent<T> where T : 
 	public uint? Recipient { get; set; }
 
 	[Parameter]
-	public ISubscriber<T> Registration { get; set; } = default!;
+	public ISubscriber<T> Registration { get; set; } = null!;
 
 	protected override ISubscription DetermineSubscription() => Registration.Get(new(Recipient, _body));
 }
 
 public sealed class SubscriberOfComponent : SubscriptionComponent
 {
-	Func<Task> _body = default!;
+	Func<Task> _body = null!;
 
 	protected override void OnInitialized()
 	{
@@ -39,7 +39,7 @@ public sealed class SubscriberOfComponent : SubscriptionComponent
 	public uint? Recipient { get; set; }
 
 	[Parameter]
-	public ISubscriber Registration { get; set; } = default!;
+	public ISubscriber Registration { get; set; } = null!;
 
 	protected override ISubscription DetermineSubscription() => Registration.Get(new(Recipient, _body));
 

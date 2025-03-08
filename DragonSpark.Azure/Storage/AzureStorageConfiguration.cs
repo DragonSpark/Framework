@@ -2,5 +2,5 @@
 
 public sealed class AzureStorageConfiguration
 {
-	public string Namespace { get; set; } = default!;
+	public string Namespace { get; set; } = null!;
 }

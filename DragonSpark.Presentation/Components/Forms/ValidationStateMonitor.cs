@@ -14,8 +14,8 @@ public sealed class ValidationStateMonitor : ComponentBase, IDisposable
 {
 	readonly Switch _start = new();
 
-	Func<Task>       _update = default!;
-	IOperation<None> _call   = default!;
+	Func<Task>       _update = null!;
+	IOperation<None> _call   = null!;
 
 	protected override void OnInitialized()
 	{

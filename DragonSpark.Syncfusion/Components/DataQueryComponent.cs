@@ -21,7 +21,7 @@ public abstract class DataQueryComponent : DataComponent
 				Input = null;
 			}
 		}
-	}	IDataRequest _content = default!;
+	}	IDataRequest _content = null!;
 
 	protected virtual void OnContentChanged(Await<DataManagerRequest, object>? parameter){}
 

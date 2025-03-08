@@ -28,7 +28,7 @@ sealed class ServiceScopedTransaction(
 
 	public ValueTask DisposeAsync()
 	{
-		store.Execute(default);
+		store.Execute(null);
 		return instance.DisposeAsync();
 	}
 }
