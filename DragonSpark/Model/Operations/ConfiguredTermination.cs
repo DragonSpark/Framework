@@ -18,7 +18,7 @@ public class ConfiguredTermination<T> : IOperation
 
     public async ValueTask Get()
     {
-        var parameter = await _result.Get().Await();
-        await _configure(parameter).Await();
+        var parameter = await _result.Get().Off();
+        await _configure(parameter).Off();
     }
 }

@@ -20,25 +20,25 @@ public class OperationComposer<T> : Composer<T, ValueTask>
 	public static implicit operator Operate<T>(OperationComposer<T> instance) => instance.Get().Get;
 
 	public static implicit operator DragonSpark.Model.Operations.Await<T>(OperationComposer<T> instance)
-		=> instance.Get().Await;
+		=> instance.Get().Off;
 
 	readonly ISelect<T, ValueTask> _subject;
 
 	public OperationComposer(ISelect<T, ValueTask> subject) : base(subject) => _subject = subject;
 
-	public OperationComposer<T> Append(ISelect<T, ValueTask> command) => Append(command.Await);
+	public OperationComposer<T> Append(ISelect<T, ValueTask> command) => Append(command.Off);
 
 	public OperationComposer<T> Append(ICommand<T> command) => Append(command.Execute);
 
 	public OperationComposer<T> Append(Action<T> command) => Append(Start.A.Command(command).Operation());
 
 	public OperationComposer<T> Append(DragonSpark.Model.Operations.Await<T> command)
-		=> new(new DragonSpark.Model.Operations.Appending<T>(Get().Await, command));
+		=> new(new DragonSpark.Model.Operations.Appending<T>(Get().Off, command));
 
-	public OperationComposer<T> Append(IOperation command) => Append(command.Await);
+	public OperationComposer<T> Append(IOperation command) => Append(command.Off);
 
 	public OperationComposer<T> Append(Await command)
-		=> new(new DragonSpark.Model.Operations.Termination<T>(Get().Await, command));
+		=> new(new DragonSpark.Model.Operations.Termination<T>(Get().Off, command));
 
 	public LogOperationComposer<T, TParameter> Bind<TParameter>(ILogMessage<TParameter> log) => new(_subject, log);
 
@@ -65,11 +65,11 @@ public class OperationComposer : ResultComposer<ValueTask>
 {
 	public static implicit operator Operate(OperationComposer instance) => instance.Get().Get;
 
-	public static implicit operator Await(OperationComposer instance) => instance.Get().Await;
+	public static implicit operator Await(OperationComposer instance) => instance.Get().Off;
 
 	public OperationComposer(IResult<ValueTask> instance) : base(instance) {}
 
-	public OperationComposer Append(Await next) => new(new Appending(Get().Await, next));
+	public OperationComposer Append(Await next) => new(new Appending(Get().Off, next));
 
 	public OperationComposer Append(Operate next) => new(new AppendedOperate(Get().Get, next));
 

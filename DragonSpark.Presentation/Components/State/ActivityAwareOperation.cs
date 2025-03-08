@@ -32,14 +32,14 @@ sealed class ActivityAwareOperation : IOperation
 		var operation = _operation.Get();
 		if (!operation.IsCompleted)
 		{
-			await _update.Get((_subject, _input)).Go();
+			await _update.Get((_subject, _input)).On();
 			try
 			{
-				await operation.Go();
+				await operation.On();
 			}
 			finally
 			{
-				await _update.Await(_subject);
+				await _update.Off(_subject);
 			}
 		}
 	}
@@ -73,14 +73,14 @@ sealed class ActivityAwareOperation<T> : IOperation<T>
 		var operation = _operation.Get(parameter);
 		if (!operation.IsCompleted)
 		{
-			await _update.Get((_subject, _input)).Go();
+			await _update.Get((_subject, _input)).On();
 			try
 			{
-				await operation.Go();
+				await operation.On();
 			}
 			finally
 			{
-				await _update.Await(_subject);
+				await _update.Off(_subject);
 			}
 		}
 	}

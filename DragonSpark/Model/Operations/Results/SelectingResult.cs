@@ -9,7 +9,7 @@ public class SelectingResult<TIn, TOut> : IResulting<TOut>
 	readonly AwaitOf<TIn>               _in;
 	readonly Func<TIn, ValueTask<TOut>> _select;
 
-	public SelectingResult(IResulting<TIn> @in, Func<TIn, ValueTask<TOut>> select) : this(@in.Await, select) {}
+	public SelectingResult(IResulting<TIn> @in, Func<TIn, ValueTask<TOut>> select) : this(@in.Off, select) {}
 
 	public SelectingResult(AwaitOf<TIn> @in, Func<TIn, ValueTask<TOut>> select)
 	{
@@ -20,7 +20,7 @@ public class SelectingResult<TIn, TOut> : IResulting<TOut>
 	public async ValueTask<TOut> Get()
 	{
 		var previous = await _in();
-		var result   = await _select(previous).Await();
+		var result   = await _select(previous).Off();
 		return result;
 	}
 }

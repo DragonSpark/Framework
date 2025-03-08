@@ -36,14 +36,14 @@ sealed class ActivityAwareSelecting<TIn, TOut> : ISelecting<TIn, TOut>
 			return previous.Result;
 		}
 
-		await _update.Get(Pairs.Create(_subject, _input)).Go();
+		await _update.Get(Pairs.Create(_subject, _input)).On();
 		try
 		{
-			return await previous.Go();
+			return await previous.On();
 		}
 		finally
 		{
-			await _update.Await(_subject);
+			await _update.Off(_subject);
 		}
 	}
 }

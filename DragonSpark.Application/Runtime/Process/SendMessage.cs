@@ -29,7 +29,7 @@ public class SendMessage : ITokenOperation<string>
         var (subject, item) = parameter;
         await using var client = new NamedPipeClientStream(_name);
 
-        await client.ConnectAsync(_timeout, item).Await();
+        await client.ConnectAsync(_timeout, item).Off();
 
         if (!client.IsConnected)
         {
@@ -37,8 +37,8 @@ public class SendMessage : ITokenOperation<string>
         }
 
         await using var writer = new StreamWriter(client);
-        await writer.WriteAsync(subject.AsMemory(), item).Await();
-        await writer.FlushAsync(item).Await();
+        await writer.WriteAsync(subject.AsMemory(), item).Off();
+        await writer.FlushAsync(item).Off();
     }
 }
 

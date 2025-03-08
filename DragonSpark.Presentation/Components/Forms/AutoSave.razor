@@ -78,12 +78,12 @@
                 {
                     await ModelChanging.Invoke(Model);
                     Target.Execute(new(Model, content));
-                    await ModelChanged.Invoke(Model).Await();
+                    await ModelChanged.Invoke(Model).Off();
                 }
                 catch (Exception e)
                 {
                     Loading.Execute(new (e, content));
-                    await ErrorOccurred.Invoke().Await();
+                    await ErrorOccurred.Invoke().Off();
                 }
             }
         }
@@ -92,12 +92,12 @@
             try
             {
                 var content = Formatter.Get(Model);
-                await Store.Await(content);
+                await Store.Off(content);
             }
             catch (Exception e)
             {
                 Saving.Execute(e);
-                await ErrorOccurred.Invoke().Await();
+                await ErrorOccurred.Invoke().Off();
             }
         }
     }

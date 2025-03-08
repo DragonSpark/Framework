@@ -16,11 +16,11 @@ sealed class DatabaseTransaction(DbContext context, DatabaseFacade facade) : ITr
 
 	public async ValueTask Get()
 	{
-		await context.SaveChangesAsync().Await();
+		await context.SaveChangesAsync().Off();
 		var transaction = facade.CurrentTransaction;
 		if (transaction is not null)
 		{
-			await transaction.CommitAsync().Await();
+			await transaction.CommitAsync().Off();
 		}
 	}
 

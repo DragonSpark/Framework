@@ -13,7 +13,7 @@ sealed class GetClientEntry : ISelecting<BlobBaseClient, DefaultStorageEntry>
 
 	public async ValueTask<DefaultStorageEntry> Get(BlobBaseClient parameter)
 	{
-		var response = await parameter.GetPropertiesAsync().Await();
+		var response = await parameter.GetPropertiesAsync().Off();
 		var value    = response.Value;
 		var properties = new StorageEntryProperties(parameter.Uri, parameter.Name, value.ContentType,
 		                                            (ulong)value.ContentLength, value.CreatedOn, value.LastModified,

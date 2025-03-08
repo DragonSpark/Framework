@@ -30,7 +30,7 @@ public sealed class CombineTests
 
 		var evaluate = contexts.Then().Use(Combined.Default).To.Array();
 		{
-			var array = await evaluate.Await();
+			var array = await evaluate.Off();
 			var open  = array.Open();
 			open.Should().HaveCount(2);
 			open.Should().BeEquivalentTo("One", "Three");
@@ -51,7 +51,7 @@ public sealed class CombineTests
 
 		var evaluate = factory.Then().Use(Combined.Default).To.Array();
 		{
-			var array = await evaluate.Await();
+			var array = await evaluate.Off();
 			var open  = array.Open();
 			open.Should().HaveCount(2);
 			open.Should().BeEquivalentTo("One", "Three");

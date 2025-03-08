@@ -9,7 +9,7 @@ public class Termination<TIn, TNext> : IOperation<TIn>
 	readonly Await<TIn, TNext> _first;
 	readonly Await<TNext>      _second;
 
-	public Termination(ISelecting<TIn, TNext> first, IOperation<TNext> second) : this(first.Await, second.Await) {}
+	public Termination(ISelecting<TIn, TNext> first, IOperation<TNext> second) : this(first.Off, second.Off) {}
 
 	public Termination(Await<TIn, TNext> first, Await<TNext> second)
 	{
@@ -29,7 +29,7 @@ public class Termination<T> : IOperation<T>
 	readonly Await<T> _first;
 	readonly Await    _second;
 
-	public Termination(IOperation<T> first, IOperation second) : this(first.Await, second.Await) {}
+	public Termination(IOperation<T> first, IOperation second) : this(first.Off, second.Off) {}
 
 	public Termination(Await<T> first, Await second)
 	{

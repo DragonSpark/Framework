@@ -16,14 +16,14 @@ sealed class ConfiguredAwareKey<T> : ISelecting<UserInput<T>, string> where T : 
 
 	public async ValueTask<string> Get(UserInput<T> parameter)
 	{
-		var previous = await _previous.Await(parameter);
+		var previous = await _previous.Off(parameter);
 		if (string.IsNullOrEmpty(previous))
 		{
 			var (manager, user) = parameter;
-			var updated = await manager.FindByIdAsync(await manager.GetUserIdAsync(user).Await())
-			                           .Await();
-			await manager.ResetAuthenticatorKeyAsync(updated.Verify()).Await();
-			var result = await _previous.Await(parameter);
+			var updated = await manager.FindByIdAsync(await manager.GetUserIdAsync(user).Off())
+			                           .Off();
+			await manager.ResetAuthenticatorKeyAsync(updated.Verify()).Off();
+			var result = await _previous.Off(parameter);
 			return result.Verify();
 		}
 

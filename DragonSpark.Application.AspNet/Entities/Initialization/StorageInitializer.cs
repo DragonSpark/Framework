@@ -31,12 +31,12 @@ public sealed class StorageInitializer<T> : IHostInitializer where T : DbContext
 	{
 		await using var context = await parameter.Services.GetRequiredService<IDbContextFactory<T>>()
 		                                         .CreateDbContextAsync()
-		                                         .Await();
+		                                         .Off();
 		using var __ = _registry.Assigned(new DataMigrationRegistry(parameter.Services));
 		using var _  = _services.Assigned(parameter.Services);
 		foreach (var initializer in _initializers.Open())
 		{
-			await initializer.Await(context);
+			await initializer.Off(context);
 		}
 	}
 }

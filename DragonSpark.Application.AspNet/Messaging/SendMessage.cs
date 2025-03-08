@@ -18,8 +18,8 @@ public class SendMessage<T> : IOperation<T>
 
 	public async ValueTask Get(T parameter)
 	{
-		var (to, title, body) = await _template.Await(parameter);
+		var (to, title, body) = await _template.Off(parameter);
 
-		await _sender.SendEmailAsync(to, title, body).Await();
+		await _sender.SendEmailAsync(to, title, body).Off();
 	}
 }

@@ -19,10 +19,10 @@ sealed class SignOutAwareAddExternalSignin : IAddExternalSignin
 
 	public async ValueTask<IdentityResult?> Get(ClaimsPrincipal parameter)
 	{
-		var result = await _previous.Await(parameter);
+		var result = await _previous.Off(parameter);
 		if (result?.Succeeded ?? false)
 		{
-			await _clear.Await();
+			await _clear.Off();
 		}
 
 		return result;

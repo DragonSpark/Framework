@@ -3,7 +3,7 @@
 @code {
     protected override async ValueTask<bool> Allow(LocationChangingContext parameter)
     {
-        await Changing.Invoke(parameter).Await();
+        await Changing.Invoke(parameter).Off();
         return !parameter.IsNavigationIntercepted;
     }
 

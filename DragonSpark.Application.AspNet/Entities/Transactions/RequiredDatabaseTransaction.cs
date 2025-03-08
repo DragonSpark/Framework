@@ -17,8 +17,8 @@ sealed class RequiredDatabaseTransaction(DbContext context, DatabaseFacade facad
 
 	public async ValueTask Get()
 	{
-		await context.SaveChangesAsync().Await();
-		await facade.CurrentTransaction.Verify().CommitAsync().Await();
+		await context.SaveChangesAsync().Off();
+		await facade.CurrentTransaction.Verify().CommitAsync().Off();
 	}
 
 	public ValueTask DisposeAsync() => facade.CurrentTransaction?.DisposeAsync() ?? ValueTask.CompletedTask;

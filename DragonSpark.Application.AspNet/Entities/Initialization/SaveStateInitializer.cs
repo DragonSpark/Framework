@@ -12,6 +12,6 @@ public sealed class SaveStateInitializer : IInitializer
 
 	public async ValueTask Get(DbContext parameter)
 	{
-		await parameter.SaveChangesAsync().Await();
+		await parameter.SaveChangesAsync().Off();
 	}
 }

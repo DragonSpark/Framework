@@ -39,7 +39,7 @@ public sealed class ConfiguredStoreContext<TIn, TOut> : StoreContext<TIn, TOut>
 		=> Using(key.Get);
 
 	public DragonSpark.Compose.Model.Operations.OperationResultComposer<TIn, TOut> Using(Func<TIn, object> key)
-		=> new Memory<TIn, TOut>(Memory, new Load<TIn, TOut>(Memory, Subject.Await, _configure.Execute).Await, key)
+		=> new Memory<TIn, TOut>(Memory, new Load<TIn, TOut>(Memory, Subject.Off, _configure.Execute).Off, key)
 		   .Then()
 		   .Protecting();
 }

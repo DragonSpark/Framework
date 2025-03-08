@@ -13,7 +13,7 @@ sealed class ToCount<T> : IEvaluate<T, uint>
 
 	public async ValueTask<uint> Get(IAsyncEnumerable<T> parameter)
 	{
-		var count  = await parameter.CountAsync().Await();
+		var count  = await parameter.CountAsync().Off();
 		var result = count.Grade();
 		return result;
 	}

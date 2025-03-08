@@ -21,7 +21,7 @@ sealed class TokenAwareOperation<T> : IOperation<T>
 	{
 		var token = _token();
 		token.ThrowIfCancellationRequested();
-		await _operation.Await(parameter);
+		await _operation.Off(parameter);
 		token.ThrowIfCancellationRequested();
 	}
 }

@@ -15,7 +15,7 @@ sealed class Aggregate<T> : ISelecting<Many<T>, T>
 		var result = seed;
 		foreach (var altering in alterations.Open())
 		{
-			result = await altering.Await(result);
+			result = await altering.Off(result);
 		}
 		return result;
 	}

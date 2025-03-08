@@ -9,7 +9,7 @@ public class Maybe<T> : IResulting<T?>
 {
 	readonly AwaitOf<T?> _first, _second;
 
-	public Maybe(IResulting<T?> first, IResulting<T?> second) : this(first.Await, second.Await) {}
+	public Maybe(IResulting<T?> first, IResulting<T?> second) : this(first.Off, second.Off) {}
 
 	public Maybe(AwaitOf<T?> first, AwaitOf<T?> second)
 	{

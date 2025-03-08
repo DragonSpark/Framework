@@ -13,7 +13,7 @@ sealed class Delete : IDelete
 	public async ValueTask<bool> Get(string parameter)
 	{
 		var client   = _client.GetBlobClient(parameter);
-		var response = await client.DeleteIfExistsAsync().Await();
+		var response = await client.DeleteIfExistsAsync().Off();
 		return response.Value;
 	}
 }

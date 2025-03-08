@@ -18,10 +18,10 @@ public class Transacting<T> : IOperation<T>
 
 	public async ValueTask Get(T parameter)
 	{
-		await using var transaction = await _transactions.Await();
+		await using var transaction = await _transactions.Off();
 		transaction.Execute();
-		await _previous.Await(parameter);
-		await transaction.Await();
+		await _previous.Off(parameter);
+		await transaction.Off();
 	}
 }
 
@@ -38,10 +38,10 @@ public class Transacting<TIn, TOut> : ISelecting<TIn, TOut>
 
 	public async ValueTask<TOut> Get(TIn parameter)
 	{
-		await using var transaction = await _transactions.Await();
+		await using var transaction = await _transactions.Off();
 		transaction.Execute();
-		var result = await _previous.Await(parameter);
-		await transaction.Await();
+		var result = await _previous.Off(parameter);
+		await transaction.Off();
 		return result;
 	}
 }

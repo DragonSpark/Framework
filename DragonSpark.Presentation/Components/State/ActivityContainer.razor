@@ -80,7 +80,7 @@
             await Focus.Restore.Get();
             if (Monitor is not null)
             {
-                await Monitor.Await();
+                await Monitor.Off();
             }
         }
     }
@@ -115,7 +115,7 @@
             }
             if (Monitor is not null)
             {
-                await Monitor.Await();
+                await Monitor.Off();
             }
 
             using var renderings = _renderings.AsValueEnumerable().ToArray(ArrayPool<IRenderAware>.Shared);

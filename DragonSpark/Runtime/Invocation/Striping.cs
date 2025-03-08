@@ -20,8 +20,8 @@ public class Striping<TIn, TOut> : ISelecting<TIn, TOut> where TIn : notnull
 
 	public async ValueTask<TOut> Get(TIn parameter)
 	{
-		using var @lock  = await _lock.LockAsync(parameter).Await();
-		var       result = await _previous.Await(parameter);
+		using var @lock  = await _lock.LockAsync(parameter).Off();
+		var       result = await _previous.Off(parameter);
 		return result;
 	}
 }

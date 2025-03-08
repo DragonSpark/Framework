@@ -11,14 +11,14 @@ sealed class Authentication(IExternalSignin signin, IUserSynchronization synchro
 {
 	public async ValueTask<SignInResult> Get(ExternalLoginInfo parameter)
 	{
-		var result = await signin.Get(parameter).Go();
+		var result = await signin.Get(parameter).On();
 
 		if (result.Succeeded)
 		{
 			log.LogInformation("[{Id}] {LoginProvider} user with key {Key} logged in",
 			                    parameter.Principal.Number(), parameter.LoginProvider, parameter.ProviderKey);
 
-			await synchronization.Await(parameter);
+			await synchronization.Off(parameter);
 		}
 
 		return result;

@@ -20,13 +20,13 @@ public class TryLogAndThrow<TIn, TOut> : ISelecting<TIn, TOut>
 	{
 		try
 		{
-			return await _previous.Await(parameter);
+			return await _previous.Off(parameter);
 		}
 		catch (Exception e)
 		{
 			// ReSharper disable once UnthrowableException
 			// ReSharper disable once ThrowingSystemException
-			throw await _logger.Await(new(GetType(), e));
+			throw await _logger.Off(new(GetType(), e));
 		}
 	}
 }

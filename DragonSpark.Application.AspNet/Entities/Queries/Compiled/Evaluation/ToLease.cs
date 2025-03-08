@@ -17,7 +17,7 @@ public sealed class ToLease<T> : IEvaluate<T, Leasing<T>>
 	[MustDisposeResource]
 	public async ValueTask<Leasing<T>> Get(IAsyncEnumerable<T> parameter)
 	{
-		var owner  = await parameter.AsAsyncValueEnumerable().ToArrayAsync(ArrayPool<T>.Shared).Await();
+		var owner  = await parameter.AsAsyncValueEnumerable().ToArrayAsync(ArrayPool<T>.Shared).Off();
 		var result = owner.Then();
 		return result;
 	}

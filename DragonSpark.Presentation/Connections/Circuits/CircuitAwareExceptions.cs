@@ -26,7 +26,7 @@ sealed class CircuitAwareExceptions : IExceptions
 		var record  = _store.Get();
 		var current = _ambient.Get();
 		_ambient.Execute(record);
-		await _exceptions.Await(parameter);
+		await _exceptions.Off(parameter);
 		_ambient.Execute(current);
 	}
 }

@@ -20,8 +20,8 @@ sealed class SaveContent : ISaveContent
 
 	public async ValueTask<IStorageEntry> Get(WriteInput parameter)
 	{
-		var client = await _write.Await(parameter);
-		var result = await _entry.Await(client);
+		var client = await _write.Off(parameter);
+		var result = await _entry.Off(client);
 		return result;
 	}
 }

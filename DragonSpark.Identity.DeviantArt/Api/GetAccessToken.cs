@@ -26,7 +26,7 @@ sealed class GetAccessToken : IAccessToken
 	public async ValueTask<AccessToken> Get()
 	{
 		using var client = _clients.CreateClient();
-		var response = await client.GetFromJsonAsync<AccessTokenResponse>(_location).Await()
+		var response = await client.GetFromJsonAsync<AccessTokenResponse>(_location).Off()
 		               ??
 		               throw new InvalidOperationException();
 		var result = _token.Get(response);

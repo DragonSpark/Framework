@@ -8,7 +8,7 @@ public class Termination<TIn, TNext> : IAllocated<TIn>
 	readonly Await<TIn, TNext> _first;
 	readonly Await<TNext>      _second;
 
-	public Termination(IAllocating<TIn, TNext> first, IAllocated<TNext> second) : this(first.Await, second.Await) {}
+	public Termination(IAllocating<TIn, TNext> first, IAllocated<TNext> second) : this(first.Off, second.Off) {}
 
 	public Termination(Await<TIn, TNext> first, Await<TNext> second)
 	{
@@ -28,7 +28,7 @@ public class Termination<T> : IAllocated<T>
 	readonly Await<T> _first;
 	readonly Await    _second;
 
-	public Termination(IAllocated<T> first, IAllocated second) : this(first.Await, second.Await) {}
+	public Termination(IAllocated<T> first, IAllocated second) : this(first.Off, second.Off) {}
 
 	public Termination(Await<T> first, Await second)
 	{

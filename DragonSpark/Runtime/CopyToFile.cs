@@ -14,6 +14,6 @@ public sealed class CopyToFile : ICopyToFile
 	{
 		var (source, destination) = parameter;
 		await using var result = File.OpenWrite(destination);
-		await source.CopyToAsync(result).Await();
+		await source.CopyToAsync(result).Off();
 	}
 }

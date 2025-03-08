@@ -20,7 +20,7 @@ sealed class FailureAwareCreateExternal<T> : ICreateExternal<T> where T : Identi
 
 	public async ValueTask<CreateUserResult<T>> Get(ExternalLoginInfo parameter)
 	{
-		var result = await _previous.Await(parameter);
+		var result = await _previous.Off(parameter);
 		if (!result.Result.Succeeded)
 		{
 			_warning.Execute(parameter.LoginProvider, parameter.ProviderKey,

@@ -24,6 +24,6 @@ sealed class OpenDialog : IOperation
 
 	public async ValueTask Get()
 	{
-		await _service.OpenAsync(_title, _fragment).Await();
+		await _service.OpenAsync(_title, _fragment).Off();
 	}
 }

@@ -16,7 +16,7 @@ public class AllocatedAppended : IAllocated
 
     public async Task Get()
     {
-        await _previous().Go();
-        await _current().Await();
+        await _previous().On();
+        await _current().Off();
     }
 }

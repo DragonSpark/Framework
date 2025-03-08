@@ -16,6 +16,6 @@ sealed class DefaultToArray<T> : IToArray<T>
 	public async ValueTask<Array<T>> Get(Token<IQueryable<T>> parameter)
 	{
 		var (queryable, token) = parameter;
-		return await queryable.ToArrayAsync(token).Await();
+		return await queryable.ToArrayAsync(token).Off();
 	}
 }

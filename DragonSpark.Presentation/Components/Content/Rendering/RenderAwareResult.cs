@@ -23,17 +23,17 @@ sealed class RenderAwareResult<T> : IResulting<T?>
 		{
 			case RenderState.Default:
 			{
-				var result = _variable.Pop(out var stored) ? stored : await _previous.Await();
+				var result = _variable.Pop(out var stored) ? stored : await _previous.Off();
 				_variable.Execute(result);
 				return result;
 			}
 			case RenderState.Ready:
 			{
-				return _variable.Pop(out var stored) ? stored : await _previous.Await();
+				return _variable.Pop(out var stored) ? stored : await _previous.Off();
 			}
 			default:
 			{
-				return await _previous.Await();
+				return await _previous.Off();
 			}
 		}
 	}

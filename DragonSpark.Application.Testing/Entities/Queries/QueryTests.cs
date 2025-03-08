@@ -90,7 +90,7 @@ public sealed class QueryTests
 
 		var evaluate = new SubjectsNotTwo(new NewContext<Context>(factory));
 		{
-			var results = await evaluate.Await();
+			var results = await evaluate.Off();
 			var open    = results.Open();
 			open.Should().HaveCount(2);
 			open.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
@@ -115,7 +115,7 @@ public sealed class QueryTests
 
 		var evaluate = new SubjectsNotTwo(new NewContext<Context>(factory), Complex.Default);
 		{
-			var results = await evaluate.Await();
+			var results = await evaluate.Off();
 			var open    = results.Open();
 			open.Should().HaveCount(2);
 			open.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
@@ -140,7 +140,7 @@ public sealed class QueryTests
 
 		var evaluate = new SubjectsNotWithParameter(new NewContext<Context>(factory));
 		{
-			var results = await evaluate.Await("One");
+			var results = await evaluate.Off("One");
 			var open    = results.Open();
 			open.Should().HaveCount(2);
 			open.Select(x => x.Name).Should().BeEquivalentTo("Two", "Three");
@@ -149,7 +149,7 @@ public sealed class QueryTests
 		counter.Get().Should().Be(2);
 
 		{
-			var results = await evaluate.Await("Two");
+			var results = await evaluate.Off("Two");
 			var open    = results.Open();
 			open.Should().HaveCount(2);
 			open.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
@@ -172,14 +172,14 @@ public sealed class QueryTests
 
 		var parameter = new SubjectsNotWithParameter(factory);
 		{
-			var results = await parameter.Await("One");
+			var results = await parameter.Off("One");
 			var open    = results.Open();
 			open.Should().HaveCount(2);
 			open.Select(x => x.Name).Should().BeEquivalentTo("Two", "Three");
 		}
 
 		{
-			var results = await parameter.Await("Two");
+			var results = await parameter.Off("Two");
 			var open    = results.Open();
 			open.Should().HaveCount(2);
 			open.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
@@ -199,7 +199,7 @@ public sealed class QueryTests
 
 		var evaluate = new SubjectsNotTwo(new NewContext<Context>(factory));
 		{
-			var             results  = await evaluate.Await();
+			var             results  = await evaluate.Off();
 			await using var context  = factory.CreateDbContext();
 			var             scoped   = new Scoped(context);
 			var             elements = await scoped.Get().ToArrayAsync();
@@ -300,9 +300,9 @@ public sealed class QueryTests
 		public async Task<Array> MeasureScoped() => await _scoped.ToArrayAsync();
 
 		[Benchmark]
-		public async Task<Array> MeasureCompiled() => await _query.Await();
+		public async Task<Array> MeasureCompiled() => await _query.Off();
 
 		[Benchmark]
-		public async Task<Array> MeasureCompiledParameter() => await _selected.Await("Two");
+		public async Task<Array> MeasureCompiledParameter() => await _selected.Off("Two");
 	}
 }

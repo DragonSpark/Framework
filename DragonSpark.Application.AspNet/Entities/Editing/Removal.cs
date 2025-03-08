@@ -24,10 +24,10 @@ public class Removal<TIn, T> : IOperation<TIn> where T : class
 
 	public async ValueTask Get(TIn parameter)
 	{
-		var entity = await _select.Await(parameter);
+		var entity = await _select.Off(parameter);
 		if (entity is not null)
 		{
-			await _remove.Await(entity);
+			await _remove.Off(entity);
 		}
 		else
 		{

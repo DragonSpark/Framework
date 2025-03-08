@@ -22,11 +22,11 @@ public class EntityState<T> : IOperation<Updated<T>> where T : class
 		{
 			case "Add":
 			case "Edit":
-				await _update.Await(subject);
+				await _update.Off(subject);
 				break;
 			case "Remove":
 			case "Delete":
-				await _remove.Await(subject);
+				await _remove.Off(subject);
 				break;
 		}
 	}

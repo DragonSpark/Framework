@@ -30,7 +30,7 @@ public sealed class EditorValidation : IResulting<bool>
 			_validated()(_sender, args);
 			foreach (var callback in args.Callbacks.AsValueEnumerable())
 			{
-				await callback.Invoke().Go();
+				await callback.Invoke().On();
 			}
 		}
 

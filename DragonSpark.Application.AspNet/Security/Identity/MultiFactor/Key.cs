@@ -13,7 +13,7 @@ sealed class Key<T> : ISelecting<UserInput<T>, string?> where T : IdentityUser
 	public async ValueTask<string?> Get(UserInput<T> parameter)
 	{
 		var (manager, user) = parameter;
-		var result = await manager.GetAuthenticatorKeyAsync(user).Await();
+		var result = await manager.GetAuthenticatorKeyAsync(user).Off();
 		return result;
 	}
 }

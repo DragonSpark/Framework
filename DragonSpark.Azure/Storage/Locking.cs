@@ -24,7 +24,7 @@ public class Locking<T> : IOperation<T>
 
 	public async ValueTask Get(T parameter)
 	{
-		await using var @lock = await _lock.Await(parameter);
-		await _previous.Await(parameter);
+		await using var @lock = await _lock.Off(parameter);
+		await _previous.Off(parameter);
 	}
 }

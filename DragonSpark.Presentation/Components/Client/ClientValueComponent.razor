@@ -36,7 +36,7 @@
             Result = await Store.Get();
             if (Result?.Success ?? false)
             {
-                await Initialized.Invoke(Result.Value.Value).Await();
+                await Initialized.Invoke(Result.Value.Value).Off();
             }
         }
     }
@@ -45,7 +45,7 @@
     {
         if (_initialized && Enabled)
         {
-            await Store.Await(await Source.Get());
+            await Store.Off(await Source.Get());
         }
     }
 }

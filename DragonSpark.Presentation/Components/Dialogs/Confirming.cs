@@ -29,7 +29,7 @@ public class Confirming<T, TConfirm> : IConfirming<T> where TConfirm : ConfirmCo
 
 	public async ValueTask<DialogResult> Get(T parameter)
 	{
-		await _display.Get().Go();
+		await _display.Get().On();
 		return _result.Get();
 	}
 }

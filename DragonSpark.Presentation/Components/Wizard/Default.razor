@@ -190,7 +190,7 @@
 
         if (isCanceled)
         {
-            await ValueChanged.Invoke(Value).Await();
+            await ValueChanged.Invoke(Value).Off();
         }
         else
         {
@@ -215,7 +215,7 @@
 
         if (isCanceled)
         {
-            await ValueChanged.Invoke(Value).Await();
+            await ValueChanged.Invoke(Value).Off();
         }
         else
         {
@@ -244,7 +244,7 @@
 
         await ValueChanged.InvokeAsync(targetIndex);
 
-        return await OnStepChangeHandlerAsync(args).Await();
+        return await OnStepChangeHandlerAsync(args).Off();
     }
 
     /// <summary />

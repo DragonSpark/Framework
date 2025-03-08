@@ -20,7 +20,7 @@ public class OperationResultComposer<T> : ResultComposer<ValueTask<T>>
 	public static implicit operator OperateOf<T>(OperationResultComposer<T> instance) => instance.Get().Get;
 
 	public static implicit operator DragonSpark.Model.Operations.AwaitOf<T>(OperationResultComposer<T> instance)
-		=> instance.Get().Await;
+		=> instance.Get().Off;
 
 	public OperationResultComposer(IResult<ValueTask<T>> instance) : base(instance) {}
 
@@ -61,7 +61,7 @@ public class OperationResultComposer<_, T> : Composer<_, ValueTask<T>>
 	public static implicit operator Operate<_, T>(OperationResultComposer<_, T> instance) => instance.Get().Get;
 
 	public static implicit operator DragonSpark.Model.Operations.Await<_, T>(OperationResultComposer<_, T> instance)
-		=> instance.Get().Await;
+		=> instance.Get().Off;
 
 	public static implicit operator DragonSpark.Model.Operations.Await<_>(OperationResultComposer<_, T> instance)
 		=> instance.Terminate();
@@ -99,7 +99,7 @@ public class OperationResultComposer<_, T> : Composer<_, ValueTask<T>>
 
 	public OperationResultComposer<_, T> Protecting() => Protecting(new AsyncLock());
 
-	public OperationResultComposer<_, T> Protecting(AsyncLock @lock) => new(new Protecting<_, T>(Get().Await, @lock));
+	public OperationResultComposer<_, T> Protecting(AsyncLock @lock) => new(new Protecting<_, T>(Get().Off, @lock));
 
 	public OperationResultComposer<_, T> Configure(Action<T> configure)
 		=> new(Get().Select(new Configure<T>(configure)));

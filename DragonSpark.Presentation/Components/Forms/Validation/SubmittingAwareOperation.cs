@@ -25,6 +25,6 @@ sealed class SubmittingAwareOperation : IOperation<EditContext>
 	public async ValueTask Get(EditContext parameter)
 	{
 		using var _ = _submitting.Get(parameter).Assigned(true);
-		await _previous.Await(parameter);
+		await _previous.Off(parameter);
 	}
 }

@@ -19,7 +19,7 @@ public class Protecting<T> : IOperation<T>
 
 	public async ValueTask Get(T parameter)
 	{
-		using var @lock = await _lock.LockAsync().Go();
-		await _previous.Await(parameter);
+		using var @lock = await _lock.LockAsync().On();
+		await _previous.Off(parameter);
 	}
 }

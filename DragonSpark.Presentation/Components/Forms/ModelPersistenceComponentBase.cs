@@ -53,12 +53,12 @@ public class ModelPersistenceComponentBase<T> : ComponentBase where T : class
 				var model = DetermineModel();
 				await ModelChanging.Invoke(model);
 				Target.Execute(new(model, content));
-				await ModelChanged.Invoke(model).Await();
+				await ModelChanged.Invoke(model).Off();
 			}
 			catch (Exception e)
 			{
 				ProblemLoading.Execute(new(e, content));
-				await ErrorOccurred.Invoke().Await();
+				await ErrorOccurred.Invoke().Off();
 			}
 		}
 	}
@@ -69,13 +69,13 @@ public class ModelPersistenceComponentBase<T> : ComponentBase where T : class
 		{
 			var model   = DetermineModel();
 			var content = Formatter.Get(model);
-			await Store.Await(content);
+			await Store.Off(content);
 			Saved.Execute(content.Length.Bytes().Humanize());
 		}
 		catch (Exception e)
 		{
 			ProblemSaving.Execute(e);
-			await ErrorOccurred.Invoke().Await();
+			await ErrorOccurred.Invoke().Off();
 		}
 	}
 }

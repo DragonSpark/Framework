@@ -7,7 +7,7 @@ public class Awaiting<T> : IOperation<T>
 {
 	readonly Await<T> _await;
 
-	public Awaiting(IOperation<T> operation) : this(operation.Await) {}
+	public Awaiting(IOperation<T> operation) : this(operation.Off) {}
 
 	public Awaiting(Await<T> await) => _await = @await;
 

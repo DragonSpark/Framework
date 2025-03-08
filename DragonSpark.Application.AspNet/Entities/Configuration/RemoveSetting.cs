@@ -11,11 +11,11 @@ sealed class RemoveSetting : IRemove
 
 	public async ValueTask Get(string parameter)
 	{
-		using var edit = await _edit.Await(parameter);
+		using var edit = await _edit.Off(parameter);
 		if (edit.Subject is not null)
 		{
 			edit.Remove(edit.Subject);
-			await edit.Await();
+			await edit.Off();
 		}
 	}
 }

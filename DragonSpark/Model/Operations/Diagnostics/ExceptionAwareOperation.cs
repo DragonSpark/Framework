@@ -21,7 +21,7 @@ sealed class ExceptionAwareOperation<T> : IOperation<T>
     {
         try
         {
-            await _operation.Await(parameter);
+            await _operation.Off(parameter);
         }
         // ReSharper disable once CatchAllClause
         catch (Exception e)

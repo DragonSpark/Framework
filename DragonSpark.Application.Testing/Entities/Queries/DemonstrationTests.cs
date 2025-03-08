@@ -29,20 +29,20 @@ public sealed class DemonstrationTests
 			using var editor = editors.Get();
 			var       entity = new Blog { Url = "http://blogs.msdn.com/adonet" };
 			editor.Add(entity);
-			await editor.Await();
+			await editor.Off();
 			id = entity.BlogId;
 		}
 
 		id.Should().NotBe(0);
 
 		{
-			using var editor = await edit.Await(id);
+			using var editor = await edit.Off(id);
 			editor.Subject.Posts.Add(new() { Title = "Hello World", Content = "I wrote an app using EF Core!" });
-			await editor.Await();
+			await editor.Off();
 		}
 
 		{
-			var specific = await get.Await(id);
+			var specific = await get.Off(id);
 			specific.Should().NotBeNull();
 			var verify = specific.Verify();
 			verify.BlogId.Should().Be(id);
@@ -50,13 +50,13 @@ public sealed class DemonstrationTests
 		}
 
 		{
-			using var editor = await edit.Await(id);
+			using var editor = await edit.Off(id);
 			editor.Remove(editor.Subject);
-			await editor.Await();
+			await editor.Off();
 		}
 
 		{
-			var specific = await get.Await(id);
+			var specific = await get.Off(id);
 			specific.Should().BeNull();
 		}
 	}

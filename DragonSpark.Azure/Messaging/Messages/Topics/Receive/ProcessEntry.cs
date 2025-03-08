@@ -23,12 +23,12 @@ public sealed class ProcessEntry : IOperation<ProcessEntryInput>
 		{
 			try
 			{
-				await operation.Await(message);
+				await operation.Off(message);
 			}
 			catch (Exception e)
 			{
 				var type = operation.AsTo<IReportedTypeAware, Type?>(x => x.Get()) ?? operation.GetType();
-				await _logger.Await(new(type, e));
+				await _logger.Off(new(type, e));
 			}
 		}
 	}

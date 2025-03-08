@@ -17,9 +17,9 @@ sealed class Write : IWrite
 		var             result  = _client.GetBlobClient(name);
 		var             header  = new BlobHttpHeaders { ContentType      = contentType };
 		var             options = new BlobOpenWriteOptions { HttpHeaders = header };
-		await using var stream  = await result.OpenWriteAsync(true, options).Await();
-		await write(stream).Await();
-		await stream.FlushAsync().Await();
+		await using var stream  = await result.OpenWriteAsync(true, options).Off();
+		await write(stream).Off();
+		await stream.FlushAsync().Off();
 		return result;
 	}
 }

@@ -13,7 +13,7 @@ public class ExceptionAwareResult<T> : IResulting<T?>
 	readonly Type?       _reportedType;
 
 	public ExceptionAwareResult(IResulting<T?> previous, IExceptions exceptions, Type? reportedType = null)
-		: this(previous.Await, exceptions, reportedType) {}
+		: this(previous.Off, exceptions, reportedType) {}
 
 	public ExceptionAwareResult(AwaitOf<T?> previous, IExceptions exceptions, Type? reportedType = null)
 	{
@@ -30,7 +30,7 @@ public class ExceptionAwareResult<T> : IResulting<T?>
 		}
 		catch (Exception e)
 		{
-			await _exceptions.Await(new(_reportedType ?? GetType(), e));
+			await _exceptions.Off(new(_reportedType ?? GetType(), e));
 			throw;
 		}
 	}

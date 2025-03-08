@@ -35,7 +35,7 @@ sealed class ChallengedModel : ISelecting<ModelBindingContext, object>
 			return new LoginErrorRedirect($"Error from external provider: {error}", @return);
 		}
 
-		var login = await _profile.Await();
+		var login = await _profile.Off();
 
 		var result = login != null
 			             ? new Challenged(login, @return)

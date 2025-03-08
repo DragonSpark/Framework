@@ -13,7 +13,7 @@ sealed class AddExternalSignin<T> : IAddExternalSignin where T : IdentityUser
 
 	public async ValueTask<IdentityResult?> Get(ClaimsPrincipal parameter)
 	{
-		var login  = await _challenged.Await(parameter);
+		var login  = await _challenged.Off(parameter);
 		var result = login?.Result;
 		return result;
 	}

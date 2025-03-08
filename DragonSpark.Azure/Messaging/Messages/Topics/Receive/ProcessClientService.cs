@@ -27,7 +27,7 @@ public abstract class ProcessClientService(
 
 	public async Task StopAsync(CancellationToken cancellationToken)
 	{
-		await _client.StopProcessingAsync(cancellationToken).Await();
+		await _client.StopProcessingAsync(cancellationToken).Off();
 		_client.ProcessMessageAsync -= _process;
 		_client.ProcessErrorAsync   -= _error;
 	}

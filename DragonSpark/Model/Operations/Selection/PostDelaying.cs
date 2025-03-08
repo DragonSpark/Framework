@@ -21,8 +21,8 @@ public class PostDelaying<TIn, TOut> : ISelecting<TIn, TOut>
 
 	public async ValueTask<TOut> Get(TIn parameter)
 	{
-		var result = await _previous.Await(parameter);
-		await Task.Delay(_wait).Await();
+		var result = await _previous.Off(parameter);
+		await Task.Delay(_wait).Off();
 		return result;
 	}
 }

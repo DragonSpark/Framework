@@ -22,12 +22,12 @@ public sealed class ExceptionLoggingAwareSelectingDefault<T, TIn, TOut> : ISelec
 	{
 		try
 		{
-			return await _previous.Await(parameter);
+			return await _previous.Off(parameter);
 		}
 		// ReSharper disable once CatchAllClause
 		catch (Exception error)
 		{
-			await _logger.Await(new(A.Type<T>(), error));
+			await _logger.Off(new(A.Type<T>(), error));
 			return _default;
 		}
 	}

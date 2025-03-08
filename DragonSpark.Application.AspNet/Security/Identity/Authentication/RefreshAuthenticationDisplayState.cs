@@ -19,14 +19,14 @@ public sealed class RefreshAuthenticationDisplayState<T> : IDepending<ClaimsPrin
 
 	public async ValueTask<bool> Get(ClaimsPrincipal parameter)
 	{
-		var previous = await _store.Await();
+		var previous = await _store.Off();
 		var number   = parameter.Number();
 		if (number is not null)
 		{
 			_clear.Execute(number.Value);
 		}
 
-		var next = await _store.Await();
+		var next = await _store.Off();
 		var result = previous.User.IsAuthenticated() != next.User.IsAuthenticated()
 		             || previous.To<AuthenticationState<T>>().Profile?.SecurityStamp !=
 		             next.To<AuthenticationState<T>>().Profile?.SecurityStamp;

@@ -10,7 +10,7 @@ public class Terminating<TIn, TOut> : IOperation<TIn>
 {
 	readonly Await<TIn, TOut> _await;
 
-	public Terminating(ISelecting<TIn, TOut> operation) : this(operation.Await) {}
+	public Terminating(ISelecting<TIn, TOut> operation) : this(operation.Off) {}
 
 	public Terminating(Await<TIn, TOut> await) => _await = @await;
 
@@ -25,7 +25,7 @@ public class Terminating<T> : IOperation
 {
 	readonly AwaitOf<T> _await;
 
-	public Terminating(IResulting<T> operation) : this(operation.Await) {}
+	public Terminating(IResulting<T> operation) : this(operation.Off) {}
 
 	public Terminating(AwaitOf<T> await) => _await = @await;
 

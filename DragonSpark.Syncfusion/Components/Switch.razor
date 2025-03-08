@@ -28,7 +28,7 @@
     async Task OnChanged(bool parameter)
     {
         await ValueChanged.Invoke(Value = parameter);
-        await Updated.Invoke().Await();
+        await Updated.Invoke().Off();
     }
 
     string Identifier { get; set; } = UniqueIdentifiers.Default.Get();

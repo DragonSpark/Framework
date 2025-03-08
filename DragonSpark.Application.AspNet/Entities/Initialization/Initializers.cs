@@ -14,7 +14,7 @@ public class Initializers : IInitializer
 	{
 		foreach (var initializer in _initializers)
 		{
-			await initializer.Await(parameter);
+			await initializer.Off(parameter);
 		}
 	}
 }

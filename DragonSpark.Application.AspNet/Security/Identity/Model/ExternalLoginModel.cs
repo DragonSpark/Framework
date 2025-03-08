@@ -44,7 +44,7 @@ public class ExternalLoginModel<T> : PageModel where T : class
 		=> OnGet(context);
 
 	public async Task<IActionResult> OnGetCallback([ModelBinder(typeof(ChallengedModelBinder))] Challenged context)
-		=> ModelState.IsValid ? await _request.Await(context) ?? Bind(context) : BadRequest();
+		=> ModelState.IsValid ? await _request.Off(context) ?? Bind(context) : BadRequest();
 
 	IActionResult Bind(Challenged parameter)
 	{

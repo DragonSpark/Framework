@@ -12,9 +12,9 @@ sealed class RemoveLogin<T>(IUsers<T> users) : IRemoveLogin<T> where T : Identit
 	{
 		using var users = _users.Get();
 		var (user, (provider, identity)) = parameter;
-		var found  = await users.Subject.FindByIdAsync(user.Id.ToString()).Await();
+		var found  = await users.Subject.FindByIdAsync(user.Id.ToString()).Off();
 		var verify = found.Verify();
-		var result = await users.Subject.RemoveLoginAsync(verify, provider, identity).Await();
+		var result = await users.Subject.RemoveLoginAsync(verify, provider, identity).Off();
 		return result;
 	}
 }

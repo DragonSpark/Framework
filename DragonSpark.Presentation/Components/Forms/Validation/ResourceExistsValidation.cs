@@ -10,5 +10,5 @@ public sealed class ResourceExistsValidation : IValidatingValue<string>
 
 	public ResourceExistsValidation(IResourceQuery query) => _query = query;
 
-	public async ValueTask<bool> Get(string parameter) => await _query.Await(parameter) is not null;
+	public async ValueTask<bool> Get(string parameter) => await _query.Off(parameter) is not null;
 }

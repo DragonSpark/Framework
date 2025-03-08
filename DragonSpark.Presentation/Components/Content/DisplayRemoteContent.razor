@@ -31,7 +31,7 @@
 
     protected override async ValueTask<MarkupString> GetContent()
     {
-        var response = await _client.GetStringAsync(Address).Await();
+        var response = await _client.GetStringAsync(Address).Off();
         var content  = Alteration.Get(response);
         return new(content);
     }

@@ -16,13 +16,13 @@ public class AppendedTransaction(ITransaction first, ITransaction second) : ITra
 
 	public async ValueTask Get()
 	{
-		await first.Await();
-		await second.Await();
+		await first.Off();
+		await second.Off();
 	}
 
 	public async ValueTask DisposeAsync()
 	{
-		await first.DisposeAsync().Await();
-		await second.DisposeAsync().Await();
+		await first.DisposeAsync().Off();
+		await second.DisposeAsync().Off();
 	}
 }

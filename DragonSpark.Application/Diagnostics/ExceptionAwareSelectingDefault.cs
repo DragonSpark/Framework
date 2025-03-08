@@ -19,7 +19,7 @@ public sealed class ExceptionAwareSelectingDefault<TIn, TOut> : ISelecting<TIn, 
 	{
 		try
 		{
-			return await _previous.Await(parameter);
+			return await _previous.Off(parameter);
 		}
 		// ReSharper disable once CatchAllClause
 		catch

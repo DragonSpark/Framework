@@ -19,6 +19,6 @@ public sealed class MonitoredOperation : IOperation
 	public async ValueTask Get()
 	{
 		using var _ = _subject.Scoped();
-		await _previous.Await();
+		await _previous.Off();
 	}
 }

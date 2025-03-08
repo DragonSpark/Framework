@@ -18,7 +18,7 @@ sealed class FormatAwareKeyCode<T> : IKeyCode<T> where T : class
 
 	public async ValueTask<KeyCodeView> Get(UserInput<T> parameter)
 	{
-		var previous = await _previous.Await(parameter);
+		var previous = await _previous.Off(parameter);
 		var result   = previous with { Key = _format.Get(previous.Key) };
 		return result;
 	}

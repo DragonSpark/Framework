@@ -21,7 +21,7 @@ sealed class Binding<TIn, TOut> : IResulting<TOut>
 	public async ValueTask<TOut> Get()
 	{
 		var parameter = await _parameter().ConfigureAwait(_capture);
-		var result    = await _select.Await(parameter);
+		var result    = await _select.Off(parameter);
 		return result;
 	}
 }

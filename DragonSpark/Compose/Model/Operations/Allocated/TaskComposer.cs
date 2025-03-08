@@ -29,17 +29,17 @@ public class TaskComposer<T> : Composer<T, Task>
 
 	public OperationComposer<T> Structure() => new(Get().Select(SelectOperation.Default));
 
-	public TaskComposer<T> Append(ISelect<T, Task> command) => Append(command.Await);
+	public TaskComposer<T> Append(ISelect<T, Task> command) => Append(command.Off);
 
 	public TaskComposer<T> Append(ICommand<T> command) => Append(command.Execute);
 
 	public TaskComposer<T> Append(Action<T> command) => Append(Start.A.Command(command).Operation().Allocate().Get());
 
 	public TaskComposer<T> Append(DragonSpark.Model.Operations.Allocated.Await<T> command)
-		=> new(new DragonSpark.Model.Operations.Allocated.Appending<T>(Get().Await, command));
+		=> new(new DragonSpark.Model.Operations.Allocated.Appending<T>(Get().Off, command));
 
-	public TaskComposer<T> Append(IAllocated command) => Append(command.Await);
+	public TaskComposer<T> Append(IAllocated command) => Append(command.Off);
 
 	public TaskComposer<T> Append(Await command)
-		=> new(new DragonSpark.Model.Operations.Allocated.Termination<T>(Get().Await, command));
+		=> new(new DragonSpark.Model.Operations.Allocated.Termination<T>(Get().Off, command));
 }

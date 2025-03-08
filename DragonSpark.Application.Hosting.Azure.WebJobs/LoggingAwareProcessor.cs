@@ -29,7 +29,7 @@ sealed class LoggingAwareProcessor : IOperation<Guid>
 	{
 		try
 		{
-			await _previous.Await(parameter);
+			await _previous.Off(parameter);
 		}
 		catch (Exception e)
 		{

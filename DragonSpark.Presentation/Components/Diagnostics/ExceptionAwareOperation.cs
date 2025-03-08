@@ -23,12 +23,12 @@ sealed class ExceptionAwareOperation : IOperation
     {
         try
         {
-            await _callback().Await();
+            await _callback().Off();
         }
         // ReSharper disable once CatchAllClause
         catch (Exception e)
         {
-            await _exceptions.Await(new(_owner, e));
+            await _exceptions.Off(new(_owner, e));
         }
     }
 }
@@ -50,12 +50,12 @@ sealed class ExceptionAwareOperation<T> : IOperation<T>
     {
         try
         {
-            await _callback(parameter).Await();
+            await _callback(parameter).Off();
         }
         // ReSharper disable once CatchAllClause
         catch (Exception e)
         {
-            await _exceptions.Await(new(_owner, e));
+            await _exceptions.Off(new(_owner, e));
         }
     }
 }

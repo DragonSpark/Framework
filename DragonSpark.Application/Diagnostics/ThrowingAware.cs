@@ -23,11 +23,11 @@ public class ThrowingAware<T> : IOperation<T>
 	{
 		try
 		{
-			await _previous.Await(parameter);
+			await _previous.Off(parameter);
 		}
 		catch (Exception e)
 		{
-			await _exceptions.Await(new(_reportedType ?? GetType(), e));
+			await _exceptions.Off(new(_reportedType ?? GetType(), e));
 			throw;
 		}
 	}

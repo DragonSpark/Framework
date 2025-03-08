@@ -28,7 +28,7 @@ sealed class Blocker : IDepending
 
     public async ValueTask<bool> Get(None parameter)
     {
-        using var _      = await _lock.LockAsync().Go();
+        using var _      = await _lock.LockAsync().On();
         var       result = _active.Up();
         if (result)
         {

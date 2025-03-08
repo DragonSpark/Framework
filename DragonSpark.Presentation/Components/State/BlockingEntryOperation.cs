@@ -23,9 +23,9 @@ sealed class BlockingEntryOperation : IOperation
 
 	public async ValueTask Get()
 	{
-		if (await _allowed.Go())
+		if (await _allowed.On())
 		{
-			await _operation.Await();
+			await _operation.Off();
 		}
 	}
 }
@@ -48,9 +48,9 @@ sealed class BlockingEntryOperation<T> : IOperation<T>
 
 	public async ValueTask Get(T parameter)
 	{
-		if (await _allowed.Go())
+		if (await _allowed.On())
 		{
-			await _operation.Await(parameter);
+			await _operation.Off(parameter);
 		}
 	}
 }

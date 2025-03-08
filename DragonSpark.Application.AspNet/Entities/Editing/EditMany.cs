@@ -18,7 +18,7 @@ public class EditMany<TIn, T> : IEditMany<TIn, T>
 	[MustDisposeResource]
 	public async ValueTask<ManyEdit<T>> Get(TIn parameter)
 	{
-		var (editor, subject) = await _edit.Await(parameter);
+		var (editor, subject) = await _edit.Off(parameter);
 		return new(editor, subject);
 	}
 }

@@ -8,7 +8,7 @@ public class Inversing<T> : IDepending<T>
 {
 	readonly Await<T, bool> _previous;
 
-	public Inversing(ISelect<T, ValueTask<bool>> select) : this(select.Await) {}
+	public Inversing(ISelect<T, ValueTask<bool>> select) : this(select.Off) {}
 
 	protected Inversing(Await<T, bool> previous) => _previous = previous;
 

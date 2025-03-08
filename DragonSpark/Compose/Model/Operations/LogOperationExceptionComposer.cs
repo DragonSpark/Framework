@@ -15,7 +15,7 @@ public class LogOperationExceptionComposer<T> : IResult<IOperation<T>>
 
 	public static implicit operator Operate<T>(LogOperationExceptionComposer<T> instance) => instance.Get().Get;
 
-	public static implicit operator Await<T>(LogOperationExceptionComposer<T> instance) => instance.Get().Await;
+	public static implicit operator Await<T>(LogOperationExceptionComposer<T> instance) => instance.Get().Off;
 
 	readonly ISelect<T, ValueTask> _operation;
 	readonly ILogException<T>      _log;

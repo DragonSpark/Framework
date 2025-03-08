@@ -15,7 +15,7 @@ sealed class SelectedRequest<TIn, TOut> : IRequesting<TIn> where TOut : class
 	{
 		var (owner, (_, _, subject)) = parameter;
 
-		var previous = await _selecting.Await(subject);
+		var previous = await _selecting.Off(subject);
 		var result   = previous is not null ? previous as IActionResult ?? owner.Ok(previous) : owner.NotFound();
 		return result;
 	}

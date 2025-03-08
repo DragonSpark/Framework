@@ -20,8 +20,8 @@ public class Protecting<T> : IResulting<T>
 
 	public async ValueTask<T> Get()
 	{
-		using var @lock  = await _lock.LockAsync().Go();
-		var       result = await _previous.Await();
+		using var @lock  = await _lock.LockAsync().On();
+		var       result = await _previous.Off();
 		return result;
 	}
 }

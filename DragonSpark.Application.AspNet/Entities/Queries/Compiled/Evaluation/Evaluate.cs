@@ -18,7 +18,7 @@ public class Evaluate<TIn, T, TResult> : ISelecting<TIn, TResult>
 	public async ValueTask<TResult> Get(TIn parameter)
 	{
 		using var invocation = _reading.Get(parameter);
-		var       result     = await _evaluate.Await(invocation.Elements);
+		var       result     = await _evaluate.Off(invocation.Elements);
 		return result;
 	}
 }

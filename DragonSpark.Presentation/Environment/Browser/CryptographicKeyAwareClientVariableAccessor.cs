@@ -17,11 +17,11 @@ public sealed class CryptographicKeyAwareClientVariableAccessor<T> : IClientVari
 	{
 		try
 		{
-			return await _previous.Get(parameter).Go();
+			return await _previous.Get(parameter).On();
 		}
 		catch (CryptographicException)
 		{
-			await Remove.Go(parameter);
+			await Remove.On(parameter);
 			return new();
 		}
 	}

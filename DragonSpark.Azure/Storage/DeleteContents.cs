@@ -21,7 +21,7 @@ sealed class DeleteContents : IDeleteContents
 			{
 				var response = await _client.GetBlobClient(item!.Name)
 				                            .DeleteIfExistsAsync(DeleteSnapshotsOption.IncludeSnapshots)
-				                            .Await();
+				                            .Off();
 				if (!response.Value)
 				{
 					return false;

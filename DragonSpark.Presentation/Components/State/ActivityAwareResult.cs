@@ -35,14 +35,14 @@ sealed class ActivityAwareResult<T> : IResulting<T?>
 			return previous.Result;
 		}
 
-		await _activity.Get((_subject, _input)).Go();
+		await _activity.Get((_subject, _input)).On();
 		try
 		{
-			return await previous.Go();
+			return await previous.On();
 		}
 		finally
 		{
-			await _activity.Await(_subject);
+			await _activity.Off(_subject);
 		}
 	}
 }

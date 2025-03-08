@@ -13,6 +13,6 @@ public sealed class FieldValueMonitor<T> : FieldNameMonitorBase
 	{
 		var value = Identifier.GetValue<T>();
 		await Changed.Invoke(value);
-		await base.OnUpdate().Await();
+		await base.OnUpdate().Off();
 	}
 }

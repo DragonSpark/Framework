@@ -151,15 +151,15 @@
                 break;
             case Action.BeginEdit:
                 var allow = new Allow<T>(parameter.Data);
-                await Editing.Invoke(allow).Await();
+                await Editing.Invoke(allow).Off();
                 parameter.Cancel = !allow.Get();
                 break;
             case Action.Add:
-                await Created.Invoke(parameter.Data).Await();
+                await Created.Invoke(parameter.Data).Off();
                 break;
             case Action.Save:
             case Action.Delete:
-                await Updated.Invoke(new(parameter.Data, parameter.Action)).Await();
+                await Updated.Invoke(new(parameter.Data, parameter.Action)).Off();
                 break;
         }
     }
@@ -168,7 +168,7 @@
     {
         _fragment = ProblemTemplate.Accept;
         await Exceptions.Get(new(ReportedType ?? GetType(), parameter.Error));
-        await Error.Invoke(parameter.Error).Await();
+        await Error.Invoke(parameter.Error).Off();
     }
 
     void ICommand<string>.Execute(string parameter)

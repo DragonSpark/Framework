@@ -19,6 +19,6 @@ sealed class PersistSignIn<T> : IPersistSignIn<T> where T : IdentityUser
 		var (user, claims) = parameter;
 
 		using var authentication = _authentication.Get();
-		await authentication.Subject.SignInWithClaimsAsync(user, _persist, claims).Await();	
+		await authentication.Subject.SignInWithClaimsAsync(user, _persist, claims).Off();	
 	}
 }

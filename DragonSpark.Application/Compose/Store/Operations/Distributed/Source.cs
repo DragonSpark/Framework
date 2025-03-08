@@ -30,7 +30,7 @@ sealed class Load<TIn, TOut> : ISelecting<EntryKey<TIn>, TOut>
 		var (@in, key) = parameter;
 		var result = await _source(@in);
 		var (content, options) = _content(result);
-		await _memory.SetStringAsync(key, content, options).Await();
+		await _memory.SetStringAsync(key, content, options).Off();
 		return result;
 	}
 }

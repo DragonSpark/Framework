@@ -16,5 +16,5 @@ public class AppendedTransactions : ITransactions
 	}
 
 	[MustDisposeResource]
-	public async ValueTask<ITransaction> Get() => new AppendedTransaction(await _first.Await(), await _second.Await());
+	public async ValueTask<ITransaction> Get() => new AppendedTransaction(await _first.Off(), await _second.Off());
 }

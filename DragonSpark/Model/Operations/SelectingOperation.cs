@@ -10,9 +10,9 @@ public class SelectingOperation<T> : IOperation
 	readonly AwaitOf<T> _previous;
 	readonly Await<T>   _select;
 
-	public SelectingOperation(IResulting<T> previous, ISelect<T, ValueTask> select) : this(previous, select.Await) {}
+	public SelectingOperation(IResulting<T> previous, ISelect<T, ValueTask> select) : this(previous, select.Off) {}
 
-	public SelectingOperation(IResulting<T> previous, Await<T> select) : this(previous.Await, select) {}
+	public SelectingOperation(IResulting<T> previous, Await<T> select) : this(previous.Off, select) {}
 
 	public SelectingOperation(AwaitOf<T> previous, Await<T> select)
 	{

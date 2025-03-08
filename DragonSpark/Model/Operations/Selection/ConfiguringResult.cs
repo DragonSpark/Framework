@@ -12,7 +12,7 @@ public class ConfiguringResult<TSource, TResult> : ISelecting<TSource, TResult>
 		: this(Start.A.Selection.Of.Type<TSource>().By.Instantiation<TResult>().Operation().Out(), operation) {}
 
 	public ConfiguringResult(ISelecting<TSource, TResult> select, IOperation<TResult> operation)
-		: this(select.Await, operation.Await) {}
+		: this(select.Off, operation.Off) {}
 
 	public ConfiguringResult(Await<TSource, TResult> select, Await<TResult> configure)
 	{

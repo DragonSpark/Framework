@@ -22,11 +22,11 @@ sealed class ExceptionAwareAddExternalLogin : IAddExternalSignin
 	{
 		try
 		{
-			return await _previous.Await(parameter);
+			return await _previous.Off(parameter);
 		}
 		catch (Exception e)
 		{
-			await _logger.Await(new (GetType(), e));
+			await _logger.Off(new (GetType(), e));
 			return IdentityResult.Failed(new IdentityError
 			{
 				Description =

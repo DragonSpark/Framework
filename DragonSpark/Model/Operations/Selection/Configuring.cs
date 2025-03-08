@@ -17,7 +17,7 @@ public class Configuring<TSource, TResult> : ISelecting<TSource, TResult>
     public async ValueTask<TResult> Get(TSource parameter)
     {
         var result = await _select(parameter);
-        await _configure((parameter, result)).Await();
+        await _configure((parameter, result)).Off();
         return result;
     }
 }

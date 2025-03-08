@@ -14,6 +14,6 @@ public class EntityRangeInitializer<T> : IInitializer where T : class
 	public async ValueTask Get(DbContext parameter)
 	{
 		parameter.Set<T>().AddRange(_entities);
-		await parameter.SaveChangesAsync().Await();
+		await parameter.SaveChangesAsync().Off();
 	}
 }

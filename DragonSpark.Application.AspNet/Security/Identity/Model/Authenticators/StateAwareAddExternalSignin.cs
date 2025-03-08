@@ -18,7 +18,7 @@ sealed class StateAwareAddExternalSignin : IAddExternalSignin
 
 	public async ValueTask<IdentityResult?> Get(ClaimsPrincipal parameter)
 	{
-		var result = await _previous.Await(parameter);
+		var result = await _previous.Off(parameter);
 		if (result?.Succeeded ?? false)
 		{
 			var number = parameter.Number();

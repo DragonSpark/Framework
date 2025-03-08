@@ -17,5 +17,5 @@ sealed class GetClientTimeOffset : ISelecting<IJSObjectReference, TimeSpan>
 	public GetClientTimeOffset(string name) => _name = name;
 
 	public async ValueTask<TimeSpan> Get(IJSObjectReference parameter)
-		=> TimeSpan.FromMinutes(await parameter.InvokeAsync<short>(_name).Go());
+		=> TimeSpan.FromMinutes(await parameter.InvokeAsync<short>(_name).On());
 }

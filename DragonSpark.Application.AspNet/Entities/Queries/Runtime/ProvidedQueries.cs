@@ -16,7 +16,7 @@ public class ProvidedQueries<T> : IQueries<T>
 	[MustDisposeResource]
 	public async ValueTask<Query<T>> Get()
 	{
-		var previous = await _previous().Await();
+		var previous = await _previous().Off();
 		return new (previous.AsQueryable(), EmptyDisposable.Default);
 	}
 }

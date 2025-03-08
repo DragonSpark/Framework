@@ -20,7 +20,7 @@ public sealed class DisposingAny : IOperation<object>
 	{
 		if (parameter is IAsyncDisposable disposable)
 		{
-			await disposable.DisposeAsync().Await();
+			await disposable.DisposeAsync().Off();
 		}
 		else
 		{

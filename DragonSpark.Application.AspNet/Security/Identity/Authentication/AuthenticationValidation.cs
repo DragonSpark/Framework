@@ -29,7 +29,7 @@ sealed class AuthenticationValidation<T> : IAuthenticationValidation where T : I
 	{
 		if (_application.Get(parameter))
 		{
-			var (_, hash) = await _views.Await(parameter);
+			var (_, hash) = await _views.Off(parameter);
 			var result = hash is not null && parameter.FindFirstValue(_type) == hash;
 			return result;
 		}

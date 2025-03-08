@@ -17,7 +17,7 @@ public class EntityInitializer<T> : IInitializer where T : class
 		foreach (var entity in _entities.Open())
 		{
 			set.Add(entity);
-			await parameter.SaveChangesAsync().Await();
+			await parameter.SaveChangesAsync().Off();
 		}
 	}
 }

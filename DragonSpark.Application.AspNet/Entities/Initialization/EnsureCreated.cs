@@ -14,6 +14,6 @@ public sealed class EnsureCreated : IInitialize
 
 	public async ValueTask Get(DbContext parameter)
 	{
-		await parameter.Database.EnsureCreatedAsync().Await();
+		await parameter.Database.EnsureCreatedAsync().Off();
 	}
 }

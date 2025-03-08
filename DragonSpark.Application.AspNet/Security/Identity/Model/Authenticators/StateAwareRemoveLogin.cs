@@ -18,12 +18,12 @@ sealed class StateAwareRemoveLogin<T>(
 
 	public async ValueTask<IdentityResult> Get(RemoveLoginInput<T> parameter)
 	{
-		var result = await _previous.Await(parameter);
+		var result = await _previous.Off(parameter);
 		if (result.Succeeded)
 		{
 			var (user, _) = parameter;
 			using var authentications = _authentications.Get();
-			var       principal = await authentications.Subject.CreateUserPrincipalAsync(user).Go();
+			var       principal = await authentications.Subject.CreateUserPrincipalAsync(user).On();
 			var       number = principal.Number();
 			if (number is not null)
 			{

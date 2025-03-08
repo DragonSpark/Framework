@@ -11,10 +11,10 @@ public class Validating<T> : IOperation<T>
 	readonly Await<T>       _true, _false;
 
 	public Validating(IDepending<T> condition, IOperation<T> @true)
-		: this(condition.Await, @true.Await, Default<T>.Instance.Then().Operation()) {}
+		: this(condition.Off, @true.Off, Default<T>.Instance.Then().Operation()) {}
 
 	public Validating(IDepending<T> condition, IOperation<T> @true, IOperation<T> @false)
-		: this(condition.Await, @true.Await, @false.Await) {}
+		: this(condition.Off, @true.Off, @false.Off) {}
 
 	public Validating(Await<T, bool> specification, Await<T> @true)
 		: this(specification, @true, Default<T>.Instance.Then().Operation()) {}

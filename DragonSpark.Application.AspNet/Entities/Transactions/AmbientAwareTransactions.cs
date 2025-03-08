@@ -13,7 +13,7 @@ public sealed class AmbientAwareTransactions : ITransactions
 	[MustDisposeResource]
 	public async ValueTask<ITransaction> Get()
 	{
-		var previous = await _previous.Await();
+		var previous = await _previous.Off();
 		return new AmbientAwareTransaction(previous);
 	}
 }

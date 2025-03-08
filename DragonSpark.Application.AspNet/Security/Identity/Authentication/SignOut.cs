@@ -25,6 +25,6 @@ public sealed class SignOut<T> : ISignOut where T : class
 			_state.Execute(number.Value);
 		}
 
-		await authentication.Subject.SignOutAsync().Await();
+		await authentication.Subject.SignOutAsync().Off();
 	}
 }

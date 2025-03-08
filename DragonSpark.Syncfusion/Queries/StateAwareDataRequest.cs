@@ -28,12 +28,12 @@ sealed class StateAwareDataRequest : IDataRequest
 		try
 		{
 			_active.Up();
-			return await _previous.Await(parameter);
+			return await _previous.Off(parameter);
 		}
 		catch
 		{
 			_active.Down();
-			await _remove.Await();
+			await _remove.Off();
 			throw;
 		}
 	}

@@ -8,7 +8,7 @@ sealed class Introduce<TIn, TOut> : ISelecting<TIn, (TIn, TOut)>
 {
 	readonly Await<TIn, TOut> _select;
 
-	public Introduce(ISelect<TIn, ValueTask<TOut>> select) : this(select.Await) {}
+	public Introduce(ISelect<TIn, ValueTask<TOut>> select) : this(select.Off) {}
 
 	public Introduce(Await<TIn, TOut> select) => _select = select;
 

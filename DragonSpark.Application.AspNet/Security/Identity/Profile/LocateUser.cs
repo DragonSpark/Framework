@@ -14,7 +14,7 @@ sealed class LocateUser<T> : ILocateUser<T> where T : IdentityUser
 	{
 		using var users = _users.Get();
 		var result = await users.Subject.FindByLoginAsync(parameter.LoginProvider, parameter.ProviderKey)
-		                        .Await();
+		                        .Off();
 		return result;
 	}
 }

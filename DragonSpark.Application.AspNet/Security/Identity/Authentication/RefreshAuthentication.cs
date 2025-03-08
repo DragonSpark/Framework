@@ -17,11 +17,11 @@ sealed class RefreshAuthentication<T> : IRefreshAuthentication<T> where T : Iden
 
 	public async ValueTask Get(T parameter)
 	{
-		var composition = await _compositions.Await();
+		var composition = await _compositions.Off();
 		if (composition != null)
 		{
 			var (properties, claims) = composition.Value;
-			await _persist.Await(new(parameter, properties, claims));
+			await _persist.Off(new(parameter, properties, claims));
 		}
 	}
 }

@@ -13,7 +13,7 @@ public sealed class ServiceScopedDatabaseTransactions(IServiceScopedTransactions
 	{
 		var previous = transactions.Get();
 		var context  = previous.Provider.GetRequiredService<DbContext>();
-		await context.Database.BeginTransactionAsync().Await();
+		await context.Database.BeginTransactionAsync().Off();
 		return new ServiceScopedDatabaseTransaction(previous, new DatabaseTransaction(context));
 	}
 }

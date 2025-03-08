@@ -20,8 +20,8 @@ public class ModuleInstance : IAsyncDisposable
 
 	public async ValueTask DisposeAsync()
 	{
-		await _instance.InvokeVoidAsync(_method).Await();
-		await _instance.DisposeAsync().Await();
-		await _module.DisposeAsync().Await();
+		await _instance.InvokeVoidAsync(_method).Off();
+		await _instance.DisposeAsync().Off();
+		await _module.DisposeAsync().Off();
 	}
 }

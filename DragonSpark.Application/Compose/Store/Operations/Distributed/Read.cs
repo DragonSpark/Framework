@@ -21,7 +21,7 @@ sealed class Read<T> : ISelecting<string, T?>
 
 	public async ValueTask<T?> Get(string parameter)
 	{
-		var content = await _store.GetStringAsync(parameter).Await();
+		var content = await _store.GetStringAsync(parameter).Off();
 		return content is not null ? _deserialize.Get(content) : default;
 	}
 }

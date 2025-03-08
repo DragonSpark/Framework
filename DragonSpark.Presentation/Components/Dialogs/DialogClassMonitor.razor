@@ -32,8 +32,8 @@
     {
         if (firstRender)
         {
-            _element = await Create.Await();
-            await Apply().Await();
+            _element = await Create.Off();
+            await Apply().Off();
         }
     }
 

@@ -13,7 +13,7 @@ public sealed class DatabaseTransactions(DbContext context, DatabaseFacade facad
 	[MustDisposeResource]
 	public async ValueTask<ITransaction> Get()
 	{
-		await facade.BeginTransactionAsync().Await();
+		await facade.BeginTransactionAsync().Off();
 		return new DatabaseTransaction(context);
 	}
 }

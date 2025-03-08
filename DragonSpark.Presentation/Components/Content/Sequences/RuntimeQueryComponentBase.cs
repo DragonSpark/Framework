@@ -20,6 +20,6 @@ public abstract class RuntimeQueryComponentBase<T> : InstanceComponentBase<IQuer
 		{
 			await Publisher.Get(new(instance));
 		}
-		await base.RefreshState().Await();
+		await base.RefreshState().Off();
 	}
 }

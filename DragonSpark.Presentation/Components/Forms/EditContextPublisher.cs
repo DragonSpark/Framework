@@ -22,7 +22,7 @@ public sealed class EditContextPublisher : ComponentBase
 
 		if (change)
 		{
-			await Updated.Invoke(EditContext).Await();
+			await Updated.Invoke(EditContext).Off();
 		}
 	}
 }

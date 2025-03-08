@@ -20,7 +20,7 @@
         if (!string.IsNullOrEmpty(Identifier))
         {
             var element = await Runtime.InvokeAsync<IJSObjectReference>("document.getElementById", Identifier);
-            await element.InvokeVoidAsync("focus").Await();
+            await element.InvokeVoidAsync("focus").Off();
         }
     }
 

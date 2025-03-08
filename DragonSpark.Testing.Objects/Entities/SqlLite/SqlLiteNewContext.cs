@@ -30,12 +30,12 @@ public sealed class SqlLiteNewContext<T> : INewContext<T>, IAsyncDisposable wher
 		if (!await context.Database.GetService<IDatabaseCreator>()
 		                  .To<RelationalDatabaseCreator>()
 		                  .ExistsAsync()
-		                  .Await())
+		                  .Off())
 		{
-			await context.Database.EnsureDeletedAsync().Await();
+			await context.Database.EnsureDeletedAsync().Off();
 		}
 
-		await context.Database.EnsureCreatedAsync().Await();
+		await context.Database.EnsureCreatedAsync().Off();
 		return this;
 	}
 
@@ -45,6 +45,6 @@ public sealed class SqlLiteNewContext<T> : INewContext<T>, IAsyncDisposable wher
 	public async ValueTask DisposeAsync()
 	{
 		await using var context = NewContext.Get();
-		await context.Database.EnsureDeletedAsync().Await();
+		await context.Database.EnsureDeletedAsync().Off();
 	}
 }

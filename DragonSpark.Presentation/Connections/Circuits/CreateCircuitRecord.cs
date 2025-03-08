@@ -20,7 +20,7 @@ sealed class CreateCircuitRecord : ISelecting<Circuit, CircuitRecord>
 
 	public async ValueTask<CircuitRecord> Get(Circuit parameter)
 	{
-		var state = await _authentication.GetAuthenticationStateAsync().Await();
+		var state = await _authentication.GetAuthenticationStateAsync().Off();
 		return new(parameter, _navigation, state.User);
 	}
 }

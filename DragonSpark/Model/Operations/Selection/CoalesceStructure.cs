@@ -9,7 +9,7 @@ public class CoalesceStructure<TIn, TOut> : ISelecting<TIn, TOut> where TOut : s
 	readonly Await<TIn, TOut>  _second;
 
 	protected CoalesceStructure(ISelecting<TIn, TOut?> first, ISelecting<TIn, TOut> second)
-		: this(first.Await, second.Await) {}
+		: this(first.Off, second.Off) {}
 
 	protected CoalesceStructure(Await<TIn, TOut?> first, Await<TIn, TOut> second)
 	{

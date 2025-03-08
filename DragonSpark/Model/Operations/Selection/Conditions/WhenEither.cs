@@ -14,5 +14,5 @@ public class WhenEither<T> : IDepending<T>
 	}
 
 	public async ValueTask<bool> Get(T parameter)
-		=> await _first.Await(parameter) || await _second.Await(parameter);
+		=> await _first.Off(parameter) || await _second.Off(parameter);
 }

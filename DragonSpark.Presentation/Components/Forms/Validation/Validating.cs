@@ -115,7 +115,7 @@ public class Validating : ComponentBase, IDisposable
 		{
 			try
 			{
-				await _current.Await();
+				await _current.Off();
 			}
 			finally
 			{
@@ -144,7 +144,7 @@ public class Validating : ComponentBase, IDisposable
 			context.NotifyValidationStateChanged();
 
 			var callback = IsEmpty() ? Valid : Invalid;
-			await callback.Invoke().Await();
+			await callback.Invoke().Off();
 		}
 	}
 

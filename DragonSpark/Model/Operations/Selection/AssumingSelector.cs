@@ -13,7 +13,7 @@ public class AssumingSelector<TIn, TOut> : ISelecting<TIn, TOut>
 
 	public async ValueTask<TOut> Get(TIn parameter)
 	{
-		var previous = await _previous.Await();
+		var previous = await _previous.Off();
 		return previous.Get(parameter);
 	}
 }

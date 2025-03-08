@@ -14,7 +14,7 @@ public sealed class Ok<T> : IRequesting<T>
 	public async ValueTask<IActionResult> Get(Request<T> parameter)
 	{
 		var (owner, (_, _, subject)) = parameter;
-		await _selecting.Await(subject);
+		await _selecting.Off(subject);
 		return owner.Ok();
 	}
 }

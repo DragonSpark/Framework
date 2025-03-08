@@ -22,8 +22,8 @@ public class EditCombined<TIn, T> : IEditMany<TIn, T>
 	[MustDisposeResource]
 	public async ValueTask<ManyEdit<T>> Get(TIn parameter)
 	{
-		var (editor, first) = await _first.Await(parameter);
-		var (_, second)     = await _second.Await(parameter);
+		var (editor, first) = await _first.Off(parameter);
+		var (_, second)     = await _second.Off(parameter);
 		var combined = first.Then().Concat(second).Result();
 		second.Dispose();
 		return new(editor, combined);

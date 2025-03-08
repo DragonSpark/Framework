@@ -17,8 +17,8 @@ sealed class Move : IMove
 	public async ValueTask<IStorageEntry> Get(DestinationInput parameter)
 	{
 		var (source, _) = parameter;
-		var result = await _copy.Await(parameter);
-		await _delete.Await(source.Properties.Path);
+		var result = await _copy.Off(parameter);
+		await _delete.Off(source.Properties.Path);
 		return result;
 	}
 }

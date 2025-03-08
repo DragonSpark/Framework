@@ -26,7 +26,7 @@ sealed class Distributed<TIn, TOut> : ISelecting<TIn, TOut>
 	public async ValueTask<TOut> Get(TIn parameter)
 	{
 		var key      = _key(parameter);
-		var existing = await _read.Await(key);
+		var existing = await _read.Off(key);
 		var result   = existing ?? await _store(new(parameter, key));
 		return result;
 	}

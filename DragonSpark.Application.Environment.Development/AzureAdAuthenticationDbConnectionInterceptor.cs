@@ -52,11 +52,11 @@ sealed class AzureAdAuthenticationDbConnectionInterceptor : DbConnectionIntercep
 		var sql = (SqlConnection)connection;
 		if (Access(sql))
 		{
-			var token = await _credential.GetTokenAsync(_context, cancellationToken).Await();
+			var token = await _credential.GetTokenAsync(_context, cancellationToken).Off();
 			sql.AccessToken = token.Token;
 		}
 
-		return await base.ConnectionOpeningAsync(connection, eventData, result, cancellationToken).Await();
+		return await base.ConnectionOpeningAsync(connection, eventData, result, cancellationToken).Off();
 	}
 
 	static bool Access(SqlConnection connection)

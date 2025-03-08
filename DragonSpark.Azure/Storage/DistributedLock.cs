@@ -15,7 +15,7 @@ public class DistributedLock : IDistributedLock
 
 	public DistributedLock(AzureBlobLeaseDistributedLock @lock) => _lock = @lock;
 
-	public async ValueTask<IDistributedSynchronizationHandle> Get() => await _lock.AcquireAsync().Await();
+	public async ValueTask<IDistributedSynchronizationHandle> Get() => await _lock.AcquireAsync().Off();
 }
 
 public class DistributedLock<T> : IDistributedLock<T>
@@ -35,6 +35,6 @@ public class DistributedLock<T> : IDistributedLock<T>
 	{
 		var name  = $"{_qualifier}_{_identifier(parameter)}";
 		var @lock = new AzureBlobLeaseDistributedLock(_client, name);
-		return await @lock.AcquireAsync().Await();
+		return await @lock.AcquireAsync().Off();
 	}
 }

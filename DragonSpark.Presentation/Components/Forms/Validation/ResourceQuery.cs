@@ -30,7 +30,7 @@ sealed class ResourceQuery : IResourceQuery
 		try
 		{
 			var response = await client.SendAsync(new(HttpMethod.Head, parameter))
-			                           .Await();
+			                           .Off();
 			return response.IsSuccessStatusCode
 				       ? new ResourceQueryRecord(parameter, response.StatusCode, response.Content.Headers.ContentType)
 				       : null;

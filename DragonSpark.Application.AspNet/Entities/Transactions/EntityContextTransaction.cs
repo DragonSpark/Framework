@@ -13,7 +13,7 @@ sealed class EntityContextTransaction(DbContext context) : ITransaction
 
 	public async ValueTask Get()
 	{
-		await context.SaveChangesAsync().Await();
+		await context.SaveChangesAsync().Off();
 	}
 
 	public ValueTask DisposeAsync() => ValueTask.CompletedTask;

@@ -15,7 +15,7 @@ public class AppendedOperate : IOperation
 
     public async ValueTask Get()
     {
-        await _previous().Await();
-        await _current().Await();
+        await _previous().Off();
+        await _current().Off();
     }
 }

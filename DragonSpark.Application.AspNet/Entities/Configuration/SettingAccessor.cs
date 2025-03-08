@@ -19,7 +19,7 @@ sealed class SettingAccessor : Operation<Pair<string, string?>>, ISettingAccesso
 
 	public async ValueTask<string?> Get(string parameter)
 	{
-		var setting = await _setting.Await(parameter);
+		var setting = await _setting.Off(parameter);
 		return setting?.Value;
 	}
 }

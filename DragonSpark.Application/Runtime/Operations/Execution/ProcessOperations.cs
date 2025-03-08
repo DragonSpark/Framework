@@ -14,7 +14,7 @@ sealed class ProcessOperations : IOperation
 	{
 		while (_queue.TryDequeue(out var operation))
 		{
-			await operation().Await();
+			await operation().Off();
 		}
 
 		_queue.Clear();

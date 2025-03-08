@@ -17,8 +17,8 @@ sealed class SynchronizationAwareCreateExternal<T> : ICreateExternal<T> where T 
 
 	public async ValueTask<CreateUserResult<T>> Get(ExternalLoginInfo parameter)
 	{
-		var result = await _previous.Await(parameter);
-		await _synchronization.Await(parameter);
+		var result = await _previous.Off(parameter);
+		await _synchronization.Off(parameter);
 		return result;
 	}
 }

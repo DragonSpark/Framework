@@ -23,7 +23,7 @@ public class EditExisting<T> : IEdit<T> where T : class
 		editor.Attach(parameter);
 		if (_reload)
 		{
-			await context.Entry(parameter).ReloadAsync().Await();
+			await context.Entry(parameter).ReloadAsync().Off();
 		}
 
 		return new(editor, parameter);

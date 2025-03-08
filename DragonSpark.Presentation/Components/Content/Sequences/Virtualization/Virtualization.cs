@@ -22,8 +22,8 @@ sealed class Virtualization : ISelecting<InitializeInput, IJSObjectReference?>
 
 	public async ValueTask<IJSObjectReference?> Get(InitializeInput parameter)
 	{
-		var module   = new VirutalizationReference(new PolicyAwareJSObjectReference(await _load.Await()));
-		var instance = await _initialize.Await(new(module, parameter));
+		var module   = new VirutalizationReference(new PolicyAwareJSObjectReference(await _load.Off()));
+		var instance = await _initialize.Off(new(module, parameter));
 		var result = instance.Account() is not null
 			             ? new ConnectionAwareReference(new ModuleReference(module, instance), parameter.Reference)
 			             : null;

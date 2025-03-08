@@ -33,9 +33,9 @@ public class EvaluateToPage<TIn, T> : ISelecting<PageRequest<TIn>, PageResponse<
 		var       query    = _expression.Invoke(scope.Owner, parameter.Subject).AsExpandable();
 		var       filtered = parameter.Filter is not null ? _filter.Get(new(query, parameter.Filter)) : query;
 		var       all      = parameter.OrderBy is not null ? filtered.OrderBy(parameter.OrderBy) : filtered;
-		var       count    = parameter.Count ? (uint)await all.CountAsync().Await() : (uint?)null;
+		var       count    = parameter.Count ? (uint)await all.CountAsync().Off() : (uint?)null;
 		var       paged    = all.Skip((int)(parameter.Skip ?? 0)).Take(parameter.Top ?? 10);
-		var       page     = await paged.ToArrayAsync().Await();
+		var       page     = await paged.ToArrayAsync().Off();
 		return new(page, count);
 	}
 }

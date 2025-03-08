@@ -14,10 +14,10 @@ sealed class AssignSetting : IOperation<Pair<string, string?>>
 	public async ValueTask Get(Pair<string, string?> parameter)
 	{
 		var (key, value) = parameter;
-		using var edit    = await _edit.Await(key);
+		using var edit    = await _edit.Off(key);
 		var       subject = edit.Subject ?? new() { Id = key };
 		subject.Value = value;
 		edit.Update(subject);
-		await edit.Await();
+		await edit.Off();
 	}
 }

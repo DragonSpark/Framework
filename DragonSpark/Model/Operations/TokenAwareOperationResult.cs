@@ -22,7 +22,7 @@ sealed class TokenAwareOperationResult<T> : IResulting<T>
 	{
 		var token = _token();
 		token.ThrowIfCancellationRequested();
-		var result = await _operation.Await();
+		var result = await _operation.Off();
 		token.ThrowIfCancellationRequested();
 		return result;
 	}

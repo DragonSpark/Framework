@@ -48,7 +48,7 @@ sealed class IgnoreEntryOperation : IOperation, ICommand
 
 			try
 			{
-				await _operation.Go();
+				await _operation.On();
 			}
 			finally
 			{

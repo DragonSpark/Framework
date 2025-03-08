@@ -20,11 +20,11 @@ sealed class CommitAwareEditor : IEditor
 
 	public async ValueTask Get()
 	{
-		await _previous.Await();
+		await _previous.Off();
 		if (_facade.CurrentTransaction is not null)
 		{
-			await _facade.CurrentTransaction.CommitAsync().Await();
-			await _facade.BeginTransactionAsync().Await();
+			await _facade.CurrentTransaction.CommitAsync().Off();
+			await _facade.BeginTransactionAsync().Off();
 		}
 	}
 

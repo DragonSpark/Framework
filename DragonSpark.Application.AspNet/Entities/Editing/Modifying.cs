@@ -10,11 +10,11 @@ public class Modifying<TIn, T> : ISelecting<TIn, T>
 	readonly IEdit<TIn, T>  _select;
 	readonly Await<Edit<T>> _configure;
 
-	protected Modifying(IEdit<TIn, T> select, IOperation<T> configure) : this(select, configure.Await) {}
+	protected Modifying(IEdit<TIn, T> select, IOperation<T> configure) : this(select, configure.Off) {}
 
 	protected Modifying(IEdit<TIn, T> select, Await<T> configure) : this(select, x => configure(x.Subject)) {}
 
-	protected Modifying(IEdit<TIn, T> select, IOperation<Edit<T>> configure) : this(select, configure.Await) {}
+	protected Modifying(IEdit<TIn, T> select, IOperation<Edit<T>> configure) : this(select, configure.Off) {}
 
 	protected Modifying(IEdit<TIn, T> select, Await<Edit<T>> configure)
 	{
@@ -24,9 +24,9 @@ public class Modifying<TIn, T> : ISelecting<TIn, T>
 
 	public async ValueTask<T> Get(TIn parameter)
 	{
-		using var edit = await _select.Get(parameter).Go();
+		using var edit = await _select.Get(parameter).On();
 		await _configure(edit);
-		await edit.Await();
+		await edit.Off();
 		return edit.Subject;
 	}
 }

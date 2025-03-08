@@ -12,7 +12,7 @@ sealed class ValidContext : IDepending<EditContext>
 	{
 		if (A.Condition(list).Get())
 		{
-			var awaitable = list.Await();
+			var awaitable = list.Off();
 			list.Execute();
 			await awaitable;
 		}
@@ -31,7 +31,7 @@ sealed class ValidContext : IDepending<EditContext>
 		var list = _list(parameter);
 		if (parameter.Validate())
 		{
-			await Process(list).Await();
+			await Process(list).Off();
 
 			return parameter.IsValid();
 		}

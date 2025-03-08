@@ -19,7 +19,7 @@
         if (firstRender)
         {
             _element = await Create.Get(new (this));
-            await _element.Start().Await();
+            await _element.Start().Off();
         }
     }
 

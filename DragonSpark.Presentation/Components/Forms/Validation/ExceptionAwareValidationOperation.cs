@@ -25,7 +25,7 @@ sealed class ExceptionAwareValidationOperation : IOperation<ValidationContext>
 	{
 		try
 		{
-			await _previous.Await(parameter);
+			await _previous.Off(parameter);
 		}
 		catch (Exception e)
 		{

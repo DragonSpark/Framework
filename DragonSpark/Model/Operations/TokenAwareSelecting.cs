@@ -22,7 +22,7 @@ sealed class TokenAwareSelecting<TIn, TOut> : ISelecting<TIn, TOut>
 	{
 		var token = _token();
 		token.ThrowIfCancellationRequested();
-		var result = await _operation.Await(parameter);
+		var result = await _operation.Off(parameter);
 		token.ThrowIfCancellationRequested();
 		return result;
 	}

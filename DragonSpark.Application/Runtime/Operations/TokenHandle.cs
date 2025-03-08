@@ -26,7 +26,7 @@ public sealed class TokenHandle : ITokenHandle
 		if (source is not null)
 		{
 			_store.Execute(null);
-			await source.CancelAsync().Await();
+			await source.CancelAsync().Off();
 		}
 	}
 

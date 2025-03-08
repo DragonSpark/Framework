@@ -15,7 +15,7 @@ sealed class StateUser<T> : IStateUser<T> where T : IdentityUser
 	public async ValueTask<T?> Get(ClaimsPrincipal parameter)
 	{
 		using var users  = _users.Get();
-		var       result = await users.Subject.GetUserAsync(parameter).Await();
+		var       result = await users.Subject.GetUserAsync(parameter).Off();
 		return result;
 	}
 }

@@ -20,12 +20,12 @@ public abstract class NavigationAwareComponent : ComponentBase, IAsyncDisposable
 	{
 		if (await Allow(parameter))
 		{
-			await Exit().Await();
+			await Exit().Off();
 		}
 		else
 		{
 			parameter.PreventNavigation();
-			await OnNavigationCanceled().Await();
+			await OnNavigationCanceled().Off();
 		}
 	}
 
@@ -52,7 +52,7 @@ public abstract class NavigationAwareComponent : ComponentBase, IAsyncDisposable
 
 	public async ValueTask DisposeAsync()
 	{
-		await OnDisposing().Await();
+		await OnDisposing().Off();
 		GC.SuppressFinalize(this);
 	}
 

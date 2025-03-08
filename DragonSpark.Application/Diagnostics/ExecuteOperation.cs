@@ -17,7 +17,7 @@ sealed class ExecuteOperation : IExecuteOperation
         {
             if (!operation.IsCompleted)
             {
-                await operation.Await();
+                await operation.Off();
             }
             else if (operation.IsFaulted)
             {
@@ -30,7 +30,7 @@ sealed class ExecuteOperation : IExecuteOperation
         // ReSharper disable once CatchAllClause
         catch (Exception error)
         {
-            await _exceptions.Await(new(owner, error));
+            await _exceptions.Off(new(owner, error));
             return error;
         }
     }

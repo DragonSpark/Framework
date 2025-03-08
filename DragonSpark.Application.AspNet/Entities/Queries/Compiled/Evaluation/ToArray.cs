@@ -12,5 +12,5 @@ sealed class ToArray<T> : IEvaluate<T, Array<T>>
 
 	ToArray() {}
 
-	public async ValueTask<Array<T>> Get(IAsyncEnumerable<T> parameter) => await parameter.ToArrayAsync().Await();
+	public async ValueTask<Array<T>> Get(IAsyncEnumerable<T> parameter) => await parameter.ToArrayAsync().Off();
 }

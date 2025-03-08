@@ -15,7 +15,7 @@ sealed class AuthenticateRequest : IAuthenticateRequest
 	{
 		var (login, origin) = parameter;
 
-		var authentication = await _authentication.Await(login);
+		var authentication = await _authentication.Off(login);
 		var result = authentication.IsLockedOut
 			             ? new RedirectToPageResult("./Lockout")
 			             : authentication.Succeeded

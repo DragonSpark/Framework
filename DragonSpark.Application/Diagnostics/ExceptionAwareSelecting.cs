@@ -23,11 +23,11 @@ public class ExceptionAwareSelecting<TIn, TOut> : ISelecting<TIn, TOut>
 	{
 		try
 		{
-			return await _previous.Await(parameter);
+			return await _previous.Off(parameter);
 		}
 		catch (Exception e)
 		{
-			await _exceptions.Await(new(_reportedType ?? GetType(), e));
+			await _exceptions.Off(new(_reportedType ?? GetType(), e));
 			throw;
 		}
 	}

@@ -23,9 +23,9 @@ public class Compose<T> : ICompose<T>
 	public async ValueTask<Composition<T>> Get(ComposeInput<T> parameter)
 	{
 		var (input, _) = parameter;
-		var body      = await _body.Await(parameter);
-		var count     = input.IncludeTotalCount ? await _count.Await(new(body, input.Token)) : default(ulong?);
-		var partition = input.Partition.HasValue ? await _partition.Await(new(body, input.Partition.Value)) : body;
+		var body      = await _body.Off(parameter);
+		var count     = input.IncludeTotalCount ? await _count.Off(new(body, input.Token)) : default(ulong?);
+		var partition = input.Partition.HasValue ? await _partition.Off(new(body, input.Partition.Value)) : body;
 		return new(partition, count);
 	}
 }

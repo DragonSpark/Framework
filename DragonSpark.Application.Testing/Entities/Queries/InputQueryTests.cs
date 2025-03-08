@@ -40,7 +40,7 @@ public sealed class InputQueryTests
 			new EvaluateToArray<string, string>(new NewContext<Context>(factory).Then().Scopes(),
 			                                    Selected.Default);
 		{
-			var results = await evaluate.Await("One");
+			var results = await evaluate.Off("One");
 			var open    = results.Open();
 			open.Should().HaveCount(2);
 			open.Should().BeEquivalentTo("Two", "Three");
@@ -67,7 +67,7 @@ public sealed class InputQueryTests
 		               .Where((s, subject) => subject.Name == name || subject.Name == s)
 		               .Invoke(contexts)
 		               .To.Array();
-		var subjects = await sut.Await("One");
+		var subjects = await sut.Off("One");
 		var open     = subjects.Open();
 		open.Should().HaveCount(2);
 		open.Select(x => x.Name).Should().BeEquivalentTo("Two", "One");
@@ -92,7 +92,7 @@ public sealed class InputQueryTests
 		               .Where((s, subject) => subject.Name == name || subject.Name == s)
 		               .Invoke(contexts)
 		               .To.Array();
-		var subjects = await sut.Await("One");
+		var subjects = await sut.Off("One");
 		var open     = subjects.Open();
 		open.Should().HaveCount(2);
 		open.Select(x => x.Name).Should().BeEquivalentTo("Two", "One");
@@ -112,14 +112,14 @@ public sealed class InputQueryTests
 
 		var evaluation = new EvaluateToArray<string, string>(factory.Then().Scopes(), Selected.Default);
 		{
-			var results = await evaluation.Await("One");
+			var results = await evaluation.Off("One");
 			var open    = results.Open();
 			open.Should().HaveCount(2);
 			open.Should().BeEquivalentTo("Two", "Three");
 		}
 
 		{
-			var results = await evaluation.Await("Two");
+			var results = await evaluation.Off("Two");
 			var open    = results.Open();
 			open.Should().HaveCount(2);
 			open.Should().BeEquivalentTo("One", "Three");
@@ -145,7 +145,7 @@ public sealed class InputQueryTests
 			new EvaluateToArray<Input, string>(new NewContext<ContextWithData>(contexts).Then().Scopes(),
 			                                   ComplexSelected.Default);
 		{
-			var results = await evaluate.Await(new(id, "One"));
+			var results = await evaluate.Off(new(id, "One"));
 			var only    = results.Open().Only();
 			only.Should().NotBeNull();
 			only.Should().Be("One");
@@ -168,7 +168,7 @@ public sealed class InputQueryTests
 
 		var evaluate = contexts.Then().Use(ComplexSelected.Default).To.Array();
 		{
-			var results = await evaluate.Await(new(id, "One"));
+			var results = await evaluate.Off(new(id, "One"));
 			var only    = results.Open().Only();
 			only.Should().NotBeNull();
 			only.Should().Be("One");
@@ -194,7 +194,7 @@ public sealed class InputQueryTests
 		               .To.Single();
 		{
 			await using var data = contexts.Get();
-			var             item = await sut.Await(new Input(id, "Two"));
+			var             item = await sut.Off(new Input(id, "Two"));
 			item.Should().NotBeNull();
 			item.Id.Should().Be(id);
 			item.Name.Should().Be("Two");
@@ -221,7 +221,7 @@ public sealed class InputQueryTests
 		               .Invoke(contexts)
 		               .To.Single();
 		{
-			var item = await sut.Await(new Input(id, "Two"));
+			var item = await sut.Off(new Input(id, "Two"));
 			item.Identity.Should().Be(id);
 			item.Name.Should().Be("Two");
 		}

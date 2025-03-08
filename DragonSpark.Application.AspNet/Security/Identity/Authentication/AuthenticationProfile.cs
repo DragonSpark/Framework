@@ -13,7 +13,7 @@ sealed class AuthenticationProfile<T> : IAuthenticationProfile where T : class
 	public async ValueTask<ExternalLoginInfo?> Get()
 	{
 		using var authentication = _authentications.Get();
-		var       result         = await authentication.Subject.GetExternalLoginInfoAsync().Await();
+		var       result         = await authentication.Subject.GetExternalLoginInfoAsync().Off();
 		return result;
 	}
 }

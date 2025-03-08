@@ -16,12 +16,12 @@ public class RemoveMany<TIn, TOut> : IOperation<TIn> where TOut : class
 
 	public async ValueTask Get(TIn parameter)
 	{
-		using var edit = await _edit.Await(parameter);
+		using var edit = await _edit.Off(parameter);
 		foreach (var remove in edit.Subject)
 		{
 			edit.Remove(remove);
 		}
 
-		await edit.Await();
+		await edit.Off();
 	}
 }

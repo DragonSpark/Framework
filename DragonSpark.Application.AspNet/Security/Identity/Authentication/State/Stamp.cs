@@ -15,7 +15,7 @@ sealed class Stamp<T> : ISelecting<T, string?> where T : IdentityUser
 		using var users   = _users.Get();
 		var       manager = users.Subject;
 		return manager.SupportsUserSecurityStamp
-			       ? await manager.GetSecurityStampAsync(parameter).Await()
+			       ? await manager.GetSecurityStampAsync(parameter).Off()
 			       : null;
 	}
 }

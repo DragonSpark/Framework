@@ -15,7 +15,7 @@ sealed class LogAwareEvaluate : IEvaluate
 	{
 		try
 		{
-			await _previous.Await(parameter);
+			await _previous.Off(parameter);
 		}
 		catch (JSException e)
 		{

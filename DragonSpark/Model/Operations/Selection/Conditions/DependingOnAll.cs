@@ -13,7 +13,7 @@ public class DependingOnAll<T> : IDepending<T>
 	readonly Array<Await<T, bool>> _selections;
 
 	protected DependingOnAll(params ISelect<T, ValueTask<bool>>[] selections)
-		: this(selections.AsValueEnumerable().Select(x => new Await<T, bool>(x.Await)).ToArray()) {}
+		: this(selections.AsValueEnumerable().Select(x => new Await<T, bool>(x.Off)).ToArray()) {}
 
 	protected DependingOnAll(params Await<T, bool>[] selections) => _selections = selections;
 

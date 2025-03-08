@@ -12,5 +12,5 @@ sealed class ToNumber : IEvaluate<int, uint>
 	ToNumber() {}
 
 	public async ValueTask<uint> Get(IAsyncEnumerable<int> parameter)
-		=> (uint)await parameter.AsAsyncValueEnumerable().SumAsync().Await();
+		=> (uint)await parameter.AsAsyncValueEnumerable().SumAsync().Off();
 }

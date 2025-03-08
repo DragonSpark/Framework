@@ -31,7 +31,7 @@ sealed class Compositions : IResulting<Composition?>
 	{
 		var authentication = await _accessor.Get()
 		                                    .AuthenticateAsync(IdentityConstants.ApplicationScheme)
-		                                    .Await();
+		                                    .Off();
 		var identity = authentication.Principal;
 		var result = identity is not null
 			             ? new(authentication.Properties,

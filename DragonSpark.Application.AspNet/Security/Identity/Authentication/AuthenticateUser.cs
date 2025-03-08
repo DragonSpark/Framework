@@ -18,7 +18,7 @@ sealed class AuthenticateUser<T> : IOperation<Login<T>>
 	public async ValueTask Get(Login<T> parameter)
 	{
 		var (information, _) = parameter;
-		await _authenticate.Await(parameter);
+		await _authenticate.Off(parameter);
 		_clear.Execute(information.Principal);
 	}
 }

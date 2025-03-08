@@ -71,7 +71,7 @@ else
             await ValueChanged.Invoke(Value = Binding.Value);
             if (Allowed.Get(Binding.Value))
             {
-                await Store.Await(Binding.Value);
+                await Store.Off(Binding.Value);
             }
         }
     }

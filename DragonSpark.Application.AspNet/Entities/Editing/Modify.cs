@@ -9,7 +9,7 @@ namespace DragonSpark.Application.AspNet.Entities.Editing;
 
 public class Modify<T> : Modify<T, T>
 {
-	protected Modify(IScopes scopes, IOperation<Edit<T>> modification) : this(scopes, modification.Await) {}
+	protected Modify(IScopes scopes, IOperation<Edit<T>> modification) : this(scopes, modification.Off) {}
 
 	protected Modify(IScopes scopes, Await<T> configure) : this(scopes, x => configure(x.Subject)) {}
 
@@ -43,11 +43,11 @@ public class Modify<TIn, T> : IOperation<TIn>
 	protected Modify(IEnlistedScopes scopes, IQuery<TIn, T> query, Await<Edit<T>> configure)
 		: this(scopes.Then().Use(query).Edit.Single(), configure) {}
 
-	protected Modify(IEdit<TIn, T> select, IOperation<T> configure) : this(select, configure.Await) {}
+	protected Modify(IEdit<TIn, T> select, IOperation<T> configure) : this(select, configure.Off) {}
 
 	protected Modify(IEdit<TIn, T> select, Await<T> configure) : this(select, x => configure(x.Subject)) {}
 
-	protected Modify(IEdit<TIn, T> select, IOperation<Edit<T>> configure) : this(select, configure.Await) {}
+	protected Modify(IEdit<TIn, T> select, IOperation<Edit<T>> configure) : this(select, configure.Off) {}
 
 	protected Modify(IEdit<TIn, T> edit, ICommand<Edit<T>> modify) : this(edit, modify.Then().Operation().Out()) {}
 
@@ -64,8 +64,8 @@ public class Modify<TIn, T> : IOperation<TIn>
 
 	public async ValueTask Get(TIn parameter)
 	{
-		using var edit = await _select.Get(parameter).Go();
+		using var edit = await _select.Get(parameter).On();
 		await _configure(edit);
-		await edit.Await();
+		await edit.Off();
 	}
 }

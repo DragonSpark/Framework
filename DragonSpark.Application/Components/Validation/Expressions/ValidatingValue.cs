@@ -29,7 +29,7 @@ public class ValidatingValue<TFrom, TTo> : IValidatingValue<TFrom>
 	public async ValueTask<bool> Get(TFrom parameter)
 	{
 		var select = _select(parameter);
-		var result  = await _existing.Await(select);
+		var result  = await _existing.Off(select);
 		return result;
 	}
 }

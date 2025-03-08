@@ -27,7 +27,7 @@ sealed class BootstrappedProgram : IProgram
 
 		try
 		{
-			await _previous.Await(parameter);
+			await _previous.Off(parameter);
 		}
 		catch (Exception ex) when (ex is not HostAbortedException)
 		{

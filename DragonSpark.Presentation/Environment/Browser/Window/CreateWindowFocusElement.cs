@@ -19,8 +19,8 @@ sealed class CreateWindowFocusElement : ISelecting<NewWindowFocusElementInput, W
 
 	public async ValueTask<WindowFocusElement> Get(NewWindowFocusElementInput parameter)
 	{
-		var module    = await _load.Await();
-		var reference = await _new.Await(new(module, parameter));
+		var module    = await _load.Off();
+		var reference = await _new.Off(new(module, parameter));
 		return new(reference);
 	}
 }

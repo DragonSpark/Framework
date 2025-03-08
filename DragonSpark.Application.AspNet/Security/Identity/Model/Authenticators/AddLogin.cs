@@ -14,7 +14,7 @@ sealed class AddLogin<T> : IAddLogin<T> where T : IdentityUser
 	{
 		var (information, subject) = parameter;
 		using var users  = _users.Get();
-		var       result = await users.Subject.AddLoginAsync(subject, information).Await();
+		var       result = await users.Subject.AddLoginAsync(subject, information).Off();
 		return result;
 	}
 }

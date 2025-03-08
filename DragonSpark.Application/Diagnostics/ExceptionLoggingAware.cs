@@ -25,11 +25,11 @@ public class ExceptionLoggingAware<T> : IOperation<T>
 	{
 		try
 		{
-			await _previous.Await(parameter);
+			await _previous.Off(parameter);
 		}
 		catch (Exception e)
 		{
-			await _logger.Await(new(_reportedType ?? GetType(), e));
+			await _logger.Off(new(_reportedType ?? GetType(), e));
 		}
 	}
 }
@@ -55,11 +55,11 @@ public class ExceptionLoggingAware : IOperation
 	{
 		try
 		{
-			await _previous().Await();
+			await _previous().Off();
 		}
 		catch (Exception e)
 		{
-			await _logger.Await(new(_reportedType ?? GetType(), e));
+			await _logger.Off(new(_reportedType ?? GetType(), e));
 		}
 	}
 }

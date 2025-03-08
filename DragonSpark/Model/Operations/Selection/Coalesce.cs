@@ -8,7 +8,7 @@ public class Coalesce<TIn, TOut> : ISelecting<TIn, TOut>
 	readonly Await<TIn, TOut?> _first;
 	readonly Await<TIn, TOut>  _second;
 
-	public Coalesce(ISelecting<TIn, TOut?> first, ISelecting<TIn, TOut> second) : this(first.Await, second.Await) {}
+	public Coalesce(ISelecting<TIn, TOut?> first, ISelecting<TIn, TOut> second) : this(first.Off, second.Off) {}
 
 	public Coalesce(Await<TIn, TOut?> first, Await<TIn, TOut> second)
 	{

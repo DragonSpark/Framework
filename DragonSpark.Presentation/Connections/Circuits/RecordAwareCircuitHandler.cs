@@ -25,7 +25,7 @@ sealed class RecordAwareCircuitHandler : CircuitHandler
 
 	public override async Task OnCircuitOpenedAsync(Circuit circuit, CancellationToken cancellationToken)
 	{
-		var record = await _create.Await(circuit);
+		var record = await _create.Off(circuit);
 		_store.Execute(record);
 		_current.Execute(record);
 	}

@@ -16,8 +16,8 @@ sealed class Append : IAppend
 	{
 		var (name, contentType, content) = parameter;
 		var result = _client.GetAppendBlobClient(name);
-		await result.CreateIfNotExistsAsync(new BlobHttpHeaders { ContentType = contentType }).Await();
-		await result.AppendBlockAsync(content).Await();
+		await result.CreateIfNotExistsAsync(new BlobHttpHeaders { ContentType = contentType }).Off();
+		await result.AppendBlockAsync(content).Off();
 		return result;
 	}
 }

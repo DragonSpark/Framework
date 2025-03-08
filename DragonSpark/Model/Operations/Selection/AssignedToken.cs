@@ -27,7 +27,7 @@ sealed class AssignedToken<TIn, TOut> : ISelecting<TIn, TOut>
 	{
 		using (_store.Assigned(_token))
 		{
-			return await _previous.Await(parameter);
+			return await _previous.Off(parameter);
 		}
 	}
 }

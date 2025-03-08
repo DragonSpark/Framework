@@ -10,7 +10,7 @@ public class Protecting<TIn, TOut> : ISelecting<TIn, TOut>
 	readonly Await<TIn, TOut>        _previous;
 	readonly ISelect<TIn, AsyncLock> _lock;
 
-	public Protecting(ISelecting<TIn, TOut> previous) : this(previous.Await) {}
+	public Protecting(ISelecting<TIn, TOut> previous) : this(previous.Off) {}
 
 	public Protecting(Await<TIn, TOut> previous) : this(previous, new AsyncLock()) {}
 
@@ -25,7 +25,7 @@ public class Protecting<TIn, TOut> : ISelecting<TIn, TOut>
 	public async ValueTask<TOut> Get(TIn parameter)
 	{
 		var @lock = _lock.Get(parameter);
-		using (await @lock.LockAsync().Go())
+		using (await @lock.LockAsync().On())
 		{
 			return await _previous(parameter);
 		}

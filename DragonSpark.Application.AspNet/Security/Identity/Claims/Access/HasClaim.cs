@@ -19,8 +19,8 @@ public class HasClaim<T> : IDepending<T> where T : IdentityUser
 	public async ValueTask<bool> Get(T parameter)
 	{
 		using var users  = _users.Get();
-		var       user   = await users.Subject.FindByIdAsync(parameter.Id.ToString()).Await();
-		var       claims = await users.Subject.GetClaimsAsync(user.Verify()).Await();
+		var       user   = await users.Subject.FindByIdAsync(parameter.Id.ToString()).Off();
+		var       claims = await users.Subject.GetClaimsAsync(user.Verify()).Off();
 		var       result = claims.AsValueEnumerable().Select(x => x.Type).Contains(_claim);
 		return result;
 	}

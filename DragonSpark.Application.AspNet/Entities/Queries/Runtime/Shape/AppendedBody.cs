@@ -17,8 +17,8 @@ public class AppendedBody<T> : IBody<T>
 
 	public async ValueTask<IQueryable<T>> Get(ComposeInput<T> parameter)
 	{
-		var first  = await _first.Await(parameter);
-		var result = await _second.Await(parameter with { Current = first });
+		var first  = await _first.Off(parameter);
+		var result = await _second.Off(parameter with { Current = first });
 		return result;
 	}
 }

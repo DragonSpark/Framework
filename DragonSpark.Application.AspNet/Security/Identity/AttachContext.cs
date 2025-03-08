@@ -30,7 +30,7 @@ sealed class AttachContext<T> : ISelecting<AttachContextInput<T>, UserManager<T>
 		{
 			var existing = _existing.Get(manager).Database;
 			existing.SetDbConnection(context.Database.GetDbConnection());
-			await existing.UseTransactionAsync(transaction).Await();
+			await existing.UseTransactionAsync(transaction).Off();
 		}
 
 		return manager;

@@ -21,7 +21,7 @@ public class ReportAwareAllocated<T> : IAllocated<T>
     {
         try
         {
-            await _previous.Get(parameter).Go();
+            await _previous.Get(parameter).On();
         }
         finally
         {

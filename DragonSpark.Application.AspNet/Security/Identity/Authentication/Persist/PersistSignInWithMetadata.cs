@@ -14,6 +14,6 @@ sealed class PersistSignInWithMetadata<T> : IPersistSignInWithMetadata<T> where 
 		var (user, metadata, claims) = parameter;
 		using var authentication = _authentications.Get();
 		using var open           = claims;
-		await authentication.Subject.SignInWithClaimsAsync(user, metadata, open).Await();
+		await authentication.Subject.SignInWithClaimsAsync(user, metadata, open).Off();
 	}
 }

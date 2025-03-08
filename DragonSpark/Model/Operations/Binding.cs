@@ -21,6 +21,6 @@ sealed class Binding<T> : IOperation
 	{
 		var parameter = _parameter();
 		var input     = parameter.IsCompletedSuccessfully ? parameter.Result : await parameter.ConfigureAwait(_capture);
-		await _operation.Await(input);
+		await _operation.Off(input);
 	}
 }

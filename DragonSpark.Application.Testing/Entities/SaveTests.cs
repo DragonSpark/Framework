@@ -35,14 +35,14 @@ public sealed class SaveTests
 		var sut = new Save<Subject>(new EnlistedScopes(new Scopes<Context>(contexts),
 		                                               EmptyAmbientContext.Default));
 		{
-			var first = await query.Await();
+			var first = await query.Off();
 			first.Name.Should().Be(original);
 			first.Name = expected;
-			await sut.Await(first);
+			await sut.Off(first);
 		}
 
 		{
-			var first = await query.Await();
+			var first = await query.Off();
 			first.Name.Should().Be(expected);
 		}
 	}

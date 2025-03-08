@@ -17,7 +17,7 @@ sealed class ReloadEntities : IOperation<(DbUpdateConcurrencyException, TimeSpan
 		var (exception, _) = parameter;
 		foreach (var entry in exception.Entries)
 		{
-			await entry.ReloadAsync().Await();
+			await entry.ReloadAsync().Off();
 		}
 	}
 }

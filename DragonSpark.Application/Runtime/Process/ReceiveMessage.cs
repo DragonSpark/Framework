@@ -36,9 +36,9 @@ public class ReceiveMessage : IToken<string>
         await using var stream = NamedPipeServerStreamAcl.Create(_name, PipeDirection.InOut, 1,
                                                                  PipeTransmissionMode.Message, PipeOptions.Asynchronous,
                                                                  4096, 4096, _security);
-        await stream.WaitForConnectionAsync(parameter).Await();
+        await stream.WaitForConnectionAsync(parameter).Off();
 
         using var reader = new StreamReader(stream);
-        return await reader.ReadToEndAsync(parameter).Await();
+        return await reader.ReadToEndAsync(parameter).Off();
     }
 }

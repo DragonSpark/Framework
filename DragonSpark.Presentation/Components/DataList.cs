@@ -60,7 +60,7 @@ public class DataList<T> : RadzenDataList<T>, IRefreshAware
 			if (_pageIndex != page)
 			{
 				_reload?.Execute();
-				await PageIndexChanged.Invoke(_pageIndex = page).Await();
+				await PageIndexChanged.Invoke(_pageIndex = page).Off();
 			}
 		}
 	}
@@ -70,7 +70,7 @@ public class DataList<T> : RadzenDataList<T>, IRefreshAware
 		if (LoadData.HasDelegate && (_ready?.Up() ?? false))
 		{
 			var index = _pageIndex;
-			await OnPageChanged(new() { PageIndex = index, Skip = PageSize * index }).Await();
+			await OnPageChanged(new() { PageIndex = index, Skip = PageSize * index }).Off();
 			_update.Up();
 		}
 	}

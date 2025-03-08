@@ -7,7 +7,7 @@ namespace DragonSpark.Compose.Model.Operations.Allocated;
 
 public class AllocatedResultComposer<T> : ResultComposer<Task<T>>
 {
-	public static implicit operator AwaitOf<T>(AllocatedResultComposer<T> instance) => instance.Get().Await;
+	public static implicit operator AwaitOf<T>(AllocatedResultComposer<T> instance) => instance.Get().Off;
 
 	public AllocatedResultComposer(IResult<Task<T>> instance) : base(instance) {}
 

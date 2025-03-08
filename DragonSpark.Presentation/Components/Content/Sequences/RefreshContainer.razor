@@ -30,7 +30,7 @@
 	{
         foreach (var item in _children)
 		{
-			await item.Await();
+			await item.Off();
 		}
 	}
 

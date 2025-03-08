@@ -24,8 +24,8 @@ public class OutputAware<T> : IOperation<T> where T : IUserIdentity
 
 	public async ValueTask Get(T parameter)
 	{
-		await _previous.Await(parameter);
-		await _output.EvictByTagAsync(_key.Get(parameter), CancellationToken.None).Await();
+		await _previous.Off(parameter);
+		await _output.EvictByTagAsync(_key.Get(parameter), CancellationToken.None).Off();
 	}
 }
 
@@ -51,10 +51,10 @@ public class OutputAware<TIn, T> : ISelecting<TIn, T> where TIn : IUserIdentity
 
 	public async ValueTask<T> Get(TIn parameter)
 	{
-		var result = await _previous.Await(parameter);
+		var result = await _previous.Off(parameter);
 		if (_when(result))
 		{
-			await _output.EvictByTagAsync(_key.Get(parameter), CancellationToken.None).Await();
+			await _output.EvictByTagAsync(_key.Get(parameter), CancellationToken.None).Off();
 		}
 
 		return result;

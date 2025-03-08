@@ -24,9 +24,9 @@ sealed class ComponentContextFilter : IHubFilter
 		{
 			using (_store.Assigned(invocationContext.Context))
 			{
-				return await next(invocationContext).Await();
+				return await next(invocationContext).Off();
 			}
 		}
-		return await next(invocationContext).Await();
+		return await next(invocationContext).Off();
 	}
 }

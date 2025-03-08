@@ -24,7 +24,7 @@ sealed class WindowFocusElement : IAsyncDisposable
 
 	public async ValueTask DisposeAsync()
 	{
-		await _instance.InvokeVoidAsync("Stop").Go();
-		await _dispose.Await();
+		await _instance.InvokeVoidAsync("Stop").On();
+		await _dispose.Off();
 	}
 }

@@ -22,7 +22,7 @@ public sealed class IsOwner : IIsOwner
 	public async ValueTask<bool?> Get(Unique parameter)
 	{
 		var (user, identity) = parameter;
-		var owner  = await _owner.Await(identity);
+		var owner  = await _owner.Off(identity);
 		var result = owner != null ? _equals.Equals(owner, user) : (bool?)null;
 		return result;
 	}

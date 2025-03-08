@@ -22,15 +22,15 @@ sealed class AuthenticationAwareChallenged<T> : IChallenged<T> where T : Identit
 
 	public async ValueTask<ChallengeResult<T>?> Get(ClaimsPrincipal parameter)
 	{
-		var previous = await _previous.Await(parameter);
+		var previous = await _previous.Off(parameter);
 
 		if (previous.HasValue)
 		{
 			var (user, information, result) = previous.Value;
 			if (result.Succeeded)
 			{
-				await _authenticate.Await(new(information, user));
-				await _synchronization.Await(information);
+				await _authenticate.Off(new(information, user));
+				await _synchronization.Off(information);
 			}
 		}
 

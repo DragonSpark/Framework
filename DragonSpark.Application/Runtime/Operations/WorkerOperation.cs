@@ -23,7 +23,7 @@ sealed class WorkerOperation : IAllocated
     {
         try
         {
-            await _subject.Go();
+            await _subject.On();
             _source.SetResult();
         }
         // ReSharper disable once CatchAllClause
@@ -55,7 +55,7 @@ sealed class WorkerOperation<T> : IOperation
     {
         try
         {
-            var content = await _subject.Go();
+            var content = await _subject.On();
             _source.SetResult(content);
         }
         catch (Exception e)
@@ -64,7 +64,7 @@ sealed class WorkerOperation<T> : IOperation
         }
         finally
         {
-            await _complete().Await();
+            await _complete().Off();
         }
     }
 }

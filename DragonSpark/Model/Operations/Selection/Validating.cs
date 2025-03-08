@@ -14,7 +14,7 @@ public class Validating<TIn, TOut> : ISelecting<TIn, TOut>
 		: this(condition, @true, Default<TIn, TOut>.Instance.Then().Operation().Out()) {}
 
 	public Validating(IDepending<TIn> condition, ISelecting<TIn, TOut> @true, ISelecting<TIn, TOut> @false)
-		: this(condition.Await, @true.Await, @false.Await) {}
+		: this(condition.Off, @true.Off, @false.Off) {}
 
 	public Validating(Await<TIn, bool> specification, Await<TIn, TOut> @true)
 		: this(specification, @true, Default<TIn, TOut>.Instance.Then().Operation()) {}

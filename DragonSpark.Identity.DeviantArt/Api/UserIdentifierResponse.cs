@@ -25,7 +25,7 @@ sealed class UserIdentifierResponse : ISelecting<string, HttpResponseMessage>
 
 	public async ValueTask<HttpResponseMessage> Get(string parameter)
 	{
-		var       token    = await _token.Await();
+		var       token    = await _token.Off();
 		using var client   = _clients.CreateClient();
 		var       location = new Uri(_template.FormatWith(parameter, token.Token));
 		var       result   = await client.GetAsync(location);

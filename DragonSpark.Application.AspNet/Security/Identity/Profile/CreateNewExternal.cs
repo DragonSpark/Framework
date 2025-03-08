@@ -18,8 +18,8 @@ sealed class CreateNewExternal<T> : ISelecting<ExternalLoginInfo, CreateUserResu
 
 	public async ValueTask<CreateUserResult<T>> Get(ExternalLoginInfo parameter)
 	{
-		var user   = await _new.Await(parameter);
-		var result = await _create.Await(new(parameter, user));
+		var user   = await _new.Off(parameter);
+		var result = await _create.Off(new(parameter, user));
 		return new(user, result);
 	}
 }

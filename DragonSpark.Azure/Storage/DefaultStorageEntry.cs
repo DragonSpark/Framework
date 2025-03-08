@@ -21,7 +21,7 @@ sealed class DefaultStorageEntry : IStorageEntry
 
 	public async ValueTask<Stream> Get(Stream parameter)
 	{
-		await _client.DownloadToAsync(parameter).Await();
+		await _client.DownloadToAsync(parameter).Off();
 		return parameter;
 	}
 }

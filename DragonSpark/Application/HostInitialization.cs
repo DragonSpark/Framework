@@ -16,7 +16,7 @@ sealed class HostInitialization : IHostInitializer
 	{
 		foreach (var initializer in parameter.Services.GetServices<IHostInitializer>().AsValueEnumerable())
 		{
-			await initializer.Await(parameter);
+			await initializer.Off(parameter);
 		}
 	}
 }

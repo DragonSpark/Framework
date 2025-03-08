@@ -73,7 +73,7 @@ sealed class DataMigrationRegistry : IDataMigrationRegistry
 	{
 		foreach (var initializer in _initializers)
 		{
-			await initializer.Await(new(_services, parameter));
+			await initializer.Off(new(_services, parameter));
 		}
 	}
 }

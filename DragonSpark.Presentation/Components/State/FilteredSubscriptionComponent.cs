@@ -16,7 +16,7 @@ public abstract class FilteredSubscriptionComponent<T> : SubscriptionComponent<T
 	{
 		if (await Condition.Get(parameter))
 		{
-			await base.OnReceive(parameter).Await();
+			await base.OnReceive(parameter).Off();
 		}
 	}
 }

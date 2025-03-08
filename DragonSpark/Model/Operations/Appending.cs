@@ -7,7 +7,7 @@ public class Appending : IOperation
 {
 	readonly Await _previous, _current;
 
-	public Appending(IOperation first, IOperation second) : this(first.Await, second.Await) {}
+	public Appending(IOperation first, IOperation second) : this(first.Off, second.Off) {}
 
 	public Appending(Await previous, Await current)
 	{
@@ -27,7 +27,7 @@ public class Appending<T> : IOperation<T>
 	readonly Await<T> _first;
 	readonly Await<T> _second;
 
-	public Appending(IOperation<T> first, IOperation<T> second) : this(first.Await, second.Await) {}
+	public Appending(IOperation<T> first, IOperation<T> second) : this(first.Off, second.Off) {}
 
 	public Appending(Await<T> first, Await<T> second)
 	{

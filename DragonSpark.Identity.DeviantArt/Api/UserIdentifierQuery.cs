@@ -20,7 +20,7 @@ sealed class UserIdentifierQuery : IUserIdentifierQuery
 
 	public async ValueTask<string?> Get(string parameter)
 	{
-		var response = await _response.Await(parameter);
+		var response = await _response.Off(parameter);
 
 		if (response.IsSuccessStatusCode)
 		{

@@ -7,7 +7,7 @@ public class Maybe<TIn, TOut> : ISelecting<TIn, TOut?>
 {
 	readonly Await<TIn, TOut?> _first, _second;
 
-	public Maybe(ISelecting<TIn, TOut?> first, ISelecting<TIn, TOut?> second) : this(first.Await, second.Await) {}
+	public Maybe(ISelecting<TIn, TOut?> first, ISelecting<TIn, TOut?> second) : this(first.Off, second.Off) {}
 
 	public Maybe(Await<TIn, TOut?> first, Await<TIn, TOut?> second)
 	{

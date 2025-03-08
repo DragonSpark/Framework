@@ -111,7 +111,7 @@
 
         if (_items.Count < (int)page.Total.Value())
         {
-            await Notify().Await();
+            await Notify().Off();
         }
         else
         {
@@ -123,7 +123,7 @@
     {
         if (_instance is not null)
         {
-            await _instance.InvokeVoidAsync("onNewItems").Await();
+            await _instance.InvokeVoidAsync("onNewItems").Off();
         }
         else
         {
@@ -138,19 +138,19 @@
         {
             if(_notify.Down())
             {
-                await Notify().Await();
+                await Notify().Off();
             }
 
             if (_reload.Down())
             {
-                await LoadMoreItems().Await();
+                await LoadMoreItems().Off();
             }
         }
     }
 
     async Task<IJSObjectReference?> Instance(ElementReference parameter)
     {
-        var result = await Model.Await(new(parameter, DotNetObjectReference.Create(this), (byte)Direction));
+        var result = await Model.Off(new(parameter, DotNetObjectReference.Create(this), (byte)Direction));
         _active &= result is not null;
         return result;
     }

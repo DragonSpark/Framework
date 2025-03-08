@@ -29,7 +29,7 @@ sealed class CreateTimer<T> : ISelect<T, Timer>
                           {
                               if (_store.Remove(parameter))
                               {
-	                              await _subject(parameter).Await();
+	                              await _subject(parameter).Off();
                               }
                           };
         return result;

@@ -14,6 +14,6 @@ sealed class TokenAdapter<TIn, TOut> : ISelectingToken<TIn, TOut>
 	public async ValueTask<Token<TOut>> Get(Token<TIn> parameter)
 	{
 		var (subject, token) = parameter;
-		return new(await _previous.Await(subject), token);
+		return new(await _previous.Off(subject), token);
 	}
 }

@@ -26,11 +26,11 @@ public class ExceptionAware<T> : IOperation<T>
 	{
 		try
 		{
-			await _previous(parameter).Await();
+			await _previous(parameter).Off();
 		}
 		catch (Exception e)
 		{
-			await _exceptions.Await(new(_reportedType ?? GetType(), e));
+			await _exceptions.Off(new(_reportedType ?? GetType(), e));
 		}
 	}
 }

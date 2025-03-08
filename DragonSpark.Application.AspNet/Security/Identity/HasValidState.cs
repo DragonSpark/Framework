@@ -14,9 +14,9 @@ sealed class HasValidState<T> : IHasValidState<T> where T : IdentityUser
 	{
 		using var session = _authentications.Get();
 		var (authentication, users) = session;
-		var user = await users.FindByIdAsync(parameter.Id.ToString()).Await();
+		var user = await users.FindByIdAsync(parameter.Id.ToString()).Off();
 		var result = await authentication.ValidateSecurityStampAsync(user, parameter.SecurityStamp)
-		                                 .Await();
+		                                 .Off();
 		return result;
 	}
 }

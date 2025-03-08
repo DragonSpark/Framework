@@ -21,7 +21,7 @@ public class PostDelay<T> : IOperation<T>
 
 	public async ValueTask Get(T parameter)
 	{
-		await _previous.Await(parameter);
-		await Task.Delay(_wait).Await();
+		await _previous.Off(parameter);
+		await Task.Delay(_wait).Off();
 	}
 }

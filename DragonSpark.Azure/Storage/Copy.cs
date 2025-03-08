@@ -22,9 +22,9 @@ sealed class Copy : ICopy
 	{
 		var (entry, destination) = parameter;
 		var client    = _client.GetBlobClient(destination);
-		var operation = await client.StartCopyFromUriAsync(entry.Properties.Identity).Await();
-		await operation.WaitForCompletionAsync().Await();
-		var result = await _entry.Await(client);
+		var operation = await client.StartCopyFromUriAsync(entry.Properties.Identity).Off();
+		await operation.WaitForCompletionAsync().Off();
+		var result = await _entry.Off(client);
 		return result;
 	}
 }

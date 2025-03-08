@@ -30,7 +30,7 @@ sealed class TwitterIdentity : ITwitterIdentity
 			TweetFields = _expansions,
 			UserFields  = _fields
 		};
-		var response = await _client.GetUserByNameAsync(parameters).Await();
+		var response = await _client.GetUserByNameAsync(parameters).Off();
 		var result   = response?.User?.Id;
 		return result;
 	}

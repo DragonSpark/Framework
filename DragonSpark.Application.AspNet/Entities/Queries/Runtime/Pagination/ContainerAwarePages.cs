@@ -19,7 +19,7 @@ sealed class ContainerAwarePages<T> : IPages<T>
 	{
 		try
 		{
-			var result = await _pages.Get(parameter).Go();
+			var result = await _pages.Get(parameter).On();
 			_container.Execute(result);
 			return result;
 		}

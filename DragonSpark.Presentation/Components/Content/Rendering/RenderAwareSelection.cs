@@ -24,14 +24,14 @@ class RenderAwareSelection<TIn, TOut> : ISelecting<TIn, TOut>
 		{
 			case RenderState.Default:
 			{
-				var result = _variable.Pop(out var stored) ? stored.Verify() : await _previous.Await(parameter);
+				var result = _variable.Pop(out var stored) ? stored.Verify() : await _previous.Off(parameter);
 				_variable.Execute(result);
 				return result;
 			}
 			default:
 			{
 				var pop = _variable.Pop(out var stored);
-				return pop ? stored.Verify() : await _previous.Await(parameter);
+				return pop ? stored.Verify() : await _previous.Off(parameter);
 			}
 		}
 	}
