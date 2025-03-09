@@ -3,6 +3,7 @@
 	<TargetFramework>$(DefaultTargetFramework)</TargetFramework>
   </PropertyGroup>
 	<ItemGroup>
+		<PackageReference Include="SixLabors.ImageSharp" />
 		<PackageReference Include="SixLabors.ImageSharp.Drawing" />
 		<PackageReference Include="System.Drawing.Common" />
 	</ItemGroup>
