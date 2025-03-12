@@ -1,0 +1,20 @@
+﻿@using DragonSpark.Compose
+@using DragonSpark.Model.Operations.Results
+
+@typeparam T
+
+@inherits ContentComponentBase<T>
+
+<ApplicationContentView TValue="T" Content="@Content" ChildContent="@ChildContent" />
+
+@code {
+
+    [Parameter]
+    public required IResulting<T> Model { get; set; }
+
+    [Parameter]
+    public required RenderFragment<T> ChildContent { get; set; }
+
+    protected override ValueTask<T?> GetContent() => Model.Accounting();
+
+}
