@@ -25,7 +25,7 @@ public sealed class ReceiveNotification : ICommand<Intent>
 
     public void Execute(Intent parameter)
     {
-        var service = _services.GetService<INotificationManagerService>();
+        var service = _services.GetService<INotifications>();
         if (service is not null)
         {
             var title   = parameter.GetStringExtra(_title);

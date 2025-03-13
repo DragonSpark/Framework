@@ -26,7 +26,7 @@ public abstract class AlarmHandler : BroadcastReceiver
             var message = intent.GetStringExtra(MessageKey.Default);
             if (title is not null && message is not null)
             {
-                _services.GetService<INotificationManagerService>()?.SendNotification(new(new(title, message)));
+                _services.GetService<INotifications>()?.SendNotification(new(new(title, message)));
             }
         }
     }

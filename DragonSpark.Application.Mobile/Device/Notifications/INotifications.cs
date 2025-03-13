@@ -4,7 +4,7 @@ using DragonSpark.Model.Operations.Allocated;
 
 namespace DragonSpark.Application.Mobile.Device.Notifications;
 
-public interface INotificationManagerService
+public interface INotifications
 {
 	event EventHandler NotificationReceived;
 	Task SendNotification(Token<NotificationInput> notification);

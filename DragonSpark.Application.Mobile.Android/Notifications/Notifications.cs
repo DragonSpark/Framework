@@ -12,7 +12,7 @@ using Uno.UI;
 
 namespace DragonSpark.Application.Mobile.Android.Notifications;
 
-sealed class NotificationManagerService : INotificationManagerService
+sealed class Notifications : INotifications
 {
     public event EventHandler NotificationReceived;
 
@@ -22,15 +22,15 @@ sealed class NotificationManagerService : INotificationManagerService
     readonly Context                   _context;
     readonly NotificationChannelView   _channel;
     
-    public NotificationManagerService(NotificationChannelView channel) : this(BaseActivity.Current, channel) {}
+    public Notifications(NotificationChannelView channel) : this(BaseActivity.Current, channel) {}
 
     [Candidate(false)]
-    public NotificationManagerService(Context context, NotificationChannelView channel)
+    public Notifications(Context context, NotificationChannelView channel)
         : this(NotificationManagerCompat.From(context), delegate {}, context, channel) {}
 
     // ReSharper disable once TooManyDependencies
     [Candidate(false)]
-    public NotificationManagerService(NotificationManagerCompat manager, EventHandler received, Context context,
+    public Notifications(NotificationManagerCompat manager, EventHandler received, Context context,
                                       NotificationChannelView channel)
     {
         _manager             = manager;

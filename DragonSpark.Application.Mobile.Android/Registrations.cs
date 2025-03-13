@@ -1,4 +1,6 @@
+using DragonSpark.Application.Mobile.Android.Messages;
 using DragonSpark.Application.Mobile.Android.Notifications;
+using DragonSpark.Application.Mobile.Device.Messaging;
 using DragonSpark.Application.Mobile.Device.Notifications;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
@@ -14,9 +16,15 @@ sealed class Registrations : ICommand<IServiceCollection>
 
     public void Execute(IServiceCollection parameter)
     {
-        parameter.Start<INotificationManagerService>()
-                 .Forward<NotificationManagerService>()
-                 .Decorate<RegisteredNotificationManagerService>()
+        parameter.Start<INotifications>()
+                 .Forward<Notifications.Notifications>()
+                 .Decorate<PermissionAwareNotifications>()
+                 .Singleton()
+                 //
+                 .Then.Start<IMessenger>()
+                 .Forward<ActivityMessenger>()
+                 .Decorate<PermissionAwareMessenger>()
+                 .Include(x => x.Dependencies)
                  .Singleton();
     }
 }

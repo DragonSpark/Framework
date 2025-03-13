@@ -9,16 +9,16 @@ using Windows.Extensions;
 
 namespace DragonSpark.Application.Mobile.Android.Notifications;
 
-sealed class RegisteredNotificationManagerService : INotificationManagerService
+sealed class PermissionAwareNotifications : INotifications
 {
-    readonly INotificationManagerService _previous;
+    readonly INotifications _previous;
     readonly string                      _permission;
 
     [ActivatorUtilitiesConstructor]
-    public RegisteredNotificationManagerService(INotificationManagerService previous)
+    public PermissionAwareNotifications(INotifications previous)
         : this(previous, Manifest.Permission.PostNotifications) {}
 
-    public RegisteredNotificationManagerService(INotificationManagerService previous, string permission)
+    public PermissionAwareNotifications(INotifications previous, string permission)
     {
         _previous   = previous;
         _permission = permission;
@@ -33,7 +33,7 @@ sealed class RegisteredNotificationManagerService : INotificationManagerService
     public async Task SendNotification(Token<NotificationInput> notification)
     {
         var (_, item) = notification;
-        var granted = await PermissionsHelper.TryGetPermission(item, _permission).On();
+        var granted = await PermissionsHelper.TryGetPermission(item, _permission).Off();
         if (granted)
         {
             await _previous.SendNotification(notification).Off();
