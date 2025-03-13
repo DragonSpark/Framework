@@ -1,6 +1,3 @@
-﻿namespace DragonSpark.Application.Mobile.iOS;
+namespace DragonSpark.Application.Mobile.iOS;
 
-public class Class1
-{
-}
-
+public class Class1;
