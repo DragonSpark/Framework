@@ -4,7 +4,7 @@ using DragonSpark.Model.Results;
 
 namespace DragonSpark.Application.Mobile.Presentation;
 
-sealed class CurrentServices : Result<IServiceProvider>, IServiceProvider
+public sealed class CurrentServices : Result<IServiceProvider>, IServiceProvider
 {
 	public static CurrentServices Default { get; } = new();
 

@@ -1,7 +1,7 @@
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 
-namespace DragonSpark.Application.Mobile.Device;
+namespace DragonSpark.Application.Mobile.Device.Camera;
 
 public sealed class DefaultCameraFile : DragonSpark.Model.Results.Instance<ImageSource>
 {

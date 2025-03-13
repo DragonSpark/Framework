@@ -5,7 +5,7 @@ using DragonSpark.Model.Operations.Results;
 using Microsoft.UI.Xaml.Media;
 using Microsoft.UI.Xaml.Media.Imaging;
 
-namespace DragonSpark.Application.Mobile.Device;
+namespace DragonSpark.Application.Mobile.Device.Camera;
 
 public sealed class CameraFile : IResulting<ImageSource?>
 {
