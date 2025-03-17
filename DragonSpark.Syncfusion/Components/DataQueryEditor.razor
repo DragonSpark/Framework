@@ -2,12 +2,12 @@
 
 @using BlazorPro.BlazorSize
 @using DragonSpark.Application.AspNet.Entities.Queries.Runtime
-@using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination
 @using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Shape
 @using DragonSpark.Application.Runtime.Operations
 @using DragonSpark.Compose
 @using DragonSpark.Model.Operations
 @using DragonSpark.Presentation
+@using DragonSpark.Presentation.Components.Content.Sequences
 @using DragonSpark.Presentation.Components.Dialogs
 @using DragonSpark.SyncfusionRendering.Entities
 @using DragonSpark.SyncfusionRendering.Queries
@@ -93,10 +93,10 @@
     public RenderFragment? BodyFooterTemplate { get; set; }
 
     [Parameter]
-    public RenderFragment<IPages<T>>? HeaderTemplate { get; set; }
+    public RenderFragment<PagingRenderState<T>>? HeaderTemplate { get; set; }
 
     [Parameter]
-    public RenderFragment<IPages<T>>? FooterTemplate { get; set; }
+    public RenderFragment<PagingRenderState<T>>? FooterTemplate { get; set; }
 
     [Parameter]
     public bool AllowPaging { get; set; } = true;

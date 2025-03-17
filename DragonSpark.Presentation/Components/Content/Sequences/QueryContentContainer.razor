@@ -7,23 +7,21 @@
 
 <DragonSpark.Presentation.Components.Content.ApplicationPrincipalAwareContentView>
     <ContentView TValue="IPages<T>" Content="@_subject" NotFoundTemplate="@NotFoundTemplate">
-        @HeaderTemplate?.Invoke(context)
+        @HeaderTemplate?.Invoke(new(context, _any, _loading))
 
-        @if (Results.Get(_results))
+        @if (_any)
         {
-            if (!_error && _results is null)
+            if (_loading)
             {
                 @LoadingTemplate
             }
-            <CascadingValue TValue="IPageContainer<T>" Value="@(this)" IsFixed="true">
-                @ChildContent(context)
-            </CascadingValue>
+            <CascadingValue TValue="IPageContainer<T>" Value="@(this)" IsFixed="true" ChildContent="@ChildContent(context)" />
         }
         else
         {
             @EmptyElementsTemplate
         }
 
-        @FooterTemplate?.Invoke(context)
+        @FooterTemplate?.Invoke(new(context, _any, _loading))
     </ContentView>
 </DragonSpark.Presentation.Components.Content.ApplicationPrincipalAwareContentView>

@@ -50,8 +50,8 @@
 	public Type? ReportedType { get; set; }
 
 	[Parameter]
-	public RenderFragment<IPages<T>>? HeaderTemplate { get; set; }
+    public RenderFragment<PagingRenderState<T>>? HeaderTemplate { get; set; }
 
 	[Parameter]
-	public RenderFragment<IPages<T>>? FooterTemplate { get; set; }
+    public RenderFragment<PagingRenderState<T>>? FooterTemplate { get; set; }
 }

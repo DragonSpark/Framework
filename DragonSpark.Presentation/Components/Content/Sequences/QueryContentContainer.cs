@@ -12,9 +12,9 @@ namespace DragonSpark.Presentation.Components.Content.Sequences;
 
 partial class QueryContentContainer<T> : IPageContainer<T>
 {
-	Switch     _error = new();
-	bool?      _results;
-	IPages<T>? _subject;
+	readonly Switch _error = false, _any = false, _loading = true;
+	bool?           _results;
+	IPages<T>?      _subject;
 
 	[Parameter]
 	public IQueries<T>? Content
@@ -52,10 +52,10 @@ partial class QueryContentContainer<T> : IPageContainer<T>
 	public Type? ReportedType { get; set; }
 
 	[Parameter]
-	public RenderFragment<IPages<T>>? HeaderTemplate { get; set; }
+	public RenderFragment<PagingRenderState<T>>? HeaderTemplate { get; set; }
 
 	[Parameter]
-	public RenderFragment<IPages<T>>? FooterTemplate { get; set; }
+	public RenderFragment<PagingRenderState<T>>? FooterTemplate { get; set; }
 
 	[Parameter]
 	public IPagination<T>? Pagination { get; set; }
@@ -64,6 +64,7 @@ partial class QueryContentContainer<T> : IPageContainer<T>
 	{
 		base.OnParametersSet();
 		_subject ??= DetermineSubject(Content.Verify());
+		Update();
 	}
 
 	IPages<T> DetermineSubject(IQueries<T> parameter)
@@ -74,10 +75,17 @@ partial class QueryContentContainer<T> : IPageContainer<T>
 
 	public Type Get() => ReportedType ?? GetType();
 
+	void Update()
+	{
+		_any.Execute(Results.Get(_results));
+		_loading.Execute(!_error && _results is null);
+	}
+
 	void ICommand<Page<T>>.Execute(Page<T> parameter)
 	{
 		_error.Down();
 		_results ??= parameter.Total is > 0;
+		Update();
 		StateHasChanged();
 	}
 
@@ -85,6 +93,13 @@ partial class QueryContentContainer<T> : IPageContainer<T>
 	{
 		_error.Up();
 		_results = null;
+		Update();
 		StateHasChanged();
 	}
+}
+
+// TODO
+public readonly record struct PagingRenderState<T>(IPages<T> Subject, bool Any, bool Loading, bool Ready)
+{
+	public PagingRenderState(IPages<T> Subject, bool Any, bool Loading) : this(Subject, Any, Loading, Any && !Loading) {}
 }
