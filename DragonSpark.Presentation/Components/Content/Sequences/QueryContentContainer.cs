@@ -97,9 +97,3 @@ partial class QueryContentContainer<T> : IPageContainer<T>
 		StateHasChanged();
 	}
 }
-
-// TODO
-public readonly record struct PagingRenderState<T>(IPages<T> Subject, bool Any, bool Loading, bool Ready)
-{
-	public PagingRenderState(IPages<T> Subject, bool Any, bool Loading) : this(Subject, Any, Loading, Any && !Loading) {}
-}
