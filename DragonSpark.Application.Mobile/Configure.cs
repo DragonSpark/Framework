@@ -11,5 +11,6 @@ sealed class Configure : IAlteration<BuildHostContext>
 
     public BuildHostContext Get(BuildHostContext parameter)
         => parameter.Configure(Application.DefaultRegistrations.Default, DefaultRegistrations.Default,
-                               Presentation.Models.Registrations.Default);
+                               Presentation.Models.Registrations.Default,
+                               Device.Camera.Registrations.Default);
 }

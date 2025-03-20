@@ -1,10 +1,10 @@
-<Project Sdk="Uno.Sdk">
+﻿<Project Sdk="Uno.Sdk">
     <PropertyGroup>
         <TargetFrameworks>net9.0-ios</TargetFrameworks>
         <UnoSingleProject>true</UnoSingleProject>
         <OutputType>Library</OutputType>
         <!-- Ensures the .xr.xml files are generated in a proper layout folder -->
-        <GenerateLibraryLayout>true</GenerateLibraryLayout>
+        <GenerateLibraryLayout>false</GenerateLibraryLayout>
     </PropertyGroup>
     <ItemGroup>
         <ProjectReference Include="..\DragonSpark.Application.Mobile\DragonSpark.Application.Mobile.csproj" />

@@ -17,7 +17,7 @@ public sealed class CameraFileAddress : IResulting<Uri?>
 
     public async ValueTask<Uri?> Get()
     {
-        var file = await _camera.CaptureFileAsync(CameraCaptureUIMode.Photo);
+        var         file = await _camera.CaptureFileAsync(CameraCaptureUIMode.Photo);
         return file is not null ? new(file.Path) : null;
     }
 }
