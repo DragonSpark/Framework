@@ -26,8 +26,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        var current = await Operation;
-        if (!await Validation.Get(current.User))
+        var current = await Operation.On();
+        if (!await Validation.Get(current.User).On())
         {
             Set.Execute(AuthenticationState<T>.Default);
             SignOut.Execute();
@@ -56,7 +56,7 @@
         if (_operation.Account() is not null && _update.Down())
         {
             // ReSharper disable once AsyncApostle.AsyncWait
-            var state = Operation.IsCompletedSuccessfully ? Operation.Result : await Operation;
+            var state = Operation.IsCompletedSuccessfully ? Operation.Result : await Operation.On();
             if (state != _state)
             {
                 var next = state.To<AuthenticationState<T>>();
