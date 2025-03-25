@@ -1,7 +1,7 @@
 using DragonSpark.Compose;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Application.Mobile.Android;
+namespace DragonSpark.Application.Mobile.iOS;
 
 public static class Extensions
 {

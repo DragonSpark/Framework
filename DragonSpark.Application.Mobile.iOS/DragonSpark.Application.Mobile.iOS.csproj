@@ -9,5 +9,4 @@
     <ItemGroup>
         <ProjectReference Include="..\DragonSpark.Application.Mobile\DragonSpark.Application.Mobile.csproj" />
     </ItemGroup>
-    <ItemGroup></ItemGroup>
 </Project>

@@ -1,6 +1,6 @@
 using System;
 
-namespace DragonSpark.Application.Mobile.Android.Notifications;
+namespace DragonSpark.Application.Mobile.Device.Notifications;
 
 public sealed class NotificationEventArgs : EventArgs
 {
