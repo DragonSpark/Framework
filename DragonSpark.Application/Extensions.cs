@@ -31,8 +31,6 @@ partial class Extensions
 
 	public static Claim Claim(this Text.Text @this, string value) => new(@this, value);
 
-	
-
 	public static bool IsAuthenticated(this ClaimsPrincipal @this) => @this.Identity?.IsAuthenticated ?? false;
 
 	/**/
@@ -106,7 +104,7 @@ partial class Extensions
 		=> new(@this.Get());
 
 /**/
-	
+
 	public static IOperation<T> Ambient<T>(this IOperation<T> @this) => new DeferredOperation<T>(@this);
 
 /**/
