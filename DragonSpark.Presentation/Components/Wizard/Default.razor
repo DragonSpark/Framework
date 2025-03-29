@@ -1,8 +1,10 @@
 ﻿@using DragonSpark.Compose
+@using DragonSpark.Model.Results
 @using Microsoft.FluentUI.AspNetCore.Components
 @using Microsoft.FluentUI.AspNetCore.Components.Utilities
 
 @inherits FluentComponentBase
+@implements IResult<WizardButtonTemplateInput>
 
 <CascadingValue Value="this" IsFixed="true">
     <div id="@Id"
@@ -11,18 +13,13 @@
          border-outside="@Border.HasFlag(WizardBorder.Outside)"
          position="@(StepperPosition == StepperPosition.Top ? "top" : "left")"
          @attributes="@AdditionalAttributes">
-        <ol style="@GetStepperWidthOrHeight()"
-            border-inside="@Border.HasFlag(WizardBorder.Inside)">
+        <ol style="@GetStepperWidthOrHeight()" border-inside="@Border.HasFlag(WizardBorder.Inside)">
             @Steps
         </ol>
 
-        @{
-            var display = CurrentButtonDisplay;
-            var input   = new WizardButtonTemplateInput(Value.Contract().Contract(), false, Value > 0 ? _previous : null, !Active ? Value < _steps.Count - 1 ? _next : _finish : null);
-            if (display.HasFlag(WizardButtonsLocation.Top))
-            {
-                <Buttons Input="@input" Border="@Border" ButtonTemplate="@ButtonTemplate"/>
-            }
+        @if (CurrentButtonDisplay.HasFlag(WizardButtonsLocation.Top))
+        {
+            <Buttons Border="@Border" ButtonTemplate="@ButtonTemplate" />
         }
 
         <div class="fluent-wizard-content" border-inside="@Border.HasFlag(WizardBorder.Inside)">
@@ -31,19 +28,19 @@
                 <CascadingValue Value="@_steps[Value]" ChildContent="@_steps[Value].ChildContent" IsFixed="true" />
             }
         </div>
-        @if (display.HasFlag(WizardButtonsLocation.Bottom))
+        @if (CurrentButtonDisplay.HasFlag(WizardButtonsLocation.Bottom))
         {
-            <Buttons Input="@input" Border="@Border" ButtonTemplate="@ButtonTemplate" />
+            <Buttons Border="@Border" ButtonTemplate="@ButtonTemplate" />
         }
     </div>
 </CascadingValue>
 
 @code {
-    static   string     LabelButtonPrevious = "Previous", LabelButtonNext = "Next";
-    readonly List<Step> _steps              = new();
-    int                 _value;
-    internal int        _maxStepVisited;
-    WizardButtonInput   _previous = null!, _next = null!, _finish = null!;
+    readonly static string     LabelButtonPrevious = "Previous", LabelButtonNext = "Next";
+    readonly        List<Step> _steps              = new();
+    int                        _value;
+    internal int               _maxStepVisited;
+    WizardButtonInput          _previous = null!, _next = null!, _finish = null!;
 
     protected override void OnInitialized()
     {
@@ -146,7 +143,7 @@
     /// Custom Wizard buttons do not trigger the component OnChange and OnFinish events.
     /// </summary>
     [Parameter]
-    public RenderFragment<WizardButtonTemplateInput>? ButtonTemplate { get; set; }
+    public RenderFragment? ButtonTemplate { get; set; }
 
     /// <summary>
     /// Gets or sets the wizard steps. Add WizardStep tags inside this tag.
@@ -360,4 +357,7 @@
 
         return null;
     }
+
+    public WizardButtonTemplateInput Get()
+        => new(Value.Contract().Contract(), Active, Value > 0 ? _previous : null, Value < _steps.Count - 1 ? _next : _finish);
 }

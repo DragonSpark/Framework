@@ -1,0 +1,10 @@
+﻿@ChildContent(Parent.Get())
+
+@code
+{
+    [CascadingParameter]
+    public required Default Parent { get; set; }
+
+    [Parameter]
+    public required RenderFragment<WizardButtonTemplateInput> ChildContent { get; set; }
+}

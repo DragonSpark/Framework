@@ -3,21 +3,20 @@
 <div class="fluent-wizard-buttons" border-inside="@Border.HasFlag(WizardBorder.Inside)">
     @if (ButtonTemplate is not null)
     {
-        @ButtonTemplate(Input)
+        @ButtonTemplate
     }
     else
     {
-        @if (Input.Previous is not null)
-        {
-            <FluentButton Appearance="Appearance.Neutral" OnClick="@Input.Previous.Action" Disabled="@Input.Active">@Input.Previous.Text</FluentButton>
-        }
+        <ButtonContainerComponent>
+            @if (context.Previous is not null)
+            {
+                <FluentButton Appearance="Appearance.Neutral" OnClick="@context.Previous.Action" Disabled="@context.Active">@context.Previous.Text</FluentButton>
+            }
 
-        <span style="margin-right: 10px"></span>
+            <span style="margin-right: 10px"></span>
 
-        @if (Input.Next is not null)
-        {
-            <FluentButton Appearance="@Appearance.Accent" OnClick="@Input.Next.Action" Disabled="@Input.Active">@Input.Next.Text</FluentButton>
-        }
+            <FluentButton Appearance="@Appearance.Accent" OnClick="@context.Next.Action" Disabled="@context.Active">@context.Next.Text</FluentButton>
+        </ButtonContainerComponent>
     }
 </div>
 
@@ -26,9 +25,5 @@
     public WizardBorder Border { get; set; } = WizardBorder.None;
 
     [Parameter]
-    public WizardButtonTemplateInput Input { get; set; } = null!;
-
-    [Parameter]
-    public RenderFragment<WizardButtonTemplateInput>? ButtonTemplate { get; set; }
-
+    public RenderFragment? ButtonTemplate { get; set; }
 }

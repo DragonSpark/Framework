@@ -111,7 +111,7 @@
 
             if (_rendered)
             {
-                await Focus.Store.Get();
+                await Focus.Store.On();
             }
             if (Monitor is not null)
             {
@@ -136,7 +136,7 @@
 
             if (Monitor is not null)
             {
-                await Monitor.Get();
+                await Monitor.On();
             }
             if (refresh)
             {
