@@ -162,6 +162,11 @@ public static class Extensions
 
 	public static Task Invoke(this EventCallback @this) => @this.HasDelegate ? @this.InvokeAsync() : Task.CompletedTask;
 
+	public static ConfiguredTaskAwaitable On(this EventCallback @this) => @this.Invoke().On();
+
+	public static ConfiguredTaskAwaitable On<T>(this EventCallback<T> @this, T parameter)
+		=> @this.Invoke(parameter).On();
+
 	public static ConfiguredTaskAwaitable Off(this EventCallback @this) => @this.Invoke().Off();
 
 	public static ConfiguredTaskAwaitable Off<T>(this EventCallback<T> @this, T parameter)
