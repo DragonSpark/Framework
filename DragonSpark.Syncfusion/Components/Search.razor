@@ -1,0 +1,47 @@
+﻿@using DragonSpark.Presentation
+@using Syncfusion.Blazor.Inputs
+@using System.Threading
+
+<SfTextBox @ref="_subject" Created="@OnCreated" Value="@_value" Placeholder="@Placeholder" Width="250px" CssClass="e-corner" Input="@OnChanged" FloatLabelType="@FloatLabelType.Never"/>
+
+@code {
+    string                  _value    = string.Empty;
+    CancellationTokenSource _source   = new();
+    Func<Task, Task>        _start    = null!;
+    Func<Task>              _continue = null!;
+    SfTextBox               _subject  = null!;
+
+    [Parameter]
+    public string Input { get; set; } = string.Empty;
+
+    [Parameter]
+    public string Placeholder { get; set; } = "Enter search term";
+
+    [Parameter]
+    public EventCallback<string> InputChanged { get; set; }
+
+    [Parameter]
+    public TimeSpan Delay { get; set; } = TimeSpan.FromMilliseconds(750);
+
+    protected override void OnInitialized()
+    {
+        _start    = StartContinue;
+        _continue = Continue;
+        base.OnInitialized();
+    }
+
+    Task OnCreated() => _subject.AddIconAsync("prepend", "e-upload-picture");
+
+    Task OnChanged(InputEventArgs parameter)
+    {
+        _value = parameter.Value;
+        _source.Cancel();
+        _source = new();
+        return Task.Delay(Delay, _source.Token).ContinueWith(_start, _source.Token);
+    }
+
+    Task StartContinue(Task _) => InvokeAsync(_continue);
+
+    Task Continue() => InputChanged.Invoke(Input = _value);
+
+}

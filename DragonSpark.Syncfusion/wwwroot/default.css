@@ -1,0 +1,10 @@
+.e-input-group.e-corner { border-radius: 5px; }
+
+.e-upload-picture::before { content: '\e754'; font-family: e-icons; }
+
+label.e-float-text,
+.e-corner.e-float-input label.e-float-text,
+.e-corner.e-float-input.e-control-wrapper label.e-float-text,
+.e-corner.e-float-input:not(.e-input-focus) input:not(:focus):valid ~ label.e-float-text.e-label-bottom {
+    padding-left: 34px;
+}

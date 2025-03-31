@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
   <PropertyGroup>
 	<TargetFramework>$(DefaultTargetFramework)</TargetFramework>
   </PropertyGroup>
@@ -24,5 +24,8 @@
   </ItemGroup>
   <ItemGroup>
 	<ProjectReference Include="..\DragonSpark.Presentation\DragonSpark.Presentation.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="wwwroot\default.css" />
   </ItemGroup>
 </Project>
