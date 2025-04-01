@@ -1,6 +1,6 @@
+using DragonSpark.Compose;
 using System;
 using System.Threading.Tasks;
-using DragonSpark.Compose;
 
 namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
 
@@ -19,7 +19,7 @@ sealed class ContainerAwarePages<T> : IPages<T>
 	{
 		try
 		{
-			var result = await _pages.Get(parameter).On();
+			var result = await _pages.On(parameter);
 			_container.Execute(result);
 			return result;
 		}

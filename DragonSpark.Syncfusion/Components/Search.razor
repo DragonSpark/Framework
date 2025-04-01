@@ -1,8 +1,10 @@
-﻿@using DragonSpark.Presentation
+﻿@using DragonSpark.Compose
+@using DragonSpark.Presentation
+@using Radzen
 @using Syncfusion.Blazor.Inputs
 @using System.Threading
 
-<SfTextBox @ref="_subject" Created="@OnCreated" Value="@_value" Placeholder="@Placeholder" Width="250px" CssClass="e-corner" Input="@OnChanged" FloatLabelType="@FloatLabelType.Never"/>
+<SfTextBox @ref="_subject" Created="@OnCreated" Value="@_value" Placeholder="@Placeholder" Width="250px" CssClass="e-corner" Input="@OnChanged" FloatLabelType="@FloatLabelType.Never" ShowClearButton="true"/>
 
 @code {
     string                  _value    = string.Empty;
@@ -30,14 +32,25 @@
         base.OnInitialized();
     }
 
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        var changed = parameters.DidParameterChange(nameof(Input), Input);
+        await base.SetParametersAsync(parameters).Off();
+        if (changed)
+        {
+            _value = Input;
+        }
+    }
+
     Task OnCreated() => _subject.AddIconAsync("prepend", "e-upload-picture");
 
     Task OnChanged(InputEventArgs parameter)
     {
-        _value = parameter.Value;
+        var value = parameter.Value.Account();
+        _value = value ?? string.Empty;
         _source.Cancel();
         _source = new();
-        return Task.Delay(Delay, _source.Token).ContinueWith(_start, _source.Token);
+        return Task.Delay(value is null ? TimeSpan.Zero : Delay, _source.Token).ContinueWith(_start, _source.Token);
     }
 
     Task StartContinue(Task _) => InvokeAsync(_continue);
