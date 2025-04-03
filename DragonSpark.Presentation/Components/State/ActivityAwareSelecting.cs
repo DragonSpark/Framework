@@ -1,7 +1,7 @@
-using System.Threading.Tasks;
 using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Operations.Selection;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.State;
 
@@ -13,10 +13,15 @@ sealed class ActivityAwareSelecting<TIn, TOut> : ISelecting<TIn, TOut>
 	readonly IUpdateActivityReceiver _update;
 
 	public ActivityAwareSelecting(ISelecting<TIn, TOut> previous, object subject)
-		: this(previous, subject, ActivityOptions.Default) {}
+		: this(previous, subject, UpdateActivityReceiver.Default) {}
 
-	public ActivityAwareSelecting(ISelecting<TIn, TOut> previous, object subject, ActivityOptions input)
-		: this(previous, subject, new(previous, input), UpdateActivityReceiver.Default) {}
+	public ActivityAwareSelecting(ISelecting<TIn, TOut> previous, object subject, IUpdateActivityReceiver update)
+		: this(previous, subject, ActivityOptions.Default, update) {}
+
+	// ReSharper disable once TooManyDependencies
+	public ActivityAwareSelecting(ISelecting<TIn, TOut> previous, object subject, ActivityOptions input,
+	                              IUpdateActivityReceiver update)
+		: this(previous, subject, new ActivityReceiver(previous, input), update) {}
 
 	// ReSharper disable once TooManyDependencies
 	public ActivityAwareSelecting(ISelecting<TIn, TOut> previous, object subject, ActivityReceiver input,
