@@ -1,4 +1,4 @@
-using DragonSpark.Application.Mobile.Run;
+using DragonSpark.Application.Mobile.Uno.Run;
 using Microsoft.Extensions.Hosting;
 
 namespace DragonSpark.Application.Hosting.Uno.Run;
@@ -6,7 +6,7 @@ namespace DragonSpark.Application.Hosting.Uno.Run;
 public abstract class RunApplication(
 	Func<InitializeInput, IApplicationBuilder> builder,
 	Func<IApplicationBuilder, Task<IHost>> host)
-	: Mobile.Run.RunApplication(builder, host)
+	: Mobile.Uno.Run.RunApplication(builder, host)
 {
 	protected RunApplication(Func<IHostBuilder, IHostBuilder> select, Action<IApplicationBuilder> configure,
 	                         Func<IApplicationBuilder, Task<IHost>> host)

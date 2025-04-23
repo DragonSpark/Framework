@@ -1,4 +1,4 @@
-using DragonSpark.Application.Mobile.Presentation;
+using DragonSpark.Application.Mobile.Uno.Presentation;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Hosting;
 
@@ -28,7 +28,7 @@ sealed class ConfigureAwareBuilder : IApplicationBuilder
 	public IHost Build()
 	{
 		var result = _previous.Build();
-		_configure.Execute(new Mobile.Run.Application(_previous, result));
+		_configure.Execute(new Mobile.Uno.Run.Application(_previous, result));
 		return result;
 	}
 

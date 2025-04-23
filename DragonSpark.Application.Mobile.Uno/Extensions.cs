@@ -1,0 +1,23 @@
+using DragonSpark.Application.Mobile.Uno.Diagnostics;
+using DragonSpark.Application.Mobile.Uno.Run;
+using DragonSpark.Composition.Compose;
+
+namespace DragonSpark.Application.Mobile.Uno;
+
+public static class Extensions
+{
+	public static BuildHostContext WithFrameworkConfigurations(this BuildHostContext @this)
+		=> Configure.Default.Get(@this);
+
+	public static IRunApplication ForSynchronousExecution(this IRunApplication @this)
+		=> new SynchronousAwareRunApplication(@this);
+
+	public static IRunApplication WithInitialization(this IRunApplication @this)
+		=> new RunInitializedApplication(@this);
+
+	public static BuildHostContext WithOpenTelemetry(this BuildHostContext @this, params string[] sources)
+		=> @this.Configure(new ConfigureOpenTelemetry(sources));
+
+	public static BuildHostContext WithIdentityProfileFrameworkConfiguration(this BuildHostContext @this)
+		=> @this.Configure(Security.Identity.Registrations.Default, Security.Identity.Profile.Registrations.Default);
+}

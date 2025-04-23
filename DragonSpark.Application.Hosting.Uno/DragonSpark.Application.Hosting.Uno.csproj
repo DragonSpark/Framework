@@ -9,6 +9,6 @@
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\DragonSpark.Application.Mobile\DragonSpark.Application.Mobile.csproj" />
+		<ProjectReference Include="..\DragonSpark.Application.Mobile.Uno\DragonSpark.Application.Mobile.Uno.csproj" />
 	</ItemGroup>
 </Project>

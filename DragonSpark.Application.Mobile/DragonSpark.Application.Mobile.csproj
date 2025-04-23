@@ -1,10 +1,6 @@
-﻿<Project Sdk="Uno.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-	  <!--<TargetFramework>$(DefaultTargetFramework)</TargetFramework>-->
-	  <TargetFrameworks>net9.0-desktop;net9.0;net9.0-ios;net9.0-maccatalyst;net9.0-android</TargetFrameworks>
-	  <UnoFeatures>
-		  MVUX;
-	  </UnoFeatures>
+      <TargetFramework>$(DefaultTargetFramework)</TargetFramework>
   </PropertyGroup>
 	<ItemGroup>
 		<ProjectReference Include="..\DragonSpark.Application\DragonSpark.Application.csproj" />
@@ -12,9 +8,5 @@
 	<ItemGroup>
         <PackageReference Include="Microsoft.Extensions.Logging.Console" /><!--ISSUE-->
 		<PackageReference Include="Duende.IdentityModel" />
-		<PackageReference Include="Uno.Extensions.Authentication" />
-		<PackageReference Include="Uno.Extensions.Hosting.WinUI" />
-		<PackageReference Include="Uno.Extensions.Navigation" />
-		<PackageReference Include="Uno.Extensions.Navigation.Toolkit.WinUI" />
 	</ItemGroup>
 </Project>
