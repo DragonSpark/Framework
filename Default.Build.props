@@ -1,0 +1,11 @@
+<Project>
+  <PropertyGroup>
+	<DefaultWindowsVersion>10.0.26100</DefaultWindowsVersion>
+	<DefaultWindowsTargetFramework>net9.0-windows$(DefaultWindowsVersion).0</DefaultWindowsTargetFramework>
+	<WindowsSdkPackageVersion>$(DefaultWindowsVersion).38</WindowsSdkPackageVersion>
+	<DefaultTargetFramework>net9.0</DefaultTargetFramework>
+	<DefaultTargetFrameworks>net9.0-android;net9.0-ios</DefaultTargetFrameworks>
+	<DefaultUnoTargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">net9.0-desktop;$(DefaultTargetFramework);$(DefaultTargetFrameworks)</DefaultUnoTargetFrameworks>
+	<DefaultMauiTargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(DefaultTargetFrameworks);$(DefaultWindowsTargetFramework)</DefaultMauiTargetFrameworks>
+  </PropertyGroup>
+</Project>

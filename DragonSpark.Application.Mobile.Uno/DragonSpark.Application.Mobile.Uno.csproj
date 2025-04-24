@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Uno.Sdk">
     <PropertyGroup>
         <!--<TargetFramework>$(DefaultTargetFramework)</TargetFramework>-->
-        <TargetFrameworks>net9.0-desktop;net9.0;net9.0-ios;net9.0-maccatalyst;net9.0-android</TargetFrameworks>
+        <TargetFrameworks>$(DefaultUnoTargetFrameworks)</TargetFrameworks>
         <UnoFeatures>
             MVUX;
         </UnoFeatures>

@@ -1,10 +1,10 @@
-﻿using DragonSpark.Model;
-using DragonSpark.Model.Selection;
-using DragonSpark.Model.Selection.Conditions;
-using DragonSpark.Model.Selection.Stores;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
+using DragonSpark.Model;
+using DragonSpark.Model.Selection;
+using DragonSpark.Model.Selection.Conditions;
+using DragonSpark.Model.Selection.Stores;
 
 namespace DragonSpark.Compose;
 

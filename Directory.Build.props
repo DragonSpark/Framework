@@ -1,5 +1,17 @@
 <Project>
   <PropertyGroup>
+	<ParentDirectoryBuildPropsPath>$([MSBuild]::GetPathOfFileAbove('Default.Build.props', '$(MSBuildThisFileDirectory)..\'))</ParentDirectoryBuildPropsPath>
+  </PropertyGroup>
+
+  <ImportGroup>
+	<Import Project="$(ParentDirectoryBuildPropsPath)" Condition="Exists($(ParentDirectoryBuildPropsPath))" />
+  </ImportGroup>
+  <ImportGroup>
+	<Import Project="Default.build.props" Condition="Exists('Default.build.props') And !Exists($(ParentDirectoryBuildPropsPath))" />
+  </ImportGroup>
+
+  <PropertyGroup>
+	<ImplicitUsings>false</ImplicitUsings>
 	<Features>enable-generator-cache</Features>
 	<DefaultTargetFramework>net9.0</DefaultTargetFramework>
 	<LangVersion>latest</LangVersion>
@@ -7,11 +19,11 @@
 	<RunAnalyzersDuringLiveAnalysis>false</RunAnalyzersDuringLiveAnalysis>
 	<EnableNETAnalyzers>false</EnableNETAnalyzers>
 	<DisableImplicitNamespaceImports>true</DisableImplicitNamespaceImports>	
-	 <GitVersionBaseDirectory>$(MSBuildThisFileDirectory)</GitVersionBaseDirectory>
-	 <Company>DragonSpark Technologies Incorporated</Company>
-	 <Copyright>Copyright © 2025 DragonSpark Technologies Incorporated</Copyright>
-	 <Trademark>DragonSpark Technologies Incorporated</Trademark>
-	  <AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
+	<GitVersionBaseDirectory>$(MSBuildThisFileDirectory)</GitVersionBaseDirectory>
+	<Company>DragonSpark Technologies Incorporated</Company>
+	<Copyright>Copyright © 2025 DragonSpark Technologies Incorporated</Copyright>
+	<Trademark>DragonSpark Technologies Incorporated</Trademark>
+	<AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
   </PropertyGroup>
   <ItemGroup>
 		<PackageReference Include="Microsoft.Net.Compilers.Razor.Toolset" Condition=" '$(UsingMicrosoftNETSdkRazor)' == 'true' " />
