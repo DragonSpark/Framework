@@ -1,5 +1,4 @@
-﻿using DragonSpark.Model;
-using DragonSpark.Text;
+﻿using DragonSpark.Text;
 using Syncfusion.Blazor;
 using Syncfusion.Blazor.Data;
 using System;
@@ -19,15 +18,12 @@ public sealed class DataManagerRequestFormatter : IFormatter<DataManagerRequest>
 
 	public string Get(DataManagerRequest parameter)
 	{
-		var empty  = Empty.Enumerable<string>();
-		var sorted = string.Join(',', parameter.Sorted?.Select(x => $"{x.Name} {x.Direction}") ?? empty);
-		var select = string.Join(',', parameter.Select ?? empty);
-		var where  = string.Join(',', parameter.Where?.Select(_where) ?? empty);
+		var sorted = string.Join(',', parameter.Sorted.Select(x => $"{x.Name} {x.Direction}"));
+		var select = string.Join(',', parameter.Select);
+		var where  = string.Join(',', parameter.Where.Select(_where));
 		var search =
 			string.Join(',',
-			            parameter.Search?
-				            .Select(x => $"{string.Join(',', x.Fields)} {x.Key} {x.Operator} {x.IgnoreCase}")
-			            ?? empty);
+			            parameter.Search.Select(x => $"{string.Join(',', x.Fields)} {x.Key} {x.Operator} {x.IgnoreCase}"));
 
 		var result = $"{select}_{where}_{search}_{sorted}_{parameter.Take}_{parameter.Skip}";
 		return result;

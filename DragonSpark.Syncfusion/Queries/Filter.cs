@@ -18,7 +18,7 @@ sealed class Filter<T> : IQuery<T>
 	public ValueTask<Parameter<T>> Get(Parameter<T> parameter)
 	{
 		var (request, query, _) = parameter;
-		var data = request.Select?.Count > 0
+		var data = request.Select.Count > 0
 			           ? parameter with { Query = _select.Get(new PerformSelectInput<T>(query, request.Select)) }
 			           : parameter;
 		var result = data.ToOperation();
