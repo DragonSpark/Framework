@@ -53,5 +53,3 @@ public sealed class NotificationReceiver : UNUserNotificationCenterDelegate
         }
     }
 }
-
-// TODO

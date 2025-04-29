@@ -7,7 +7,7 @@ internal class Class1
 {
 }
 
-public abstract class ApplicationBase : Microsoft.Maui.Controls.Application, IApplication
+public abstract class ApplicationBase : Microsoft.Maui.Controls.Application, IApplication // TODO
 {
     protected ApplicationBase(IServiceProvider services) => Services = services;
 
