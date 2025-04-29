@@ -1,9 +1,9 @@
-﻿using DragonSpark.Text;
+using DragonSpark.Text;
 using Microsoft.Extensions.Hosting;
 
 namespace DragonSpark.Composition;
 
-sealed class GetHostEnvironmentName : IFormatter<HostBuilderContext>
+public sealed class GetHostEnvironmentName : IFormatter<HostBuilderContext>
 {
 	public static GetHostEnvironmentName Default { get; } = new();
 

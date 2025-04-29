@@ -19,7 +19,7 @@ sealed class RegisterModularity : IServiceConfiguration
 
     public void Execute(IServiceCollection parameter)
     {
-        var instance = parameter.GetRequiredInstance<HostBuilderContext>();
+        var instance = parameter.Context();
 
         var (assemblies, types, locator, componentType) = _components.Get(instance);
 

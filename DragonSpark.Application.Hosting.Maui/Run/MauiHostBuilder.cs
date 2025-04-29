@@ -50,7 +50,7 @@ sealed class MauiHostBuilder : IHostBuilder
     }
 #pragma warning restore CS8633 // Nullability in constraints for type parameter doesn't match the constraints for type parameter in implicitly implemented interface method'.
 
-    HostBuilderContext New() => _builder.Services.GetRequiredInstance<HostBuilderContext>();
+    HostBuilderContext New() => _builder.Services.Context();
 
     public IHostBuilder ConfigureHostConfiguration(Action<IConfigurationBuilder> configureDelegate)
     {

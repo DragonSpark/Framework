@@ -1,6 +1,5 @@
-﻿using DragonSpark.Model.Selection;
+using DragonSpark.Model.Selection;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 namespace DragonSpark.Composition.Compose.Deferred;
 
@@ -15,5 +14,5 @@ sealed class GetDeferredRegistrations : ISelect<IServiceCollection, DeferredRegi
 	public GetDeferredRegistrations(IDeferredRegistrationStateAccessor accessor) => _accessor = accessor;
 
 	public DeferredRegistrations Get(IServiceCollection parameter)
-		=> _accessor.Get(parameter.GetRequiredInstance<HostBuilderContext>().Properties);
+		=> _accessor.Get(parameter.Context().Properties);
 }

@@ -3,12 +3,13 @@ using DragonSpark.Model.Selection.Alterations;
 
 namespace DragonSpark.Application.Mobile.Maui;
 
-sealed class Configure : IAlteration<BuildHostContext>
+sealed class Configure<T> : IAlteration<BuildHostContext>
 {
-    public static Configure Default { get; } = new();
+    public static Configure<T> Default { get; } = new();
 
     Configure() {}
 
     public BuildHostContext Get(BuildHostContext parameter)
-        => parameter.Configure(Application.DefaultRegistrations.Default, DefaultRegistrations.Default);
+        => parameter.Configure(ApplyApplicationConfiguration<T>.Default, Application.DefaultRegistrations.Default,
+                               DefaultRegistrations.Default);
 }
