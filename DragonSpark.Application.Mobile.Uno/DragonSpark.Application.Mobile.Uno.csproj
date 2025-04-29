@@ -6,34 +6,6 @@
             MVUX;
         </UnoFeatures>
     </PropertyGroup>
-    <!--<ItemGroup>
-      <Compile Remove="Platforms\Android\Extensions.cs" />
-      <Compile Remove="Platforms\Android\Messages\ActivityMessenger.cs" />
-      <Compile Remove="Platforms\Android\Messages\Messenger.cs" />
-      <Compile Remove="Platforms\Android\Messages\PermissionAwareMessenger.cs" />
-      <Compile Remove="Platforms\Android\Notifications\AlarmHandler.cs" />
-      <Compile Remove="Platforms\Android\Notifications\Notifications.cs" />
-      <Compile Remove="Platforms\Android\Notifications\PermissionAwareNotifications.cs" />
-      <Compile Remove="Platforms\Android\Notifications\ReceiveNotification.cs" />
-      <Compile Remove="Platforms\Android\Registrations.cs" />
-    </ItemGroup>
-    <ItemGroup>
-      <Compile Include="Platforms\iOS\Extensions.cs" />
-      <Compile Include="Platforms\iOS\Messages\Allowed.cs" />
-      <Compile Include="Platforms\iOS\Messages\CurrentController.cs" />
-      <Compile Include="Platforms\iOS\Messages\Display.cs" />
-      <Compile Include="Platforms\iOS\Messages\DisplayInput.cs" />
-      <Compile Include="Platforms\iOS\Messages\Messenger.cs" />
-      <Compile Include="Platforms\iOS\Notifications\ConvertToNSDateComponents.cs" />
-      <Compile Include="Platforms\iOS\Notifications\DetermineTrigger.cs" />
-      <Compile Include="Platforms\iOS\Notifications\Handle.cs" />
-      <Compile Include="Platforms\iOS\Notifications\ISend.cs" />
-      <Compile Include="Platforms\iOS\Notifications\NotificationReceiver.cs" />
-      <Compile Include="Platforms\iOS\Notifications\Notifications.cs" />
-      <Compile Include="Platforms\iOS\Notifications\PermissionAwareSend.cs" />
-      <Compile Include="Platforms\iOS\Notifications\Send.cs" />
-      <Compile Include="Platforms\iOS\Registrations.cs" />
-    </ItemGroup>-->
     <ItemGroup>
       <None Include="Platforms\Android\Messages\ActivityMessenger.cs">
         <Sdk>Uno</Sdk>
@@ -47,5 +19,6 @@
         <PackageReference Include="Uno.Extensions.Hosting.WinUI" />
         <PackageReference Include="Uno.Extensions.Navigation" />
         <PackageReference Include="Uno.Extensions.Navigation.Toolkit.WinUI" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Console" /><!--ISSUE-->
     </ItemGroup>
 </Project>

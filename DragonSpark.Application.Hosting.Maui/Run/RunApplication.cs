@@ -4,7 +4,6 @@ using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
-using DragonSpark.Reflection.Members;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -36,18 +35,10 @@ sealed class InitializeBuilder(Func<IHostBuilder, IHostBuilder> host, Action<Mau
     }
 }
 
-sealed class HostBuilderServices : FieldAccessor<HostBuilder, IServiceCollection>
-{
-    public static HostBuilderServices Default { get; } = new();
-
-    HostBuilderServices() : base("_renderFragment") {}
-}
-
 // TODO
 sealed class MauiHostBuilder : IHostBuilder
 {
     readonly MauiAppBuilder    _builder;
-    readonly IHostBuilder      _host;
     readonly IMutable<object?> _factory;
 
     public MauiHostBuilder(MauiAppBuilder builder)
@@ -56,21 +47,16 @@ sealed class MauiHostBuilder : IHostBuilder
     public MauiHostBuilder(MauiAppBuilder builder, IHostBuilder host, IMutable<object?> factory)
     {
         _builder   = builder;
-        _host      = host;
         _factory   = factory;
         Properties = host.Properties;
 
-        // TODO
-        var result = _host.Build();
+        var result = host.Build();
         _builder.Services.AddSingleton(result.Services.GetRequiredService<HostBuilderContext>());
     }
 
     public IHost Build()
     {
         throw new InvalidOperationException();
-        /*var result = _host.Build();
-        // _builder.Services.AddSingleton(result.Services.GetRequiredService<HostBuilderContext>());
-        return result;*/
     }
 
     public IHostBuilder ConfigureAppConfiguration(Action<HostBuilderContext, IConfigurationBuilder> configureDelegate)
