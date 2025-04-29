@@ -29,8 +29,7 @@ sealed class ApplyApplicationConfiguration<T> : ICommand<IServiceCollection>
     public void Execute(IServiceCollection parameter)
     {
         using var @base       = _assembly.GetManifestResourceStream($"{_namespace}.appsettings.json");
-        var       name        = parameter.EnvironmentName().ToLower();
-        var       key         = $"{_namespace}.appsettings.{name}.json";
+        var       key         = $"{_namespace}.appsettings.{parameter.EnvironmentName().ToLower()}.json";
         using var environment = _assembly.GetManifestResourceStream(key);
         var       start       = new ConfigurationBuilder();
         if (@base is not null)
@@ -40,7 +39,7 @@ sealed class ApplyApplicationConfiguration<T> : ICommand<IServiceCollection>
 
         if (environment is not null)
         {
-            start.AddJsonStream(@environment);
+            start.AddJsonStream(environment);
         }
 
         var configuration = start.Build();
