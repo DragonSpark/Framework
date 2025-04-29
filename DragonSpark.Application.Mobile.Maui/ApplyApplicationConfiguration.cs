@@ -1,15 +1,14 @@
 using System;
 using System.Reflection;
-using DragonSpark.Application.Mobile.Maui.Run;
 using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Maui.Hosting;
 
 namespace DragonSpark.Application.Mobile.Maui;
 
-sealed class ApplyApplicationConfiguration<T> : ICommand<IServiceCollection>
+sealed class ApplyApplicationConfiguration<T> : ICommand<MauiAppBuilder>
 {
     public static ApplyApplicationConfiguration<T> Default { get; } = new();
 
@@ -26,23 +25,24 @@ sealed class ApplyApplicationConfiguration<T> : ICommand<IServiceCollection>
         _namespace = @namespace;
     }
 
-    public void Execute(IServiceCollection parameter)
+    public void Execute(MauiAppBuilder parameter)
     {
         using var @base       = _assembly.GetManifestResourceStream($"{_namespace}.appsettings.json");
-        var       key         = $"{_namespace}.appsettings.{parameter.EnvironmentName().ToLower()}.json";
+        var       key         = $"{_namespace}.appsettings.{parameter.Services.EnvironmentName().ToLower()}.json";
         using var environment = _assembly.GetManifestResourceStream(key);
-        var       start       = new ConfigurationBuilder();
+        var       builder     = new ConfigurationBuilder();
+        
         if (@base is not null)
         {
-            start.AddJsonStream(@base);
+            builder.AddJsonStream(@base);
         }
 
         if (environment is not null)
         {
-            start.AddJsonStream(environment);
+            builder.AddJsonStream(environment);
         }
 
-        var configuration = start.Build();
-        parameter.Application().Configuration.AddConfiguration(configuration);
+        var configuration = builder.Build();
+        parameter.Configuration.AddConfiguration(configuration);
     }
 }

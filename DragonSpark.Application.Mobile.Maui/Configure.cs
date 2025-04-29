@@ -1,3 +1,4 @@
+using DragonSpark.Application.Mobile.Maui.Run;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Selection.Alterations;
 
@@ -10,6 +11,6 @@ sealed class Configure<T> : IAlteration<BuildHostContext>
     Configure() {}
 
     public BuildHostContext Get(BuildHostContext parameter)
-        => parameter.Configure(ApplyApplicationConfiguration<T>.Default, Application.DefaultRegistrations.Default,
-                               DefaultRegistrations.Default);
+        => parameter.Configure(ApplyApplicationConfiguration<T>.Default.Adapt(),
+                               Application.DefaultRegistrations.Default, DefaultRegistrations.Default);
 }
