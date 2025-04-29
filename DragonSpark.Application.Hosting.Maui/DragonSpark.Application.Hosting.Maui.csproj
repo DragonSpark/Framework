@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+        <TargetFrameworks>$(DefaultMauiTargetFrameworks)</TargetFrameworks>
+		<!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
+		<!-- <TargetFrameworks>$(TargetFrameworks);net9.0-tizen</TargetFrameworks> -->
+		<UseMaui>true</UseMaui>
+		<SingleProject>true</SingleProject>
+	</PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\DragonSpark.Application.Mobile.Maui\DragonSpark.Application.Mobile.Maui.csproj" />
+    </ItemGroup>
+</Project>

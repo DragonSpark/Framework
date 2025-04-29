@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace DragonSpark.Application.Mobile.Uno.Diagnostics;
+namespace DragonSpark.Application.Mobile.Diagnostics;
 
 sealed class ConfigureOpenTelemetry(Action<ILoggingBuilder> logging, Action<IServiceCollection> services)
 	: ICommand<IHostBuilder>
