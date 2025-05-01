@@ -1,19 +1,12 @@
-using DragonSpark.Composition;
+using DragonSpark.Application.Mobile.Diagnostics;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Application.Mobile;
 
-public sealed class DefaultRegistrations : ICommand<IServiceCollection>
+public sealed class DefaultRegistrations : Command<IServiceCollection>
 {
     public static DefaultRegistrations Default { get; } = new();
 
-    DefaultRegistrations() {}
-
-    public void Execute(IServiceCollection parameter)
-    {
-        parameter.Start<IApplicationErrorHandler>()
-                 .Forward<ApplicationErrorHandler>()
-                 .Singleton();
-    }
+    DefaultRegistrations() : base(Registrations.Default) {}
 }

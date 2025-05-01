@@ -13,9 +13,7 @@
 	<ItemGroup>
 	  <PackageReference Include="CommunityToolkit.Mvvm" />
       <PackageReference Include="CommunityToolkit.Maui" />
-      <PackageReference Include="Metalama.Extensions.DependencyInjection" />
-      <PackageReference Include="Metalama.Framework" />
-	  <PackageReference Include="Microsoft.Maui.Controls" />
+      <PackageReference Include="Microsoft.Maui.Controls" />
 	  <PackageReference Include="Syncfusion.Maui.Toolkit" />
 	</ItemGroup>
 	<ItemGroup>

@@ -1,11 +1,11 @@
 using System;
 using System.Threading.Tasks;
-using DragonSpark.Application.Mobile.Maui.Diagnostics;
+using DragonSpark.Application.Mobile.Diagnostics;
 using DragonSpark.Compose;
 using Metalama.Extensions.DependencyInjection;
 using Metalama.Framework.Aspects;
 
-namespace DragonSpark.Application.Mobile.Maui.Aspects;
+namespace DragonSpark.Application.Mobile.Aspects;
 
 public sealed class ExceptionAwareAttribute : OverrideMethodAspect
 {
@@ -40,3 +40,15 @@ public sealed class ExceptionAwareAttribute : OverrideMethodAspect
         }
     }
 }
+
+/*
+sealed class Fabric : ProjectFabric
+{
+    public override void AmendProject(IProjectAmender amender)
+        => amender.SelectTypes()
+                  .Where(x => x.Accessibility == Accessibility.Public
+                              && x.BaseType!.FullName == "CommunityToolkit.Mvvm.ComponentModel.ObservableObject")
+                  .SelectMany(type => type.Methods)
+                  .Where(x => x.Attributes.Any(x => x.Type.FullName == "CommunityToolkit.Mvvm.Input.RelayCommand"))
+                  .AddAspectIfEligible<ExceptionAwareAttribute>();
+}*/

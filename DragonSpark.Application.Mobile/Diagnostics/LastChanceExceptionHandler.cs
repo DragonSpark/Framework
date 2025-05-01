@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace DragonSpark.Application.Mobile.Maui.Diagnostics;
+namespace DragonSpark.Application.Mobile.Diagnostics;
 
 sealed class LastChanceExceptionHandler : ILastChanceExceptionHandler
 {

@@ -3,7 +3,7 @@ using DragonSpark.Application.Diagnostics;
 using DragonSpark.Compose;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Application.Mobile;
+namespace DragonSpark.Application.Mobile.Diagnostics;
 
 sealed class ApplicationErrorHandler : IApplicationErrorHandler
 {

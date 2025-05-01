@@ -8,5 +8,7 @@
 	<ItemGroup>
         <PackageReference Include="Microsoft.Extensions.Logging.Console" /><!--ISSUE-->
 		<PackageReference Include="Duende.IdentityModel" />
+        <PackageReference Include="Metalama.Extensions.DependencyInjection" />
+        <PackageReference Include="Metalama.Framework" />
 	</ItemGroup>
 </Project>

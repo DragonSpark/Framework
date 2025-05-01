@@ -1,4 +1,5 @@
 using System;
+using DragonSpark.Application.Mobile.Diagnostics;
 using DragonSpark.Application.Mobile.Uno.Presentation;
 using DragonSpark.Application.Mobile.Uno.Run;
 using DragonSpark.Composition;
