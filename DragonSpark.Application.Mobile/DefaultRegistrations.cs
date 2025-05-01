@@ -10,11 +10,10 @@ public sealed class DefaultRegistrations : ICommand<IServiceCollection>
 
     DefaultRegistrations() {}
 
-	public void Execute(IServiceCollection parameter)
-	{
-		parameter.Start<IApplicationErrorHandler>()
-				 .Forward<ApplicationErrorHandler>()
-				 .Singleton();
-		
-	}
+    public void Execute(IServiceCollection parameter)
+    {
+        parameter.Start<IApplicationErrorHandler>()
+                 .Forward<ApplicationErrorHandler>()
+                 .Singleton();
+    }
 }
