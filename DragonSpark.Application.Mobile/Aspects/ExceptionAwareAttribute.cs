@@ -40,15 +40,3 @@ public sealed class ExceptionAwareAttribute : OverrideMethodAspect
         }
     }
 }
-
-/*
-sealed class Fabric : ProjectFabric
-{
-    public override void AmendProject(IProjectAmender amender)
-        => amender.SelectTypes()
-                  .Where(x => x.Accessibility == Accessibility.Public
-                              && x.BaseType!.FullName == "CommunityToolkit.Mvvm.ComponentModel.ObservableObject")
-                  .SelectMany(type => type.Methods)
-                  .Where(x => x.Attributes.Any(x => x.Type.FullName == "CommunityToolkit.Mvvm.Input.RelayCommand"))
-                  .AddAspectIfEligible<ExceptionAwareAttribute>();
-}*/
