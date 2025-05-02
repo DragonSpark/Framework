@@ -17,7 +17,7 @@ sealed class Where<T> : IQuery<T>
 	public ValueTask<Parameter<T>> Get(Parameter<T> parameter)
 	{
 		var (request, query, _) = parameter;
-		var data = request.Where.Count > 0
+		var data = request.Where.Account()?.Count > 0
 			           ? new(request, DataOperations.PerformFiltering(query, request.Where, _condition))
 			           : parameter;
 		var result = data.ToOperation();

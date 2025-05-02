@@ -2,98 +2,55 @@
 using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
 using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Shape;
 using DragonSpark.Compose;
-using DragonSpark.Model.Commands;
-using DragonSpark.Model.Results;
-using DragonSpark.Model.Selection.Conditions;
 using Microsoft.AspNetCore.Components;
+using Radzen;
 using System;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content.Sequences;
 
 partial class QueryContentContainer<T> : IPageContainer<T>
 {
-	readonly Switch _error = false, _any = false, _loading = true;
-	bool?           _results;
-	IPages<T>?      _subject;
+	IPages<T>?        _subject;
+	IPageContainer<T> _relay = null!;
 
 	[Parameter]
-	public IQueries<T>? Content
-	{
-		get => _content;
-		set
-		{
-			if (_content != value)
-			{
-				_content = value;
-				_subject = null;
-				_results = null;
-			}
-		}
-	}	IQueries<T>? _content;
+	public IQueries<T>? Content { get; set; }
 
 	[Parameter]
-	public ICompose<T> Compose
-	{
-		get => _compose;
-		set
-		{
-			if (_compose != value)
-			{
-				_compose = value;
-				_subject = null;
-			}
-		}
-	}	ICompose<T> _compose = DefaultCompose<T>.Default;
-
-	[Parameter]
-	public ICondition<bool?> Results { get; set; } = HasResults.Default;
-
-	[Parameter]
-	public Type? ReportedType { get; set; }
-
-	[Parameter]
-	public RenderFragment<PagingRenderState<T>>? HeaderTemplate { get; set; }
-
-	[Parameter]
-	public RenderFragment<PagingRenderState<T>>? FooterTemplate { get; set; }
+	public ICompose<T> Compose { get; set; } = DefaultCompose<T>.Default;
 
 	[Parameter]
 	public IPagination<T>? Pagination { get; set; }
 
-	protected override void OnParametersSet()
+	public override async Task SetParametersAsync(ParameterView parameters)
 	{
-		base.OnParametersSet();
-		_subject ??= DetermineSubject(Content.Verify());
-		Update();
+		var changed = parameters.DidParameterChange(nameof(Content), Content) ||
+		              parameters.DidParameterChange(nameof(Compose), Compose);
+		await base.SetParametersAsync(parameters).Off();
+		if (changed)
+		{
+			_subject = DetermineSubject();
+		}
 	}
 
-	IPages<T> DetermineSubject(IQueries<T> parameter)
+	IPages<T> DetermineSubject()
 	{
-		var start = Paging.Get(new(this, parameter, Compose));
-		return Pagination?.Get(start) ?? start;
+		var content = Content.Verify();
+		var pages   = Paging.Get(new(this, content, Compose));
+		var result  = Pagination?.Get(pages) ?? pages;
+		return result;
 	}
 
-	public Type Get() => ReportedType ?? GetType();
-
-	void Update()
+	public void Execute(Page<T> parameter)
 	{
-		_any.Execute(Results.Get(_results));
-		_loading.Execute(!_error && _results is null);
+		_relay.Execute(parameter);
 	}
 
-	void ICommand<Page<T>>.Execute(Page<T> parameter)
+	public void Execute(Exception parameter)
 	{
-		_error.Down();
-		_results ??= parameter.Total is > 0;
-		Update();
-		StateHasChanged();
+		_relay.Execute(parameter);
 	}
 
-	void ICommand<Exception>.Execute(Exception parameter)
-	{
-		_error.Up();
-		_results = null;
-		Update();
-		StateHasChanged();
-	}
+	public Type Get() => _relay.Account()?.Get() ?? ReportedType.Verify();
 }

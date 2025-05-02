@@ -1,0 +1,65 @@
+﻿@typeparam T
+@using DragonSpark.Compose
+@using DragonSpark.Presentation.Components
+@using DragonSpark.SyncfusionRendering.Queries
+@using Radzen
+@inherits DataGridTemplateComponentBase<T>
+
+@if (BodyHeaderTemplate is not null)
+{
+    @BodyHeaderTemplate
+}
+@*<DragonSpark.SyncfusionRendering.Components.MemoryAwareRequestContainer Id="@_identity" Input="Input" Context="input">
+
+</DragonSpark.SyncfusionRendering.Components.MemoryAwareRequestContainer>
+
+TODO
+*@
+
+<DataQueryGrid T="T" Content="@Input"
+               Id="@_identity"
+               FilterType="@FilterType"
+               ReportedType="@ReportedType"
+               Columns="@Columns"
+               AllowSelection="@AllowSelection"
+               AllowPaging="@AllowPaging"
+               AllowFiltering="@AllowFiltering"
+               AllowSorting="@AllowSorting"
+               AllowExport="@AllowExport"
+               LoadingTemplate="@LoadingTemplate"
+               DesktopToolbar="@DesktopToolbar"
+               MobileToolbar="@MobileToolbar"
+               CssClass="@CssClass"
+               Breakpoint="@Breakpoint"
+               PageSize="@PageSize"
+               Editing="@Editing"
+               Created="@Created"
+               Updated="@Updated"
+               @attributes="@AdditionalAttributes">
+    @if (BodyContentTemplate is not null)
+    {
+        @BodyContentTemplate
+    }
+</DataQueryGrid>
+
+@if (BodyFooterTemplate is not null)
+{
+    @BodyFooterTemplate
+}
+
+@code {
+    string? _identity;
+
+    [Parameter]
+    public required IDataRequest Input { get; set; }
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        var update = parameters.DidParameterChange(nameof(Id), Id) || parameters.DidParameterChange(nameof(Qualifier), Qualifier);
+        await base.SetParametersAsync(parameters).Off();
+        if (update)
+        {
+            _identity = $"{GenerateElementIdentifier.Default.Get(Id)}{Qualifier}";
+        }
+    }
+}

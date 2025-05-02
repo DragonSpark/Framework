@@ -1,0 +1,48 @@
+﻿@using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination
+@using DragonSpark.Presentation.Components.Content.Templates
+@using DragonSpark.SyncfusionRendering.Queries
+
+@typeparam T
+
+@inherits DataGridTemplateComponentBase<T>
+
+<DragonSpark.Presentation.Components.State.ActivityReceiverContainer Context="_">
+	<SyncfusionPagingContainer T="T" Content="@Content" Reporter="@Reporter"
+							  EmptyElementsTemplate="@EmptyElementsTemplate"
+							  NotFoundTemplate="@NotFoundTemplate"
+							  ExceptionTemplate="@ExceptionTemplate"
+							  LoadingTemplate="@EmptyContentTemplate.Default">
+		<DataQueryGridDisplayComponent T="T"
+									   Id="@Id"
+									   Qualifier="@Qualifier"
+									   Input="@context"
+									   FilterType="@FilterType"
+									   ReportedType="@ReportedType"
+									   Columns="@Columns"
+									   AllowSelection="@AllowSelection"
+									   AllowPaging="@AllowPaging"
+									   AllowFiltering="@AllowFiltering"
+									   AllowSorting="@AllowSorting"
+									   AllowExport="@AllowExport"
+									   LoadingTemplate="@LoadingTemplate"
+									   DesktopToolbar="@DesktopToolbar"
+									   MobileToolbar="@MobileToolbar"
+									   CssClass="@CssClass"
+									   Breakpoint="@Breakpoint"
+									   PageSize="@PageSize"
+									   Editing="@Editing"
+									   Created="@Created"
+									   Updated="@Updated"
+									   BodyHeaderTemplate="@BodyHeaderTemplate"
+									   BodyContentTemplate="@BodyContentTemplate"
+									   BodyFooterTemplate="@BodyFooterTemplate"
+									   @attributes="@AdditionalAttributes"/>
+	</SyncfusionPagingContainer>
+</DragonSpark.Presentation.Components.State.ActivityReceiverContainer>
+
+@code {
+
+	[Parameter]
+	public required IPages<T> Content { get; set; }
+
+}

@@ -1,6 +1,8 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using DragonSpark.SyncfusionRendering.Queries;
 using Microsoft.AspNetCore.Components;
+using Radzen;
 using Syncfusion.Blazor;
 using System.Threading.Tasks;
 
@@ -8,36 +10,26 @@ namespace DragonSpark.SyncfusionRendering.Components;
 
 public abstract class DataQueryComponent : DataComponent
 {
+	Await<DataManagerRequest, object>? _input;
+
 	[Parameter]
-	public IDataRequest Content
+	public required IDataRequest Content { get; set; }
+
+	public override async Task SetParametersAsync(ParameterView parameters)
 	{
-		get => _content;
-		set
+		var changed = parameters.DidParameterChange(nameof(Content), Content);
+		await base.SetParametersAsync(parameters).Off();
+		if (changed)
 		{
-			if (_content != value)
-			{
-				_content = value;
-				OnContentChanged(Input);
-				Input = null;
-			}
+			_input = CreateInput();
 		}
-	}	IDataRequest _content = null!;
-
-	protected virtual void OnContentChanged(Await<DataManagerRequest, object>? parameter){}
-
-	Await<DataManagerRequest, object>? Input { get; set; }
-
-	protected override void OnParametersSet()
-	{
-		Input ??= CreateInput();
-		base.OnParametersSet();
 	}
 
 	protected abstract Await<DataManagerRequest, object> CreateInput();
 
 	protected virtual async Task OnRequest(DataRequestResult parameter)
 	{
-		var data = await Input!(parameter.Request);
+		var data = await _input.Verify()(parameter.Request);
 		parameter.Execute(data);
 	}
 }

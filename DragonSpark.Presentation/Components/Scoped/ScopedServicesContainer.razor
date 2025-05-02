@@ -13,7 +13,7 @@
     [Parameter]
     public IServiceProvider Provider { get; set; } = null!;
 
-    public new void Execute(ComponentBase parameter)
+    public void Execute(ComponentBase parameter)
     {
         ApplyScopedInjections.Default.Execute(new (parameter, Provider));
     }

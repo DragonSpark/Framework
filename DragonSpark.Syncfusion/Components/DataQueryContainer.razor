@@ -1,183 +1,54 @@
-﻿@using BlazorPro.BlazorSize
-@using DragonSpark.Application.AspNet.Entities.Queries.Runtime
-@using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination
+﻿@using DragonSpark.Application.AspNet.Entities.Queries.Runtime
 @using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Shape
-@using DragonSpark.Application.Runtime.Operations
-@using DragonSpark.Compose
-@using DragonSpark.Model.Selection.Conditions
-@using DragonSpark.Presentation.Components
-@using DragonSpark.Presentation.Components.Content.Sequences
-@using DragonSpark.SyncfusionRendering.Entities
 @using DragonSpark.SyncfusionRendering.Queries
-@using Syncfusion.Blazor.Grids
 
 @typeparam T
 
-@inherits DragonSpark.Presentation.Components.Content.Templates.ManyActiveContentTemplateComponentBase<IDataRequest>
+@inherits DataGridTemplateComponentBase<T>
 
 <DragonSpark.Presentation.Components.State.ActivityReceiverContainer Context="_">
-	<SyncfusionQueryContainer T="T" Content="@Content" Compose="@Compose" Results="@Results" Reporter="@Reporter"
-							  LoadingTemplate="@LoadingTemplate"
-							  EmptyElementsTemplate="@EmptyElementsTemplate"
-							  NotFoundTemplate="@NotFoundTemplate"
-							  ExceptionTemplate="@ExceptionTemplate"
-							  HeaderTemplate="@HeaderTemplate"
-							  FooterTemplate="@FooterTemplate"
-							  ReportedType="@ReportedType"
-							  >
-		@if (BodyHeaderTemplate is not null)
-		{
-			@BodyHeaderTemplate
-		}
-        <DragonSpark.SyncfusionRendering.Components.MemoryAwareRequestContainer Id="@_identity" Input="context" Context="input">
-            <DataQueryGrid T="T" @ref="_subject" Content="input"
-                           Id="@_identity"
-                           FilterType="@FilterType"
-                           ReportedType="@ReportedType"
-                           Columns="@Columns"
-                           AllowSelection="@AllowSelection"
-                           AllowPaging="@AllowPaging"
-                           AllowFiltering="@AllowFiltering"
-                           AllowSorting="@AllowSorting"
-                           AllowExport="@AllowExport"
-                           LoadingTemplate="@LoadingTemplate"
-                           DesktopToolbar="@DesktopToolbar"
-                           MobileToolbar="@MobileToolbar"
-                           CssClass="@CssClass"
-                           Breakpoint="@Breakpoint"
-                           PageSize="@PageSize"
-                           Editing="@Editing"
-                           Created="@Created"
-                           Updated="@Updated"
-                           @attributes="@AdditionalAttributes">
-                @if (BodyContentTemplate is not null)
-                {
-                    @BodyContentTemplate
-                }
-            </DataQueryGrid>
-        </DragonSpark.SyncfusionRendering.Components.MemoryAwareRequestContainer>
-
-		@if (BodyFooterTemplate is not null)
-		{
-			@BodyFooterTemplate
-		}
-	</SyncfusionQueryContainer>
+    <SyncfusionQueryContainer T="T" Content="@Content" Compose="@Compose" Results="@Results" Reporter="@Reporter"
+                              LoadingTemplate="@LoadingTemplate"
+                              EmptyElementsTemplate="@EmptyElementsTemplate"
+                              NotFoundTemplate="@NotFoundTemplate"
+                              ExceptionTemplate="@ExceptionTemplate"
+                              HeaderTemplate="@HeaderTemplate"
+                              FooterTemplate="@FooterTemplate"
+                              ReportedType="@ReportedType">
+        <DataQueryGridDisplayComponent T="T"
+                                       Id="@Id"
+                                       Qualifier="@Qualifier"
+                                       Input="@context"
+                                       FilterType="@FilterType"
+                                       ReportedType="@ReportedType"
+                                       Columns="@Columns"
+                                       AllowSelection="@AllowSelection"
+                                       AllowPaging="@AllowPaging"
+                                       AllowFiltering="@AllowFiltering"
+                                       AllowSorting="@AllowSorting"
+                                       AllowExport="@AllowExport"
+                                       LoadingTemplate="@LoadingTemplate"
+                                       DesktopToolbar="@DesktopToolbar"
+                                       MobileToolbar="@MobileToolbar"
+                                       CssClass="@CssClass"
+                                       Breakpoint="@Breakpoint"
+                                       PageSize="@PageSize"
+                                       Editing="@Editing"
+                                       Created="@Created"
+                                       Updated="@Updated"
+                                       BodyHeaderTemplate="@BodyHeaderTemplate"
+                                       BodyContentTemplate="@BodyContentTemplate"
+                                       BodyFooterTemplate="@BodyFooterTemplate"
+                                       @attributes="@AdditionalAttributes"/>
+    </SyncfusionQueryContainer>
 </DragonSpark.Presentation.Components.State.ActivityReceiverContainer>
 
 @code {
-    readonly Model.Results.Switch _update   = new(true);
-    string                        _identity = string.Empty, _identifier = string.Empty;
-    DataQueryGrid<T>?             _subject;
-
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-        _identifier = GenerateElementIdentifier.Default.Get(Id);
-    }
 
     [Parameter]
-    public Guid Id { get; set; }
+    public IQueries<T> Content { get; set; } = null!;
 
     [Parameter]
-    public string Qualifier
-    {
-        get => _qualifier;
-        set
-        {
-            if (_qualifier != value)
-            {
-                _qualifier = value;
-                _update.Up();
-            }
-        }
-    }	string _qualifier = null!;
+    public ICompose<T> Compose { get; set; } = SyncfusionCompose<T>.Default;
 
-    protected override void OnParametersSet()
-    {
-        if (_update.Down())
-        {
-            _identity = $"{_identifier}{Qualifier}";
-        }
-        base.OnParametersSet();
-    }
-
-    [Parameter]
-	public IQueries<T> Content {get; set; } = null!;
-
-	[Parameter]
-	public ICompose<T> Compose { get; set; } = SyncfusionCompose<T>.Default;
-
-    [Parameter]
-    public ICondition<bool?> Results { get; set; } = HasResults.Default;
-
-	[Parameter]
-	public IReporter<IDataRequest>? Reporter { get; set; } = Queries.Reporter.Default;
-
-	[Parameter]
-	public Type? ReportedType { get; set; }
-
-	[Parameter]
-	public FilterType FilterType { get; set; } = FilterType.Excel;
-
-	[Parameter]
-	public RenderFragment Columns { get; set; } = null!;
-
-	[Parameter]
-	public RenderFragment? BodyHeaderTemplate { get; set; }
-
-	[Parameter]
-	public RenderFragment? BodyContentTemplate { get; set; }
-
-	[Parameter]
-	public RenderFragment? BodyFooterTemplate { get; set; }
-
-	[Parameter]
-	public RenderFragment<PagingRenderState<T>>? HeaderTemplate { get; set; }
-
-	[Parameter]
-    public RenderFragment<PagingRenderState<T>>? FooterTemplate { get; set; }
-
-    [Parameter]
-    public bool AllowSelection { get; set; }
-
-    [Parameter]
-    public bool AllowExport { get; set; }
-
-	[Parameter]
-	public bool AllowPaging { get; set; } = true;
-
-	[Parameter]
-	public bool AllowFiltering { get; set; } = true;
-
-	[Parameter]
-	public bool AllowSorting { get; set; } = true;
-
-	[Parameter]
-	public string Breakpoint { get; set; } = Breakpoints.SmallUp;
-
-	[Parameter]
-	public string CssClass { get; set; } = string.Empty;
-
-    [Parameter]
-    public ICollection<string>? DesktopToolbar { get; set; }
-
-    [Parameter]
-    public ICollection<string>? MobileToolbar { get; set; } = DefaultToolbar.Default;
-
-	[Parameter]
-	public ushort PageSize { get; set; } = 10;
-
-    [Parameter]
-    public EventCallback<Allow<T>> Editing { get; set; }
-
-    [Parameter]
-    public EventCallback<T> Created { get; set; }
-
-    [Parameter]
-    public EventCallback<Updated<T>> Updated { get; set; }
-
-	[Parameter(CaptureUnmatchedValues = true)]
-	public Dictionary<string, object> AdditionalAttributes { get; set; } = null!;
-
-    public Task Export() => _subject?.Export() ?? Task.CompletedTask;
 }

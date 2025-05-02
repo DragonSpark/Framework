@@ -1,10 +1,12 @@
 ﻿@using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination
-@using DragonSpark.Application.Runtime.Operations
+@using DragonSpark.Compose
 @using DragonSpark.Presentation.Components.Content
+@using DragonSpark.SyncfusionRendering.Components
+@using Radzen
 
 @typeparam T
 
-@inherits DragonSpark.Presentation.Components.Content.Templates.ManyActiveContentTemplateComponentBase<IDataRequest>
+@inherits DataRequestTemplateComponentBase
 
 <ReportingContentView TIn="IDataRequest" TOut="IDataRequest"
 	Content="@_subject"
@@ -12,36 +14,22 @@
 	LoadingTemplate="@LoadingTemplate"
 	ExceptionTemplate="@ExceptionTemplate"
 	NotFoundTemplate="@NotFoundTemplate"
->
-	@ChildContent(context)
-</ReportingContentView>
+    ChildContent="@ChildContent"
+    />
 
 @code {
     IDataRequest? _subject;
 
-	[Parameter]
-	public IPages<T> Content
-	{
-		get => _content;
-		set
-		{
-			if (_content != value)
-			{
-				_content = value;
-                _subject = null;
-			}
-		}
-	}	IPages<T> _content = null!;
+    [Parameter]
+    public required IPages<T> Content { get; set; }
 
-	[Parameter]
-	public IDataRequests<T> Requests { get; set; } = DataRequests<T>.Default;
-
-	[Parameter]
-	public IReporter<IDataRequest> Reporter { get; set; } = Queries.Reporter.Default;
-
-	protected override void OnParametersSet()
-	{
-        _subject ??= Requests.Get(Content);
-		base.OnParametersSet();
-	}
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        var changed = parameters.DidParameterChange(nameof(Content), Content);
+        await base.SetParametersAsync(parameters).Off();
+        if (changed)
+        {
+            _subject = new ProcessRequest<T>(Content);
+        }
+    }
 }

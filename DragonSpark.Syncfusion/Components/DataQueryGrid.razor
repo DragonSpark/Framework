@@ -49,7 +49,7 @@
 </DataGrid>
 
 @code {
-    readonly Model.Results.Switch _active = new(true), _update = new(true);
+    readonly Model.Results.Switch _active = true, _update = true;
 
     GridStateVariable _store = null!;
     DataGrid<T>? _subject;
@@ -99,8 +99,6 @@
     public EventCallback Empty { get; set; }
 
     public Task Refresh() => _subject?.Refresh() ?? Task.CompletedTask;
-
-    protected override void OnContentChanged(Await<DataManagerRequest, object>? parameter) {}
 
     protected override Await<DataManagerRequest, object> CreateInput()
         => new StateAwareDataRequest(Content, _store, _active).Then().Then().Handle(EmptyDataResult.Default.Get());

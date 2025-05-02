@@ -75,7 +75,7 @@ public class OwningComponentBase<T> : OwningComponentBase where T : class
 		}
 	}
 
-	protected override Task OnInitializedAsync() => Execute.Get(GetType(), Initialize()).AsTask();
+	protected override Task OnInitializedAsync() => ExecuteOperation.Get(GetType(), Initialize()).AsTask();
 
 	public override async ValueTask DisposeAsync()
 	{

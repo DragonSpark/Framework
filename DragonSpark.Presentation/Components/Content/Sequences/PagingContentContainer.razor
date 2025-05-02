@@ -1,0 +1,27 @@
+﻿@using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination
+@typeparam T
+@inherits PagingContainer<T>
+
+<ContentView TValue="IPages<T>" Content="@Content" NotFoundTemplate="@NotFoundTemplate">
+    @HeaderTemplate?.Invoke(new(context, _any, _loading))
+
+    @if (_any)
+    {
+        if (_loading)
+        {
+            @LoadingTemplate
+        }
+
+        <CascadingValue TValue="IPageContainer<T>" Value="@(this)" IsFixed="true" ChildContent="@ChildContent(context)" />
+    }
+    else
+    {
+        @EmptyElementsTemplate
+    }
+
+    @FooterTemplate?.Invoke(new(context, _any, _loading))
+</ContentView>
+
+@code {
+
+}

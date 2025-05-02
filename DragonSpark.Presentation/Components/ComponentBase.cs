@@ -12,7 +12,7 @@ public class ComponentBase : Microsoft.AspNetCore.Components.ComponentBase
 
 	public ComponentBase() => _changed = StateHasChanged;
 
-	protected override Task OnInitializedAsync() => Execute.Get(GetType(), Initialize()).AsTask();
+	protected override Task OnInitializedAsync() => ExecuteOperation.Get(GetType(), Initialize()).AsTask();
 
 	protected virtual ValueTask Initialize() => ValueTask.CompletedTask;
 
@@ -24,5 +24,5 @@ public class ComponentBase : Microsoft.AspNetCore.Components.ComponentBase
 	protected IExceptions Exceptions { get; set; } = null!;
 
 	[Inject]
-	protected IExecuteOperation Execute { get; set; } = null!;
+	protected IExecuteOperation ExecuteOperation { get; set; } = null!;
 }
