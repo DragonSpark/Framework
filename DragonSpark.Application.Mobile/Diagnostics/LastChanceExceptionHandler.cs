@@ -1,17 +1,24 @@
 using System;
+using System.Threading.Tasks;
+using DragonSpark.Compose;
+using DragonSpark.Model.Operations.Allocated;
+using DragonSpark.Model.Selection.Conditions;
 
 namespace DragonSpark.Application.Mobile.Diagnostics;
 
-sealed class LastChanceExceptionHandler : ILastChanceExceptionHandler
+sealed class LastChanceExceptionHandler : ConditionAware<Exception>, ILastChanceExceptionHandler
 {
     readonly IApplicationErrorHandler _handler;
 
-    public LastChanceExceptionHandler(IApplicationErrorHandler handler) => _handler = handler;
+    public LastChanceExceptionHandler(IApplicationErrorHandler handler) : this(handler, Is.Always<Exception>().Out()) {}
 
-    public bool Get(Exception parameter) => true;
+    public LastChanceExceptionHandler(IApplicationErrorHandler handler, ICondition<Exception> condition)
+        : base(condition)
+        => _handler = handler;
 
-    public void Execute(Exception parameter)
+    public ValueTask Get(Token<Exception> parameter)
     {
         _handler.Execute(parameter);
+        return ValueTask.CompletedTask;
     }
 }

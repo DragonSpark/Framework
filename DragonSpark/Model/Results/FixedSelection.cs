@@ -1,5 +1,5 @@
-﻿using DragonSpark.Model.Selection;
 using System;
+using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Model.Results;
 

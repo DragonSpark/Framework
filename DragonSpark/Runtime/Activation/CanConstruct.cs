@@ -1,5 +1,5 @@
-﻿using DragonSpark.Model.Selection.Conditions;
 using System;
+using DragonSpark.Model.Selection.Conditions;
 
 namespace DragonSpark.Runtime.Activation;
 
@@ -9,5 +9,5 @@ sealed class CanConstruct : ICondition<Type>
 
 	CanConstruct() {}
 
-	public bool Get(Type parameter) => !parameter.IsAbstract && parameter.IsClass;
+	public bool Get(Type parameter) => parameter is { IsAbstract: false, IsClass: true };
 }

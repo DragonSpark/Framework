@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using DragonSpark.Application.Mobile.Diagnostics;
 using DragonSpark.Compose;
@@ -12,17 +14,21 @@ public sealed class ExceptionAwareAttribute : OverrideMethodAspect
     [IntroduceDependency(IsRequired = true)]
     readonly ILastChanceExceptionHandler? _exceptionHandler = null;
 
+    public ExceptionAwareAttribute() => UseAsyncTemplateForAnyAwaitable = true;
+
     public override async Task<dynamic?> OverrideAsyncMethod()
     {
         try
         {
             return await meta.ProceedAsync().Off();
         }
-        catch (Exception e) when (_exceptionHandler?.Get(e) ?? false)
+        catch (Exception e) when (_exceptionHandler?.Condition.Get(e) ?? false)
         {
-            _exceptionHandler.Execute(e);
+            var parameter = meta.Target.Parameters.LastOrDefault(p => p.Type.Equals(typeof(CancellationToken)));
+            var token     = parameter is not null ? parameter.Value : CancellationToken.None;
+            await _exceptionHandler.Off(new(e, token));
 
-            return default;
+            return null;
         }
     }
 
@@ -32,11 +38,10 @@ public sealed class ExceptionAwareAttribute : OverrideMethodAspect
         {
             return meta.Proceed();
         }
-        catch (Exception e) when (_exceptionHandler?.Get(e) ?? false)
+        catch (Exception e) when (_exceptionHandler?.Condition.Get(e) ?? false)
         {
-            _exceptionHandler.Execute(e);
-
-            return default;
+            _exceptionHandler.Get(new(e)).AsTask().GetAwaiter().GetResult();
+            return null;
         }
     }
 }
