@@ -13,6 +13,9 @@ public class NavigateTo : ComponentBase
 
 	[Parameter]
 	public bool Forced { get; set; }
+	
+	[Parameter]
+	public bool Replace { get; set; }
 
 	protected override void OnInitialized()
 	{
@@ -24,7 +27,7 @@ public class NavigateTo : ComponentBase
 		var path = Path.Verify("Path not provided for navigation.");
 		if (path.TrimStart('/') != Navigation.ToBaseRelativePath(Navigation.Uri))
 		{
-			Navigation.NavigateTo(path, Forced);
+			Navigation.NavigateTo(path, Forced, Replace);
 		}
 	}
 }
