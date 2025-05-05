@@ -65,6 +65,7 @@ public static class Extensions
 	public static CallbackComposer Callback(this ModelContext _, Func<Task> method) => new(method);
 
 	public static SubmitCallbackComposer Callback(this ModelContext _, Func<EditContext, Task> submit) => new(submit);
+	public static SubmitCallbackComposer<T> Submit<T>(this ModelContext _, Func<SubmitInput<T>, Task> submit) => new(submit);
 
 	public static CallbackComposer<object> Callback(this ModelContext _, Func<object, Task> method) => new(method);
 
