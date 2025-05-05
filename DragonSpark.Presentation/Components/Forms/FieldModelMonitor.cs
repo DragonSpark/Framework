@@ -15,9 +15,6 @@ public sealed class FieldModelMonitor : ComponentBase, IDisposable
 	public object? Model { get; set; }
 
 	[Parameter]
-	public bool AssumeEditContextModel { get; set; } = true;
-
-	[Parameter]
 	public EventCallback Changed { get; set; }
 
 	[CascadingParameter]
@@ -43,7 +40,7 @@ public sealed class FieldModelMonitor : ComponentBase, IDisposable
 
 	void FieldChanged(object? sender, FieldChangedEventArgs args)
 	{
-		var model = Model ?? (AssumeEditContextModel ? EditContext?.Model : args.FieldIdentifier.Model);
+		var model = Model ?? args.FieldIdentifier.Model;
 		if (args.FieldIdentifier.Model == model && _update.Up())
 		{
 			StateHasChanged();
