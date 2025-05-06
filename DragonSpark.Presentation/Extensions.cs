@@ -117,10 +117,13 @@ public static class Extensions
 		=> @this.NotifyFieldChanged(@this.Field(field));
 
 	public static T GetValue<T>(this FieldIdentifier @this)
-		=> @this.FieldName.Contains(".")
+		=> @this.FieldName.Contains('.')
 			   ? (T)PropertyAccess.GetValue(@this.Model, @this.FieldName)
 			   : SelectValue<T>.Default.Get(@this);
-
+	/**/
+	public static RenderFragment Fragment(this string? @this) => x => x.AddContent(0, @this);
+	public static RenderFragment Text<T>(this T @this) where T : notnull => @this.ToString().Fragment();
+	public static RenderFragment Fragment<T>(this T @this) => x => x.AddContent(0, @this);
 	public static string Text(this RenderFragment @this) => FragmentText.Default.Get(@this);
 
 	public static MarkupString AsMarkdown(this string @this) => MarkdownString.Default.Get(@this);
