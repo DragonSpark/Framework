@@ -1,0 +1,56 @@
+﻿@using DragonSpark.Compose
+
+@inherits FormsComponentBase
+
+<RenderCompensationComponent>
+    <DragonSpark.Presentation.Components.Forms.FluentTextArea Name="@Name" Rows="@Rows" Cols="@Cols" Value="@Value" ValueChanged="@_update" Immediate="true" ImmediateDelay="750"
+                                                              Label="@Label" Maxlength="@Maximum" Disabled="@Receiver.Active"/>
+    @if (ChildContent is not null)
+    {
+        @ChildContent
+    }
+    <DragonSpark.Presentation.Components.Forms.Counter Count="@Value.Length.Grade().Contract()" Maximum="@Maximum" CssClass="@CounterCssClass" />
+</RenderCompensationComponent>
+
+@code {
+    EventCallback<string?> _update;
+
+    protected override void OnInitialized()
+    {
+        _update = Start.A.Callback<string?>(OnUpdate);
+        base.OnInitialized();
+    }
+
+    [Parameter]
+    public string? Name { get; set; }
+
+    [Parameter]
+    public string? Label { get; set; }
+
+    [Parameter]
+    public required string Value { get; set; }
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public EventCallback<string> ValueChanged { get; set; }
+
+    [Parameter]
+    public ushort Maximum { get; set; }
+
+    [Parameter]
+    public string? CounterCssClass { get; set; }
+
+    [Parameter]
+    public int? Cols { get; set; }
+
+    /// <summary>
+    /// Gets or sets the size the element vertically by a number of character rows.
+    /// </summary>
+    [Parameter]
+    public int? Rows { get; set; }
+
+    Task OnUpdate(string? parameter) => ValueChanged.Invoke(Value = parameter ?? string.Empty);
+
+}
