@@ -1,3 +1,4 @@
+using DragonSpark.Application.Mobile.Maui.Diagnostics;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,6 +12,7 @@ sealed class Registrations : ICommand<IServiceCollection>
 
     public void Execute(IServiceCollection parameter)
     {
+        parameter.TryDecorate<IConfigureExceptions, ConfigureExceptions>();
         /*parameter.Start<INotifications>()
                  .Forward<Notifications.Notifications>()
                  .Decorate<PermissionAwareNotifications>()

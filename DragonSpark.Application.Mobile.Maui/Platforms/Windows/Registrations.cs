@@ -2,7 +2,7 @@ using DragonSpark.Application.Mobile.Maui.Diagnostics;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Application.Mobile.Maui.Platforms.iOS;
+namespace DragonSpark.Application.Mobile.Maui.Platforms.Windows;
 
 sealed class Registrations : ICommand<IServiceCollection>
 {
