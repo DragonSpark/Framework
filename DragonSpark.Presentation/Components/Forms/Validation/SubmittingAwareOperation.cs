@@ -29,8 +29,6 @@ sealed class SubmittingAwareOperation : IOperation<EditContext>
 		await _previous.Off(parameter);
 	}
 }
-// TODO
-public readonly record struct SubmitInput<T>(EditContext Context, T Subject);
 
 sealed class SubmittingAwareOperation<T> : IOperation<SubmitInput<T>>
 {

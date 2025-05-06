@@ -21,7 +21,10 @@ public static partial class ExtensionMethods
 	public static Composer<T, string> Intern<T>(this Composer<T, string> @this)
 		=> @this.Select(Text.Intern.Default);
 
-	public static string OrNone<T>(this T @this) => @this?.ToString() ?? None.Default;
+	public static string OrNone(this string? @this) => OrNone(@this, None.Default);
+
+	public static string OrNone(this string? @this, string none) => @this?.IsNullOrEmpty() ?? true ? none : @this;
+	public static string OrNone<T>(this T? @this) => @this?.ToString() ?? None.Default;
 
 	public static string OrNone<T>(this T? @this) where T : struct => @this.OrNone(None.Default);
 
