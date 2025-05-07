@@ -8,5 +8,6 @@ sealed class DefaultRegistrations : Commands<IServiceCollection>
     public static DefaultRegistrations Default { get; } = new();
 
     DefaultRegistrations()
-        : base(Mobile.DefaultRegistrations.Default, LocalRegistrations.Default, Diagnostics.Registrations.Default) {}
+        : base(Mobile.DefaultRegistrations.Default, LocalRegistrations.Default, Diagnostics.Registrations.Default,
+               Device.Camera.Registrations.Default) {}
 }
