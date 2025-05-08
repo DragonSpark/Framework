@@ -29,5 +29,5 @@ public abstract class Program(
 		return _run.Get(application);
 	}
 
-	protected IHostBuilder Create(string[] parameter) => _builder(parameter);
+	/*protected IHostBuilder Create(string[] parameter) => Host. _builder(parameter);*/
 }
