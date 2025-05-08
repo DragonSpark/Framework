@@ -97,7 +97,7 @@
     <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.12.0" />
     <PackageVersion Include="Polly" Version="8.5.2" />
     <PackageVersion Include="Radzen.Blazor" Version="6.6.4" />
-    <PackageVersion Include="Refit" Version="7.0.0" />
+    <PackageVersion Include="Refit" Version="8.0.0" />
     <PackageVersion Include="Scrutor" Version="6.0.1" />
     <PackageVersion Include="SendGrid.Extensions.DependencyInjection" Version="1.0.1" />
     <PackageVersion Include="Seq.Extensions.Logging" Version="8.0.0" />

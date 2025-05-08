@@ -1,65 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-	<TargetFramework>$(DefaultTargetFramework)</TargetFramework>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>$(DefaultTargetFramework)</TargetFramework>
+	</PropertyGroup>
 
-	<ItemGroup>
-	  <Compile Remove="Components\Validation\Expressions\**" />
-	  <Compile Remove="Compose\Store\**" />
-	  <Compile Remove="Configuration\**" />
-	  <Compile Remove="Connections\**" />
-	  <Compile Remove="Model\Sequences\**" />
-	  <EmbeddedResource Remove="Components\Validation\Expressions\**" />
-	  <EmbeddedResource Remove="Compose\Store\**" />
-	  <EmbeddedResource Remove="Configuration\**" />
-	  <EmbeddedResource Remove="Connections\**" />
-	  <EmbeddedResource Remove="Model\Sequences\**" />
-	  <None Remove="Components\Validation\Expressions\**" />
-	  <None Remove="Compose\Store\**" />
-	  <None Remove="Configuration\**" />
-	  <None Remove="Connections\**" />
-	  <None Remove="Model\Sequences\**" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Compile Remove="Communication\ConnectionPath.cs" />
-	  <Compile Remove="Compose\OperationComposer.cs" />
-	  <Compile Remove="Compose\OperationResultComposer.cs" />
-	  <Compile Remove="Model\Interaction\Adapter.cs" />
-	  <Compile Remove="Model\Interaction\GeneralProblemEncounteredResult.cs" />
-	  <Compile Remove="Model\Interaction\IInteractionResult.cs" />
-	  <Compile Remove="Model\Interaction\IInteractionResultHandler.cs" />
-	  <Compile Remove="Model\Interaction\InteractionResult.cs" />
-	  <Compile Remove="Model\Interaction\InvalidResult.cs" />
-	  <Compile Remove="Model\Interaction\ISuccessResult.cs" />
-	  <Compile Remove="Model\Interaction\IUnsuccessfulResult.cs" />
-	  <Compile Remove="Model\Interaction\NoActionResult.cs" />
-	  <Compile Remove="Model\Interaction\Registrations.cs" />
-	  <Compile Remove="Model\Interaction\SuccessResult.cs" />
-	  <Compile Remove="Model\Interaction\SuccessResultBase.cs" />
-	  <Compile Remove="Model\Interaction\UniqueIdentityResult.cs" />
-	  <Compile Remove="Model\Interaction\UnsuccessfulResultBase.cs" />
-	  <Compile Remove="Model\Interaction\ValidatingAwareResultHandler.cs" />
-	  <Compile Remove="Model\Interaction\ValidationResult.cs" />
-	  <Compile Remove="Model\MemoryAssignment.cs" />
-	  <Compile Remove="Model\Reference.cs" />
-	  <Compile Remove="Model\RemoveFromMemory.cs" />
-	  <Compile Remove="Model\RemoveKeys.cs" />
-	  <Compile Remove="Model\Removing.cs" />
-	  <Compile Remove="Navigation\UrlDecode.cs" />
-	  <Compile Remove="Navigation\UrlDecrypt.cs" />
-	  <Compile Remove="Navigation\UrlEncode.cs" />
-	  <Compile Remove="Navigation\UrlEncrypt.cs" />
-	  <Compile Remove="Security\Data\EncryptionCertificate.cs" />
-	  <Compile Remove="Security\Data\EncryptionSettings.cs" />
-	  <Compile Remove="Security\Hash.cs" />
-	  <Compile Remove="Security\HashInput.cs" />
-	  <Compile Remove="Security\Salt.cs" />
-	</ItemGroup>
-
-	<!--<ItemGroup>
-	  <EditorConfigFiles Include=".editorconfig" />
-	</ItemGroup>-->
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Http.Polly" />
@@ -72,6 +15,7 @@
 		<PackageReference Include="OpenTelemetry.Instrumentation.AspNetCore" />
 		<PackageReference Include="LinqKit.Microsoft.EntityFrameworkCore" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
+		<PackageReference Include="Refit" />
 		<PackageReference Include="Serilog.Sinks.Console" />
 		<PackageReference Include="System.Linq.Async" />
 		<PackageReference Include="System.Linq.Dynamic.Core" />
@@ -82,19 +26,19 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Properties\Resources.Designer.cs">
-	    <DependentUpon>Resources.resx</DependentUpon>
-	    <DesignTime>True</DesignTime>
-	    <AutoGen>True</AutoGen>
-	  </Compile>
+		<Compile Update="Properties\Resources.Designer.cs">
+			<DependentUpon>Resources.resx</DependentUpon>
+			<DesignTime>True</DesignTime>
+			<AutoGen>True</AutoGen>
+		</Compile>
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Update="Properties\Resources.resx">
-	    <SubType>Designer</SubType>
-	    <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-	    <Generator>ResXFileCodeGenerator</Generator>
-	  </EmbeddedResource>
+		<EmbeddedResource Update="Properties\Resources.resx">
+			<SubType>Designer</SubType>
+			<LastGenOutput>Resources.Designer.cs</LastGenOutput>
+			<Generator>ResXFileCodeGenerator</Generator>
+		</EmbeddedResource>
 	</ItemGroup>
 
 </Project>
