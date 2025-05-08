@@ -8,7 +8,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.AspNet.Communication.Http;
+namespace DragonSpark.Application.Communication.Http;
 
 /// <summary>
 ///  ATTRIBUTION: https://github.com/reactiveui/refit/issues/1128#issuecomment-2256753536

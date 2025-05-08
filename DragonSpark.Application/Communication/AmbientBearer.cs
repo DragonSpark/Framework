@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Runtime.Execution;
 
-namespace DragonSpark.Application.AspNet.Security.Identity.Bearer;
+namespace DragonSpark.Application.Communication;
 
 public sealed class AmbientBearer : Logical<string>
 {

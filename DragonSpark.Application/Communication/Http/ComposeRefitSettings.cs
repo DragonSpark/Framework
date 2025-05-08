@@ -2,7 +2,7 @@
 using Refit;
 using System.Linq;
 
-namespace DragonSpark.Application.AspNet.Communication.Http;
+namespace DragonSpark.Application.Communication.Http;
 
 public sealed class ComposeRefitSettings : IResult<RefitSettings>
 {

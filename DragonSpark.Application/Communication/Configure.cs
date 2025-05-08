@@ -1,10 +1,9 @@
-﻿using DragonSpark.Application.AspNet.Security.Identity.Bearer;
-using DragonSpark.Model.Commands;
+﻿using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using System;
 using System.Net.Http;
 
-namespace DragonSpark.Application.AspNet.Communication;
+namespace DragonSpark.Application.Communication;
 
 public abstract class Configure : ICommand<HttpClient>
 {
