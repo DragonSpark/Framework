@@ -3,7 +3,7 @@
 @inherits FormsComponentBase
 
 <RenderCompensationComponent>
-    <DragonSpark.Presentation.Components.Forms.FluentTextArea Name="@Name" Rows="@Rows" Cols="@Cols" Value="@Value" ValueChanged="@_update" Immediate="true" ImmediateDelay="750"
+    <DragonSpark.Presentation.Components.Forms.FluentTextArea Name="@Name" Rows="@(Rows ?? 5)" Cols="@(Cols ?? 60)" Value="@Value" ValueChanged="@_update" Immediate="true" ImmediateDelay="750"
                                                               Label="@Label" Maxlength="@Maximum" Disabled="@Receiver.Active"/>
     @if (ChildContent is not null)
     {

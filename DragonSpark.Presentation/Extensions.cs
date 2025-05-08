@@ -65,7 +65,9 @@ public static class Extensions
 	public static CallbackComposer Callback(this ModelContext _, Func<Task> method) => new(method);
 
 	public static SubmitCallbackComposer Callback(this ModelContext _, Func<EditContext, Task> submit) => new(submit);
-	public static SubmitCallbackComposer<T> Submit<T>(this ModelContext _, Func<SubmitInput<T>, Task> submit) => new(submit);
+
+	public static SubmitCallbackComposer<T> Submit<T>(this ModelContext _, Func<SubmitInput<T>, Task> submit)
+		=> new(submit);
 
 	public static CallbackComposer<object> Callback(this ModelContext _, Func<object, Task> method) => new(method);
 
@@ -86,6 +88,7 @@ public static class Extensions
 	public static EditContextCallbackComposer Callback(this ModelContext _, EditContext context) => new(context);
 
 	public static CallbackComposer Callback(this ResultComposer<ValueTask> @this) => new(@this.Then().Allocate());
+
 	public static CallbackComposer Callback(this ResultComposer<Task> @this) => new(@this);
 
 	public static CallbackComposer<T> Callback<T>(this TaskComposer<T> @this) => new(@this);
@@ -112,7 +115,6 @@ public static class Extensions
 	public static bool IsValid(this EditContext @this, object receiver)
 		=> @this.IsValid() && !IsActive.Default.Get(receiver);
 
-
 	public static void NotifyModelField(this EditContext @this, string field)
 		=> @this.NotifyFieldChanged(@this.Field(field));
 
@@ -120,13 +122,15 @@ public static class Extensions
 		=> @this.FieldName.Contains('.')
 			   ? (T)PropertyAccess.GetValue(@this.Model, @this.FieldName)
 			   : SelectValue<T>.Default.Get(@this);
+
 	/**/
-	public static RenderFragment Fragment(this string? @this) => x => x.AddContent(0, @this);
+	/*public static RenderFragment Fragment(this string? @this) => x => x.AddContent(0, @this);
 	public static RenderFragment Text<T>(this T @this) where T : notnull => @this.ToString().Fragment();
-	public static RenderFragment Fragment<T>(this T @this) => x => x.AddContent(0, @this);
+	public static RenderFragment Fragment<T>(this T @this) => x => x.AddContent(0, @this);*/
 	public static string Text(this RenderFragment @this) => FragmentText.Default.Get(@this);
 
-	public static MarkupString AsMarkdown(this string @this) => MarkdownString.Default.Get(@this);
+	public static MarkupString AsMarkdown(this string? @this)
+		=> !@this.IsNullOrEmpty() ? MarkdownString.Default.Get(@this.Verify()) : new(@this.OrNone());
 
 	/**/
 

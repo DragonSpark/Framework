@@ -26,8 +26,7 @@ public sealed class FragmentText : ISelect<RenderFragment, string>
 
 		foreach (var frame in builder.GetFrames()
 		                             .Array.AsValueEnumerable()
-		                             .Where(x => x.FrameType == RenderTreeFrameType.Markup
-		                                         || x.FrameType == RenderTreeFrameType.Text)
+		                             .Where(x => x.FrameType is RenderTreeFrameType.Markup or RenderTreeFrameType.Text)
 		                             .Select(x => x.MarkupContent.Trim())
 		                             .Where(x => !string.IsNullOrEmpty(x)))
 		{
