@@ -6,8 +6,6 @@ using Microsoft.Maui.Dispatching;
 
 namespace DragonSpark.Application.Mobile.Maui.Presentation.Models;
 
-class Class1;
-
 public class DispatchAwareResulting<T> : IResulting<T>
 {
     readonly Func<Task<T>> _previous;
