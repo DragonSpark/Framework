@@ -20,12 +20,6 @@ sealed class Registrations : ICommand<IServiceCollection>
                  .Forward<Notifications.Notifications>()
                  .Decorate<PermissionAwareNotifications>()
                  .Singleton()
-        /*
-                 //
-                 .Then.Start<IMessenger>()
-                 .Forward<ActivityMessenger>()
-                 .Decorate<PermissionAwareMessenger>()
-                 .Include(x => x.Dependencies)
-                 .Singleton()*/;
+                 ;
     }
 }

@@ -1,3 +1,4 @@
+using DragonSpark.Application.Mobile.Maui.Device.Messaging;
 using DragonSpark.Application.Mobile.Maui.Run;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
@@ -15,6 +16,9 @@ sealed class LocalRegistrations : ICommand<IServiceCollection>
     {
         parameter.Start<IInitializeApplication>()
                  .Forward<DefaultInitializeApplication>()
+                 .Singleton()
+                 .Then.Start<IMessenger>()
+                 .Forward<Messenger>()
                  .Singleton();
     }
 }

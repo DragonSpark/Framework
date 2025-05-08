@@ -17,13 +17,12 @@ sealed class Registrations : ICommand<IServiceCollection>
         parameter.TryDecorate<IConfigureExceptions, ConfigureExceptions>();
         parameter.Start<INotifications>()
                  .Forward<Notifications.Notifications>()
-                 .Singleton();
-        /*
-                 //
+                 .Singleton()
+                 /*//
                  .Then.Start<IMessenger>()
                  .Forward<ActivityMessenger>()
                  .Decorate<PermissionAwareMessenger>()
                  .Include(x => x.Dependencies)
-                 .Singleton();*/
+                 .Singleton()*/;
     }
 }
