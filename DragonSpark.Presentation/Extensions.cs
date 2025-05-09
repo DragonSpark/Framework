@@ -116,7 +116,15 @@ public static class Extensions
 		=> @this.IsValid() && !IsActive.Default.Get(receiver);
 
 	public static void NotifyModelField(this EditContext @this, string field)
-		=> @this.NotifyFieldChanged(@this.Field(field));
+	{
+		@this.NotifyFieldChanged(@this.Field(field));
+	}
+
+	public static void MarkModified(this EditContext @this)
+	{
+		@this.NotifyModelField(string.Empty);
+		@this.NotifyValidationStateChanged();
+	}
 
 	public static T GetValue<T>(this FieldIdentifier @this)
 		=> @this.FieldName.Contains('.')

@@ -53,7 +53,7 @@ sealed class Submit<T> : IOperation<SubmitInput<T>>
 
 	public async ValueTask Get(SubmitInput<T> parameter)
 	{
-		var (context, _) = parameter;
+		var (context, _, @continue) = parameter;
 		var validate     = await _validate(context).On();
 		if (validate)
 		{
@@ -62,6 +62,7 @@ sealed class Submit<T> : IOperation<SubmitInput<T>>
 		}
 		else
 		{
+			@continue.Down();
 			await _invalid.Off(parameter);
 		}
 	}
