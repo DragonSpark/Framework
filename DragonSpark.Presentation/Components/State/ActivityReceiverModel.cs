@@ -4,8 +4,6 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.State;
 
-class Class1 {}
-
 sealed class ActivityReceiverModel : IActivityReceiver
 {
 	readonly Stack<ActivityReceiverState> _stack;
