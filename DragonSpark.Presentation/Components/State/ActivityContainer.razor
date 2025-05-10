@@ -5,7 +5,6 @@
 @using NetFabric.Hyperlinq
 @using System.Buffers
 
-@rendermode InteractiveServer
 @inherits Components.ComponentBase
 
 @implements IActivityReceiver
@@ -21,14 +20,14 @@
             </ShouldRenderComponent>
         </fieldset>
     </div>
-    @if (Active && _options.Message is not null)
+    @if (Active && _previous.Current is CancelAwareActivityOptions cancel)
     {
         <div class="position-absolute top-0 d-flex w-100 h-100 flex-column align-items-center justify-content-center">
             <div class="d-flex gap-2">
                 <div class="spinner-border" role="status"></div>
-                <div>@(_displaying ? "Please wait..." : _options.Message)</div>
+                <div>@(_displaying ? "Please wait..." : cancel.Message)</div>
             </div>
-            @if (_options.Handle is not null && !_displaying)
+            @if (!_displaying)
             {
                 <ul class="actions">
                     <li><button class="small button" disabled="@_displaying" @onclick="@OnCancel">Cancel</button></li>
@@ -41,16 +40,15 @@
 @code
 {
     readonly List<IRenderAware> _renderings = new();
-    readonly Switch             _rendered   = new(), _restore = new(), _displaying = new(), _active = new(), _render = new(true);
-    Renderings                  _membership = null!;
-    ActivityOptions             _options    = ActivityOptions.Default;
+    readonly Switch             _start      = false, _restore = false, _displaying = false, _render = true;
+    ActivityReceiverModel       _previous   = null!;
     RenderFragment              _content    = null!;
     string?                     _class, _outer;
 
     protected override void OnInitialized()
     {
-        _membership = new(_renderings);
-        _content    = ChildContent(this);
+        _previous = new(new(_renderings));
+        _content  = ChildContent(this);
         Monitor?.Add.Execute(this);
         base.OnInitialized();
     }
@@ -73,40 +71,36 @@
         return result;
     }
 
-    bool Render => !_active && (_render || !_render.Up());
+    bool Render => !Active && (_render || !_render.Up());
 
-    public bool Active => _active;
+    public bool Active => _previous.Active;
 
-    bool Update() => Update(_options);
+    void Update() => Update(_previous.Current);
 
-    bool Update(ActivityOptions parameter)
+    void Update(ActivityOptions? parameter)
     {
-        var active = ActiveState.Default.Get(this);
-        var result = _active.Assign(active);
-        if (result)
-        {
-            _class = Class();
-            _outer = active && parameter.Message is not null ? "position-relative" : null;
-        }
-        return result;
+        _class = Class();
+        _outer = Active && parameter is CancelAwareActivityOptions ? "position-relative" : null;
     }
 
-    public async ValueTask Start(ActivityOptions parameter)
+    public async ValueTask Get(ActivityReceiverState parameter)
     {
-        if (Update(parameter))
+        await _previous.On(parameter);
+        Update();
+        if (_start && !_restore)
         {
-            _options = parameter;
+            await Focus.Store.On();
+        }
 
-            /*if (_rendered && parameter.RenderOnCompletion)
-            {
-                StateHasChanged();
-            }*/
-
-            await Render().On();
-
+        if (parameter.Options.RedrawOnStart)
+        {
+            StateHasChanged();
+        }
+        else
+        {
             if (Monitor is not null)
             {
-                await Monitor.Off();
+                await Monitor.On();
             }
 
             using var renderings = _renderings.AsValueEnumerable().ToArray(ArrayPool<IRenderAware>.Shared);
@@ -115,20 +109,13 @@
                 i.Execute();
             }
         }
-
-        async ValueTask Render()
-        {
-            if (_rendered && !_restore)
-            {
-                await Focus.Store.Off();
-            }
-        }
     }
 
-    public async ValueTask Complete(bool refresh = false)
+    public async ValueTask<ActivityReceiverState?> Get()
     {
-        var update = Update();
-        if (update)
+        var result = await _previous.On();
+        Update(result?.Options);
+        if (result is not null)
         {
             _restore.Up();
             _displaying.Down();
@@ -137,21 +124,24 @@
             {
                 await Monitor.On();
             }
-            if (refresh)
+
+            switch (result.Value.Options.PostRenderAction)
             {
-                StateHasChanged();
-            }
-            else if (!_options.RenderOnCompletion)
-            {
-                _render.Down();
+                case PostRenderAction.ForceRedraw:
+                    StateHasChanged();
+                    break;
+                case PostRenderAction.DeferredRedraw:
+                    _render.Down();
+                    break;
             }
         }
+        return result;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        _rendered.Up();
-        if (!_active && _restore.Down())
+        _start.Up();
+        if (!Active && _restore.Down())
         {
             await Focus.Restore.Get();
             if (Monitor is not null)
@@ -164,22 +154,21 @@
 
     Task OnCancel()
     {
-        var handle = _options.Handle;
-        if (handle is not null)
+        if (_previous.Current is CancelAwareActivityOptions cancel)
         {
             _displaying.Up();
-            return handle.Allocate();
+            return cancel.Handle.Allocate();
         }
         return Task.CompletedTask;
     }
+
+    public ICommand<IRenderAware> Add => _previous.Add;
+
+    public ICommand<IRenderAware> Remove => _previous.Remove;
 
     public ValueTask DisposeAsync()
     {
         Monitor?.Remove.Execute(this);
         return Focus.DisposeAsync();
     }
-
-    public ICommand<IRenderAware> Add => _membership.Add;
-
-    public ICommand<IRenderAware> Remove => _membership.Remove;
 }

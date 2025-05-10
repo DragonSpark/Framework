@@ -1,12 +1,8 @@
-﻿using DragonSpark.Application.Runtime.Operations;
+﻿namespace DragonSpark.Presentation.Components.State;
 
-namespace DragonSpark.Presentation.Components.State;
-
-public sealed record ActivityOptions(
-	string? Message = null,
-	ITokenHandle? Handle = null,
-	bool RenderOnCompletion = true)
+public record ActivityOptions(bool RedrawOnStart = false, PostRenderAction PostRenderAction = PostRenderAction.None)
 {
 	public static ActivityOptions Default { get; } = new();
-	public static ActivityOptions NoPostRender { get; } = new(RenderOnCompletion: false);
+	public static ActivityOptions PostRedraw { get; } = new(PostRenderAction: PostRenderAction.ForceRedraw);
+	public static ActivityOptions DeferredPostRender { get; } = new(PostRenderAction: PostRenderAction.DeferredRedraw);
 }

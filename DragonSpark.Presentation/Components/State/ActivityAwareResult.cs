@@ -1,30 +1,23 @@
-using System.Threading.Tasks;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations.Results;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.State;
 
 sealed class ActivityAwareResult<T> : IResulting<T?>
 {
-	readonly IResulting<T?>          _previous;
-	readonly object                  _subject;
-	readonly ActivityReceiver  _input;
-	readonly IUpdateActivityReceiver _activity;
+	readonly IResulting<T?>        _previous;
+	readonly IActivityReceiver     _subject;
+	readonly ActivityReceiverState _state;
 
-	/*public ActivityAwareResult(IResulting<T?> previous, object subject)
-		: this(previous, subject, ActivityReceiverInput.Default) {}*/
+	public ActivityAwareResult(IResulting<T?> previous, IActivityReceiver subject, ActivityOptions options)
+		: this(previous, subject, new ActivityReceiverState(previous, options)) {}
 
-	public ActivityAwareResult(IResulting<T?> previous, object subject, ActivityOptions input)
-		: this(previous, subject, new(previous, input), UpdateActivityReceiverWithRedraw.Default) {}
-
-	// ReSharper disable once TooManyDependencies
-	public ActivityAwareResult(IResulting<T?> previous, object subject, ActivityReceiver input,
-	                           IUpdateActivityReceiver activity)
+	public ActivityAwareResult(IResulting<T?> previous, IActivityReceiver subject, ActivityReceiverState state)
 	{
 		_previous = previous;
 		_subject  = subject;
-		_input    = input;
-		_activity = activity;
+		_state    = state;
 	}
 
 	public async ValueTask<T?> Get()
@@ -35,14 +28,14 @@ sealed class ActivityAwareResult<T> : IResulting<T?>
 			return previous.Result;
 		}
 
-		await _activity.Get((_subject, _input)).On();
+		await _subject.On(_state);
 		try
 		{
 			return await previous.On();
 		}
 		finally
 		{
-			await _activity.Off(_subject);
+			await _subject.Off();
 		}
 	}
 }

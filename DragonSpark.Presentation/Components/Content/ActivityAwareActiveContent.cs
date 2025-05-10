@@ -10,10 +10,10 @@ public sealed class ActivityAwareActiveContent<T> : Resulting<T?>, IActiveConten
 {
 	readonly ICommand _previous;
 
-	public ActivityAwareActiveContent(IActiveContent<T> previous, object receiver)
-		: this(previous, receiver, ActivityOptions.Default) {}
+	public ActivityAwareActiveContent(IActiveContent<T> previous, IActivityReceiver receiver)
+		: this(previous, receiver, ActivityOptions.PostRedraw) {}
 
-	public ActivityAwareActiveContent(IActiveContent<T> previous, object receiver, ActivityOptions input)
+	public ActivityAwareActiveContent(IActiveContent<T> previous, IActivityReceiver receiver, ActivityOptions input)
 		: this(previous, previous.Condition, new ActivityAwareResult<T>(previous, receiver, input)) {}
 
 	public ActivityAwareActiveContent(ICommand previous, ICondition<None> refresh, IResulting<T?> resulting)

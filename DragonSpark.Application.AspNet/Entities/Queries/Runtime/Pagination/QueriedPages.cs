@@ -25,7 +25,7 @@ sealed class QueriedPages<T> : IPages<T>
 		using var session = await _queries.Off();
 		var (query, count) = await _compose.Off(new(parameter, session.Subject));
 		var materialize = await _materialize.Off(new(query, parameter.Token));
-		await Task.Delay(1500);
+		await Task.Delay(1500); // TODO
 		return new(materialize.Open(), count);
 	}
 }

@@ -22,7 +22,7 @@
     IActiveContent<TValue> _content = null!;
 
     [Parameter]
-    public ISelect<object, IActiveContent<TValue>> Input
+    public ISelect<IActivityReceiver, IActiveContent<TValue>> Input
     {
         get => _input;
         set
@@ -33,7 +33,7 @@
                 _assign.Up();
             }
         }
-    }	ISelect<object, IActiveContent<TValue>> _input = null!;
+    }	ISelect<IActivityReceiver, IActiveContent<TValue>> _input = null!;
 
     [Parameter]
     public bool ForceRender { get; set; }

@@ -105,15 +105,15 @@ public static class Extensions
 
 	public static bool CanSubmit(this EditContext @this) => @this.IsModified() && @this.IsValid();
 
-	public static bool CanSubmit(this EditContext @this, object receiver)
-		=> @this.CanSubmit() && !IsActive.Default.Get(receiver);
+	public static bool CanSubmit(this EditContext @this, IActivityReceiver receiver)
+		=> @this.CanSubmit() && !receiver.Active;
 
 	public static ValueTask<bool> Validating(this EditContext @this) => ValidContext.Default.Get(@this);
 
 	public static bool IsValid(this EditContext @this) => Components.Forms.Validation.IsValid.Default.Get(@this);
 
-	public static bool IsValid(this EditContext @this, object receiver)
-		=> @this.IsValid() && !IsActive.Default.Get(receiver);
+	public static bool IsValid(this EditContext @this, IActivityReceiver receiver)
+		=> @this.IsValid() && !receiver.Active;
 
 	public static void NotifyModelField(this EditContext @this, string field)
 	{
@@ -189,5 +189,7 @@ public static class Extensions
 		=> @this.Invoke(parameter).Off();
 
 	/**/
-	public static ActivityOptions Get(this ITokenHandle @this, string message) => new(message, @this);
+	public static CancelAwareActivityOptions Get(this ITokenHandle @this, string message,
+	                                             PostRenderAction action = PostRenderAction.None)
+		=> new(message, @this, PostRenderAction: action);
 }

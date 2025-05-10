@@ -12,6 +12,10 @@ public class OperationResultComposer<_, T> : Application.Compose.OperationResult
 	public OperationResultComposer<_, T> UpdateActivity(IActivityReceiver receiver)
 		=> new(new ActivityAwareSelecting<_, T>(_subject, receiver));
 
+	public OperationResultComposer<_, T> UpdateActivityWithRedraw(IActivityReceiver receiver)
+		=> new(new ActivityAwareSelecting<_, T>(_subject, receiver,
+		                                        ActivityOptions.PostRedraw with { RedrawOnStart = true }));
+
 	public OperationResultComposer<_, T> UpdateActivityWithPostRedraw(IActivityReceiver receiver)
-		=> new(new ActivityAwareSelecting<_, T>(_subject, receiver, UpdateActivityReceiverWithRedraw.Default));
+		=> new(new ActivityAwareSelecting<_, T>(_subject, receiver, ActivityOptions.PostRedraw));
 }

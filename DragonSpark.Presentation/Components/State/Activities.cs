@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DragonSpark.Presentation.Components.State;
 
-sealed class Activities : ReferenceValueStore<object, Stack<object>>
+sealed class Activities : ReferenceValueStore<IActivityReceiver, Stack<object>>
 {
 	public static Activities Default { get; } = new();
 

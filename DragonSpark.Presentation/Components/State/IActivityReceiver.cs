@@ -1,12 +1,12 @@
-﻿using DragonSpark.Model.Sequences.Collections;
-using System.Threading.Tasks;
+﻿using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Results;
+using DragonSpark.Model.Sequences.Collections;
 
 namespace DragonSpark.Presentation.Components.State;
 
-public interface IActivityReceiver : IMembership<IRenderAware>
+public interface IActivityReceiver : IOperation<ActivityReceiverState>,
+									 IResulting<ActivityReceiverState?>,
+									 IMembership<IRenderAware>
 {
-	ValueTask Start(ActivityOptions input);
-	ValueTask Complete(bool refresh = false);
-
 	bool Active { get; }
 }

@@ -26,8 +26,8 @@
 				_contents = new ActivityContents<TValue>(_content).Then().Stores().New();
 			}
 		}
-	}   IActiveContent<TValue>              _content  = null!;
-    ISelect<object, IActiveContent<TValue>> _contents = null!;
+	}   IActiveContent<TValue>                         _content  = null!;
+    ISelect<IActivityReceiver, IActiveContent<TValue>> _contents = null!;
 
 	[Parameter]
 	public bool ForceRender { get; set; }

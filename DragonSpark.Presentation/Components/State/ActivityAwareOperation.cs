@@ -1,30 +1,26 @@
-using System.Threading.Tasks;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.State;
 
 sealed class ActivityAwareOperation : IOperation
 {
-	readonly IOperation              _operation;
-	readonly object                  _subject;
-	readonly ActivityReceiver        _input;
-	readonly IUpdateActivityReceiver _update;
+	readonly IOperation            _operation;
+	readonly IActivityReceiver     _subject;
+	readonly ActivityReceiverState _state;
 
-	public ActivityAwareOperation(IOperation operation, object subject)
+	public ActivityAwareOperation(IOperation operation, IActivityReceiver subject)
 		: this(operation, subject, ActivityOptions.Default) {}
 
-	public ActivityAwareOperation(IOperation operation, object subject, ActivityOptions input)
-		: this(operation, subject, new(operation, input), UpdateActivityReceiver.Default) {}
+	public ActivityAwareOperation(IOperation operation, IActivityReceiver subject, ActivityOptions input)
+		: this(operation, subject, new ActivityReceiverState(operation, input)) {}
 
-	// ReSharper disable once TooManyDependencies
-	public ActivityAwareOperation(IOperation operation, object subject, ActivityReceiver input,
-	                              IUpdateActivityReceiver update)
+	public ActivityAwareOperation(IOperation operation, IActivityReceiver subject, ActivityReceiverState state)
 	{
 		_operation = operation;
 		_subject   = subject;
-		_input     = input;
-		_update    = update;
+		_state     = state;
 	}
 
 	public async ValueTask Get()
@@ -32,14 +28,14 @@ sealed class ActivityAwareOperation : IOperation
 		var operation = _operation.Get();
 		if (!operation.IsCompleted)
 		{
-			await _update.Get((_subject, _input)).On();
+			await _subject.On(_state);
 			try
 			{
 				await operation.On();
 			}
 			finally
 			{
-				await _update.Off(_subject);
+				await _subject.Off();
 			}
 		}
 	}
@@ -48,24 +44,20 @@ sealed class ActivityAwareOperation : IOperation
 sealed class ActivityAwareOperation<T> : IOperation<T>
 {
 	readonly IOperation<T>           _operation;
-	readonly object                  _subject;
-	readonly ActivityReceiver        _input;
-	readonly IUpdateActivityReceiver _update;
+	readonly IActivityReceiver       _subject;
+	readonly ActivityReceiverState   _state;
 
-	public ActivityAwareOperation(IOperation<T> operation, object subject)
+	public ActivityAwareOperation(IOperation<T> operation, IActivityReceiver subject)
 		: this(operation, subject, ActivityOptions.Default) {}
 
-	public ActivityAwareOperation(IOperation<T> operation, object subject, ActivityOptions options)
-		: this(operation, subject, new(operation, options), UpdateActivityReceiver.Default) {}
+	public ActivityAwareOperation(IOperation<T> operation, IActivityReceiver subject, ActivityOptions options)
+		: this(operation, subject, new ActivityReceiverState(operation, options)) {}
 
-	// ReSharper disable once TooManyDependencies
-	public ActivityAwareOperation(IOperation<T> operation, object subject, ActivityReceiver input,
-	                              IUpdateActivityReceiver update)
+	public ActivityAwareOperation(IOperation<T> operation, IActivityReceiver subject, ActivityReceiverState state)
 	{
 		_operation = operation;
 		_subject   = subject;
-		_input     = input;
-		_update    = update;
+		_state     = state;
 	}
 
 	public async ValueTask Get(T parameter)
@@ -73,14 +65,14 @@ sealed class ActivityAwareOperation<T> : IOperation<T>
 		var operation = _operation.Get(parameter);
 		if (!operation.IsCompleted)
 		{
-			await _update.Get((_subject, _input)).On();
+			await _subject.On(_state);
 			try
 			{
 				await operation.On();
 			}
 			finally
 			{
-				await _update.Off(_subject);
+				await _subject.Off();
 			}
 		}
 	}
