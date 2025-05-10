@@ -7,7 +7,7 @@
 
 @inherits Templates.ManyActiveContentTemplateComponentBase<Page<T>>
 
-<ResultingContentView Content="@Subject"
+<ResultingContentView Content="@_subject"
                       LoadingTemplate="@LoadingTemplate"
                       NotFoundTemplate="@NotFoundTemplate"
                       ExceptionTemplate="@ExceptionTemplate">
@@ -22,6 +22,11 @@
 </ResultingContentView>
 
 @code {
+    IResulting<Page<T>>? _subject;
+    IPages<T>            _input = null!;
+    bool                 _includeTotalCount;
+    string?              _orderBy, _filter;
+    Partition?           _partition;
 
     [Parameter]
     public IPages<T> Input
@@ -31,8 +36,8 @@
         {
             if (_input != value)
             {
-                _input = value;
-                Subject = null;
+                _input   = value;
+                _subject = null;
             }
         }
     }
@@ -46,7 +51,7 @@
             if (_includeTotalCount != value)
             {
                 _includeTotalCount = value;
-                Subject = null;
+                _subject           = null;
             }
         }
     }
@@ -60,7 +65,7 @@
             if (_orderBy != value)
             {
                 _orderBy = value;
-                Subject = null;
+                _subject = null;
             }
         }
     }
@@ -73,8 +78,8 @@
         {
             if (_filter != value)
             {
-                _filter = value;
-                Subject = null;
+                _filter  = value;
+                _subject = null;
             }
         }
     }
@@ -88,21 +93,14 @@
             if (_partition != value)
             {
                 _partition = value;
-                Subject = null;
+                _subject   = null;
             }
         }
     }
 
-    IResulting<Page<T>>? Subject { get; set; }
-
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
-        Subject ??= Input.Then().Bind(new PageInput(IncludeTotalCount, OrderBy, Filter, Partition)).Out();
+        _subject ??= Input.Then().Bind(new PageInput(IncludeTotalCount, OrderBy, Filter, Partition)).Out();
     }
-
-    IPages<T> _input = null!;
-    bool _includeTotalCount;
-    string? _orderBy, _filter;
-    Partition? _partition;
 }
