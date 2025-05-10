@@ -1,0 +1,24 @@
+﻿@using DragonSpark.Compose
+@using DragonSpark.Model.Results
+@typeparam T
+@inherits RelayComponentBase<T>
+
+<RelayValueComponent T="T" Enabled="@Monitor" Input="@Input" Changed="@OnChanged" />
+
+@code {
+    [Parameter]
+    public required Switch Monitor { get; set; } = true;
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        Monitor.Down();
+        base.OnAfterRender(firstRender);
+    }
+
+    Task OnChanged(T parameter)
+    {
+        Monitor.Down();
+        return parameter is not null ? Changed.Invoke(parameter) : Task.CompletedTask;
+    }
+
+}

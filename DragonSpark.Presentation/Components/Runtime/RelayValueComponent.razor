@@ -1,16 +1,8 @@
 ﻿@using DragonSpark.Compose
 @typeparam T
+@inherits RelayComponentBase<T>
 
 @code {
-    [Parameter]
-    public required bool Enabled { get; set; } = true;
-
-    [Parameter]
-    public required T Input { get; set; }
-
-    [Parameter]
-    public EventCallback<T> Changed { get; set; }
-
     public override async Task SetParametersAsync(ParameterView parameters)
     {
         var changed = parameters.DidParameterChange(nameof(Input), Input);
