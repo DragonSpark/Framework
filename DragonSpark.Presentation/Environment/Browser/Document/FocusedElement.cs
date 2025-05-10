@@ -1,24 +1,20 @@
 ﻿using DragonSpark.Model.Operations;
+using DragonSpark.Runtime;
 using Majorsoft.Blazor.Components.Common.JsInterop.Focus;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Environment.Browser.Document;
 
-sealed class FocusedElement : IFocusedElement
+sealed class FocusedElement : Disposing, IFocusedElement
 {
-	readonly IFocusHandler _previous;
-
-	public FocusedElement(IFocusHandler previous, PolicyAwareFocusedElement focus,
+	public FocusedElement(IFocusHandler previous, PolicyAwareFocusedElement store,
 	                      PolicyAwareRestoreFocusedElement restore)
+		: base(previous)
 	{
-		_previous = previous;
-		Store     = focus;
-		Restore   = restore;
+		Store   = store;
+		Restore = restore;
 	}
-
-	public IOperation Restore { get; }
 
 	public IOperation Store { get; }
 
-	public ValueTask DisposeAsync() => _previous.DisposeAsync();
+	public IOperation Restore { get; }
 }

@@ -6,9 +6,9 @@
 
 @inherits Templates.ActiveContentTemplateComponentBase<T>
 
-@if (Content is not null)
+@if (_content is not null)
 {
-    @ChildContent(Content)
+    @ChildContent(_content)
 }
 else
 {
@@ -17,20 +17,20 @@ else
 
 @code
 {
+    T? _content;
+
     [Parameter]
     public IClientVariable<T> Definition { get; set; } = null!;
 
     [Parameter]
     public IResult<T> New { get; set; } = New<T>.Default;
 
-    T? Content { get; set; }
-
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
             var current = await Definition.Get();
-            Content = current.Success ? current.Value : New.Get();
+            _content = current.Success ? current.Value : New.Get();
             StateHasChanged();
         }
     }

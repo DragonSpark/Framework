@@ -1,9 +1,6 @@
-﻿using DragonSpark.Diagnostics;
+﻿namespace DragonSpark.Presentation.Environment.Browser.Document;
 
-namespace DragonSpark.Presentation.Environment.Browser.Document;
-
-sealed class PolicyAwareRestoreFocusedElement : PolicyAwareOperation
+sealed class PolicyAwareRestoreFocusedElement : ConnectionAware
 {
-	public PolicyAwareRestoreFocusedElement(ConnectionAwareRestoreFocusedElement previous)
-		: base(previous, ConnectionAwarePolicy.Default) {}
+	public PolicyAwareRestoreFocusedElement(RestoreFocusedElement previous) : base(previous) {}
 }

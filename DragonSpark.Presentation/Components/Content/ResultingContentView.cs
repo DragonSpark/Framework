@@ -13,10 +13,10 @@ namespace DragonSpark.Presentation.Components.Content;
 
 partial class ResultingContentView<T>
 {
+	readonly Switch _loaded = false;
 	RenderFragment? _fragment;
-	readonly Switch _loaded = new();
-	Func<Task> _update = null!;
-	Worker<T?>? _subject;
+	Func<Task>      _update = null!;
+	Worker<T?>?     _subject;
 
 	[Parameter]
 	public IResulting<T?>? Content

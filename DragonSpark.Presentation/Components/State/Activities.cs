@@ -7,5 +7,5 @@ sealed class Activities : ReferenceValueStore<object, Stack<object>>
 {
 	public static Activities Default { get; } = new();
 
-	Activities() : base(_ => new Stack<object>()) {}
+	Activities() : base(_ => []) {}
 }
