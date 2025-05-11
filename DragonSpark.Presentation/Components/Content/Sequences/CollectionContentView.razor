@@ -1,8 +1,8 @@
 ﻿@typeparam TItem
 
-@inherits Templates.ManyContentTemplateComponentBase<ICollection<TItem>>
+@inherits Templates.ManyContentTemplateComponentBase<IReadOnlyCollection<TItem>>
 
-<ContentView TValue="ICollection<TItem>" Content="Content" NotFoundTemplate="@NotFoundTemplate">
+<ContentView TValue="IReadOnlyCollection<TItem>" Content="Content" NotFoundTemplate="@NotFoundTemplate">
 	@if (context.Count > 0)
 	{
 		@ChildContent(context)
@@ -15,5 +15,5 @@
 
 @code {
 	[Parameter]
-	public ICollection<TItem>? Content { get; set; }
+    public IReadOnlyCollection<TItem>? Content { get; set; }
 }
