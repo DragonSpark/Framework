@@ -34,9 +34,9 @@
 
 				if (value.Any())
 				{
-					foreach (var (field, message) in value.AsValueEnumerable())
+					foreach (var (@field, message) in value.AsValueEnumerable())
 					{
-						_store?.Add(field, message);
+						_store?.Add(@field, message);
 					}
 					EditContext?.NotifyValidationStateChanged();
 				}

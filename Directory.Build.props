@@ -13,7 +13,7 @@
     <PropertyGroup>
 	<ImplicitUsings>false</ImplicitUsings>
 	<Features>enable-generator-cache</Features>
-	<LangVersion>latest</LangVersion>
+	<LangVersion>preview</LangVersion>
 	<Nullable>enable</Nullable>
 	<RunAnalyzersDuringLiveAnalysis>false</RunAnalyzersDuringLiveAnalysis>
 	<EnableNETAnalyzers>false</EnableNETAnalyzers>

@@ -83,28 +83,74 @@ public class SelectionTests
 			        .Select(x => x),
 			       new InSelect<Reference, Reference, Reference>(
 			                                                     new InSelect<Reference, Reference, Reference>(
-			                                                                                                   new InSelect<Reference, Reference, Reference>(
-			                                                                                                                                                 new InSelect<Reference, Reference, Reference>(
-			                                                                                                                                                                                               (in Reference x) => x, (in Reference x) => x).Get,
-			                                                                                                                                                 (in Reference x) => x).Get,
-			                                                                                                   (in Reference x) => x).Get,
-			                                                     (in Reference x) => x),
+			                                                                                                   new
+					                                                                                                   InSelect
+					                                                                                                   <Reference
+						                                                                                                   , Reference
+						                                                                                                   , Reference>(
+						                                                                                                                new
+								                                                                                                                InSelect
+								                                                                                                                <Reference
+									                                                                                                                , Reference
+									                                                                                                                , Reference>(
+									                                                                                                                             (in x)
+										                                                                                                                             => x,
+									                                                                                                                             (in x)
+										                                                                                                                             => x)
+							                                                                                                                .Get,
+						                                                                                                                (in x)
+							                                                                                                                => x)
+				                                                                                                   .Get,
+			                                                                                                   (in x)
+				                                                                                                   => x)
+				                                                     .Get,
+			                                                     (in x) => x),
 			       new InSelect<Writable, Writable, Writable>(
 			                                                  new InSelect<Writable, Writable, Writable>(
-			                                                                                             new InSelect<Writable, Writable, Writable>(
-			                                                                                                                                        new InSelect<Writable, Writable, Writable>(
-			                                                                                                                                                                                   (in Writable x) => x, (in Writable x) => x).Get,
-			                                                                                                                                        (in Writable x) => x).Get,
-			                                                                                             (in Writable x) => x).Get,
-			                                                  (in Writable x) => x),
+			                                                                                             new InSelect<
+					                                                                                             Writable
+					                                                                                             ,
+					                                                                                             Writable
+					                                                                                             ,
+					                                                                                             Writable>(
+					                                                                                                       new
+							                                                                                                       InSelect
+							                                                                                                       <Writable
+								                                                                                                       , Writable
+								                                                                                                       , Writable>(
+								                                                                                                                   (in x)
+									                                                                                                                   => x,
+								                                                                                                                   (in x)
+									                                                                                                                   => x)
+						                                                                                                       .Get,
+					                                                                                                       (in x)
+						                                                                                                       => x)
+				                                                                                             .Get,
+			                                                                                             (in x) => x)
+				                                                  .Get,
+			                                                  (in x) => x),
 			       new InSelect<Readable, Readable, Readable>(
 			                                                  new InSelect<Readable, Readable, Readable>(
-			                                                                                             new InSelect<Readable, Readable, Readable>(
-			                                                                                                                                        new InSelect<Readable, Readable, Readable>((in Readable x) => x,
-			                                                                                                                                                                                   (in Readable x) => x).Get,
-			                                                                                                                                        (in Readable x) => x).Get,
-			                                                                                             (in Readable x) => x).Get,
-			                                                  (in Readable x) => x)) {}
+			                                                                                             new InSelect<
+					                                                                                             Readable
+					                                                                                             ,
+					                                                                                             Readable
+					                                                                                             ,
+					                                                                                             Readable>(
+					                                                                                                       new
+							                                                                                                       InSelect
+							                                                                                                       <Readable
+								                                                                                                       , Readable
+								                                                                                                       , Readable>((in x) => x,
+								                                                                                                                   (in x)
+									                                                                                                                   => x)
+						                                                                                                       .Get,
+					                                                                                                       (in x)
+						                                                                                                       => x)
+				                                                                                             .Get,
+			                                                                                             (in x) => x)
+				                                                  .Get,
+			                                                  (in x) => x)) {}
 
 		// ReSharper disable once TooManyDependencies
 		public InParameterSelectionBenchmarks(ISelect<Reference, Reference> reference,
@@ -123,7 +169,8 @@ public class SelectionTests
 		}
 
 		[Benchmark(Baseline = true)]
-		public object ReferenceSelect() => _reference.Get(new Reference(new object(), new object(), new object())).First;
+		public object ReferenceSelect()
+			=> _reference.Get(new Reference(new object(), new object(), new object())).First;
 
 		[Benchmark]
 		public object WriteSelect() => _writable.Get(new Writable(new object(), new object(), new object())).Message;
