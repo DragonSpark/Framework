@@ -1,5 +1,4 @@
 ﻿@using DragonSpark.Compose
-@using DragonSpark.Model.Results
 
 @inherits Components.ComponentBase
 @implements IDisposable
@@ -7,28 +6,31 @@
 @inject NavigationManager Manager
 
 @code {
-    readonly Switch                                 _update = new();
-	readonly EventHandler<LocationChangedEventArgs> _changed;
+    readonly EventHandler<LocationChangedEventArgs> _changed;
 
-	public NavigationMonitor() => _changed = OnChanged;
+    public NavigationMonitor() => _changed = OnChanged;
 
     [Parameter]
     public EventCallback Changed { get; set; }
 
-	protected override Task OnInitializedAsync()
-	{
-	    Manager.LocationChanged += _changed;
-		return base.OnInitializedAsync();
-	}
+    protected override Task OnInitializedAsync()
+    {
+        Manager.LocationChanged += _changed;
+        return base.OnInitializedAsync();
+    }
 
-	void OnChanged(object? sender, EventArgs e)
-	{
-        _update.Up();
-	    StateHasChanged();
-	}
-
-    protected override Task OnAfterRenderAsync(bool firstRender)
-        => _update.Down() ? Changed.Invoke() : base.OnAfterRenderAsync(firstRender);
+    // ReSharper disable once AvoidAsyncVoid -- booooo!
+    async void OnChanged(object? sender, EventArgs e)
+    {
+        try
+        {
+            await Changed.Invoke().Off();
+        }
+        catch (Exception error)
+        {
+            await Exceptions.Off(new(GetType(), error));
+        }
+    }
 
     public void Dispose()
     {

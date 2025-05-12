@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Presentation.Components.Content.Rendering;
 using Microsoft.AspNetCore.Components;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content;
@@ -27,6 +28,9 @@ public abstract class ContentComponentBase<T> : ComponentBase
 	protected IActiveContent<T> Content { get; private set; } = null!;
 
 	protected abstract ValueTask<T?> GetContent();
+
+	[CascadingParameter]
+	public required CancellationToken Cancel { get; set; } = CancellationToken.None;
 
 	protected virtual void RequestNewContent(bool redraw = false)
 	{

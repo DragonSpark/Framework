@@ -1,0 +1,27 @@
+﻿@using DragonSpark.Presentation.Components.Routing
+@using System.Threading
+
+@implements IDisposable
+
+<NavigationMonitor Changed="@OnChange" />
+<CascadingValue Value="@_source.Token" ChildContent="@ChildContent" />
+
+@code {
+    CancellationTokenSource _source = new();
+
+    [Parameter]
+    public required RenderFragment ChildContent { get; set; }
+
+    void OnChange()
+    {
+        _source.Cancel();
+        _source = new();
+    }
+
+    public void Dispose()
+    {
+        _source.Cancel();
+        _source.Dispose();
+    }
+
+}
