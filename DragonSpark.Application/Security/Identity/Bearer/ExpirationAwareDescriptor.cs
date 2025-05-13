@@ -5,7 +5,7 @@ using DragonSpark.Model.Selection.Stores;
 using DragonSpark.Runtime;
 using Microsoft.IdentityModel.Tokens;
 
-namespace DragonSpark.Application.AspNet.Security.Identity.Bearer;
+namespace DragonSpark.Application.Security.Identity.Bearer;
 
 public class ExpirationAwareDescriptor<T> : ISelect<T, SecurityTokenDescriptor> where T : class
 {

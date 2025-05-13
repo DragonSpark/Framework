@@ -65,6 +65,7 @@
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="9.0.4" />
     <PackageVersion Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="9.0.4" />
     <PackageVersion Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.4" />
+    <PackageVersion Include="Microsoft.AspNetCore.Identity" Version="2.3.1" />
     <PackageVersion Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="9.0.4" />
     <PackageVersion Include="Microsoft.AspNetCore.Identity.UI" Version="9.0.4" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.4" />
@@ -81,6 +82,7 @@
     <PackageVersion Include="Microsoft.Extensions.Caching.Abstractions" Version="9.0.4" />
     <PackageVersion Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.3" />
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.4" />
+    <PackageVersion Include="Microsoft.Extensions.Http" Version="9.0.4" />
     <PackageVersion Include="Microsoft.Extensions.Http.Polly" Version="9.0.4" />
     <PackageVersion Include="Microsoft.Extensions.Identity.Core" Version="9.0.4" />
     <PackageVersion Include="Microsoft.Extensions.Logging.Console" Version="9.0.4" />

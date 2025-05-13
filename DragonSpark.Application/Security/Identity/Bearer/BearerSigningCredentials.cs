@@ -2,7 +2,7 @@
 using DragonSpark.Text;
 using Microsoft.IdentityModel.Tokens;
 
-namespace DragonSpark.Application.AspNet.Security.Identity.Bearer;
+namespace DragonSpark.Application.Security.Identity.Bearer;
 
 sealed class BearerSigningCredentials : Instance<SigningCredentials>
 {

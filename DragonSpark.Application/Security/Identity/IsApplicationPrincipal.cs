@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 
-namespace DragonSpark.Application.AspNet.Security.Identity.Authentication;
+namespace DragonSpark.Application.Security.Identity;
 
 public sealed class IsApplicationPrincipal : ICondition<ClaimsPrincipal>
 {

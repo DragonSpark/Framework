@@ -1,31 +1,14 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
 	<TargetFramework>$(DefaultTargetFramework)</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Compose\Entities\**" />
-    <Compile Remove="Entities\**" />
-    <Compile Remove="Messaging\**" />
-    <Compile Remove="Navigation\Security\**" />
-    <EmbeddedResource Remove="Compose\Entities\**" />
-    <EmbeddedResource Remove="Entities\**" />
-    <EmbeddedResource Remove="Messaging\**" />
-    <EmbeddedResource Remove="Navigation\Security\**" />
-    <None Remove="Compose\Entities\**" />
-    <None Remove="Entities\**" />
-    <None Remove="Messaging\**" />
-    <None Remove="Navigation\Security\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="Navigation\ReturnPath.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
 	<PackageReference Include="Flurl" />
 	<PackageReference Include="Humanizer" />
 	<PackageReference Include="Markdig" />
+	<PackageReference Include="Microsoft.AspNetCore.Identity" />
+	<PackageReference Include="Microsoft.Extensions.Http" />
     <PackageReference Include="Microsoft.Extensions.Logging.Console" />
 	<PackageReference Include="Microsoft.Extensions.Caching.Abstractions" />
 	<PackageReference Include="Microsoft.Extensions.Identity.Core" />

@@ -1,7 +1,7 @@
-﻿using DragonSpark.Application.AspNet.Security.Identity.Bearer;
+﻿using DragonSpark.Application.Security.Identity.Bearer;
 using System.Net.Http;
 
-namespace DragonSpark.Application.AspNet.Communication;
+namespace DragonSpark.Application.Communication.Http;
 
 public abstract class UserClients : User<HttpClient>
 {

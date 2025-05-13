@@ -5,7 +5,6 @@ using DragonSpark.Application.AspNet.Entities.Transactions;
 using DragonSpark.Application.AspNet.Model.Content;
 using DragonSpark.Application.AspNet.Security.Identity;
 using DragonSpark.Application.AspNet.Security.Identity.Authentication;
-using DragonSpark.Application.AspNet.Security.Identity.Bearer;
 using DragonSpark.Application.Security.Identity.Claims;
 using DragonSpark.Compose;
 using DragonSpark.Composition.Compose;
@@ -47,8 +46,7 @@ partial class Extensions
 
 	public static Claim? Claim(this Accessed @this) => @this.Exists ? new(@this.Claim, @this.Value.Verify()) : null;
 
-	public static T Get<T>(this ISelect<ClaimsIdentity, T> @this, ClaimsPrincipal parameter)
-		=> @this.Get(PrincipalIdentity.Default.Get(parameter));
+	
 	public static uint? Number(this ClaimsPrincipal @this) => UserNumber.Default.Get(@this);
 
 	public static ProviderIdentity AuthenticatedIdentity(this ClaimsPrincipal @this)

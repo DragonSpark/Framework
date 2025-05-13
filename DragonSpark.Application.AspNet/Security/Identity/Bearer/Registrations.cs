@@ -12,24 +12,6 @@ sealed class Registrations : ICommand<IServiceCollection>
 
 	public void Execute(IServiceCollection parameter)
 	{
-		parameter.Register<BearerSettings>()
-		         //
-		         .Start<BearerConfiguration>()
-		         .And<TokenValidation>()
-		         .Singleton()
-		         //
-		         .Then.Start<ISign>()
-		         .Forward<Sign>()
-		         .Include(x => x.Dependencies.Recursive())
-		         .Singleton()
-		         //
-		         .Then.Start<IBearer>()
-		         .Forward<Bearer>()
-		         .Include(x => x.Dependencies.Recursive())
-		         .Scoped()
-		         //
-		         .Then.Start<ICurrentBearer>()
-		         .Forward<CurrentBearer>()
-		         .Scoped();
+		parameter.Start<TokenValidation>().And<BearerConfiguration>().Singleton();
 	}
 }

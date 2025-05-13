@@ -5,10 +5,12 @@ using DragonSpark.Application.Compose.Store.Operations.Memory;
 using DragonSpark.Application.Model.Sequences;
 using DragonSpark.Application.Runtime;
 using DragonSpark.Application.Runtime.Operations.Execution;
+using DragonSpark.Application.Security.Identity.Bearer;
 using DragonSpark.Compose;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
+using DragonSpark.Model.Selection;
 using Humanizer;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -26,12 +28,17 @@ partial class Extensions
 		=> @this.Select(Configuration.WithAmbientConfiguration.Default);
 
 	/**/
+	public static BuildHostContext WithHttp(this BuildHostContext @this)
+		=> @this.Configure(Communication.Http.Registrations.Default);
 
 	public static bool HasClaim(this ClaimsPrincipal @this, string claim) => @this.HasClaim(x => x.Type == claim);
 
 	public static Claim Claim(this Text.Text @this, string value) => new(@this, value);
 
 	public static bool IsAuthenticated(this ClaimsPrincipal @this) => @this.Identity?.IsAuthenticated ?? false;
+
+	public static T Get<T>(this ISelect<ClaimsIdentity, T> @this, ClaimsPrincipal parameter)
+		=> @this.Get(PrincipalIdentity.Default.Get(parameter));
 
 	/**/
 

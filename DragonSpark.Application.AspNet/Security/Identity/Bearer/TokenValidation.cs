@@ -1,4 +1,5 @@
-﻿using DragonSpark.Composition;
+﻿using DragonSpark.Application.Security.Identity.Bearer;
+using DragonSpark.Composition;
 using DragonSpark.Model.Results;
 using DragonSpark.Text;
 using Microsoft.AspNetCore.Identity;

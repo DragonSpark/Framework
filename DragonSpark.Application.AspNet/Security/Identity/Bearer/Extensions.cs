@@ -12,7 +12,7 @@ namespace DragonSpark.Application.AspNet.Security.Identity.Bearer;
 public static class Extensions
 {
 	public static ApplicationProfileContext WithBearerSupport(this ApplicationProfileContext @this)
-		=> @this.Append(Registrations.Default);
+		=> @this.Append(DragonSpark.Application.Security.Identity.Bearer.Registrations.Default, Registrations.Default);
 
 	public static AuthenticationBuilder AddDefaultBearer(this IServiceCollection @this,
 	                                                     string name = JwtBearerDefaults.AuthenticationScheme)
