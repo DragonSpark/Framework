@@ -52,5 +52,5 @@ partial class QueryContentContainer<T> : IPageContainer<T>
 		_relay.Execute(parameter);
 	}
 
-	public Type Get() => _relay.Account()?.Get() ?? ReportedType.Verify();
+	public Type Get() => _relay.Account()?.Get() ?? ReportedType ?? GetType();
 }
