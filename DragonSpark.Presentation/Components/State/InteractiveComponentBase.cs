@@ -12,3 +12,9 @@ public class InteractiveComponentBase : ComponentBase
 
 	protected override bool ShouldRender() => !Receiver.Active;
 }
+
+public class InteractiveComponentBase<T> : InteractiveComponentBase
+{
+	[Parameter]
+	public required T Input { get; set; }
+}

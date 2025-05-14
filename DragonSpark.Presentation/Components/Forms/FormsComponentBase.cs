@@ -29,3 +29,27 @@ public class FormsComponentBase : InteractiveComponentBase
 
 	protected override bool ShouldRender() => base.ShouldRender() && !_submitting;
 }
+
+public class FormsComponentBase<T> : InteractiveComponentBase<T>
+{
+	DragonSpark.Model.Results.Switch _submitting = null!;
+
+	public override async Task SetParametersAsync(ParameterView parameters)
+	{
+		var change = parameters.DidParameterChange(nameof(EditContext), EditContext);
+		await base.SetParametersAsync(parameters);
+		if (change)
+		{
+			_submitting = Submitting.Default.Get(EditContext);
+		}
+	}
+
+	[CascadingParameter]
+	protected EditContext EditContext { get; set; } = null!;
+
+	[CascadingParameter]
+	protected FieldRegistry Fields { get; set; } = null!;
+
+	protected override bool ShouldRender() => base.ShouldRender() && !_submitting;
+}
+
