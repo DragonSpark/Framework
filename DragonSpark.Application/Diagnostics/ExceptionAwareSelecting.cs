@@ -1,7 +1,7 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Operations.Selection;
 using System;
 using System.Threading.Tasks;
+using DragonSpark.Compose;
+using DragonSpark.Model.Operations.Selection;
 
 namespace DragonSpark.Application.Diagnostics;
 
@@ -23,7 +23,7 @@ public class ExceptionAwareSelecting<TIn, TOut> : ISelecting<TIn, TOut>
 	{
 		try
 		{
-			return await _previous.Off(parameter);
+			return await _previous.On(parameter);
 		}
 		catch (Exception e)
 		{

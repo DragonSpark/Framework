@@ -1,9 +1,9 @@
-﻿using DragonSpark.Application.AspNet.Entities.Configure;
+using System;
+using DragonSpark.Application.AspNet.Entities.Configure;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace DragonSpark.Application.AspNet.Compose.Entities;
 

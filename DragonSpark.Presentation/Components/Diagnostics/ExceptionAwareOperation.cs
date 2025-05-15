@@ -23,7 +23,7 @@ sealed class ExceptionAwareOperation : IOperation
     {
         try
         {
-            await _callback().Off();
+            await _callback().On();
         }
         // ReSharper disable once CatchAllClause
         catch (Exception e)
@@ -50,7 +50,7 @@ sealed class ExceptionAwareOperation<T> : IOperation<T>
     {
         try
         {
-            await _callback(parameter).Off();
+            await _callback(parameter).On();
         }
         // ReSharper disable once CatchAllClause
         catch (Exception e)

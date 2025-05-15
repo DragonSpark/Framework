@@ -1,7 +1,7 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Operations.Selection;
 using System;
 using System.Threading.Tasks;
+using DragonSpark.Compose;
+using DragonSpark.Model.Operations.Selection;
 
 namespace DragonSpark.Application.Diagnostics;
 
@@ -22,7 +22,7 @@ public sealed class ExceptionLoggingAwareSelectingDefault<T, TIn, TOut> : ISelec
 	{
 		try
 		{
-			return await _previous.Off(parameter);
+			return await _previous.On(parameter);
 		}
 		// ReSharper disable once CatchAllClause
 		catch (Exception error)

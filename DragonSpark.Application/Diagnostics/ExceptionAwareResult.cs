@@ -1,8 +1,8 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Operations;
-using DragonSpark.Model.Operations.Results;
 using System;
 using System.Threading.Tasks;
+using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Results;
 
 namespace DragonSpark.Application.Diagnostics;
 
@@ -13,7 +13,7 @@ public class ExceptionAwareResult<T> : IResulting<T?>
 	readonly Type?       _reportedType;
 
 	public ExceptionAwareResult(IResulting<T?> previous, IExceptions exceptions, Type? reportedType = null)
-		: this(previous.Off, exceptions, reportedType) {}
+		: this(previous.On, exceptions, reportedType) {}
 
 	public ExceptionAwareResult(AwaitOf<T?> previous, IExceptions exceptions, Type? reportedType = null)
 	{

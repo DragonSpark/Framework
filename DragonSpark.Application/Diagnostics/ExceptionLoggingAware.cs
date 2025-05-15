@@ -1,10 +1,10 @@
-﻿using DragonSpark.Compose;
+using System;
+using System.Threading.Tasks;
+using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using JetBrains.Annotations;
-using System;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Diagnostics;
 
@@ -25,7 +25,7 @@ public class ExceptionLoggingAware<T> : IOperation<T>
 	{
 		try
 		{
-			await _previous.Off(parameter);
+			await _previous.On(parameter);
 		}
 		catch (Exception e)
 		{
@@ -55,7 +55,7 @@ public class ExceptionLoggingAware : IOperation
 	{
 		try
 		{
-			await _previous().Off();
+			await _previous().On();
 		}
 		catch (Exception e)
 		{

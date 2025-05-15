@@ -1,8 +1,8 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Operations;
-using DragonSpark.Model.Selection;
 using System;
 using System.Threading.Tasks;
+using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
+using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Application.Diagnostics;
 
@@ -26,7 +26,7 @@ public class ExceptionAware<T> : IOperation<T>
 	{
 		try
 		{
-			await _previous(parameter).Off();
+			await _previous(parameter).On();
 		}
 		catch (Exception e)
 		{

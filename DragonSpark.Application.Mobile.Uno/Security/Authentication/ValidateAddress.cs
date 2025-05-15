@@ -12,9 +12,9 @@ public class ValidateAddress : ISelecting<ValidateAddressInput, Uri?>
     readonly IToken<string>                    _receive;
     readonly ISelect<ResumeSessionInput, Uri?> _address;
 
-    public ValidateAddress(IToken<string> receive) : this(receive, ResumeSession.Default) {}
+    protected ValidateAddress(IToken<string> receive) : this(receive, ResumeSession.Default) {}
 
-    public ValidateAddress(IToken<string> receive, ISelect<ResumeSessionInput, Uri?> address)
+    protected ValidateAddress(IToken<string> receive, ISelect<ResumeSessionInput, Uri?> address)
     {
         _receive = receive;
         _address = address;

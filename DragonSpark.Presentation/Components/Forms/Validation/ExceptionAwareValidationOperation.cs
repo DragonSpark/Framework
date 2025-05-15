@@ -1,8 +1,8 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Diagnostics.Logging;
-using DragonSpark.Model.Operations;
 using System;
 using System.Threading.Tasks;
+using DragonSpark.Compose;
+using DragonSpark.Diagnostics.Logging;
+using DragonSpark.Model.Operations;
 using Exception = System.Exception;
 
 namespace DragonSpark.Presentation.Components.Forms.Validation;
@@ -25,7 +25,7 @@ sealed class ExceptionAwareValidationOperation : IOperation<ValidationContext>
 	{
 		try
 		{
-			await _previous.Off(parameter);
+			await _previous.On(parameter);
 		}
 		catch (Exception e)
 		{
