@@ -3,4 +3,4 @@ using DragonSpark.Model.Operations.Allocated;
 
 namespace DragonSpark.Application.Communication.Http;
 
-public interface IAccessTokenProvider : IAllocatingToken<HttpRequestMessage, string>;
+public interface IAccessTokenProvider : IAllocatedStopAware<HttpRequestMessage, string>;

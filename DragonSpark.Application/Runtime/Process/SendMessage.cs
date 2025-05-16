@@ -11,7 +11,7 @@ namespace DragonSpark.Application.Runtime.Process;
 /// <summary>
 /// ATTRIBUTION: https://stackoverflow.com/a/60546519
 /// </summary>
-public class SendMessage : ITokenOperation<string>
+public class SendMessage : IStopAware<string>
 {
     readonly string   _name;
     readonly TimeSpan _timeout;

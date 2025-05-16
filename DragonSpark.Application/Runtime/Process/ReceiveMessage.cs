@@ -18,7 +18,7 @@ public class ReceiveMessage<T> : ReceiveMessage
 /// <summary>
 /// ATTRIBUTION: https://stackoverflow.com/a/60546519
 /// </summary>
-public class ReceiveMessage : IToken<string>
+public class ReceiveMessage : IStopAware<string>
 {
     readonly string       _name;
     readonly PipeSecurity _security;

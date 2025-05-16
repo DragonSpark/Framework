@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations.Selection;
 
-sealed class TokenAdapter<TIn, TOut> : ISelectingToken<TIn, TOut>
+sealed class TokenAdapter<TIn, TOut> : IContinuing<TIn, TOut>
 {
 	readonly ISelect<TIn, ValueTask<TOut>> _previous;
 

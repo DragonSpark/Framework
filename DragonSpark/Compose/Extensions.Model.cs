@@ -144,5 +144,5 @@ public static partial class ExtensionMethods
 		return result;
 	}
 
-	public static IToken<T> AsToken<T>(this IResulting<T> @this) => new TokenAdapter<T>(@this);
+	public static DragonSpark.Model.Operations.Results.IStopAware<T> AsToken<T>(this IResulting<T> @this) => new StopAwareAdapter<T>(@this);
 }

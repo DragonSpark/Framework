@@ -11,7 +11,7 @@ namespace DragonSpark.Compose;
 // ReSharper disable once MismatchedFileName
 public partial class ExtensionMethods
 {
-    public static Task<TOut> Get<TIn, TOut>(this IAllocatingToken<TIn, TOut> @this, TIn parameter,
+    public static Task<TOut> Get<TIn, TOut>(this IAllocatedStopAware<TIn, TOut> @this, TIn parameter,
                                             CancellationToken stop)
         => @this.Get(new(parameter, stop));
 

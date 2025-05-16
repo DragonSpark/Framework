@@ -3,4 +3,4 @@ using System.Threading;
 
 namespace DragonSpark.Model.Operations.Results;
 
-public interface IToken<T> : ISelecting<CancellationToken, T>;
+public interface IStopAware<T> : ISelecting<CancellationToken, T>;
