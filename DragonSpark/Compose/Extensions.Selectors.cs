@@ -1,13 +1,20 @@
-﻿using DragonSpark.Compose.Model.Results;
-using DragonSpark.Compose.Model.Selection;
-using DragonSpark.Model.Selection;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
+using DragonSpark.Compose.Model.Results;
+using DragonSpark.Compose.Model.Selection;
+using DragonSpark.Model.Operations.Allocated;
+using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Compose;
 
 // ReSharper disable once MismatchedFileName
 public partial class ExtensionMethods
 {
+    public static Task<TOut> Get<TIn, TOut>(this IAllocatingToken<TIn, TOut> @this, TIn parameter,
+                                            CancellationToken stop)
+        => @this.Get(new(parameter, stop));
+
 	public static ResultComposer<T> Bind<T>(this Composer<Type, object> @this) => @this.Bind(A.Type<T>()).Cast<T>();
 
 	public static Composer<T, string> Out<T>(this Composer<Type, string> @this)

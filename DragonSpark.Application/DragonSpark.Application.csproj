@@ -16,7 +16,7 @@
 	<PackageReference Include="System.IdentityModel.Tokens.Jwt" />
 	<PackageReference Include="SluggyUnidecode" />
 	<PackageReference Include="SmartFormat.NET" />
-	<PackageReference Include="Refit" />
+    <PackageReference Include="Refit.HttpClientFactory" />
   </ItemGroup>
 
   <ItemGroup>

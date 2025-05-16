@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using Android;
 using DragonSpark.Application.Mobile.Maui.Device.Notifications;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations.Allocated;
@@ -39,24 +37,5 @@ sealed class PermissionAwareNotifications : INotifications
     public void ReceiveNotification(string title, string message)
     {
         _previous.ReceiveNotification(title, message);
-    }
-}
-
-// TODO
-public sealed class NotificationPermission : Permissions.BasePlatformPermission
-{
-    public override (string androidPermission, bool isRuntime)[] RequiredPermissions
-    {
-        get
-        {
-            var result = new List<(string androidPermission, bool isRuntime)>();
-            if (!OperatingSystem.IsAndroidVersionAtLeast(33))
-            {
-                return result.ToArray();
-            }
-
-            result.Add((Manifest.Permission.PostNotifications, true));
-            return result.ToArray();
-        }
     }
 }

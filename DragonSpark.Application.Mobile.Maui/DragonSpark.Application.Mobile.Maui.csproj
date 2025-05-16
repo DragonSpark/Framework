@@ -20,6 +20,9 @@
 	  <Compile Update="Platforms\iOS\Extensions.cs">
 	    <ExcludeFromCurrentConfiguration>false</ExcludeFromCurrentConfiguration>
 	  </Compile>
+	  <Compile Update="Platforms\iOS\Http\Registrations.cs">
+	    <ExcludeFromCurrentConfiguration>false</ExcludeFromCurrentConfiguration>
+	  </Compile>
 	  <Compile Update="Platforms\iOS\Registrations.cs">
 	    <ExcludeFromCurrentConfiguration>false</ExcludeFromCurrentConfiguration>
 	  </Compile>

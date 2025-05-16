@@ -20,8 +20,11 @@ public static class Extensions
     public static IServiceCollection Register<T>(this IServiceCollection @this) where T : class
         => RegisterOption<T>.Default.Get(@this);
 
+    public static T? Section<T>(this IConfiguration @this, string name) where T : class => new Section<T>(name).Get(@this);
     public static T? Section<T>(this IConfiguration @this) where T : class => Composition.Section<T>.Default.Get(@this);
 
+    public static T? Section<T>(this IServiceCollection @this, string name) where T : class 
+        => @this.Configuration().Section<T>(name);
     public static T? Section<T>(this IServiceCollection @this) where T : class => @this.Configuration().Section<T>();
 
     public static HostOperationsContext Operations(this BuildHostContext @this) => new(@this);
