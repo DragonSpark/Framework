@@ -1,10 +1,9 @@
+using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using System;
 using System.IO;
 using System.IO.Pipes;
 using System.Threading.Tasks;
-using DragonSpark.Compose;
-using DragonSpark.Model.Operations;
-using DragonSpark.Model.Operations.Allocated;
 
 namespace DragonSpark.Application.Runtime.Process;
 
@@ -24,7 +23,7 @@ public class SendMessage : IStopAware<string>
         _timeout = timeout;
     }
 
-    public async ValueTask Get(Token<string> parameter)
+    public async ValueTask Get(Stop<string> parameter)
     {
         var (subject, item) = parameter;
         await using var client = new NamedPipeClientStream(_name);

@@ -189,8 +189,8 @@ public static partial class ExtensionMethods
 		=> await @this.Off(parameter);
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static async ValueTask<Token<TOut?>> Accounting<TIn, TOut>(this IContinuing<TIn, TOut> @this,
-	                                                                  Token<TIn> parameter)
+	public static async ValueTask<Stop<TOut?>> Accounting<TIn, TOut>(this IContinuing<TIn, TOut> @this,
+	                                                                  Stop<TIn> parameter)
 	{
 		var (subject, token) = await @this.Off(parameter);
 		return new(subject.Account(), token);

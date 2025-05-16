@@ -1,12 +1,12 @@
 ﻿using DragonSpark.Composition;
-using DragonSpark.Model.Operations.Allocated;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Selection;
 using OpenAI.Images;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Ai;
 
-public sealed class GenerateImageFromPrompt : ISelecting<Token<string>, GeneratedImage>
+public sealed class GenerateImageFromPrompt : ISelecting<Stop<string>, GeneratedImage>
 {
 	readonly ImageClient            _client;
 	readonly ImageGenerationOptions _options;
@@ -21,9 +21,9 @@ public sealed class GenerateImageFromPrompt : ISelecting<Token<string>, Generate
 		_options = options;
 	}
 
-	public async ValueTask<GeneratedImage> Get(Token<string> parameter)
+	public async ValueTask<GeneratedImage> Get(Stop<string> parameter)
 	{
-		var response = await _client.GenerateImageAsync(parameter, _options, parameter.Item);
+		var response = await _client.GenerateImageAsync(parameter, _options, parameter.Token);
 		return response.Value;
 	}
 }

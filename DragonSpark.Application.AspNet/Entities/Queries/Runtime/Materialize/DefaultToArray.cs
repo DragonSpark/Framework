@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Model.Operations.Allocated;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Sequences;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
@@ -13,7 +13,7 @@ sealed class DefaultToArray<T> : IToArray<T>
 
 	DefaultToArray() {}
 
-	public async ValueTask<Array<T>> Get(Token<IQueryable<T>> parameter)
+	public async ValueTask<Array<T>> Get(Stop<IQueryable<T>> parameter)
 	{
 		var (queryable, token) = parameter;
 		return await queryable.ToArrayAsync(token).Off();

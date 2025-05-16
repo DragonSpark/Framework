@@ -90,7 +90,7 @@ public class OperationResultComposer<_, T> : Composer<_, ValueTask<T>>
 	public OperationResultComposer<_, T> Using(CancellationToken parameter)
 		=> new(new AssignedToken<_, T>(Get(), parameter));
 
-	public OperationResultComposer<Token<_>, Token<T>> Token() => new(new TokenAdapter<_, T>(Get()));
+	public OperationResultComposer<Stop<_>, Stop<T>> Stop() => new(new StopAdapter<_, T>(Get()));
 
 	public OperationResultComposer<T> Bind(IResult<ValueTask<_>> parameter) => Bind(parameter.Get);
 

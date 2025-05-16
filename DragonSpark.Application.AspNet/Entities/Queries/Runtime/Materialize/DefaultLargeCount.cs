@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Model.Operations.Allocated;
+using DragonSpark.Model.Operations;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
@@ -12,7 +12,7 @@ sealed class DefaultLargeCount<T> : ILargeCount<T>
 
 	DefaultLargeCount() {}
 
-	public async ValueTask<ulong> Get(Token<IQueryable<T>> parameter)
+	public async ValueTask<ulong> Get(Stop<IQueryable<T>> parameter)
 	{
 		var (subject, token) = parameter;
 		var count  = await subject.LongCountAsync(token).Off();
