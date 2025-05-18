@@ -2,7 +2,7 @@
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Model.Operations.Selection;
+namespace DragonSpark.Model.Operations.Selection.Stop;
 
 public class Continuing<T, TOut> : Selecting<Stop<T>, Stop<TOut>>, IContinuing<T, TOut>
 {

@@ -1,6 +1,11 @@
-﻿using DragonSpark.Model;
+﻿using DragonSpark.Compose.Model.Operations;
+using DragonSpark.Model;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Results;
+using DragonSpark.Model.Operations.Selection;
+using DragonSpark.Model.Operations.Selection.Stop;
 using DragonSpark.Model.Selection;
+using System;
 using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
@@ -11,6 +16,26 @@ namespace DragonSpark.Compose;
 // ReSharper disable SuspiciousTypeConversion.Global
 public static partial class ExtensionMethods
 {
+	public static DragonSpark.Model.Operations.Results.IStopAware<T> AsStop<T>(this IResulting<T> @this)
+		=> new StopAwareAdapter<T>(@this);
+
+	public static IStopAware<TIn, TOut> AsStop<TIn, TOut>(this ISelecting<TIn, TOut> @this)
+		=> new StopAdapter<TIn, TOut>(@this);
+
+	public static OperationResultComposer<T> Ambient<T>(this OperationResultComposer<CancellationToken, T> @this)
+		=> new(new StopAwareAmbientAdapter<T>(@this.Get()));
+
+	public static IResulting<T> Ambient<T>(this ISelect<CancellationToken, ValueTask<T>> @this)
+		=> new StopAwareAmbientAdapter<T>(@this);
+
+	public static OperationResultComposer<CancellationToken, T> Bind<TIn, T>(
+		this OperationResultComposer<Stop<TIn>, T> @this, TIn parameter)
+		=> @this.Bind(() => parameter);
+
+	public static OperationResultComposer<CancellationToken, T> Bind<TIn, T>(
+		this OperationResultComposer<Stop<TIn>, T> @this,
+		Func<TIn> parameter)
+		=> new(new StopAwareBinding<TIn,T>(@this.Get(), parameter));
 	/**/
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
