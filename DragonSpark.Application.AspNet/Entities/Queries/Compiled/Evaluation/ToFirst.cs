@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using DragonSpark.Model.Operations;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,5 +11,5 @@ sealed class ToFirst<T> : IEvaluate<T, T>
 
 	ToFirst() {}
 
-	public ValueTask<T> Get(IAsyncEnumerable<T> parameter) => parameter.FirstAsync();
+	public ValueTask<T> Get(Stop<IAsyncEnumerable<T>> parameter) => parameter.Subject.FirstAsync(parameter.Token);
 }

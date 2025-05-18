@@ -1,7 +1,8 @@
+using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DragonSpark.Compose;
 
 namespace DragonSpark.Application.AspNet.Entities.Queries.Compiled.Evaluation;
 
@@ -11,10 +12,11 @@ sealed class ToCount<T> : IEvaluate<T, uint>
 
 	ToCount() {}
 
-	public async ValueTask<uint> Get(IAsyncEnumerable<T> parameter)
+	public async ValueTask<uint> Get(Stop<IAsyncEnumerable<T>> parameter)
 	{
-		var count  = await parameter.CountAsync().Off();
-		var result = count.Grade();
+		var (subject, token) = parameter;
+		var count        = await subject.CountAsync(token).Off();
+		var result       = count.Grade();
 		return result;
 	}
 }

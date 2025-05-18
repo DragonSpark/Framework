@@ -31,7 +31,7 @@ public sealed class FormComposerTests
 			                        .Where(x => x.Name != "Two")
 			                        .Invoke(contexts)
 			                        .To.Array()
-			                        .Get();
+			                        .Alternate.Get();
 			result.Length.Should().Be(2);
 			result.Open().Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
 		}
@@ -47,7 +47,7 @@ public sealed class FormComposerTests
 		}
 		{
 			using var result =
-				await Start.A.Query<Subject>().Where(x => x.Name != "Two").Invoke(contexts).To.Lease().Get();
+				await Start.A.Query<Subject>().Where(x => x.Name != "Two").Invoke(contexts).To.Lease().Alternate.Get();
 			result.Length.Should().Be(2);
 			result.ToArray().Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
 		}
@@ -66,7 +66,7 @@ public sealed class FormComposerTests
 			                        .Where(x => x.Name != "Two")
 			                        .Invoke(contexts)
 			                        .To.List()
-			                        .Get();
+			                        .Alternate.Get();
 			result.Count.Should().Be(2);
 			result.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
 		}
@@ -85,7 +85,7 @@ public sealed class FormComposerTests
 			                        .Where(x => x.Name != "Two")
 			                        .Invoke(contexts)
 			                        .To.Dictionary(x => x.Name)
-			                        .Get();
+			                        .Alternate.Get();
 			result.Count.Should().Be(2);
 			result.Keys.Should().BeEquivalentTo("One", "Three");
 		}
@@ -104,7 +104,7 @@ public sealed class FormComposerTests
 			                        .Where(x => x.Name != "Two")
 			                        .Invoke(contexts)
 			                        .To.Dictionary(x => x.Name, x => x.Id)
-			                        .Get();
+			                        .Alternate.Get();
 			result.Count.Should().Be(2);
 			result.Keys.Count.Should().Be(2);
 			result.Keys.Should().BeEquivalentTo("One", "Three");
@@ -129,11 +129,11 @@ public sealed class FormComposerTests
 			                        .Where(x => x.Name == "Two")
 			                        .Invoke(contexts)
 			                        .To.Single()
-			                        .Get();
+			                        .Alternate.Get();
 			single.Should().NotBeNull();
 		}
 		{
-			var single = Start.A.Query<Subject>().Where(x => x.Name != "Two").Invoke(contexts).To.Single().Get();
+			var single = Start.A.Query<Subject>().Where(x => x.Name != "Two").Invoke(contexts).To.Single().Alternate.Get();
 			await single.Awaiting(x => x.AsTask()).Should().ThrowAsync<InvalidOperationException>();
 		}
 	}
@@ -151,7 +151,7 @@ public sealed class FormComposerTests
 			                        .Where(x => x.Name == "Two")
 			                        .Invoke(contexts)
 			                        .To.SingleOrDefault()
-			                        .Get();
+			                        .Alternate.Get();
 			single.Should().NotBeNull();
 		}
 		{
@@ -159,7 +159,7 @@ public sealed class FormComposerTests
 			                        .Where(x => x.Name == "Four")
 			                        .Invoke(contexts)
 			                        .To.SingleOrDefault()
-			                        .Get();
+			                        .Alternate.Get();
 			single.Should().BeNull();
 		}
 	}
@@ -177,11 +177,11 @@ public sealed class FormComposerTests
 			                        .Where(x => x.Name == "Two")
 			                        .Invoke(contexts)
 			                        .To.First()
-			                        .Get();
+			                        .Alternate.Get();
 			single.Should().NotBeNull();
 		}
 		{
-			var single = Start.A.Query<Subject>().Where(x => x.Name == "Four").Invoke(contexts).To.First().Get();
+			var single = Start.A.Query<Subject>().Where(x => x.Name == "Four").Invoke(contexts).To.First().Alternate.Get();
 			await single.Awaiting(x => x.AsTask()).Should().ThrowAsync<InvalidOperationException>();
 		}
 	}
@@ -199,7 +199,7 @@ public sealed class FormComposerTests
 			                        .Where(x => x.Name == "Two")
 			                        .Invoke(contexts)
 			                        .To.FirstOrDefault()
-			                        .Get();
+			                        .Alternate.Get();
 			single.Should().NotBeNull();
 		}
 		{
@@ -207,7 +207,7 @@ public sealed class FormComposerTests
 			                        .Where(x => x.Name == "Four")
 			                        .Invoke(contexts)
 			                        .To.FirstOrDefault()
-			                        .Get();
+			                        .Alternate.Get();
 			single.Should().BeNull();
 		}
 	}
@@ -221,7 +221,7 @@ public sealed class FormComposerTests
 			await context.Database.EnsureCreatedAsync();
 		}
 		{
-			var single = await Start.A.Query<Subject>().Where(x => x.Name == "Two").Invoke(contexts).To.Any().Get();
+			var single = await Start.A.Query<Subject>().Where(x => x.Name == "Two").Invoke(contexts).To.Any().Alternate.Get();
 			single.Should().BeTrue();
 		}
 		{
@@ -229,7 +229,7 @@ public sealed class FormComposerTests
 			                        .Where(x => x.Name == "Four")
 			                        .Invoke(contexts)
 			                        .To.Any()
-			                        .Get();
+			                        .Alternate.Get();
 			single.Should().BeFalse();
 		}
 	}
@@ -271,7 +271,7 @@ public sealed class FormComposerTests
 		Benchmarks(IDbContextFactory<Context> factory) : this(new NewContext<Context>(factory), factory) {}
 
 		Benchmarks(INewContext<Context> @new, IDbContextFactory<Context> factory)
-			: this(Start.A.Query<Subject>().Where(x => x.Name == "Two").Invoke(@new).To.Single(),
+			: this(Start.A.Query<Subject>().Where(x => x.Name == "Two").Invoke(@new).To.Single().Alternate,
 			       factory,
 			       EF.CompileAsyncQuery<DbContext, Subject>(x => x.Set<Subject>().Single(y => y.Name == "Two"))) {}
 

@@ -30,7 +30,7 @@ public abstract class ContentComponentBase<T> : ComponentBase
 	protected abstract ValueTask<T?> GetContent();
 
 	[CascadingParameter]
-	public required CancellationToken Cancel { get; set; } = CancellationToken.None;
+	public required CancellationToken Stop { get; set; } = CancellationToken.None;
 
 	protected virtual void RequestNewContent(bool redraw = false)
 	{

@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Sequences;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
@@ -11,13 +12,14 @@ public class EntityInitializer<T> : IInitializer where T : class
 
 	protected EntityInitializer(params T[] entities) => _entities = entities;
 
-	public async ValueTask Get(DbContext parameter)
+	public async ValueTask Get(Stop<DbContext> parameter)
 	{
-		var set = parameter.Set<T>();
+		var (subject, stop) = parameter;
+		var set = subject.Set<T>();
 		foreach (var entity in _entities.Open())
 		{
 			set.Add(entity);
-			await parameter.SaveChangesAsync().Off();
+			await subject.SaveChangesAsync(stop).Off();
 		}
 	}
 }

@@ -1,7 +1,8 @@
+using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
+using NetFabric.Hyperlinq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using DragonSpark.Compose;
-using NetFabric.Hyperlinq;
 
 namespace DragonSpark.Application.AspNet.Entities.Queries.Compiled.Evaluation;
 
@@ -11,6 +12,6 @@ sealed class ToNumber : IEvaluate<int, uint>
 
 	ToNumber() {}
 
-	public async ValueTask<uint> Get(IAsyncEnumerable<int> parameter)
-		=> (uint)await parameter.AsAsyncValueEnumerable().SumAsync().Off();
+	public async ValueTask<uint> Get(Stop<IAsyncEnumerable<int>> parameter)
+		=> (uint)await parameter.Subject.AsAsyncValueEnumerable().SumAsync(parameter.Token).Off();
 }

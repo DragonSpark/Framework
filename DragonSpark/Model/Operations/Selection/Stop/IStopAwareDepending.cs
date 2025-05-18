@@ -1,4 +1,4 @@
-namespace DragonSpark.Model.Operations.Selection;
+namespace DragonSpark.Model.Operations.Selection.Stop;
 
 public interface IStopAwareDepending<T> : ISelecting<Stop<T>, bool>;
 

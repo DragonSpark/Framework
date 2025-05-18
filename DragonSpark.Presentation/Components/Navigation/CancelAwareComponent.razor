@@ -1,21 +1,36 @@
-﻿@using DragonSpark.Presentation.Components.Routing
+﻿@using DragonSpark.Application.AspNet.Runtime.Operations
+@using DragonSpark.Presentation.Components.Routing
 @using System.Threading
+
+@inject IScopedToken Session
 
 @implements IDisposable
 
 <NavigationMonitor Changed="@OnChange" />
-<CascadingValue Value="@_source.Token" ChildContent="@ChildContent" />
+<CascadingValue TValue="CancellationToken?" Value="@_combined.Token" ChildContent="@ChildContent" />
 
 @code {
-    CancellationTokenSource _source = new();
+    CancellationTokenSource _source = null!, _combined = null!;
 
     [Parameter]
     public required RenderFragment ChildContent { get; set; }
 
+    protected override void OnInitialized()
+    {
+        OnReset();
+        base.OnInitialized();
+    }
+
+    void OnReset()
+    {
+        _source = new();
+        _combined = CancellationTokenSource.CreateLinkedTokenSource(Session.Get(), _source.Token);
+    }
+
     void OnChange()
     {
         _source.Cancel();
-        _source = new();
+        OnReset();
     }
 
     public void Dispose()
@@ -23,5 +38,4 @@
         _source.Cancel();
         _source.Dispose();
     }
-
 }

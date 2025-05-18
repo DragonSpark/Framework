@@ -26,7 +26,7 @@
     {
         var state = await State.Off();
         var api   = Api.Get(state.User);
-        return await Factory(api, Cancel).Off();
+        return await Factory(api, Stop).Off();
     }
 
 }

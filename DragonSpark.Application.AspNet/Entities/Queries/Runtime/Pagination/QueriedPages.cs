@@ -1,6 +1,8 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Materialize;
 using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Shape;
 using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
@@ -24,7 +26,7 @@ sealed class QueriedPages<T> : IPages<T>
 	{
 		using var session = await _queries.Off();
 		var (query, count) = await _compose.Off(new(parameter, session.Subject));
-		var materialize = await _materialize.Off(new(query, parameter.Token));
+		var materialize = await _materialize.Off(new Stop<IQueryable<T>>(query, parameter.Token));
 		return new(materialize.Open(), count);
 	}
 }

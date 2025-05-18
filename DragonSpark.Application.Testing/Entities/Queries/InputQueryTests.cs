@@ -77,7 +77,7 @@ public sealed class InputQueryTests
 	public async Task VerifyExternalParameterSql()
 	{
 		await using var contexts = await new SqlLiteNewContext<Context>().Initialize();
-		
+
 		{
 			await using var context = contexts.Get();
 			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
@@ -102,7 +102,7 @@ public sealed class InputQueryTests
 	public async Task VerifySelectedSql()
 	{
 		await using var factory = await new SqlLiteNewContext<Context>().Initialize();
-		
+
 		{
 			await using var context = factory.Get();
 			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
@@ -145,7 +145,7 @@ public sealed class InputQueryTests
 			new EvaluateToArray<Input, string>(new NewContext<ContextWithData>(contexts).Then().Scopes(),
 			                                   ComplexSelected.Default);
 		{
-			var results = await evaluate.Off(new(id, "One"));
+			var results = await evaluate.Alternate.Off(new(id, "One"));
 			var only    = results.Open().Only();
 			only.Should().NotBeNull();
 			only.Should().Be("One");
@@ -158,7 +158,7 @@ public sealed class InputQueryTests
 	public async Task VerifyComplexSelectedSql()
 	{
 		await using var contexts = await new SqlLiteNewContext<ContextWithData>().Initialize();
-		
+
 		{
 			await using var context = contexts.Get();
 			await context.Database.EnsureCreatedAsync();
@@ -168,7 +168,7 @@ public sealed class InputQueryTests
 
 		var evaluate = contexts.Then().Use(ComplexSelected.Default).To.Array();
 		{
-			var results = await evaluate.Off(new(id, "One"));
+			var results = await evaluate.Alternate.Off(new(id, "One"));
 			var only    = results.Open().Only();
 			only.Should().NotBeNull();
 			only.Should().Be("One");
@@ -205,7 +205,7 @@ public sealed class InputQueryTests
 	public async Task VerifyWhereWithParameterSql()
 	{
 		await using var contexts = await new SqlLiteNewContext<ContextWithData>().Initialize();
-		
+
 		{
 			await using var data = contexts.Get();
 			await data.Database.EnsureCreatedAsync();
@@ -291,7 +291,7 @@ public sealed class InputQueryTests
 	public class Benchmarks
 	{
 		readonly INewContext<ContextWithData> _new;
-		readonly ISelecting<Input, Result>  _select;
+		readonly ISelecting<Input, Result>    _select;
 
 		public Benchmarks() : this(new DbContextOptionsBuilder<ContextWithData>().UseInMemoryDatabase("0")
 		                                                                         .Options) {}
@@ -310,12 +310,13 @@ public sealed class InputQueryTests
 			            .Where((input, subject) => input.Identity == subject.Id)
 			            .Select(x => new Result(x.Id, x.Name))
 			            .Invoke(@new)
-			            .To.Single()) {}
+			            .To.Single()
+			            .Alternate) {}
 
 		Benchmarks(INewContext<ContextWithData> @new, ISelecting<Input, Result> select)
 		{
-			_new = @new;
-			_select   = @select;
+			_new    = @new;
+			_select = @select;
 		}
 
 		[GlobalSetup]

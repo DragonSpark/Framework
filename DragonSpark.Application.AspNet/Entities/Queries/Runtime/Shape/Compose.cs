@@ -1,5 +1,7 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Materialize;
 using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Shape;
@@ -24,7 +26,8 @@ public class Compose<T> : ICompose<T>
 	{
 		var (input, _) = parameter;
 		var body      = await _body.Off(parameter);
-		var count     = input.IncludeTotalCount ? await _count.Off(new(body, input.Token)) : default(ulong?);
+		var stop      = new Stop<IQueryable<T>>(body, input.Token);
+		var count     = input.IncludeTotalCount ? await _count.Off(stop) : default(ulong?);
 		var partition = input.Partition.HasValue ? await _partition.Off(new(body, input.Partition.Value)) : body;
 		return new(partition, count);
 	}

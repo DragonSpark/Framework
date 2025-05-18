@@ -15,6 +15,6 @@
     [Parameter]
     public required RenderFragment<T> ChildContent { get; set; }
 
-    protected override ValueTask<T?> GetContent() => Factory(Cancel).ToOperation();
+    protected override ValueTask<T?> GetContent() => Factory(Stop).ToOperation();
 
 }

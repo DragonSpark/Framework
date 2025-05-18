@@ -1,6 +1,7 @@
-using System.Threading.Tasks;
 using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Initialization;
 
@@ -10,8 +11,9 @@ public sealed class SaveStateInitializer : IInitializer
 
 	SaveStateInitializer() {}
 
-	public async ValueTask Get(DbContext parameter)
+	public async ValueTask Get(Stop<DbContext> parameter)
 	{
-		await parameter.SaveChangesAsync().Off();
+		var (subject, stop) = parameter;
+		await subject.SaveChangesAsync(stop).Off();
 	}
 }

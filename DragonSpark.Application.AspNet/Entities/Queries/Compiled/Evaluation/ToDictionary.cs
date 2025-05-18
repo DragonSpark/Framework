@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DragonSpark.Model.Operations;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,7 +12,8 @@ sealed class ToDictionary<T, TKey> : IEvaluate<T, Dictionary<TKey, T>> where TKe
 
 	public ToDictionary(Func<T, TKey> key) => _key = key;
 
-	public ValueTask<Dictionary<TKey, T>> Get(IAsyncEnumerable<T> parameter) => parameter.ToDictionaryAsync(_key);
+	public ValueTask<Dictionary<TKey, T>> Get(Stop<IAsyncEnumerable<T>> parameter)
+		=> parameter.Subject.ToDictionaryAsync(_key, parameter.Token);
 }
 
 sealed class ToDictionary<T, TKey, TValue> : IEvaluate<T, Dictionary<TKey, TValue>> where TKey : notnull
@@ -25,6 +27,6 @@ sealed class ToDictionary<T, TKey, TValue> : IEvaluate<T, Dictionary<TKey, TValu
 		_value = value;
 	}
 
-	public ValueTask<Dictionary<TKey, TValue>> Get(IAsyncEnumerable<T> parameter)
-		=> parameter.ToDictionaryAsync(_key, _value);
+	public ValueTask<Dictionary<TKey, TValue>> Get(Stop<IAsyncEnumerable<T>> parameter)
+		=> parameter.Subject.ToDictionaryAsync(_key, _value, parameter.Token);
 }

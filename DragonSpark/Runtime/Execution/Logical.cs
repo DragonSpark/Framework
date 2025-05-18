@@ -5,6 +5,8 @@ namespace DragonSpark.Runtime.Execution;
 
 public class Logical<T> : IMutable<T?>
 {
+	public static implicit operator T?(Logical<T> instance) => instance.Get();
+
 	readonly AsyncLocal<T?> _local;
 
 	public Logical() : this(new AsyncLocal<T?>()) {}

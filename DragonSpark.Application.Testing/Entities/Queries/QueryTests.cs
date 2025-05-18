@@ -284,8 +284,8 @@ public sealed class QueryTests
 		Benchmarks(DbContextOptions<Context> options) : this(new PooledDbContextFactory<Context>(options)) {}
 
 		Benchmarks(IDbContextFactory<Context> factory)
-			: this(new SubjectsNotTwo(new NewContext<Context>(factory)),
-			       new SubjectsNotWithParameter(new NewContext<Context>(factory)),
+			: this(new SubjectsNotTwo(new NewContext<Context>(factory)).Alternate,
+			       new SubjectsNotWithParameter(new NewContext<Context>(factory)).Alternate,
 			       new Scoped(factory.CreateDbContext()).Get()) {}
 
 		Benchmarks(ISelecting<None, Array<Subject>> query, ISelecting<string, Array<Subject>> selected,
