@@ -1,13 +1,13 @@
 ﻿using DragonSpark.Model.Operations;
-using DragonSpark.Model.Operations.Selection;
+using DragonSpark.Model.Operations.Selection.Stop;
 
 namespace DragonSpark.Application.AspNet.Entities.Editing;
 
-public class Saving<TIn, TOut> : ConfiguringResult<TIn, TOut> where TOut : class
+public class Saving<TIn, TOut> : StopAwareConfiguringResult<TIn, TOut> where TOut : class
 {
-	protected Saving(ISelecting<TIn, TOut> @new, Save<TOut> add) : base(@new, add) {}
+	protected Saving(IStopAware<TIn, TOut> @new, Save<TOut> add) : base(@new, add) {}
 
-	protected Saving(ISelecting<TIn, TOut> select, IOperation<TOut> operation) : base(select, operation) {}
+	protected Saving(IStopAware<TIn, TOut> select, IStopAware<TOut> operation) : base(select, operation) {}
 
-	protected Saving(Await<TIn, TOut> @new, Await<TOut> add) : base(@new, add) {}
+	public Saving(Await<Stop<TIn>, TOut> select, Await<Stop<TOut>> configure) : base(select, configure) {}
 }

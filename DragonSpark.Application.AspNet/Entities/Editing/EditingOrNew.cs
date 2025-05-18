@@ -1,8 +1,9 @@
-using System.Threading.Tasks;
 using DragonSpark.Application.AspNet.Entities.Queries.Composition;
 using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Selection;
 using JetBrains.Annotations;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Editing;
 
@@ -21,7 +22,7 @@ public class EditingOrNew<TIn, T> : IEdit<TIn, T> where T : class
 	}
 
 	[MustDisposeResource]
-	public async ValueTask<Edit<T>> Get(TIn parameter)
+	public async ValueTask<Edit<T>> Get(Stop<TIn> parameter)
 	{
 		var (context, current) = await _previous.Off(parameter);
 		if (current is null)

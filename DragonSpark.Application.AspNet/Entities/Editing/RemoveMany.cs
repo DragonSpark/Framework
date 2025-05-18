@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Editing;
 
-public class RemoveMany<TIn, TOut> : IOperation<TIn> where TOut : class
+public class RemoveMany<TIn, TOut> : IStopAware<TIn> where TOut : class
 {
 	readonly IEditMany<TIn, TOut> _edit;
 
@@ -14,7 +14,7 @@ public class RemoveMany<TIn, TOut> : IOperation<TIn> where TOut : class
 
 	public RemoveMany(IEditMany<TIn, TOut> edit) => _edit = edit;
 
-	public async ValueTask Get(TIn parameter)
+	public async ValueTask Get(Stop<TIn> parameter)
 	{
 		using var edit = await _edit.Off(parameter);
 		foreach (var remove in edit.Subject)

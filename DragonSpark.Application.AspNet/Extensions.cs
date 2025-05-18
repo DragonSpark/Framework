@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Security.Claims;
+using System.Threading;
 using System.Threading.Tasks;
 using IdentityUser = DragonSpark.Application.AspNet.Security.Identity.IdentityUser;
 
@@ -46,7 +47,7 @@ partial class Extensions
 
 	public static Claim? Claim(this Accessed @this) => @this.Exists ? new(@this.Claim, @this.Value.Verify()) : null;
 
-	
+
 	public static uint? Number(this ClaimsPrincipal @this) => UserNumber.Default.Get(@this);
 
 	public static ProviderIdentity AuthenticatedIdentity(this ClaimsPrincipal @this)
@@ -84,8 +85,8 @@ partial class Extensions
 	public static string? Read(this IReadClaim @this, ClaimsPrincipal parameter)
 		=> @this.Get(parameter).To<Accessed, string?>(x => x.Exists ? x.Value : null);
 
-	public static Task<int> Save(this DbContext @this) => @this.SaveChangesAsync();
-	
+	public static Task Save(this DbContext @this, CancellationToken stop) => @this.SaveChangesAsync(stop);
+
 	public static T Attached<T>(this IEditor @this, T parameter) where T : class
 	{
 		@this.Attach(parameter);
@@ -97,7 +98,7 @@ partial class Extensions
 	public static MarkupString AsMarkup(this string? @this) => AsMarkdown.Default.Get(@this);
 
 	/**/
-	
+
 	public static ITransactions Ambient(this ITransactions @this) => new AmbientAwareTransactions(@this);
 
 	public static IOperation<T> ReloadAware<T>(this IOperation<T> @this) => new ReloadAware<T>(@this);

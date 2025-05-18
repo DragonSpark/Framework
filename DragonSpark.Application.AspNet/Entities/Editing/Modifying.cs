@@ -1,11 +1,11 @@
-using System.Threading.Tasks;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
-using DragonSpark.Model.Operations.Selection;
+using DragonSpark.Model.Operations.Selection.Stop;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Editing;
 
-public class Modifying<TIn, T> : ISelecting<TIn, T>
+public class Modifying<TIn, T> : IStopAware<TIn, T>
 {
 	readonly IEdit<TIn, T>  _select;
 	readonly Await<Edit<T>> _configure;
@@ -22,7 +22,7 @@ public class Modifying<TIn, T> : ISelecting<TIn, T>
 		_configure = configure;
 	}
 
-	public async ValueTask<T> Get(TIn parameter)
+	public async ValueTask<T> Get(Stop<TIn> parameter)
 	{
 		using var edit = await _select.Get(parameter).On();
 		await _configure(edit);

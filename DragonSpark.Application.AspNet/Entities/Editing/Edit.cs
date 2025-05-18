@@ -1,11 +1,12 @@
-using System;
-using System.Threading.Tasks;
 using DragonSpark.Application.AspNet.Entities.Queries.Compiled;
 using DragonSpark.Application.AspNet.Entities.Queries.Compiled.Evaluation;
 using DragonSpark.Compose;
-using DragonSpark.Model.Operations.Selection;
+using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Selection.Stop;
 using DragonSpark.Model.Selection;
 using JetBrains.Annotations;
+using System;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Editing;
 
@@ -21,11 +22,11 @@ public sealed class Edit<TIn, T, TResult> : IEdit<TIn, TResult>
 	}
 
 	[MustDisposeResource]
-	public async ValueTask<Edit<TResult>> Get(TIn parameter)
+	public async ValueTask<Edit<TResult>> Get(Stop<TIn> parameter)
 	{
 		var (context, disposable, elements) = _reading.Get(parameter);
 		var evaluate = await _evaluate.Off(elements);
-		return new(new Editor(context, disposable), evaluate);
+		return new(new Editor(context, disposable, parameter), evaluate);
 	}
 }
 
@@ -75,9 +76,9 @@ public readonly struct Edit<T>(IEditor editor, T subject) : IEditor
 	}
 }
 
-public class Edit<TIn, T> : Selecting<TIn, Edit<T>>, IEdit<TIn, T>
+public class Edit<TIn, T> : StopAware<TIn, Edit<T>>, IEdit<TIn, T>
 {
-	protected Edit(ISelect<TIn, ValueTask<Edit<T>>> select) : base(select) {}
+	protected Edit(ISelect<Stop<TIn>, ValueTask<Edit<T>>> select) : base(select) {}
 
-	protected Edit(Func<TIn, ValueTask<Edit<T>>> select) : base(select) {}
+	protected Edit(Func<Stop<TIn>, ValueTask<Edit<T>>> select) : base(select) {}
 }

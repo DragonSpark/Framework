@@ -1,23 +1,24 @@
-using System;
-using System.Threading.Tasks;
 using DragonSpark.Compose;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Editing;
 
 [MustDisposeResource]
-sealed class Editor : DragonSpark.Model.Operations.Allocated.Terminating<int>, IEditor
+sealed class Editor : IEditor
 {
-	readonly DbContext   _context;
-	readonly IDisposable _disposable;
+	readonly DbContext         _context;
+	readonly IDisposable       _disposable;
+	readonly CancellationToken _stop;
 
-	/*public Editor(DbContext context) : this(context, context) {}*/
-
-	public Editor(DbContext context, IDisposable disposable) : base(context.Save)
+	public Editor(DbContext context, IDisposable disposable, CancellationToken stop)
 	{
 		_context    = context;
 		_disposable = disposable;
+		_stop  = stop;
 	}
 
 	public void Add(object entity)
@@ -57,10 +58,12 @@ sealed class Editor : DragonSpark.Model.Operations.Allocated.Terminating<int>, I
 		_context.ChangeTracker.Clear();
 	}
 
-	public ValueTask Refresh(object entity) => _context.Entry(entity).ReloadAsync().ToOperation();
+	public ValueTask Refresh(object entity) => _context.Entry(entity).ReloadAsync(_stop).ToOperation();
 
 	public void Dispose()
 	{
 		_disposable.Dispose();
 	}
+
+	public ValueTask Get() => _context.Save(_stop).ToOperation();
 }

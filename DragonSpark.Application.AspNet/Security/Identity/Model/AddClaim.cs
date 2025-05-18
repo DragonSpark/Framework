@@ -1,10 +1,10 @@
-using System;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using DragonSpark.Application.AspNet.Entities.Editing;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations.Selection;
 using Microsoft.AspNetCore.Identity;
+using System;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Model;
 
@@ -27,7 +27,7 @@ public class AddClaim<T> : ISelecting<T, IdentityResult> where T : IdentityUser
 	public async ValueTask<IdentityResult> Get(T parameter)
 	{
         // ReSharper disable once NotDisposedResource
-        using var edit   = await _edit.Get(parameter).On();
+        using var edit   = await _edit.Get(new(parameter)).On();
         using var users  = _users.Get();
         var       claim  = _claim(parameter);
 		var       result = await users.Subject.AddClaimAsync(parameter, claim).Off();

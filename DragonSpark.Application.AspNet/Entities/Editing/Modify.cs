@@ -1,9 +1,9 @@
-using System;
-using System.Threading.Tasks;
 using DragonSpark.Application.AspNet.Entities.Queries.Composition;
 using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
+using System;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Editing;
 
@@ -29,7 +29,7 @@ public class Modify<T> : Modify<T, T>
 	protected Modify(IEdit<T> edit, Action<T> modify) : this(edit, Start.A.Command(modify).Get()) {}
 }
 
-public class Modify<TIn, T> : IOperation<TIn>
+public class Modify<TIn, T> : IStopAware<TIn>
 {
 	readonly IEdit<TIn, T>  _select;
 	readonly Await<Edit<T>> _configure;
@@ -62,9 +62,9 @@ public class Modify<TIn, T> : IOperation<TIn>
 		_configure = configure;
 	}
 
-	public async ValueTask Get(TIn parameter)
+	public async ValueTask Get(Stop<TIn> parameter)
 	{
-		using var edit = await _select.Get(parameter).On();
+		using var edit = await _select.On(parameter);
 		await _configure(edit);
 		await edit.Off();
 	}

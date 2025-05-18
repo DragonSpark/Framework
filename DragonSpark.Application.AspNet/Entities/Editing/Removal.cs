@@ -6,23 +6,23 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Editing;
 
-public class Removal<TIn, T> : IOperation<TIn> where T : class
+public class Removal<TIn, T> : IStopAware<TIn> where T : class
 {
-	readonly ISelecting<TIn, T?> _select;
+	readonly IStopAware<TIn, T?> _select;
 	readonly Remove<T>           _remove;
 	readonly ICommand<TIn>       _command;
 
-	protected Removal(ISelecting<TIn, T?> select, Remove<T> remove)
+	protected Removal(IStopAware<TIn, T?> select, Remove<T> remove)
 		: this(@select, remove, EmptyCommand<TIn>.Default) {}
 
-	protected Removal(ISelecting<TIn, T?> select, Remove<T> remove, ICommand<TIn> command)
+	protected Removal(IStopAware<TIn, T?> select, Remove<T> remove, ICommand<TIn> command)
 	{
 		_select  = select;
 		_remove  = remove;
 		_command = command;
 	}
 
-	public async ValueTask Get(TIn parameter)
+	public async ValueTask Get(Stop<TIn> parameter)
 	{
 		var entity = await _select.Off(parameter);
 		if (entity is not null)

@@ -11,30 +11,29 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Server.Output;
 
-public class OutputsAware<T> : IOperation<T> where T : IUserIdentity
+public class OutputsAware<T> : IStopAware<T> where T : IUserIdentity
 {
-	readonly IOperation<T>     _previous;
-	readonly IOutputCacheStore _output;
-	readonly Array<IOutputKey> _keys;
+	readonly IOperation<Stop<T>> _previous;
+	readonly IOutputCacheStore   _output;
+	readonly Array<IOutputKey>   _keys;
 
-	protected OutputsAware(IOperation<T> previous, IOutputCacheStore output, params IOutputKey[] keys)
+	protected OutputsAware(IOperation<Stop<T>> previous, IOutputCacheStore output, params IOutputKey[] keys)
 	{
 		_previous = previous;
 		_output   = output;
 		_keys     = keys;
 	}
 
-	public async ValueTask Get(T parameter)
+	public async ValueTask Get(Stop<T> parameter)
 	{
 		await _previous.Off(parameter);
 		foreach (var key in _keys.Open())
 		{
-			var tag = key is IUserOutputKey user ? user.Get(parameter) : key.Get(None.Default);
+			var tag = key is IUserOutputKey user ? user.Get(parameter.Subject) : key.Get(None.Default);
 			await _output.EvictByTagAsync(tag, CancellationToken.None).Off();
 		}
 	}
 }
-
 public class OutputsAware<TIn, T> : ISelecting<TIn, T> where TIn : IUserIdentity
 {
 	readonly ISelecting<TIn, T> _previous;
