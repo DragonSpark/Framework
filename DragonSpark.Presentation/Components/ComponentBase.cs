@@ -2,6 +2,7 @@
 using DragonSpark.Compose;
 using Microsoft.AspNetCore.Components;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components;
@@ -25,4 +26,7 @@ public class ComponentBase : Microsoft.AspNetCore.Components.ComponentBase
 
 	[Inject]
 	protected IExecuteOperation ExecuteOperation { get; set; } = null!;
+
+	[CascadingParameter]
+	public required CancellationToken Stop { get; set; } = CancellationToken.None;
 }

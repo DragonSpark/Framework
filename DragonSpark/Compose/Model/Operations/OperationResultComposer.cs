@@ -105,12 +105,14 @@ public class OperationResultComposer<_, T> : Composer<_, ValueTask<T>>
 	public OperationResultComposer<_, T> Configure(Action<T> configure)
 		=> new(Get().Select(new Configure<T>(configure)));
 
-	public OperationComposer<_> Terminate(ISelect<T, ValueTask> command) => Terminate(command.Get);
-
+	public OperationComposer<_> Terminate(ISelect<T, ValueTask> command) => Terminate(command.ToDelegate());
 	public new OperationComposer<_> Terminate() => Terminate(_ => ValueTask.CompletedTask);
-
 	public OperationComposer<_> Terminate(Func<T, ValueTask> command)
 		=> new(Get().Select(new OperationSelect<T>(command)));
+
+	/*public OperationComposer<_> Terminate(ISelect<Stop<T>, ValueTask> command) => Terminate(command.Get);
+	public OperationComposer<Stop<_>> Terminate(Func<Stop<T>, ValueTask> command)
+		=> new(new Terminate<_, T>(Get(), command));*/
 
 	public OperationComposer<_> Terminate(Action<T> command) => new(Get().Select(new InvokingParameter<T>(command)));
 

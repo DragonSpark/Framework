@@ -1,5 +1,5 @@
-﻿using DragonSpark.Model.Operations.Selection;
+﻿using DragonSpark.Model.Operations.Selection.Stop;
 
 namespace DragonSpark.Application.AspNet.Entities.Editing;
 
-public interface IEditMany<in TIn, T> : ISelecting<TIn, ManyEdit<T>>;
+public interface IEditMany<TIn, T> : IStopAware<TIn, ManyEdit<T>>;

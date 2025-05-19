@@ -18,7 +18,7 @@ public class StopAware<TIn, TFrom, TTo> : IStopAware<TIn, TTo>
 	readonly Func<Stop<TFrom>, ValueTask<TTo>> _to;
 
 	public StopAware(ISelect<Stop<TIn>, ValueTask<TFrom>> from, ISelect<Stop<TFrom>, ValueTask<TTo>> to)
-		: this(@from.Get, to.Get) {}
+		: this(from.Get, to.Get) {}
 
 	public StopAware(Func<Stop<TIn>, ValueTask<TFrom>> from, Func<Stop<TFrom>, ValueTask<TTo>> to)
 	{
