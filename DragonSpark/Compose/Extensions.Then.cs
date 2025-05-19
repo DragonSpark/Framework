@@ -12,6 +12,7 @@ using DragonSpark.Model.Operations.Results;
 using DragonSpark.Model.Operations.Selection;
 using DragonSpark.Model.Operations.Selection.Conditions;
 using DragonSpark.Model.Operations.Selection.Stop;
+using DragonSpark.Model.Operations.Stop;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Alterations;
@@ -218,8 +219,8 @@ public static partial class ExtensionMethods
 
 	public static IStopAware<TIn, TOut> Out<TIn, TOut>(this Composer<Stop<TIn>, ValueTask<TOut>> @this)
 		=> @this.Get().To(x => x as IStopAware<TIn, TOut> ?? new StopAware<TIn, TOut>(x.Get));
-	public static DragonSpark.Model.Operations.IStopAware<T> Out<T>(this Composer<Stop<T>, ValueTask> @this)
-		=> @this.Get().To(x => x as DragonSpark.Model.Operations.IStopAware<T> ?? new StopAware<T>(x.Get));
+	public static DragonSpark.Model.Operations.Stop.IStopAware<T> Out<T>(this Composer<Stop<T>, ValueTask> @this)
+		=> @this.Get().To(x => x as DragonSpark.Model.Operations.Stop.IStopAware<T> ?? new StopAware<T>(x.Get));
 
 	public static IContinuing<TIn, TOut> Out<TIn, TOut>(this Composer<Stop<TIn>, ValueTask<Stop<TOut>>> @this)
 		=> @this.Get().To(x => x as IContinuing<TIn, TOut> ?? new Continuing<TIn, TOut>(x.Get));

@@ -1,4 +1,4 @@
-using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Stop;
 using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Application.AspNet.Entities.Initialization;

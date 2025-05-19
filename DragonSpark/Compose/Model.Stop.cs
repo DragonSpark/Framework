@@ -5,6 +5,7 @@ using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Results;
 using DragonSpark.Model.Operations.Selection;
 using DragonSpark.Model.Operations.Selection.Stop;
+using DragonSpark.Model.Operations.Stop;
 using DragonSpark.Model.Selection;
 using System;
 using System.Runtime.CompilerServices;
@@ -39,11 +40,11 @@ public static partial class ExtensionMethods
 	public static IOperation<T> Alternate<T>(this ISelect<Stop<T>, ValueTask> @this)
 		=> new StopAwareOperationAdapter<T>(@this);
 
-	public static DragonSpark.Model.Operations.IStopAware<T> AsStop<T>(this Composer<T, ValueTask> @this)
-		=> new DragonSpark.Model.Operations.StopAwareAdapter<T>(@this.Get());
+	public static DragonSpark.Model.Operations.Stop.IStopAware<T> AsStop<T>(this Composer<T, ValueTask> @this)
+		=> new DragonSpark.Model.Operations.Stop.StopAwareAdapter<T>(@this.Get());
 
-	public static DragonSpark.Model.Operations.IStopAware<T> AsStop<T>(this ISelect<T, ValueTask> @this)
-		=> new DragonSpark.Model.Operations.StopAwareAdapter<T>(@this);
+	public static DragonSpark.Model.Operations.Stop.IStopAware<T> AsStop<T>(this ISelect<T, ValueTask> @this)
+		=> new DragonSpark.Model.Operations.Stop.StopAwareAdapter<T>(@this);
 
 	public static OperationComposer<Stop<T>> Terminate<T, TOut>(this OperationResultComposer<Stop<T>, TOut> @this,
 	                                                      ISelect<Stop<TOut>, ValueTask> command)
