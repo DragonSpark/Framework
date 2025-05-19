@@ -3,6 +3,7 @@ using DragonSpark.Application.AspNet;
 using DragonSpark.Application.AspNet.Entities;
 using DragonSpark.Application.AspNet.Entities.Editing;
 using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
 using DragonSpark.Testing.Objects.Entities;
 using DragonSpark.Testing.Objects.Entities.SqlLite;
@@ -11,6 +12,7 @@ using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -189,6 +191,36 @@ public sealed class SaveTests
 			return await context.Subjects.SingleAsync();
 		}
 	}
+
+	public class AmbientBenchmarks
+	{
+		readonly CancellationTokenSource source = new();
+		[GlobalSetup]
+		public void GlobalSetup()
+		{
+			AmbientToken.Default.Execute(source.Token);
+
+		}
+
+		/*[Benchmark]
+		public Task Assign()
+		{
+			using var _ = AmbientToken.Default.Assigned(source.Token);
+			return Task.CompletedTask;
+		}*/
+
+		[Benchmark]
+		public Task Read()
+		{
+			var token = AmbientToken.Default.Get();
+			if (token == CancellationToken.None)
+			{
+				throw new InvalidOperationException();
+			}
+			return Task.CompletedTask;
+		}
+	}
+
 
 	public class DisposeBenchmarks
 	{

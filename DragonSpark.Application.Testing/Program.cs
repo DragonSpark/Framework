@@ -8,6 +8,6 @@ public class Program
 	static void Main(params string[] arguments)
 	{
 		Hosting.BenchmarkDotNet.Configuration.Default.Get(arguments)
-		       .To(Hosting.BenchmarkDotNet.Run.A<SaveTests.DisposeBenchmarks>);
+		       .To(Hosting.BenchmarkDotNet.Run.A<SaveTests.AmbientBenchmarks>);
 	}
 }
