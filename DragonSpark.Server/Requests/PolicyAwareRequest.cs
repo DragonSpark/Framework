@@ -10,11 +10,11 @@ namespace DragonSpark.Server.Requests;
 
 public class PolicyAwareRequest<TIn, TOut> : PolicyAwareRequest<TIn> where TOut : class
 {
-	protected PolicyAwareRequest(IStopAware<Guid, uint?> owner, ISelecting<TIn, TOut?> select,
+	protected PolicyAwareRequest(IStopAware<Guid, uint?> owner, IStopAware<TIn, TOut?> select,
 	                             IRequesting<TIn> other)
 		: this(new Policy(owner), select, other) {}
 
-	protected PolicyAwareRequest(IPolicy policy, ISelecting<TIn, TOut?> select, IRequesting<TIn> other)
+	protected PolicyAwareRequest(IPolicy policy, IStopAware<TIn, TOut?> select, IRequesting<TIn> other)
 		: base(policy, new SelectedRequest<TIn, TOut>(select), other) {}
 
 	protected PolicyAwareRequest(IStopAware<Guid, uint?> owner, ISelecting<Request<TIn>, IActionResult> previous,
