@@ -19,8 +19,6 @@ public class StopAware<T> : Operation<Stop<T>>, IStopAware<T>
 	public StopAware(Func<Stop<T>, ValueTask> select) : base(select) {}
 }
 
-// TODO
-
 sealed class StopAwareOperationAdapter<T> : IOperation<T>
 {
 	readonly ISelect<Stop<T>, ValueTask> _previous;
@@ -52,9 +50,6 @@ public class StopAdaptor<T> : StopAware<T>, IStopAdaptor<T>
 		: base(stop) => Alternate = selecting;
 
 	public IOperation<T> Alternate { get; }
-
-	// TODO: Stop: Remove
-	public ValueTask Get(T parameter) => base.Get(new(parameter));
 }
 
 sealed class Terminate<TIn, TTo> : IStopAware<TIn>

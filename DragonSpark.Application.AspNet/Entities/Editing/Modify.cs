@@ -3,7 +3,6 @@ using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
 using System;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Editing;
 
@@ -54,27 +53,5 @@ public class Modify<TIn, T> : StopAdaptor<TIn>
 	protected Modify(IEdit<TIn, T> edit, Action<T> modify) : this(edit, Start.A.Command(modify).Get()) {}
 
 	protected Modify(IEdit<TIn, T> select, Await<Edit<T>> configure)
-		: base(new ModifyWithStop<TIn, T>(select, configure))
-	{
-	}
-}
-
-// TODO
-sealed class ModifyWithStop<TIn, T> : IStopAware<TIn>
-{
-	readonly IEdit<TIn, T>  _select;
-	readonly Await<Edit<T>> _configure;
-
-	public ModifyWithStop(IEdit<TIn, T> select, Await<Edit<T>> configure)
-	{
-		_select    = select;
-		_configure = configure;
-	}
-
-	public async ValueTask Get(Stop<TIn> parameter)
-	{
-		using var edit = await _select.On(parameter);
-		await _configure(edit);
-		await edit.Off();
-	}
+		: base(new ModifyDispatch<TIn, T>(select, configure)) {}
 }
