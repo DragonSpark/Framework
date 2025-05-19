@@ -12,6 +12,8 @@ public class Evaluate<TIn, T, TResult> : StopAdaptor<TIn, TResult>
 		: base(new StopAwareEvaluate<TIn, T, TResult>(reading, evaluate)) {}
 }
 
+// TODO
+
 public class StopAwareEvaluate<TIn, T, TResult> : IStopAware<TIn, TResult>
 {
 	readonly IReading<TIn, T>      _reading;

@@ -216,6 +216,9 @@ public static partial class ExtensionMethods
 	public static ISelecting<TIn, TOut> Out<TIn, TOut>(this Composer<TIn, ValueTask<TOut>> @this)
 		=> @this.Get().To(x => x as ISelecting<TIn, TOut> ?? new Selecting<TIn, TOut>(x.Get));
 
+	public static IStopAware<TIn, TOut> Out<TIn, TOut>(this Composer<Stop<TIn>, ValueTask<TOut>> @this)
+		=> @this.Get().To(x => x as IStopAware<TIn, TOut> ?? new StopAware<TIn, TOut>(x.Get));
+
 	public static IContinuing<TIn, TOut> Out<TIn, TOut>(this Composer<Stop<TIn>, ValueTask<Stop<TOut>>> @this)
 		=> @this.Get().To(x => x as IContinuing<TIn, TOut> ?? new Continuing<TIn, TOut>(x.Get));
 

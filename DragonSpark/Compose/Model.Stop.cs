@@ -17,16 +17,19 @@ namespace DragonSpark.Compose;
 public static partial class ExtensionMethods
 {
 	public static DragonSpark.Model.Operations.Results.IStopAware<T> AsStop<T>(this IResulting<T> @this)
-		=> new StopAwareAdapter<T>(@this);
+		=> new DragonSpark.Model.Operations.Results.StopAwareAdapter<T>(@this);
 
 	public static IStopAware<TIn, TOut> AsStop<TIn, TOut>(this ISelecting<TIn, TOut> @this)
 		=> new StopAdapter<TIn, TOut>(@this);
 
 	public static OperationResultComposer<T> Ambient<T>(this OperationResultComposer<CancellationToken, T> @this)
-		=> new(new StopAwareAmbientAdapter<T>(@this.Get()));
+		=> new(new DragonSpark.Model.Operations.Results.StopAwareAmbientAdapter<T>(@this.Get()));
 
 	public static IResulting<T> Ambient<T>(this ISelect<CancellationToken, ValueTask<T>> @this)
-		=> new StopAwareAmbientAdapter<T>(@this);
+		=> new DragonSpark.Model.Operations.Results.StopAwareAmbientAdapter<T>(@this);
+
+	public static ISelecting<TIn, TOut> Alternate<TIn, TOut>(this IStopAware<TIn, TOut> @this)
+		=> new StopAwareAdapter<TIn, TOut>(@this);
 
 	public static OperationResultComposer<CancellationToken, T> Bind<TIn, T>(
 		this OperationResultComposer<Stop<TIn>, T> @this, TIn parameter)
@@ -36,6 +39,26 @@ public static partial class ExtensionMethods
 		this OperationResultComposer<Stop<TIn>, T> @this,
 		Func<TIn> parameter)
 		=> new(new StopAwareBinding<TIn,T>(@this.Get(), parameter));
+
+	/**/
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static T Get<T>(this ISelect<Stop<None>, T> @this) => @this.Get(AmbientToken.Default); // TODO: Audit
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static T Get<T>(this ISelect<Stop<None>, T> @this, CancellationToken stop)
+		=> @this.Get(new(None.Default, stop));
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static ConfiguredValueTaskAwaitable<T> On<T>(this ISelect<Stop<None>, ValueTask<T>> @this,
+	                                                           CancellationToken stop)
+		=> @this.Get(new(None.Default, stop)).ConfigureAwait(false);
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static ConfiguredValueTaskAwaitable<TOut> Off<TOut>(this ISelect<Stop<None>, ValueTask<TOut>> @this,
+	                                                           CancellationToken stop)
+		=> @this.Get(new(None.Default, stop)).ConfigureAwait(false);
+
 	/**/
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]

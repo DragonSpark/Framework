@@ -17,7 +17,7 @@ sealed class ContinuingAdapter<TIn, TOut> : IContinuing<TIn, TOut>
 	}
 }
 
-
+// TODO
 sealed class StopAdapter<TIn, TOut> : IStopAware<TIn, TOut>
 {
 	readonly ISelect<TIn, ValueTask<TOut>> _previous;

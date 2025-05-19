@@ -5,14 +5,20 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Editing;
 
-public class RemoveMany<TIn, TOut> : IStopAware<TIn> where TOut : class
+public class RemoveMany<TIn, TOut> : StopAdaptor<TIn> where TOut : class
 {
-	readonly IEditMany<TIn, TOut> _edit;
-
 	protected RemoveMany(IEnlistedScopes scopes, IQuery<TIn, TOut> query)
 		: this(new EditMany<TIn, TOut>(scopes, query)) {}
 
-	public RemoveMany(IEditMany<TIn, TOut> edit) => _edit = edit;
+	public RemoveMany(IEditMany<TIn, TOut> edit) : base(new RemoveManyWithStop<TIn, TOut>(edit)) {}
+}
+
+// TODO
+public class RemoveManyWithStop<TIn, TOut> : IStopAware<TIn> where TOut : class
+{
+	readonly IEditMany<TIn, TOut> _edit;
+
+	public RemoveManyWithStop(IEditMany<TIn, TOut> edit) => _edit = edit;
 
 	public async ValueTask Get(Stop<TIn> parameter)
 	{

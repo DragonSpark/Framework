@@ -29,11 +29,8 @@ public class Modify<T> : Modify<T, T>
 	protected Modify(IEdit<T> edit, Action<T> modify) : this(edit, Start.A.Command(modify).Get()) {}
 }
 
-public class Modify<TIn, T> : IStopAware<TIn>
+public class Modify<TIn, T> : StopAdaptor<TIn>
 {
-	readonly IEdit<TIn, T>  _select;
-	readonly Await<Edit<T>> _configure;
-
 	protected Modify(IEnlistedScopes scopes, IQuery<TIn, T> query, IOperation<Edit<T>> modification)
 		: this(scopes.Then().Use(query).Edit.Single(), modification) {}
 
@@ -57,6 +54,18 @@ public class Modify<TIn, T> : IStopAware<TIn>
 	protected Modify(IEdit<TIn, T> edit, Action<T> modify) : this(edit, Start.A.Command(modify).Get()) {}
 
 	protected Modify(IEdit<TIn, T> select, Await<Edit<T>> configure)
+		: base(new ModifyWithStop<TIn, T>(select, configure))
+	{
+	}
+}
+
+// TODO
+sealed class ModifyWithStop<TIn, T> : IStopAware<TIn>
+{
+	readonly IEdit<TIn, T>  _select;
+	readonly Await<Edit<T>> _configure;
+
+	public ModifyWithStop(IEdit<TIn, T> select, Await<Edit<T>> configure)
 	{
 		_select    = select;
 		_configure = configure;
