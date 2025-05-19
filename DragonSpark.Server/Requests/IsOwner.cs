@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Model.Operations.Selection;
+using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Selection.Stop;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -8,21 +9,21 @@ namespace DragonSpark.Server.Requests;
 
 public sealed class IsOwner : IIsOwner
 {
-	readonly ISelecting<Guid, uint?> _owner;
+	readonly IStopAware<Guid, uint?>  _owner;
 	readonly IEqualityComparer<uint?> _equals;
 
-	public IsOwner(ISelecting<Guid, uint?> owner) : this(owner, EqualityComparer<uint?>.Default) {}
+	public IsOwner(IStopAware<Guid, uint?> owner) : this(owner, EqualityComparer<uint?>.Default) {}
 
-	public IsOwner(ISelecting<Guid, uint?> owner, IEqualityComparer<uint?> equals)
+	public IsOwner(IStopAware<Guid, uint?> owner, IEqualityComparer<uint?> equals)
 	{
 		_owner  = owner;
 		_equals = @equals;
 	}
 
-	public async ValueTask<bool?> Get(Unique parameter)
+	public async ValueTask<bool?> Get(Stop<Unique> parameter)
 	{
-		var (user, identity) = parameter;
-		var owner  = await _owner.Off(identity);
+		var ((user, identity), stop) = parameter;
+		var owner  = await _owner.Off(new(identity, stop));
 		var result = owner != null ? _equals.Equals(owner, user) : (bool?)null;
 		return result;
 	}

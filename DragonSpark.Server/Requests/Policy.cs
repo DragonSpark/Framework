@@ -1,15 +1,14 @@
-﻿using DragonSpark.Model.Operations.Selection;
-using DragonSpark.Model.Selection;
+﻿using DragonSpark.Model.Operations.Selection.Stop;
 using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Server.Requests;
 
-public class Policy : Selecting<Unique, bool?>, IPolicy
+public class Policy : StopAware<Unique, bool?>, IPolicy
 {
-	public Policy(ISelecting<Guid, uint?> owner) : base(new IsOwner(owner)) {}
+	public Policy(IStopAware<Guid, uint?> owner) : base(new IsOwner(owner)) {}
 
-	public Policy(ISelect<Unique, ValueTask<bool?>> select) : base(select) {}
+	public Policy(IStopAware<Unique, bool?> select) : base(select) {}
 }
 
 public class Policy<T> : IPolicy<T>
@@ -25,5 +24,7 @@ public class Policy<T> : IPolicy<T>
 		_select = @select;
 	}
 
-	public ValueTask<bool?> Get(Request<T> parameter) => _policy.Get(new(parameter.Parameter.User, _select(parameter)));
+	public ValueTask<bool?> Get(Request<T> parameter)
+		=> _policy.Get(new(new(parameter.Parameter.User, _select(parameter)),
+		                   parameter.Owner.HttpContext.RequestAborted));
 }
