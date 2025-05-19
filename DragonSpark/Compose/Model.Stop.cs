@@ -83,7 +83,7 @@ public static partial class ExtensionMethods
 	/**/
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static T Get<T>(this ISelect<Stop<None>, T> @this) => @this.Get(AmbientToken.Default); // TODO: Audit
+	public static T Get<T>(this ISelect<Stop<None>, T> @this) => @this.Get(AmbientToken.Default);
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static T Get<T>(this ISelect<Stop<None>, T> @this, CancellationToken stop)
