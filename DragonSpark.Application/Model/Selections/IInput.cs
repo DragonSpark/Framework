@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model.Operations.Selection;
 using DragonSpark.Model.Operations.Selection.Stop;
 
-namespace DragonSpark.Application.Model;
+namespace DragonSpark.Application.Model.Selections;
 
 public interface IInput<TSubject, TOut> : ISelecting<UserInput<TSubject>, TOut>;
 public interface IInput<T> : ISelecting<UserInput, T>;

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using DragonSpark.Compose;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations.Stop;
 
@@ -6,7 +7,7 @@ public class StopAwareAppending<T> : IStopAware<T>
 {
 	readonly Await<Stop<T>> _first, _second;
 
-	public StopAwareAppending(IStopAware<T> first, IStopAware<T> second) : this((Await<Stop<T>>)first.Off, second.Off) {}
+	public StopAwareAppending(IStopAware<T> first, IStopAware<T> second) : this(first.Off, second.Off) {}
 
 	public StopAwareAppending(Await<Stop<T>> first, Await<Stop<T>> second)
 	{

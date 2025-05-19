@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Model.Operations;
 
-namespace DragonSpark.Application.Model;
+namespace DragonSpark.Application.Model.Operations;
 
 public interface IInputted<T> : IOperation<UserInput<T>>;
 
