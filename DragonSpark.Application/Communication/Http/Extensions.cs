@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using DragonSpark.Compose;
 using DragonSpark.Composition;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +18,12 @@ public static class Extensions
         where T : class
         => @this.AddRefitApi<T, Options>(options);
 
+    public static IServiceCollection AddRefitApi<T>(this IServiceCollection @this,
+                                                    Func<IHttpClientBuilder, IHttpClientBuilder> builder)
+        where T : class
+        => @this.AddRefitApi<T, Options>(@this.Section<Options>(DefaultName<T>.Default).Verify(), (_, _) => {},
+                                         (x, _) => builder(x));
+
     public static IServiceCollection AddRefitApi<T>(this IServiceCollection @this, Options options,
                                                     Action<IServiceProvider, RefitSettings> settings)
         where T : class
@@ -32,9 +38,7 @@ public static class Extensions
 
     public static IServiceCollection AddRefitApi<T, TOptions>(this IServiceCollection @this)
         where TOptions : Options where T : class
-        => @this.AddRefitApi<T, TOptions>(A.Type<TOptions>().IsInterface
-                                              ? A.Type<TOptions>().Name[1..]
-                                              : A.Type<TOptions>().Name);
+        => @this.AddRefitApi<T, TOptions>(DefaultName<T>.Default);
 
     public static IServiceCollection AddRefitApi<T, TOptions>(this IServiceCollection @this, string name)
         where TOptions : Options where T : class
