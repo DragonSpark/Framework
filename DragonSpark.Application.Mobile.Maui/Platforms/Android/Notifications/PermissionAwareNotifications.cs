@@ -2,7 +2,7 @@ using System;
 using System.Threading.Tasks;
 using DragonSpark.Application.Mobile.Maui.Device.Notifications;
 using DragonSpark.Compose;
-using DragonSpark.Model.Operations.Allocated;
+using DragonSpark.Model.Operations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Maui.ApplicationModel;
 
@@ -21,7 +21,7 @@ sealed class PermissionAwareNotifications : INotifications
         remove => _previous.NotificationReceived -= value;
     }
 
-    public async Task SendNotification(Token<NotificationInput> notification)
+    public async Task SendNotification(Stop<NotificationInput> notification)
     {
         var granted = await Permissions.RequestAsync<NotificationPermission>().Off();
         switch (granted)

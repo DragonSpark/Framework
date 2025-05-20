@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using DragonSpark.Application.Mobile.Maui.Device.Notifications;
-using DragonSpark.Model.Operations.Allocated;
+using DragonSpark.Model.Operations;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.iOS.Notifications;
 
@@ -15,7 +15,7 @@ public class Notifications : INotifications
 
     public Notifications(ISend send) => _send = send;
 
-    public Task SendNotification(Token<NotificationInput> notification) => _send.Get(notification);
+    public Task SendNotification(Stop<NotificationInput> notification) => _send.Get(notification);
 
     public void ReceiveNotification(string title, string message)
     {

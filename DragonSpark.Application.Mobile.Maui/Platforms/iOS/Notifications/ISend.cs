@@ -3,4 +3,4 @@ using DragonSpark.Model.Operations.Allocated;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.iOS.Notifications;
 
-public interface ISend : IAllocatingToken<NotificationInput>;
+public interface ISend : IAllocatedStopAware<NotificationInput>;

@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 using DragonSpark.Application.Mobile.Maui.Device.Notifications;
-using DragonSpark.Model.Operations.Allocated;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
 using Foundation;
 using UserNotifications;
@@ -29,7 +29,7 @@ sealed class Send : ISend
         _center.Delegate = new NotificationReceiver();
     }
 
-    public Task Get(Token<NotificationInput> parameter)
+    public Task Get(Stop<NotificationInput> parameter)
     {
         var ((title, message, notifyTime), _) = parameter;
 

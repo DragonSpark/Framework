@@ -1,6 +1,6 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using DragonSpark.Compose;
-using DragonSpark.Model.Operations.Allocated;
+using DragonSpark.Model.Operations;
 using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.ApplicationModel.Communication;
 
@@ -12,7 +12,7 @@ sealed class Messenger : IMessenger
 
     Messenger() {}
 
-    public async ValueTask<bool> Get(Token<MessageInput> parameter)
+    public async ValueTask<bool> Get(Stop<MessageInput> parameter)
     {
         var ((recipient, content), _) = parameter;
         var message = new SmsMessage(content, recipient.Split(',', '*'));

@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using DragonSpark.Application.Mobile.Maui.Device.Notifications;
-using DragonSpark.Model.Operations.Allocated;
+using DragonSpark.Model.Operations;
 using UserNotifications;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.iOS.Notifications;
@@ -22,5 +22,5 @@ sealed class PermissionAwareSend : ISend
         center.RequestAuthorization(UNAuthorizationOptions.Alert, (approved, _) => _allowed = approved);
     }
 
-    public Task Get(Token<NotificationInput> parameter) => _allowed ? _previous.Get(parameter) : Task.CompletedTask;
+    public Task Get(Stop<NotificationInput> parameter) => _allowed ? _previous.Get(parameter) : Task.CompletedTask;
 }

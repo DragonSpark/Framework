@@ -4,4 +4,4 @@ using DragonSpark.Model.Selection.Conditions;
 
 namespace DragonSpark.Application.Mobile.Diagnostics;
 
-public interface ILastChanceExceptionHandler : IConditionAware<Exception>, ITokenOperation<Exception>;
+public interface ILastChanceExceptionHandler : IConditionAware<Exception>, IStopAware<Exception>;

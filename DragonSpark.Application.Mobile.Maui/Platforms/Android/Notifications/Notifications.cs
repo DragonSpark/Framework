@@ -8,7 +8,7 @@ using AndroidX.Core.App;
 using DragonSpark.Application.Mobile.Maui.Device.Notifications;
 using DragonSpark.Compose;
 using DragonSpark.Composition;
-using DragonSpark.Model.Operations.Allocated;
+using DragonSpark.Model.Operations;
 using Microsoft.Maui.ApplicationModel;
 using Context = Android.Content.Context;
 
@@ -58,7 +58,7 @@ sealed class Notifications : INotifications
         }
     }
 
-    public Task SendNotification(Token<NotificationInput> notification)
+    public Task SendNotification(Stop<NotificationInput> notification)
     {
         var ((title, message, notifyTime), _) = notification;
         if (notifyTime is not null)
