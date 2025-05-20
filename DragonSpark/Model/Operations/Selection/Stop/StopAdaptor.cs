@@ -1,5 +1,3 @@
-using System.Threading.Tasks;
-
 namespace DragonSpark.Model.Operations.Selection.Stop;
 
 public class StopAdaptor<TIn, TOut> : StopAware<TIn, TOut>, IStopAdaptor<TIn, TOut>
@@ -10,7 +8,4 @@ public class StopAdaptor<TIn, TOut> : StopAware<TIn, TOut>, IStopAdaptor<TIn, TO
 		: base(stop) => Alternate = selecting;
 
 	public ISelecting<TIn, TOut> Alternate { get; }
-
-	// TODO: Stop: Remove
-	public ValueTask<TOut> Get(TIn parameter) => base.Get(new(parameter));
 }

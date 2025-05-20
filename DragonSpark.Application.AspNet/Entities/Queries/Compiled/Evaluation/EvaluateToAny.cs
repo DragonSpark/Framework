@@ -19,7 +19,7 @@ public class EvaluateToAny<T> : EvaluateToAny<None, T>
 	public EvaluateToAny(IReading<None, T> reading) : base(reading) {}
 }
 
-public class EvaluateToAny<TIn, T> : Evaluate<TIn, T, bool>, IStopAwareDepending<TIn>
+public class EvaluateToAny<TIn, T> : Evaluate<TIn, T, bool>, IDependingWithStop<TIn>
 {
 	public EvaluateToAny(IScopes scopes, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
 		: this(new Reading<TIn, T>(scopes, (d, @in) => expression.Invoke(d, @in).Take(1))) {}

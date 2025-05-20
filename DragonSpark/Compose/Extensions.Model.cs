@@ -11,6 +11,7 @@ using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Allocated;
 using DragonSpark.Model.Operations.Results;
+using DragonSpark.Model.Operations.Results.Stop;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;

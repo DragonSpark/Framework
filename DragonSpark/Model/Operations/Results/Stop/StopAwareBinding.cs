@@ -5,7 +5,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Model.Operations.Results;
+namespace DragonSpark.Model.Operations.Results.Stop;
 
 sealed class StopAwareBinding<TIn, TOut> : ISelecting<CancellationToken, TOut>
 {

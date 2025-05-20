@@ -3,6 +3,7 @@ using DragonSpark.Compose.Model.Selection;
 using DragonSpark.Model;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Results;
+using DragonSpark.Model.Operations.Results.Stop;
 using DragonSpark.Model.Operations.Selection;
 using DragonSpark.Model.Operations.Selection.Stop;
 using DragonSpark.Model.Operations.Stop;
@@ -29,8 +30,8 @@ public static partial class ExtensionMethods
 	public static IResulting<T> Alternate<T>(this ISelect<CancellationToken, ValueTask<T>> @this)
 		=> new StopAwareAmbientAdapter<T>(@this);
 
-	public static DragonSpark.Model.Operations.Results.IStopAware<T> AsStop<T>(this IResulting<T> @this)
-		=> new DragonSpark.Model.Operations.Results.StopAwareAdapter<T>(@this);
+	public static DragonSpark.Model.Operations.Results.Stop.IStopAware<T> AsStop<T>(this IResulting<T> @this)
+		=> new DragonSpark.Model.Operations.Results.Stop.StopAwareAdapter<T>(@this);
 
 	/*Operation*/
 
@@ -81,7 +82,7 @@ public static partial class ExtensionMethods
 		=> new(new StopAware<TIn, TOut, TTo>(@this.Get().Get, select));
 
 	/**/
-
+	
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static T Get<T>(this ISelect<Stop<None>, T> @this) => @this.Get(AmbientToken.Default);
 

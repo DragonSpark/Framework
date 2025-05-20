@@ -4,7 +4,7 @@ using DragonSpark.Model.Selection;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Model.Operations.Results;
+namespace DragonSpark.Model.Operations.Results.Stop;
 
 public sealed class StopAwareAmbientAdapter<T> : Resulting<T>
 {

@@ -1,5 +1,5 @@
-﻿using DragonSpark.Model.Operations.Selection;
+﻿using DragonSpark.Model.Operations.Selection.Stop;
 
 namespace DragonSpark.Application.Model.Selections;
 
-public interface INumber<T> : ISelecting<ulong, T>;
+public interface INumber<T> : IStopAware<uint, T>;

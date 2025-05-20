@@ -2,78 +2,27 @@
 using DragonSpark.Application.Compose.Store;
 using DragonSpark.Application.Diagnostics.Time;
 using DragonSpark.Application.Model;
+using DragonSpark.Application.Model.Selections;
 using DragonSpark.Compose;
 using DragonSpark.Compose.Model.Selection;
 using DragonSpark.Composition.Compose;
+using DragonSpark.Model.Operations;
 using DragonSpark.Runtime;
 using System;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application;
 
 // ReSharper disable once MismatchedFileName
 public static partial class Extensions
 {
-	/*public static StorageConfigurationBuilder WithSqlServer(this StorageConfigurationBuilder @this, string name)
-		=> @this.WithSqlServer(name, _ => {});
-
-	public static StorageConfigurationBuilder WithSqlServer(this StorageConfigurationBuilder @this, string name,
-	                                                        Action<SqlServerDbContextOptionsBuilder> configure)
-		=> @this.Append(new ConfigureSqlServer(name, configure));
-
-	public static StorageConfigurationBuilder WithSqlServer(this StorageConfigurationBuilder @this, string name,
-	                                                        string migrations)
-		=> @this.Append(new ConfigureSqlServerWithMigration(name, migrations));
-
-	public static StorageConfigurationBuilder WithSqlServer<T>(this StorageConfigurationBuilder @this)
-		where T : DbContext => @this.WithSqlServer<T>(_ => {});
-
-	public static StorageConfigurationBuilder WithSqlServer<T>(this StorageConfigurationBuilder @this,
-	                                                           Action<SqlServerDbContextOptionsBuilder> configure)
-		where T : DbContext
-		=> @this.Append(new ConfigureSqlServer<T>(configure));
-
-	public static StorageConfigurationBuilder WithSqlServer<T>(this StorageConfigurationBuilder @this, string name)
-		where T : DbContext
-		=> @this.Append(new ConfigureSqlServerWithMigration<T>(name));
-
-	public static StorageConfigurationBuilder WithEnvironmentalConfiguration(this StorageConfigurationBuilder @this)
-		=> @this.Append(EnvironmentalStorageConfiguration.Default);
-
-	public static StorageConfigurationBuilder WithModel(this StorageConfigurationBuilder @this, IModel model)
-		=> @this.Append(new RuntimeModelConfiguration(model));
-
-	/*#1#
-
-	public static IdentityStorage<T> WithIdentity<T>(this ApplicationProfileContext @this) where T : IdentityUser
-		=> new(@this);
-
-	public static IdentityStorage<T> WithIdentity<T>(this ApplicationProfileContext @this,
-	                                                 Action<IdentityOptions> configure)
-		where T : IdentityUser
-		=> new(@this, configure);
-
-	public static AuthenticationContext WithAuthentication(this ApplicationProfileContext @this) => new(@this);
-
-	public static AuthenticationContext WithAuthentication(this ApplicationProfileContext @this,
-	                                                       Action<AuthenticationBuilder> configure)
-		=> new(@this, Start.A.Command(configure));
-
-	public static ApplicationProfileContext AuthorizeUsing(this ApplicationProfileContext @this,
-	                                                       ICommand<AuthorizationOptions> policy)
-		=> @this.AuthorizeUsing(policy.Execute);
-
-	public static ApplicationProfileContext AuthorizeUsing(this ApplicationProfileContext @this,
-	                                                       Action<AuthorizationOptions> policy)
-		=> @this.Append(new AuthorizeConfiguration(policy));
-
-	public static ApplicationProfileContext AuthorizeUsing<T>(this ApplicationProfileContext @this,
-	                                                          Action<AuthorizationOptions, T> policy)
-		where T : class
-		=> @this.Append(new SelectedAuthorizeConfiguration<T>(policy));*/
 	/**/
 
-	/*public static BuildHostContext WithDataSecurity(this BuildHostContext @this)
-		=> @this.Configure(Security.Data.Registrations.Default);*/
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static ValueTask<T> Get<T>(this INumber<T> @this, Stop<ulong> parameter)
+		=> @this.Get(new(parameter.Subject.Contract(), parameter));
+
 
 	public static BuildHostContext WithInitializationLogging<T>(this BuildHostContext @this)
 		=> new(new InitializationAwareHostBuilder<T>(@this));
