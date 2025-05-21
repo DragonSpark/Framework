@@ -2,5 +2,4 @@
 
 namespace DragonSpark.Application.Model.Selections;
 
-public interface IInput<TSubject, TOut> : ISelecting<UserInput<TSubject>, TOut>;
-public interface IInput<T> : ISelecting<UserInput, T>;
+public interface IInput<TSubject, TOut> : ISelecting<UserInput<TSubject>, TOut>; // TODO: 18

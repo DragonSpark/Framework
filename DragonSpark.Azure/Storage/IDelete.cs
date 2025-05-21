@@ -1,5 +1,5 @@
-﻿using DragonSpark.Model.Operations.Selection.Conditions;
+﻿using DragonSpark.Model.Operations.Selection.Stop;
 
 namespace DragonSpark.Azure.Storage;
 
-public interface IDelete : IDepending<string>;
+public interface IDelete : IDependingWithStop<string>;

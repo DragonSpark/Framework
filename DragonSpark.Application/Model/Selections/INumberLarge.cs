@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.Model.Selections;
 
-public interface INumberWithStop<T> : IStopAware<ulong, T>;
+public interface INumberLarge<T> : IStopAware<ulong, T>;
