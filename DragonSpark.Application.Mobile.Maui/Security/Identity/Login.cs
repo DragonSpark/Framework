@@ -7,12 +7,12 @@ namespace DragonSpark.Application.Mobile.Maui.Security.Identity;
 
 sealed class Login : ILogin
 {
-    readonly IAccessTokenView                                                     _view;
-    readonly DragonSpark.Model.Operations.IStopAware<PersistAccessTokenViewInput> _persist;
+    readonly IAccessTokenView                        _view;
+    readonly IStopAware<PersistAccessTokenViewInput> _persist;
 
     public Login(IAccessTokenView view) : this(view, PersistAccessTokenView.Default) {}
 
-    public Login(IAccessTokenView view, DragonSpark.Model.Operations.IStopAware<PersistAccessTokenViewInput> persist)
+    public Login(IAccessTokenView view, IStopAware<PersistAccessTokenViewInput> persist)
     {
         _view    = view;
         _persist = persist;

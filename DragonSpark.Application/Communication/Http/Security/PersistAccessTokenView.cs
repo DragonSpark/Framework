@@ -4,7 +4,7 @@ using DragonSpark.Model.Operations;
 
 namespace DragonSpark.Application.Communication.Http.Security;
 
-public class PersistAccessTokenView : DragonSpark.Model.Operations.IStopAware<PersistAccessTokenViewInput>
+public class PersistAccessTokenView : IStopAware<PersistAccessTokenViewInput>
 {
     readonly IStorageValue<AccessTokenView> _value;
 
