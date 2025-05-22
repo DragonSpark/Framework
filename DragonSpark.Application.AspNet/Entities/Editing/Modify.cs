@@ -14,7 +14,7 @@ public class Modify<T> : Modify<T, T>
 	protected Modify(IScopes scopes, Await<T> configure) : this(scopes, x => configure(x.Subject)) {}
 
 	protected Modify(IScopes scopes, Await<Edit<T>> configure)
-		: base(new Edits<T, T>(scopes, A.Self<T>().Then().Operation().Out()), configure) {}
+		: base(new Edits<T, T>(scopes, A.Self<T>().Then().Operation().Out().AsStop()), configure) {}
 
 	protected Modify(IEdit<T, T> edit, Await<Edit<T>> configure) : base(edit, configure) {}
 

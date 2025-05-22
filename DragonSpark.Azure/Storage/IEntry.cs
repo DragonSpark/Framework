@@ -1,5 +1,5 @@
-﻿using DragonSpark.Model.Operations.Selection;
+﻿using DragonSpark.Model.Operations.Selection.Stop;
 
 namespace DragonSpark.Azure.Storage;
 
-public interface IEntry : ISelecting<string, IStorageEntry?>;
+public interface IEntry : IStopAware<string, IStorageEntry?>;

@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using DragonSpark.Model.Operations;
+using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Storage;
@@ -17,7 +19,7 @@ public class StorageEntry : IStorageEntry
 
 	public StorageEntryProperties Properties { get; }
 
-	public ValueTask<Stream> Get() => _previous.Get();
+	public ValueTask<Stream> Get(CancellationToken parameter) => _previous.Get(parameter);
 
-	public ValueTask<Stream> Get(Stream parameter) => _previous.Get(parameter);
+	public ValueTask<Stream> Get(Stop<Stream> parameter) => _previous.Get((CancellationToken)parameter);
 }
