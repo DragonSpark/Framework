@@ -1,4 +1,4 @@
-﻿using DragonSpark.Composition;
+using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -6,14 +6,19 @@ namespace DragonSpark.Application.Communication.Http;
 
 sealed class Registrations : ICommand<IServiceCollection>
 {
-	public static Registrations Default { get; } = new();
+    public static Registrations Default { get; } = new();
 
-	Registrations() {}
+    Registrations() {}
 
-	public void Execute(IServiceCollection parameter)
-	{
-		parameter.Start<UserApis<object>>()
-		         .Generic()
-		         .Singleton();
-	}
+    public void Execute(IServiceCollection parameter)
+    {
+        parameter.Start<UserApis<object>>()
+                 .Generic()
+                 .Singleton()
+                 //
+                 .Then.Start<IAccessTokenProvider>()
+                 .Forward<AmbientAwareAccessTokenProvider>()
+                 .Singleton();
+    }
 }
+

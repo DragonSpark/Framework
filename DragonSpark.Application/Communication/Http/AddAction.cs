@@ -1,4 +1,4 @@
-﻿using System.Buffers;
+using System.Buffers;
 using System.Net.Http;
 using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
@@ -32,8 +32,8 @@ sealed class AddAction : ICommand<HttpMessageHandlerBuilder>
                 current              = span[i];
             }
 
-            first.InnerHandler       = parameter.PrimaryHandler;
-            parameter.PrimaryHandler = first;
+            current.InnerHandler       = parameter.PrimaryHandler;
+            parameter.PrimaryHandler = span[0];
         }
     }
 }

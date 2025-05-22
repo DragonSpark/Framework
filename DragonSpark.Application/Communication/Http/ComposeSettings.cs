@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,7 +16,7 @@ sealed class ComposeSettings : ISelect<IServiceProvider, RefitSettings>
     {
         var serializer = parameter.GetService<IHttpContentSerializer>();
         var settings   = serializer is not null ? new() { ContentSerializer = serializer } : new RefitSettings();
-        var provider   = parameter.GetService<IAccessTokenProvider>();
+        var provider   = parameter.GetService<IRefitAccessTokenProvider>();
 
         settings.AuthorizationHeaderValueGetter
             = provider is not null ? provider.Get : settings.AuthorizationHeaderValueGetter;

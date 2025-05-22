@@ -1,28 +1,20 @@
-﻿using DragonSpark.Model.Commands;
-using DragonSpark.Model.Results;
 using System;
 using System.Net.Http;
+using DragonSpark.Model.Commands;
+using DragonSpark.Model.Results;
 
 namespace DragonSpark.Application.Communication;
 
 public abstract class Configure : ICommand<HttpClient>
 {
-	readonly Uri              _base;
-	readonly IResult<string?> _bearer;
+    readonly Uri _base;
 
-	protected Configure(IResult<Uri> connection) : this(connection.Get(), AmbientBearer.Default) {}
+    protected Configure(IResult<Uri> connection) : this(connection.Get()) {}
 
-	protected Configure(Uri @base, IResult<string?> bearer)
-	{
-		_base   = @base;
-		_bearer = bearer;
-	}
+    protected Configure(Uri @base) => _base = @base;
 
-	public void Execute(HttpClient parameter)
-	{
-		var bearer  = _bearer.Get();
-		var headers = parameter.DefaultRequestHeaders;
-		headers.Authorization = bearer is not null ? new("Bearer", bearer) : headers.Authorization;
-		parameter.BaseAddress = _base;
-	}
+    public void Execute(HttpClient parameter)
+    {
+        parameter.BaseAddress = _base;
+    }
 }

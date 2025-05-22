@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using DragonSpark.Model.Selection.Alterations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Http;
@@ -9,10 +9,7 @@ class ConfigureActions : IAlteration<IHttpClientBuilder>
 {
     readonly Action<HttpMessageHandlerBuilder> _add;
 
-    protected ConfigureActions(Action<HttpMessageHandlerBuilder> add)
-    {
-        _add = add;
-    }
+    protected ConfigureActions(Action<HttpMessageHandlerBuilder> add) => _add = add;
 
     public IHttpClientBuilder Get(IHttpClientBuilder parameter)
     {
