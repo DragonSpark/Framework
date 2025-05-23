@@ -1,4 +1,5 @@
-﻿using DragonSpark.Application.Compose;
+using System;
+using DragonSpark.Application.Compose;
 using DragonSpark.Application.Compose.Store;
 using DragonSpark.Application.Diagnostics.Time;
 using DragonSpark.Application.Model;
@@ -6,7 +7,6 @@ using DragonSpark.Compose;
 using DragonSpark.Compose.Model.Selection;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Runtime;
-using System;
 
 namespace DragonSpark.Application;
 
@@ -92,6 +92,8 @@ public static partial class Extensions
 	public static IWindow IsPast(this ITime @this, TimeSpan window) => new FromNow(@this, window);
 
 	public static IWindow FromThen(this ITime @this, TimeSpan window) => new FromThen(@this, window);
+    
+    public static IWindow GreaterThan(this ITime @this, TimeSpan window) => new GreaterThan(@this, window);
 
 	public static IWindow Outside(this ITime @this, TimeSpan window) => new Outside(@this, window);
 

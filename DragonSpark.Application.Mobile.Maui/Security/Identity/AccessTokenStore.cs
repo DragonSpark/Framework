@@ -1,11 +1,9 @@
 using DragonSpark.Application.Communication.Http.Security;
-using DragonSpark.Model.Operations.Results;
 
 namespace DragonSpark.Application.Mobile.Maui.Security.Identity;
 
-public sealed class AccessTokenStore : Storing<AccessTokenView?>
+sealed class AccessTokenStore : DragonSpark.Model.Operations.Results.Stop.Storing<AccessTokenView?>, IAccessTokenStore
 {
-    public static AccessTokenStore Default { get; } = new();
-
-    AccessTokenStore() : base(AccessTokenStorage.Default, AccessTokenViewStorage.Default) {}
+    // TODO: MutableAware
+    public AccessTokenStore(RefreshAwareAccessTokenStore refresh) : base(AccessTokenStorage.Default, refresh) {}
 }

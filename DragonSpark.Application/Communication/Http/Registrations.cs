@@ -1,3 +1,4 @@
+using DragonSpark.Application.Communication.Http.Security;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,7 +19,10 @@ sealed class Registrations : ICommand<IServiceCollection>
                  //
                  .Then.Start<IAccessTokenProvider>()
                  .Forward<AmbientAwareAccessTokenProvider>()
+                 .Singleton()
+                 //
+                 .Then.Start<IComposeTokenView>()
+                 .Forward<ComposeTokenView>()
                  .Singleton();
     }
 }
-

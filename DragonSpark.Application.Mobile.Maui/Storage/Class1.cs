@@ -1,6 +1,8 @@
+using System.Threading;
 using System.Threading.Tasks;
 using DragonSpark.Application.Runtime.Objects;
 using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using Microsoft.Maui.Storage;
 
 namespace DragonSpark.Application.Mobile.Maui.Storage;
@@ -22,9 +24,9 @@ public class StorageValue<T> : IStorageValue<T>
         _storage    = storage;
     }
 
-    public ValueTask Get(T parameter) => _storage.SetAsync(_key, _serializer.Format.Get(parameter)).ToOperation();
+    public ValueTask Get(Stop<T> parameter) => _storage.SetAsync(_key, _serializer.Format.Get(parameter)).ToOperation();
 
-    public async ValueTask<T?> Get()
+    public async ValueTask<T?> Get(CancellationToken _)
     {
         var storage = await _storage.GetAsync(_key).Off();
         return storage is not null ? _serializer.Parse.Get(storage) : default;

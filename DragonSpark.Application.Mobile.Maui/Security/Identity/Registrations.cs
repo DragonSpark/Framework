@@ -1,4 +1,5 @@
 using DragonSpark.Application.Communication.Http;
+using DragonSpark.Application.Communication.Http.Security;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +18,12 @@ public sealed class Registrations : ICommand<IServiceCollection>
                  .Forward<Login>()
                  .Include(x => x.Dependencies)
                  .Singleton()
+                 //
+                 .Then.Start<IAccessTokenStore>()
+                 .Forward<AccessTokenStore>()
+                 .Include(x => x.Dependencies)
+                 .Singleton()
+                 //
                  .Then.TryDecorate<IAccessTokenProvider, AccessTokenProvider>();
         //
     }

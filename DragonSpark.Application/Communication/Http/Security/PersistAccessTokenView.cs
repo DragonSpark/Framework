@@ -12,7 +12,7 @@ public class PersistAccessTokenView : IStopAware<PersistAccessTokenViewInput>
 
     public ValueTask Get(Stop<PersistAccessTokenViewInput> parameter)
     {
-        var ((identifier, response), _) = parameter;
-        return _value.Get(new(identifier, response));
+        var ((identifier, response), stop) = parameter;
+        return _value.Get(new(new(identifier, response), stop));
     }
 }
