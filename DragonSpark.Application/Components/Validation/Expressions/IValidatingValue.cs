@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.Components.Validation.Expressions;
 
-public interface IValidatingValue<T> : IDependingWithStop<T>; // TODO: 17
+public interface IValidatingValue<T> : IDependingWithStop<T>;
