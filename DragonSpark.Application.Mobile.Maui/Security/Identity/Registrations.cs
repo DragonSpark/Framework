@@ -25,6 +25,5 @@ public sealed class Registrations : ICommand<IServiceCollection>
                  .Singleton()
                  //
                  .Then.TryDecorate<IAccessTokenProvider, AccessTokenProvider>();
-        //
     }
 }

@@ -6,13 +6,13 @@ namespace DragonSpark.Application.Communication.Http.Security;
 
 public class PersistAccessTokenView : IStopAware<PersistAccessTokenViewInput>
 {
-    readonly IStorageValue<AccessTokenView?> _value;
+    readonly IStorageValue<AccessTokenView> _value;
 
-    protected PersistAccessTokenView(IStorageValue<AccessTokenView?> value) => _value = value;
+    protected PersistAccessTokenView(IStorageValue<AccessTokenView> value) => _value = value;
 
     public ValueTask Get(Stop<PersistAccessTokenViewInput> parameter)
     {
         var ((identifier, response), stop) = parameter;
-        return _value.Get(new(new(identifier, response), stop));
+        return _value.Get(new Stop<AccessTokenView>(new(identifier, response), stop)); // TODO: Use .Stop(stop)
     }
 }

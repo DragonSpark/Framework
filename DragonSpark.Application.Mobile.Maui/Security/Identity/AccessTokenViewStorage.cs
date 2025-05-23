@@ -3,7 +3,7 @@ using DragonSpark.Application.Mobile.Maui.Storage;
 
 namespace DragonSpark.Application.Mobile.Maui.Security.Identity;
 
-sealed class AccessTokenViewStorage : StorageValue<AccessTokenView?>, IAccessTokenStore
+sealed class AccessTokenViewStorage : StorageValue<AccessTokenView>, IAccessTokenStore
 {
     public static AccessTokenViewStorage Default { get; } = new();
 

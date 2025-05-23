@@ -2,6 +2,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using DragonSpark.Application.Runtime.Objects;
 using DragonSpark.Compose;
+using DragonSpark.Model;
 using DragonSpark.Model.Operations;
 using Microsoft.Maui.Storage;
 
@@ -31,4 +32,6 @@ public class StorageValue<T> : IStorageValue<T>
         var storage = await _storage.GetAsync(_key).Off();
         return storage is not null ? _serializer.Parse.Get(storage) : default;
     }
+
+    public ValueTask<bool> Get(Stop<None> parameter) => _storage.Remove(_key).ToOperation();
 }
