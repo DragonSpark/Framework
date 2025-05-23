@@ -7,27 +7,13 @@ namespace DragonSpark.Application.Mobile.Maui.Security.Identity;
 
 sealed class Login : ILogin
 {
-    readonly IAccessTokenView                        _view;
-    readonly IStopAware<PersistAccessTokenViewInput> _persist;
+    readonly IChallenge _view;
 
-    public Login(IAccessTokenView view) : this(view, PersistAccessTokenView.Default) {}
-
-    public Login(IAccessTokenView view, IStopAware<PersistAccessTokenViewInput> persist)
-    {
-        _view    = view;
-        _persist = persist;
-    }
+    public Login(IChallenge view) => _view = view;
 
     public async ValueTask<bool> Get(Stop<ChallengeRequest> parameter)
     {
         var response = await _view.Off(parameter);
-        if (response is not null)
-        {
-            var ((address, _), stop) = parameter;
-            await _persist.Off(new(new(address, response), stop));
-            return true;
-        }
-
-        return false;
+        return response is not null;
     }
 }

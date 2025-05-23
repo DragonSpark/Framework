@@ -24,6 +24,8 @@ public sealed class Registrations : ICommand<IServiceCollection>
                  .Include(x => x.Dependencies)
                  .Singleton()
                  //
+                 .Then.Start<IUpdateTokenState>().Forward<UpdateTokenState>().Singleton()
+                 //
                  .Then.TryDecorate<IAccessTokenProvider, AccessTokenProvider>();
     }
 }
