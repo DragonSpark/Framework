@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Selection.Conditions;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ public abstract class FilteredSubscriptionComponent<T> : SubscriptionComponent<T
 	[Parameter]
 	public IDepending<T> Condition { get; set; } = DefaultCondition;
 
-	protected override async Task OnReceive(T parameter)
+	protected override async Task OnReceive(Stop<T> parameter)
 	{
 		if (await Condition.Get(parameter))
 		{

@@ -10,6 +10,6 @@ public class SubscriberOf<T> : Subscriber<T>, ISubscriber
 	public ISubscription Get(SubscriberInput parameter)
 	{
 		var (recipient, body) = parameter;
-		return Get(new SubscriberInput<T>(recipient, body.Start().Accept<T>()));
+		return Get(new SubscriberInput<T>(recipient, x => body(x)));
 	}
 }

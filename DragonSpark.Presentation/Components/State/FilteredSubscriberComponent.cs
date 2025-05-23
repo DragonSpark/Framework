@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Application.Connections.Events;
 using DragonSpark.Model;
 using Microsoft.AspNetCore.Components;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.State;
@@ -26,5 +27,5 @@ public sealed class FilteredSubscriberComponent : FilteredSubscriptionComponent<
 
 	protected override ISubscription DetermineSubscription() => Registration.Get(new(Recipient, OnReceive));
 
-	Task OnReceive() => OnReceive(None.Default);
+	Task OnReceive(CancellationToken parameter) => base.OnReceive(new(None.Default, parameter));
 }

@@ -1,14 +1,16 @@
 ﻿using DragonSpark.Application.Connections.Events;
 using DragonSpark.Model;
+using DragonSpark.Model.Operations;
 using Microsoft.AspNetCore.Components;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.State;
 
 public sealed class SubscriberComponent<T> : SubscriptionComponent<T> where T : notnull
 {
-	Func<T, Task> _body = null!;
+	Func<Stop<T>, Task> _body = null!;
 
 	protected override void OnInitialized()
 	{
@@ -27,7 +29,7 @@ public sealed class SubscriberComponent<T> : SubscriptionComponent<T> where T : 
 
 public sealed class SubscriberOfComponent : SubscriptionComponent
 {
-	Func<Task> _body = null!;
+	Func<CancellationToken, Task> _body = null!;
 
 	protected override void OnInitialized()
 	{
@@ -43,5 +45,5 @@ public sealed class SubscriberOfComponent : SubscriptionComponent
 
 	protected override ISubscription DetermineSubscription() => Registration.Get(new(Recipient, _body));
 
-	Task OnReceive() => OnReceive(None.Default);
+	Task OnReceive(CancellationToken parameter) => base.OnReceive(new Stop<None>(None.Default, parameter));
 }

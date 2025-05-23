@@ -22,16 +22,16 @@ public abstract class SubscriptionComponent<T> : ComponentBase, IAsyncDisposable
 
 	protected override Task OnInitializedAsync()
 	{
-		_operation  = new ThrottleOperation<T>(Fire, Throttle);
+		_operation  = new ThrottleOperation<T>(Dispatch, Throttle);
 		_connection = DetermineSubscription();
 		return _connection.Allocate();
 	}
 
 	protected abstract ISubscription DetermineSubscription();
 
-	protected virtual Task OnReceive(T parameter) => _operation.Get(parameter).AsTask();
+	protected virtual Task OnReceive(Stop<T> parameter) => _operation.Get(parameter).AsTask();
 
-	Task Fire(T parameter) => InvokeAsync(() => Received.Invoke(parameter));
+	Task Dispatch(T parameter) => InvokeAsync(() => Received.Invoke(parameter));
 
 	public ValueTask DisposeAsync() => _connection?.DisposeAsync() ?? Task.CompletedTask.ToOperation();
 }

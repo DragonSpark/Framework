@@ -2,6 +2,7 @@
 using DragonSpark.Application.Diagnostics;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Stop;
 using NetFabric.Hyperlinq;
 using System;
 using System.Buffers;
@@ -18,7 +19,7 @@ public sealed class ProcessEntry : IOperation<ProcessEntryInput>
 	public async ValueTask Get(ProcessEntryInput parameter)
 	{
 		var (message, handlers) = parameter;
-		using var lease = handlers.AsValueEnumerable().ToArray(ArrayPool<IOperation<object>>.Shared);
+		using var lease = handlers.AsValueEnumerable().ToArray(ArrayPool<IStopAware<object>>.Shared);
 		foreach (var operation in lease)
 		{
 			try
