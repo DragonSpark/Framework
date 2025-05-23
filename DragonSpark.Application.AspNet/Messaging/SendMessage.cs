@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Messaging;
 
-public class SendMessage<T> : IOperation<T> // TODO: 33
+public class SendMessage<T> : IOperation<T>
 {
 	readonly IEmailSender        _sender;
 	readonly IMessageTemplate<T> _template;
