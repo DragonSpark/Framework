@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using System;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -23,14 +24,13 @@ sealed class ResourceQuery : IResourceQuery
 	/// </summary>
 	/// <param name="parameter"></param>
 	/// <returns></returns>
-	public async ValueTask<ResourceQueryRecord?> Get(string parameter)
+	public async ValueTask<ResourceQueryRecord?> Get(Stop<string> parameter)
 	{
 		using var client = _clients.CreateClient();
 		client.Timeout = _timeout;
 		try
 		{
-			var response = await client.SendAsync(new(HttpMethod.Head, parameter))
-			                           .Off();
+			var response = await client.SendAsync(new(HttpMethod.Head, parameter), parameter).Off();
 			return response.IsSuccessStatusCode
 				       ? new ResourceQueryRecord(parameter, response.StatusCode, response.Content.Headers.ContentType)
 				       : null;

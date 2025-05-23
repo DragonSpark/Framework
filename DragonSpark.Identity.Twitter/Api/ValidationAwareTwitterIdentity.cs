@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Application.Components.Validation.Expressions;
 using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Identity.Twitter.Api;
@@ -17,6 +18,6 @@ sealed class ValidationAwareTwitterIdentity : ITwitterIdentity
 		_validate = validate;
 	}
 
-	public ValueTask<string?> Get(string parameter)
+	public ValueTask<string?> Get(Stop<string> parameter)
 		=> _validate.Get(parameter) ? _previous.Get(parameter) : default(string).ToOperation();
 }

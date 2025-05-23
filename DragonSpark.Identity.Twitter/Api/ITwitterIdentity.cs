@@ -1,5 +1,5 @@
-﻿using DragonSpark.Model.Operations.Selection;
+﻿using DragonSpark.Model.Operations.Selection.Stop;
 
 namespace DragonSpark.Identity.Twitter.Api;
 
-public interface ITwitterIdentity : ISelecting<string, string?>;
+public interface ITwitterIdentity : IStopAware<string, string?>;

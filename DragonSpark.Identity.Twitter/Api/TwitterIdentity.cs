@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Tweetinvi;
@@ -22,7 +23,7 @@ sealed class TwitterIdentity : ITwitterIdentity
 		_expansions = expansions;
 	}
 
-	public async ValueTask<string?> Get(string parameter)
+	public async ValueTask<string?> Get(Stop<string> parameter)
 	{
 		var parameters = new GetUserByNameV2Parameters(parameter)
 		{
