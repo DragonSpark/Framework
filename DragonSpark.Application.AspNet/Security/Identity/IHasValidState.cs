@@ -1,5 +1,5 @@
-﻿using DragonSpark.Model.Operations.Selection.Conditions;
+﻿using DragonSpark.Model.Operations.Selection.Stop;
 
 namespace DragonSpark.Application.AspNet.Security.Identity;
 
-public interface IHasValidState<in T> : IDepending<T> where T : IdentityUser;
+public interface IHasValidState<T> : IDependingWithStop<T> where T : IdentityUser;
