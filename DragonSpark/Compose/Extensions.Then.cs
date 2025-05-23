@@ -213,6 +213,10 @@ public static partial class ExtensionMethods
 	public static IDepending<T> Out<T>(this Composer<T, ValueTask<bool>> @this)
 		=> @this.Get().To(x => x as IDepending<T> ?? new Depending<T>(x.Get));
 
+	public static IDependingWithStop<T> Out<T>(this Composer<Stop<T>, ValueTask<bool>> @this) => @this.Get().Out();
+	public static IDependingWithStop<T> Out<T>(this ISelect<Stop<T>, ValueTask<bool>> @this)
+		=> @this.To(x => x as IDependingWithStop<T> ?? new DependingWithStop<T>(x.Get));
+
 	public static ISelecting<TIn, TOut> Out<TIn, TOut>(this Composer<TIn, ValueTask<TOut>> @this)
 		=> @this.Get().To(x => x as ISelecting<TIn, TOut> ?? new Selecting<TIn, TOut>(x.Get));
 
