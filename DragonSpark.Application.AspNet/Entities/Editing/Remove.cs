@@ -11,16 +11,19 @@ public class Remove<TIn, T> : Modify<TIn, T> where T : class
 		: this(scopes, query, configure.Off) {}
 
 	protected Remove(IEnlistedScopes scopes, IQuery<TIn, T> query, Await<T> configure)
-		: base(scopes, query, x => configure(x.Subject)) {}
+		: base(scopes, query, x => configure(x.Subject.Subject)) {}
 
 	protected Remove(IEnlistedScopes scopes, IQuery<TIn, T> query)
 		: this(scopes, query, (Edit<T> _) => Task.CompletedTask.ToOperation().Off()) {}
 
 	protected Remove(IEnlistedScopes scopes, IQuery<TIn, T> query, IOperation<Edit<T>> configure)
-		: this(scopes, query, configure.Off) {}
+		: this(scopes, query, configure.AsStop().Off) {}
 
 	protected Remove(IEnlistedScopes scopes, IQuery<TIn, T> query, Await<Edit<T>> configure)
 		: base(scopes, query, Start.An.Operation(configure).Append(RemoveLocal<T>.Default)) {}
+
+	protected Remove(IEnlistedScopes scopes, IQuery<TIn, T> query, Await<Stop<Edit<T>>> configure)
+		: base(scopes, query, configure.Then().Append(x => RemoveLocal<T>.Default.Execute(x.Subject))) {}
 
 	protected Remove(IEdit<TIn, T> select, IOperation<T> configure) : this(select, configure.Off) {}
 
