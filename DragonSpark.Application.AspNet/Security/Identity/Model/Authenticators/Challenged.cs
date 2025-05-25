@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Application.AspNet.Security.Identity.Authentication;
 using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -17,17 +18,18 @@ sealed class Challenged<T> : IChallenged<T> where T : IdentityUser
 		_add             = add;
 	}
 
-	public async ValueTask<ChallengeResult<T>?> Get(ClaimsPrincipal parameter)
+	public async ValueTask<ChallengeResult<T>?> Get(Stop<ClaimsPrincipal> parameter)
 	{
 		using var authentication = _authentications.Get();
 		var       user           = await authentication.Users.GetUserAsync(parameter).Off();
 		if (user != null)
 		{
+			var (subject, stop) = parameter;
 			var name = authentication.Users.GetUserId(parameter);
 			var login = await authentication.Subject.GetExternalLoginInfoAsync(name).Off()
 			            ?? throw new
 				            InvalidOperationException($"Unexpected error occurred loading external login info for user with ID '{user.Id}'.");
-			var result = await _add.Off(new(login, user));
+			var result = await _add.Off(new(new(login, user), stop));
 			return new(user, login, result);
 		}
 

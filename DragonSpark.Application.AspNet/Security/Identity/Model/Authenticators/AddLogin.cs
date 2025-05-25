@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
@@ -10,9 +11,9 @@ sealed class AddLogin<T> : IAddLogin<T> where T : IdentityUser
 
 	public AddLogin(IUsers<T> users) => _users = users;
 
-	public async ValueTask<IdentityResult> Get(Login<T> parameter)
+	public async ValueTask<IdentityResult> Get(Stop<Login<T>> parameter)
 	{
-		var (information, subject) = parameter;
+		var ((information, subject), _) = parameter;
 		using var users  = _users.Get();
 		var       result = await users.Subject.AddLoginAsync(subject, information).Off();
 		return result;

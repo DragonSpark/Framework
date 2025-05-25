@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Application.AspNet.Security.Identity.Authentication;
 using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -17,7 +18,7 @@ sealed class SignOutAwareAddExternalSignin : IAddExternalSignin
 		_clear    = clear;
 	}
 
-	public async ValueTask<IdentityResult?> Get(ClaimsPrincipal parameter)
+	public async ValueTask<IdentityResult?> Get(Stop<ClaimsPrincipal> parameter)
 	{
 		var result = await _previous.Off(parameter);
 		if (result?.Succeeded ?? false)

@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
@@ -15,7 +16,7 @@ sealed class SynchronizationAwareCreateExternal<T> : ICreateExternal<T> where T 
 		_synchronization = synchronization;
 	}
 
-	public async ValueTask<CreateUserResult<T>> Get(ExternalLoginInfo parameter)
+	public async ValueTask<CreateUserResult<T>> Get(Stop<ExternalLoginInfo> parameter)
 	{
 		var result = await _previous.Off(parameter);
 		await _synchronization.Off(parameter);

@@ -1,7 +1,7 @@
 ﻿using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Specialized;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
-using DragonSpark.Model.Operations.Selection;
 using DragonSpark.Model.Operations.Selection.Stop;
 using System.Threading.Tasks;
 
@@ -13,10 +13,10 @@ sealed class DetermineClientEntry : IStopAware<BlobClient, IStorageEntry?>
 
 	DetermineClientEntry() : this(GetClientEntry.Default) {}
 
-	readonly ISelecting<BlobClient, DefaultStorageEntry> _previous;
-	
-	public DetermineClientEntry(ISelecting<BlobClient, DefaultStorageEntry> previous) => _previous = previous;
+	readonly IStopAware<BlobBaseClient, DefaultStorageEntry> _previous;
+
+	public DetermineClientEntry(IStopAware<BlobBaseClient, DefaultStorageEntry> previous) => _previous = previous;
 
 	public async ValueTask<IStorageEntry?> Get(Stop<BlobClient> parameter)
-		=> await parameter.Subject.ExistsAsync(parameter).Off() ? await _previous.Off(parameter) : null;
+		=> await parameter.Subject.ExistsAsync(parameter).Off() ? await _previous.Off(new(parameter, parameter)) : null;
 }

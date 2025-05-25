@@ -1,9 +1,10 @@
-using System.Threading.Tasks;
 using DragonSpark.Application.Runtime.Operations.Execution;
 using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Results;
 using JetBrains.Annotations;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Transactions;
 
@@ -28,11 +29,11 @@ public sealed class AmbientAwareTransaction(
 		_previous.Execute(parameter);
 	}
 
-	public async ValueTask Get()
+	public async ValueTask Get(CancellationToken parameter)
 	{
 		var operations = _store.Get().Verify();
-		await _previous.Off();
-		await operations.Off();
+		await _previous.Off(parameter);
+		await operations.Off(parameter);
 	}
 
 	public ValueTask DisposeAsync() => _previous.DisposeAsync();

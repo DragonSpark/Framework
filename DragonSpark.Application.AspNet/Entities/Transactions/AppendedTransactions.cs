@@ -1,6 +1,7 @@
-using System.Threading.Tasks;
 using DragonSpark.Compose;
 using JetBrains.Annotations;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Transactions;
 
@@ -16,5 +17,6 @@ public class AppendedTransactions : ITransactions
 	}
 
 	[MustDisposeResource]
-	public async ValueTask<ITransaction> Get() => new AppendedTransaction(await _first.Off(), await _second.Off());
+	public async ValueTask<ITransaction> Get(CancellationToken parameter)
+		=> new AppendedTransaction(await _first.Off(parameter), await _second.Off(parameter));
 }

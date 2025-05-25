@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Runtime.Operations.Execution;
@@ -14,7 +15,7 @@ sealed class Operations : IOperations
 		_subject = subject;
 	}
 
-	public ValueTask Get() => _process.Get();
+	public ValueTask Get(CancellationToken parameter) => _process.Get();
 
 	public void Execute(Func<ValueTask> parameter)
 	{

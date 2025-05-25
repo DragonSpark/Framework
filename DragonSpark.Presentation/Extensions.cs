@@ -40,16 +40,16 @@ public static class Extensions
 		=> @this.Configure(CircuitDiagnosticRegistrations.Default);
 
 	/**/
-	public static CallbackComposer<ValidationContext> Callback<T>(this ModelContext context, IValidateValue<T> validate)
+	public static CallbackComposer<Stop<ValidationContext>> Callback<T>(this ModelContext context, IValidateValue<T> validate)
 		=> context.Callback(validate.Adapt());
 
-	public static CallbackComposer<ValidationContext> Callback<T>(this ModelContext _, IValidatingValue<T> validating)
+	public static CallbackComposer<Stop<ValidationContext>> Callback<T>(this ModelContext _, IValidatingValue<T> validating)
 		=> validating.Callback();
 
-	public static CallbackComposer<ValidationContext> Callback<T>(this IValidationMessage<T> @this)
-		=> new ValidationOperationComposer(new ValidationMessageOperation<T>(@this)).DenoteExceptions().Get();
+	public static CallbackComposer<Stop<ValidationContext>> Callback<T>(this IValidationMessage<T> @this)
+		=> new ValidationOperationComposer(new ValidationMessageOperation<T>(@this).AsStop()).DenoteExceptions().Get();
 
-	public static CallbackComposer<ValidationContext> Callback<T>(this IValidatingValue<T> @this)
+	public static CallbackComposer<Stop<ValidationContext>> Callback<T>(this IValidatingValue<T> @this)
 		=> new ValidationOperationComposer(new ValidationOperation<T>(@this)).DenoteExceptions().Get();
 
 	public static IValidatingValue<string> AllowUnassigned(this IValidatingValue<string> @this)

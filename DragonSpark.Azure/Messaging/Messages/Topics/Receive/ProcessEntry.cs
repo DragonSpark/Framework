@@ -10,21 +10,21 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Messaging.Messages.Topics.Receive;
 
-public sealed class ProcessEntry : IOperation<ProcessEntryInput>
+public sealed class ProcessEntry : IStopAware<ProcessEntryInput>
 {
 	readonly IExceptionLogger _logger;
 
 	public ProcessEntry(IExceptionLogger logger) => _logger = logger;
 
-	public async ValueTask Get(ProcessEntryInput parameter)
+	public async ValueTask Get(Stop<ProcessEntryInput> parameter)
 	{
-		var (message, handlers) = parameter;
+		var ((message, handlers), stop) = parameter;
 		using var lease = handlers.AsValueEnumerable().ToArray(ArrayPool<IStopAware<object>>.Shared);
 		foreach (var operation in lease)
 		{
 			try
 			{
-				await operation.Off(message);
+				await operation.Off(new(message, stop));
 			}
 			catch (Exception e)
 			{

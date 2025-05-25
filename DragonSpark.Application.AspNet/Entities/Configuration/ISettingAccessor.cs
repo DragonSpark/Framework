@@ -1,10 +1,10 @@
 ﻿using DragonSpark.Model;
-using DragonSpark.Model.Operations;
-using DragonSpark.Model.Operations.Selection;
+using DragonSpark.Model.Operations.Selection.Stop;
+using DragonSpark.Model.Operations.Stop;
 
 namespace DragonSpark.Application.AspNet.Entities.Configuration;
 
-public interface ISettingAccessor : ISelecting<string, string?>, IOperation<Pair<string, string?>>
+public interface ISettingAccessor : IStopAware<string, string?>, IStopAware<Pair<string, string?>>
 {
 	IRemove Remove { get; }
 }

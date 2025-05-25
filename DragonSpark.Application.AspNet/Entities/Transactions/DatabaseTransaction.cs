@@ -1,9 +1,10 @@
-using System.Threading.Tasks;
 using DragonSpark.Compose;
 using DragonSpark.Model;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Transactions;
 
@@ -14,13 +15,13 @@ sealed class DatabaseTransaction(DbContext context, DatabaseFacade facade) : ITr
 
 	public void Execute(None parameter) {}
 
-	public async ValueTask Get()
+	public async ValueTask Get(CancellationToken parameter)
 	{
-		await context.SaveChangesAsync().Off();
+		await context.SaveChangesAsync(parameter).Off();
 		var transaction = facade.CurrentTransaction;
 		if (transaction is not null)
 		{
-			await transaction.CommitAsync().Off();
+			await transaction.CommitAsync(parameter).Off();
 		}
 	}
 

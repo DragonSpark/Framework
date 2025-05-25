@@ -2,6 +2,7 @@
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Allocated;
+using DragonSpark.Model.Operations.Stop;
 using DragonSpark.Model.Results;
 using DragonSpark.Runtime.Execution;
 using JetBrains.Annotations;
@@ -41,7 +42,7 @@ public abstract class DataMigration : Migration
 
 	protected override void Down(MigrationBuilder migrationBuilder) {}
 }
-
+// TODO
 sealed class LogicalMigrationRegistry : Logical<IDataMigrationRegistry>
 {
 	public static LogicalMigrationRegistry Default { get; } = new();
@@ -49,7 +50,7 @@ sealed class LogicalMigrationRegistry : Logical<IDataMigrationRegistry>
 	LogicalMigrationRegistry() {}
 }
 
-public interface IDataMigrationRegistry : ICommand<ISeed>, IOperation<DbContext>;
+public interface IDataMigrationRegistry : ICommand<ISeed>, IStopAware<DbContext>;
 
 sealed class DataMigrationRegistry : IDataMigrationRegistry
 {
@@ -69,16 +70,16 @@ sealed class DataMigrationRegistry : IDataMigrationRegistry
 		_initializers.Add(parameter);
 	}
 
-	public async ValueTask Get(DbContext parameter)
+	public async ValueTask Get(Stop<DbContext> parameter)
 	{
 		foreach (var initializer in _initializers)
 		{
-			await initializer.Off(new(_services, parameter));
+			await initializer.Off(new(new(_services, parameter), parameter));
 		}
 	}
 }
 
-public sealed class ApplyMigrationRegistry : IAllocated<DbContext>
+public sealed class ApplyMigrationRegistry : IAllocatedStopAware<DbContext>
 {
 	public static ApplyMigrationRegistry Default { get; } = new();
 
@@ -88,7 +89,7 @@ public sealed class ApplyMigrationRegistry : IAllocated<DbContext>
 
 	public ApplyMigrationRegistry(IResult<IDataMigrationRegistry?> registry) => _registry = registry;
 
-	public Task Get(DbContext parameter) => _registry.Get().Verify("Migration registry not found").Allocate(parameter);
+	public Task Get(Stop<DbContext> parameter) => _registry.Get().Verify("Migration registry not found").Allocate(parameter);
 
-	public Task Get(DbContext parameter, bool seeded, CancellationToken _) => Get(parameter);
+	public Task Get(DbContext parameter, bool seeded, CancellationToken stop) => Get(new(parameter, stop));
 }

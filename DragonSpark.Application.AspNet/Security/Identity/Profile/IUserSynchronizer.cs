@@ -1,5 +1,5 @@
-﻿using DragonSpark.Model.Operations.Selection.Conditions;
+﻿using DragonSpark.Model.Operations.Selection.Stop;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Profile;
 
-public interface IUserSynchronizer<T> : IDepending<Login<T>> where T : IdentityUser;
+public interface IUserSynchronizer<T> : IDependingWithStop<Login<T>> where T : IdentityUser;

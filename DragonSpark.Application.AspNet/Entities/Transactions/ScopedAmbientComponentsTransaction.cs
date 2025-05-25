@@ -1,7 +1,8 @@
-using System;
-using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Transactions;
 
@@ -17,5 +18,6 @@ public sealed class ScopedAmbientComponentsTransaction : ITransactions
 	}
 
 	[MustDisposeResource]
-	public ValueTask<ITransaction> Get() => new(new AssignAmbientComponentsTransaction(_first, _second));
+	public ValueTask<ITransaction> Get(CancellationToken parameter)
+		=> new(new AssignAmbientComponentsTransaction(_first, _second));
 }

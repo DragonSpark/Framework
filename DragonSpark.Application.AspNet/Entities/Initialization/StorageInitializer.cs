@@ -36,7 +36,7 @@ public sealed class StorageInitializer<T> : IHostInitializer where T : DbContext
 		using var _  = _services.Assigned(parameter.Services);
 		foreach (var initializer in _initializers.Open())
 		{
-			await initializer.Off(context);
+			await initializer.Off(new(context));
 		}
 	}
 }

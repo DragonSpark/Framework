@@ -12,6 +12,7 @@ using DragonSpark.Model.Operations.Results;
 using DragonSpark.Model.Operations.Selection;
 using DragonSpark.Model.Operations.Selection.Conditions;
 using DragonSpark.Model.Operations.Selection.Stop;
+using DragonSpark.Model.Operations.Stop;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Alterations;
@@ -207,9 +208,9 @@ public static partial class ExtensionMethods
 
 	public static IOperation Out(this OperationComposer @this)
 		=> @this.Get().To(x => x as IOperation ?? new Operation(x.Get));
-
 	public static IOperation<T> Out<T>(this Composer<T, ValueTask> @this)
 		=> @this.Get().To(x => x as IOperation<T> ?? new Operation<T>(x.Get));
+
 	public static IDepending<T> Out<T>(this Composer<T, ValueTask<bool>> @this)
 		=> @this.Get().To(x => x as IDepending<T> ?? new Depending<T>(x.Get));
 
@@ -219,13 +220,12 @@ public static partial class ExtensionMethods
 
 	public static ISelecting<TIn, TOut> Out<TIn, TOut>(this Composer<TIn, ValueTask<TOut>> @this)
 		=> @this.Get().To(x => x as ISelecting<TIn, TOut> ?? new Selecting<TIn, TOut>(x.Get));
-
 	public static IStopAware<TIn, TOut> Out<TIn, TOut>(this Composer<Stop<TIn>, ValueTask<TOut>> @this)
 		=> @this.Get().To(x => x as IStopAware<TIn, TOut> ?? new StopAware<TIn, TOut>(x.Get));
-	public static DragonSpark.Model.Operations.Stop.IStopAware<T> Out<T>(this Composer<Stop<T>, ValueTask> @this)
-		=> @this.Get()
-		        .To(x => x as DragonSpark.Model.Operations.Stop.IStopAware<T> ??
-		                 new DragonSpark.Model.Operations.Stop.StopAware<T>(x.Get));
+
+	public static IStopAware<T> Out<T>(this Composer<Stop<T>, ValueTask> @this) => @this.Get().Out();
+	public static IStopAware<T> Out<T>(this ISelect<Stop<T>, ValueTask> @this)
+		=> @this.To(x => x as IStopAware<T> ?? new StopAware<T>(x.Get));
 
 	public static IContinuing<TIn, TOut> Out<TIn, TOut>(this Composer<Stop<TIn>, ValueTask<Stop<TOut>>> @this)
 		=> @this.Get().To(x => x as IContinuing<TIn, TOut> ?? new Continuing<TIn, TOut>(x.Get));

@@ -1,7 +1,8 @@
-using System.Threading.Tasks;
 using DragonSpark.Application.AspNet.Security.Identity.Authentication;
 using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Model.Authenticators;
 
@@ -16,12 +17,12 @@ sealed class StateAwareRemoveLogin<T>(
 	readonly IAuthentications<T>       _authentications = authentications;
 	readonly IClearAuthenticationState _clear           = clear;
 
-	public async ValueTask<IdentityResult> Get(RemoveLoginInput<T> parameter)
+	public async ValueTask<IdentityResult> Get(Stop<RemoveLoginInput<T>> parameter)
 	{
 		var result = await _previous.Off(parameter);
 		if (result.Succeeded)
 		{
-			var (user, _) = parameter;
+			var ((user, _), _) = parameter;
 			using var authentications = _authentications.Get();
 			var       principal = await authentications.Subject.CreateUserPrincipalAsync(user).On();
 			var       number = principal.Number();

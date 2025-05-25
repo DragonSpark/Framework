@@ -24,7 +24,7 @@ sealed class UserSynchronization<T> : IUserSynchronization where T : IdentityUse
 	{
 		var (subject, stop) = parameter;
 		var user    = await _locate.Off(new(subject, stop));
-		var changed = await _synchronizer.Off(new(parameter, user.Verify()));
+		var changed = await _synchronizer.Off(new(new(parameter, user.Verify()), stop));
 		if (changed)
 		{
 			_clear.Execute(subject.Principal);

@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Application.Runtime;
 using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using DragonSpark.Runtime;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -25,7 +26,7 @@ public sealed class New<T> : INew<T> where T : IdentityUser
 		_time = time;
 	}
 
-	public ValueTask<T> Get(ExternalLoginInfo parameter)
+	public ValueTask<T> Get(Stop<ExternalLoginInfo> parameter)
 	{
 		var user = _new(parameter);
 		user.UserName = _name(parameter);

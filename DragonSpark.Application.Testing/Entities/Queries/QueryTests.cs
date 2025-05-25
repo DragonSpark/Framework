@@ -22,6 +22,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 using Array = System.Array;
@@ -90,7 +91,7 @@ public sealed class QueryTests
 
 		var evaluate = new SubjectsNotTwo(new NewContext<Context>(factory));
 		{
-			var results = await evaluate.Off();
+			var results = await evaluate.Off(CancellationToken.None);
 			var open    = results.Open();
 			open.Should().HaveCount(2);
 			open.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
@@ -115,7 +116,7 @@ public sealed class QueryTests
 
 		var evaluate = new SubjectsNotTwo(new NewContext<Context>(factory), Complex.Default);
 		{
-			var results = await evaluate.Off();
+			var results = await evaluate.Off(CancellationToken.None);
 			var open    = results.Open();
 			open.Should().HaveCount(2);
 			open.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
@@ -140,7 +141,7 @@ public sealed class QueryTests
 
 		var evaluate = new SubjectsNotWithParameter(new NewContext<Context>(factory));
 		{
-			var results = await evaluate.Off("One");
+			var results = await evaluate.Off(new("One", CancellationToken.None));
 			var open    = results.Open();
 			open.Should().HaveCount(2);
 			open.Select(x => x.Name).Should().BeEquivalentTo("Two", "Three");
@@ -149,7 +150,7 @@ public sealed class QueryTests
 		counter.Get().Should().Be(2);
 
 		{
-			var results = await evaluate.Off("Two");
+			var results = await evaluate.Off(new("Two", CancellationToken.None));
 			var open    = results.Open();
 			open.Should().HaveCount(2);
 			open.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
@@ -172,14 +173,14 @@ public sealed class QueryTests
 
 		var parameter = new SubjectsNotWithParameter(factory);
 		{
-			var results = await parameter.Off("One");
+			var results = await parameter.Off(new("One", CancellationToken.None));
 			var open    = results.Open();
 			open.Should().HaveCount(2);
 			open.Select(x => x.Name).Should().BeEquivalentTo("Two", "Three");
 		}
 
 		{
-			var results = await parameter.Off("Two");
+			var results = await parameter.Off(new("Two", CancellationToken.None));
 			var open    = results.Open();
 			open.Should().HaveCount(2);
 			open.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
@@ -199,7 +200,7 @@ public sealed class QueryTests
 
 		var evaluate = new SubjectsNotTwo(new NewContext<Context>(factory));
 		{
-			var             results  = await evaluate.Off();
+			var             results  = await evaluate.Off(CancellationToken.None);
 			await using var context  = factory.CreateDbContext();
 			var             scoped   = new Scoped(context);
 			var             elements = await scoped.Get().ToArrayAsync();

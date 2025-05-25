@@ -1,6 +1,6 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model.Operations.Stop;
 using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Application.AspNet.Entities.Initialization;
 
-public interface IInitialize : IOperation<DbContext>;
+public interface IInitialize : IStopAware<DbContext>;

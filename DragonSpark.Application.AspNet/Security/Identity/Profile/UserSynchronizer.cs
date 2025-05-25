@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using JetBrains.Annotations;
 using System.Threading.Tasks;
 
@@ -11,5 +12,5 @@ sealed class UserSynchronizer<T> : IUserSynchronizer<T> where T : IdentityUser
 
 	UserSynchronizer() {}
 
-	public ValueTask<bool> Get(Login<T> parameter) => false.ToOperation();
+	public ValueTask<bool> Get(Stop<Login<T>> parameter) => false.ToOperation();
 }

@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
@@ -20,17 +21,18 @@ public sealed class AutomaticMigration : IInitialize
 		_migrate  = migrate;
 	}
 
-	public ValueTask Get(DbContext parameter)
+	public ValueTask Get(Stop<DbContext> parameter)
 	{
 		if (_settings.Enabled)
 		{
+			var (subject, stop) = parameter;
 			var target = _settings.Target;
 			return target is not null
-				       ? parameter.GetInfrastructure()
-				                  .GetService<IMigrator>()
-				                  .Verify()
-				                  .MigrateAsync(target)
-				                  .ToOperation()
+				       ? subject.GetInfrastructure()
+				                .GetService<IMigrator>()
+				                .Verify()
+				                .MigrateAsync(target, stop)
+				                .ToOperation()
 				       : _migrate.Get(parameter);
 		}
 

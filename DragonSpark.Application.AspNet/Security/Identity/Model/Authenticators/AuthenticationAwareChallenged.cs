@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Application.AspNet.Security.Identity.Authentication;
 using DragonSpark.Application.AspNet.Security.Identity.Profile;
 using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -20,7 +21,7 @@ sealed class AuthenticationAwareChallenged<T> : IChallenged<T> where T : Identit
 		_synchronization = synchronization;
 	}
 
-	public async ValueTask<ChallengeResult<T>?> Get(ClaimsPrincipal parameter)
+	public async ValueTask<ChallengeResult<T>?> Get(Stop<ClaimsPrincipal> parameter)
 	{
 		var previous = await _previous.Off(parameter);
 
@@ -30,7 +31,7 @@ sealed class AuthenticationAwareChallenged<T> : IChallenged<T> where T : Identit
 			if (result.Succeeded)
 			{
 				await _authenticate.Off(new(information, user));
-				await _synchronization.Off(information);
+				await _synchronization.Off(new(information, parameter));
 			}
 		}
 

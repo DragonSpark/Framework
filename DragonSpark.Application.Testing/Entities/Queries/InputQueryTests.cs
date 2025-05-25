@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -40,7 +41,7 @@ public sealed class InputQueryTests
 			new EvaluateToArray<string, string>(new NewContext<Context>(factory).Then().Scopes(),
 			                                    Selected.Default);
 		{
-			var results = await evaluate.Off("One");
+			var results = await evaluate.Off(new("One", CancellationToken.None));
 			var open    = results.Open();
 			open.Should().HaveCount(2);
 			open.Should().BeEquivalentTo("Two", "Three");
@@ -67,7 +68,7 @@ public sealed class InputQueryTests
 		               .Where((s, subject) => subject.Name == name || subject.Name == s)
 		               .Invoke(contexts)
 		               .To.Array();
-		var subjects = await sut.Off("One");
+		var subjects = await sut.Off(new("One", CancellationToken.None));
 		var open     = subjects.Open();
 		open.Should().HaveCount(2);
 		open.Select(x => x.Name).Should().BeEquivalentTo("Two", "One");
@@ -92,7 +93,7 @@ public sealed class InputQueryTests
 		               .Where((s, subject) => subject.Name == name || subject.Name == s)
 		               .Invoke(contexts)
 		               .To.Array();
-		var subjects = await sut.Off("One");
+		var subjects = await sut.Off(new("One", CancellationToken.None));
 		var open     = subjects.Open();
 		open.Should().HaveCount(2);
 		open.Select(x => x.Name).Should().BeEquivalentTo("Two", "One");
@@ -112,14 +113,14 @@ public sealed class InputQueryTests
 
 		var evaluation = new EvaluateToArray<string, string>(factory.Then().Scopes(), Selected.Default);
 		{
-			var results = await evaluation.Off("One");
+			var results = await evaluation.Off(new("One", CancellationToken.None));
 			var open    = results.Open();
 			open.Should().HaveCount(2);
 			open.Should().BeEquivalentTo("Two", "Three");
 		}
 
 		{
-			var results = await evaluation.Off("Two");
+			var results = await evaluation.Off(new("Two", CancellationToken.None));
 			var open    = results.Open();
 			open.Should().HaveCount(2);
 			open.Should().BeEquivalentTo("One", "Three");
@@ -194,7 +195,7 @@ public sealed class InputQueryTests
 		               .To.Single();
 		{
 			await using var data = contexts.Get();
-			var             item = await sut.Off(new Input(id, "Two"));
+			var             item = await sut.Off(new(new Input(id, "Two"), CancellationToken.None));
 			item.Should().NotBeNull();
 			item.Id.Should().Be(id);
 			item.Name.Should().Be("Two");
@@ -221,7 +222,7 @@ public sealed class InputQueryTests
 		               .Invoke(contexts)
 		               .To.Single();
 		{
-			var item = await sut.Off(new Input(id, "Two"));
+			var item = await sut.Off(new(new Input(id, "Two"), CancellationToken.None));
 			item.Identity.Should().Be(id);
 			item.Name.Should().Be("Two");
 		}

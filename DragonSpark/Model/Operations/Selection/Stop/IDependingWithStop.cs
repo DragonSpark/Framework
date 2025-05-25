@@ -1,12 +1,13 @@
+using DragonSpark.Model.Operations.Selection.Conditions;
 using DragonSpark.Model.Selection;
 using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations.Selection.Stop;
 
-public interface IDependingWithStop<T> : ISelecting<Stop<T>, bool>;
+public interface IDependingWithStop<T> : IDepending<Stop<T>>;
 
-public class DependingWithStop<T> : StopAware<T, bool>, IDependingWithStop<T>
+public class DependingWithStop<T> : Depending<Stop<T>>, IDependingWithStop<T>
 {
 	public DependingWithStop(ISelect<Stop<T>, ValueTask<bool>> select) : base(select) {}
 

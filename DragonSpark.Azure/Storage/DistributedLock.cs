@@ -1,8 +1,10 @@
 ﻿using Azure.Storage.Blobs;
 using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using Medallion.Threading;
 using Medallion.Threading.Azure;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Storage;
@@ -15,7 +17,8 @@ public class DistributedLock : IDistributedLock
 
 	public DistributedLock(AzureBlobLeaseDistributedLock @lock) => _lock = @lock;
 
-	public async ValueTask<IDistributedSynchronizationHandle> Get() => await _lock.AcquireAsync().Off();
+	public async ValueTask<IDistributedSynchronizationHandle> Get(CancellationToken parameter)
+		=> await _lock.AcquireAsync(cancellationToken: parameter).Off();
 }
 
 public class DistributedLock<T> : IDistributedLock<T>
@@ -31,10 +34,10 @@ public class DistributedLock<T> : IDistributedLock<T>
 		_identifier = identifier;
 	}
 
-	public async ValueTask<IDistributedSynchronizationHandle> Get(T parameter)
+	public async ValueTask<IDistributedSynchronizationHandle> Get(Stop<T> parameter)
 	{
 		var name  = $"{_qualifier}_{_identifier(parameter)}";
 		var @lock = new AzureBlobLeaseDistributedLock(_client, name);
-		return await @lock.AcquireAsync().Off();
+		return await @lock.AcquireAsync(cancellationToken: parameter).Off();
 	}
 }

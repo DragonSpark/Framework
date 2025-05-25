@@ -1,27 +1,28 @@
-using System;
-using System.Threading.Tasks;
 using DragonSpark.Compose;
 using DragonSpark.Diagnostics.Logging;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Stop;
+using System;
+using System.Threading.Tasks;
 using Exception = System.Exception;
 
 namespace DragonSpark.Presentation.Components.Forms.Validation;
 
-sealed class ExceptionAwareValidationOperation : IOperation<ValidationContext>
+sealed class ExceptionAwareValidationOperation : IStopAware<ValidationContext>
 {
-	readonly IOperation<ValidationContext> _previous;
+	readonly IStopAware<ValidationContext> _previous;
 	readonly ITemplate<(Type, string)>     _template;
 
-	public ExceptionAwareValidationOperation(IOperation<ValidationContext> previous)
+	public ExceptionAwareValidationOperation(IStopAware<ValidationContext> previous)
 		: this(previous, Template.Default) {}
 
-	public ExceptionAwareValidationOperation(IOperation<ValidationContext> previous, ITemplate<(Type, string)> template)
+	public ExceptionAwareValidationOperation(IStopAware<ValidationContext> previous, ITemplate<(Type, string)> template)
 	{
 		_previous = previous;
 		_template = template;
 	}
 
-	public async ValueTask Get(ValidationContext parameter)
+	public async ValueTask Get(Stop<ValidationContext> parameter)
 	{
 		try
 		{
@@ -29,7 +30,7 @@ sealed class ExceptionAwareValidationOperation : IOperation<ValidationContext>
 		}
 		catch (Exception e)
 		{
-			var ((_, field), messages, (_, _, error)) = parameter;
+			var (((_, field), messages, (_, _, error)), _) = parameter;
 			messages.Add(in field, error);
 			throw _template.Get(e, field.Model.GetType(), field.FieldName);
 		}

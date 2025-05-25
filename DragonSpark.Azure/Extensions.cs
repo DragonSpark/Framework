@@ -50,7 +50,7 @@ public static class Extensions
 		=> serializer.DeserializeAsync(data.ToStream(), type, cancellationToken);
 
 	public static ISend Send(this ISender @this, TimeSpan? life = null, TimeSpan? visibility = null)
-		=> @this.Get(new SendInput(life, visibility)); // TODO: 54
+		=> @this.Get(new SendInput(life, visibility));
 
 	public static RegistrationResult Storage<T>(this IServiceCollection @this) where T : class, IContainer
 		=> @this.Start<IContainer>()

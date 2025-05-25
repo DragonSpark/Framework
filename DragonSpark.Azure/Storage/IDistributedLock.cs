@@ -1,9 +1,9 @@
-﻿using DragonSpark.Model.Operations.Results;
-using DragonSpark.Model.Operations.Selection;
+﻿using DragonSpark.Model.Operations.Results.Stop;
+using DragonSpark.Model.Operations.Selection.Stop;
 using Medallion.Threading;
 
 namespace DragonSpark.Azure.Storage;
 
-public interface IDistributedLock : IResulting<IDistributedSynchronizationHandle>;
+public interface IDistributedLock : IStopAware<IDistributedSynchronizationHandle>;
 
-public interface IDistributedLock<in T> : ISelecting<T, IDistributedSynchronizationHandle>;
+public interface IDistributedLock<T> : IStopAware<T, IDistributedSynchronizationHandle>;

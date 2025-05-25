@@ -1,5 +1,6 @@
 ﻿using Azure.Messaging.ServiceBus;
 using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
 using System.Threading.Tasks;
 
@@ -16,9 +17,9 @@ sealed class Send : ISend
 		_message = message;
 	}
 
-	public ValueTask Get(string parameter)
+	public ValueTask Get(Stop<string> parameter)
 	{
 		var message = _message.Get(parameter);
-		return _sender.SendMessageAsync(message).ToOperation();
+		return _sender.SendMessageAsync(message, parameter).ToOperation();
 	}
 }

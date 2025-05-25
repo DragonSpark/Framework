@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
@@ -15,12 +16,12 @@ sealed class AddLoginAwareCreate<T> : ICreate<T> where T : IdentityUser
 		_users    = users;
 	}
 
-	public async ValueTask<IdentityResult> Get(Login<T> parameter)
+	public async ValueTask<IdentityResult> Get(Stop<Login<T>> parameter)
 	{
 		var previous = await _previous.Off(parameter);
 		if (previous.Succeeded)
 		{
-			var (login, user) = parameter;
+			var ((login, user), _) = parameter;
 			using var users  = _users.Get();
 			var       local  = await users.Subject.FindByIdAsync(user.Id.ToString()).Off();
 			var       result = await users.Subject.AddLoginAsync(local.Verify(), login).Off();

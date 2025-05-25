@@ -1,11 +1,12 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Stop;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Configuration;
 
-sealed class SettingAccessor : Operation<Pair<string, string?>>, ISettingAccessor
+sealed class SettingAccessor : StopAware<Pair<string, string?>>, ISettingAccessor
 {
 	readonly GetSetting _setting;
 
@@ -17,7 +18,7 @@ sealed class SettingAccessor : Operation<Pair<string, string?>>, ISettingAccesso
 
 	public IRemove Remove { get; }
 
-	public async ValueTask<string?> Get(string parameter)
+	public async ValueTask<string?> Get(Stop<string> parameter)
 	{
 		var setting = await _setting.Off(parameter);
 		return setting?.Value;

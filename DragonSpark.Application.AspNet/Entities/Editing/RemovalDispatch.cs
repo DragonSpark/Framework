@@ -25,7 +25,7 @@ sealed class RemovalDispatch<TIn, T> : IStopAware<TIn> where T : class
 		var entity = await _select.Off(parameter);
 		if (entity is not null)
 		{
-			await _remove.Off(entity);
+			await _remove.Off(new(entity, parameter));
 		}
 		else
 		{

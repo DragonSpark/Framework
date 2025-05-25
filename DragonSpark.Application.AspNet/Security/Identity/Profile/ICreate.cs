@@ -1,6 +1,6 @@
-﻿using DragonSpark.Model.Operations.Selection;
+﻿using DragonSpark.Model.Operations.Selection.Stop;
 using Microsoft.AspNetCore.Identity;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Profile;
 
-public interface ICreate<T> : ISelecting<Login<T>, IdentityResult>;
+public interface ICreate<T> : IStopAware<Login<T>, IdentityResult>;

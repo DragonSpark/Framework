@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -29,7 +30,7 @@ public sealed class ContextQueryAdapterTests
 
 		var evaluate = Start.A.Query<Subject>().Where(x => x.Name != "Two").Invoke(contexts).To.Array();
 		{
-			var array = await evaluate.Off();
+			var array = await evaluate.Off(CancellationToken.None);
 			var open  = array.Open();
 			open.Should().HaveCount(2);
 			open.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
@@ -50,7 +51,7 @@ public sealed class ContextQueryAdapterTests
 
 		var evaluate = Start.A.Query<Subject>().Where(x => x.Name != "Two").Invoke(contexts).To.Array();
 		{
-			var array = await evaluate.Off();
+			var array = await evaluate.Off(CancellationToken.None);
 			var open  = array.Open();
 			open.Should().HaveCount(2);
 			open.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");

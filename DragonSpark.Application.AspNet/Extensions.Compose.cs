@@ -13,6 +13,7 @@ using DragonSpark.Compose.Model.Operations;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Commands;
+using DragonSpark.Model.Operations;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -56,7 +57,8 @@ public static partial class Extensions
 	public static StorageConfigurationBuilder ApplySeeding(this StorageConfigurationBuilder @this)
 		=> ApplySeeding(@this, ApplyMigrationRegistry.Default.Get);
 
-	public static StorageConfigurationBuilder ApplySeeding(this StorageConfigurationBuilder @this, Func<DbContext, Task> configure)
+	public static StorageConfigurationBuilder ApplySeeding(this StorageConfigurationBuilder @this,
+	                                                       Func<Stop<DbContext>, Task> configure)
 		=> @this.Append(_ => new ApplySeeding(configure).Execute);
 
 	public static StorageConfigurationBuilder WithEnvironmentalConfiguration(this StorageConfigurationBuilder @this)
@@ -162,5 +164,4 @@ public static partial class Extensions
 	public static OperationResultComposer<T?> Handle<T>(this OperationResultComposer<T?> @this,
 	                                                    IExceptions exceptions, Type? reportedType = null)
 		=> new(new ExceptionAwareResult<T>(@this, exceptions, reportedType));
-
 }
