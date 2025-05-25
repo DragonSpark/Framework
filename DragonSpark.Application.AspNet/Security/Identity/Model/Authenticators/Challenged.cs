@@ -24,7 +24,7 @@ sealed class Challenged<T> : IChallenged<T> where T : IdentityUser
 		var       user           = await authentication.Users.GetUserAsync(parameter).Off();
 		if (user != null)
 		{
-			var (subject, stop) = parameter;
+			var (_, stop) = parameter;
 			var name = authentication.Users.GetUserId(parameter);
 			var login = await authentication.Subject.GetExternalLoginInfoAsync(name).Off()
 			            ?? throw new
