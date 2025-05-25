@@ -82,7 +82,7 @@ public static partial class ExtensionMethods
 		=> new(new StopAware<TIn, TOut, TTo>(@this.Get().Get, select));
 
 	/**/
-	
+
 	/*[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static T Get<T>(this ISelect<Stop<None>, T> @this) => @this.Get(AmbientToken.Default);*/
 
@@ -101,16 +101,6 @@ public static partial class ExtensionMethods
 		=> @this.Get(new(None.Default, stop)).ConfigureAwait(false);
 
 	/**/
-
-	/*[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static ConfiguredValueTaskAwaitable<TOut> Off<TIn, TOut>(this ISelect<Stop<TIn>, ValueTask<TOut>> @this,
-	                                                                Stop<TIn> parameter)
-		=> @this.Get(parameter).ConfigureAwait(false);*/
-
-	/*[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static ConfiguredValueTaskAwaitable<TOut> Off<TIn, TOut>(this ISelect<Stop<TIn>, ValueTask<TOut>> @this,
-	                                                                TIn parameter)
-		=> @this.Get(new(parameter)).ConfigureAwait(false);*/
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ConfiguredValueTaskAwaitable<TOut> Off<TFirst, TSecond, TOut>(
@@ -134,44 +124,17 @@ public static partial class ExtensionMethods
 	public static ConfiguredTaskAwaitable<TOut> Off<TIn, TOut>(this ISelect<Stop<TIn>, Task<TOut>> @this, TIn parameter)
 		=> @this.Get(new(parameter)).ConfigureAwait(false);
 
-	/*[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static ConfiguredValueTaskAwaitable Off<T>(this ISelect<Stop<T>, ValueTask> @this, T parameter)
-		=> @this.Get(new(parameter)).ConfigureAwait(false);*/
-
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ConfiguredValueTaskAwaitable Off(this ISelect<Stop<None>, ValueTask> @this)
 		=> @this.Get(new(None.Default)).ConfigureAwait(false);
-
-	/*[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static ConfiguredValueTaskAwaitable<T> Off<T>(this ISelect<Stop<None>, ValueTask<T>> @this)
-		=> @this.Get(new(None.Default)).ConfigureAwait(false);*/
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ConfiguredValueTaskAwaitable<T> Off<T>(this ISelect<Stop<T>, ValueTask<T>> @this, T parameter)
 		=> @this.Get(new(parameter)).ConfigureAwait(false);
 
-	/*[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static ConfiguredValueTaskAwaitable<T> Off<T>(this ISelect<CancellationToken, ValueTask<T>> @this)
-		=> @this.Get(AmbientToken.Default).ConfigureAwait(false); TODO*/
-
-	/*[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static ConfiguredValueTaskAwaitable Off<T>(this T @this) where T : ISelect<CancellationToken, ValueTask>
-		=> @this.Get(AmbientToken.Default.Get()).ConfigureAwait(false);*/
-
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ConfiguredTaskAwaitable<T> Off<T>(this ISelect<CancellationToken, Task<T>> @this)
 		=> @this.Get(AmbientToken.Default).ConfigureAwait(false);
-
-	/**/
-	/*[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static ConfiguredValueTaskAwaitable<TOut> On<TIn, TOut>(this ISelect<Stop<TIn>, ValueTask<TOut>> @this,
-	                                                               Stop<TIn> parameter)
-		=> @this.Get(parameter).ConfigureAwait(true);*/
-
-	/*[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static ConfiguredValueTaskAwaitable<TOut> On<TIn, TOut>(this ISelect<Stop<TIn>, ValueTask<TOut>> @this,
-	                                                               TIn parameter)
-		=> @this.Get(new(parameter)).ConfigureAwait(true);*/
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ConfiguredValueTaskAwaitable<TOut> On<TFirst, TSecond, TOut>(
@@ -207,17 +170,9 @@ public static partial class ExtensionMethods
 	public static ConfiguredValueTaskAwaitable<T> On<T>(this ISelect<Stop<None>, ValueTask<T>> @this)
 		=> @this.Get(new(None.Default)).ConfigureAwait(true);
 
-	/*[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static ConfiguredValueTaskAwaitable<T> On<T>(this ISelect<Stop<T>, ValueTask<T>> @this, T parameter)
-		=> @this.Get(new(parameter)).ConfigureAwait(true);*/
-
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ConfiguredValueTaskAwaitable<T> On<T>(this ISelect<CancellationToken, ValueTask<T>> @this)
 		=> @this.Get(AmbientToken.Default).ConfigureAwait(true);
-
-	/*[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static ConfiguredValueTaskAwaitable On<T>(this T @this) where T : IResult<ValueTask>
-		=> @this.Get().ConfigureAwait(true);*/
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ConfiguredTaskAwaitable<T> On<T>(this ISelect<CancellationToken, Task<T>> @this)

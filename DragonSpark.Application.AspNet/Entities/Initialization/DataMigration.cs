@@ -1,24 +1,10 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Commands;
-using DragonSpark.Model.Operations;
-using DragonSpark.Model.Operations.Allocated;
-using DragonSpark.Model.Operations.Stop;
-using DragonSpark.Model.Results;
-using DragonSpark.Runtime.Execution;
+﻿using DragonSpark.Model.Results;
 using JetBrains.Annotations;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Initialization;
 
-/// <summary>
-/// This is not very good, but the best we have for now:
-/// https://github.com/dotnet/efcore/issues/24710#issuecomment-993242982
-/// </summary>
 [UsedImplicitly]
 public abstract class DataMigration : Migration
 {
@@ -41,55 +27,4 @@ public abstract class DataMigration : Migration
 	}
 
 	protected override void Down(MigrationBuilder migrationBuilder) {}
-}
-// TODO
-sealed class LogicalMigrationRegistry : Logical<IDataMigrationRegistry>
-{
-	public static LogicalMigrationRegistry Default { get; } = new();
-
-	LogicalMigrationRegistry() {}
-}
-
-public interface IDataMigrationRegistry : ICommand<ISeed>, IStopAware<DbContext>;
-
-sealed class DataMigrationRegistry : IDataMigrationRegistry
-{
-	readonly IServiceProvider _services;
-	readonly HashSet<ISeed>   _initializers;
-
-	public DataMigrationRegistry(IServiceProvider services) : this(services, new()) {}
-
-	public DataMigrationRegistry(IServiceProvider services, HashSet<ISeed> initializers)
-	{
-		_services     = services;
-		_initializers = initializers;
-	}
-
-	public void Execute(ISeed parameter)
-	{
-		_initializers.Add(parameter);
-	}
-
-	public async ValueTask Get(Stop<DbContext> parameter)
-	{
-		foreach (var initializer in _initializers)
-		{
-			await initializer.Off(new(new(_services, parameter), parameter));
-		}
-	}
-}
-
-public sealed class ApplyMigrationRegistry : IAllocatedStopAware<DbContext>
-{
-	public static ApplyMigrationRegistry Default { get; } = new();
-
-	ApplyMigrationRegistry() : this(LogicalMigrationRegistry.Default) {}
-
-	readonly IResult<IDataMigrationRegistry?> _registry;
-
-	public ApplyMigrationRegistry(IResult<IDataMigrationRegistry?> registry) => _registry = registry;
-
-	public Task Get(Stop<DbContext> parameter) => _registry.Get().Verify("Migration registry not found").Allocate(parameter);
-
-	public Task Get(DbContext parameter, bool seeded, CancellationToken stop) => Get(new(parameter, stop));
 }
