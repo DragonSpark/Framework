@@ -1,4 +1,5 @@
 using System;
+using System.Threading;
 using Android.Content;
 using Android.Runtime;
 using DragonSpark.Application.Mobile.Maui.Device.Notifications;
@@ -27,7 +28,8 @@ public abstract class AlarmHandler : BroadcastReceiver
             var message = intent.GetStringExtra(MessageKey.Default);
             if (title is not null && message is not null)
             {
-                _services.GetService<INotifications>()?.SendNotification(new(new(title, message)));
+                var input = new NotificationInput(title, message);
+                _services.GetService<INotifications>()?.SendNotification(new(input, CancellationToken.None));
             }
         }
     }

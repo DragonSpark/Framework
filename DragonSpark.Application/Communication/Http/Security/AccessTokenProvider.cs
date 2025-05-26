@@ -2,13 +2,14 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Results.Stop;
 
 namespace DragonSpark.Application.Communication.Http.Security;
 
 public class AccessTokenProvider : IAccessTokenProvider
 {
-    readonly IAccessTokenProvider                                              _previous;
-    readonly DragonSpark.Model.Operations.Results.IStopAware<AccessTokenView?> _view;
+    readonly IAccessTokenProvider         _previous;
+    readonly IStopAware<AccessTokenView?> _view;
 
     protected AccessTokenProvider(IAccessTokenProvider previous, IAccessTokenStore view)
     {

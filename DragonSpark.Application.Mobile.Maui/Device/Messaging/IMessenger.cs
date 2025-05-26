@@ -1,5 +1,5 @@
-using DragonSpark.Model.Operations.Selection;
+using DragonSpark.Model.Operations.Selection.Stop;
 
 namespace DragonSpark.Application.Mobile.Maui.Device.Messaging;
 
-public interface IMessenger : IStopAwareDepending<MessageInput>;
+public interface IMessenger : IDepending<MessageInput>;

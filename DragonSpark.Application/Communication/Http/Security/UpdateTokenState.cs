@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Stop;
 
 namespace DragonSpark.Application.Communication.Http.Security;
 

@@ -1,4 +1,6 @@
 using System;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using DragonSpark.Application.Compose;
 using DragonSpark.Application.Compose.Store;
 using DragonSpark.Application.Diagnostics.Time;
@@ -9,9 +11,6 @@ using DragonSpark.Compose.Model.Selection;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Runtime;
-using System;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application;
 

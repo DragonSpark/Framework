@@ -40,7 +40,7 @@ public sealed class ExceptionAwareAttribute : OverrideMethodAspect
         }
         catch (Exception e) when (_exceptionHandler?.Condition.Get(e) ?? false)
         {
-            _exceptionHandler.Get(new(e)).AsTask().GetAwaiter().GetResult();
+            _exceptionHandler.Get(new(e, CancellationToken.None)).AsTask().GetAwaiter().GetResult();
             return null;
         }
     }
