@@ -1,6 +1,6 @@
-﻿using System.Net.Http;
-using DragonSpark.Model.Operations.Allocated;
+﻿using DragonSpark.Model.Operations.Allocated.Stop;
+using System.Net.Http;
 
 namespace DragonSpark.Application.Communication.Http;
 
-public interface IAccessTokenProvider : IAllocatedStopAware<HttpRequestMessage, string>;
+public interface IAccessTokenProvider : IAllocated<HttpRequestMessage, string>;

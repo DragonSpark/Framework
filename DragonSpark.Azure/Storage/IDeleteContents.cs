@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Azure.Storage;
 
-public interface IDeleteContents : IDependingWithStop<string>;
+public interface IDeleteContents : IDepending<string>;

@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations.Allocated.Stop;
 
-sealed class ParameterBinding<T> : IAllocated<T>
+sealed class ParameterBinding<T> : Operations.Allocated.IAllocated<T>
 {
 	readonly ISelect<Stop<T>, Task> _previous;
 	readonly CancellationToken           _parameter;

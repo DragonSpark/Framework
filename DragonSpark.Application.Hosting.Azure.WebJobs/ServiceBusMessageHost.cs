@@ -1,5 +1,4 @@
 ﻿using Azure.Messaging.ServiceBus;
-using DragonSpark.Model.Operations.Allocated;
 using DragonSpark.Model.Operations.Stop;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Extensions.Logging;
@@ -8,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Hosting.Azure.WebJobs;
 
-public class ServiceBusMessageHost : IAllocated<ServiceBusReceivedMessage>
+public class ServiceBusMessageHost : DragonSpark.Model.Operations.Allocated.IAllocated<ServiceBusReceivedMessage>
 {
-	readonly IAllocatedStopAware<string> _previous;
-	readonly WebJobsShutdownWatcher      _watcher;
+	readonly DragonSpark.Model.Operations.Allocated.Stop.IAllocated<string> _previous;
+	readonly WebJobsShutdownWatcher                                         _watcher;
 
 	protected ServiceBusMessageHost(IStopAware<Guid> operation, ILoggerFactory factory)
 		: this(new LoggedParsedIdentityTextHost(operation, factory), new()) {}
 
-	public ServiceBusMessageHost(IAllocatedStopAware<string> previous, WebJobsShutdownWatcher watcher)
+	public ServiceBusMessageHost(DragonSpark.Model.Operations.Allocated.Stop.IAllocated<string> previous, WebJobsShutdownWatcher watcher)
 	{
 		_previous = previous;
 		_watcher  = watcher;
