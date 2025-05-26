@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose.Model.Operations;
+using DragonSpark.Compose.Model.Operations.Allocated;
 using DragonSpark.Compose.Model.Selection;
 using DragonSpark.Model;
 using DragonSpark.Model.Operations;
@@ -48,10 +49,13 @@ public static partial class ExtensionMethods
 	public static OperationComposer<CancellationToken> Bind<T>(this OperationComposer<Stop<T>> @this, Func<T> parameter)
 		=> new(new StopAwareBinding<T>(@this.Get(), parameter));
 
-	/* SELECTING */
+	public static OperationComposer<T> Bind<T>(this OperationComposer<Stop<T>> @this, CancellationToken parameter)
+		=> new(new ParameterBinding<T>(@this.Get(), parameter));
 
-	public static ISelecting<TIn, TOut> Alternate<TIn, TOut>(this IStopAware<TIn, TOut> @this)
-		=> new SelectingAdapter<TIn, TOut>(@this);
+	public static TaskComposer<T> Bind<T>(this TaskComposer<Stop<T>> @this, CancellationToken parameter)
+		=> new(new DragonSpark.Model.Operations.Allocated.Stop.ParameterBinding<T>(@this.Get(), parameter));
+
+	/* SELECTING */
 
 	public static IStopAware<TIn, TOut> AsStop<TIn, TOut>(this ISelecting<TIn, TOut> @this)
 		=> new StopAdapter<TIn, TOut>(@this);

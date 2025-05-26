@@ -26,27 +26,27 @@ public sealed class QueryInvocationComposer<TIn, T>
 		_subject = subject;
 	}
 
-	public IStopAdaptor<TIn, Array<T>> Array() => new Evaluate<TIn, T, Array<T>>(_subject, ToArray<T>.Default);
+	public IStopAware<TIn, Array<T>> Array() => new Evaluate<TIn, T, Array<T>>(_subject, ToArray<T>.Default);
 
-	public IStopAdaptor<TIn, Leasing<T>> Lease() => new Evaluate<TIn, T, Leasing<T>>(_subject, ToLease<T>.Default);
+	public IStopAware<TIn, Leasing<T>> Lease() => new Evaluate<TIn, T, Leasing<T>>(_subject, ToLease<T>.Default);
 
-	public IStopAdaptor<TIn, List<T>> List() => new Evaluate<TIn, T, List<T>>(_subject, ToList<T>.Default);
+	public IStopAware<TIn, List<T>> List() => new Evaluate<TIn, T, List<T>>(_subject, ToList<T>.Default);
 
-	public IStopAdaptor<TIn, Dictionary<TKey, T>> Dictionary<TKey>(Func<T, TKey> key) where TKey : notnull
+	public IStopAware<TIn, Dictionary<TKey, T>> Dictionary<TKey>(Func<T, TKey> key) where TKey : notnull
 		=> new Evaluate<TIn, T, Dictionary<TKey, T>>(_subject, new ToDictionary<T, TKey>(key));
 
-	public IStopAdaptor<TIn, Dictionary<TKey, TValue>> Dictionary<TKey, TValue>(
+	public IStopAware<TIn, Dictionary<TKey, TValue>> Dictionary<TKey, TValue>(
 		Func<T, TKey> key, Func<T, TValue> value)
 		where TKey : notnull
 		=> new Evaluate<TIn, T, Dictionary<TKey, TValue>>(_subject, new ToDictionary<T, TKey, TValue>(key, value));
 
-	public IStopAdaptor<TIn, T> Single() => new EvaluateToSingle<TIn, T>(_scopes, _query.Get());
+	public IStopAware<TIn, T> Single() => new EvaluateToSingle<TIn, T>(_scopes, _query.Get());
 
-	public IStopAdaptor<TIn, T?> SingleOrDefault() => new EvaluateToSingleOrDefault<TIn, T>(_scopes, _query.Get());
+	public IStopAware<TIn, T?> SingleOrDefault() => new EvaluateToSingleOrDefault<TIn, T>(_scopes, _query.Get());
 
-	public IStopAdaptor<TIn, T> First() => new EvaluateToFirst<TIn, T>(_scopes, _query.Get());
+	public IStopAware<TIn, T> First() => new EvaluateToFirst<TIn, T>(_scopes, _query.Get());
 
-	public IStopAdaptor<TIn, T?> FirstOrDefault() => new EvaluateToFirstOrDefault<TIn, T>(_scopes, _query.Get());
+	public IStopAware<TIn, T?> FirstOrDefault() => new EvaluateToFirstOrDefault<TIn, T>(_scopes, _query.Get());
 
-	public IStopAdaptor<TIn, bool> Any() => new EvaluateToAny<TIn, T>(_scopes, _query.Get());
+	public IStopAware<TIn, bool> Any() => new EvaluateToAny<TIn, T>(_scopes, _query.Get());
 }

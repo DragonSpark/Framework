@@ -8,9 +8,4 @@ public record PageInput(
 	string? OrderBy,
 	string? Filter,
 	Partition? Partition,
-	CancellationToken Token)
-{
-	// ReSharper disable once TooManyDependencies
-	public PageInput(bool IncludeTotalCount, string? OrderBy, string? Filter, Partition? Partition)
-		: this(IncludeTotalCount, OrderBy, Filter, Partition, CancellationToken.None) {}
-}
+	CancellationToken Token);

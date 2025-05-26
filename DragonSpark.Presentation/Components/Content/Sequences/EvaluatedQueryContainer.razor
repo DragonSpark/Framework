@@ -97,6 +97,6 @@
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
-        _subject ??= Input.Then().Bind(new PageInput(IncludeTotalCount, OrderBy, Filter, Partition)).Out();
+        _subject ??= Input.Then().Bind(new PageInput(IncludeTotalCount, OrderBy, Filter, Partition, Stop)).Out();
     }
 }

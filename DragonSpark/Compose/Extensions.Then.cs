@@ -23,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Compose;
@@ -217,6 +218,11 @@ public static partial class ExtensionMethods
 	public static IDependingWithStop<T> Out<T>(this Composer<Stop<T>, ValueTask<bool>> @this) => @this.Get().Out();
 	public static IDependingWithStop<T> Out<T>(this ISelect<Stop<T>, ValueTask<bool>> @this)
 		=> @this.To(x => x as IDependingWithStop<T> ?? new DependingWithStop<T>(x.Get));
+
+	public static DragonSpark.Model.Operations.Results.Stop.IStopAware<T> Out<T>(
+		this Composer<CancellationToken, ValueTask<T>> @this) => @this.Get().Out();
+	public static DragonSpark.Model.Operations.Results.Stop.IStopAware<T> Out<T>(this ISelect<CancellationToken, ValueTask<T>> @this)
+		=> @this.To(x => x as DragonSpark.Model.Operations.Results.Stop.IStopAware<T> ?? new DragonSpark.Model.Operations.Results.Stop.StopAware<T>(x.Get));
 
 	public static ISelecting<TIn, TOut> Out<TIn, TOut>(this Composer<TIn, ValueTask<TOut>> @this)
 		=> @this.Get().To(x => x as ISelecting<TIn, TOut> ?? new Selecting<TIn, TOut>(x.Get));

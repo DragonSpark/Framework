@@ -4,7 +4,7 @@ using DragonSpark.Application.AspNet.Entities;
 using DragonSpark.Application.AspNet.Entities.Queries.Compiled.Evaluation;
 using DragonSpark.Application.AspNet.Entities.Queries.Composition;
 using DragonSpark.Compose;
-using DragonSpark.Model.Operations.Selection;
+using DragonSpark.Model.Operations.Selection.Stop;
 using DragonSpark.Runtime.Execution;
 using DragonSpark.Testing.Objects.Entities;
 using DragonSpark.Testing.Objects.Entities.SqlLite;
@@ -146,7 +146,7 @@ public sealed class InputQueryTests
 			new EvaluateToArray<Input, string>(new NewContext<ContextWithData>(contexts).Then().Scopes(),
 			                                   ComplexSelected.Default);
 		{
-			var results = await evaluate.Alternate.Off(new(id, "One"));
+			var results = await evaluate.Off(new(new(id, "One"), CancellationToken.None));
 			var only    = results.Open().Only();
 			only.Should().NotBeNull();
 			only.Should().Be("One");
@@ -169,7 +169,7 @@ public sealed class InputQueryTests
 
 		var evaluate = contexts.Then().Use(ComplexSelected.Default).To.Array();
 		{
-			var results = await evaluate.Alternate.Off(new(id, "One"));
+			var results = await evaluate.Off(new(new(id, "One"), CancellationToken.None));
 			var only    = results.Open().Only();
 			only.Should().NotBeNull();
 			only.Should().Be("One");
@@ -292,7 +292,7 @@ public sealed class InputQueryTests
 	public class Benchmarks
 	{
 		readonly INewContext<ContextWithData> _new;
-		readonly ISelecting<Input, Result>    _select;
+		readonly IStopAware<Input, Result>    _select;
 
 		public Benchmarks() : this(new DbContextOptionsBuilder<ContextWithData>().UseInMemoryDatabase("0")
 		                                                                         .Options) {}
@@ -311,10 +311,9 @@ public sealed class InputQueryTests
 			            .Where((input, subject) => input.Identity == subject.Id)
 			            .Select(x => new Result(x.Id, x.Name))
 			            .Invoke(@new)
-			            .To.Single()
-			            .Alternate) {}
+			            .To.Single()) {}
 
-		Benchmarks(INewContext<ContextWithData> @new, ISelecting<Input, Result> select)
+		Benchmarks(INewContext<ContextWithData> @new, IStopAware<Input, Result> select)
 		{
 			_new    = @new;
 			_select = @select;
@@ -329,6 +328,7 @@ public sealed class InputQueryTests
 
 		[Benchmark]
 		public ValueTask<Result> MeasureCompiled()
-			=> _select.Get(new Input(new Guid("08013B99-3297-49F6-805E-0A94AE5B79A2"), "Tw"));
+			=> _select.Get(new(new Input(new Guid("08013B99-3297-49F6-805E-0A94AE5B79A2"), "Tw"),
+			                   CancellationToken.None));
 	}
 }

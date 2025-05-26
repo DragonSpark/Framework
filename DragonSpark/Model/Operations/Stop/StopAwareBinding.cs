@@ -4,7 +4,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Model.Operations;
+namespace DragonSpark.Model.Operations.Stop;
 
 sealed class StopAwareBinding<T> : IOperation<CancellationToken>
 {

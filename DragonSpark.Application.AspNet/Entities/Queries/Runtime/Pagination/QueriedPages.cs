@@ -24,7 +24,7 @@ sealed class QueriedPages<T> : IPages<T>
 
 	public async ValueTask<Page<T>> Get(PageInput parameter)
 	{
-		using var session = await _queries.Off();
+		using var session = await _queries.Off(parameter.Token);
 		var (query, count) = await _compose.Off(new(parameter, session.Subject));
 		var materialize = await _materialize.Off(new Stop<IQueryable<T>>(query, parameter.Token));
 		return new(materialize.Open(), count);

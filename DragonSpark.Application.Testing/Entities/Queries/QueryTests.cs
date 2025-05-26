@@ -7,7 +7,7 @@ using DragonSpark.Application.AspNet.Entities.Queries.Composition;
 using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Selection;
 using DragonSpark.Compose;
 using DragonSpark.Model;
-using DragonSpark.Model.Operations.Selection;
+using DragonSpark.Model.Operations.Selection.Stop;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Runtime.Execution;
 using DragonSpark.Testing.Objects.Entities;
@@ -276,8 +276,8 @@ public sealed class QueryTests
 
 	public class Benchmarks
 	{
-		readonly ISelecting<None, Array<Subject>>   _query;
-		readonly ISelecting<string, Array<Subject>> _selected;
+		readonly IStopAware<None, Array<Subject>>   _query;
+		readonly IStopAware<string, Array<Subject>> _selected;
 		readonly IQueryable<Subject>                _scoped;
 
 		public Benchmarks() : this(new DbContextOptionsBuilder<Context>().UseInMemoryDatabase("0").Options) {}
@@ -285,11 +285,11 @@ public sealed class QueryTests
 		Benchmarks(DbContextOptions<Context> options) : this(new PooledDbContextFactory<Context>(options)) {}
 
 		Benchmarks(IDbContextFactory<Context> factory)
-			: this(new SubjectsNotTwo(new NewContext<Context>(factory)).Alternate,
-			       new SubjectsNotWithParameter(new NewContext<Context>(factory)).Alternate,
+			: this(new SubjectsNotTwo(new NewContext<Context>(factory)),
+			       new SubjectsNotWithParameter(new NewContext<Context>(factory)),
 			       new Scoped(factory.CreateDbContext()).Get()) {}
 
-		Benchmarks(ISelecting<None, Array<Subject>> query, ISelecting<string, Array<Subject>> selected,
+		Benchmarks(IStopAware<None, Array<Subject>> query, IStopAware<string, Array<Subject>> selected,
 		           IQueryable<Subject> scoped)
 		{
 			_query    = query;
@@ -301,9 +301,9 @@ public sealed class QueryTests
 		public async Task<Array> MeasureScoped() => await _scoped.ToArrayAsync();
 
 		[Benchmark]
-		public async Task<Array> MeasureCompiled() => await _query.Off();
+		public async Task<Array> MeasureCompiled() => await _query.Off(CancellationToken.None);
 
 		[Benchmark]
-		public async Task<Array> MeasureCompiledParameter() => await _selected.Off("Two");
+		public async Task<Array> MeasureCompiledParameter() => await _selected.Off(new("Two", CancellationToken.None));
 	}
 }

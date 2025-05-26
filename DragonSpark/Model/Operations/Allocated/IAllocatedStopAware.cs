@@ -6,5 +6,5 @@ namespace DragonSpark.Model.Operations.Allocated;
 
 public interface IAllocatedStopAware<T, TOut> : ISelect<Stop<T>, Task<TOut>>;
 
-public interface IAllocatedStopAware<T> : ISelect<Stop<T>, Task>;
+public interface IAllocatedStopAware<T> : ISelect<Stop<T>, Task>; // TODO: WithStop
 public interface IAllocatedStopAware : ISelect<CancellationToken, Task>;

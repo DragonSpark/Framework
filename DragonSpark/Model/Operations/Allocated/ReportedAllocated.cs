@@ -1,14 +1,15 @@
-﻿using System;
+﻿using DragonSpark.Model.Selection;
+using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations.Allocated;
 
 public class ReportedAllocated<T> : IAllocated<T>
 {
-	readonly IAllocated<T> _previous;
-	readonly Action<Task>  _report;
+	readonly ISelect<T, Task> _previous;
+	readonly Action<Task>     _report;
 
-	protected ReportedAllocated(IAllocated<T> previous, Action<Task> report)
+	protected ReportedAllocated(ISelect<T, Task> previous, Action<Task> report)
 	{
 		_previous = previous;
 		_report   = report;

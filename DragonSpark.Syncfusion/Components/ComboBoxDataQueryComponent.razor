@@ -69,7 +69,7 @@
         await Requested.Invoke(parameter).Off();
     }
 
-    protected override Await<DataManagerRequest, object> CreateInput()
+    protected override Await<Stop<DataManagerRequest>, object> CreateInput()
         => Requests.Get(Content)
                    .Then()
                    .Then()

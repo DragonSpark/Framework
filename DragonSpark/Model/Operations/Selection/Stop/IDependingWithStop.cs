@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations.Selection.Stop;
 
-public interface IDependingWithStop<T> : IDepending<Stop<T>>;
+public interface IDependingWithStop<T> : IDepending<Stop<T>>; // TODO
 
 public class DependingWithStop<T> : Depending<Stop<T>>, IDependingWithStop<T>
 {

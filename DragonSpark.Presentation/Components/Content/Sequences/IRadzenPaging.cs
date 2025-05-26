@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace DragonSpark.Presentation.Components.Content.Sequences;
 
-public interface IRadzenPaging<out T> : IAllocated<LoadDataArgs>
+public interface IRadzenPaging<out T> : IAllocatedStopAware<LoadDataArgs>
 {
 	public ulong Count { get; }
 
