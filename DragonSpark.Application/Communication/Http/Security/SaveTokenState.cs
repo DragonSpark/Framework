@@ -1,12 +1,11 @@
 using System.Threading.Tasks;
 using DragonSpark.Application.Runtime.Objects;
+using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
-using DragonSpark.Model.Operations.Stop;
 using DragonSpark.Model.Results;
 
 namespace DragonSpark.Application.Communication.Http.Security;
 
-public interface ISaveTokenState : IStopAware<AccessTokenView>;
 public class SaveTokenState : ISaveTokenState
 {
     readonly IMutable<AccessTokenView?>     _store;
@@ -22,6 +21,6 @@ public class SaveTokenState : ISaveTokenState
     {
         var (subject, stop) = parameter;
         _store.Execute(subject);
-        return _value.Get(new Stop<AccessTokenView>(subject, stop)); // TODO: Use .Stop(stop)
+        return _value.Get(subject.Stop(stop));
     }
 }
