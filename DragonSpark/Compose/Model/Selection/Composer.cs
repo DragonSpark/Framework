@@ -5,7 +5,6 @@ using DragonSpark.Compose.Model.Sequences;
 using DragonSpark.Compose.Model.Validation;
 using DragonSpark.Model;
 using DragonSpark.Model.Commands;
-using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Stores;
@@ -124,7 +123,7 @@ public class Composer<TIn, TOut> : IResult<ISelect<TIn, TOut>>, IActivateUsing<I
 		=> new SelectedAssignment<TIn, TOut, T>(_subject.Get, command).Then();
 
 	public OperationResultComposer<TIn, TOut> Operation() => new(_subject.Select(x => x.ToOperation()));
-	public Composer<TIn, Stop<TOut>> Stop() => new(_subject.Select(x => x.Stop()));
+	/*public Composer<TIn, Stop<TOut>> Stop() => new(_subject.Select(x => x.Stop()));*/
 
 	public ISelect<TIn, TOut> Get() => _subject;
 }

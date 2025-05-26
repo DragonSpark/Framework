@@ -8,7 +8,7 @@ namespace DragonSpark.Application.AspNet.Entities.Editing;
 public class Remove<TIn, T> : Modify<TIn, T> where T : class
 {
 	protected Remove(IEnlistedScopes scopes, IQuery<TIn, T> query, IOperation<T> configure)
-		: this(scopes, query, configure.Off) {}
+		: this(scopes, query, configure.AsStop().Off) {}
 
 	protected Remove(IEnlistedScopes scopes, IQuery<TIn, T> query, Await<T> configure)
 		: base(scopes, query, x => configure(x.Subject.Subject)) {}
@@ -18,6 +18,9 @@ public class Remove<TIn, T> : Modify<TIn, T> where T : class
 
 	protected Remove(IEnlistedScopes scopes, IQuery<TIn, T> query, IOperation<Edit<T>> configure)
 		: this(scopes, query, configure.AsStop().Off) {}
+
+	protected Remove(IEnlistedScopes scopes, IQuery<TIn, T> query, Await<Stop<T>> configure)
+		: this(scopes, query, x => configure(x.Subject.Subject.Stop(x))) {}
 
 	protected Remove(IEnlistedScopes scopes, IQuery<TIn, T> query, Await<Edit<T>> configure)
 		: base(scopes, query, Start.An.Operation(configure).Append(RemoveLocal<T>.Default)) {}

@@ -19,7 +19,7 @@ namespace DragonSpark.Compose;
 // ReSharper disable SuspiciousTypeConversion.Global
 public static partial class ExtensionMethods
 {
-	public static Stop<T> Stop<T>(this T @this) => new(@this);
+
 
 	public static Stop<T> Stop<T>(this T @this, CancellationToken stop) => new(@this, stop);
 
@@ -35,11 +35,8 @@ public static partial class ExtensionMethods
 
 	/*Operation*/
 
-	public static IOperation<T> Alternate<T>(this Composer<Stop<T>, ValueTask> @this)
-		=> @this.Get().Alternate();
-
 	public static IOperation<T> Alternate<T>(this ISelect<Stop<T>, ValueTask> @this)
-		=> new StopAwareOperationAdapter<T>(@this);
+		=> new StopAwareOperationAdapter<T>(@this); // TODO: 5
 
 	public static DragonSpark.Model.Operations.Stop.IStopAware<T> AsStop<T>(this Composer<T, ValueTask> @this)
 		=> new DragonSpark.Model.Operations.Stop.StopAwareAdapter<T>(@this.Get());
@@ -55,6 +52,12 @@ public static partial class ExtensionMethods
 	                                                      Func<Stop<TOut>, ValueTask> command)
 		=> new(new Terminate<T, TOut>(@this.Get(), command));
 
+	public static OperationComposer<CancellationToken> Bind<T>(this OperationComposer<Stop<T>> @this, T parameter)
+		=> @this.Bind(() => parameter);
+
+	public static OperationComposer<CancellationToken> Bind<T>(this OperationComposer<Stop<T>> @this, Func<T> parameter)
+		=> new(new StopAwareBinding<T>(@this.Get(), parameter));
+
 	/* SELECTING */
 
 	public static ISelecting<TIn, TOut> Alternate<TIn, TOut>(this IStopAware<TIn, TOut> @this)
@@ -68,8 +71,7 @@ public static partial class ExtensionMethods
 		=> @this.Bind(() => parameter);
 
 	public static OperationResultComposer<CancellationToken, T> Bind<TIn, T>(
-		this OperationResultComposer<Stop<TIn>, T> @this,
-		Func<TIn> parameter)
+		this OperationResultComposer<Stop<TIn>, T> @this, Func<TIn> parameter)
 		=> new(new StopAwareBinding<TIn, T>(@this.Get(), parameter));
 
 	public static OperationResultComposer<Stop<TIn>, TTo> Select<TIn, TOut, TTo>(
@@ -102,7 +104,7 @@ public static partial class ExtensionMethods
 
 	/**/
 
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	/*[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ConfiguredValueTaskAwaitable<TOut> Off<TFirst, TSecond, TOut>(
 		this ISelect<Stop<(TFirst, TSecond)>, ValueTask<TOut>> @this, TFirst first, TSecond second)
 		=> @this.Get(new((first, second))).ConfigureAwait(false);
@@ -130,13 +132,13 @@ public static partial class ExtensionMethods
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ConfiguredValueTaskAwaitable<T> Off<T>(this ISelect<Stop<T>, ValueTask<T>> @this, T parameter)
-		=> @this.Get(new(parameter)).ConfigureAwait(false);
+		=> @this.Get(new(parameter)).ConfigureAwait(false);*/
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ConfiguredTaskAwaitable<T> Off<T>(this ISelect<CancellationToken, Task<T>> @this)
 		=> @this.Get(AmbientToken.Default).ConfigureAwait(false);
 
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	/*[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ConfiguredValueTaskAwaitable<TOut> On<TFirst, TSecond, TOut>(
 		this ISelect<Stop<(TFirst, TSecond)>, ValueTask<TOut>> @this, TFirst first, TSecond second)
 		=> @this.Get(new((first, second))).ConfigureAwait(true);
@@ -148,13 +150,13 @@ public static partial class ExtensionMethods
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ConfiguredTaskAwaitable On<T>(this ISelect<Stop<T>, Task> @this, T parameter)
-		=> @this.Get(new(parameter)).ConfigureAwait(true);
+		=> @this.Get(new(parameter)).ConfigureAwait(true);*/
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ConfiguredTaskAwaitable On(this ISelect<CancellationToken, Task> @this)
 		=> @this.Get(AmbientToken.Default).ConfigureAwait(true);
 
-	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	/*[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ConfiguredTaskAwaitable<TOut> On<TIn, TOut>(this ISelect<Stop<TIn>, Task<TOut>> @this, TIn parameter)
 		=> @this.Get(new(parameter)).ConfigureAwait(true);
 
@@ -168,7 +170,7 @@ public static partial class ExtensionMethods
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ConfiguredValueTaskAwaitable<T> On<T>(this ISelect<Stop<None>, ValueTask<T>> @this)
-		=> @this.Get(new(None.Default)).ConfigureAwait(true);
+		=> @this.Get(new(None.Default)).ConfigureAwait(true);*/
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ConfiguredValueTaskAwaitable<T> On<T>(this ISelect<CancellationToken, ValueTask<T>> @this)

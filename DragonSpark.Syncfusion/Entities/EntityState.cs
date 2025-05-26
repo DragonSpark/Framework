@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.SyncfusionRendering.Entities;
 
-public class EntityState<T> : IOperation<Updated<T>> where T : class
+public class EntityState<T> : IOperation<Updated<T>> where T : class // TODO
 {
 	readonly IOperation<T> _update;
 	readonly IOperation<T> _remove;

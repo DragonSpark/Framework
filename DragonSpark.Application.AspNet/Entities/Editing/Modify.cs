@@ -33,7 +33,7 @@ public class Modify<T> : Modify<T, T>
 	protected Modify(IEdit<T, T> edit, Action<T> modify) : this(edit, Start.A.Command(modify).Get()) {}
 }
 
-public class Modify<TIn, T> : StopAdaptor<TIn>
+public class Modify<TIn, T> : StopAware<TIn>
 {
 	protected Modify(IEnlistedScopes scopes, IQuery<TIn, T> query, IOperation<Edit<T>> modification)
 		: this(scopes.Then().Use(query).Edit.Single(), modification) {}
