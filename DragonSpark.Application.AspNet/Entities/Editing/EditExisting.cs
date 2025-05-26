@@ -21,10 +21,10 @@ public class EditExisting<T> : IEdit<T> where T : class
 	{
 		var (context, disposable) = _scopes.Get();
 		var editor = new Editor(context, disposable, parameter);
-		editor.Attach(parameter);
+		editor.Attach(parameter.Subject);
 		if (_reload)
 		{
-			await context.Entry(parameter).ReloadAsync().Off();
+			await context.Entry(parameter.Subject).ReloadAsync(parameter).Off();
 		}
 
 		return new(editor, parameter);

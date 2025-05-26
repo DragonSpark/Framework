@@ -19,7 +19,7 @@ sealed class Registrations : ICommand<IServiceCollection>
                  //
                  .Then.Start<IAccessTokenProvider>()
                  .Forward<AmbientAwareAccessTokenProvider>()
-                 .Singleton()
+                 .Transient()
                  //
                  .Then.Start<IComposeTokenView>()
                  .Forward<ComposeTokenView>()

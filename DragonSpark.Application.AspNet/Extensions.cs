@@ -16,6 +16,7 @@ using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Security.Claims;
 using System.Threading;
@@ -34,6 +35,9 @@ partial class Extensions
 
 	public static ApplicationProfileContext WithIdentityClaimsRelay(this ApplicationProfileContext @this)
 		=> @this.Append(Security.Identity.Authentication.Persist.WithIdentityClaimsRelay.Default);
+
+	public static IServiceCollection AddHttpIdentity(this IServiceCollection @this)
+		=> Communication.Http.Registrations.Default.Parameter(@this);
 
 	/**/
 

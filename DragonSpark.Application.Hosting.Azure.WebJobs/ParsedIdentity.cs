@@ -10,7 +10,7 @@ public class ParsedIdentity : Allocated<string>
 {
 	public ParsedIdentity(IStopAware<Guid> body)
 		: base(Start.A.Selection<Stop<string>>()
-		            .By.Calling(x => Guid.Parse(x).Stop(x))
+		            .By.Calling(x => Guid.Parse(x.Subject).Stop(x))
 		            .Select(body)
 		            .Then()
 		            .Allocate()) {}
