@@ -4,14 +4,13 @@ namespace DragonSpark.Application.Security.Identity.Claims;
 
 public readonly struct Read<T>
 {
-	readonly T _value;
 	public static Read<T> Default { get; } = new(false, default!);
 
 	public Read(T value) : this(true, value) {}
 
 	public Read(bool exists, T value)
 	{
-		_value = value;
+		Value = value;
 		Exists = exists;
 	}
 
@@ -19,6 +18,6 @@ public readonly struct Read<T>
 
 	public T Value
 		=> Exists
-			   ? _value
+			   ? field
 			   : throw new InvalidOperationException("Attempted access to claim value that does not exist");
 }

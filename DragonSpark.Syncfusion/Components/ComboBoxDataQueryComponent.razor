@@ -46,16 +46,16 @@
     [Parameter]
     public byte? Virtualization
     {
-        get => _virtualization;
+        get;
         set
         {
-            if (_virtualization != value)
+            if (field != value)
             {
-                _virtualization = value;
-                _display = _virtualization.HasValue ? new Query().Take(_virtualization.Value) : null;
+                field    = value;
+                _display = field.HasValue ? new Query().Take(field.Value) : null;
             }
         }
-    }   byte? _virtualization = DefaultPageSize.Default;
+    } = DefaultPageSize.Default;
 
     Query? _display = new Query().Take(DefaultPageSize.Default);
 

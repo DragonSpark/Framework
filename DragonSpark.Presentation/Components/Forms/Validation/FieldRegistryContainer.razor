@@ -7,24 +7,24 @@
     [CascadingParameter]
     EditContext? EditContext
     {
-        get => _context;
+        get;
         set
         {
-            if (_context != value)
+            if (field != value)
             {
-                if (_context is not null)
+                if (field is not null)
                 {
                     _registry.Clear();
                 }
 
-                if ((_context = value) is not null)
+                if ((field = value) is not null)
                 {
                     _registry = new FieldRegistry();
                     _content  = ChildContent(_registry);
                 }
             }
         }
-    }	EditContext? _context;
+    }
 
     [Parameter]
     public RenderFragment<FieldRegistry> ChildContent { get; set; } = null!;

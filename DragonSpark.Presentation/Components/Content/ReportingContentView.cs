@@ -20,19 +20,19 @@ partial class ReportingContentView<TIn, TOut> where TIn : class
 	[Parameter]
 	public TIn? Content
 	{
-		get => _content;
+		get;
 		set
 		{
-			if (_content != value)
+			if (field != value)
 			{
-				_content               = value;
+				field                  = value;
 				Current                = null;
 				Subject                = default;
 				Loaded                 = true;
 				CurrentLoadingTemplate = null;
 			}
 		}
-	}	TIn? _content;
+	}
 
 	[Parameter]
 	public IReporter<TIn, TOut> Reporter { get; set; } = null!;

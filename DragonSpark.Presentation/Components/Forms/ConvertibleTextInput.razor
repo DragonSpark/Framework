@@ -57,21 +57,21 @@
     public IEqualityComparer<T> Comparer { get; set; } = EqualityComparer<T>.Default;
 
     [Parameter]
-    public IValidateValue<object>? Validator { get; set; } 
+    public IValidateValue<object>? Validator { get; set; }
 
     [Parameter]
-    public T? Value 
+    public T? Value
     {
-        get => _value;
+        get;
         set
         {
-            if (Comparer.Equals(_value, value))
+            if (Comparer.Equals(field, value))
             {
-                _value = value;
-                CurrentValue = _value is not null ? Formatter.Get(_value) : null;
+                field        = value;
+                CurrentValue = field is not null ? Formatter.Get(field) : null;
             }
         }
-    }	T? _value;
+    }
 
     [Parameter]
     public EventCallback<T> ValueChanged { get; set; }

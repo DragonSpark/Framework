@@ -9,23 +9,23 @@
     [CascadingParameter]
     EditContext? EditContext
     {
-        get => _context;
+        get;
         set
         {
-            if (_context != value)
+            if (field != value)
             {
-                if (_context != null)
+                if (field != null)
                 {
-                    _context.OnValidationRequested -= Update;
+                    field.OnValidationRequested -= Update;
                 }
 
-                if ((_context = value) != null)
+                if ((field = value) != null)
                 {
-                    _context.OnValidationRequested += Update;
+                    field.OnValidationRequested += Update;
                 }
             }
         }
-    }   EditContext? _context;
+    }
 
     [Parameter]
     public FieldIdentifier Identifier { get; set; }

@@ -12,25 +12,25 @@
     [CascadingParameter]
     AuthenticationState State
     {
-        get => _state;
+        get;
         set
         {
-            if (_state != value)
+            if (field != value)
             {
-                if (_state.Account() is not null)
+                if (field.Account() is not null)
                 {
                     var authenticated = value.User.IsAuthenticated();
-                    var current = _state.Account()?.User.IsAuthenticated() ?? authenticated;
+                    var current       = field.Account()?.User.IsAuthenticated() ?? authenticated;
                     if (authenticated != current)
                     {
                         _update.Up();
                     }
                 }
 
-                _state = value;
+                field = value;
             }
         }
-    }   AuthenticationState _state = null!;
+    } = null!;
 
     protected override void OnParametersSet()
     {

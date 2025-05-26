@@ -14,21 +14,20 @@ public abstract class ValidationComponent : ComponentBase, IDisposable
 	readonly        Switch          _update           = new();
 	ValidationMessageStore          _messages         = null!;
 	EditContext?                    _context;
-	bool                            _enabled = true;
 
 	[Parameter]
 	public bool Enabled
 	{
-		get => _enabled;
+		get;
 		set
 		{
-			if (_enabled != value)
+			if (field != value)
 			{
-				_enabled = value;
+				field = value;
 				_update.Up();
 			}
 		}
-	}
+	} = true;
 
 	[Parameter]
 	public FieldIdentifier Identifier { get; set; } = DefaultIdentifier;

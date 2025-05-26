@@ -38,30 +38,30 @@ public class TimerComponent : Microsoft.AspNetCore.Components.ComponentBase, IDi
 	[Parameter]
 	public bool AutoStart
 	{
-		get => _autoStart;
+		get;
 		set
 		{
-			if (_autoStart != value)
+			if (field != value)
 			{
-				_autoStart      = value;
-				_update.Execute(_update || _autoStart); 
+				field = value;
+				_update.Execute(_update || field);
 			}
 		}
-	}	bool _autoStart;
+	}
 
 	[Parameter]
 	public bool Enabled
 	{
-		get => _enabled;
+		get;
 		set
 		{
-			if (_enabled != value)
+			if (field != value)
 			{
-				_enabled = value;
-				_update.Execute(_update || _enabled);
+				field = value;
+				_update.Execute(_update || field);
 			}
 		}
-	}	bool _enabled = true;
+	} = true;
 
 	[Parameter]
 	public bool Repeat { get; set; }

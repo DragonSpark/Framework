@@ -72,16 +72,16 @@
     [Parameter]
     public Expression<Func<string>> ValueExpression
     {
-        get => _valueExpression;
+        get;
         set
         {
-            if (_valueExpression != value)
+            if (field != value)
             {
-                _valueExpression = value;
+                field       = value;
                 _identifier = FieldIdentifier.Create(ValueExpression);
             }
         }
-    }	Expression<Func<string>> _valueExpression = null!;
+    } = null!;
 
     [CascadingParameter]
     EditContext? EditContext { get; set; }

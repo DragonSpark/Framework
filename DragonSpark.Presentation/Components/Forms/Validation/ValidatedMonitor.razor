@@ -1,4 +1,5 @@
 ﻿@using DragonSpark.Compose
+@using System.Diagnostics.CodeAnalysis
 @implements IDisposable
 
 @code {
@@ -6,29 +7,28 @@
 	public EventCallback Validated { get; set; }
 
 	[CascadingParameter]
-	IValidated Validation
+    [field: AllowNull, MaybeNull]
+    IValidated Validation
 	{
-		get => _validation.Verify();
+		get => field.Verify();
 		set
 		{
-			if (_validation != value)
+			if (field != value)
 			{
-				if (_validation != null)
+				if (field != null)
 				{
-					_validation.Validated -= ValidationOnValidated;
+					field.Validated -= ValidationOnValidated;
 				}
 
-				if ((_validation = value) != null)
+				if ((field = value) != null)
 				{
-					_validation.Validated += ValidationOnValidated;
+					field.Validated += ValidationOnValidated;
 				}
 			}
 		}
 	}
-	IValidated? _validation;
 
-
-	void ValidationOnValidated(object? sender, ValidationCallbackEventArgs e)
+    void ValidationOnValidated(object? sender, ValidationCallbackEventArgs e)
 	{
 		e.Callbacks.Add(Validated);
 	}

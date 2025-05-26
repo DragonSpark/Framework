@@ -22,20 +22,18 @@ public sealed class WhereTests
 		                                                      .Select(x => x.Where(y => y > 1000).ToArray())
 		                                                      .Out();
 
-		uint _count = Total;
-
 		uint[] _source = null!;
 
 		[Params(Total)]
 		public uint Count
 		{
-			get => _count;
+			get;
 			set
 			{
-				_count  = value;
-				_source = FixtureInstance.Default.Many<uint>(_count).Get().ToArray();
+				field   = value;
+				_source = FixtureInstance.Default.Many<uint>(field).Get().ToArray();
 			}
-		}
+		} = Total;
 
 		[Benchmark]
 		public Array Full() => Select.Get(_source);

@@ -70,16 +70,16 @@
     [Parameter]
     public string Id
     {
-        get => _id;
+        get;
         set
         {
-            if (_id != value)
+            if (field != value)
             {
-                _id = value;
+                field = value;
                 _update.Up();
             }
         }
-    }   string _id = string.Empty;
+    } = string.Empty;
 
     [Parameter]
     public bool Enabled { get; set; } = true;

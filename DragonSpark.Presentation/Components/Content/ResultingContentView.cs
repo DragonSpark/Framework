@@ -21,19 +21,17 @@ partial class ResultingContentView<T>
 	[Parameter]
 	public IResulting<T?>? Content
 	{
-		get => _content;
+		get;
 		set
 		{
-			if (_content != value)
+			if (field != value)
 			{
-				_content = value;
+				field = value;
 				_loaded.Down();
 				_subject = null;
 			}
 		}
 	}
-
-	IResulting<T?>? _content;
 
 	[Parameter]
 	public ICondition<None>? UpdateMonitor { get; set; }

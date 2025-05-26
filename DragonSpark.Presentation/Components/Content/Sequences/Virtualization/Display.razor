@@ -45,23 +45,24 @@
     [Parameter]
     public IPages<T> Input
     {
-        get => _input;
+        get;
         set
         {
-            if (_input != value)
+            if (field != value)
             {
-                _input = value;
+                field = value;
                 if (_items.Count > 0)
                 {
                     _reload.Up();
                 }
+
                 _items.Clear();
                 _source?.Cancel();
-                _source = null;
+                _source   = null;
                 _complete = _loading = false;
             }
         }
-    }   IPages<T> _input = null!;
+    } = null!;
 
     [Parameter]
     public string? OrderBy { get; set; }

@@ -41,21 +41,19 @@ public class Validating : ComponentBase, IDisposable
 	[Parameter]
 	public bool Enabled
 	{
-		get => _enabled;
+		get;
 		set
 		{
-			if (_enabled != value)
+			if (field != value)
 			{
-				_enabled = value;
+				field = value;
 				if (value)
 				{
 					_requested.Up();
 				}
 			}
 		}
-	}
-
-	bool _enabled = true;
+	} = true;
 
 	[CascadingParameter]
 	EditContext? Context

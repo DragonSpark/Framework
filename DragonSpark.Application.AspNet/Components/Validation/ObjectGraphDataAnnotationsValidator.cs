@@ -1,11 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Conditions;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace DragonSpark.Application.AspNet.Components.Validation;
 
@@ -36,28 +36,28 @@ public sealed class ObjectGraphDataAnnotationsValidator : ComponentBase, IDispos
 	[CascadingParameter]
 	EditContext? EditContext
 	{
-		get => _context;
+		get;
 		set
 		{
-			if (_context != value)
+			if (field != value)
 			{
-				if (_context != null)
+				if (field != null)
 				{
 					_messages.Execute();
-					_context.OnFieldChanged        -= FieldChanged;
-					_context.OnValidationRequested -= ValidationRequested;
+					field.OnFieldChanged        -= FieldChanged;
+					field.OnValidationRequested -= ValidationRequested;
 				}
 
-				if ((_context = value) != null)
+				if ((field = value) != null)
 				{
-					_context.OnValidationRequested += ValidationRequested;
-					_context.OnFieldChanged        += FieldChanged;
-					_messages                      =  new Messages(_context, new ValidationMessageStore(_context));
-					_validator                     =  new ObjectGraphValidator(Condition.Then());
+					field.OnValidationRequested += ValidationRequested;
+					field.OnFieldChanged        += FieldChanged;
+					_messages                   =  new Messages(field, new ValidationMessageStore(field));
+					_validator                  =  new ObjectGraphValidator(Condition.Then());
 				}
 			}
 		}
-	}	EditContext? _context;
+	}
 
 	void ValidationRequested(object? sender, ValidationRequestedEventArgs e)
 	{
