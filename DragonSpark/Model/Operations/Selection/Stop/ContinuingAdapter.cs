@@ -2,13 +2,13 @@
 using DragonSpark.Model.Selection;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Model.Operations.Selection;
+namespace DragonSpark.Model.Operations.Selection.Stop;
 
-sealed class StopAdapter<TIn, TOut> : IContinuing<TIn, TOut>
+sealed class ContinuingAdapter<TIn, TOut> : IContinuing<TIn, TOut>
 {
 	readonly ISelect<TIn, ValueTask<TOut>> _previous;
 
-	public StopAdapter(ISelect<TIn, ValueTask<TOut>> previous) => _previous = previous;
+	public ContinuingAdapter(ISelect<TIn, ValueTask<TOut>> previous) => _previous = previous;
 
 	public async ValueTask<Stop<TOut>> Get(Stop<TIn> parameter)
 	{

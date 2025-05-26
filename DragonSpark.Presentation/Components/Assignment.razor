@@ -8,16 +8,16 @@
     [Parameter]
     public T Value
     {
-        get => _value;
+        get;
         set
         {
-            if (!Comparer.Equals(_value, value))
+            if (!Comparer.Equals(field, value))
             {
-                _value = value;
+                field = value;
                 _update.Up();
             }
         }
-    }	T _value = default!;
+    } = default!;
 
     [Parameter]
     public IEqualityComparer<T> Comparer { get; set; } = EqualityComparer<T>.Default;

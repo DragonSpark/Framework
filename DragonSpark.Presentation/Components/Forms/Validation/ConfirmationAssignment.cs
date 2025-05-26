@@ -11,16 +11,14 @@ public sealed class ConfirmationAssignment : ComponentBase
 	[Parameter]
 	public IResulting<bool> Assignment
 	{
-		get => _assignment;
+		get;
 		set
 		{
-			if (_assignment != value)
+			if (field != value)
 			{
-				_assignment = value;
-				Subject.Execute(_assignment);
+				field = value;
+				Subject.Execute(field);
 			}
 		}
-	}
-
-	IResulting<bool> _assignment = null!;
+	} = null!;
 }

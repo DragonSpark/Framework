@@ -1,7 +1,8 @@
-using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Transactions;
 
@@ -10,7 +11,7 @@ public sealed class AmbientAwareEntityContextTransactions(IServiceScopedTransact
 	readonly IServiceScopedTransactions _previous = previous;
 
 	[MustDisposeResource]
-	public ValueTask<ITransaction> Get()
+	public ValueTask<ITransaction> Get(CancellationToken parameter)
 	{
 		var previous = _previous.Get();
 		var context  = previous.Provider.GetRequiredService<DbContext>();

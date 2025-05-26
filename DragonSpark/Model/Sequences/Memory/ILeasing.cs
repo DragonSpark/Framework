@@ -1,5 +1,5 @@
-﻿using DragonSpark.Model.Operations.Selection;
+﻿using DragonSpark.Model.Operations.Selection.Stop;
 
 namespace DragonSpark.Model.Sequences.Memory;
 
-public interface ILeasing<in TIn, T> : ISelecting<TIn, Leasing<T>>;
+public interface ILeasing<TIn, T> : IStopAware<TIn, Leasing<T>>;

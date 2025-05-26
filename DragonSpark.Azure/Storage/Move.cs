@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Storage;
@@ -14,11 +15,11 @@ sealed class Move : IMove
 		_delete = delete;
 	}
 
-	public async ValueTask<IStorageEntry> Get(DestinationInput parameter)
+	public async ValueTask<IStorageEntry> Get(Stop<DestinationInput> parameter)
 	{
-		var (source, _) = parameter;
+		var ((source, _), stop) = parameter;
 		var result = await _copy.Off(parameter);
-		await _delete.Off(source.Properties.Path);
+		await _delete.Off(new(source.Properties.Path, stop));
 		return result;
 	}
 }

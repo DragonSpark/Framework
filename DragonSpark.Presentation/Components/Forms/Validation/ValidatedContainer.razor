@@ -20,23 +20,23 @@
     [CascadingParameter]
     EditContext? EditContext
     {
-        get => _context;
+        get;
         set
         {
-            if (_context != value)
+            if (field != value)
             {
-                if (_context != null)
+                if (field != null)
                 {
-                    Validated = delegate { };
+                    Validated = delegate {};
                 }
 
-                if ((_context = value) != null)
+                if ((field = value) != null)
                 {
-                    _validation = new(_context, this, () => Validated);
+                    _validation = new(field, this, () => Validated);
                 }
             }
         }
-    }	EditContext? _context;
+    }
 
     public void Dispose()
 	{

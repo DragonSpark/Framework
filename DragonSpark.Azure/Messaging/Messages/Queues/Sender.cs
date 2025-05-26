@@ -1,5 +1,6 @@
 ﻿using Azure.Messaging.ServiceBus;
 using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
 using System.Threading.Tasks;
 
@@ -22,10 +23,10 @@ public class Sender : ISender
 		_create   = create;
 	}
 
-	public ValueTask Get(MessageInput parameter)
+	public ValueTask Get(Stop<MessageInput> parameter)
 	{
 		var message = _create.Get(parameter);
-		return Get(message);
+		return Get(message.Stop(parameter));
 	}
 
 	public ISend Get(SendInput parameter)
@@ -34,5 +35,6 @@ public class Sender : ISender
 		return new Send(_instance, new CreateMessageFromContent(life, visibility, _create));
 	}
 
-	public ValueTask Get(ServiceBusMessage parameter) => _instance.SendMessageAsync(parameter).ToOperation();
+	public ValueTask Get(Stop<ServiceBusMessage> parameter)
+		=> _instance.SendMessageAsync(parameter, parameter).ToOperation();
 }

@@ -8,6 +8,7 @@ using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -26,7 +27,7 @@ public sealed class DemonstrationTests
 		var get     = new GetSpecificBlog(scopes);
 		var edit    = new EditSpecificBlog(scopes);
 		{
-			using var editor = editors.Get();
+			using var editor = editors.Get(CancellationToken.None);
 			var       entity = new Blog { Url = "http://blogs.msdn.com/adonet" };
 			editor.Add(entity);
 			await editor.Off();
@@ -36,13 +37,13 @@ public sealed class DemonstrationTests
 		id.Should().NotBe(0);
 
 		{
-			using var editor = await edit.Off(id);
+			using var editor = await edit.Off(new(id, CancellationToken.None));
 			editor.Subject.Posts.Add(new() { Title = "Hello World", Content = "I wrote an app using EF Core!" });
 			await editor.Off();
 		}
 
 		{
-			var specific = await get.Off(id);
+			var specific = await get.Off(new(id, CancellationToken.None));
 			specific.Should().NotBeNull();
 			var verify = specific.Verify();
 			verify.BlogId.Should().Be(id);
@@ -50,13 +51,13 @@ public sealed class DemonstrationTests
 		}
 
 		{
-			using var editor = await edit.Off(id);
+			using var editor = await edit.Off(new(id, CancellationToken.None));
 			editor.Remove(editor.Subject);
 			await editor.Off();
 		}
 
 		{
-			var specific = await get.Off(id);
+			var specific = await get.Off(new(id, CancellationToken.None));
 			specific.Should().BeNull();
 		}
 	}

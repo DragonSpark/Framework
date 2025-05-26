@@ -1,5 +1,5 @@
-﻿using DragonSpark.Model.Operations.Selection;
+﻿using DragonSpark.Model.Operations.Selection.Stop;
 
 namespace DragonSpark.Identity.DeviantArt.Api;
 
-public interface IUserIdentifierQuery : ISelecting<string, string?>;
+public interface IUserIdentifierQuery : IStopAware<string, string?>;

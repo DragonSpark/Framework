@@ -34,23 +34,23 @@ public sealed class ValidationStateMonitor : ComponentBase, IDisposable
 	[CascadingParameter]
 	EditContext? EditContext
 	{
-		get => _subject;
+		get;
 		set
 		{
-			if (_subject != value)
+			if (field != value)
 			{
-				if (_subject is not null)
+				if (field is not null)
 				{
-					_subject.OnValidationStateChanged -= StateChanged;
+					field.OnValidationStateChanged -= StateChanged;
 				}
 
-				if ((_subject = value) != null)
+				if ((field = value) != null)
 				{
-					_subject.OnValidationStateChanged += StateChanged;
+					field.OnValidationStateChanged += StateChanged;
 				}
 			}
 		}
-	}	EditContext? _subject;
+	}
 
 	void StateChanged(object? sender, ValidationStateChangedEventArgs e)
 	{

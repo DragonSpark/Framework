@@ -1,10 +1,11 @@
 ﻿using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Stop;
 using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Messaging.Messages.Topics.Send;
 
-public class Send<T, U> : IOperation<T> where U : Message
+public class Send<T, U> : IStopAware<T> where U : Message
 {
 	readonly IProducer        _producer;
 	readonly Func<T, U>       _select;
@@ -19,10 +20,10 @@ public class Send<T, U> : IOperation<T> where U : Message
 		_create   = create;
 	}
 
-	public ValueTask Get(T parameter)
+	public ValueTask Get(Stop<T> parameter)
 	{
 		var message = _select(parameter);
 		var data    = _create.Get(new(message));
-		return _producer.Get(data);
+		return _producer.Get(new(data, parameter));
 	}
 }

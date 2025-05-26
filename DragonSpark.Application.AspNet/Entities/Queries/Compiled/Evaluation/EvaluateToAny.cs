@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Model;
-using DragonSpark.Model.Operations.Selection.Conditions;
+using DragonSpark.Model.Operations.Selection.Stop;
 using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using System;

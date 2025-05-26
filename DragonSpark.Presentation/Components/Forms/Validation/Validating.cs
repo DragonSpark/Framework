@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -29,7 +30,7 @@ public class Validating : ComponentBase, IDisposable
 	public string Message { get; set; } = "This field does not contain a valid value.";
 
 	[Parameter]
-	public EventCallback<ValidationContext> Validate { get; set; }
+	public EventCallback<Stop<ValidationContext>> Validate { get; set; }
 
 	[Parameter]
 	public EventCallback Valid { get; set; }
@@ -40,21 +41,19 @@ public class Validating : ComponentBase, IDisposable
 	[Parameter]
 	public bool Enabled
 	{
-		get => _enabled;
+		get;
 		set
 		{
-			if (_enabled != value)
+			if (field != value)
 			{
-				_enabled = value;
+				field = value;
 				if (value)
 				{
 					_requested.Up();
 				}
 			}
 		}
-	}
-
-	bool _enabled = true;
+	} = true;
 
 	[CascadingParameter]
 	EditContext? Context
@@ -139,7 +138,7 @@ public class Validating : ComponentBase, IDisposable
 		var context = _context;
 		if (context is not null && context.IsValid())
 		{
-			await Validate.Invoke(new(new(context, Identifier), _messages, Message));
+			await Validate.Invoke(new(new(new(context, Identifier), _messages, Message), Stop));
 
 			context.NotifyValidationStateChanged();
 

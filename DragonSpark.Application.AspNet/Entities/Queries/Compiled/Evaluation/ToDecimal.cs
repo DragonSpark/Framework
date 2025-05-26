@@ -1,4 +1,5 @@
-﻿using NetFabric.Hyperlinq;
+﻿using DragonSpark.Model.Operations;
+using NetFabric.Hyperlinq;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -10,5 +11,9 @@ sealed class ToDecimal : IEvaluate<decimal, decimal>
 
 	ToDecimal() {}
 
-	public ValueTask<decimal> Get(IAsyncEnumerable<decimal> parameter) => parameter.AsAsyncValueEnumerable().SumAsync();
+	public ValueTask<decimal> Get(Stop<IAsyncEnumerable<decimal>> parameter)
+	{
+		var (subject, token) = parameter;
+		return subject.AsAsyncValueEnumerable().SumAsync(token);
+	}
 }

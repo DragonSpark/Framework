@@ -10,7 +10,7 @@ namespace DragonSpark.SyncfusionRendering.Components;
 
 public abstract class DataQueryComponent : DataComponent
 {
-	Await<DataManagerRequest, object>? _input;
+	Await<Stop<DataManagerRequest>, object>? _input;
 
 	[Parameter]
 	public required IDataRequest Content { get; set; }
@@ -25,11 +25,11 @@ public abstract class DataQueryComponent : DataComponent
 		}
 	}
 
-	protected abstract Await<DataManagerRequest, object> CreateInput();
+	protected abstract Await<Stop<DataManagerRequest>, object> CreateInput();
 
 	protected virtual async Task OnRequest(DataRequestResult parameter)
 	{
-		var data = await _input.Verify()(parameter.Request);
+		var data = await _input.Verify()(new(parameter.Request, Stop));
 		parameter.Execute(data);
 	}
 }

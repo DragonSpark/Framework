@@ -1,6 +1,8 @@
 ﻿using Azure.Storage.Blobs.Specialized;
 using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Storage;
@@ -17,11 +19,12 @@ sealed class DefaultStorageEntry : IStorageEntry
 
 	public StorageEntryProperties Properties { get; }
 
-	public ValueTask<Stream> Get() => _client.OpenReadAsync().ToOperation();
+	public ValueTask<Stream> Get(CancellationToken parameter)
+		=> _client.OpenReadAsync(cancellationToken: parameter).ToOperation();
 
-	public async ValueTask<Stream> Get(Stream parameter)
+	public async ValueTask<Stream> Get(Stop<Stream> parameter)
 	{
-		await _client.DownloadToAsync(parameter).Off();
+		await _client.DownloadToAsync(parameter, parameter).Off();
 		return parameter;
 	}
 }

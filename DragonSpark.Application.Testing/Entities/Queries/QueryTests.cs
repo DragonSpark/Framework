@@ -7,7 +7,7 @@ using DragonSpark.Application.AspNet.Entities.Queries.Composition;
 using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Selection;
 using DragonSpark.Compose;
 using DragonSpark.Model;
-using DragonSpark.Model.Operations.Selection;
+using DragonSpark.Model.Operations.Selection.Stop;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Runtime.Execution;
 using DragonSpark.Testing.Objects.Entities;
@@ -22,6 +22,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 using Array = System.Array;
@@ -90,7 +91,7 @@ public sealed class QueryTests
 
 		var evaluate = new SubjectsNotTwo(new NewContext<Context>(factory));
 		{
-			var results = await evaluate.Off();
+			var results = await evaluate.Off(CancellationToken.None);
 			var open    = results.Open();
 			open.Should().HaveCount(2);
 			open.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
@@ -115,7 +116,7 @@ public sealed class QueryTests
 
 		var evaluate = new SubjectsNotTwo(new NewContext<Context>(factory), Complex.Default);
 		{
-			var results = await evaluate.Off();
+			var results = await evaluate.Off(CancellationToken.None);
 			var open    = results.Open();
 			open.Should().HaveCount(2);
 			open.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
@@ -140,7 +141,7 @@ public sealed class QueryTests
 
 		var evaluate = new SubjectsNotWithParameter(new NewContext<Context>(factory));
 		{
-			var results = await evaluate.Off("One");
+			var results = await evaluate.Off(new("One", CancellationToken.None));
 			var open    = results.Open();
 			open.Should().HaveCount(2);
 			open.Select(x => x.Name).Should().BeEquivalentTo("Two", "Three");
@@ -149,7 +150,7 @@ public sealed class QueryTests
 		counter.Get().Should().Be(2);
 
 		{
-			var results = await evaluate.Off("Two");
+			var results = await evaluate.Off(new("Two", CancellationToken.None));
 			var open    = results.Open();
 			open.Should().HaveCount(2);
 			open.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
@@ -172,14 +173,14 @@ public sealed class QueryTests
 
 		var parameter = new SubjectsNotWithParameter(factory);
 		{
-			var results = await parameter.Off("One");
+			var results = await parameter.Off(new("One", CancellationToken.None));
 			var open    = results.Open();
 			open.Should().HaveCount(2);
 			open.Select(x => x.Name).Should().BeEquivalentTo("Two", "Three");
 		}
 
 		{
-			var results = await parameter.Off("Two");
+			var results = await parameter.Off(new("Two", CancellationToken.None));
 			var open    = results.Open();
 			open.Should().HaveCount(2);
 			open.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
@@ -199,7 +200,7 @@ public sealed class QueryTests
 
 		var evaluate = new SubjectsNotTwo(new NewContext<Context>(factory));
 		{
-			var             results  = await evaluate.Off();
+			var             results  = await evaluate.Off(CancellationToken.None);
 			await using var context  = factory.CreateDbContext();
 			var             scoped   = new Scoped(context);
 			var             elements = await scoped.Get().ToArrayAsync();
@@ -275,8 +276,8 @@ public sealed class QueryTests
 
 	public class Benchmarks
 	{
-		readonly ISelecting<None, Array<Subject>>   _query;
-		readonly ISelecting<string, Array<Subject>> _selected;
+		readonly IStopAware<None, Array<Subject>>   _query;
+		readonly IStopAware<string, Array<Subject>> _selected;
 		readonly IQueryable<Subject>                _scoped;
 
 		public Benchmarks() : this(new DbContextOptionsBuilder<Context>().UseInMemoryDatabase("0").Options) {}
@@ -288,7 +289,7 @@ public sealed class QueryTests
 			       new SubjectsNotWithParameter(new NewContext<Context>(factory)),
 			       new Scoped(factory.CreateDbContext()).Get()) {}
 
-		Benchmarks(ISelecting<None, Array<Subject>> query, ISelecting<string, Array<Subject>> selected,
+		Benchmarks(IStopAware<None, Array<Subject>> query, IStopAware<string, Array<Subject>> selected,
 		           IQueryable<Subject> scoped)
 		{
 			_query    = query;
@@ -300,9 +301,9 @@ public sealed class QueryTests
 		public async Task<Array> MeasureScoped() => await _scoped.ToArrayAsync();
 
 		[Benchmark]
-		public async Task<Array> MeasureCompiled() => await _query.Off();
+		public async Task<Array> MeasureCompiled() => await _query.Off(CancellationToken.None);
 
 		[Benchmark]
-		public async Task<Array> MeasureCompiledParameter() => await _selected.Off("Two");
+		public async Task<Array> MeasureCompiledParameter() => await _selected.Off(new("Two", CancellationToken.None));
 	}
 }

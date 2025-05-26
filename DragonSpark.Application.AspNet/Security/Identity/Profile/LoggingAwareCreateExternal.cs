@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Diagnostics.Logging;
+using DragonSpark.Model.Operations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
@@ -19,14 +20,15 @@ sealed class LoggingAwareCreateExternal<T> : ICreateExternal<T> where T : Identi
 		_created  = created;
 	}
 
-	public async ValueTask<CreateUserResult<T>> Get(ExternalLoginInfo parameter)
+	public async ValueTask<CreateUserResult<T>> Get(Stop<ExternalLoginInfo> parameter)
 	{
-		_creating.Execute(parameter.LoginProvider, parameter.ProviderKey);
+		var (subject, _) = parameter;
+		_creating.Execute(subject.LoginProvider, subject.ProviderKey);
 		var result = await _previous.Off(parameter);
 		if (result.Result.Succeeded)
 		{
 			var (user, _) = result;
-			_created.Execute(user.UserName.Verify(), parameter.LoginProvider, parameter.ProviderKey);
+			_created.Execute(user.UserName.Verify(), subject.LoginProvider, subject.ProviderKey);
 		}
 
 		return result;

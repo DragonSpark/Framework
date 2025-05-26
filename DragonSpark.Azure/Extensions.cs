@@ -52,8 +52,6 @@ public static class Extensions
 	public static ISend Send(this ISender @this, TimeSpan? life = null, TimeSpan? visibility = null)
 		=> @this.Get(new SendInput(life, visibility));
 
-	/*public static IMessage Message(this ISender @this) => new Message(@this.Get());*/
-
 	public static RegistrationResult Storage<T>(this IServiceCollection @this) where T : class, IContainer
 		=> @this.Start<IContainer>()
 		        .Forward<T>()

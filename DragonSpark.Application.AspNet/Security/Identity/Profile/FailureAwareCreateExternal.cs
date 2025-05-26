@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Diagnostics.Logging;
+using DragonSpark.Model.Operations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using NetFabric.Hyperlinq;
@@ -18,12 +19,13 @@ sealed class FailureAwareCreateExternal<T> : ICreateExternal<T> where T : Identi
 		_warning  = warning;
 	}
 
-	public async ValueTask<CreateUserResult<T>> Get(ExternalLoginInfo parameter)
+	public async ValueTask<CreateUserResult<T>> Get(Stop<ExternalLoginInfo> parameter)
 	{
 		var result = await _previous.Off(parameter);
 		if (!result.Result.Succeeded)
 		{
-			_warning.Execute(parameter.LoginProvider, parameter.ProviderKey,
+			var (subject, _) = parameter;
+			_warning.Execute(subject.LoginProvider, subject.ProviderKey,
 			                 result.Result.Errors.AsValueEnumerable()
 			                       .Select(x => $"{x.Code}: {x.Description}")
 			                       .ToArray());

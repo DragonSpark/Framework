@@ -1,11 +1,12 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Model.Operations.Selection;
+using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Selection.Stop;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Profile;
 
-sealed class CreateNewExternal<T> : ISelecting<ExternalLoginInfo, CreateUserResult<T>> where T : class
+sealed class CreateNewExternal<T> : IStopAware<ExternalLoginInfo, CreateUserResult<T>> where T : class
 {
 	readonly ICreate<T> _create;
 	readonly INew<T>    _new;
@@ -16,10 +17,11 @@ sealed class CreateNewExternal<T> : ISelecting<ExternalLoginInfo, CreateUserResu
 		_new    = @new;
 	}
 
-	public async ValueTask<CreateUserResult<T>> Get(ExternalLoginInfo parameter)
+	public async ValueTask<CreateUserResult<T>> Get(Stop<ExternalLoginInfo> parameter)
 	{
+		var (subject, stop) = parameter;
 		var user   = await _new.Off(parameter);
-		var result = await _create.Off(new(parameter, user));
+		var result = await _create.Off(new(new(subject, user), stop));
 		return new(user, result);
 	}
 }

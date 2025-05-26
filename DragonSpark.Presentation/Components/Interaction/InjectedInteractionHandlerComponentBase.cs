@@ -12,16 +12,16 @@ public abstract class InjectedInteractionHandlerComponentBase<THandler, T> : Com
 	[Parameter]
 	public IInteractionResult Result
 	{
-		get => _result;
+		get;
 		set
 		{
-			if (_result != value)
+			if (field != value)
 			{
-				_result = value;
+				field   = value;
 				Current = null;
 			}
 		}
-	}	IInteractionResult _result = NoActionResult.Default;
+	} = NoActionResult.Default;
 
 	[Inject]
 	THandler Operation { get; set; } = null!;

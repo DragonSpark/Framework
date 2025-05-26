@@ -1,5 +1,5 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model.Operations.Stop;
 
 namespace DragonSpark.Runtime;
 
-public interface ICopyToFile : IOperation<CopyInput>;
+public interface ICopyToFile : IStopAware<CopyInput>;

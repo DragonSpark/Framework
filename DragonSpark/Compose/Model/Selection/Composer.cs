@@ -123,6 +123,7 @@ public class Composer<TIn, TOut> : IResult<ISelect<TIn, TOut>>, IActivateUsing<I
 		=> new SelectedAssignment<TIn, TOut, T>(_subject.Get, command).Then();
 
 	public OperationResultComposer<TIn, TOut> Operation() => new(_subject.Select(x => x.ToOperation()));
+	/*public Composer<TIn, Stop<TOut>> Stop() => new(_subject.Select(x => x.Stop()));*/
 
 	public ISelect<TIn, TOut> Get() => _subject;
 }

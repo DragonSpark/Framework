@@ -1,14 +1,15 @@
+using DragonSpark.Application.AspNet.Entities.Editing;
+using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Selection.Stop;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using DragonSpark.Application.AspNet.Entities.Editing;
-using DragonSpark.Compose;
-using DragonSpark.Model.Operations.Selection;
-using Microsoft.AspNetCore.Identity;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Model;
 
-public class AddClaim<T> : ISelecting<T, IdentityResult> where T : IdentityUser
+public class AddClaim<T> : IStopAware<T, IdentityResult> where T : IdentityUser
 {
 	readonly IUsers<T>       _users;
 	readonly EditExisting<T> _edit;
@@ -24,7 +25,7 @@ public class AddClaim<T> : ISelecting<T, IdentityResult> where T : IdentityUser
 		_claim = claim;
 	}
 
-	public async ValueTask<IdentityResult> Get(T parameter)
+	public async ValueTask<IdentityResult> Get(Stop<T> parameter)
 	{
         // ReSharper disable once NotDisposedResource
         using var edit   = await _edit.Get(parameter).On();

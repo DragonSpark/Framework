@@ -14,19 +14,20 @@
 
 @code
 {
-	[Parameter]
-	public IActiveContent<TValue> Content
-	{
-		get => _content;
-		set
-		{
-			if (_content != value)
-			{
-				_content  = value;
-				_contents = new ActivityContents<TValue>(_content).Then().Stores().New();
-			}
-		}
-	}   IActiveContent<TValue>                         _content  = null!;
+    [Parameter]
+    public IActiveContent<TValue> Content
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field     = value;
+                _contents = new ActivityContents<TValue>(field).Then().Stores().New();
+            }
+        }
+    } = null!;
+
     ISelect<IActivityReceiver, IActiveContent<TValue>> _contents = null!;
 
 	[Parameter]

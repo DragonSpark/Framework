@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Model.Operations.Selection.Conditions;
 using DragonSpark.Model.Selection;
 using System.Threading.Tasks;
 
@@ -10,10 +9,10 @@ public class Validating<T> : IOperation<T>
 	readonly Await<T, bool> _specification;
 	readonly Await<T>       _true, _false;
 
-	public Validating(IDepending<T> condition, IOperation<T> @true)
+	public Validating(ISelect<T, ValueTask<bool>> condition, IOperation<T> @true)
 		: this(condition.Off, @true.Off, Default<T>.Instance.Then().Operation()) {}
 
-	public Validating(IDepending<T> condition, IOperation<T> @true, IOperation<T> @false)
+	public Validating(ISelect<T, ValueTask<bool>> condition, IOperation<T> @true, IOperation<T> @false)
 		: this(condition.Off, @true.Off, @false.Off) {}
 
 	public Validating(Await<T, bool> specification, Await<T> @true)

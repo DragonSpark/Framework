@@ -1,6 +1,6 @@
 ﻿using Azure.Storage.Blobs.Specialized;
-using DragonSpark.Model.Operations.Selection;
+using DragonSpark.Model.Operations.Selection.Stop;
 
 namespace DragonSpark.Azure.Storage;
 
-public interface IAppend : ISelecting<AppendInput, BlobBaseClient>;
+public interface IAppend : IStopAware<AppendInput, BlobBaseClient>;

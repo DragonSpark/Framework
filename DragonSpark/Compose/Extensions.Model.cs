@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using DragonSpark.Compose.Extents;
 using DragonSpark.Compose.Extents.Commands;
 using DragonSpark.Compose.Extents.Conditions;
@@ -13,11 +11,14 @@ using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Allocated;
 using DragonSpark.Model.Operations.Results;
+using DragonSpark.Model.Operations.Results.Stop;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Runtime.Activation;
 using JetBrains.Annotations;
+using System;
+using System.Threading.Tasks;
 using Action = System.Action;
 using CommandComposer = DragonSpark.Compose.Extents.Commands.CommandComposer;
 using ValueTask = System.Threading.Tasks.ValueTask;
@@ -144,5 +145,5 @@ public static partial class ExtensionMethods
 		return result;
 	}
 
-	public static DragonSpark.Model.Operations.Results.IStopAware<T> AsToken<T>(this IResulting<T> @this) => new StopAwareAdapter<T>(@this);
+	public static IStopAware<T> AsToken<T>(this IResulting<T> @this) => new StopAwareAdapter<T>(@this);
 }

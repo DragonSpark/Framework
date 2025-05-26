@@ -5,7 +5,7 @@ using JetBrains.Annotations;
 
 namespace DragonSpark.Application.AspNet.Entities.Diagnostics;
 
-public class ReloadAware<T> : PolicyAwareOperation<T>
+public sealed class ReloadAware<T> : PolicyAwareOperation<T>
 {
 	public ReloadAware(IOperation<T> previous) : base(previous, ReloadPolicy.Default.Get()) {}
 }

@@ -4,7 +4,7 @@ using DragonSpark.Application.AspNet.Entities;
 using DragonSpark.Application.AspNet.Entities.Queries.Compiled.Evaluation;
 using DragonSpark.Application.AspNet.Entities.Queries.Composition;
 using DragonSpark.Compose;
-using DragonSpark.Model.Operations.Selection;
+using DragonSpark.Model.Operations.Selection.Stop;
 using DragonSpark.Runtime.Execution;
 using DragonSpark.Testing.Objects.Entities;
 using DragonSpark.Testing.Objects.Entities.SqlLite;
@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -40,7 +41,7 @@ public sealed class InputQueryTests
 			new EvaluateToArray<string, string>(new NewContext<Context>(factory).Then().Scopes(),
 			                                    Selected.Default);
 		{
-			var results = await evaluate.Off("One");
+			var results = await evaluate.Off(new("One", CancellationToken.None));
 			var open    = results.Open();
 			open.Should().HaveCount(2);
 			open.Should().BeEquivalentTo("Two", "Three");
@@ -67,7 +68,7 @@ public sealed class InputQueryTests
 		               .Where((s, subject) => subject.Name == name || subject.Name == s)
 		               .Invoke(contexts)
 		               .To.Array();
-		var subjects = await sut.Off("One");
+		var subjects = await sut.Off(new("One", CancellationToken.None));
 		var open     = subjects.Open();
 		open.Should().HaveCount(2);
 		open.Select(x => x.Name).Should().BeEquivalentTo("Two", "One");
@@ -77,7 +78,7 @@ public sealed class InputQueryTests
 	public async Task VerifyExternalParameterSql()
 	{
 		await using var contexts = await new SqlLiteNewContext<Context>().Initialize();
-		
+
 		{
 			await using var context = contexts.Get();
 			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
@@ -92,7 +93,7 @@ public sealed class InputQueryTests
 		               .Where((s, subject) => subject.Name == name || subject.Name == s)
 		               .Invoke(contexts)
 		               .To.Array();
-		var subjects = await sut.Off("One");
+		var subjects = await sut.Off(new("One", CancellationToken.None));
 		var open     = subjects.Open();
 		open.Should().HaveCount(2);
 		open.Select(x => x.Name).Should().BeEquivalentTo("Two", "One");
@@ -102,7 +103,7 @@ public sealed class InputQueryTests
 	public async Task VerifySelectedSql()
 	{
 		await using var factory = await new SqlLiteNewContext<Context>().Initialize();
-		
+
 		{
 			await using var context = factory.Get();
 			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
@@ -112,14 +113,14 @@ public sealed class InputQueryTests
 
 		var evaluation = new EvaluateToArray<string, string>(factory.Then().Scopes(), Selected.Default);
 		{
-			var results = await evaluation.Off("One");
+			var results = await evaluation.Off(new("One", CancellationToken.None));
 			var open    = results.Open();
 			open.Should().HaveCount(2);
 			open.Should().BeEquivalentTo("Two", "Three");
 		}
 
 		{
-			var results = await evaluation.Off("Two");
+			var results = await evaluation.Off(new("Two", CancellationToken.None));
 			var open    = results.Open();
 			open.Should().HaveCount(2);
 			open.Should().BeEquivalentTo("One", "Three");
@@ -145,7 +146,7 @@ public sealed class InputQueryTests
 			new EvaluateToArray<Input, string>(new NewContext<ContextWithData>(contexts).Then().Scopes(),
 			                                   ComplexSelected.Default);
 		{
-			var results = await evaluate.Off(new(id, "One"));
+			var results = await evaluate.Off(new(new(id, "One"), CancellationToken.None));
 			var only    = results.Open().Only();
 			only.Should().NotBeNull();
 			only.Should().Be("One");
@@ -158,7 +159,7 @@ public sealed class InputQueryTests
 	public async Task VerifyComplexSelectedSql()
 	{
 		await using var contexts = await new SqlLiteNewContext<ContextWithData>().Initialize();
-		
+
 		{
 			await using var context = contexts.Get();
 			await context.Database.EnsureCreatedAsync();
@@ -168,7 +169,7 @@ public sealed class InputQueryTests
 
 		var evaluate = contexts.Then().Use(ComplexSelected.Default).To.Array();
 		{
-			var results = await evaluate.Off(new(id, "One"));
+			var results = await evaluate.Off(new(new(id, "One"), CancellationToken.None));
 			var only    = results.Open().Only();
 			only.Should().NotBeNull();
 			only.Should().Be("One");
@@ -194,7 +195,7 @@ public sealed class InputQueryTests
 		               .To.Single();
 		{
 			await using var data = contexts.Get();
-			var             item = await sut.Off(new Input(id, "Two"));
+			var             item = await sut.Off(new(new Input(id, "Two"), CancellationToken.None));
 			item.Should().NotBeNull();
 			item.Id.Should().Be(id);
 			item.Name.Should().Be("Two");
@@ -205,7 +206,7 @@ public sealed class InputQueryTests
 	public async Task VerifyWhereWithParameterSql()
 	{
 		await using var contexts = await new SqlLiteNewContext<ContextWithData>().Initialize();
-		
+
 		{
 			await using var data = contexts.Get();
 			await data.Database.EnsureCreatedAsync();
@@ -221,7 +222,7 @@ public sealed class InputQueryTests
 		               .Invoke(contexts)
 		               .To.Single();
 		{
-			var item = await sut.Off(new Input(id, "Two"));
+			var item = await sut.Off(new(new Input(id, "Two"), CancellationToken.None));
 			item.Identity.Should().Be(id);
 			item.Name.Should().Be("Two");
 		}
@@ -291,7 +292,7 @@ public sealed class InputQueryTests
 	public class Benchmarks
 	{
 		readonly INewContext<ContextWithData> _new;
-		readonly ISelecting<Input, Result>  _select;
+		readonly IStopAware<Input, Result>    _select;
 
 		public Benchmarks() : this(new DbContextOptionsBuilder<ContextWithData>().UseInMemoryDatabase("0")
 		                                                                         .Options) {}
@@ -312,10 +313,10 @@ public sealed class InputQueryTests
 			            .Invoke(@new)
 			            .To.Single()) {}
 
-		Benchmarks(INewContext<ContextWithData> @new, ISelecting<Input, Result> select)
+		Benchmarks(INewContext<ContextWithData> @new, IStopAware<Input, Result> select)
 		{
-			_new = @new;
-			_select   = @select;
+			_new    = @new;
+			_select = @select;
 		}
 
 		[GlobalSetup]
@@ -327,6 +328,7 @@ public sealed class InputQueryTests
 
 		[Benchmark]
 		public ValueTask<Result> MeasureCompiled()
-			=> _select.Get(new Input(new Guid("08013B99-3297-49F6-805E-0A94AE5B79A2"), "Tw"));
+			=> _select.Get(new(new Input(new Guid("08013B99-3297-49F6-805E-0A94AE5B79A2"), "Tw"),
+			                   CancellationToken.None));
 	}
 }

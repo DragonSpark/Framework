@@ -1,8 +1,8 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model.Operations.Stop;
 
 namespace DragonSpark.Azure.Messaging.Messages.Topics.Receive;
 
 public class UserEventRegistration<T> : EventRegistration<T, uint> where T : NumberMessage
 {
-	protected UserEventRegistration(IOperation<uint> body) : base(body) {}
+	protected UserEventRegistration(IStopAware<uint> body) : base(body) {}
 }

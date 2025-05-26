@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Diagnostics.Logging;
+using DragonSpark.Model.Operations;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Net.Http.Json;
@@ -18,18 +19,18 @@ sealed class UserIdentifierQuery : IUserIdentifierQuery
 		_template = template;
 	}
 
-	public async ValueTask<string?> Get(string parameter)
+	public async ValueTask<string?> Get(Stop<string> parameter)
 	{
 		var response = await _response.Off(parameter);
 
 		if (response.IsSuccessStatusCode)
 		{
-			var user   = await response.Content.ReadFromJsonAsync<UserResponse>();
+			var user   = await response.Content.ReadFromJsonAsync<UserResponse>(parameter);
 			var result = user?.Result.UserId;
 			return result;
 		}
 
-		var body = await response.Content.ReadFromJsonAsync<ErrorResponse>() ?? throw new InvalidOperationException();
+		var body = await response.Content.ReadFromJsonAsync<ErrorResponse>(parameter) ?? throw new InvalidOperationException();
 		_template.Execute(parameter, body.Error, body.ErrorMessage);
 
 		return null;

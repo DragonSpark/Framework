@@ -7,67 +7,68 @@
 @code {
 	ValidationMessageStore? _store;
 
-	[Parameter]
-	public ValidationFieldMessage Message
-	{
-		get => _message;
-		set
-		{
-			if (!ReferenceEquals(_message, value))
-			{
-				_message = value;
-				Messages = value.Account() == null ? Empty.Array<ValidationFieldMessage>() : value.Yield().ToArray();
-			}
-		}
-	}	ValidationFieldMessage _message = null!;
+    [Parameter]
+    public ValidationFieldMessage Message
+    {
+        get;
+        set
+        {
+            if (!ReferenceEquals(field, value))
+            {
+                field    = value;
+                Messages = value.Account() == null ? Empty.Array<ValidationFieldMessage>() : value.Yield().ToArray();
+            }
+        }
+    } = null!;
 
-	[Parameter]
-	public ICollection<ValidationFieldMessage> Messages
-	{
-		get => _messages;
-		set
-		{
-			if (!Equals(_messages, value))
-			{
-				_messages = value;
-				_store?.Clear();
+    [Parameter]
+    public ICollection<ValidationFieldMessage> Messages
+    {
+        get;
+        set
+        {
+            if (!Equals(field, value))
+            {
+                field = value;
+                _store?.Clear();
 
-				if (value.Any())
-				{
-					foreach (var (@field, message) in value.AsValueEnumerable())
-					{
-						_store?.Add(@field, message);
-					}
-					EditContext?.NotifyValidationStateChanged();
-				}
-			}
-		}
-	}	ICollection<ValidationFieldMessage> _messages = null!;
+                if (value.Any())
+                {
+                    foreach (var (@field, message) in value.AsValueEnumerable())
+                    {
+                        _store?.Add(@field, message);
+                    }
 
-	[CascadingParameter]
-	EditContext? EditContext
-	{
-		get => _context;
-		set
-		{
-			if (_context != value)
-			{
-				if (_context != null)
-				{
-					_store?.Clear();
-					_context.OnFieldChanged        -= Update;
-					_context.OnValidationRequested -= Update;
-				}
+                    EditContext?.NotifyValidationStateChanged();
+                }
+            }
+        }
+    } = null!;
 
-				if ((_context = value) != null)
-				{
-					Assign(_context);
-				}
-			}
-		}
-	}	EditContext? _context;
+    [CascadingParameter]
+    EditContext? EditContext
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                if (field != null)
+                {
+                    _store?.Clear();
+                    field.OnFieldChanged        -= Update;
+                    field.OnValidationRequested -= Update;
+                }
 
-	void Assign(EditContext parameter)
+                if ((field = value) != null)
+                {
+                    Assign(field);
+                }
+            }
+        }
+    }
+
+    void Assign(EditContext parameter)
 	{
 		parameter.OnFieldChanged        += Update;
 		parameter.OnValidationRequested += Update;

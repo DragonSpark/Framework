@@ -10,19 +10,19 @@ public class DropDownGrid<T> : RadzenDropDownDataGrid<T>, IRefreshAware
 	[CascadingParameter]
 	IRefreshContainer? Container
 	{
-		get => _container;
+		get;
 		set
 		{
-			if (_container != value)
+			if (field != value)
 			{
-				_container?.Remove.Execute(this);
+				field?.Remove.Execute(this);
 
-				_container = value;
+				field = value;
 
-				_container?.Add.Execute(this);
+				field?.Add.Execute(this);
 			}
 		}
-	}	IRefreshContainer? _container;
+	}
 
 	protected override void OnParametersSet()
 	{

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using DragonSpark.Model.Operations;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,5 +11,5 @@ sealed class ToOpenArray<T> : IEvaluate<T, T[]>
 
 	ToOpenArray() {}
 
-	public ValueTask<T[]> Get(IAsyncEnumerable<T> parameter) => parameter.ToArrayAsync();
+	public ValueTask<T[]> Get(Stop<IAsyncEnumerable<T>> parameter) => parameter.Subject.ToArrayAsync(parameter.Token);
 }

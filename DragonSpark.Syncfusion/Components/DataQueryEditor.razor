@@ -5,7 +5,7 @@
 @using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Shape
 @using DragonSpark.Application.Runtime.Operations
 @using DragonSpark.Compose
-@using DragonSpark.Model.Operations
+@using DragonSpark.Model.Operations.Stop
 @using DragonSpark.Presentation
 @using DragonSpark.Presentation.Components.Content.Sequences
 @using DragonSpark.Presentation.Components.Dialogs
@@ -57,10 +57,10 @@
     ConfirmResultContext<T> _prompt = null!;
 
     [Parameter]
-    public IOperation<T> Add { get; set; } = null!;
+    public IStopAware<T> Add { get; set; } = null!;
 
     [Parameter]
-    public IOperation<Updated<T>> Update { get; set; } = null!;
+    public IStopAware<Updated<T>> Update { get; set; } = null!;
 
     [Parameter]
     public Guid Id { get; set; }
@@ -149,8 +149,8 @@
 
     async Task OnCreate(T parameter)
     {
-        await Add.Get(parameter);
-        await Created.Invoke(parameter).Off();
+        await Add.On(new(parameter, Stop));
+        await Created.Off(parameter);
     }
 
     async Task OnUpdate(Updated<T> parameter)
@@ -162,14 +162,14 @@
                 switch (await _prompt.Confirm(subject))
                 {
                     case DialogResult.Ok:
-                        await Update.Get(parameter);
-                        await Updated.Invoke(parameter).Off();
+                        await Update.On(new(parameter, Stop));
+                        await Updated.Off(parameter);
                         break;
                 }
                 break;
             default:
-                await Update.Get(parameter);
-                await Updated.Invoke(parameter).Off();
+                await Update.On(new(parameter, Stop));
+                await Updated.Off(parameter);
                 break;
         }
     }

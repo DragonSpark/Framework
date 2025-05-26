@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Application.Diagnostics;
 using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Security.Claims;
@@ -18,7 +19,7 @@ sealed class ExceptionAwareAddExternalLogin : IAddExternalSignin
 		_logger   = logger;
 	}
 
-	public async ValueTask<IdentityResult?> Get(ClaimsPrincipal parameter)
+	public async ValueTask<IdentityResult?> Get(Stop<ClaimsPrincipal> parameter)
 	{
 		try
 		{

@@ -68,16 +68,16 @@
     [Parameter]
     public string Qualifier
     {
-        get => _qualifier;
+        get;
         set
         {
-            if (_qualifier != value)
+            if (field != value)
             {
-                _qualifier = value;
+                field = value;
                 _update.Up();
             }
         }
-    }	string _qualifier = null!;
+    } = null!;
 
     [Parameter]
     public HttpClient Client { get; set; } = null!;

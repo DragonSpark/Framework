@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
@@ -10,5 +11,5 @@ public sealed class Migrate : IInitialize
 
 	Migrate() {}
 
-	public ValueTask Get(DbContext parameter) => parameter.Database.MigrateAsync().ToOperation();
+	public ValueTask Get(Stop<DbContext> parameter) => parameter.Subject.Database.MigrateAsync(parameter).ToOperation();
 }

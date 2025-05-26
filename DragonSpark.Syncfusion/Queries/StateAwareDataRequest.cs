@@ -1,9 +1,9 @@
-using System.Threading.Tasks;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
 using DragonSpark.Presentation.Environment.Browser;
 using Syncfusion.Blazor;
+using System.Threading.Tasks;
 
 namespace DragonSpark.SyncfusionRendering.Queries;
 
@@ -23,7 +23,7 @@ sealed class StateAwareDataRequest : IDataRequest
 		_active   = active;
 	}
 
-	public async ValueTask<object> Get(DataManagerRequest parameter)
+	public async ValueTask<object> Get(Stop<DataManagerRequest> parameter)
 	{
 		try
 		{

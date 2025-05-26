@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Application.AspNet.Security.Identity.Authentication;
 using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
@@ -19,13 +20,14 @@ sealed class UserSynchronization<T> : IUserSynchronization where T : IdentityUse
 		_clear        = clear;
 	}
 
-	public async ValueTask Get(ExternalLoginInfo parameter)
+	public async ValueTask Get(Stop<ExternalLoginInfo> parameter)
 	{
-		var user    = await _locate.Off(parameter);
-		var changed = await _synchronizer.Off(new(parameter, user.Verify()));
+		var (subject, stop) = parameter;
+		var user    = await _locate.Off(new(subject, stop));
+		var changed = await _synchronizer.Off(new(new(parameter, user.Verify()), stop));
 		if (changed)
 		{
-			_clear.Execute(parameter.Principal);
+			_clear.Execute(subject.Principal);
 		}
 	}
 }

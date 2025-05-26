@@ -49,16 +49,16 @@
     [Parameter]
     public string FieldsToSkip
     {
-        get => _fieldsToSkip;
+        get;
         set
         {
-            if (_fieldsToSkip != value)
+            if (field != value)
             {
-                _fieldsToSkip = value;
-                _skip         = _fieldsToSkip.Split(',', StringSplitOptions.RemoveEmptyEntries);
+                field = value;
+                _skip = field.Split(',', StringSplitOptions.RemoveEmptyEntries);
             }
         }
-    }   string _fieldsToSkip = null!;
+    } = null!;
 
     [CascadingParameter]
     EditContext? ParentEditContext { get; set; }

@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -16,12 +17,12 @@ sealed class StateAwareAddExternalSignin : IAddExternalSignin
 		_clear    = clear;
 	}
 
-	public async ValueTask<IdentityResult?> Get(ClaimsPrincipal parameter)
+	public async ValueTask<IdentityResult?> Get(Stop<ClaimsPrincipal> parameter)
 	{
 		var result = await _previous.Off(parameter);
 		if (result?.Succeeded ?? false)
 		{
-			var number = parameter.Number();
+			var number = parameter.Subject.Number();
 			if (number is not null)
 			{
 				_clear.Execute(number.Value);

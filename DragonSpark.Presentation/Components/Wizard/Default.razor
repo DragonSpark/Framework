@@ -38,8 +38,7 @@
 @code {
     readonly static string     LabelButtonPrevious = "Previous", LabelButtonNext = "Next";
     readonly        List<Step> _steps              = new();
-    int                        _value;
-    internal int               _maxStepVisited;
+    internal        int        _maxStepVisited;
     WizardButtonInput          _previous = null!, _next = null!, _finish = null!;
 
     protected override void OnInitialized()
@@ -120,13 +119,13 @@
     [Parameter]
     public int Value
     {
-        get => _value;
+        get;
         set
         {
-            _value          = value;
-            _maxStepVisited = Math.Max(_value, _maxStepVisited);
+            field           = value;
+            _maxStepVisited = Math.Max(field, _maxStepVisited);
 
-            SetCurrentStatusToStep(_value);
+            SetCurrentStatusToStep(field);
         }
     }
 

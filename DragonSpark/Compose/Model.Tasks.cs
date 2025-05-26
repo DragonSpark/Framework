@@ -23,7 +23,7 @@ public static partial class ExtensionMethods
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ConfiguredValueTaskAwaitable<TOut> Off<TIn, TOut>(this ISelect<TIn, ValueTask<TOut>> @this,
-	                                                                  TIn parameter)
+	                                                                TIn parameter)
 		=> @this.Get(parameter).ConfigureAwait(false);
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Application.AspNet.Security.Identity.Profile;
 using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
@@ -18,7 +19,7 @@ sealed class ExternalSignin<T> : IExternalSignin where T : IdentityUser
 		_external     = external;
 	}
 
-	public async ValueTask<SignInResult> Get(ExternalLoginInfo parameter)
+	public async ValueTask<SignInResult> Get(Stop<ExternalLoginInfo> parameter)
 	{
 		var user = await _locate.Off(parameter);
 		if (user is not null)

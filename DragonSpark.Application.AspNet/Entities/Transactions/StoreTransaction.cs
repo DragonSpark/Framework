@@ -1,7 +1,8 @@
-using System.Threading.Tasks;
 using DragonSpark.Model;
 using DragonSpark.Model.Results;
 using JetBrains.Annotations;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Transactions;
 
@@ -13,7 +14,7 @@ abstract class StoreTransaction<T>(T value, IMutable<T?> store) : ITransaction
 		store.Execute(value);
 	}
 
-	public ValueTask Get() => ValueTask.CompletedTask;
+	public ValueTask Get(CancellationToken _) => ValueTask.CompletedTask;
 
 	public ValueTask DisposeAsync()
 	{

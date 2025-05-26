@@ -8,6 +8,7 @@ using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -32,7 +33,7 @@ public sealed class SelectionTests
 		                    .Invoke(contexts)
 		                    .To.Array();
 		{
-			var array = await evaluate.Off();
+			var array = await evaluate.Off(CancellationToken.None);
 			var open  = array.Open();
 			open.Should().HaveCount(2);
 			open.Should().BeEquivalentTo("One", "Three");
@@ -57,7 +58,7 @@ public sealed class SelectionTests
 		                    .Invoke(contexts)
 		                    .To.Array();
 		{
-			var array = await evaluate.Off();
+			var array = await evaluate.Off(CancellationToken.None);
 			var open  = array.Open();
 			open.Should().HaveCount(2);
 			open.Should().BeEquivalentTo("One", "Three");

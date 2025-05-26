@@ -1,17 +1,17 @@
+using DragonSpark.Compose.Model.Results;
+using DragonSpark.Compose.Model.Selection;
+using DragonSpark.Model.Operations.Allocated.Stop;
+using DragonSpark.Model.Selection;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
-using DragonSpark.Compose.Model.Results;
-using DragonSpark.Compose.Model.Selection;
-using DragonSpark.Model.Operations.Allocated;
-using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Compose;
 
 // ReSharper disable once MismatchedFileName
 public partial class ExtensionMethods
 {
-    public static Task<TOut> Get<TIn, TOut>(this IAllocatedStopAware<TIn, TOut> @this, TIn parameter,
+    public static Task<TOut> Get<TIn, TOut>(this IAllocated<TIn, TOut> @this, TIn parameter,
                                             CancellationToken stop)
         => @this.Get(new(parameter, stop));
 

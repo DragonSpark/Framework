@@ -1,5 +1,5 @@
-﻿using DragonSpark.Model.Operations.Results;
+﻿using DragonSpark.Model.Operations.Results.Stop;
 
 namespace DragonSpark.Application.AspNet.Entities.Transactions;
 
-public interface ITransactions : IResulting<ITransaction>;
+public interface ITransactions : IStopAware<ITransaction>;

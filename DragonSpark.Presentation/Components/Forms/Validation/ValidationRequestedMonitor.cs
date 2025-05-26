@@ -17,23 +17,23 @@ public sealed class ValidationRequestedMonitor : ComponentBase, IDisposable
 	[CascadingParameter]
 	EditContext? EditContext
 	{
-		get => _context;
+		get;
 		set
 		{
-			if (_context != value)
+			if (field != value)
 			{
-				if (_context != null)
+				if (field != null)
 				{
-					_context.OnValidationRequested -= OnValidationRequested;
+					field.OnValidationRequested -= OnValidationRequested;
 				}
 
-				if ((_context = value) != null)
+				if ((field = value) != null)
 				{
-					_context.OnValidationRequested += OnValidationRequested;
+					field.OnValidationRequested += OnValidationRequested;
 				}
 			}
 		}
-	}	EditContext? _context;
+	}
 
 	void OnValidationRequested(object? sender, ValidationRequestedEventArgs e)
 	{

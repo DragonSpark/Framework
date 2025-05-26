@@ -21,21 +21,21 @@
 	[Parameter]
 	public string Identifier { get; set; } = UniqueIdentifiers.Default.Get();
 
-	[Parameter]
-	public bool Enabled
-	{
-		get => _enabled;
-		set
-		{
-			if (_enabled != value)
-			{
-				_enabled = value;
-				Signal.Up();
-			}
-		}
-	}	bool _enabled = true;
+    [Parameter]
+    public bool Enabled
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field = value;
+                Signal.Up();
+            }
+        }
+    } = true;
 
-	[Parameter]
+    [Parameter]
 	public RenderFragment ChildContent { get; set; } = null!;
 
 	[Parameter(CaptureUnmatchedValues = true)]

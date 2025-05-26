@@ -1,6 +1,6 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model.Operations.Stop;
 using System;
 
 namespace DragonSpark.Application.Hosting.Azure.WebJobs;
 
-public interface IApplication : IOperation<Guid>;
+public interface IApplication : IStopAware<Guid>;

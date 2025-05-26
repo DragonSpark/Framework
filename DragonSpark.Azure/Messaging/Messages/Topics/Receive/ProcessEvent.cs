@@ -25,10 +25,11 @@ public sealed class ProcessEvent : IAllocated<ProcessMessageEventArgs>
 		if (entry is not null)
 		{
 			var (key, handlers) = entry;
-			var message = await parameter.Message.Body.Verify().ToObjectAsync(key).Off();
+			var stop    = parameter.CancellationToken;
+			var message = await parameter.Message.Body.Verify().ToObjectAsync(key, cancellationToken: stop).Off();
 			if (message is not null)
 			{
-				await _process.Off(new(message, handlers));
+				await _process.Off(new(new(message, handlers), stop));
 			}
 		}
 	}

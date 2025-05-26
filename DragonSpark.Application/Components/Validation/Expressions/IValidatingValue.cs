@@ -1,5 +1,5 @@
-﻿using DragonSpark.Model.Operations.Selection.Conditions;
+﻿using DragonSpark.Model.Operations.Selection.Stop;
 
 namespace DragonSpark.Application.Components.Validation.Expressions;
 
-public interface IValidatingValue<in T> : IDepending<T>;
+public interface IValidatingValue<T> : IDepending<T>;

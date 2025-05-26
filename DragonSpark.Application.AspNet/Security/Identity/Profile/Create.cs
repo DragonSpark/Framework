@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
@@ -10,9 +11,9 @@ sealed class Create<T> : ICreate<T> where T : class
 
 	public Create(IUsers<T> users) => _users = users;
 
-	public async ValueTask<IdentityResult> Get(Login<T> parameter)
+	public async ValueTask<IdentityResult> Get(Stop<Login<T>> parameter)
 	{
-		var (_, user) = parameter;
+		var ((_, user), _) = parameter;
 		using var users  = _users.Get();
 		var       result = await users.Subject.CreateAsync(user).Off();
 		return result;

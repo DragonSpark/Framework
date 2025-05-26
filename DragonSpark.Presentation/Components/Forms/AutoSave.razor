@@ -29,17 +29,16 @@
     [Parameter]
     public T Model
     {
-        get => _model;
+        get;
         set
         {
-            if (_model != value)
+            if (field != value)
             {
-                _model = value;
+                field = value;
                 _save.Down();
             }
         }
-    }	T _model = null!;
-
+    } = null!;
 
     [Parameter]
     public EventCallback<T> ModelChanging { get; set; }
@@ -105,37 +104,37 @@
     [Parameter]
     public string FieldsToSkip
     {
-        get => _fieldsToSkip;
+        get;
         set
         {
-            if (_fieldsToSkip != value)
+            if (field != value)
             {
-                _fieldsToSkip = value;
-                _skip = _fieldsToSkip.Split(',');
+                field = value;
+                _skip = field.Split(',');
             }
         }
-    }	string _fieldsToSkip = null!;
+    } = null!;
 
     [CascadingParameter]
     EditContext? EditContext
     {
-        get => _editContext;
+        get;
         set
         {
-            if (_editContext != value)
+            if (field != value)
             {
-                if (_editContext != null)
+                if (field != null)
                 {
-                    _editContext.OnFieldChanged -= FieldChanged;
+                    field.OnFieldChanged -= FieldChanged;
                 }
 
-                if ((_editContext = value) != null)
+                if ((field = value) != null)
                 {
-                    _editContext.OnFieldChanged += FieldChanged;
+                    field.OnFieldChanged += FieldChanged;
                 }
             }
         }
-    }   EditContext? _editContext;
+    }
 
     void FieldChanged(object? sender, FieldChangedEventArgs args)
     {

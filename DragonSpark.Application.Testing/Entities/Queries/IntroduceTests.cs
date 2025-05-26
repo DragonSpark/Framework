@@ -11,6 +11,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -32,7 +33,7 @@ public sealed class IntroduceTests
 
 		var evaluate = contexts.Then().Use(Query.Default).To.Array();
 		{
-			var array = await evaluate.Off();
+			var array = await evaluate.Off(CancellationToken.None);
 			var open  = array.Open();
 			open.Should().HaveCount(2);
 			open.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
@@ -54,7 +55,7 @@ public sealed class IntroduceTests
 
 		var evaluate = contexts.Then().Use(Query.Default).To.Array();
 		{
-			var array = await evaluate.Off();
+			var array = await evaluate.Off(CancellationToken.None);
 			var open  = array.Open();
 			open.Should().HaveCount(2);
 			open.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
@@ -79,7 +80,7 @@ public sealed class IntroduceTests
 		                    .Invoke(contexts)
 		                    .To.Array();
 		{
-			var array = await evaluate.Off();
+			var array = await evaluate.Off(CancellationToken.None);
 			var open  = array.Open();
 			open.Should().HaveCount(2);
 			open.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
@@ -105,7 +106,7 @@ public sealed class IntroduceTests
 		                    .Invoke(contexts)
 		                    .To.Array();
 		{
-			var array = await evaluate.Off();
+			var array = await evaluate.Off(CancellationToken.None);
 			var open  = array.Open();
 			open.Should().HaveCount(2);
 			open.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
@@ -143,7 +144,7 @@ public sealed class IntroduceTests
 		                    .Invoke(contexts)
 		                    .To.Array();
 		{
-			var array = await evaluate.Off();
+			var array = await evaluate.Off(CancellationToken.None);
 			var open  = array.Open();
 			open.Should().HaveCount(4);
 			open.Select(x => (x.Name, x.Amount))
@@ -184,7 +185,7 @@ public sealed class IntroduceTests
 		                    .Invoke(contexts)
 		                    .To.Array();
 		{
-			var array = await evaluate.Off();
+			var array = await evaluate.Off(CancellationToken.None);
 			var open  = array.Open();
 			open.Should().HaveCount(4);
 			open.Select(x => (x.Name, x.Amount))
@@ -226,7 +227,7 @@ public sealed class IntroduceTests
 		                    .Invoke(contexts)
 		                    .To.Array();
 		{
-			var array = await evaluate.Off();
+			var array = await evaluate.Off(CancellationToken.None);
 			var open  = array.Open();
 			open.Should().HaveCount(4);
 			open.Select(x => (x.Name, x.Amount, Third: x.ThirdAmount))
@@ -272,7 +273,7 @@ public sealed class IntroduceTests
 		                    .Invoke(contexts)
 		                    .To.Array();
 		{
-			var array = await evaluate.Off();
+			var array = await evaluate.Off(CancellationToken.None);
 			var open  = array.Open();
 			open.Should().HaveCount(4);
 			open.Select(x => (x.Name, x.Amount, Third: x.ThirdAmount))

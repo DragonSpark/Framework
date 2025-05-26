@@ -16,24 +16,22 @@ public class FieldTypeMonitor<T> : ComponentBase, IDisposable
 	[Parameter]
 	public EventCallback<T> Changed { get; set; }
 
-	EditContext? _editContext;
-
 	[CascadingParameter]
 	EditContext? EditContext
 	{
-		get => _editContext;
+		get;
 		set
 		{
-			if (_editContext != value)
+			if (field != value)
 			{
-				if (_editContext != null)
+				if (field != null)
 				{
-					_editContext.OnFieldChanged -= FieldChanged;
+					field.OnFieldChanged -= FieldChanged;
 				}
 
-				if ((_editContext = value) != null)
+				if ((field = value) != null)
 				{
-					_editContext.OnFieldChanged += FieldChanged;
+					field.OnFieldChanged += FieldChanged;
 				}
 			}
 		}

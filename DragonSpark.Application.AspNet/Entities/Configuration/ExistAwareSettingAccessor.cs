@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Diagnostics.Logging;
 using DragonSpark.Model;
+using DragonSpark.Model.Operations;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Logging;
 using System.Threading.Tasks;
@@ -23,7 +24,7 @@ sealed class ExistAwareSettingAccessor : ISettingAccessor
 		public Warning(ILogger<Warning> logger) : base(logger, "Setting entity is not found") {}
 	}
 
-	public async ValueTask<string?> Get(string parameter)
+	public async ValueTask<string?> Get(Stop<string> parameter)
 	{
 		try
 		{
@@ -36,7 +37,7 @@ sealed class ExistAwareSettingAccessor : ISettingAccessor
 		}
 	}
 
-	public ValueTask Get(Pair<string, string?> parameter) => _previous.Get(parameter);
+	public ValueTask Get(Stop<Pair<string, string?>> parameter) => _previous.Get(parameter);
 
 	public IRemove Remove => _previous.Remove;
 }

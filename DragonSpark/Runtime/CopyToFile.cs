@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -10,10 +11,10 @@ public sealed class CopyToFile : ICopyToFile
 
 	CopyToFile() {}
 
-	public async ValueTask Get(CopyInput parameter)
+	public async ValueTask Get(Stop<CopyInput> parameter)
 	{
-		var (source, destination) = parameter;
+		var ((source, destination), stop) = parameter;
 		await using var result = File.OpenWrite(destination);
-		await source.CopyToAsync(result).Off();
+		await source.CopyToAsync(result, stop).Off();
 	}
 }

@@ -1,11 +1,13 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Sequences;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Initialization;
@@ -23,7 +25,7 @@ public sealed class StorageInitializer<T> : IHostInitializer where T : DbContext
 	                          params IInitialize[] initializers)
 	{
 		_services     = services;
-		_registry      = registry;
+		_registry     = registry;
 		_initializers = initializers;
 	}
 
@@ -34,9 +36,11 @@ public sealed class StorageInitializer<T> : IHostInitializer where T : DbContext
 		                                         .Off();
 		using var __ = _registry.Assigned(new DataMigrationRegistry(parameter.Services));
 		using var _  = _services.Assigned(parameter.Services);
+		var stop = parameter.Services.GetService<IHttpContextAccessor>()?.HttpContext?.RequestAborted ??
+		           CancellationToken.None;
 		foreach (var initializer in _initializers.Open())
 		{
-			await initializer.Off(context);
+			await initializer.Off(new(context, stop));
 		}
 	}
 }

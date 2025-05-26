@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
@@ -12,8 +13,8 @@ public sealed class EnsureCreated : IInitialize
 
 	EnsureCreated() {}
 
-	public async ValueTask Get(DbContext parameter)
+	public async ValueTask Get(Stop<DbContext> parameter)
 	{
-		await parameter.Database.EnsureCreatedAsync().Off();
+		await parameter.Subject.Database.EnsureCreatedAsync(parameter).Off();
 	}
 }

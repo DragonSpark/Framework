@@ -1,7 +1,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Model.Operations.Results;
+namespace DragonSpark.Model.Operations.Results.Stop;
 
 public sealed class StopAwareAdapter<T> : IStopAware<T>
 {

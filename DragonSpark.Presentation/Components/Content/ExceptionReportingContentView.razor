@@ -20,19 +20,19 @@
 
 @code
 {
-	[Parameter]
-	public IResulting<TValue?>? Content
-	{
-		get => _content;
-		set
-		{
-			if (_content != value)
-			{
-				_content = value;
-				Subject = null;
-			}
-		}
-	}	IResulting<TValue?>? _content;
+    [Parameter]
+    public IResulting<TValue?>? Content
+    {
+        get;
+        set
+        {
+            if (field != value)
+            {
+                field   = value;
+                Subject = null;
+            }
+        }
+    }
 
     [Parameter]
     public ICondition<None>? UpdateMonitor { get; set; }

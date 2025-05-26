@@ -1,6 +1,6 @@
-﻿using DragonSpark.Model.Operations.Selection;
+﻿using DragonSpark.Model.Operations.Selection.Stop;
 using System.Collections.Generic;
 
 namespace DragonSpark.Application.AspNet.Entities.Queries.Compiled.Evaluation;
 
-public interface IEvaluate<in T, TResult> : ISelecting<IAsyncEnumerable<T>, TResult>;
+public interface IEvaluate<T, TResult> : IStopAware<IAsyncEnumerable<T>, TResult>;

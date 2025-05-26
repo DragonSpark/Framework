@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using DragonSpark.Model.Operations;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,5 +11,5 @@ sealed class ToSum : IEvaluate<decimal, decimal>
 
 	ToSum() {}
 
-	public ValueTask<decimal> Get(IAsyncEnumerable<decimal> parameter) => parameter.SumAsync();
+	public ValueTask<decimal> Get(Stop<IAsyncEnumerable<decimal>> parameter) => parameter.Subject.SumAsync(parameter.Token);
 }

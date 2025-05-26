@@ -1,10 +1,11 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Model.Operations.Selection;
+using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Selection.Stop;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Queries.Compiled.Evaluation;
 
-public class Evaluate<TIn, T, TResult> : ISelecting<TIn, TResult>
+public class Evaluate<TIn, T, TResult> : IStopAware<TIn, TResult>
 {
 	readonly IReading<TIn, T>      _reading;
 	readonly IEvaluate<T, TResult> _evaluate;
@@ -15,10 +16,11 @@ public class Evaluate<TIn, T, TResult> : ISelecting<TIn, TResult>
 		_evaluate = evaluate;
 	}
 
-	public async ValueTask<TResult> Get(TIn parameter)
+	public async ValueTask<TResult> Get(Stop<TIn> parameter)
 	{
-		using var invocation = _reading.Get(parameter);
-		var       result     = await _evaluate.Off(invocation.Elements);
+		var (subject, token) = parameter;
+		using var invocation = _reading.Get(subject);
+		var       result     = await _evaluate.Off(new(invocation.Elements, token));
 		return result;
 	}
 }

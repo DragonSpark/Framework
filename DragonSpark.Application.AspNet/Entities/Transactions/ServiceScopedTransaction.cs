@@ -1,9 +1,10 @@
-using System;
-using System.Threading.Tasks;
 using DragonSpark.Model;
 using DragonSpark.Model.Commands;
 using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Transactions;
 
@@ -19,7 +20,7 @@ sealed class ServiceScopedTransaction(
 
 	public IServiceProvider Provider { get; } = provider;
 
-	public ValueTask Get() => ValueTask.CompletedTask;
+	public ValueTask Get(CancellationToken _) => ValueTask.CompletedTask;
 
 	public void Execute(None parameter)
 	{

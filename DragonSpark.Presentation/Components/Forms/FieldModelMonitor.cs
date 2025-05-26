@@ -20,23 +20,23 @@ public sealed class FieldModelMonitor : ComponentBase, IDisposable
 	[CascadingParameter]
 	EditContext? EditContext
 	{
-		get => _subject;
+		get;
 		set
 		{
-			if (_subject != value)
+			if (field != value)
 			{
-				if (_subject is not null)
+				if (field is not null)
 				{
-					_subject.OnFieldChanged -= FieldChanged;
+					field.OnFieldChanged -= FieldChanged;
 				}
 
-				if ((_subject = value) != null)
+				if ((field = value) != null)
 				{
-					_subject.OnFieldChanged += FieldChanged;
+					field.OnFieldChanged += FieldChanged;
 				}
 			}
 		}
-	}	EditContext? _subject;
+	}
 
 	void FieldChanged(object? sender, FieldChangedEventArgs args)
 	{

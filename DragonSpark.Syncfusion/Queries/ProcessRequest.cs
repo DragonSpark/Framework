@@ -9,13 +9,13 @@ namespace DragonSpark.SyncfusionRendering.Queries;
 
 sealed class ProcessRequest<T> : IDataRequest
 {
-	readonly Await<DataManagerRequest, Page<T>> _current;
+	readonly Await<Stop<DataManagerRequest>, Page<T>> _current;
 
 	public ProcessRequest(IPages<T> pages) : this(SelectQueryInput.Default.Then().Select(pages).Then()) {}
 
-	public ProcessRequest(Await<DataManagerRequest, Page<T>> current) => _current = current;
+	public ProcessRequest(Await<Stop<DataManagerRequest>, Page<T>> current) => _current = current;
 
-	public async ValueTask<object> Get(DataManagerRequest parameter)
+	public async ValueTask<object> Get(Stop<DataManagerRequest> parameter)
 	{
 		var evaluate = await _current(parameter);
 		var result = evaluate.Total.HasValue

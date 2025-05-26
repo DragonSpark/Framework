@@ -11,9 +11,10 @@ public class EntityRangeInitializer<T> : IInitializer where T : class
 
 	protected EntityRangeInitializer(params T[] entities) => _entities = entities;
 
-	public async ValueTask Get(DbContext parameter)
+	public async ValueTask Get(DragonSpark.Model.Operations.Stop<DbContext> parameter)
 	{
-		parameter.Set<T>().AddRange(_entities);
-		await parameter.SaveChangesAsync().Off();
+		var (subject, stop) = parameter;
+		subject.Set<T>().AddRange(_entities);
+		await subject.SaveChangesAsync(stop).Off();
 	}
 }

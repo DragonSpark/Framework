@@ -13,23 +13,23 @@ public class EditorComponent : NavigationAwareComponent
 	[CascadingParameter]
 	EditContext EditContext
 	{
-		get => _editContext;
+		get;
 		set
 		{
-			if (_editContext != value)
+			if (field != value)
 			{
-				if (_editContext.Account() != null)
+				if (field.Account() != null)
 				{
-					_editContext.OnFieldChanged -= OnChanged;
+					field.OnFieldChanged -= OnChanged;
 				}
 
-				if ((_editContext = value) != null)
+				if ((field = value) != null)
 				{
-					_editContext.OnFieldChanged += OnChanged;
+					field.OnFieldChanged += OnChanged;
 				}
 			}
 		}
-	}	EditContext _editContext = null!;
+	} = null!;
 
 	[Inject]
 	IFocusHandler Focus { get; set; } = null!;

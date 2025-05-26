@@ -1,23 +1,25 @@
 ﻿using Azure.Storage.Blobs.Specialized;
 using DragonSpark.Compose;
-using DragonSpark.Model.Operations.Selection;
+using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Selection.Stop;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Storage;
 
-sealed class GetClientEntry : ISelecting<BlobBaseClient, DefaultStorageEntry>
+sealed class GetClientEntry : IStopAware<BlobBaseClient, DefaultStorageEntry>
 {
 	public static GetClientEntry Default { get; } = new();
 
 	GetClientEntry() {}
 
-	public async ValueTask<DefaultStorageEntry> Get(BlobBaseClient parameter)
+	public async ValueTask<DefaultStorageEntry> Get(Stop<BlobBaseClient> parameter)
 	{
-		var response = await parameter.GetPropertiesAsync().Off();
+		var (subject, stop) = parameter;
+		var response = await subject.GetPropertiesAsync(cancellationToken: stop).Off();
 		var value    = response.Value;
-		var properties = new StorageEntryProperties(parameter.Uri, parameter.Name, value.ContentType,
-		                                            (ulong)value.ContentLength, value.CreatedOn, value.LastModified,
-		                                            value.ETag);
-		return new(parameter, properties);
+		return new(parameter,
+		           new(subject.Uri, subject.Name, value.ContentType,
+		               (ulong)value.ContentLength, value.CreatedOn, value.LastModified,
+		               value.ETag));
 	}
 }

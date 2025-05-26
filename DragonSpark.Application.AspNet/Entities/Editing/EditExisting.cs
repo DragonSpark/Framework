@@ -1,6 +1,7 @@
-using System.Threading.Tasks;
 using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using JetBrains.Annotations;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Editing;
 
@@ -16,10 +17,10 @@ public class EditExisting<T> : IEdit<T> where T : class
 	}
 
 	[MustDisposeResource]
-	public async ValueTask<Edit<T>> Get(T parameter)
+	public async ValueTask<Edit<T>> Get(Stop<T> parameter)
 	{
 		var (context, disposable) = _scopes.Get();
-		var editor = new Editor(context, disposable);
+		var editor = new Editor(context, disposable, parameter);
 		editor.Attach(parameter);
 		if (_reload)
 		{

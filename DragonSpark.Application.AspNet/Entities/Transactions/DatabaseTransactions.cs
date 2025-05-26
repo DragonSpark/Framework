@@ -1,8 +1,9 @@
-using System.Threading.Tasks;
 using DragonSpark.Compose;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Transactions;
 
@@ -11,9 +12,9 @@ public sealed class DatabaseTransactions(DbContext context, DatabaseFacade facad
 	public DatabaseTransactions(DbContext owner) : this(owner, owner.Database) {}
 
 	[MustDisposeResource]
-	public async ValueTask<ITransaction> Get()
+	public async ValueTask<ITransaction> Get(CancellationToken parameter)
 	{
-		await facade.BeginTransactionAsync().Off();
+		await facade.BeginTransactionAsync(parameter).Off();
 		return new DatabaseTransaction(context);
 	}
 }

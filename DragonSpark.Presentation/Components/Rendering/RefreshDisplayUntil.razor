@@ -16,16 +16,16 @@
     [Parameter]
     public DateTimeOffset Until
     {
-        get => _until;
+        get;
         set
         {
-            if (_until != value)
+            if (field != value)
             {
-                _until = value;
+                field  = value;
                 _timer = new();
             }
         }
-    }	DateTimeOffset _until;
+    }
 
     [Parameter]
     public RenderFragment<DateTimeOffset>? ChildContent { get; set; }

@@ -1,6 +1,7 @@
-using System.Threading.Tasks;
 using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Initialization;
 
@@ -10,7 +11,7 @@ public class Initializers : IInitializer
 
 	protected Initializers(params IInitializer[] initializers) => _initializers = initializers;
 
-	public async ValueTask Get(DbContext parameter)
+	public async ValueTask Get(Stop<DbContext> parameter)
 	{
 		foreach (var initializer in _initializers)
 		{

@@ -25,23 +25,23 @@ public abstract class FieldNameMonitorBase : ComponentBase, IDisposable
 	[CascadingParameter]
 	EditContext? EditContext
 	{
-		get => _editContext;
+		get;
 		set
 		{
-			if (_editContext != value)
+			if (field != value)
 			{
-				if (_editContext != null)
+				if (field != null)
 				{
-					_editContext.OnFieldChanged -= FieldChanged;
+					field.OnFieldChanged -= FieldChanged;
 				}
 
-				if ((_editContext = value) != null)
+				if ((field = value) != null)
 				{
-					_editContext.OnFieldChanged += FieldChanged;
+					field.OnFieldChanged += FieldChanged;
 				}
 			}
 		}
-	}	EditContext? _editContext;
+	}
 
 	void FieldChanged(object? sender, FieldChangedEventArgs args)
 	{

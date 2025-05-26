@@ -100,7 +100,7 @@
 
     public Task Refresh() => _subject?.Refresh() ?? Task.CompletedTask;
 
-    protected override Await<DataManagerRequest, object> CreateInput()
+    protected override Await<Stop<DataManagerRequest>, object> CreateInput()
         => new StateAwareDataRequest(Content, _store, _active).Then().Then().Handle(EmptyDataResult.Default.Get());
 
     protected override void OnParametersSet()

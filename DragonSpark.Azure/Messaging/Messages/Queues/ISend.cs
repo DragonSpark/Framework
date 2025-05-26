@@ -1,5 +1,5 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model.Operations.Stop;
 
 namespace DragonSpark.Azure.Messaging.Messages.Queues;
 
-public interface ISend : IOperation<string>;
+public interface ISend : IStopAware<string>;
