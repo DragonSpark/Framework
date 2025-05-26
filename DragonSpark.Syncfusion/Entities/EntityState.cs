@@ -1,32 +1,33 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Stop;
 using System.Threading.Tasks;
 
 namespace DragonSpark.SyncfusionRendering.Entities;
 
-public class EntityState<T> : IOperation<Updated<T>> where T : class // TODO
+public class EntityState<T> : IStopAware<Updated<T>> where T : class
 {
-	readonly IOperation<T> _update;
-	readonly IOperation<T> _remove;
+	readonly IStopAware<T> _update;
+	readonly IStopAware<T> _remove;
 
-	protected EntityState(IOperation<T> update, IOperation<T> remove)
+	protected EntityState(IStopAware<T> update, IStopAware<T> remove)
 	{
 		_update = update;
 		_remove = remove;
 	}
 
-	public async ValueTask Get(Updated<T> parameter)
+	public async ValueTask Get(Stop<Updated<T>> parameter)
 	{
-		var (subject, action) = parameter;
+		var ((subject, action), stop) = parameter;
 		switch (action)
 		{
 			case "Add":
 			case "Edit":
-				await _update.Off(subject);
+				await _update.Off(new(subject, stop));
 				break;
 			case "Remove":
 			case "Delete":
-				await _remove.Off(subject);
+				await _remove.Off(new(subject, stop));
 				break;
 		}
 	}

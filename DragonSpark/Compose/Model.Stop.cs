@@ -19,24 +19,14 @@ namespace DragonSpark.Compose;
 // ReSharper disable SuspiciousTypeConversion.Global
 public static partial class ExtensionMethods
 {
-
-
 	public static Stop<T> Stop<T>(this T @this, CancellationToken stop) => new(@this, stop);
 
 	/* Results: */
-	public static OperationResultComposer<T> Alternate<T>(this OperationResultComposer<CancellationToken, T> @this)
-		=> new(new StopAwareAmbientAdapter<T>(@this.Get()));
-
-	public static IResulting<T> Alternate<T>(this ISelect<CancellationToken, ValueTask<T>> @this)
-		=> new StopAwareAmbientAdapter<T>(@this);
 
 	public static DragonSpark.Model.Operations.Results.Stop.IStopAware<T> AsStop<T>(this IResulting<T> @this)
 		=> new DragonSpark.Model.Operations.Results.Stop.StopAwareAdapter<T>(@this);
 
 	/*Operation*/
-
-	public static IOperation<T> Alternate<T>(this ISelect<Stop<T>, ValueTask> @this)
-		=> new StopAwareOperationAdapter<T>(@this); // TODO: 5
 
 	public static DragonSpark.Model.Operations.Stop.IStopAware<T> AsStop<T>(this Composer<T, ValueTask> @this)
 		=> new DragonSpark.Model.Operations.Stop.StopAwareAdapter<T>(@this.Get());
