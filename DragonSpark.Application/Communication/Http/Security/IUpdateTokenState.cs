@@ -1,5 +1,5 @@
-using DragonSpark.Model.Operations.Stop;
+using DragonSpark.Model.Operations.Selection.Stop;
 
 namespace DragonSpark.Application.Communication.Http.Security;
 
-public interface IUpdateTokenState : IStopAware<AccessTokenView?>;
+public interface IUpdateTokenState : IDepending<AccessTokenView?>;

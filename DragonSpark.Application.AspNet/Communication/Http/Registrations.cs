@@ -1,10 +1,10 @@
-﻿using DragonSpark.Application.Communication.Http;
+using System.Net.Http;
+using DragonSpark.Application.Communication.Http;
 using DragonSpark.Application.Communication.Http.Security;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
-using System.Net.Http;
 
 namespace DragonSpark.Application.AspNet.Communication.Http;
 
@@ -31,5 +31,3 @@ sealed class Registrations : ICommand<IServiceCollection>
 		         .Then.TryDecorate<IAccessTokenProvider, AccessTokenProvider>();
 	}
 }
-
-// TODO: Scoped

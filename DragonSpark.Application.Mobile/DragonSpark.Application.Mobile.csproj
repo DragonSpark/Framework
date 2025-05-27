@@ -11,4 +11,7 @@
         <PackageReference Include="Metalama.Extensions.DependencyInjection" />
         <PackageReference Include="Metalama.Framework" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Folder Include="Security\Identity\" />
+	</ItemGroup>
 </Project>
