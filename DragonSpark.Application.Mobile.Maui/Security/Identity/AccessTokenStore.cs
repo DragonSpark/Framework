@@ -4,5 +4,5 @@ namespace DragonSpark.Application.Mobile.Maui.Security.Identity;
 
 sealed class AccessTokenStore : DragonSpark.Model.Operations.Results.Stop.Storing<AccessTokenView?>, IAccessTokenStore
 {
-    public AccessTokenStore(RefreshAwareAccessTokenStore refresh) : base(AccessTokenStorage.Default, refresh) {}
+    public AccessTokenStore(RefreshAwareAccessTokenStore refresh) : base(AccessTokenProcessValue.Default, refresh) {}
 }

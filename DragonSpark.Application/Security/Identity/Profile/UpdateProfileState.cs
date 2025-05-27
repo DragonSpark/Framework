@@ -1,10 +1,10 @@
 using DragonSpark.Application.Model.Values;
+using DragonSpark.Model.Operations.Selection.Stop;
 using DragonSpark.Model.Operations.Stop;
-using DragonSpark.Model.Results;
 
 namespace DragonSpark.Application.Security.Identity.Profile;
 
-public class UpdateProfileState<T> : SaveState<T> where T : ProfileBase
+public class UpdateProfileState<T> : UpdateState<T> where T : ProfileBase
 {
-    protected UpdateProfileState(IMutable<T?> store, IStopAware<T> value) : base(store, value) {}
+    protected UpdateProfileState(IStopAware<T> save, IDepending clear) : base(save, clear) {}
 }

@@ -4,5 +4,5 @@ public sealed class ClearTokenState : Communication.Http.Security.ClearTokenStat
 {
     public static ClearTokenState Default { get; } = new();
 
-    ClearTokenState() : base(AccessTokenStorage.Default, AccessTokenViewStorage.Default) {}
+    ClearTokenState() : base(AccessTokenProcessValue.Default, AccessTokenViewStorage.Default) {}
 }
