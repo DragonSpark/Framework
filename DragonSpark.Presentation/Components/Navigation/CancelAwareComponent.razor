@@ -7,7 +7,7 @@
 @implements IDisposable
 
 <NavigationMonitor Changed="@OnChange" />
-<CascadingValue TValue="CancellationToken?" Value="@_combined.Token" ChildContent="@ChildContent" />
+<CascadingValue Value="@_combined.Token" ChildContent="@ChildContent" />
 
 @code {
     CancellationTokenSource _source = null!, _combined = null!;
