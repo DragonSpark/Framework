@@ -1,14 +1,6 @@
-﻿using DragonSpark.Application.AspNet.Security;
-using DragonSpark.Application.Communication.Http.Security;
-using DragonSpark.Application.Security.Identity.Bearer;
-using DragonSpark.Compose;
-using DragonSpark.Runtime;
-using System.Threading;
-using System.Threading.Tasks;
+﻿namespace DragonSpark.Application.AspNet.Communication.Http;
 
-namespace DragonSpark.Application.AspNet.Communication.Http;
-
-sealed class ComposeAccessTokenView : IAccessTokenStore
+/*sealed class ComposeAccessTokenView : IAccessTokenStore
 {
 	readonly ICurrentContext            _context;
 	readonly ApplicationUserAwareBearer _bearer;
@@ -37,4 +29,4 @@ sealed class ComposeAccessTokenView : IAccessTokenStore
 
 		return default(AccessTokenView?).ToOperation();
 	}
-}
+}*/

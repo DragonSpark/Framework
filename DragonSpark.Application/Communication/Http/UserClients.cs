@@ -1,10 +1,9 @@
-﻿using DragonSpark.Application.Security.Identity.Bearer;
+﻿using DragonSpark.Model.Results;
 using System.Net.Http;
 
 namespace DragonSpark.Application.Communication.Http;
 
-public abstract class UserClients : User<HttpClient>
+public abstract class UserClients : Result<HttpClient>
 {
-	protected UserClients(ApplicationUserAwareBearer bearer, IHttpClientFactory clients, string name)
-		: base(bearer, () => clients.CreateClient(name)) {}
+	protected UserClients(IHttpClientFactory clients, string name) : base(() => clients.CreateClient(name)) {}
 }

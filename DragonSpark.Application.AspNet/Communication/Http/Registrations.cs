@@ -22,12 +22,13 @@ sealed class Registrations : ICommand<IServiceCollection>
 		         .Start<IHttpContentSerializer>()
 		         .Use<DefaultSerializer>()
 		         .Singleton()
-		         //
+		         /*//
 		         .Then.AddSingleton<ComposeAccessTokenView>()
 		         .Start<IAccessTokenStore>()
 		         .Forward<AccessTokenStore>()
 		         .Include(x => x.Dependencies)
 		         .Scoped()
-		         .Then.TryDecorate<IAccessTokenProvider, AccessTokenProvider>();
+		         */
+		         ;
 	}
 }

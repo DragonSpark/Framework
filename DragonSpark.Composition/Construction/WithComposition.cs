@@ -25,7 +25,7 @@ sealed class WithComposition : IAlteration<IHostBuilder>
 
 	public IHostBuilder Get(IHostBuilder parameter)
 	{
-		var options = _options().WithMicrosoftSettings().WithAspNetCoreSettings().With(x => x.EnableVariance = false);
+		var options = _options().WithMicrosoftSettings().WithAspNetCoreSettings();
 		var root    = new ServiceContainer(options);
 		root.ConstructorSelector = new ConstructorSelector(new CanSelectDependency(root, options).Get);
 

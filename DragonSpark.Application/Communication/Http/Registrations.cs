@@ -13,13 +13,9 @@ sealed class Registrations : ICommand<IServiceCollection>
 
     public void Execute(IServiceCollection parameter)
     {
-        parameter.Start<UserApis<object>>()
-                 .Generic()
-                 .Singleton()
-                 //
-                 .Then.Start<IAccessTokenProvider>()
-                 .Forward<AmbientAwareAccessTokenProvider>()
-                 .Transient()
+        parameter.Start<IAccessTokenProvider>()
+                 .Forward<AccessTokenProvider>()
+                 .Scoped()
                  //
                  .Then.Start<IComposeTokenView>()
                  .Forward<ComposeTokenView>()

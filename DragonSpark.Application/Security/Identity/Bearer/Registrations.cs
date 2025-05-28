@@ -21,6 +21,7 @@ public sealed class Registrations : ICommand<IServiceCollection>
 		         //
 		         .Then.Start<IBearer>()
 		         .Forward<Bearer>()
+		         .Decorate<ReferenceValueAwareBearer>()
 		         .Include(x => x.Dependencies.Recursive())
 		         .Scoped()
 		         //

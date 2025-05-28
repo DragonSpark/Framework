@@ -1,4 +1,5 @@
-﻿using DragonSpark.Compose;
+﻿using DragonSpark.Application.Security.Identity;
+using DragonSpark.Compose;
 using Microsoft.AspNetCore.Components.Authorization;
 using System.Security.Claims;
 
@@ -16,7 +17,7 @@ public sealed class AuthenticationState<T> : AuthenticationState where T : Ident
 
 	public static AuthenticationState<T> Default { get; } = new();
 
-	AuthenticationState() : this(new(new ClaimsIdentity()), null) {}
+	AuthenticationState() : this(AnonymousPrincipal.Default, null) {}
 
 	public AuthenticationState(ClaimsPrincipal user, T? profile) : base(user) => Profile = profile;
 

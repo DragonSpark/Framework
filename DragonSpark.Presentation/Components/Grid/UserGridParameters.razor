@@ -1,6 +1,5 @@
-﻿@using DragonSpark.Application.AspNet
+﻿@using DragonSpark.Model.Results
 @using DragonSpark.Model.Selection
-@using System.Security.Claims
 
 @ChildContent(new(_client, _address))
 
@@ -10,7 +9,7 @@
 
     protected override void OnInitialized()
     {
-        _client  = Clients.Get(State);
+        _client  = Clients.Get();
         _address = Address.Get(Path).ToString();
         base.OnInitialized();
     }
@@ -19,14 +18,11 @@
     public string Path { get; set; } = null!;
 
     [Parameter]
-    public ISelect<ClaimsPrincipal, HttpClient> Clients { get; set; } = null!;
+    public IResult<HttpClient> Clients { get; set; } = null!;
 
     [Parameter]
     public ISelect<string, Uri> Address { get; set; } = null!;
 
     [Parameter]
     public RenderFragment<UserGridParametersView> ChildContent { get; set; } = null!;
-
-    [CascadingParameter]
-    AuthenticationState State { get; set; } = null!;
 }
