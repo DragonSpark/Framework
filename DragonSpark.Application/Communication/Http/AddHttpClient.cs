@@ -1,26 +1,34 @@
-﻿using System;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Selection;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace DragonSpark.Application.Communication.Http;
 
+sealed class AddHttpClient : Select<AddHttpClientInput<Options>, IServiceCollection>
+{
+	public static AddHttpClient Default { get; } = new();
+
+	AddHttpClient() : base(AddHttpClient<Options>.Default) {}
+}
+
 sealed class AddHttpClient<T> : IAddClient<T> where T : Options
 {
-    public static AddHttpClient<T> Default { get; } = new();
+	public static AddHttpClient<T> Default { get; } = new();
 
-    AddHttpClient() : this(ConfigurePrimaryActions.Default.Then().Select(ConfigureDelegatingHandlers.Default).Get) {}
+	AddHttpClient() : this(ConfigurePrimaryActions.Default.Then().Select(ConfigureDelegatingHandlers.Default).Get) {}
 
-    readonly Func<IHttpClientBuilder, IHttpClientBuilder> _configure;
+	readonly Func<IHttpClientBuilder, IHttpClientBuilder> _configure;
 
-    public AddHttpClient(Func<IHttpClientBuilder, IHttpClientBuilder> configure) => _configure = configure;
+	public AddHttpClient(Func<IHttpClientBuilder, IHttpClientBuilder> configure) => _configure = configure;
 
-    public IServiceCollection Get(AddHttpClientInput<T> parameter)
-    {
-        var (result, options, client, configure) = parameter;
-        var start = client(result);
-        var next = start.When(options.Configure, _configure)
-                        .ConfigureHttpClient((_, c) => c.BaseAddress = new(options.Address));
-        _ = configure(next, options);
-        return result;
-    }
+	public IServiceCollection Get(AddHttpClientInput<T> parameter)
+	{
+		var (result, options, client, configure) = parameter;
+		var start = client(result);
+		var next = start.When(options.Configure, _configure)
+						.ConfigureHttpClient((_, c) => c.BaseAddress = new(options.Address));
+		_ = configure(next, options);
+		return result;
+	}
 }

@@ -10,6 +10,16 @@ public static class Extensions
 {
 	public static T When<T>(this T @this, bool @true, Func<T, T> alter) => @true ? alter(@this) : @this;
 
+	public static IServiceCollection AddConfiguredHttpClient(
+		this IServiceCollection @this, string name, Options options)
+		=> AddConfiguredHttpClient(@this, name, options, (builder, _) => builder);
+
+	// ReSharper disable once TooManyArguments
+	public static IServiceCollection AddConfiguredHttpClient(
+		this IServiceCollection @this, string name, Options options,
+		Func<IHttpClientBuilder, Options, IHttpClientBuilder> configure)
+		=> AddHttpClient.Default.Get(new(@this, options, x => x.AddHttpClient(name), configure));
+
 	public static IServiceCollection AddRefitApi<T>(this IServiceCollection @this)
 		where T : class
 		=> @this.AddRefitApi<T, Options>();
@@ -69,7 +79,7 @@ public static class Extensions
 		Action<IServiceProvider, RefitSettings> settings,
 		Func<IHttpClientBuilder, TOptions, IHttpClientBuilder> configure)
 		where TOptions : Options where T : class
-		=> AddRefitApi<T, TOptions>(@this, A.Type<T>().AssemblyQualifiedName.Verify(), options, settings, configure);
+		=> @this.AddRefitApi<T, TOptions>(A.Type<T>().AssemblyQualifiedName.Verify(), options, settings, configure);
 
 	// ReSharper disable once TooManyArguments
 	public static IServiceCollection AddRefitApi<T, TOptions>(

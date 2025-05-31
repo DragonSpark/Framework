@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Commands;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.OData;
 using Microsoft.OData.Edm;
@@ -23,6 +24,16 @@ public class ConfigureModel : ICommand<ODataOptions>
 
 	public void Execute(ODataOptions parameter)
 	{
-		parameter.EnableQueryFeatures(_max).AddRouteComponents(_prefix, _model);
+		// ATTRIBUTION: https://github.com/OData/AspNetCoreOData/issues/238#issuecomment-931433269
+		/*var conventions = parameter.Conventions;
+		using var keep = conventions.Where(x => x is AttributeRoutingConvention or MetadataRoutingConvention
+			                                        or FunctionRoutingConvention)
+		                            .AsValueEnumerable()
+		                            .ToArray(ArrayPool<IODataControllerActionConvention>.Shared);
+		*/
+		//conventions.Rebuild(keep.Memory)
+		parameter.Return(parameter)
+		         .EnableQueryFeatures(_max)
+		         .AddRouteComponents(_prefix, _model);
 	}
 }

@@ -54,6 +54,9 @@ partial class Extensions
 	public static TList AddRange<TList, T>(this TList @this, Memory<T> range) where TList : List<T>
 		=> CopyList<TList, T>.Default.Get(new(range, @this));
 
+	public static ICollection<T> Rebuild<T>(this ICollection<T> @this, Memory<T> source)
+		=> Compose.Runtime.Rebuild<T>.Default.Get(new(@this, source));
+
 	/**/
 
 	public static string Format<T>(this IResult<string> @this, T parameter) where T : notnull

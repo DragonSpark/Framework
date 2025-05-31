@@ -15,14 +15,14 @@
     }
 
     [Parameter]
-    public string Path { get; set; } = null!;
+    public required string Path { get; set; }
 
     [Parameter]
-    public IResult<HttpClient> Clients { get; set; } = null!;
+    public required IResult<HttpClient> Clients { get; set; }
 
     [Parameter]
-    public ISelect<string, Uri> Address { get; set; } = null!;
+    public required ISelect<string, Uri> Address { get; set; }
 
     [Parameter]
-    public RenderFragment<UserGridParametersView> ChildContent { get; set; } = null!;
+    public required RenderFragment<UserGridParametersView> ChildContent { get; set; }
 }
