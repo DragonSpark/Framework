@@ -20,7 +20,7 @@ public sealed class ExceptionAwareAttribute : OverrideMethodAspect
     {
         try
         {
-            return await meta.ProceedAsync().On();
+            return await meta.ProceedAsync().On(); 
         }
         catch (Exception e) when (_exceptionHandler?.Condition.Get(e) ?? false)
         {
