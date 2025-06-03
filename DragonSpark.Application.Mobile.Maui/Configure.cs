@@ -12,5 +12,7 @@ sealed class Configure<T> : IAlteration<BuildHostContext>
 
     public BuildHostContext Get(BuildHostContext parameter)
         => parameter.Configure(ApplyApplicationConfiguration<T>.Default.Adapt(),
-                               Application.DefaultRegistrations.Default, DefaultRegistrations.Default);
+                               Application.DefaultRegistrations.Default, 
+                               Presentation.Syncfusion.Registrations.Default,
+                               DefaultRegistrations.Default);
 }
