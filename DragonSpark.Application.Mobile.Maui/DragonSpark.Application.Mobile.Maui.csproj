@@ -15,6 +15,7 @@
       <PackageReference Include="CommunityToolkit.Maui" />
       <PackageReference Include="Microsoft.Maui.Controls" />
 	  <PackageReference Include="Syncfusion.Maui.Toolkit" />
+	  <PackageReference Include="System.CodeDom" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Compile Update="Platforms\iOS\Extensions.cs">

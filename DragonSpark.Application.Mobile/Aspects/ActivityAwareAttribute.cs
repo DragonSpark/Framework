@@ -1,7 +1,6 @@
 using System.Threading.Tasks;
 using DragonSpark.Application.Mobile.Model;
 using DragonSpark.Compose;
-using Metalama.Framework.Aspects;
 
 namespace DragonSpark.Application.Mobile.Aspects;
 
