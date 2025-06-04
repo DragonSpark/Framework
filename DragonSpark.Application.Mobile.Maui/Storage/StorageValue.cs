@@ -8,7 +8,7 @@ using Microsoft.Maui.Storage;
 
 namespace DragonSpark.Application.Mobile.Maui.Storage;
 
-public class StorageValue<T> : IStorageValue<T>
+public class StorageValue<T> : IStorageValue<T> where T : notnull
 {
     readonly string         _key;
     readonly ISerializer<T> _serializer;
@@ -16,7 +16,7 @@ public class StorageValue<T> : IStorageValue<T>
 
     protected StorageValue() : this(A.Type<T>().FullName.Verify()) {}
 
-    protected StorageValue(string key) : this(key, Serializer<T>.Default, SecureStorage.Default) {}
+    protected StorageValue(string key) : this(key, DefaultSerializer<T>.Default, SecureStorage.Default) {}
 
     protected StorageValue(string key, ISerializer<T> serializer, ISecureStorage storage)
     {
@@ -25,12 +25,12 @@ public class StorageValue<T> : IStorageValue<T>
         _storage    = storage;
     }
 
-    public ValueTask Get(Stop<T> parameter) => _storage.SetAsync(_key, _serializer.Format.Get(parameter)).ToOperation();
+    public ValueTask Get(Stop<T> parameter) => _storage.SetAsync(_key, _serializer.Get(parameter)).ToOperation();
 
     public async ValueTask<T?> Get(CancellationToken _)
     {
         var storage = await _storage.GetAsync(_key).Off();
-        return storage is not null ? _serializer.Parse.Get(storage) : default;
+        return storage is not null ? _serializer.Parser.Get(storage) : default;
     }
 
     public ValueTask<bool> Get(Stop<None> parameter) => _storage.Remove(_key).ToOperation();
