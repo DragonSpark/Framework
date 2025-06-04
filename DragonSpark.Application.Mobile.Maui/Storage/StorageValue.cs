@@ -1,9 +1,11 @@
 using System.Threading;
 using System.Threading.Tasks;
+using DragonSpark.Application.Mobile.Maui.Presentation;
 using DragonSpark.Application.Runtime.Objects;
 using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Operations;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Maui.Storage;
 
 namespace DragonSpark.Application.Mobile.Maui.Storage;
@@ -16,7 +18,9 @@ public class StorageValue<T> : IStorageValue<T> where T : notnull
 
     protected StorageValue() : this(A.Type<T>().FullName.Verify()) {}
 
-    protected StorageValue(string key) : this(key, DefaultSerializer<T>.Default, SecureStorage.Default) {}
+    protected StorageValue(string key)
+        : this(key, DefaultSerializer<T>.Default,
+               CurrentServices.Default.GetService<ISecureStorage>() ?? SecureStorage.Default) {}
 
     protected StorageValue(string key, ISerializer<T> serializer, ISecureStorage storage)
     {

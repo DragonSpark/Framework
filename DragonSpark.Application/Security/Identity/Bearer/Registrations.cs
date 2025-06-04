@@ -1,4 +1,5 @@
-﻿using DragonSpark.Composition;
+using DragonSpark.Application.Communication.Http;
+using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -27,6 +28,9 @@ public sealed class Registrations : ICommand<IServiceCollection>
 		         //
 		         .Then.Start<ICurrentBearer>()
 		         .Forward<CurrentBearer>()
-		         .Scoped();
+		         .Scoped()
+                 //
+                 .Then.TryDecorate<IAccessTokenProvider, BearerAwareAccessTokenProvider>()
+                 ;
 	}
 }

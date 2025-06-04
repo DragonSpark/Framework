@@ -14,7 +14,7 @@ sealed class Registrations : ICommand<IServiceCollection>
     public void Execute(IServiceCollection parameter)
     {
         parameter.Start<IAccessTokenProvider>()
-                 .Forward<AccessTokenProvider>()
+                 .Forward<DefaultAccessTokenProvider>()
                  .Scoped()
                  //
                  .Then.Start<IComposeTokenView>()

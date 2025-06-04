@@ -1,4 +1,7 @@
-﻿using DragonSpark.Application.Components.Validation.Expressions;
+using System;
+using System.Collections.Generic;
+using System.Security.Claims;
+using DragonSpark.Application.Components.Validation.Expressions;
 using DragonSpark.Application.Compose;
 using DragonSpark.Application.Compose.Runtime;
 using DragonSpark.Application.Compose.Store.Operations.Memory;
@@ -13,9 +16,6 @@ using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using Humanizer;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Security.Claims;
 
 namespace DragonSpark.Application;
 
