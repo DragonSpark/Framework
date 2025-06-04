@@ -1,22 +1,22 @@
 using DragonSpark.Compose;
 using DragonSpark.Text;
+using System.Text.Json;
 
 namespace DragonSpark.Application.Runtime.Objects;
 
-public sealed class Serializer<T> : ISerializer<T>
+public class Serializer<T> : Formatter<T>, ISerializer<T> where T : notnull
 {
-    public static Serializer<T> Default { get; } = new();
+	protected Serializer(JsonSerializerOptions options)
+		: this(new Serialize<T>(options),
+		       new Parser<T>(DefaultDeserialize<T>.Default.Then().Select(x => x.Verify())),
+		       new Target<T>(options)) {}
 
-    Serializer()
-        : this(DefaultSerialize<T>.Default,
-               new Parser<T>(DefaultDeserialize<T>.Default.Then().Select(x => x.Verify()))) {}
+	protected Serializer(IFormatter<T> format, IParser<T> parser, ITarget<T> target) : base(format)
+	{
+		Parser = parser;
+		Target = target;
+	}
 
-    public Serializer(IFormatter<T> format, IParser<T> parse)
-    {
-        Format = format;
-        Parse  = parse;
-    }
-
-    public IFormatter<T> Format { get; }
-    public IParser<T> Parse { get; }
+	public IParser<T> Parser { get; }
+	public ITarget<T> Target { get; }
 }

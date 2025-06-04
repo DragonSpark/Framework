@@ -2,8 +2,8 @@ using DragonSpark.Text;
 
 namespace DragonSpark.Application.Runtime.Objects;
 
-public interface ISerializer<T>
+public interface ISerializer<T> : IFormatter<T> where T : notnull
 {
-    IFormatter<T> Format { get; }
-    IParser<T> Parse { get; }
+	public IParser<T> Parser { get; }
+	public ITarget<T> Target { get; }
 }
