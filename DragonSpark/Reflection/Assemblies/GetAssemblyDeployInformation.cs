@@ -1,11 +1,11 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Selection;
 using System;
 using System.Reflection;
+using DragonSpark.Compose;
+using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Reflection.Assemblies;
 
-sealed class GetAssemblyDeployInformation : ISelect<Assembly, AssemblyDeployInformation>
+public sealed class GetAssemblyDeployInformation : ISelect<Assembly, AssemblyDeployInformation>
 {
 	public static GetAssemblyDeployInformation Default { get; } = new();
 
