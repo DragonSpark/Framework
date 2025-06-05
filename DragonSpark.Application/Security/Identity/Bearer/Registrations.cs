@@ -29,6 +29,8 @@ public sealed class Registrations : ICommand<IServiceCollection>
 		         .Then.Start<ICurrentBearer>()
 		         .Forward<CurrentBearer>()
 		         .Scoped()
+				 //
+				 .Then.Start<CurrentMessageBearer>().Scoped()
                  //
                  .Then.TryDecorate<IAccessTokenProvider, BearerAwareAccessTokenProvider>()
                  ;
