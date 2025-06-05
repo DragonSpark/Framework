@@ -116,6 +116,9 @@ public static class Extensions
     public static BuildHostContext ApplyDeferredRegistrations(this BuildHostContext @this)
         => @this.Configure(Compose.Deferred.ApplyDeferredRegistrations.Default);
 
+    public static IServiceCollection ApplyDeferredRegistrations(this IServiceCollection @this)
+        => Compose.Deferred.ApplyDeferredRegistrations.Default.Parameter(@this);
+
     public static BuildHostContext RegisterModularity(this BuildHostContext @this)
         => @this.Configure(Composition.RegisterModularity.Default);
 
