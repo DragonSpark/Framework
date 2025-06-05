@@ -7,5 +7,5 @@ public abstract class MarkupExtension<T> : IMarkupExtension<T>
 {
     public abstract T ProvideValue(IServiceProvider serviceProvider);
 
-    object IMarkupExtension.ProvideValue(IServiceProvider serviceProvider) => ProvideValue(serviceProvider);
+    object IMarkupExtension.ProvideValue(IServiceProvider serviceProvider) => ProvideValue(serviceProvider)!;
 }
