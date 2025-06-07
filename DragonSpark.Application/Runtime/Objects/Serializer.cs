@@ -8,7 +8,7 @@ public class Serializer<T> : Formatter<T>, ISerializer<T> where T : notnull
 {
 	protected Serializer(JsonSerializerOptions options)
 		: this(new Serialize<T>(options),
-		       new Parser<T>(DefaultDeserialize<T>.Default.Then().Select(x => x.Verify())),
+		       new Parser<T>(new DefaultDeserialize<T>(options).Then().Select(x => x.Verify())),
 		       new Target<T>(options)) {}
 
 	protected Serializer(IFormatter<T> format, IParser<T> parser, ITarget<T> target) : base(format)
