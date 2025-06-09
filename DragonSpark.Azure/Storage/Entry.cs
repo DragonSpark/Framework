@@ -1,4 +1,5 @@
 ﻿using Azure.Storage.Blobs;
+using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Selection.Stop;
 using System.Threading.Tasks;
@@ -22,7 +23,7 @@ sealed class Entry : IEntry
 	{
 		var (subject, stop) = parameter;
 		var client = _client.GetBlobClient(subject);
-		var result = _entry.Get(new(client, stop));
+		var result = _entry.Get(client.Stop(stop));
 		return result;
 	}
 }

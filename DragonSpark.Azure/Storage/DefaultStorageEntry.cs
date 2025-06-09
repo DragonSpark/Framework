@@ -1,6 +1,7 @@
 ﻿using Azure.Storage.Blobs.Specialized;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,4 +28,7 @@ sealed class DefaultStorageEntry : IStorageEntry
 		await _client.DownloadToAsync(parameter, parameter).Off();
 		return parameter;
 	}
+
+	public async ValueTask Get(Stop<IDictionary<string, string?>> parameter)
+		=> await _client.SetMetadataAsync(parameter.Subject, cancellationToken: parameter).Off();
 }

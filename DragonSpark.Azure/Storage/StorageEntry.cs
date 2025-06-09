@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Model.Operations;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
@@ -21,5 +22,7 @@ public class StorageEntry : IStorageEntry
 
 	public ValueTask<Stream> Get(CancellationToken parameter) => _previous.Get(parameter);
 
-	public ValueTask<Stream> Get(Stop<Stream> parameter) => _previous.Get((CancellationToken)parameter);
+	public ValueTask<Stream> Get(Stop<Stream> parameter) => _previous.Get(parameter);
+
+	public ValueTask Get(Stop<IDictionary<string, string?>> parameter) => _previous.Get(parameter);
 }
