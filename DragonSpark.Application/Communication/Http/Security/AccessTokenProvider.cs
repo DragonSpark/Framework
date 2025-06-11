@@ -19,8 +19,13 @@ public class AccessTokenProvider : IAccessTokenProvider
 
     public async ValueTask<string?> Get(Stop<HttpRequestMessage> parameter)
     {
-        var view   = await _view.Off(parameter);
-        var result = view?.Response.AccessToken ?? await _previous.Off(parameter);
-        return result;
+        var previous = await _previous.Off(parameter);
+        if (previous is null)
+        {
+            var view   = await _view.Off(parameter);
+            return view?.Response.AccessToken;
+        }
+
+        return previous;
     }
 }
