@@ -5,6 +5,7 @@ using DragonSpark.Application.AspNet.Entities.Transactions;
 using DragonSpark.Application.AspNet.Model.Content;
 using DragonSpark.Application.AspNet.Security.Identity;
 using DragonSpark.Application.AspNet.Security.Identity.Authentication;
+using DragonSpark.Application.Model;
 using DragonSpark.Application.Security.Identity.Claims;
 using DragonSpark.Compose;
 using DragonSpark.Composition.Compose;
@@ -13,6 +14,7 @@ using DragonSpark.Model.Selection;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
@@ -106,4 +108,17 @@ partial class Extensions
 	public static ITransactions Ambient(this ITransactions @this) => new AmbientAwareTransactions(@this);
 
 	public static IOperation<T> ReloadAware<T>(this IOperation<T> @this) => new ReloadAware<T>(@this);
+
+	/**/
+	public static UserInput Input(this ClaimsPrincipal @this, Guid subject) => new(@this.Number().Value(), subject);
+	public static UserInput<T> Input<T>(this ClaimsPrincipal @this, T subject) => new(@this.Number().Value(), subject);
+	public static UserInput Input(this HttpContext @this, Guid subject) => @this.User.Input(subject);
+
+	public static UserInput<T> Input<T>(this HttpContext @this, T subject) => @this.User.Input(subject);
+	public static Stop<uint> UserInput(this HttpContext @this) => new(@this.User.Number().Value(), @this.RequestAborted);
+	public static Stop<T> Stop<T>(this HttpContext @this, T parameter) => new(parameter, @this.RequestAborted);
+	public static Stop<UserInput<T>> UserInput<T>(this HttpContext @this, T subject)
+		=> new(@this.User.Input(subject), @this.RequestAborted);
+	public static Stop<UserInput> UserInput(this HttpContext @this, Guid subject)
+		=> new(@this.User.Input(subject), @this.RequestAborted);
 }
