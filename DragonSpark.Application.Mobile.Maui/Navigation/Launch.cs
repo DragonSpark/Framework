@@ -1,5 +1,5 @@
 using System;
-using DragonSpark.Application.Mobile.Maui.Model.Navigation;
+using DragonSpark.Application.Mobile.Maui.Model.Commands;
 using Microsoft.Maui.ApplicationModel;
 
 namespace DragonSpark.Application.Mobile.Maui.Navigation;
