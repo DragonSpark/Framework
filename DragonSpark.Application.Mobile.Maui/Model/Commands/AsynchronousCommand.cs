@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.Input;
 
-namespace DragonSpark.Application.Mobile.Maui.Model.Navigation;
+namespace DragonSpark.Application.Mobile.Maui.Model.Commands;
 
 public class AsynchronousCommand<T> : IAsyncRelayCommand<T>
 {
