@@ -12,10 +12,10 @@ sealed class DefaultStorageEntry : IStorageEntry
 {
 	readonly BlobBaseClient _client;
 
-	public DefaultStorageEntry(BlobBaseClient client, StorageEntryProperties entry)
+	public DefaultStorageEntry(BlobBaseClient client, StorageEntryProperties properties)
 	{
 		_client    = client;
-		Properties = entry;
+		Properties = properties;
 	}
 
 	public StorageEntryProperties Properties { get; }

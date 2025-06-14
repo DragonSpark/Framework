@@ -2,13 +2,13 @@
 
 namespace DragonSpark.Azure.Storage;
 
-sealed class EntryName : IFormatter<EntryNameInput>
+sealed class EntryName : IFormatter<EntryInput>
 {
 	public static EntryName Default { get; } = new();
 
 	EntryName() {}
 
-	public string Get(EntryNameInput parameter)
+	public string Get(EntryInput parameter)
 	{
 		var (client, properties) = parameter;
 		if (properties.Metadata.Count > 0)

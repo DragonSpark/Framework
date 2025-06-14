@@ -3,4 +3,4 @@ using Azure.Storage.Blobs.Specialized;
 
 namespace DragonSpark.Azure.Storage;
 
-public readonly record struct EntryNameInput(BlobBaseClient Client, BlobProperties Properties);
+public readonly record struct EntryInput(BlobBaseClient Client, BlobProperties Properties);
