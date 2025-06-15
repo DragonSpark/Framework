@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Model.Operations;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 
@@ -11,12 +10,10 @@ sealed class LocateUser<T> : ILocateUser<T> where T : IdentityUser
 
 	public LocateUser(IUsers<T> users) => _users = users;
 
-	public async ValueTask<T?> Get(Stop<ExternalLoginInfo> parameter)
+	public async ValueTask<T?> Get(ExternalLoginInfo parameter)
 	{
-		var (subject, _) = parameter;
-		using var users = _users.Get();
-		var result = await users.Subject.FindByLoginAsync(subject.LoginProvider, subject.ProviderKey)
-		                        .Off();
+		using var users  = _users.Get();
+		var       result = await users.Subject.FindByLoginAsync(parameter.LoginProvider, parameter.ProviderKey).Off();
 		return result;
 	}
 }

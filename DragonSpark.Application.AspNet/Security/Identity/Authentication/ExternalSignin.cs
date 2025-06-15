@@ -8,8 +8,8 @@ namespace DragonSpark.Application.AspNet.Security.Identity.Authentication;
 
 sealed class ExternalSignin<T> : IExternalSignin where T : IdentityUser
 {
-	readonly ILocateUser<T>          _locate;
-	readonly AuthenticateUser<T>     _authenticate;
+	readonly ILocateUser<T>       _locate;
+	readonly AuthenticateUser<T>  _authenticate;
 	readonly AuthenticateExternal _external;
 
 	public ExternalSignin(ILocateUser<T> locate, AuthenticateUser<T> authenticate, AuthenticateExternal external)
@@ -24,9 +24,10 @@ sealed class ExternalSignin<T> : IExternalSignin where T : IdentityUser
 		var user = await _locate.Off(parameter);
 		if (user is not null)
 		{
-			await _authenticate.Off(new(parameter, user));
+			await _authenticate.Off(new(new(parameter, user), parameter));
 			return SignInResult.Success;
 		}
+
 		await _external.Off(parameter);
 		return SignInResult.Failed;
 	}

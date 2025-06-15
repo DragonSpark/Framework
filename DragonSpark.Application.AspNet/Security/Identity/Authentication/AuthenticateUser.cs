@@ -1,10 +1,11 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Stop;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Authentication;
 
-sealed class AuthenticateUser<T> : IOperation<Login<T>>
+sealed class AuthenticateUser<T> : IStopAware<Login<T>>
 {
 	readonly IAuthenticate<T>           _authenticate;
 	readonly ClearCurrentAuthentication _clear;
@@ -15,9 +16,9 @@ sealed class AuthenticateUser<T> : IOperation<Login<T>>
 		_clear        = clear;
 	}
 
-	public async ValueTask Get(Login<T> parameter)
+	public async ValueTask Get(Stop<Login<T>> parameter)
 	{
-		var (information, _) = parameter;
+		var ((information, _), _) = parameter;
 		await _authenticate.Off(parameter);
 		_clear.Execute(information.Principal);
 	}

@@ -6,13 +6,15 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Profile;
 
-public class UserClaimsPrincipals<T> : UserClaimsPrincipalFactory<T> where T : class
+public sealed class UserClaimsPrincipals<T> : UserClaimsPrincipalFactory<T> where T : class
 {
 	readonly string _applicationName;
 
-	public UserClaimsPrincipals(UserManager<T> userManager, IOptions<IdentityOptions> optionsAccessor,
-	                            string applicationName = "Identity.Application")
-		: base(userManager, optionsAccessor)
+	public UserClaimsPrincipals(UserManager<T> userManager, IOptions<IdentityOptions> options)
+		: this(userManager, options, IdentityConstants.ApplicationScheme) {}
+
+	public UserClaimsPrincipals(UserManager<T> userManager, IOptions<IdentityOptions> options, string applicationName)
+		: base(userManager, options)
 		=> _applicationName = applicationName;
 
 	protected override async Task<ClaimsIdentity> GenerateClaimsAsync(T user)

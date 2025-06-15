@@ -23,7 +23,7 @@ sealed class UserSynchronization<T> : IUserSynchronization where T : IdentityUse
 	public async ValueTask Get(Stop<ExternalLoginInfo> parameter)
 	{
 		var (subject, stop) = parameter;
-		var user    = await _locate.Off(new(subject, stop));
+		var user    = await _locate.Off(subject);
 		var changed = await _synchronizer.Off(new(new(parameter, user.Verify()), stop));
 		if (changed)
 		{

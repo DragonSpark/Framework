@@ -30,7 +30,7 @@ sealed class AuthenticationAwareChallenged<T> : IChallenged<T> where T : Identit
 			var (user, information, result) = previous.Value;
 			if (result.Succeeded)
 			{
-				await _authenticate.Off(new(information, user));
+				await _authenticate.Off(new(new(information, user), parameter));
 				await _synchronization.Off(new(information, parameter));
 			}
 		}

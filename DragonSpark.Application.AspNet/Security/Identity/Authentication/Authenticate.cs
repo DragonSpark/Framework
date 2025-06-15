@@ -2,6 +2,7 @@
 using DragonSpark.Application.AspNet.Security.Identity.Claims.Compile;
 using DragonSpark.Application.Security.Identity.Claims;
 using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Authentication;
@@ -22,9 +23,9 @@ sealed class Authenticate<T> : IAuthenticate<T> where T : IdentityUser
 		_contact = contact;
 	}
 
-	public ValueTask Get(Login<T> parameter)
+	public ValueTask Get(Stop<Login<T>> parameter)
 	{
-		var (information, user) = parameter;
+		var ((information, user), _) = parameter;
 		var claims  = _claims.Get(new(information.Principal, information.LoginProvider, information.ProviderKey));
 		var contact = _contact.Get(information.Principal).Claim();
 		var input   = contact is not null ? claims.Append(contact) : claims;
