@@ -15,6 +15,7 @@
       <PackageReference Include="CommunityToolkit.Maui" />
       <PackageReference Include="Microsoft.Maui.Controls" />
       <PackageReference Include="Syncfusion.Licensing" />
+      <PackageReference Include="Syncfusion.Maui.DataForm" />
 	  <PackageReference Include="Syncfusion.Maui.Toolkit" />
 	  <PackageReference Include="System.CodeDom" />
 	</ItemGroup>
