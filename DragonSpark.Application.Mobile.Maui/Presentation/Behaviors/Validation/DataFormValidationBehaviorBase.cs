@@ -6,25 +6,23 @@ namespace DragonSpark.Application.Mobile.Maui.Presentation.Behaviors.Validation;
 
 public class DataFormValidationBehaviorBase : BehaviorBase<SfDataForm>
 {
-    public readonly static BindableProperty ResultsProperty
-        = BindableProperty.Create(nameof(Results), typeof(ValidationResults),
+    public readonly static BindableProperty ModelProperty
+        = BindableProperty.Create(nameof(Model), typeof(ValidationModel),
                                   typeof(DataFormValidationBehaviorBase),
                                   propertyChanged:
-                                  (bindable, _, newValue)
-                                      =>
+                                  (bindable, _, newValue) =>
                                   {
-                                      if (bindable is DataFormValidationBehaviorBase b &&
-                                          newValue is ValidationResults r)
+                                      if (bindable is DataFormValidationBehaviorBase b && newValue is ValidationModel m)
                                       {
-                                          b.OnSubjectChanged(r);
+                                          b.OnSubjectChanged(m);
                                       }
                                   });
 
-    protected virtual void OnSubjectChanged(ValidationResults parameter) {}
+    protected virtual void OnSubjectChanged(ValidationModel parameter) {}
 
-    public ValidationResults Results
+    public ValidationModel Model
     {
-        get { return (ValidationResults)GetValue(ResultsProperty); }
-        set { SetValue(ResultsProperty, value); }
+        get { return (ValidationModel)GetValue(ModelProperty); }
+        set { SetValue(ModelProperty, value); }
     }
 }

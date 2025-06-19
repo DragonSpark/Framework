@@ -16,8 +16,9 @@ public sealed class DataFormValidationBehavior : DataFormValidationBehaviorBase
         set { SetValue(DefaultCommitModeProperty, value); }
     }
 
-    public static readonly BindableProperty DefaultValidationModeProperty 
-        = BindableProperty.Create(nameof(DefaultValidationMode), typeof(DataFormValidationMode), typeof(DataFormValidationBehavior), DataFormValidationMode.PropertyChanged);
+    public static readonly BindableProperty DefaultValidationModeProperty
+        = BindableProperty.Create(nameof(DefaultValidationMode), typeof(DataFormValidationMode),
+                                  typeof(DataFormValidationBehavior), DataFormValidationMode.PropertyChanged);
 
     public DataFormValidationMode DefaultValidationMode
     {
@@ -38,18 +39,19 @@ public sealed class DataFormValidationBehavior : DataFormValidationBehaviorBase
     {
         if (e.IsValid)
         {
-            Results.Local.Remove(e.PropertyName);
+            Model.Local.Remove(e.PropertyName);
         }
         else
         {
-            Results.Local[e.PropertyName] = [e.ErrorMessage];
+            Model.Local[e.PropertyName] = [e.ErrorMessage];
         }
+
         Command.NotifyCanExecuteChanged();
     }
 
     protected override void OnDetachingFrom(SfDataForm bindable)
     {
-        bindable.ValidateProperty      -= BindableOnValidateProperty;
+        bindable.ValidateProperty -= BindableOnValidateProperty;
 
         base.OnDetachingFrom(bindable);
     }
