@@ -1,6 +1,8 @@
+using DragonSpark.Application.Mobile.Model.Validation;
+
 namespace DragonSpark.Application.Mobile.Maui.Model;
 
-public class ValidationModelBase : ModelBase
+public class ValidationModelBase : ModelBase, IValidationAware
 {
     protected ValidationModelBase(bool isValid = true) : this(new ValidationModel(isValid)) {}
 
@@ -19,4 +21,12 @@ public class ValidationModelBase : ModelBase
             }
         }
     }
+
+    public void Execute(ValidationModelRecord parameter)
+    {
+        var (local, external) = parameter;
+        Validation            = new(local, external);
+    }
+
+    public IValidationModel Get() => Validation;
 }

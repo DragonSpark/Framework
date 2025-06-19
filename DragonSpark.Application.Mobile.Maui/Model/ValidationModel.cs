@@ -1,11 +1,42 @@
 using System.Collections.Generic;
 using CommunityToolkit.Mvvm.ComponentModel;
+using DragonSpark.Application.Mobile.Model.Validation;
 using DragonSpark.Model;
 using DragonSpark.Model.Selection.Conditions;
 
 namespace DragonSpark.Application.Mobile.Maui.Model;
 
-public partial class ValidationModel : ObservableObject, ICondition
+public sealed class ValidationContainer : ObservableObject, IValidationAware, ICondition
+{
+    public ValidationContainer(bool isValid = true) : this(new ValidationModel(isValid)) {}
+
+    public ValidationContainer(ValidationModel model) => Model = model;
+
+    public ValidationModel Model
+    {
+        get;
+        set
+        {
+            if (!Equals(value, field))
+            {
+                field = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
+    public void Execute(ValidationModelRecord parameter)
+    {
+        var (local, external) = parameter;
+        Model                 = new(local, external);
+    }
+
+    public IValidationModel Get() => Model;
+
+    public bool Get(None parameter) => Model.Get(parameter);
+}
+
+public partial class ValidationModel : ObservableObject, IValidationModel
 {
     public ValidationModel(bool isValid = true) : this([], [], isValid) {}
 
