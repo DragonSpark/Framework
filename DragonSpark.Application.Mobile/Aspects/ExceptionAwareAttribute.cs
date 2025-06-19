@@ -27,10 +27,7 @@ public sealed class ExceptionAwareAttribute : OverrideMethodAspect
     public override async Task<dynamic?> OverrideAsyncMethod()
     {
         var aware = meta.This as IValidationAware;
-        if (aware is not null)
-        {
-            aware.Get().External.Clear();
-        }
+        aware?.Get().External.Clear();
 
         try
         {
