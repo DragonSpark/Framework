@@ -13,12 +13,15 @@ public sealed class DataFormValidationErrorMonitorBehavior : DataFormValidationB
         base.OnAttachedTo(bindable);
     }
 
-    protected override void OnSubjectChanged(ValidationResults parameter)
+    protected override void OnSubjectChanged(ValidationModel parameter)
     {
         if (parameter.Get())
         {
-            var names = parameter.External.Keys.ToList();
-            View?.Validate(names);
+            var keys  = parameter.External.Keys;
+            if (keys.Count > 0)
+            {
+                View?.Validate(keys.ToList());
+            }
         }
     }
 
@@ -26,9 +29,9 @@ public sealed class DataFormValidationErrorMonitorBehavior : DataFormValidationB
     {
         if (e.IsValid)
         {
-            var valid = !Results.External.ContainsKey(e.PropertyName);
+            var valid = !Model.External.ContainsKey(e.PropertyName);
             e.IsValid = valid;
-            e.ErrorMessage = valid.Inverse() && Results.External.TryGetValue(e.PropertyName, out var messages)
+            e.ErrorMessage = valid.Inverse() && Model.External.TryGetValue(e.PropertyName, out var messages)
                                  ? messages[0]
                                  : e.ErrorMessage;   
         }
