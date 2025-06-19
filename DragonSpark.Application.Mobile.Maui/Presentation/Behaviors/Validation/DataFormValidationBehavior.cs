@@ -1,12 +1,10 @@
-using System;
-using System.Windows.Input;
-using CommunityToolkit.Maui.Behaviors;
+using CommunityToolkit.Mvvm.Input;
 using Microsoft.Maui.Controls;
 using Syncfusion.Maui.DataForm;
 
 namespace DragonSpark.Application.Mobile.Maui.Presentation.Behaviors.Validation;
 
-public sealed class DataFormValidationBehavior : BaseBehavior<Button>
+public sealed class DataFormValidationBehavior : DataFormValidationBehaviorBase
 {
     public static readonly BindableProperty DefaultCommitModeProperty
         = BindableProperty.Create(nameof(DefaultCommitMode), typeof(DataFormCommitMode),
@@ -18,66 +16,50 @@ public sealed class DataFormValidationBehavior : BaseBehavior<Button>
         set { SetValue(DefaultCommitModeProperty, value); }
     }
 
-    protected override void OnAttachedTo(Button bindable)
-    {
-        Subject.ValidationMode         =  DataFormValidationMode.Manual;
-        Subject.CommitMode             =  DefaultCommitMode;
-        BindingContext                 =  bindable.BindingContext;
-        bindable.BindingContextChanged += Bindable_BindingContextChanged;
-        bindable.Clicked               += BindableOnClicked;
+    public static readonly BindableProperty DefaultValidationModeProperty 
+        = BindableProperty.Create(nameof(DefaultValidationMode), typeof(DataFormValidationMode), typeof(DataFormValidationBehavior), DataFormValidationMode.PropertyChanged);
 
+    public DataFormValidationMode DefaultValidationMode
+    {
+        get { return (DataFormValidationMode)GetValue(DefaultValidationModeProperty); }
+        set { SetValue(DefaultValidationModeProperty, value); }
+    }
+
+    protected override void OnAttachedTo(SfDataForm bindable)
+    {
+        BindingContext            =  bindable.BindingContext;
+        bindable.ValidationMode   =  DefaultValidationMode;
+        bindable.CommitMode       =  DefaultCommitMode;
+        bindable.ValidateProperty += BindableOnValidateProperty;
         base.OnAttachedTo(bindable);
     }
 
-    protected override void OnDetachingFrom(Button bindable)
+    void BindableOnValidateProperty(object? sender, DataFormValidatePropertyEventArgs e)
     {
-        bindable.BindingContextChanged -= Bindable_BindingContextChanged;
-        bindable.Clicked               -= BindableOnClicked;
+        if (e.IsValid)
+        {
+            Results.Local.Remove(e.PropertyName);
+        }
+        else
+        {
+            Results.Local[e.PropertyName] = [e.ErrorMessage];
+        }
+        Command.NotifyCanExecuteChanged();
+    }
+
+    protected override void OnDetachingFrom(SfDataForm bindable)
+    {
+        bindable.ValidateProperty      -= BindableOnValidateProperty;
 
         base.OnDetachingFrom(bindable);
     }
 
-    void Bindable_BindingContextChanged(object? sender, EventArgs e)
+    public readonly static BindableProperty CommandProperty
+        = BindableProperty.Create(nameof(Command), typeof(IRelayCommand), typeof(DataFormValidationBehavior));
+
+    public IRelayCommand Command
     {
-        if (sender is BindableObject b)
-        {
-            BindingContext = b.BindingContext;
-        }
-    }
-
-    void BindableOnClicked(object? sender, EventArgs e)
-    {
-        var validate = Subject.Validate(); 
-        if (validate && Command.CanExecute(CommandParameter))
-        {
-            Command.Execute(CommandParameter);
-        }
-    }
-
-    public readonly static BindableProperty SubjectProperty
-        = BindableProperty.Create(nameof(Subject), typeof(SfDataForm), typeof(DataFormValidationBehavior));
-
-    public SfDataForm Subject
-    {
-        get { return (SfDataForm)GetValue(SubjectProperty); }
-        set { SetValue(SubjectProperty, value); }
-    }
-
-    public static readonly BindableProperty CommandProperty
-        = BindableProperty.Create(nameof(Command), typeof(ICommand), typeof(DataFormValidationBehavior));
-
-    public ICommand Command
-    {
-        get { return (ICommand)GetValue(CommandProperty); }
+        get { return (IRelayCommand)GetValue(CommandProperty); }
         set { SetValue(CommandProperty, value); }
-    }
-
-    public static readonly BindableProperty CommandParameterProperty
-        = BindableProperty.Create(nameof(CommandParameter), typeof(object), typeof(DataFormValidationBehavior));
-
-    public object CommandParameter
-    {
-        get { return GetValue(CommandParameterProperty); }
-        set { SetValue(CommandParameterProperty, value); }
     }
 }

@@ -1,11 +1,10 @@
-using System;
 using System.Globalization;
 using System.Windows.Input;
 using Microsoft.Maui.Controls;
 
 namespace DragonSpark.Application.Mobile.Maui.Presentation.Behaviors;
 
-public class BindingContextChangedCommandBehavior : Behavior<VisualElement>
+public class BindingContextChangedCommandBehavior : BehaviorBase<VisualElement>
 {
     public readonly static BindableProperty CommandProperty 
         = BindableProperty.Create(nameof(Command), typeof(ICommand), typeof(BindingContextChangedCommandBehavior));
@@ -33,22 +32,10 @@ public class BindingContextChangedCommandBehavior : Behavior<VisualElement>
         set => SetValue(EventArgsConverterProperty, value);
     }
 
-    protected override void OnAttachedTo(VisualElement bindable)
+    protected override void OnBindingContextChanged(BindableObject b)
     {
-        BindingContextChanged += Bindable_BindingContextChanged;
-        BindingContext        =  bindable.BindingContext;
-        base.OnAttachedTo(bindable);
-    }
-
-    void Bindable_BindingContextChanged(object? sender, EventArgs e)
-    {
-        OnTriggerHandled(sender, e);
-    }
-
-    protected override void OnDetachingFrom(VisualElement bindable)
-    {
-        base.OnDetachingFrom(bindable);
-        bindable.BindingContextChanged -= Bindable_BindingContextChanged;
+        base.OnBindingContextChanged(b);
+        OnTriggerHandled();
     }
 
     [Microsoft.Maui.Controls.Internals.Preserve(Conditional = true)]

@@ -1,71 +1,42 @@
-using System;
 using System.Linq;
-using CommunityToolkit.Maui.Behaviors;
 using DragonSpark.Application.Mobile.Maui.Model;
 using DragonSpark.Compose;
-using Microsoft.Maui.Controls;
 using Syncfusion.Maui.DataForm;
 
 namespace DragonSpark.Application.Mobile.Maui.Presentation.Behaviors.Validation;
 
-public sealed class DataFormValidationErrorMonitorBehavior : BaseBehavior<SfDataForm>
+public sealed class DataFormValidationErrorMonitorBehavior : DataFormValidationBehaviorBase
 {
-    public readonly static BindableProperty ResultsProperty
-        = BindableProperty.Create(nameof(Results), typeof(ValidationResults),
-                                  typeof(DataFormValidationErrorMonitorBehavior),
-                                  propertyChanged:
-                                  (bindable, _, newValue)
-                                      =>
-                                  {
-                                      if (bindable is DataFormValidationErrorMonitorBehavior b &&
-                                          newValue is ValidationResults r)
-                                      {
-                                          b.OnSubjectChanged(r);
-                                      }
-                                  });
-
-    void OnSubjectChanged(ValidationResults parameter)
-    {
-        if (parameter.Count > 0)
-        {
-            var names = parameter.Keys.ToList();
-            View?.Validate(names);
-        }
-    }
-
-    public ValidationResults Results
-    {
-        get { return (ValidationResults)GetValue(ResultsProperty); }
-        set { SetValue(ResultsProperty, value); }
-    }
-
     protected override void OnAttachedTo(SfDataForm bindable)
     {
-        bindable.BindingContextChanged += Bindable_BindingContextChanged;
-        bindable.ValidateProperty      += BindableOnValidateProperty;
+        bindable.ValidateProperty += BindableOnValidateProperty;
         base.OnAttachedTo(bindable);
     }
 
-    void Bindable_BindingContextChanged(object? sender, EventArgs e)
+    protected override void OnSubjectChanged(ValidationResults parameter)
     {
-        if (sender is BindableObject b)
+        if (parameter.Get())
         {
-            BindingContext = b.BindingContext;
+            var names = parameter.External.Keys.ToList();
+            View?.Validate(names);
         }
     }
 
     void BindableOnValidateProperty(object? sender, DataFormValidatePropertyEventArgs e)
     {
-        e.IsValid = !Results.ContainsKey(e.PropertyName);
-        e.ErrorMessage = e.IsValid.Inverse() && Results.TryGetValue(e.PropertyName, out var messages)
-                             ? messages[0]
-                             : string.Empty;
+        if (e.IsValid)
+        {
+            var valid = !Results.External.ContainsKey(e.PropertyName);
+            e.IsValid = valid;
+            e.ErrorMessage = valid.Inverse() && Results.External.TryGetValue(e.PropertyName, out var messages)
+                                 ? messages[0]
+                                 : e.ErrorMessage;   
+        }
     }
 
     protected override void OnDetachingFrom(SfDataForm bindable)
     {
-        bindable.ValidateProperty      -= BindableOnValidateProperty;
-        bindable.BindingContextChanged -= Bindable_BindingContextChanged;
+        bindable.ValidateProperty -= BindableOnValidateProperty;
         base.OnDetachingFrom(bindable);
     }
 }
