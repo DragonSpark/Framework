@@ -1,19 +1,19 @@
 ﻿@using DragonSpark.Compose
 @using System.Threading
 
-@typeparam TApi where TApi : class
+@typeparam TInstance where TInstance : class
 @typeparam T
 
 @inherits ContentComponentBase<T>
 
-@inject TApi Api
+@inject TInstance Instance
 
 <ApplicationContentView TValue="T" Content="@Content" ChildContent="@ChildContent" />
 
 @code {
 
     [Parameter]
-    public required Func<TApi, CancellationToken, Task<T?>> Factory { get; set; }
+    public required Func<TInstance, CancellationToken, Task<T?>> Factory { get; set; }
 
     [Parameter]
     public required RenderFragment<T> ChildContent { get; set; }
@@ -21,6 +21,6 @@
     [CascadingParameter]
     public required Task<AuthenticationState> State { get; set; }
 
-    protected override async ValueTask<T?> GetContent() => await Factory(Api, Stop).Off();
+    protected override async ValueTask<T?> GetContent() => await Factory(Instance, Stop).Off();
 
 }

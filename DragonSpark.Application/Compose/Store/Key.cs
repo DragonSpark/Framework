@@ -12,6 +12,8 @@ public class Key<T> : IFormatter<T>
 
 	public Key(string prefix, Func<T, string> key) : this(prefix, KeyDelimiter.Default, key) {}
 
+	protected Key(Type prefix) : this(prefix, x => x?.ToString() ?? string.Empty) {}
+
 	protected Key(Type prefix, Func<T, string> key) : this(prefix.AssemblyQualifiedName.Verify(), key) {}
 
 	protected Key(string prefix, char delimiter, Func<T, string> key)
