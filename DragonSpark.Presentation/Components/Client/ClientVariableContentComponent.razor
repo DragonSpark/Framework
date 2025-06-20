@@ -1,4 +1,5 @@
-﻿@using DragonSpark.Presentation.Components.Content.Templates
+﻿@using DragonSpark.Compose
+@using DragonSpark.Presentation.Components.Content.Templates
 @using DragonSpark.Presentation.Environment.Browser
 @using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
 
@@ -23,13 +24,13 @@ else
     ProtectedBrowserStorageResult<T>? _input;
 
     [Parameter]
-    public IClientVariable<T> Input { get; set; } = null!;
+    public required IClientVariable<T> Input { get; set; }
+
+    [Parameter]
+    public required RenderFragment<T?> ChildContent { get; set; }
 
     [Parameter]
     public RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
-
-    [Parameter]
-    public RenderFragment<T?> ChildContent { get; set; } = null!;
 
     [Parameter]
     public RenderFragment NotFoundTemplate { get; set; } = EmptyContentTemplate.Default;
@@ -37,16 +38,21 @@ else
     [Parameter]
     public EventCallback<ProtectedBrowserStorageResult<T>> Ready { get; set; }
 
-    [CascadingParameter]
-    IActivityReceiver Receiver { get; set; } = null!;
+    [CascadingParameter] public required IActivityReceiver Receiver { get; set; }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            _input = await Input.Get();
-            await Ready.Invoke(_input.Value);
-            StateHasChanged();
+            _input = await Input.On();
+            if (Ready.HasDelegate)
+            {
+                await Ready.Off(_input.Value);
+            }
+            else
+            {
+                StateHasChanged();
+            }
         }
     }
 }

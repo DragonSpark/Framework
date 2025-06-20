@@ -7,7 +7,7 @@
 @ChildContent(_binding)
 
 @code {
-    readonly Switch  _requested = new();
+    readonly Switch  _requested = new(), _rendered = new();
     string?          _content;
     Binding<string?> _binding = null!;
 
@@ -40,9 +40,20 @@
     {
         _content = parameter;
         _requested.Up();
-        StateHasChanged();
+        if (_rendered)
+        {
+            StateHasChanged();
+        }
     }
 
-    protected override Task OnParametersSetAsync()
-        => _requested.Down() ? ValueChanged.Invoke(Value = !string.IsNullOrEmpty(_content) ? Parser.Get(_content) : default) : Task.CompletedTask;
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        _rendered.Up();
+        return _requested.Down() ? Update() : base.OnAfterRenderAsync(firstRender);
+    }
+
+    protected override Task OnParametersSetAsync() => _requested.Down() ? Update() : OnParametersSetAsync();
+
+    Task Update() => ValueChanged.Invoke(Value = !string.IsNullOrEmpty(_content) ? Parser.Get(_content) : default);
+
 }
