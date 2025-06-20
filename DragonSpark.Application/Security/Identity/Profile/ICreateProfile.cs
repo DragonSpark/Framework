@@ -1,6 +1,6 @@
 using System.Security.Claims;
-using DragonSpark.Model.Selection;
+using DragonSpark.Model.Operations.Selection.Stop;
 
 namespace DragonSpark.Application.Security.Identity.Profile;
 
-public interface ICreateProfile : ISelect<ClaimsPrincipal, ProfileBase>;
+public interface ICreateProfile : IStopAware<ClaimsPrincipal, ProfileBase>;

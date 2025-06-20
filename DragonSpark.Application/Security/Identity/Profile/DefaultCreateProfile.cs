@@ -1,5 +1,8 @@
 using System.Security.Claims;
+using System.Threading.Tasks;
 using DragonSpark.Application.Security.Identity.Claims;
+using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 
 namespace DragonSpark.Application.Security.Identity.Profile;
 
@@ -26,7 +29,7 @@ sealed class DefaultCreateProfile : ICreateProfile
         _full       = full;
     }
 
-    public ProfileBase Get(ClaimsPrincipal parameter)
+    public ValueTask<ProfileBase> Get(Stop<ClaimsPrincipal> parameter)
         => new Profile(_identifier.Get(parameter), _handle.Get(parameter), _address.Get(parameter),
-                       _first.Get(parameter), _last.Get(parameter), _full.Get(parameter));
+                       _first.Get(parameter), _last.Get(parameter), _full.Get(parameter)).ToOperation<ProfileBase>();
 }

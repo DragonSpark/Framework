@@ -1,5 +1,5 @@
-using DragonSpark.Model.Operations.Results;
+using DragonSpark.Model.Operations.Results.Stop;
 
 namespace DragonSpark.Application.Security.Identity.Profile;
 
-public interface ICurrentProfile : IResulting<Profile>;
+public interface ICurrentProfile : IStopAware<Profile>;
