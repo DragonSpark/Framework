@@ -14,19 +14,19 @@
 
 @code
 {
-    [Parameter]
-    public required IActiveContent<TValue> Content
-    {
-        get;
-        set
-        {
-            if (field != value)
-            {
-                field     = value;
-                _contents = new ActivityContents<TValue>(field).Then().Stores().New();
-            }
-        }
-    }   ISelect<IActivityReceiver, IActiveContent<TValue>> _contents = null!;
+	[Parameter]
+	public required IActiveContent<TValue> Content
+	{
+		get;
+		set
+		{
+			if (field != value)
+			{
+				field     = value;
+				_contents = new ActivityContents<TValue>(field).Then().Stores().New();
+			}
+		}
+	}   ISelect<IActivityReceiver, IActiveContent<TValue>> _contents = null!;
 
 	[Parameter]
 	public bool ForceRender { get; set; }

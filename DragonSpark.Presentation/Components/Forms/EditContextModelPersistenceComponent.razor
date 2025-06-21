@@ -15,8 +15,6 @@
     T               _model = null!;
     EditContext?    _current;
 
-    protected override T DetermineModel() => _model;
-
     protected override void OnParametersSet()
     {
         var context = ResolvedContext;
@@ -36,6 +34,9 @@
 
         base.OnParametersSet();
     }
+
+    [Parameter]
+    public T? Model { get; set; }
 
     EditContext ResolvedContext
         => (EditContext ?? ParentEditContext).Verify($"Edit Context is required for {GetType().Name}");

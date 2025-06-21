@@ -23,12 +23,11 @@ else
 
 @code
 {
+    readonly Switch                   _rendered = new(), _requested = new(), _initialize = new();
     ProtectedBrowserStorageResult<T>? _result;
 
-    Switch _rendered = new(), _requested = new(), _initialize = new();
-
     [Parameter]
-    public IClientVariable<T> Store { get; set; } = null!;
+    public required IClientVariable<T> Store { get; set; }
 
     [Parameter]
     public T Value { get; set; } = default!;

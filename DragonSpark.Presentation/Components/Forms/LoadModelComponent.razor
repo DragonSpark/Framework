@@ -1,0 +1,84 @@
+﻿@using DragonSpark.Compose
+@using DragonSpark.Model.Operations.Results.Stop
+@using DragonSpark.Model.Results
+@using DragonSpark.Presentation.Components.Content.Templates
+
+@typeparam T where T : class
+
+@inherits ModelPersistenceComponentBase<T>
+
+@inject ProblemLoadingState ProblemLoading
+
+@if (_model is not null)
+{
+    @ChildContent(_model)
+}
+else
+{
+    @DefaultLoadingTemplate.Default
+}
+
+@code {
+    readonly Switch _call = new();
+    T?              _model;
+    EventCallback   _load;
+
+    protected override void OnInitialized()
+    {
+        _load = Start.A.Callback(LoadContent).UpdateActivity(Receiver);
+        base.OnInitialized();
+    }
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        await base.SetParametersAsync(parameters);
+        if (_model is null)
+        {
+            await _load.Off();
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+        if (_call.Down() && _model is not null)
+        {
+            await ModelChanged.Off(_model);
+        }
+    }
+
+    [Parameter]
+    public required RenderFragment<T> ChildContent { get; set; }
+
+    [Parameter]
+    public Switch Load { get; set; } = new();
+
+    [Parameter]
+    public required IStopAware<T> Model { get; set; }
+
+    async Task LoadContent()
+    {
+        _model = await LoadModel().On();
+        _call.Up();
+    }
+
+    async Task<T> LoadModel()
+    {
+        var current = Load.Down() ? await Store.On() : new();
+        if (current.Success)
+        {
+            var content = current.Value.Verify();
+            try
+            {
+                return Serializer.Parser.Get(content);
+            }
+            catch (Exception e)
+            {
+                ProblemLoading.Execute(new(e, content));
+                await ErrorOccurred.Off();
+            }
+        }
+        return await Model.Off(Stop);
+    }
+
+}
