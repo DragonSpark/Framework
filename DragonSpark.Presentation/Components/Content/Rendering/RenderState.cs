@@ -1,6 +1,6 @@
 ﻿namespace DragonSpark.Presentation.Components.Content.Rendering;
 
-public enum RenderState
+public enum RenderState : byte
 {
 	Default,
 	Ready,

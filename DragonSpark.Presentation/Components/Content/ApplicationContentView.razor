@@ -15,7 +15,7 @@
 @code
 {
     [Parameter]
-    public IActiveContent<TValue> Content
+    public required IActiveContent<TValue> Content
     {
         get;
         set
@@ -26,9 +26,7 @@
                 _contents = new ActivityContents<TValue>(field).Then().Stores().New();
             }
         }
-    } = null!;
-
-    ISelect<IActivityReceiver, IActiveContent<TValue>> _contents = null!;
+    }   ISelect<IActivityReceiver, IActiveContent<TValue>> _contents = null!;
 
 	[Parameter]
 	public bool ForceRender { get; set; }
