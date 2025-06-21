@@ -63,7 +63,7 @@ public sealed class SaveTests
 		{
 			await using var data   = contexts.Get();
 			var             first  = await data.Firsts.SingleAsync();
-			var             second = new Second() { First = first };
+			var             second = new Second { First = first };
 			data.Set<First>().Update(first);
 			data.Update(second);
 			await data.SaveChangesAsync();
