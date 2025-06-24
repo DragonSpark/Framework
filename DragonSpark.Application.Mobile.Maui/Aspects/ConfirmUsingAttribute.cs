@@ -26,6 +26,7 @@ public sealed class ConfirmUsingAttribute : OverrideMethodAspect
         if (popup != null)
         {
             popup.BindingContext = meta.This;
+            
             if (!await popup.ShowAsync().On())
             {
                 return null;
