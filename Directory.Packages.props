@@ -57,8 +57,8 @@
     <PackageVersion Include="Majorsoft.Blazor.Components.Debounce" Version="1.5.0" />
     <PackageVersion Include="Markdig" Version="0.41.3" />
     <PackageVersion Include="MatBlazor" Version="2.10.0" />
-    <PackageVersion Include="Metalama.Extensions.DependencyInjection" Version="2025.1.6" />
-    <PackageVersion Include="Metalama.Framework" Version="2025.1.6" />
+    <PackageVersion Include="Metalama.Extensions.DependencyInjection" Version="2025.1.9" />
+    <PackageVersion Include="Metalama.Framework" Version="2025.1.9" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.Facebook" Version="9.0.6" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.Google" Version="9.0.6" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.6" />
@@ -123,7 +123,7 @@
     <PackageVersion Include="Syncfusion.Maui.DataForm" Version="29.2.11" />
     <PackageVersion Include="Syncfusion.Blazor" Version="30.1.38" />
     <PackageVersion Include="Syncfusion.Maui.Toolkit" Version="1.0.5" />
-    <PackageVersion Include="System.CodeDom" Version="5.0.0" />
+    <PackageVersion Include="System.CodeDom" Version="9.0.6" />
     <PackageVersion Include="System.ComponentModel.TypeConverter" Version="4.3.0" />
     <PackageVersion Include="System.Drawing.Common" Version="9.0.6" />
     <PackageVersion Include="System.Formats.Asn1" Version="9.0.6" />
@@ -138,9 +138,9 @@
     <PackageVersion Include="System.Text.Json" Version="9.0.6" />
     <PackageVersion Include="System.Text.RegularExpressions" Version="4.3.1" />
     <PackageVersion Include="TweetinviAPI" Version="5.0.4" />
-    <PackageVersion Include="Uno.Extensions.Authentication" Version="5.3.8" />
+    <PackageVersion Include="Uno.Extensions.Authentication" Version="6.0.12" />
     <PackageVersion Include="Uno.Extensions.Hosting.WinUI" Version="5.2.7" />
-    <PackageVersion Include="Uno.Extensions.Navigation" Version="5.3.8" />
+    <PackageVersion Include="Uno.Extensions.Navigation" Version="6.0.12" />
     <PackageVersion Include="Uno.Extensions.Navigation.Toolkit.WinUI" Version="5.2.7" />
     <PackageVersion Include="Uno.UI" Version="5.5.87" />
     <PackageVersion Include="Uno.WinUI.DevServer" Version="5.5.87" />
