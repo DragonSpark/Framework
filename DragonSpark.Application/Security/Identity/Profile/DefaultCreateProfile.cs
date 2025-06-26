@@ -11,7 +11,7 @@ sealed class DefaultCreateProfile : ICreateProfile
     public static DefaultCreateProfile Default { get; } = new();
 
     DefaultCreateProfile()
-        : this(Identifier.Default, UserName.Default, Address.Default, FirstName.Default, LastName.Default,
+        : this(Identifier.Default, UserName.Default, ContactAddress.Default, FirstName.Default, LastName.Default,
                FullName.Default) {}
 
     readonly IRequiredClaim _identifier, _handle, _address, _first, _last, _full;

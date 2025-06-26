@@ -3,9 +3,9 @@ using DragonSpark.Application.Security.Identity.Claims;
 
 namespace DragonSpark.Application.Security.Identity.Profile;
 
-sealed class Identifier : RequiredClaim
+sealed class ContactAddress : RequiredClaim
 {
-	public static Identifier Default { get; } = new();
+    public static ContactAddress Default { get; } = new();
 
-	Identifier() : base(ClaimTypes.NameIdentifier) {}
+    ContactAddress() : base(ClaimTypes.Email) {}
 }

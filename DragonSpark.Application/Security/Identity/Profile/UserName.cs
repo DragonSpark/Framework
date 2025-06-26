@@ -3,9 +3,9 @@ using DragonSpark.Application.Security.Identity.Claims;
 
 namespace DragonSpark.Application.Security.Identity.Profile;
 
-sealed class Identifier : RequiredClaim
+sealed class UserName : RequiredClaim
 {
-	public static Identifier Default { get; } = new();
+    public static UserName Default { get; } = new();
 
-	Identifier() : base(ClaimTypes.NameIdentifier) {}
+    UserName() : base(ClaimTypes.Name) {}
 }

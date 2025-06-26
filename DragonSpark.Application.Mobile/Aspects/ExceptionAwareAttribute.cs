@@ -68,22 +68,6 @@ public sealed class ExceptionAwareAttribute : OverrideMethodAspect
         }
         return null;
     }
-    
-    /*
-    void Update(object instance, Dictionary<string, string[]> parameter)
-    {
-        if (instance is IValidationAware aware && parameter.Count > 0)
-        {
-            var model = aware.Get();
-            foreach (var (key, value) in parameter)
-            {
-                model.External.Add(key, value);
-            }
-
-            aware.Execute(new (model.Local, model.External));
-        }
-    }
-    */
 
     public override dynamic? OverrideMethod()
     {
