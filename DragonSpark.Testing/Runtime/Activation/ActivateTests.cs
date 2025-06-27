@@ -1,10 +1,12 @@
-﻿using DragonSpark.Application.Hosting.xUnit;
+using System;
+using DragonSpark.Application.Hosting.xUnit;
 using DragonSpark.Compose;
 using DragonSpark.Compose.Extents;
 using DragonSpark.Model.Selection;
 using DragonSpark.Runtime.Activation;
 using FluentAssertions;
 using Xunit;
+using Xunit.Abstractions;
 using Activator = DragonSpark.Runtime.Activation.Activator;
 
 // ReSharper disable All
@@ -22,6 +24,17 @@ public sealed class ActivateTests
 
 		subject.Number.Should().Be(number);
 	}
+
+    readonly ITestOutputHelper _output;
+
+    public ActivateTests(ITestOutputHelper output) => _output = output;
+
+    [Fact]
+    public void Verify()
+    {
+        _output.WriteLine(TimeSpan.FromMilliseconds(750).ToString());
+        
+    }
 
 	[Theory, AutoData]
 	void VerifyParameter(Extent<Object> sut, object parameter)
