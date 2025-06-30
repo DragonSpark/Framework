@@ -1,0 +1,64 @@
+﻿@using DragonSpark.Compose
+@using DragonSpark.Model.Operations.Results.Stop
+@using DragonSpark.Model.Results
+@typeparam T
+
+@inherits ContentComponentBase<T>
+
+<ApplicationContentView Content="@Content" Refreshed="@_load">
+    <DragonSpark.Presentation.Components.State.EnabledContainer Enabled="@Allow">
+        <DragonSpark.Presentation.Components.Rendering.ShouldRenderComponent Enabled="@Allow">
+            <CascadingValue Value="context" ChildContent="@_fragment" IsFixed="true" />
+        </DragonSpark.Presentation.Components.Rendering.ShouldRenderComponent>
+    </DragonSpark.Presentation.Components.State.EnabledContainer>
+</ApplicationContentView>
+
+@code {
+    RenderFragment   _fragment = _ => {};
+    EventCallback<T> _load;
+
+    protected override void OnInitialized()
+    {
+        _load = Start.A.Callback<T>(OnLoad);
+        base.OnInitialized();
+    }
+
+    Task OnLoad(T parameter)
+    {
+        Allow.Up();
+        return Loaded.Invoke(parameter);
+    }
+
+    [Parameter]
+    public EventCallback<T> Loaded { get; set; }
+
+    [Parameter]
+    public required Switch Allow { get; set; }
+
+    [Parameter]
+    public required Switch Load { get; set; }
+
+    [Parameter]
+    public required RenderFragment<T> ChildContent { get; set; }
+
+    [Parameter]
+    public required IStopAware<T?> Source { get; set; }
+
+    protected override async ValueTask<T?> GetContent()
+    {
+        var result = await Source.Off(Stop);
+        _fragment = result is not null ? ChildContent(result) : _ => { };
+        return result;
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (Load.Down())
+        {
+            Allow.Down();
+            RequestNewContent();
+        }
+        base.OnParametersSet();
+    }
+
+}

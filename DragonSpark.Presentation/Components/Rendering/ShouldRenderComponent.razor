@@ -5,7 +5,7 @@
     public bool Enabled { get; set; } = true;
 
     [Parameter]
-    public RenderFragment ChildContent { get; set; } = null!;
+    public required RenderFragment ChildContent { get; set; }
 
     protected override bool ShouldRender() => Enabled;
 }
