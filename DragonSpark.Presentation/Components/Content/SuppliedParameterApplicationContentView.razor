@@ -1,0 +1,23 @@
+﻿@using DragonSpark.Compose
+@using DragonSpark.Model.Operations.Selection.Stop
+
+@typeparam TIn
+@typeparam TOut
+
+@inherits ContentComponentBase<TOut>
+
+<ApplicationContentView TValue="TOut" Content="@Content" ChildContent="@ChildContent" />
+
+@code {
+
+    [Parameter]
+    public required TIn Parameter { get; set; }
+
+    [Parameter]
+    public required IStopAware<TIn, TOut> Model { get; set; }
+
+    [Parameter]
+    public required RenderFragment<TOut> ChildContent { get; set; }
+
+    protected override ValueTask<TOut?> GetContent() => Model.Accounting(new(Parameter, Stop));
+}
