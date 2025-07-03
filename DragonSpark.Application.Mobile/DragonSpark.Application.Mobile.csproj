@@ -6,7 +6,6 @@
 		<ProjectReference Include="..\DragonSpark.Application\DragonSpark.Application.csproj" />
 	</ItemGroup>
 	<ItemGroup>
-		<PackageReference Include="Duende.IdentityModel" />
         <PackageReference Include="Metalama.Extensions.DependencyInjection" />
         <PackageReference Include="Metalama.Framework" />
 	</ItemGroup>
