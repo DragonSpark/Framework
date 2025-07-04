@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Security.Claims;
 using DragonSpark.Application.Components.Validation.Expressions;
 using DragonSpark.Application.Compose;
 using DragonSpark.Application.Compose.Runtime;
@@ -14,8 +11,14 @@ using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
+using DragonSpark.Model.Sequences.Memory;
 using Humanizer;
 using Microsoft.Extensions.Hosting;
+using NetFabric.Hyperlinq;
+using System;
+using System.Buffers;
+using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace DragonSpark.Application;
 
@@ -53,6 +56,20 @@ partial class Extensions
 
 	public static TList AddRange<TList, T>(this TList @this, Memory<T> range) where TList : List<T>
 		=> CopyList<TList, T>.Default.Get(new(range, @this));
+
+	public static ICollection<T> Rebuild<T>(this ICollection<T> @this, T parameter)
+	{
+		using var leasing = NewLeasing<T>.Default.Get(1);
+		var       memory  = leasing.AsMemory();
+		memory.Span[0] = parameter;
+		return @this.Rebuild(memory);
+	}
+
+	public static ICollection<T> Rebuild<T>(this ICollection<T> @this, IEnumerable<T> parameter)
+	{
+		using var lease = parameter.AsValueEnumerable().ToArray(ArrayPool<T>.Shared);
+		return @this.Rebuild(lease.Memory);
+	}
 
 	public static ICollection<T> Rebuild<T>(this ICollection<T> @this, Memory<T> source)
 		=> Compose.Runtime.Rebuild<T>.Default.Get(new(@this, source));
