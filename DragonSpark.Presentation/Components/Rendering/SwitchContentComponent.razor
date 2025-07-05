@@ -2,11 +2,11 @@
 
 @if (Input)
 {
-    @ActiveTemplate
+    @ChildContent
 }
 else
 {
-    @ChildContent
+    @AlternateTemplate
 }
 
 @code {
@@ -14,8 +14,8 @@ else
     public bool Input { get; set; }
 
     [Parameter]
-    public RenderFragment ChildContent { get; set; } = null!;
+    public required RenderFragment ChildContent { get; set; }
 
     [Parameter]
-    public RenderFragment ActiveTemplate { get; set; } = DefaultLoadingTemplate.Default;
+    public RenderFragment AlternateTemplate { get; set; } = DefaultLoadingTemplate.Default;
 }

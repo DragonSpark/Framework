@@ -5,11 +5,10 @@
 
 @code {
     [Parameter]
-    public Switch Allowed { get; set; } = null!;
+    public required Switch Allowed { get; set; }
 
     [Parameter]
-    public RenderFragment ChildContent { get; set; } = null!;
+    public required RenderFragment ChildContent { get; set; }
 
     protected override bool ShouldRender() => Allowed || !Allowed.Up();
-
 }
