@@ -5,12 +5,14 @@
 
 @inherits ContentComponentBase<T>
 
-<ApplicationContentView Content="@Content" Refreshed="@_load">
-    <DragonSpark.Presentation.Components.State.EnabledContainer Enabled="@Allow">
-        <DragonSpark.Presentation.Components.Rendering.ShouldRenderComponent Enabled="@Allow">
-            <CascadingValue Value="context" ChildContent="@_fragment" IsFixed="true" />
-        </DragonSpark.Presentation.Components.Rendering.ShouldRenderComponent>
-    </DragonSpark.Presentation.Components.State.EnabledContainer>
+<ApplicationContentView Content="@Content" Refreshed="@_load" NotFoundTemplate="@null">
+    <ContentTemplate>
+        <DragonSpark.Presentation.Components.State.EnabledContainer Enabled="@Allow">
+            <DragonSpark.Presentation.Components.Rendering.ShouldRenderComponent Enabled="@Allow">
+                <CascadingValue Value="context" ChildContent="@_fragment" IsFixed="true" />
+            </DragonSpark.Presentation.Components.Rendering.ShouldRenderComponent>
+        </DragonSpark.Presentation.Components.State.EnabledContainer>
+    </ContentTemplate>
 </ApplicationContentView>
 
 @code {
@@ -39,7 +41,7 @@
     public required Switch Load { get; set; }
 
     [Parameter]
-    public required RenderFragment<T> ChildContent { get; set; }
+    public required RenderFragment<T?> ChildContent { get; set; }
 
     [Parameter]
     public required IStopAware<T?> Source { get; set; }
@@ -47,7 +49,7 @@
     protected override async ValueTask<T?> GetContent()
     {
         var result = await Source.Off(Stop);
-        _fragment = result is not null ? ChildContent(result) : _ => { };
+        _fragment = ChildContent(result);
         return result;
     }
 

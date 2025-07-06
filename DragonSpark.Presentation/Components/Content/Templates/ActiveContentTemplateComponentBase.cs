@@ -10,4 +10,6 @@ public class ActiveContentTemplateComponentBase<T> : ContentTemplateComponentBas
 	[Parameter]
 	public virtual RenderFragment ExceptionTemplate { get; set; } = DefaultExceptionTemplate.Default;
 
+	[Parameter]
+	public required RenderFragment<T?>? ContentTemplate { get; set; }
 }

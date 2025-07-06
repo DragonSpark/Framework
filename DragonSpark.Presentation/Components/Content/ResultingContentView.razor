@@ -6,11 +6,7 @@
 
 @inject RenderStateStore Render
 
-@if (_subject is null)
-{
-	@NotFoundTemplate
-}
-else if (_subject is { Status.IsFaulted : true })
+@if (_subject is { Status.IsFaulted : true })
 {
 	@ExceptionTemplate
 }

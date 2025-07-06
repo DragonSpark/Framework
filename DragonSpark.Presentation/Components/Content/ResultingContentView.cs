@@ -88,7 +88,8 @@ partial class ResultingContentView<T>
 			// ReSharper disable once AsyncApostle.AsyncWait
 			var result = _subject.Value().Status.Result;
 			var refresh = _fragment is not null;
-			_fragment = result is not null ? ChildContent(result) : NotFoundTemplate;
+			_fragment = ContentTemplate?.Invoke(result) ??
+			            (result is not null ? ChildContent(result) : NotFoundTemplate);
 			if (result is not null)
 			{
 				var callback = refresh ? Refreshed : Rendered;

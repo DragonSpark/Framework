@@ -5,8 +5,7 @@
 @inherits Templates.ActiveContentTemplateComponentBase<TValue>
 <DragonSpark.Presentation.Components.Content.ApplicationPrincipalAwareContentView ForceRender="@ForceRender">
 	<ActivityContainer CssClass="@CssClass">
-		<ActivityContainerContent Input="@_contents"
-								  ForceRender="@ForceRender" ChildContent="@ChildContent" LoadingTemplate="@LoadingTemplate"
+		<ActivityContainerContent Input="@_contents" ForceRender="@ForceRender" ChildContent="@ChildContent" LoadingTemplate="@LoadingTemplate" ContentTemplate="@ContentTemplate"
 								  NotFoundTemplate="@NotFoundTemplate" ExceptionTemplate="@ExceptionTemplate" Rendered="@Rendered" Refreshed="@Refreshed"
 		/>
 	</ActivityContainer>
