@@ -4,11 +4,10 @@
 
 @inherits Templates.ActiveContentTemplateComponentBase<TValue>
 <DragonSpark.Presentation.Components.Content.ApplicationPrincipalAwareContentView ForceRender="@ForceRender">
-	<ActivityContainer CssClass="@CssClass">
-		<ActivityContainerContent TValue="TValue" Input="@_contents" ForceRender="@ForceRender" ChildContent="@ChildContent" LoadingTemplate="@LoadingTemplate" ContentTemplate="@ContentTemplate"
-								  NotFoundTemplate="@NotFoundTemplate" ExceptionTemplate="@ExceptionTemplate" Rendered="@Rendered" Refreshed="@Refreshed"
-		/>
-	</ActivityContainer>
+    <ActivityContainerContent TValue="TValue"
+            Input="@_contents" ForceRender="@ForceRender" ChildContent="@ChildContent" LoadingTemplate="@LoadingTemplate" ContentTemplate="@ContentTemplate"
+                              NotFoundTemplate="@NotFoundTemplate" ExceptionTemplate="@ExceptionTemplate" Rendered="@Rendered" Refreshed="@Refreshed"
+    />
 </DragonSpark.Presentation.Components.Content.ApplicationPrincipalAwareContentView>
 
 @code
@@ -29,9 +28,6 @@
 
 	[Parameter]
 	public bool ForceRender { get; set; }
-
-	[Parameter]
-	public string CssClass { get; set; } = string.Empty;
 
 	[Parameter]
 	public EventCallback<TValue> Rendered { get; set; }

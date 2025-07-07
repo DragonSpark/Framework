@@ -5,7 +5,7 @@
 
 @inherits ContentComponentBase<T>
 
-<ApplicationContentView Content="@Content" Refreshed="@_load" NotFoundTemplate="@null">
+<ApplicationContentViewAlternate TValue="T" Content="@Content" Refreshed="@_load">
     <ContentTemplate>
         <DragonSpark.Presentation.Components.State.EnabledContainer Enabled="@Allow">
             <DragonSpark.Presentation.Components.Rendering.ShouldRenderComponent Enabled="@Allow">
@@ -13,7 +13,7 @@
             </DragonSpark.Presentation.Components.Rendering.ShouldRenderComponent>
         </DragonSpark.Presentation.Components.State.EnabledContainer>
     </ContentTemplate>
-</ApplicationContentView>
+</ApplicationContentViewAlternate>
 
 @code {
     RenderFragment   _fragment = _ => {};
