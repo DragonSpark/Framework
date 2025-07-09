@@ -38,7 +38,7 @@
     public required Switch Allow { get; set; }
 
     [Parameter]
-    public required Switch Load { get; set; }
+    public required Switch? Load { get; set; }
 
     [Parameter]
     public required RenderFragment<T?> ChildContent { get; set; }
@@ -55,7 +55,7 @@
 
     protected override void OnParametersSet()
     {
-        if (Load.Down())
+        if (Load?.Down() ?? false)
         {
             Allow.Down();
             RequestNewContent();
