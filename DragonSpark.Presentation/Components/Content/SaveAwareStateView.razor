@@ -1,0 +1,34 @@
+﻿@using DragonSpark.Model.Results
+@using DragonSpark.Presentation.Components.Content.Templates
+@using DragonSpark.Presentation.Environment.Browser
+@using DragonSpark.Runtime.Activation
+
+@typeparam T
+
+<DragonSpark.Presentation.Components.Content.StateView T="T" Definition="@Definition" ExceptionTemplate="@ExceptionTemplate" LoadingTemplate="@LoadingTemplate" New="@New" NotFoundTemplate="@NotFoundTemplate" ContentTemplate="@ContentTemplate">
+    <StateViewSaveComponent Definition="Definition" ChildContent="ChildContent"  />
+</DragonSpark.Presentation.Components.Content.StateView>
+
+@code
+{
+    [Parameter]
+    public required IClientVariable<T> Definition { get; set; }
+
+    [Parameter]
+    public IResult<T> New { get; set; } = New<T>.Default;
+
+    [Parameter]
+    public required RenderFragment<SaveStateViewContext<T>> ChildContent { get; set; }
+
+    [Parameter]
+    public virtual RenderFragment NotFoundTemplate { get; set; } = DefaultNotFoundTemplate.Default;
+
+    [Parameter]
+    public virtual RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
+
+    [Parameter]
+    public virtual RenderFragment ExceptionTemplate { get; set; } = DefaultExceptionTemplate.Default;
+
+    [Parameter]
+    public required RenderFragment<T?>? ContentTemplate { get; set; }
+}

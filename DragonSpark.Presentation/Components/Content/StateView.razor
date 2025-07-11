@@ -1,10 +1,6 @@
 ﻿@typeparam T
 
-@using DragonSpark.Presentation.Environment.Browser
-@using DragonSpark.Model.Results
-@using DragonSpark.Runtime.Activation
-
-@inherits Templates.ActiveContentTemplateComponentBase<T>
+@inherits StateViewBase<T>
 
 @if (_content is not null)
 {
@@ -18,12 +14,6 @@ else
 @code
 {
     T? _content;
-
-    [Parameter]
-    public IClientVariable<T> Definition { get; set; } = null!;
-
-    [Parameter]
-    public IResult<T> New { get; set; } = New<T>.Default;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {

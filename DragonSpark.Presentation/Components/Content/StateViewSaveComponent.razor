@@ -1,0 +1,27 @@
+﻿@using DragonSpark.Compose
+@using DragonSpark.Presentation.Environment.Browser
+
+@typeparam T
+
+@ChildContent(new(Instance, _save))
+
+@code {
+    EventCallback _save;
+
+    protected override void OnInitialized()
+    {
+        _save = Start.A.Callback(OnSave).Hide();
+        base.OnInitialized();
+    }
+
+    [Parameter]
+    public required T Instance { get; set; }
+
+    [Parameter]
+    public required RenderFragment<SaveStateViewContext<T>> ChildContent { get; set; }
+
+    [Parameter]
+    public required IClientVariable<T> Definition { get; set; }
+
+    Task OnSave() => Definition.Allocate(Instance);
+}
