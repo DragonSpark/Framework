@@ -6,7 +6,7 @@
 @typeparam T
 
 <DragonSpark.Presentation.Components.Content.StateView T="T" Definition="@Definition" ExceptionTemplate="@ExceptionTemplate" LoadingTemplate="@LoadingTemplate" New="@New" NotFoundTemplate="@NotFoundTemplate" ContentTemplate="@ContentTemplate">
-    <StateViewSaveComponent Definition="Definition" ChildContent="ChildContent"  />
+    <StateViewSaveComponent Instance="@context" Definition="@Definition" ChildContent="@ChildContent"  />
 </DragonSpark.Presentation.Components.Content.StateView>
 
 @code
