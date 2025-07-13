@@ -11,7 +11,7 @@ public abstract class RuntimeQueryComponentBase<T> : InstanceComponentBase<IQuer
 	[Inject]
 	IPublisher<RefreshObjectMessage> Publisher { get; set; } = null!;
 
-	// protected override void RequestNewContent(bool redraw = false) {}
+	protected override void RequestNewContent(bool redraw = false) {}
 
 	protected override async ValueTask RefreshState()
 	{
