@@ -1,4 +1,5 @@
 ﻿using LinqKit;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
@@ -11,5 +12,9 @@ public class StartSelect<TFrom, TTo> : Select<TFrom, TTo> where TFrom : class
 
 	protected StartSelect(Expression<Func<IQueryable<TFrom>, IQueryable<TFrom>>> start,
 	                      Expression<Func<TFrom, TTo>> select)
+		: base(context => start.Invoke(context.Set<TFrom>()), select) {}
+
+	protected StartSelect(Expression<Func<IQueryable<TFrom>, IQueryable<TFrom>>> start,
+	                      Expression<Func<DbContext, TFrom, TTo>> select)
 		: base(context => start.Invoke(context.Set<TFrom>()), select) {}
 }
