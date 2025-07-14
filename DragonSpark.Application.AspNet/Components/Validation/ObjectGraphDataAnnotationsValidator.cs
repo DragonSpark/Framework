@@ -76,16 +76,17 @@ public sealed class ObjectGraphDataAnnotationsValidator : ComponentBase, IDispos
 		var field   = e.FieldIdentifier;
 		if (!string.IsNullOrEmpty(field.FieldName))
 		{
-			var value   = _delegates.Get(field);
-			var context = _contexts.Get(new NewValidationContext(field, _validator));
-			var results = new List<ValidationResult>();
+			var value = _delegates.Get(field);
+			if (value is not null)
+			{
+				var context = _contexts.Get(new NewValidationContext(field, _validator));
+				var results = new List<ValidationResult>();
 
-			Validator.TryValidateProperty(value, context, results);
-
-			_messages.Execute((field, results));
-			_messages.Execute(_contexts.Get(context));
-
-			edit.NotifyValidationStateChanged();
+				Validator.TryValidateProperty(value, context, results);
+				_messages.Execute((field, results));
+				_messages.Execute(_contexts.Get(context));
+				edit.NotifyValidationStateChanged();
+			}
 		}
 	}
 
