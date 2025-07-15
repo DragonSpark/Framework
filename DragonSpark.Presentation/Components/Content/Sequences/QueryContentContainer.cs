@@ -37,8 +37,7 @@ partial class QueryContentContainer<T> : IPageContainer<T>
 	IPages<T> DetermineSubject()
 	{
 		var content = Content.Verify();
-		var pages   = Paging.Get(new(this, content, Compose));
-		var result  = Pagination?.Get(pages) ?? pages;
+		var result  = Paging.Get(new(this, content, Compose));
 		return result;
 	}
 
@@ -53,4 +52,6 @@ partial class QueryContentContainer<T> : IPageContainer<T>
 	}
 
 	public Type Get() => _relay.Account()?.Get() ?? ReportedType ?? GetType();
+
+	public IPages<T> Get(IPages<T> parameter) => Pagination?.Get(parameter) ?? parameter;
 }

@@ -9,9 +9,8 @@ sealed class Paging<T> : IPaging<T>
 	public IPages<T> Get(PagingInput<T> parameter)
 	{
 		var (owner, queries, compose) = parameter;
-
-		var inner = new QueriedPages<T>(queries, compose);
-		return new ContainerAwarePages<T>(owner, inner);
+		var previous = new QueriedPages<T>(queries, compose);
+		var pages    = owner.Get(previous);
+		return new ContainerAwarePages<T>(owner, pages);
 	}
 }
-
