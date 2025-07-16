@@ -36,3 +36,9 @@ div.dragonspark-minimal.sf-grid div.e-gridcontent div.e-content table.e-table {
 div.dragonspark-minimal.sf-grid .e-spinner-pane .e-spinner-inner {
 	top: 65%;
 }
+
+.dragonspark-obscure {
+	-webkit-filter: blur(15px);
+	-moz-filter: blur(15px);
+	filter: blur(15px);
+}

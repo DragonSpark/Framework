@@ -1,0 +1,38 @@
+﻿@using DragonSpark.Compose
+
+@if (_class is not null)
+{
+    <div class="@_class" onclick="@_remove">@ChildContent</div>
+}
+else
+{
+    @ChildContent
+}
+
+
+@code {
+    string? _class, _remove;
+
+    [Parameter]
+    public required bool Enabled { get; set; }
+
+    [Parameter]
+    public required bool AllowView { get; set; }
+
+    [Parameter]
+    public string CssClass { get; set; } = "dragonspark-obscure";
+
+    [Parameter]
+    public required RenderFragment ChildContent { get; set; }
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        var changed = parameters.DidParameterChange(nameof(Enabled), Enabled) || parameters.DidParameterChange(nameof(CssClass), CssClass);
+        await base.SetParametersAsync(parameters).Off();
+        if (changed)
+        {
+            _class = Enabled ? CssClass : null;
+            _remove = AllowView ? $"$(this).removeClass('{CssClass}')" : null;
+        }
+    }
+}
