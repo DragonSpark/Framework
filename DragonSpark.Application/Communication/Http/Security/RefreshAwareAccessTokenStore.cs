@@ -25,7 +25,7 @@ public class RefreshAwareAccessTokenStore : IAccessTokenStore
 
     public async ValueTask<AccessTokenView?> Get(CancellationToken parameter)
     {
-        var previous = await _previous.Off(parameter);
+        var previous = await _previous.On(parameter);
         return previous is null || _window.Get(previous.Expiration)
                    ? previous
                    : await _compose.Off(new(previous, parameter));

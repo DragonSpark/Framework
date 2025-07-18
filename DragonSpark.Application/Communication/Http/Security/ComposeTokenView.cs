@@ -20,7 +20,7 @@ sealed class ComposeTokenView : IComposeTokenView
     public async ValueTask<AccessTokenView?> Get(Stop<AccessTokenView> parameter)
     {
         var ((identifier, _, response), stop) = parameter;
-        var refresh = await _refresh.Off(new(response, stop));
+        var refresh = await _refresh.On(new(response, stop));
         var result = refresh is not null
                          ? new AccessTokenView(identifier, refresh)
                          : await _challenge.Off(new(new(identifier), stop)) is {} r
