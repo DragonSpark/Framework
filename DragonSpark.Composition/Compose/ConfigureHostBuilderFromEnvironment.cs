@@ -19,15 +19,3 @@ public sealed class ConfigureHostBuilderFromEnvironment : ICommand<IHostBuilder>
 		parameter.ConfigureAppConfiguration((context, builder) => _configure.Execute(new(parameter, context, builder)));
 	}
 }
-
-sealed class AssignHostPlatform : ICommand<IHostBuilder>
-{
-	readonly string _platform;
-
-	public AssignHostPlatform(string platform) => _platform = platform;
-
-	public void Execute(IHostBuilder parameter)
-	{
-		parameter.ConfigureAppConfiguration((context, _) => new AccessPlatform(context).Execute(_platform));
-	}
-}
