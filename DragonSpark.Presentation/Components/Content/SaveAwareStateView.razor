@@ -5,7 +5,7 @@
 
 @typeparam T
 
-<DragonSpark.Presentation.Components.Content.StateView T="T" Definition="@Definition" ExceptionTemplate="@ExceptionTemplate" LoadingTemplate="@LoadingTemplate" New="@New" NotFoundTemplate="@NotFoundTemplate" ContentTemplate="@ContentTemplate">
+<DragonSpark.Presentation.Components.Content.StateView T="T" Definition="@Definition" ExceptionTemplate="@ExceptionTemplate" LoadingTemplate="@LoadingTemplate" New="@New" NotFoundTemplate="@NotFoundTemplate" ContentTemplate="@ContentTemplate" Refresh="@Refresh" Ready="@Ready">
     <StateViewSaveComponent Instance="@context" Definition="@Definition" ChildContent="@ChildContent"  />
 </DragonSpark.Presentation.Components.Content.StateView>
 
@@ -19,6 +19,12 @@
 
     [Parameter]
     public required RenderFragment<SaveStateViewContext<T>> ChildContent { get; set; }
+
+    [Parameter]
+    public Switch? Refresh { get; set; }
+
+    [Parameter]
+    public EventCallback<IMutable<T?>> Ready { get; set; }
 
     [Parameter]
     public virtual RenderFragment NotFoundTemplate { get; set; } = DefaultNotFoundTemplate.Default;

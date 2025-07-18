@@ -13,5 +13,3 @@ public class StateViewBase<T> : Templates.ActiveContentTemplateComponentBase<T>
 	[Parameter]
 	public IResult<T> New { get; set; } = New<T>.Default;
 }
-
-public readonly record struct SaveStateViewContext<T>(T Subject, EventCallback Save);

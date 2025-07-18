@@ -1,5 +1,7 @@
 ﻿@typeparam T
 
+@using DragonSpark.Compose
+@using DragonSpark.Model.Results
 @inherits StateViewBase<T>
 
 @if (_content is not null)
@@ -15,14 +17,36 @@ else
 {
     T? _content;
 
+    [Parameter]
+    public EventCallback<IMutable<T?>> Ready { get; set; }
+
+    [Parameter]
+    public Switch? Refresh { get; set; }
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
+        if (firstRender || (Refresh?.Down() ?? false))
         {
-            var current = await Definition.Get();
-            _content = current.Success ? current.Value : New.Get();
+            await RefreshContent().On();
             StateHasChanged();
         }
     }
 
+    async Task RefreshContent()
+    {
+        var current = await Definition.On();
+        _content = await ComposeContent(current.Success ? current.Value : New.Get()).Off();
+    }
+
+    async Task<T?> ComposeContent(T? parameter)
+    {
+        if (Ready.HasDelegate)
+        {
+            var store = new Variable<T>(parameter);
+            await Ready.Off(store);
+            return store.Get();
+        }
+
+        return parameter;
+    }
 }
