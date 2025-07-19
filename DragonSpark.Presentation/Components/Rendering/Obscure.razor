@@ -2,7 +2,7 @@
 
 @if (_class is not null)
 {
-    <div class="@_class" onclick="@_remove">@ChildContent</div>
+    <div class="@_class">@ChildContent</div>
 }
 else
 {
@@ -11,7 +11,7 @@ else
 
 
 @code {
-    string? _class, _remove;
+    string? _class;
 
     [Parameter]
     public required bool Enabled { get; set; }
@@ -32,7 +32,6 @@ else
         if (changed)
         {
             _class = Enabled ? CssClass : null;
-            _remove = AllowView ? $"$(this).removeClass('{CssClass}')" : null;
         }
     }
 }
