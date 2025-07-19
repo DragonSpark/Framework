@@ -2,7 +2,7 @@
 
 @if (_class is not null)
 {
-    <div class="@_class">@ChildContent</div>
+    <div class="@_class" @onclick:preventDefault="@(AllowView)">@ChildContent</div>
 }
 else
 {
