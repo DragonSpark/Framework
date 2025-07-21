@@ -82,8 +82,8 @@ public static class Extensions
 	public static CallbackComposer Callback(this ModelContext @this, ICommand<None> command)
 		=> @this.Callback(command.Execute);
 
-	public static CallbackComposer Callback(this ModelContext @this, Action callback)
-		=> @this.Callback(Start.A.Command(callback).Operation());
+	public static CallbackComposer Callback(this ModelContext _, Action callback)
+		=> new(callback.Target, Start.A.Command(callback).Operation().Allocate());
 
 	public static EditContextCallbackComposer Callback(this ModelContext _, EditContext context) => new(context);
 

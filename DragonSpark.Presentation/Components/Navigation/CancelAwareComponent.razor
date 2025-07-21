@@ -1,4 +1,5 @@
 ﻿@using DragonSpark.Application.AspNet.Runtime.Operations
+@using DragonSpark.Compose
 @using DragonSpark.Presentation.Components.Routing
 @using System.Threading
 
@@ -7,7 +8,7 @@
 @implements IDisposable
 
 <NavigationMonitor Changed="@OnChange" />
-<CascadingValue Value="@_combined.Token" ChildContent="@ChildContent" />
+<CascadingValue IsFixed="true" Value="@_combined.Token" ChildContent="@ChildContent" />
 
 @code {
     CancellationTokenSource _source = null!, _combined = null!;
