@@ -20,10 +20,10 @@ public class RemoveFromMemory<TFrom, TTo> : Select<TFrom, TTo>
 
 public class RemoveFromMemory<T> : ICommand<T>
 {
-	readonly IMemoryCache       _memory;
-	readonly ISelect<T, string> _key;
+	readonly IMemoryCache        _memory;
+	readonly ISelect<T, string?> _key;
 
-	protected RemoveFromMemory(IMemoryCache memory, ISelect<T, string> key)
+	protected RemoveFromMemory(IMemoryCache memory, ISelect<T, string?> key)
 	{
 		_memory = memory;
 		_key    = key;
@@ -31,6 +31,10 @@ public class RemoveFromMemory<T> : ICommand<T>
 
 	public void Execute(T parameter)
 	{
-		_memory.Remove(_key.Get(parameter));
+		var key = _key.Get(parameter);
+		if (key is not null)
+		{
+			_memory.Remove(key);
+		}
 	}
 }
