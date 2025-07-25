@@ -1,0 +1,10 @@
+﻿@using DragonSpark.Application.AspNet.Runtime.Operations
+
+@inject IScopedToken Session
+
+<CascadingValue IsFixed="true" Value="@Session.Get()" ChildContent="@ChildContent" />
+
+@code {
+    [Parameter]
+    public required RenderFragment ChildContent { get; set; }
+}
