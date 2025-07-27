@@ -13,7 +13,8 @@ sealed class CommonUserInterfaceExceptionsAwareExceptions : IExceptions
 	public ValueTask Get(ExceptionInput parameter)
 	{
 		var (_, exception) = parameter;
-		return exception is TaskCanceledException or JSDisconnectedException
+		return exception is TaskCanceledException or JSDisconnectedException ||
+		       exception.InnerException is TaskCanceledException or JSDisconnectedException
 			       ? ValueTask.CompletedTask
 			       : _previous.Get(parameter);
 	}

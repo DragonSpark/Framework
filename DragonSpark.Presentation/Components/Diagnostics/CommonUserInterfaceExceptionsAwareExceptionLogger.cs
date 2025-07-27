@@ -15,5 +15,7 @@ sealed class CommonUserInterfaceExceptionsAwareExceptionLogger : IExceptionLogge
 	public ValueTask<Exception> Get(ExceptionInput parameter)
 		=> parameter.Exception is TaskCanceledException or JSDisconnectedException
 			   ? parameter.Exception.ToOperation()
-			   : _previous.Get(parameter);
+			   : parameter.Exception.InnerException is TaskCanceledException or JSDisconnectedException
+				   ? parameter.Exception.InnerException.ToOperation()
+				   : _previous.Get(parameter);
 }
