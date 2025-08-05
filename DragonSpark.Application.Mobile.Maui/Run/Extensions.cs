@@ -11,7 +11,6 @@ public static class Extensions
 
     public static MauiAppBuilder Application(this IServiceCollection @this)
         => @this.GetRequiredInstance<MauiAppBuilder>();
-
     public static ICommand<IServiceCollection> Adapt(this ICommand<MauiAppBuilder> @this)
         => new ConfigureApplicationAdapter(@this);
 }

@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>$(DefaultTargetFramework)</TargetFramework>
+        <OutputType>Library</OutputType>
+    </PropertyGroup>
+    <ItemGroup>
+      <PackageReference Include="PeterO.Cbor" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\DragonSpark.Server\DragonSpark.Server.csproj" />
+    </ItemGroup>
+</Project>
