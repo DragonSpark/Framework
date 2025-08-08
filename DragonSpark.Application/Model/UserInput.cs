@@ -10,6 +10,6 @@ public readonly record struct UserInput<T>(ulong User, T Input) : IUserIdentity
 
 public readonly record struct UserInput(ulong User, Guid Input) : IUserIdentity
 {
-	public static implicit operator uint(UserInput instance) => instance.Get();
+	// public static implicit operator uint(UserInput instance) => instance.Get();
 	public uint Get() => (uint)User;
 }

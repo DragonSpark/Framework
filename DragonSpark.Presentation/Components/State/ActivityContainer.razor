@@ -71,7 +71,14 @@
         return result;
     }
 
-    bool Render => !Active && (_render || !_render.Up());
+    bool Render
+    {
+        get
+        {
+            var render = !Active && (_render || !_render.Up());
+            return render;
+        }
+    }
 
     public bool Active => _previous.Active;
 
