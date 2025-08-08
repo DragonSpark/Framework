@@ -3,11 +3,26 @@
         <TargetFramework>$(DefaultTargetFramework)</TargetFramework>
         <OutputType>Library</OutputType>
     </PropertyGroup>
-    <ItemGroup>
+   <ItemGroup>
       <PackageReference Include="PeterO.Cbor" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\DragonSpark.Server\DragonSpark.Server.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Properties\Resources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Resources.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Properties\Resources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
     </ItemGroup>
 </Project>

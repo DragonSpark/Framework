@@ -10,4 +10,7 @@ public static class Extensions
 
     public static IServiceCollection WithHttp(this IServiceCollection @this)
         => Http.Registrations.Default.Parameter(@this);
+
+    public static IServiceCollection WithAttestation(this IServiceCollection @this)
+        => Attestation.Registrations.Default.Parameter(@this);
 }
