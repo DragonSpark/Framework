@@ -1,0 +1,12 @@
+using DragonSpark.Model.Selection.Conditions;
+
+namespace DragonSpark.Server.Mobile.Platforms.iOS;
+
+public sealed class ValidAttestation : AllCondition<ValidAttestationInput>, IValidAttestation
+{
+    public static ValidAttestation Default { get; } = new();
+
+    ValidAttestation()
+        : base(ValidAttestationKey.Default, ValidAttestationBundle.Default, ValidAttestationFormat.Default,
+               ValidAttestationChallenge.Default) {}
+}

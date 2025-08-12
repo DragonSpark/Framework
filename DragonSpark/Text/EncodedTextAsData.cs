@@ -1,5 +1,5 @@
-﻿using DragonSpark.Model.Selection;
 using System.Text;
+using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Text;
 
