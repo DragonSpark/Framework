@@ -21,15 +21,13 @@ public sealed class ValidatedAttestation : ISelect<ValidatedAttestationInput, At
 
     public Attestation? Get(ValidatedAttestationInput parameter)
     {
-        var (challenge, bundleId, keyHash, attestation, format) = parameter;
+        var (challenge, bundleId, keyHash, attestation, environment, format) = parameter;
 
         var instance = _parser.Get(attestation);
         if (instance is not null)
         {
-            // TODO Additional checks: app ID, environment, etc.
-            // Store receipt/public key hash for future assertions#1#
-
-            var valid = _valid.Get(new(instance, challenge, bundleId, keyHash, format));
+            // TODO: Store receipt/public key hash for future assertions#1#
+            var valid = _valid.Get(new(instance, challenge, bundleId, keyHash, environment, format));
             return valid ? instance : null;
         }
 

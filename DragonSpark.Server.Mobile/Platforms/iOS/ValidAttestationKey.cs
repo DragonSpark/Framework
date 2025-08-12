@@ -11,7 +11,7 @@ sealed class ValidAttestationKey : IValidAttestation
 
     public bool Get(ValidAttestationInput parameter)
     {
-        var (attestation, _, _, keyHash, _) = parameter;
+        var (attestation, _, _, keyHash, _, _) = parameter;
 
         var key      = attestation.AuthenticationData.Credential.Credential.Identifier.Value;
         var expected = SHA256.HashData(key);

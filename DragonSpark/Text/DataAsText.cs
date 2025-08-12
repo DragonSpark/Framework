@@ -1,9 +1,9 @@
-﻿using DragonSpark.Model.Selection;
 using System;
+using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Text;
 
-public sealed class DataAsText : Select<byte[], string>
+public sealed class DataAsText : Select<byte[], string>, IFormatter<byte[]>
 {
 	public static DataAsText Default { get; } = new();
 

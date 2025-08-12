@@ -21,7 +21,7 @@ sealed class ValidAttestationChallenge : IValidAttestation
 
     public bool Get(ValidAttestationInput parameter)
     {
-        var (attestation, challenge, _, _, _) = parameter;
+        var (attestation, challenge, _, _, _, _) = parameter;
         var expected = _expected.Get(attestation.Statement.Certificate);
         var actual   = _actual.Get(new(attestation.AuthenticationData.Payload, challenge));
         var result   = actual.Open().SequenceEqual(expected);

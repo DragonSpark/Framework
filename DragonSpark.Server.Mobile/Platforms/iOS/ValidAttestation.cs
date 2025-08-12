@@ -8,5 +8,5 @@ public sealed class ValidAttestation : AllCondition<ValidAttestationInput>, IVal
 
     ValidAttestation()
         : base(ValidAttestationKey.Default, ValidAttestationBundle.Default, ValidAttestationFormat.Default,
-               ValidAttestationChallenge.Default) {}
+               ValidAttestationEnvironment.Default, ValidAttestationChallenge.Default) {}
 }

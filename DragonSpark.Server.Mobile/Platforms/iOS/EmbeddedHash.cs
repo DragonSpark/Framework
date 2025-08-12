@@ -1,6 +1,5 @@
 using System.Formats.Asn1;
 using System.Linq;
-using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using DragonSpark.Compose;
 using DragonSpark.Model.Sequences;
@@ -24,7 +23,7 @@ sealed class EmbeddedHash : IArray<X509Certificate2, byte>
 
     public Array<byte> Get(X509Certificate2 parameter)
     {
-        var bytes  = parameter.Extensions.Single(e => ExtensionMethods.Verify<Oid>(e.Oid).Value == _oid).RawData;
+        var bytes  = parameter.Extensions.Single(e => e.Oid.Verify().Value == _oid).RawData;
         var result = new AsnReader(bytes, AsnEncodingRules.BER).ReadSequence().ReadOctetString(_tag);
         return result;
     }

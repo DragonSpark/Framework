@@ -3,6 +3,7 @@ using System.Buffers.Binary;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
+using System.Text;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
 using PeterO.Cbor;
@@ -13,11 +14,16 @@ sealed class AuthenticationDataParser : ISelect<Array<byte>, AuthenticationData?
 {
     public static AuthenticationDataParser Default { get; } = new();
 
-    AuthenticationDataParser() : this(55) {}
+    AuthenticationDataParser() : this(55, Encoding.UTF8) {}
 
-    readonly byte _length;
+    readonly byte               _length;
+    readonly Encoding           _encoding;
 
-    public AuthenticationDataParser(byte length) => _length = length;
+    public AuthenticationDataParser(byte length, Encoding encoding)
+    {
+        _length   = length;
+        _encoding = encoding;
+    }
 
     public AuthenticationData? Get(Array<byte> parameter)
     {
@@ -58,7 +64,7 @@ sealed class AuthenticationDataParser : ISelect<Array<byte>, AuthenticationData?
                     Buffer.BlockCopy(y, 0, publicKey, 33, 32);
                     var publicKeyHash = SHA256.HashData(publicKey);
                     return new(parameter, raw.RpIdHash, raw.Flags, raw.Counter,
-                               new(raw.Aaguid,
+                               new(_encoding.GetString(raw.Aaguid).Trim('\0'),
                                    new(new(credentialId, raw.CredentialIdLength), new(publicKey, publicKeyHash))));
             }
         }

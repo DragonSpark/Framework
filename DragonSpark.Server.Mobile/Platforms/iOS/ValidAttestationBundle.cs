@@ -8,7 +8,7 @@ sealed class ValidAttestationBundle : IValidAttestation
 {
     public static ValidAttestationBundle Default { get; } = new();
 
-    ValidAttestationBundle() : this(HashedText.Default) {}
+    ValidAttestationBundle() : this(EncodedHashedText.Default) {}
 
     readonly ISelect<string, byte[]> _hash;
 
@@ -16,7 +16,7 @@ sealed class ValidAttestationBundle : IValidAttestation
 
     public bool Get(ValidAttestationInput parameter)
     {
-        var (attestation, _, bundleId, _, _) = parameter;
+        var (attestation, _, bundleId, _, _, _) = parameter;
         var result = attestation.AuthenticationData.RelyingPartyIdentifierHash.Open().SequenceEqual(_hash.Get(bundleId));
         return result;
     }
