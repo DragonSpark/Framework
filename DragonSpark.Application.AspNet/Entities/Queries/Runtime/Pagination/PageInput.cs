@@ -8,4 +8,4 @@ public record PageInput(
 	string? OrderBy,
 	string? Filter,
 	Partition? Partition,
-	CancellationToken Token);
+	CancellationToken Stop);

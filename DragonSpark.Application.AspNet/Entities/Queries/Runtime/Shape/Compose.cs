@@ -26,7 +26,7 @@ public class Compose<T> : ICompose<T>
 	{
 		var (input, _) = parameter;
 		var body      = await _body.Off(parameter);
-		var stop      = new Stop<IQueryable<T>>(body, input.Token);
+		var stop      = new Stop<IQueryable<T>>(body, input.Stop);
 		var count     = input.IncludeTotalCount ? await _count.Off(stop) : default(ulong?);
 		var partition = input.Partition.HasValue ? await _partition.Off(new(body, input.Partition.Value)) : body;
 		return new(partition, count);

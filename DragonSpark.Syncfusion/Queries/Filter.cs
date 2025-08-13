@@ -19,7 +19,7 @@ sealed class Filter<T> : IQuery<T>
 	{
 		var (request, query, _) = parameter;
 		var data = request.Select.Account()?.Count > 0
-			           ? parameter with { Query = _select.Get(new PerformSelectInput<T>(query, request.Select)) }
+			           ? parameter with { Query = _select.Get(new(query, request.Select)) }
 			           : parameter;
 		var result = data.ToOperation();
 		return result;

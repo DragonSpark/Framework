@@ -22,9 +22,9 @@ sealed class QueriedPages<T> : IPages<T>
 
 	public async ValueTask<Page<T>> Get(PageInput parameter)
 	{
-		using var session = await _queries.Off(parameter.Token);
+		using var session = await _queries.Off(parameter.Stop);
 		var (query, count) = await _compose.Off(new(parameter, session.Subject));
-		var materialize = await _materialize.Off(new(query, parameter.Token));
+		var materialize = await _materialize.Off(new(query, parameter.Stop));
 		return new(materialize.Open(), count);
 	}
 }
