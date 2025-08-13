@@ -4,6 +4,7 @@
         <OutputType>Library</OutputType>
     </PropertyGroup>
    <ItemGroup>
+      <PackageReference Include="BouncyCastle.Cryptography" />
       <PackageReference Include="PeterO.Cbor" />
     </ItemGroup>
 

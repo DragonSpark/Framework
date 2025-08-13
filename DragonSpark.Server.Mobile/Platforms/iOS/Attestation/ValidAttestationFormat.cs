@@ -1,8 +1,8 @@
 using System;
 
-namespace DragonSpark.Server.Mobile.Platforms.iOS;
+namespace DragonSpark.Server.Mobile.Platforms.iOS.Attestation;
 
-sealed class ValidAttestationFormat : IValidAttestation
+public sealed class ValidAttestationFormat : IValidAttestation
 {
     public static ValidAttestationFormat Default { get; } = new();
 

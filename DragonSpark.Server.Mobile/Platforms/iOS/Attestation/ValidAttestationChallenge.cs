@@ -2,9 +2,9 @@ using System;
 using System.Security.Cryptography.X509Certificates;
 using DragonSpark.Model.Sequences;
 
-namespace DragonSpark.Server.Mobile.Platforms.iOS;
+namespace DragonSpark.Server.Mobile.Platforms.iOS.Attestation;
 
-sealed class ValidAttestationChallenge : IValidAttestation
+public sealed class ValidAttestationChallenge : IValidAttestation
 {
     public static ValidAttestationChallenge Default { get; } = new();
 

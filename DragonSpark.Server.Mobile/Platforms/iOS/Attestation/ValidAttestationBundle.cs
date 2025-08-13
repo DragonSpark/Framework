@@ -2,9 +2,9 @@ using System;
 using DragonSpark.Model.Selection;
 using DragonSpark.Text;
 
-namespace DragonSpark.Server.Mobile.Platforms.iOS;
+namespace DragonSpark.Server.Mobile.Platforms.iOS.Attestation;
 
-sealed class ValidAttestationBundle : IValidAttestation
+public sealed class ValidAttestationBundle : IValidAttestation
 {
     public static ValidAttestationBundle Default { get; } = new();
 

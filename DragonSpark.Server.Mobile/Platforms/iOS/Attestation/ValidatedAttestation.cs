@@ -2,7 +2,7 @@ using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Text;
 
-namespace DragonSpark.Server.Mobile.Platforms.iOS;
+namespace DragonSpark.Server.Mobile.Platforms.iOS.Attestation;
 
 public sealed class ValidatedAttestation : ISelect<ValidatedAttestationInput, Attestation?>
 {
@@ -21,16 +21,11 @@ public sealed class ValidatedAttestation : ISelect<ValidatedAttestationInput, At
 
     public Attestation? Get(ValidatedAttestationInput parameter)
     {
-        var (challenge, bundleId, keyHash, attestation, environment, format) = parameter;
+        var (attestation, challenge, bundleId, keyHash, environment, format) = parameter;
 
         var instance = _parser.Get(attestation);
-        if (instance is not null)
-        {
-            // TODO: Store receipt/public key hash for future assertions#1#
-            var valid = _valid.Get(new(instance, challenge, bundleId, keyHash, environment, format));
-            return valid ? instance : null;
-        }
-
-        return null;
+        return instance is not null
+                   ? _valid.Get(new(instance, challenge, bundleId, keyHash, environment, format)) ? instance : null
+                   : null;
     }
 }

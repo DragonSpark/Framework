@@ -1,9 +1,9 @@
 using System;
 using System.Security.Cryptography;
 
-namespace DragonSpark.Server.Mobile.Platforms.iOS;
+namespace DragonSpark.Server.Mobile.Platforms.iOS.Attestation;
 
-sealed class ValidAttestationKey : IValidAttestation
+public sealed class ValidAttestationKey : IValidAttestation
 {
     public static ValidAttestationKey Default { get; } = new();
 

@@ -1,9 +1,9 @@
-namespace DragonSpark.Server.Mobile.Platforms.iOS;
+namespace DragonSpark.Server.Mobile.Platforms.iOS.Attestation;
 
 public readonly record struct ValidatedAttestationInput(
+    string Attestation,
     string Challenge,
     string BundleId,
     string KeyHash,
-    string Attestation,
     string Environment = "appattest",
     string Format = "apple-appattest");

@@ -1,3 +1,3 @@
-namespace DragonSpark.Server.Mobile.Platforms.iOS;
+namespace DragonSpark.Server.Mobile.Platforms.iOS.Attestation;
 
 public sealed record AttestedCredential(string Environment, Credential Credential);

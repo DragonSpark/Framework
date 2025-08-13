@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace DragonSpark.Server.Mobile.Platforms.iOS;
+namespace DragonSpark.Server.Mobile.Platforms.iOS.Attestation;
 
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
 struct AuthenticationDataRaw

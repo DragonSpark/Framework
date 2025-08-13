@@ -1,7 +1,7 @@
 using DragonSpark.Model.Sequences;
 using DragonSpark.Server.Mobile.Properties;
 
-namespace DragonSpark.Server.Mobile.Platforms.iOS;
+namespace DragonSpark.Server.Mobile.Platforms.iOS.Attestation;
 
 sealed class RootCertificate : Instances<byte>
 {

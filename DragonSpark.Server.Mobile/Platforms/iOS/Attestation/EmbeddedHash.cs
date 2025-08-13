@@ -4,7 +4,7 @@ using System.Security.Cryptography.X509Certificates;
 using DragonSpark.Compose;
 using DragonSpark.Model.Sequences;
 
-namespace DragonSpark.Server.Mobile.Platforms.iOS;
+namespace DragonSpark.Server.Mobile.Platforms.iOS.Attestation;
 
 sealed class EmbeddedHash : IArray<X509Certificate2, byte>
 {

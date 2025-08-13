@@ -1,6 +1,6 @@
 using DragonSpark.Model.Selection.Conditions;
 
-namespace DragonSpark.Server.Mobile.Platforms.iOS;
+namespace DragonSpark.Server.Mobile.Platforms.iOS.Attestation;
 
 public sealed class ValidAttestation : AllCondition<ValidAttestationInput>, IValidAttestation
 {

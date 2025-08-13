@@ -37,6 +37,7 @@
     <PackageVersion Include="Ben.Demystifier" Version="0.4.1" />
     <PackageVersion Include="BenchmarkDotNet" Version="0.15.2" />
     <PackageVersion Include="BlazorPro.BlazorSize" Version="9.0.0" />
+    <PackageVersion Include="BouncyCastle.Cryptography" Version="2.6.2" />
     <PackageVersion Include="Coinbase" Version="6.0.1" />
     <PackageVersion Include="CommunityToolkit.Maui" Version="11.2.0" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />

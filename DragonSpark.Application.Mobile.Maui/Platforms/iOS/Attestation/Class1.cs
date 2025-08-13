@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using DeviceCheck;
 using DragonSpark.Application.Mobile.Attestation;
+using DragonSpark.Application.Mobile.Maui.Platforms.iOS.Attestation.Assertion;
 using DragonSpark.Application.Mobile.Maui.Storage;
 using DragonSpark.Compose;
 using DragonSpark.Composition;
@@ -26,7 +27,17 @@ sealed class Registrations : ICommand<IServiceCollection>
 
     public void Execute(IServiceCollection parameter)
     {
-        parameter.Start<IAttestationToken>().Forward<AttestationToken>().Singleton();
+        parameter.Start<IAttestationToken>()
+                 .Forward<AttestationToken>()
+                 .Singleton()
+                 //
+                 .Then.Start<IAssertionToken>()
+                 .Forward<AssertionToken>()
+                 .Singleton()
+                 //
+                 .Then.Start<IClientKey>()
+                 .Forward<ClientKey>()
+                 .Singleton();
     }
 }
 
@@ -100,7 +111,7 @@ sealed class GenerateKey : IResulting<string>
     public ValueTask<string> Get() => _service.GenerateKeyAsync().ToOperation();
 }
 
-sealed class ClientKey : ProcessStoring<string>
+sealed class ClientKey : ProcessStoring<string>, IClientKey
 {
     public static ClientKey Default { get; } = new();
 

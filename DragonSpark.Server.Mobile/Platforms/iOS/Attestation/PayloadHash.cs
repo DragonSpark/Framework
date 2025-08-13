@@ -6,7 +6,7 @@ using DragonSpark.Model.Sequences;
 using DragonSpark.Model.Sequences.Memory;
 using DragonSpark.Text;
 
-namespace DragonSpark.Server.Mobile.Platforms.iOS;
+namespace DragonSpark.Server.Mobile.Platforms.iOS.Attestation;
 
 sealed class PayloadHash : IArray<PayloadHashInput, byte>
 {

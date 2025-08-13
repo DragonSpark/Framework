@@ -7,7 +7,7 @@ using DragonSpark.Text;
 using NetFabric.Hyperlinq;
 using PeterO.Cbor;
 
-namespace DragonSpark.Server.Mobile.Platforms.iOS;
+namespace DragonSpark.Server.Mobile.Platforms.iOS.Attestation;
 
 public sealed class AttestationParser : IParser<Attestation?>
 {

@@ -1,45 +1,37 @@
 using System;
 using System.Buffers.Binary;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Text;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
+using DragonSpark.Runtime.Objects;
 using PeterO.Cbor;
 
-namespace DragonSpark.Server.Mobile.Platforms.iOS;
+namespace DragonSpark.Server.Mobile.Platforms.iOS.Attestation;
 
 sealed class AuthenticationDataParser : ISelect<Array<byte>, AuthenticationData?>
 {
     public static AuthenticationDataParser Default { get; } = new();
 
-    AuthenticationDataParser() : this(55, Encoding.UTF8) {}
+    AuthenticationDataParser() : this(55, Encoding.UTF8, Materialize<AuthenticationDataRaw>.Default) {}
 
-    readonly byte               _length;
-    readonly Encoding           _encoding;
+    readonly byte                                _length;
+    readonly Encoding                            _encoding;
+    readonly IMaterialize<AuthenticationDataRaw> _raw;
 
-    public AuthenticationDataParser(byte length, Encoding encoding)
+    public AuthenticationDataParser(byte length, Encoding encoding, IMaterialize<AuthenticationDataRaw> raw)
     {
         _length   = length;
         _encoding = encoding;
+        _raw      = raw;
     }
 
     public AuthenticationData? Get(Array<byte> parameter)
     {
-        var                   authData   = parameter.Open();
-        var                   fixedBytes = authData.Take(_length).ToArray();
-        var                   handle     = GCHandle.Alloc(fixedBytes, GCHandleType.Pinned);
-        AuthenticationDataRaw raw;
-        try
-        {
-            raw = Marshal.PtrToStructure<AuthenticationDataRaw>(handle.AddrOfPinnedObject());
-        }
-        finally
-        {
-            handle.Free();
-        }
-
+        var authData = parameter.Open();
+        var data     = authData.Take(_length).ToArray();
+        var raw      = _raw.Get(data);
         if (BitConverter.IsLittleEndian)
         {
             raw.Counter            = BinaryPrimitives.ReadUInt32BigEndian(authData.AsSpan(33, 4));
@@ -49,10 +41,8 @@ sealed class AuthenticationDataParser : ISelect<Array<byte>, AuthenticationData?
         if (_length + raw.CredentialIdLength <= authData.Length)
         {
             var credentialId = authData.Skip(_length).Take(raw.CredentialIdLength).ToArray();
-            /*if (Convert.ToBase64String(credentialId) != clientKeyId)
-                return (false, null, null, null);*/
-            var bytes = authData.Skip(_length + raw.CredentialIdLength).ToArray();
-            var key   = CBORObject.DecodeFromBytes(bytes);
+            var bytes        = authData.Skip(_length + raw.CredentialIdLength).ToArray();
+            var key          = CBORObject.DecodeFromBytes(bytes);
             switch (key[CBORObject.FromObject(1)].AsInt32())
             {
                 case 2:
