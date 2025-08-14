@@ -137,8 +137,8 @@ sealed class GetAttestationPayload : IArray<AttestationPayloadInput, byte>
         var publicKey = new ECPublicKeyParameters(curve.Curve.DecodePoint(key), domain);
         var signed    = new CmsSignedData(source);
         var signer    = signed.GetSignerInfos().GetSigners().Only();
-        return (signer?.Verify(publicKey) ?? false) && signed.SignedContent is CmsProcessableByteArray b
-                   ? b.GetByteArray()
+        return (signer?.Verify(publicKey) ?? false) && signed.SignedContent is CmsProcessableByteArray x
+                   ? x.GetByteArray()
                    : Array<byte>.Empty;
     }
 }

@@ -5,5 +5,5 @@ public readonly record struct ValidatedAttestationInput(
     string Challenge,
     string BundleId,
     string KeyHash,
-    string Environment = "appattest",
+    string Environment = "appattestdevelop",
     string Format = "apple-appattest");

@@ -9,6 +9,7 @@ using DragonSpark.Model.Operations.Results.Stop;
 using Foundation;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.iOS.Attestation.Assertion;
+
 class Class1;
 
 sealed class AssertionToken : IAssertionToken
@@ -33,12 +34,11 @@ sealed class AssertionToken : IAssertionToken
             throw new NotSupportedException("App Attest not supported on this device.");
         }
 
-        var bytes       = Convert.FromBase64String(parameter);
-        var hash        = SHA256.HashData(bytes);
-        var data        = NSData.FromArray(hash);
-        var key         = await _key.Off(parameter);
-        var attestation = await _service.GenerateAssertionAsync(key, data).Off();
-        return Convert.ToBase64String(attestation.ToArray());
+        var bytes     = Convert.FromBase64String(parameter);
+        var hash      = SHA256.HashData(bytes);
+        var data      = NSData.FromArray(hash);
+        var key       = await _key.Off(parameter);
+        var assertion = await _service.GenerateAssertionAsync(key, data).Off();
+        return Convert.ToBase64String(assertion.ToArray());
     }
 }
-
