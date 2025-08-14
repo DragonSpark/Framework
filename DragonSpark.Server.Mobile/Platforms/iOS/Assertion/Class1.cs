@@ -19,7 +19,7 @@ public readonly record struct AssertionRequest(string Key, Array<byte> Challenge
 
 public readonly record struct AssertionCounterInput(AssertionRequest Request, IAttestationRecord Attestation);
 
-public readonly record struct VerifyPublicKeyInput(string Id, Array<byte> Challenge, string Hash, Array<byte> Key);
+public readonly record struct VerifyPublicKeyInput(string Id, Array<byte> Challenge, Array<byte> Hash, Array<byte> Key);
 
 sealed class VerifyPublicKey : IArray<VerifyPublicKeyInput, byte>
 {
@@ -31,7 +31,7 @@ sealed class VerifyPublicKey : IArray<VerifyPublicKeyInput, byte>
     {
         var (id, challenge, hash, key) = parameter;
         using var sha = SHA256.Create();
-        if (Convert.ToBase64String(sha.ComputeHash(key)).SequenceEqual(hash))
+        if (sha.ComputeHash(key).SequenceEqual(hash))
         {
             var compute = sha.ComputeHash(challenge);
             var keyId   = Convert.FromBase64String(id);

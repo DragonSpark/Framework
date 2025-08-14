@@ -1,9 +1,9 @@
+using System;
 using DragonSpark.Application.AspNet.Entities.Queries.Composition;
 using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Stop;
-using System;
 
 namespace DragonSpark.Application.AspNet.Entities.Editing;
 
@@ -14,8 +14,7 @@ public class Modify<T> : Modify<T, T>
 
 	protected Modify(IScopes scopes, Await<T> configure) : this(scopes, x => configure(x.Subject)) {}
 
-	protected Modify(IScopes scopes, Await<Edit<T>> configure)
-		: this(scopes, x => configure(x.Subject)) {}
+	protected Modify(IScopes scopes, Await<Edit<T>> configure) : this(scopes, x => configure(x.Subject)) {}
 
 	protected Modify(IScopes scopes, Await<Stop<Edit<T>>> configure)
 		: base(new Edits<T, T>(scopes, A.Self<T>().Then().Operation().Out().AsStop()), configure) {}
