@@ -32,12 +32,14 @@ window.applyLocationHash = () => {
 
 // ATTRIBUTION: https://stackoverflow.com/a/71221325/10340424
 function scrollToFirstValidationMessage() {
-    const elements = document.getElementsByClassName("validation-message");
-    if (elements != undefined) {
-        const element = elements[0];
-        if (element != null) {
-            element.parentNode.scrollIntoView({ behavior: 'smooth' });
-        }
-    }
-}
+   new Promise(resolve => setTimeout(resolve, 250)).then(() => {
+	   	const elements = document.getElementsByClassName("validation-message");
+		if (elements != undefined) {
+			const element = elements[0];
+			if (element != null) {
+				element.parentNode.scrollIntoView({ behavior: 'smooth' });
+			}
+		}
 
+    });
+}
