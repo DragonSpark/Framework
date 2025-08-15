@@ -100,6 +100,10 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Forward<DetermineContext>()
 		         .Scoped()
 		         //
+		         .Then.Start<IEnter>()
+		         .Forward<Enter>()
+		         .Scoped()
+		         //
 		         .Then.Start<IEstablishContext>()
 		         .Forward<EstablishContext>()
 		         .Decorate<ApplicationAgentAwareEstablishContext>()
