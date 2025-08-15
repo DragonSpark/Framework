@@ -15,8 +15,11 @@ sealed class ActivationAwareServiceProvider : IServiceProvider, IDisposable, IAs
     readonly IServiceProvider _provider;
 
     [MustDisposeResource(false)]
-    public ActivationAwareServiceProvider(IServiceProvider provider)
-        : this(provider, CanActivate.Default, Runtime.Activation.Activator.Default) { }
+    public ActivationAwareServiceProvider(IServiceProvider provider) : this(provider, CanActivate.Default) {}
+
+    [MustDisposeResource(false)]
+    public ActivationAwareServiceProvider(IServiceProvider provider, ICondition<Type> condition)
+        : this(provider, condition, Runtime.Activation.Activator.Default) { }
 
     public ActivationAwareServiceProvider(IServiceProvider provider, ICondition<Type> condition, IActivator activator)
     {

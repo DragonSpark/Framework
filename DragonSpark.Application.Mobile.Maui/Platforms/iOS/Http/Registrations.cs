@@ -1,4 +1,3 @@
-using System.Net.Http;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,6 +12,5 @@ sealed class Registrations : ICommand<IServiceCollection>
     public void Execute(IServiceCollection parameter)
     {
         parameter.AddHttpClient();
-        parameter.AddTransient<HttpMessageHandler, NSUrlSessionHandler>();
     }
 }

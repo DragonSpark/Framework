@@ -1,4 +1,3 @@
-using System.Net.Http;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,10 +11,6 @@ sealed class Registrations : ICommand<IServiceCollection>
 
     public void Execute(IServiceCollection parameter)
     {
-        parameter.AddHttpClient()
-                 .ConfigureHttpClientDefaults(x => x
-                                                  .ConfigurePrimaryHttpMessageHandler<
-                                                      Xamarin.Android.Net.AndroidMessageHandler>());
-        parameter.AddTransient<HttpMessageHandler, Xamarin.Android.Net.AndroidMessageHandler>();
+        parameter.AddHttpClient();
     }
 }

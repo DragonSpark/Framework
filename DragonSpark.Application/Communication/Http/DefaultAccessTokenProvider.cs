@@ -11,7 +11,7 @@ sealed class DefaultAccessTokenProvider : IAccessTokenProvider
 {
     public static DefaultAccessTokenProvider Default { get; } = new();
 
-    DefaultAccessTokenProvider() : this(ProcessBearer.Default) {}
+    public DefaultAccessTokenProvider() : this(ProcessBearer.Default) {}
 
     readonly IResult<string?> _bearer;
 

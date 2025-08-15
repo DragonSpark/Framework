@@ -20,11 +20,14 @@ public static class Extensions
     public static IServiceCollection Register<T>(this IServiceCollection @this) where T : class
         => RegisterOption<T>.Default.Get(@this);
 
-    public static T? Section<T>(this IConfiguration @this, string name) where T : class => new Section<T>(name).Get(@this);
+    public static T? Section<T>(this IConfiguration @this, string name) where T : class
+        => new Section<T>(name).Get(@this);
+
     public static T? Section<T>(this IConfiguration @this) where T : class => Composition.Section<T>.Default.Get(@this);
 
-    public static T? Section<T>(this IServiceCollection @this, string name) where T : class 
+    public static T? Section<T>(this IServiceCollection @this, string name) where T : class
         => @this.Configuration().Section<T>(name);
+
     public static T? Section<T>(this IServiceCollection @this) where T : class => @this.Configuration().Section<T>();
 
     public static HostOperationsContext Operations(this BuildHostContext @this) => new(@this);
@@ -43,6 +46,9 @@ public static class Extensions
         var result  = new ComponentRequest(request, @this.GetRequiredInstance<IComponentType>().Get(request));
         return result;
     }
+
+    public static Func<T> DeferredEnhanced<T>(this IServiceCollection @this) where T : class
+        => new DeferredServiceEnhanced<T>(@this).Get;
 
     public static Func<T> Deferred<T>(this IServiceCollection @this) where T : class
         => new DeferredService<T>(@this).Get;

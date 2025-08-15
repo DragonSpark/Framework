@@ -1,5 +1,6 @@
 using DragonSpark.Composition.Compose;
 using DragonSpark.Server.Mobile.Platforms.iOS.Attestation;
+using DragonSpark.Server.Mobile.Platforms.iOS.Attestation.Records;
 
 namespace DragonSpark.Server.Mobile.Platforms.iOS;
 

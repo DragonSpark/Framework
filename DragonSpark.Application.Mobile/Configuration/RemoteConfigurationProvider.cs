@@ -1,22 +1,30 @@
 using System;
-using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
+using DragonSpark.Compose;
 using Microsoft.Extensions.Configuration.Json;
 
 namespace DragonSpark.Application.Mobile.Configuration;
 
 sealed class RemoteConfigurationProvider : JsonStreamConfigurationProvider
 {
-    readonly Uri _address;
+    readonly Func<IRemoteConfigurationMessage> _message;
 
-    public RemoteConfigurationProvider(Uri address) : base(new JsonStreamConfigurationSource())
-        => _address = address;
+    public RemoteConfigurationProvider(Func<IRemoteConfigurationMessage> message)
+        : base(new JsonStreamConfigurationSource())
+        => _message = message;
 
     public override void Load()
     {
-        using var client = new HttpClient();
-        var       result = client.GetAsync(_address).GetAwaiter().GetResult();
-        result.EnsureSuccessStatusCode();
-        using var stream = result.Content.ReadAsStreamAsync().GetAwaiter().GetResult();
+        LoadStream().GetAwaiter().GetResult();
+    }
+
+    async Task LoadStream()
+    {
+        var message = await _message().Off(CancellationToken.None);
+        message.EnsureSuccessStatusCode();
+        var stream = await message.Content.ReadAsStreamAsync().Off();
         base.Load(stream);
     }
+    
 }

@@ -1,5 +1,6 @@
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
+using DragonSpark.Server.Mobile.Platforms.iOS.Attestation.Records;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Server.Mobile.Platforms.iOS.Attestation;

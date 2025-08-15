@@ -1,4 +1,4 @@
-﻿using DragonSpark.Model.Results;
+using DragonSpark.Model.Results;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Composition;

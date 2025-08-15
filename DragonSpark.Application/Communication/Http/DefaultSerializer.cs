@@ -5,10 +5,6 @@ namespace DragonSpark.Application.Communication.Http;
 
 public sealed class DefaultSerializer : IResult<IHttpContentSerializer>
 {
-    public static DefaultSerializer Default { get; } = new();
-
-    DefaultSerializer() {}
-
     public IHttpContentSerializer Get()
     {
         var options = SystemTextJsonContentSerializer.GetDefaultJsonSerializerOptions();
