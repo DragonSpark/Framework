@@ -5,7 +5,7 @@ using DragonSpark.Model.Operations.Selection.Stop;
 
 namespace DragonSpark.Server.Mobile.Platforms.iOS.Attestation.Records;
 
-sealed class ValidatedRecord<T> : IStopAware<ValidatedAttestationInput, T?> where T : class, IAttestationRecord
+sealed class ValidatedRecord<T> : IStopAware<AttestationInput, T?> where T : class, IAttestationRecord
 {
     readonly ValidatedAttestation _instance;
     readonly AddRecord<T>         _add;
@@ -18,7 +18,7 @@ sealed class ValidatedRecord<T> : IStopAware<ValidatedAttestationInput, T?> wher
         _add      = add;
     }
 
-    public async ValueTask<T?> Get(Stop<ValidatedAttestationInput> parameter)
+    public async ValueTask<T?> Get(Stop<AttestationInput> parameter)
     {
         var (input, stop) = parameter;
         var instance = _instance.Get(input);

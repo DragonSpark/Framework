@@ -19,7 +19,7 @@ public sealed class ValidAttestationChallenge : IValidAttestation
         _actual   = actual;
     }
 
-    public bool Get(ValidAttestationInput parameter)
+    public bool Get(AttestationInstanceInput parameter)
     {
         var (attestation, challenge, _, _, _, _) = parameter;
         var expected = _expected.Get(attestation.Statement.Certificate);

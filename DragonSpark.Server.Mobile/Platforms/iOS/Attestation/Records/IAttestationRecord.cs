@@ -13,4 +13,4 @@ public interface IAttestationRecord
     uint Count { get; set; }
 }
 
-public interface IAttestationRecord<T> : IStopAware<ValidatedAttestationInput, T?>;
+public interface IAttestationRecord<T> : IStopAware<AttestationInput, T?>;

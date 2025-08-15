@@ -1,7 +1,7 @@
 namespace DragonSpark.Server.Mobile.Platforms.iOS.Attestation;
 
-public readonly record struct ValidatedAttestationInput(
-    string Attestation,
+public readonly record struct AttestationInstanceInput(
+    Attestation Attestation,
     string Challenge,
     string BundleId,
     string KeyHash,

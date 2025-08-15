@@ -12,7 +12,7 @@ public sealed class ValidAttestationFormat : IValidAttestation
 
     public ValidAttestationFormat(StringComparison comparison) => _comparison = comparison;
 
-    public bool Get(ValidAttestationInput parameter)
+    public bool Get(AttestationInstanceInput parameter)
     {
         var (attestation, _, _, _, _, format) = parameter;
         var result = attestation.Format.Equals(format, _comparison);

@@ -14,7 +14,7 @@ public sealed class ValidAttestationBundle : IValidAttestation
 
     public ValidAttestationBundle(ISelect<string, byte[]> hash) => _hash = hash;
 
-    public bool Get(ValidAttestationInput parameter)
+    public bool Get(AttestationInstanceInput parameter)
     {
         var (attestation, _, bundleId, _, _, _) = parameter;
         var result = attestation.AuthenticationData.RelyingPartyIdentifierHash.Open().SequenceEqual(_hash.Get(bundleId));

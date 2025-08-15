@@ -9,7 +9,7 @@ public sealed class ValidAttestationKey : IValidAttestation
 
     ValidAttestationKey() {}
 
-    public bool Get(ValidAttestationInput parameter)
+    public bool Get(AttestationInstanceInput parameter)
     {
         var (attestation, _, _, keyHash, _, _) = parameter;
 
