@@ -6,12 +6,15 @@ namespace DragonSpark.Application.Hosting.Azure.WebJobs;
 
 sealed class DefaultServiceBusConfiguration : ICommand<ServiceBusOptions>
 {
-	readonly ServiceBusConfiguration _configuration;
+	readonly ushort? _maximum;
 
-	public DefaultServiceBusConfiguration(ServiceBusConfiguration configuration) => _configuration = configuration;
+	public DefaultServiceBusConfiguration(ServiceBusConfiguration configuration)
+		: this(configuration.MaxConcurrentCalls) {}
+
+	public DefaultServiceBusConfiguration(ushort? maximum) => _maximum  = maximum;
 
 	public void Execute(ServiceBusOptions parameter)
 	{
-		parameter.MaxConcurrentCalls = _configuration.MaxConcurrentCalls ?? parameter.MaxConcurrentCalls;
+		parameter.MaxConcurrentCalls = _maximum ?? parameter.MaxConcurrentCalls;
 	}
 }
