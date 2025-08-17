@@ -1,13 +1,13 @@
+using DragonSpark.Model;
+using DragonSpark.Model.Selection;
+using DragonSpark.Runtime;
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using DragonSpark.Model;
-using DragonSpark.Model.Selection;
-using DragonSpark.Runtime;
-using JetBrains.Annotations;
 
 namespace DragonSpark.Compose;
 
@@ -182,9 +182,21 @@ public static partial class ExtensionMethods
 
     public static float Real(this in int @this) => @this;
 
-    public static decimal Currency(this in decimal @this) => Math.Floor(@this * 100) / 100;
+    public static decimal Currency(this in decimal @this) => @this.Round(2);
 
-    public static decimal CurrencyAlternate(this in decimal @this) => Math.Ceiling(@this * 100) / 100;
+    public static decimal CurrencyAlternate(this in decimal @this) => @this.RoundAlternate(2);
+
+    public static decimal Round(this in decimal @this, byte places)
+    {
+	    var factor = (decimal)Math.Pow(10, places);
+	    return Math.Floor(@this * factor) / factor;
+    }
+
+    public static decimal RoundAlternate(this in decimal @this, byte places)
+    {
+	    var factor = (decimal)Math.Pow(10, places);
+	    return Math.Ceiling(@this * factor) / factor;
+    }
 
     public static double Expand(this in float @this) => @this;
 
