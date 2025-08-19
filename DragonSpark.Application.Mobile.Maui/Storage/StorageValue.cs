@@ -20,7 +20,7 @@ public class StorageValue<T> : IStorageValue<T> where T : notnull
 
     protected StorageValue(string key)
         : this(key, DefaultSerializer<T>.Default,
-               CurrentServices.Default.GetService<ISecureStorage>() ?? SecureStorage.Default) {}
+               CurrentSystemServiceProvider.Default.Get()?.GetService<ISecureStorage>() ?? SecureStorage.Default) {}
 
     protected StorageValue(string key, ISerializer<T> serializer, ISecureStorage storage)
     {

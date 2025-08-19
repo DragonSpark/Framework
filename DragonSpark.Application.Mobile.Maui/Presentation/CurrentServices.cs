@@ -8,7 +8,7 @@ public sealed class CurrentServices : Result<IServiceProvider>, IServiceProvider
 {
     public static CurrentServices Default { get; } = new();
 
-    CurrentServices() : base(() => Microsoft.Maui.Controls.Application.Current.Verify().To<IApplication>().Services) {}
+    CurrentServices() : base(() => CurrentSystemServiceProvider.Default.Get().Verify()) {}
 
     public object? GetService(Type serviceType) => Get().GetService(serviceType);
 }

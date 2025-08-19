@@ -14,7 +14,7 @@ sealed class AttestationToken : IAttestationToken
 {
     public static AttestationToken Default { get; } = new();
 
-    AttestationToken() : this(DCAppAttestService.SharedService, ClientKey.Default) {}
+    public AttestationToken() : this(DCAppAttestService.SharedService, ClientKey.Default) {}
 
     readonly DCAppAttestService _service;
     readonly IStopAware<string> _key;

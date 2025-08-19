@@ -7,5 +7,5 @@ sealed class ClientKey : ProcessStoring<string>, IClientKey
 {
     public static ClientKey Default { get; } = new();
 
-    ClientKey() : base(ClientKeyProcessStore.Default, ClientKeyStorage.Default) {}
+    public ClientKey() : base(ClientKeyProcessStore.Default, ClientKeyStorage.Default) {}
 }
