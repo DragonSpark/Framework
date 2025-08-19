@@ -15,10 +15,6 @@
     [Parameter]
     public required RenderFragment<T> ChildContent { get; set; }
 
-    protected override ValueTask<T?> GetContent()
-    {
-        // TODO: Test exceptions
-        return Factory(Stop).ToOperation();
-    }
+    protected override ValueTask<T?> GetContent() => Factory(Stop).ToOperation();
 
 }
