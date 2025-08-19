@@ -19,5 +19,5 @@ public class Updating<TIn, TOut> : Modifying<TIn, TOut> where TOut : class
 
 	protected Updating(IEdit<TIn, TOut> select) : this(select, UpdateLocal<TOut>.Default) {}
 
-	protected Updating(IEdit<TIn, TOut> select, IModify<TOut> modify) : base(select, modify.Then().Operation().Out()) {}
+	protected Updating(IEdit<TIn, TOut> select, IModify<TOut> modify) : base(select, modify.Then().Operation()) {}
 }

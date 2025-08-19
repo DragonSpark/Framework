@@ -7,5 +7,5 @@ public sealed class DefaultExpiration : Instance<TimeSpan>
 {
 	public static DefaultExpiration Default { get; } = new();
 
-	DefaultExpiration() : base(TimeSpan.FromHours(1)) {}
+	DefaultExpiration() : base(TimeSpan.FromDays(1)) {}
 }

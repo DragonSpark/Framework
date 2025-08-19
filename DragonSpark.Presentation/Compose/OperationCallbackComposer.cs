@@ -66,6 +66,9 @@ public sealed class OperationCallbackComposer<T> : IResult<EventCallback<T>>
 	public OperationCallbackComposer<T> UpdateActivity(IActivityReceiver receiver, ActivityOptions options)
 		=> new(receiver, new ActivityAwareOperation<T>(_operation, receiver, options));
 
+	public OperationCallbackComposer<T> Monitoring(Switch subject)
+		=> new(_receiver, new MonitoredOperation<T>(_operation, subject));
+
 	public EventCallback<T> Get()
 		=> EventCallback.Factory.Create(_receiver, new Func<T, Task>(_operation.Allocate));
 

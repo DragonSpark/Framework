@@ -10,13 +10,13 @@
 
 	protected override Task OnAfterRenderAsync(bool firstRender)
 	{
-		var enabled = Enabled && (firstRender || Signal.Down());
+		var enabled = Enabled && (firstRender || (Signal?.Down() ?? true));
 		var result  = enabled ? Runtime.InvokeAsync<bool>("scrollToElementId", Identifier).AsTask() : base.OnAfterRenderAsync(false);
 		return result;
 	}
 
 	[Parameter]
-	public Switch Signal { get; set; } = new();
+	public Switch? Signal { get; set; }
 
 	[Parameter]
 	public string Identifier { get; set; } = UniqueIdentifiers.Default.Get();
@@ -30,7 +30,7 @@
             if (field != value)
             {
                 field = value;
-                Signal.Up();
+                Signal?.Up();
             }
         }
     } = true;

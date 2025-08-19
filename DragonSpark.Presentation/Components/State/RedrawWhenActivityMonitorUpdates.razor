@@ -23,8 +23,8 @@
 
     Task OnUpdate(ActivityUpdatedMessage parameter)
     {
-        var (owner, active) = parameter;
-        if (owner == Monitor && _active.Assign(active))
+        var (owner, active, force) = parameter;
+        if (owner == Monitor && (_active.Assign(active) || force))
         {
             StateHasChanged();
         }

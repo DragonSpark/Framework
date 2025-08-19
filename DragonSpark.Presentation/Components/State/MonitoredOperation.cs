@@ -22,3 +22,21 @@ public sealed class MonitoredOperation : IOperation
 		await _previous.Off();
 	}
 }
+
+public sealed class MonitoredOperation<T> : IOperation<T>
+{
+	readonly IOperation<T> _previous;
+	readonly Switch     _subject;
+
+	public MonitoredOperation(IOperation<T> previous, Switch subject)
+	{
+		_previous = previous;
+		_subject  = subject;
+	}
+
+	public async ValueTask Get(T parameter)
+	{
+		using var _ = _subject.Scoped();
+		await _previous.Off(parameter);
+	}
+}

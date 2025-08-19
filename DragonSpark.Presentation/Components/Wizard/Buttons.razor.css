@@ -1,6 +1,7 @@
 .fluent-wizard .fluent-wizard-buttons {
     display: flex;
     justify-content: end;
+    flex-wrap: wrap;
 }
 
     .fluent-wizard .fluent-wizard-buttons[border-inside] {
