@@ -2,7 +2,7 @@
 
 namespace DragonSpark.Presentation.Model;
 
-public class ByteModel : BindingModel<sbyte>
+public class ByteModel : BindingModel<byte>
 {
-	protected ByteModel(Action<sbyte> set, Func<sbyte> get) : base(set, get) {}
+	protected ByteModel(Action<byte> set, Func<byte> get) : base(set, get) {}
 }
