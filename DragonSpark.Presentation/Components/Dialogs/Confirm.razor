@@ -12,11 +12,15 @@
         <div class="card">
             <div class="@ContentClass">@ChildContent</div>
             <div class="card-footer">
+                @if (PreButtonTemplate is not null)
+                {
+                    @PreButtonTemplate
+                }
                 <div class="d-flex justify-content-between" style="gap: 20px">
                     <ButtonComponent Text="@SecondaryText" Click="OnCancel" ButtonStyle="ButtonStyle.Secondary"
-                                     class="@SecondaryClass" />
+                                     class="@SecondaryClass"/>
 
-                    <ButtonComponent Text="@PrimaryText" Click="@_click(receiver)" class="@PrimaryClass" />
+                    <ButtonComponent Disabled="@(!EnablePrimary)" Text="@PrimaryText" Click="@_click(receiver)" class="@PrimaryClass"/>
                 </div>
             </div>
         </div>
@@ -40,22 +44,25 @@
                 .Block();
 
     async Task OnAccept(MouseEventArgs parameter)
-	{
+    {
         if (await Confirmation())
-		{
-			await Accept.Invoke(parameter);
-			Dialogs.Close();
-		}
-	}
+        {
+            await Accept.Invoke(parameter);
+            Dialogs.Close();
+        }
+    }
 
-	async Task OnCancel(MouseEventArgs parameter)
-	{
-		await Cancel.Invoke(parameter);
-		Dialogs.Close();
-	}
+    async Task OnCancel(MouseEventArgs parameter)
+    {
+        await Cancel.Invoke(parameter);
+        Dialogs.Close();
+    }
 
     [Parameter]
     public bool EnableFocus { get; set; } = true;
+
+    [Parameter]
+    public bool EnablePrimary { get; set; } = true;
 
 	[Parameter]
 	public string PrimaryText { get; set; } = "OK";
@@ -86,6 +93,9 @@
 
 	[Parameter]
 	public EventCallback<MouseEventArgs> Cancel { get; set; }
+
+    [Parameter]
+    public RenderFragment? PreButtonTemplate { get; set; }
 
 	[Parameter]
 	public Type? ReportedType { get; set; }
