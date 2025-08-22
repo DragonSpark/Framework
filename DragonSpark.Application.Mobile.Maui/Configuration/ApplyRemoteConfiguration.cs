@@ -14,14 +14,13 @@ sealed class ApplyRemoteConfiguration<T> : ICommand<MauiAppBuilder> where T : cl
 
     public void Execute(MauiAppBuilder parameter)
     {
-        var services = parameter.Services.Register<RemoteConfigurationSettings>()
-                                .AddSingleton<IRemoteConfigurationMessage, T>()
-                                         //
-                                         .Start<T>()
-                                         .Include(x => x.Dependencies.Recursive())
-                                         .Singleton()
-                                         //
-                                         .Then;
-        services.AddRemoteConfiguration(parameter.Configuration);
+        parameter.Services.Register<RemoteConfigurationSettings>()
+                 .AddSingleton<IRemoteConfigurationMessage, T>()
+                 //
+                 .Start<T>()
+                 .Include(x => x.Dependencies.Recursive())
+                 .Singleton()
+                 //
+                 .Then.AddRemoteConfiguration(parameter.Configuration);
     }
 }

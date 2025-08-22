@@ -1,4 +1,5 @@
 using System;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using DragonSpark.Compose;
@@ -21,10 +22,26 @@ sealed class RemoteConfigurationProvider : JsonStreamConfigurationProvider
 
     async Task LoadStream()
     {
-        var message = await _message().Off(CancellationToken.None);
-        message.EnsureSuccessStatusCode();
-        var stream = await message.Content.ReadAsStreamAsync().Off();
-        base.Load(stream);
+        var instance = _message();
+        try
+        {
+            var message = await instance.Get(CancellationToken.None).Off();
+            message.EnsureSuccessStatusCode();
+            switch (message.StatusCode)
+            {
+                case HttpStatusCode.NoContent:
+                    break;
+                default:
+                    var stream = await message.Content.ReadAsStreamAsync().Off();
+                    base.Load(stream);
+                    break;
+            }
+        }
+        catch (Exception e)
+        {
+            var exception = new InvalidOperationException("Could not load Remote Configuration.  This is considered a critical exception.", e);
+            await instance.Get(new(exception, CancellationToken.None)).Off();
+            throw exception;
+        }
     }
-    
 }

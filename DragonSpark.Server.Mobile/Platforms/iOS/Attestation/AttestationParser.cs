@@ -45,6 +45,8 @@ public sealed class AttestationParser : IParser<Attestation?>
         var       store        = policy.ExtraStore;
 
         policy.RevocationMode = X509RevocationMode.NoCheck;
+        policy.TrustMode      = X509ChainTrustMode.CustomRootTrust;
+        policy.CustomTrustStore.Add(_root);
         store.Add(intermediate);
         store.Add(_root);
 

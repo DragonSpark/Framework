@@ -31,7 +31,7 @@ sealed class NewRecord<T> : IStopAware<Attestation, T> where T : class, IAttesta
         var credential = instance.AuthenticationData.Credential.Credential;
         var key        = credential.Key;
         var result     = _new.Get();
-        result.Id            = Convert.ToBase64String(SHA256.HashData(credential.Identifier.Value));
+        result.KeyHash       = Convert.ToBase64String(SHA256.HashData(credential.Identifier.Value));
         result.Created       = _time.Get();
         result.Count         = instance.AuthenticationData.Count;
         result.PublicKey     = key.Value;

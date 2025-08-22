@@ -6,5 +6,5 @@ sealed class SelectAttestationRecord<T> : StartWhere<string, T> where T : class,
 {
     public static SelectAttestationRecord<T> Default { get; } = new();
 
-    SelectAttestationRecord() : base((p, x) => x.Id == p) {}
+    SelectAttestationRecord() : base((p, x) => x.KeyHash == p) {}
 }

@@ -1,8 +1,8 @@
-﻿using DragonSpark.Model.Commands;
+using System;
+using DragonSpark.Model.Commands;
 using DragonSpark.Server.Requests.Warmup;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
-using System;
 
 namespace DragonSpark.Application.Hosting.Server;
 

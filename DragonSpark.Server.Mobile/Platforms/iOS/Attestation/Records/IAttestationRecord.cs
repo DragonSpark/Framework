@@ -5,7 +5,7 @@ namespace DragonSpark.Server.Mobile.Platforms.iOS.Attestation.Records;
 
 public interface IAttestationRecord
 {
-    string Id { get; set; } // The key identifier from the attestation
+    string KeyHash { get; set; } // The key identifier from the attestation
     DateTimeOffset Created { get; set; }
     byte[] PublicKeyHash { get; set; } // SHA256 hash of the public key
     byte[] PublicKey { get; set; }     // SHA256 hash of the public key

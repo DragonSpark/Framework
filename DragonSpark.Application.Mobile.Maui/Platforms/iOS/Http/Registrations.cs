@@ -11,6 +11,7 @@ sealed class Registrations : ICommand<IServiceCollection>
 
     public void Execute(IServiceCollection parameter)
     {
+        
         parameter.AddHttpClient();
     }
 }
