@@ -1,11 +1,9 @@
-using System;
-using System.Security.Cryptography;
 using DragonSpark.Model.Sequences.Memory;
 using DragonSpark.Text;
+using System;
+using System.Security.Cryptography;
 
 namespace DragonSpark.Server.Security;
-
-internal class Class1 {}
 
 public sealed class Challenges : IText
 {
