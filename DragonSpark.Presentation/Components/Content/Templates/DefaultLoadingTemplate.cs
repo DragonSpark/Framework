@@ -6,5 +6,5 @@ public sealed class DefaultLoadingTemplate : DragonSpark.Model.Results.Instance<
 {
 	public static DefaultLoadingTemplate Default { get; } = new();
 
-	DefaultLoadingTemplate() : base(x => x.AddContent(0, "Loading, please wait.")) {}
+	DefaultLoadingTemplate() : base(x => x.AddContent(0, "Loading, please wait")) {}
 }
