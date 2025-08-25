@@ -4,17 +4,17 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.MultiFactor;
 
-sealed class ConfiguredAwareKey<T> : ISelecting<UserInput<T>, string> where T : IdentityUser
+sealed class ConfiguredAwareKey<T> : ISelecting<Input<T>, string> where T : IdentityUser
 {
 	public static ConfiguredAwareKey<T> Default { get; } = new();
 
 	ConfiguredAwareKey() : this(Key<T>.Default) {}
 
-	readonly ISelecting<UserInput<T>, string?> _previous;
+	readonly ISelecting<Input<T>, string?> _previous;
 
-	public ConfiguredAwareKey(ISelecting<UserInput<T>, string?> previous) => _previous = previous;
+	public ConfiguredAwareKey(ISelecting<Input<T>, string?> previous) => _previous = previous;
 
-	public async ValueTask<string> Get(UserInput<T> parameter)
+	public async ValueTask<string> Get(Input<T> parameter)
 	{
 		var previous = await _previous.Off(parameter);
 		if (string.IsNullOrEmpty(previous))
