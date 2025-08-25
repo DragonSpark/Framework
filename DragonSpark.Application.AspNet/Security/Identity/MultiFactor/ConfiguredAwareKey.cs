@@ -20,8 +20,7 @@ sealed class ConfiguredAwareKey<T> : ISelecting<UserInput<T>, string> where T : 
 		if (string.IsNullOrEmpty(previous))
 		{
 			var (manager, user) = parameter;
-			var updated = await manager.FindByIdAsync(await manager.GetUserIdAsync(user).Off())
-			                           .Off();
+			var updated = await manager.FindByIdAsync(await manager.GetUserIdAsync(user).Off()).Off();
 			await manager.ResetAuthenticatorKeyAsync(updated.Verify()).Off();
 			var result = await _previous.Off(parameter);
 			return result.Verify();
