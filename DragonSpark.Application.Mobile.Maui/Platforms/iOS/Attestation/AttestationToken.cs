@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using DeviceCheck;
 using DragonSpark.Application.Mobile.Attestation;
 using DragonSpark.Compose;
-using DragonSpark.Model;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Results.Stop;
 using Foundation;
