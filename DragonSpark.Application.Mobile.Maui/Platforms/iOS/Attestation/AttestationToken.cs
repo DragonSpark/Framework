@@ -33,7 +33,6 @@ sealed class AttestationToken : IAttestationToken
             throw new NotSupportedException("App Attest not supported on this device.");
         }
 
-        await ClearClientKey.Default.Get(new(None.Default, parameter)); // TODO
         var bytes       = Convert.FromBase64String(parameter);
         var hash        = SHA256.HashData(bytes);
         var data        = NSData.FromArray(hash);
