@@ -14,6 +14,7 @@
 	  <PackageReference Include="CommunityToolkit.Mvvm" />
       <PackageReference Include="CommunityToolkit.Maui" />
       <PackageReference Include="Microsoft.Maui.Controls" />
+      <PackageReference Include="Sentry.Maui" />
       <PackageReference Include="Syncfusion.Licensing" />
       <PackageReference Include="Syncfusion.Maui.DataForm" />
 	  <PackageReference Include="Syncfusion.Maui.Toolkit" />
