@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.Components.Server.Circuits;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SignalR;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,23 +11,19 @@ sealed class ContextAwareCircuitHandler : CircuitHandler
 {
 	readonly IEstablishContext          _establish;
 	readonly IMutable<HubCallerContext?> _source;
-	readonly IHttpContextAccessor        _accessor;
 
-	public ContextAwareCircuitHandler(IEstablishContext establish, IHttpContextAccessor accessor)
-		: this(establish, AmbientContext.Default, accessor) {}
+	public ContextAwareCircuitHandler(IEstablishContext establish) : this(establish, AmbientContext.Default) {}
 
-	public ContextAwareCircuitHandler(IEstablishContext establish, IMutable<HubCallerContext?> source,
-	                                  IHttpContextAccessor accessor)
+	public ContextAwareCircuitHandler(IEstablishContext establish, IMutable<HubCallerContext?> source)
 	{
 		_establish = establish;
 		_source     = source;
-		_accessor   = accessor;
 	}
 
 	public override Task OnCircuitOpenedAsync(Circuit circuit, CancellationToken cancellationToken)
 	{
-		_accessor.HttpContext ??= _source.Get().Verify().GetHttpContext().Verify();
-		_establish.Execute(_accessor.HttpContext);
+		var context = _source.Get().Verify().GetHttpContext().Verify();
+		_establish.Execute(context);
 		return Task.CompletedTask;
 	}
 }

@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Results;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -19,14 +20,18 @@ sealed class ComponentContextFilter : IHubFilter
 	public async ValueTask<object?> InvokeMethodAsync(HubInvocationContext invocationContext,
 	                                                  Func<HubInvocationContext, ValueTask<object?>> next)
 	{
-		if (invocationContext.HubMethodName == "UpdateRootComponents" 
-				&& invocationContext.Hub.GetType().Name == "ComponentHub")
+		invocationContext.ServiceProvider.GetRequiredService<IHttpContextAccessor>().HttpContext
+			??= invocationContext.Context.GetHttpContext();
+
+		if (invocationContext.HubMethodName == "UpdateRootComponents"
+		    && invocationContext.Hub.GetType().Name == "ComponentHub")
 		{
 			using (_store.Assigned(invocationContext.Context))
 			{
 				return await next(invocationContext).Off();
 			}
 		}
+
 		return await next(invocationContext).Off();
 	}
 }

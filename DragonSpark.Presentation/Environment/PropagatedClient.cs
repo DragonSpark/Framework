@@ -11,8 +11,7 @@ public sealed class PropagatedClient : IResult<HttpClient>
 	readonly string             _name;
 
 	public PropagatedClient(IHttpClientFactory clients, CurrentCookie cookie)
-		: this(clients, cookie,
-		       CookieHeaderName.Default) {}
+		: this(clients, cookie, CookieHeaderName.Default) {}
 
 	public PropagatedClient(IHttpClientFactory clients, CurrentCookie cookie, string name)
 	{
