@@ -11,11 +11,10 @@ public class ClientVariable<T> : IClientVariable<T>
 	readonly string                     _key;
 	readonly IClientVariableAccessor<T> _store;
 
+	protected ClientVariable(Type key, ProtectedBrowserStorage storage) : this(key.FullName.Verify(), storage) {}
+
 	public ClientVariable(string key, ProtectedBrowserStorage storage)
 		: this(key, ClientAccessors<T>.Default.Get(storage)) {}
-
-	protected ClientVariable(Type key, ProtectedBrowserStorage storage)
-		: this(key.AssemblyQualifiedName.Verify(), storage) {}
 
 	protected ClientVariable(string key, IClientVariableAccessor<T> store)
 		: this(key, store, store.Remove.Then().Bind(key).Out()) {}
