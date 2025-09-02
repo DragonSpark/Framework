@@ -7,7 +7,7 @@
         <Import Project="$(ParentDirectoryBuildPropsPath)" Condition="Exists($(ParentDirectoryBuildPropsPath))" />
     </ImportGroup>
     <ImportGroup>
-        <Import Project="Default.build.props" Condition="Exists('Default.build.props') And !Exists($(ParentDirectoryBuildPropsPath))" />
+        <Import Project="Default.Build.props" Condition="Exists('Default.Build.props') And !Exists($(ParentDirectoryBuildPropsPath))" />
     </ImportGroup>
 
     <PropertyGroup>
