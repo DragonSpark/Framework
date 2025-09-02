@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Results;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,11 +23,19 @@ public sealed class TokenHandle : ITokenHandle
 
 	public async ValueTask Get()
 	{
-		var source = _store.Get();
-		if (source is not null)
+		if (_store.TryPop(out var source) && source is not null)
 		{
-			_store.Execute(null);
-			await source.CancelAsync().Off();
+			try
+			{
+				await source.CancelAsync().Off();
+			}
+			catch (AggregateException e)
+			{
+				if (e.InnerExceptions.Count > 1)
+				{
+					throw;
+				}
+			}
 		}
 	}
 
