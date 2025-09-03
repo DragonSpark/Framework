@@ -1,11 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
 	<TargetFramework>$(DefaultTargetFramework)</TargetFramework>
+	<OutputType>Library</OutputType>		
   </PropertyGroup>
-	<PropertyGroup>
-		<TargetFramework>$(DefaultTargetFramework)</TargetFramework>
-		<OutputType>Library</OutputType>		
-	</PropertyGroup>
 
 	<ItemGroup>
 		<ProjectReference Include="..\DragonSpark.Server\DragonSpark.Server.csproj" />
