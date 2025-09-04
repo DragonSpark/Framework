@@ -24,8 +24,5 @@
 	<Trademark>DragonSpark Technologies Incorporated</Trademark>
 	<AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
 	<MetalamaAllowPreviewLanguageFeatures>true</MetalamaAllowPreviewLanguageFeatures>
-  </PropertyGroup>
-  <ItemGroup>
-		<PackageReference Include="Microsoft.Net.Compilers.Razor.Toolset" Condition=" '$(UsingMicrosoftNETSdkRazor)' == 'true' " />
-	</ItemGroup>
+  </PropertyGroup>  
 </Project>
