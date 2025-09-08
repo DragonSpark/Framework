@@ -158,15 +158,17 @@
         }
     }
 
-
-    Task OnCancel()
+    async Task OnCancel()
     {
         if (_previous.Current is CancelAwareActivityOptions cancel)
         {
             _displaying.Up();
-            return cancel.Handle.Allocate();
+            await cancel.Handle.On();
+            if (cancel.Canceled is not null)
+            {
+                await cancel.Canceled.Off();
+            }
         }
-        return Task.CompletedTask;
     }
 
     public ICommand<IRenderAware> Add => _previous.Add;

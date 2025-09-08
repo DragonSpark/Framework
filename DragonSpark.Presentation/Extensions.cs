@@ -189,7 +189,8 @@ public static class Extensions
 		=> @this.Invoke(parameter).Off();
 
 	/**/
-	public static CancelAwareActivityOptions Get(this ITokenHandle @this, string message,
+	// ReSharper disable once TooManyArguments
+	public static CancelAwareActivityOptions Get(this ITokenHandle @this, string message, IOperation? canceled = null,
 	                                             PostRenderAction action = PostRenderAction.None)
-		=> new(message, @this, PostRenderAction: action);
+		=> new(message, @this, PostRenderAction: action, Canceled: canceled);
 }
