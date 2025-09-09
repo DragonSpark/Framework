@@ -8,7 +8,7 @@ public class Publish<T> : IOperation where T : class
 	readonly IPublisher<T> _publisher;
 	readonly T             _message;
 
-	public Publish(IPublisher<T> publisher, T message)
+	protected Publish(IPublisher<T> publisher, T message)
 	{
 		_publisher = publisher;
 		_message   = message;

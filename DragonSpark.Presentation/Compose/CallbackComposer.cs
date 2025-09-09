@@ -37,11 +37,21 @@ public sealed class CallbackComposer : IResult<EventCallback>
 		return result;
 	}
 
-	public OperationCallbackComposer UpdateActivity(IActivityReceiver receiver)
+	public CallbackComposer UpdateActivity(IActivityReceiver receiver)
+		=> UpdateActivity(receiver, ActivityOptions.Default);
+
+	public CallbackComposer UpdateActivity(IActivityReceiver receiver, ActivityOptions options)
 	{
 		var body      = _method.Start().Then().Structure().Out();
-		var operation = new ActivityAwareOperation(body, receiver);
-		return new(receiver, operation);
+		var operation = new ActivityAwareOperation(body, receiver, options);
+		return new(receiver, operation.Allocate);
+	}
+
+	public CallbackComposer UpdateActivity(IActivityReceiver receiver, CancelAwareActivityOptions options)
+	{
+		var body      = _method.Start().Then().Structure().Out();
+		var operation = new CancelAwareOperation(new ActivityAwareOperation(body, receiver, options), options);
+		return new(receiver, operation.Allocate);
 	}
 
 	public OperationCallbackComposer BlockFor(TimeSpan duration)
@@ -79,14 +89,21 @@ public class CallbackComposer<T> : IResult<EventCallback<T>>
 		_method   = method;
 	}
 
-	public OperationCallbackComposer<T> UpdateActivity(IActivityReceiver receiver)
+	public CallbackComposer<T> UpdateActivity(IActivityReceiver receiver)
 		=> UpdateActivity(receiver, ActivityOptions.Default);
 
-	public OperationCallbackComposer<T> UpdateActivity(IActivityReceiver receiver, ActivityOptions options)
+	public CallbackComposer<T> UpdateActivity(IActivityReceiver receiver, ActivityOptions options)
 	{
 		var body      = Start.A.Selection(_method).Then().Structure().Out();
 		var operation = new ActivityAwareOperation<T>(body, receiver, options);
-		return new(receiver, operation);
+		return new(receiver, operation.Allocate);
+	}
+
+	public CallbackComposer<T> UpdateActivity(IActivityReceiver receiver, CancelAwareActivityOptions options)
+	{
+		var body      = Start.A.Selection(_method).Then().Structure().Out();
+		var operation = new CancelAwareOperation<T>(new ActivityAwareOperation<T>(body, receiver, options), options);
+		return new(receiver, operation.Allocate);
 	}
 
 	public OperationCallbackComposer<T> Handle<TReported>(IExceptions exceptions)

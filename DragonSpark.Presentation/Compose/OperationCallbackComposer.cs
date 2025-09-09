@@ -33,8 +33,11 @@ public sealed class OperationCallbackComposer : IResult<EventCallback>
 	public OperationCallbackComposer UpdateActivity(IActivityReceiver receiver)
 		=> UpdateActivity(receiver, ActivityOptions.Default);
 
-	public OperationCallbackComposer UpdateActivity(IActivityReceiver receiver, ActivityOptions input)
-		=> new(receiver, new ActivityAwareOperation(_operation, receiver, input));
+	public OperationCallbackComposer UpdateActivity(IActivityReceiver receiver, CancelAwareActivityOptions options)
+		=> new(receiver, new CancelAwareOperation(new ActivityAwareOperation(_operation, receiver, options), options));
+
+	public OperationCallbackComposer UpdateActivity(IActivityReceiver receiver, ActivityOptions options)
+		=> new(receiver, new ActivityAwareOperation(_operation, receiver, options));
 
 	public OperationCallbackComposer Watching(IRenderState parameter)
 		=> new(_receiver, new ActiveRenderAwareOperation(_operation, parameter));

@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Stop;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Presentation.Components.Eventing;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Environment.Browser.Time;
 
-sealed class ClientTimeOffsetStore : IOperation<TimeSpan>, IResult<TimeSpan>, IConditionAware
+sealed class ClientTimeOffsetStore : IStopAware<TimeSpan>, IResult<TimeSpan>, IConditionAware
 {
 	readonly IEventAggregator         _aggregator;
 	readonly IMutationAware<TimeSpan> _previous;
@@ -32,9 +33,9 @@ sealed class ClientTimeOffsetStore : IOperation<TimeSpan>, IResult<TimeSpan>, IC
 
 	public ICondition<None> Condition { get; }
 
-	public ValueTask Get(TimeSpan parameter)
+	public ValueTask Get(Stop<TimeSpan> parameter)
 	{
 		_previous.Execute(parameter);
-		return _aggregator.Publish(new ClientOffsetAssignedMessage(parameter)).ToOperation();
+		return _aggregator.Publish<ClientOffsetAssignedMessage>(new(parameter)).ToOperation();
 	}
 }

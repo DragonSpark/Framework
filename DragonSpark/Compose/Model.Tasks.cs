@@ -1,4 +1,5 @@
 using DragonSpark.Model;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Allocated;
 using DragonSpark.Model.Operations.Selection;
 using DragonSpark.Model.Results;
@@ -114,6 +115,14 @@ public static partial class ExtensionMethods
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ConfiguredValueTaskAwaitable On<T>(this ISelect<T, ValueTask> @this, T parameter)
 		=> @this.Get(parameter).ConfigureAwait(true);
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static ConfiguredValueTaskAwaitable On<T>(this DragonSpark.Model.Operations.Stop.IStopAware<T> @this, 
+	                                                 Stop<T> parameter)
+	{
+		parameter.Token.ThrowIfCancellationRequested();
+		return @this.Get(parameter).ConfigureAwait(true);
+	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ConfiguredValueTaskAwaitable On(this ISelect<None, ValueTask> @this)

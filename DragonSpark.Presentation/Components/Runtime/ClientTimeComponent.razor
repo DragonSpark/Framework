@@ -1,9 +1,11 @@
 ﻿@using DragonSpark.Presentation.Environment.Browser.Time
 
+@inherits Components.ComponentBase
+
 @inject InitializeClientTime Model
 
 @code
 {
     protected override Task OnAfterRenderAsync(bool firstRender)
-        => firstRender ? Model.Get().AsTask() : base.OnAfterRenderAsync(firstRender);
+        => firstRender ? Model.Get(Stop).AsTask() : base.OnAfterRenderAsync(firstRender);
 }

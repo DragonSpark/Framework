@@ -9,5 +9,5 @@ sealed class Publisher<T> : IPublisher<T> where T : class
 
 	public Publisher(IEventAggregator events) => _events = events;
 
-	public ValueTask Get(T parameter) => _events.Publish(parameter.To<T>()).ToOperation();
+	public ValueTask Get(T parameter) => _events.Publish(parameter).ToOperation();
 }

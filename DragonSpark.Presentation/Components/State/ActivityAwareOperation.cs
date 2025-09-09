@@ -13,8 +13,8 @@ sealed class ActivityAwareOperation : IOperation
 	public ActivityAwareOperation(IOperation operation, IActivityReceiver subject)
 		: this(operation, subject, ActivityOptions.Default) {}
 
-	public ActivityAwareOperation(IOperation operation, IActivityReceiver subject, ActivityOptions input)
-		: this(operation, subject, new ActivityReceiverState(operation, input)) {}
+	public ActivityAwareOperation(IOperation operation, IActivityReceiver subject, ActivityOptions options)
+		: this(operation, subject, new ActivityReceiverState(operation, options)) {}
 
 	public ActivityAwareOperation(IOperation operation, IActivityReceiver subject, ActivityReceiverState state)
 	{

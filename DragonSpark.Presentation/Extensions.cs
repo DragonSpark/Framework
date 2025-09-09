@@ -24,6 +24,7 @@ using Radzen;
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using Action = System.Action;
 using ComponentBase = Microsoft.AspNetCore.Components.ComponentBase;
@@ -179,6 +180,12 @@ public static class Extensions
 	public static Task Invoke(this EventCallback @this) => @this.HasDelegate ? @this.InvokeAsync() : Task.CompletedTask;
 
 	public static ConfiguredTaskAwaitable On(this EventCallback @this) => @this.Invoke().On();
+
+	public static ConfiguredTaskAwaitable On(this EventCallback<CancellationToken> @this, CancellationToken parameter)
+	{
+		parameter.ThrowIfCancellationRequested();
+		return @this.Invoke(parameter).On();
+	}
 
 	public static ConfiguredTaskAwaitable On<T>(this EventCallback<T> @this, T parameter)
 		=> @this.Invoke(parameter).On();
