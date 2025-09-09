@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Results;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -25,17 +24,7 @@ public sealed class TokenHandle : ITokenHandle
 	{
 		if (_store.TryPop(out var source) && source is not null)
 		{
-			try
-			{
-				await source.CancelAsync().Off();
-			}
-			catch (AggregateException e)
-			{
-				if (e.InnerExceptions.Count > 1)
-				{
-					throw;
-				}
-			}
+			await source.CancelAsync().Off();
 		}
 	}
 
