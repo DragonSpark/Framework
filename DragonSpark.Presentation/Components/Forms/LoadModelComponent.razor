@@ -32,7 +32,7 @@ else
     public override async Task SetParametersAsync(ParameterView parameters)
     {
         await base.SetParametersAsync(parameters);
-        if (_model is null)
+        if (_model is null || Load)
         {
             await _load.Off();
         }

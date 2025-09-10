@@ -1,4 +1,5 @@
 ﻿@using DragonSpark.Compose
+@using DragonSpark.Model.Results
 @using DragonSpark.Presentation.Components.Content.Templates
 @using DragonSpark.Presentation.Environment.Browser
 @using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
@@ -30,6 +31,9 @@ else
     public required RenderFragment<T?> ChildContent { get; set; }
 
     [Parameter]
+    public required Switch? Refresh { get; set; }
+
+    [Parameter]
     public RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
 
     [Parameter]
@@ -42,7 +46,7 @@ else
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender)
+        if (firstRender || (Refresh?.Down() ?? false))
         {
             _input = await Input.On();
             if (Ready.HasDelegate)

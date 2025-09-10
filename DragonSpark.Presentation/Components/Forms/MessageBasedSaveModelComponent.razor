@@ -7,7 +7,7 @@
 @inherits ModelPersistenceComponentBase<T>
 
 @inject ProblemSavingState ProblemSaving
-@inject SavedContentMessage Saved
+@inject SavedContentMessage Message
 
 <HandlerView T="SaveModelMessage" Received="@Handle" />
 
@@ -16,6 +16,9 @@
     [Parameter]
     public required T Model { get; set; }
 
+    [Parameter]
+    public EventCallback Saved { get; set; }
+
     Task Handle(SaveModelMessage message) => message.Subject == Model ? SaveContent() : Task.CompletedTask;
 
     async Task SaveContent()
@@ -23,8 +26,9 @@
         try
         {
             var content = Serializer.Get(Model);
-            await Store.Off(content);
-            Saved.Execute(content.Length.Bytes().Humanize());
+            await Store.On(content);
+            Message.Execute(content.Length.Bytes().Humanize());
+            await Saved.Off();
         }
         catch (Exception e)
         {
