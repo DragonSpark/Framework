@@ -9,13 +9,13 @@ namespace DragonSpark.Presentation.Components.State;
 sealed class CancelAwareOperation : IOperation
 {
 	readonly IOperation   _previous;
-	readonly ITokenHandle _handle;
+	readonly IStopHandle _handle;
 	readonly IOperation?  _canceled;
 
 	public CancelAwareOperation(IOperation previous, CancelAwareActivityOptions options)
 		: this(previous, options.Handle, options.Canceled) {}
 
-	public CancelAwareOperation(IOperation previous, ITokenHandle handle, IOperation? canceled)
+	public CancelAwareOperation(IOperation previous, IStopHandle handle, IOperation? canceled)
 	{
 		_previous = previous;
 		_handle   = handle;
@@ -49,13 +49,13 @@ sealed class CancelAwareOperation : IOperation
 sealed class CancelAwareOperation<T> : IOperation<T>
 {
 	readonly IOperation<T> _previous;
-	readonly ITokenHandle  _handle;
+	readonly IStopHandle  _handle;
 	readonly IOperation?   _canceled;
 
 	public CancelAwareOperation(IOperation<T> previous, CancelAwareActivityOptions options)
 		: this(previous, options.Handle, options.Canceled) {}
 
-	public CancelAwareOperation(IOperation<T> previous, ITokenHandle handle, IOperation? canceled)
+	public CancelAwareOperation(IOperation<T> previous, IStopHandle handle, IOperation? canceled)
 	{
 		_previous = previous;
 		_handle   = handle;

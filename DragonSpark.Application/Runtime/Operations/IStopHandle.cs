@@ -3,7 +3,7 @@ using System.Threading;
 
 namespace DragonSpark.Application.Runtime.Operations;
 
-public interface ITokenHandle : IOperation
+public interface IStopHandle : IOperation
 {
 	CancellationToken Token { get; }
 }

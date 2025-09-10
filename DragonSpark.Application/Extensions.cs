@@ -4,6 +4,7 @@ using DragonSpark.Application.Compose.Runtime;
 using DragonSpark.Application.Compose.Store.Operations.Memory;
 using DragonSpark.Application.Model.Sequences;
 using DragonSpark.Application.Runtime;
+using DragonSpark.Application.Runtime.Operations;
 using DragonSpark.Application.Runtime.Operations.Execution;
 using DragonSpark.Application.Security.Identity.Bearer;
 using DragonSpark.Compose;
@@ -19,6 +20,7 @@ using System;
 using System.Buffers;
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Threading;
 
 namespace DragonSpark.Application;
 
@@ -138,4 +140,14 @@ partial class Extensions
 	public static DragonSpark.Compose.Model.Operations.OperationResultComposer<TIn, TOut> Using<TIn, TOut>(
 		this Compose.Store.Operations.StoreContext<TIn, TOut> @this, StoreProfile<TIn> profile)
 		=> @this.In(profile.Memory).For(profile.For).Using(profile.Key);
+/**/
+
+	public static CancellationToken And(this IStopHandle @this, params ReadOnlySpan<CancellationToken> tokens)
+	{
+		using var leasing = NewLeasing<CancellationToken>.Default.Get(tokens.Length + 1);
+		var       span    = leasing.AsSpan();
+		span[0] = @this.Token;
+		tokens.CopyTo(span[1..]);
+		return CancellationTokenSource.CreateLinkedTokenSource(span).Token;
+	}
 }
