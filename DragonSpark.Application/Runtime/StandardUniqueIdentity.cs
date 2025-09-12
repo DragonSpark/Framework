@@ -4,7 +4,7 @@ using System;
 namespace DragonSpark.Application.Runtime;
 
 /// <summary>
-/// Attribution: https://x.com/i/grok/share/OiKEkhi8WdhbxQT2VsO1mlLmF
+/// Attribution: https://grok.com/share/c2hhcmQtMw%3D%3D_a2483803-1fc6-4b62-aa71-c2921ef2824c
 /// </summary>
 public sealed class StandardUniqueIdentity : IAlteration<Guid>
 {
@@ -14,20 +14,8 @@ public sealed class StandardUniqueIdentity : IAlteration<Guid>
 
 	public Guid Get(Guid parameter)
 	{
-		var bytes   = parameter.ToByteArray();
-		var octet8  = bytes[8];
-		var variant = (byte)(octet8 >> 4);
-		switch (variant)
-		{
-			case 0xC:
-			case 0xD:
-			{
-				var bits = (byte)(octet8 & 0x03);
-				bytes[8] = (byte)(0x80 | bits);
-				return new(bytes);
-			}
-		}
-
-		return parameter;
+		var data = parameter.ToByteArray();
+		data[8] = (byte)((data[8] & 0x3F) | 0x80);
+		return new(data);
 	}
 }

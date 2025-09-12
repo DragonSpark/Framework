@@ -184,7 +184,7 @@ public static partial class ExtensionMethods
 
     public static decimal Currency(this in decimal @this) => @this.Round(2);
 
-    public static decimal CurrencyAlternate(this in decimal @this) => @this.RoundAlternate(2);
+    public static decimal CurrencyUp(this in decimal @this) => @this.RoundAlternate(2);
 
     public static decimal Round(this in decimal @this, byte places)
     {
