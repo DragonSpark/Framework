@@ -24,8 +24,16 @@ public static partial class ExtensionMethods
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ConfiguredValueTaskAwaitable<TOut> Off<TIn, TOut>(this ISelect<TIn, ValueTask<TOut>> @this,
-	                                                                TIn parameter)
+																	TIn parameter)
 		=> @this.Get(parameter).ConfigureAwait(false);
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static ConfiguredValueTaskAwaitable<TOut> Off<TIn, TOut>(this ISelect<Stop<TIn>, ValueTask<TOut>> @this,
+	                                                                Stop<TIn> parameter)
+	{
+		parameter.Token.ThrowIfCancellationRequested();
+		return @this.Get(parameter).ConfigureAwait(false);
+	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ConfiguredValueTaskAwaitable<TOut> Off<TFirst, TSecond, TOut>(
@@ -47,6 +55,13 @@ public static partial class ExtensionMethods
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ConfiguredTaskAwaitable<TOut> Off<TIn, TOut>(this ISelect<TIn, Task<TOut>> @this, TIn parameter)
 		=> @this.Get(parameter).ConfigureAwait(false);
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static ConfiguredValueTaskAwaitable Off<T>(this ISelect<Stop<T>, ValueTask> @this, Stop<T> parameter)
+	{
+		parameter.Token.ThrowIfCancellationRequested();
+		return @this.Get(parameter).ConfigureAwait(false);
+	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ConfiguredValueTaskAwaitable Off<T>(this ISelect<T, ValueTask> @this, T parameter)
@@ -76,8 +91,8 @@ public static partial class ExtensionMethods
 	public static ConfiguredTaskAwaitable<T> Off<T>(this IResult<Task<T>> @this)
 		=> @this.Get().ConfigureAwait(false);
 
-    /**/
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+	/**/
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ConfiguredTaskAwaitable<T> On<T>(this Task<T> @this) => @this.ConfigureAwait(true);
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ConfiguredValueTaskAwaitable<T> On<T>(this ValueTask<T> @this) => @this.ConfigureAwait(true);
@@ -88,7 +103,7 @@ public static partial class ExtensionMethods
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ConfiguredValueTaskAwaitable<TOut> On<TIn, TOut>(this ISelect<TIn, ValueTask<TOut>> @this,
-                                                                   TIn parameter)
+																   TIn parameter)
 		=> @this.Get(parameter).ConfigureAwait(true);
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -117,8 +132,8 @@ public static partial class ExtensionMethods
 		=> @this.Get(parameter).ConfigureAwait(true);
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	public static ConfiguredValueTaskAwaitable On<T>(this DragonSpark.Model.Operations.Stop.IStopAware<T> @this, 
-	                                                 Stop<T> parameter)
+	public static ConfiguredValueTaskAwaitable On<T>(this DragonSpark.Model.Operations.Stop.IStopAware<T> @this,
+													 Stop<T> parameter)
 	{
 		parameter.Token.ThrowIfCancellationRequested();
 		return @this.Get(parameter).ConfigureAwait(true);
