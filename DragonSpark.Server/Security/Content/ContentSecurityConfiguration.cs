@@ -2,5 +2,5 @@
 
 public sealed class ContentSecurityConfiguration
 {
-	public string Policy { get; set; } = null!;
+	public required string Policy { get; set; }
 }
