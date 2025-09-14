@@ -1,12 +1,9 @@
 ﻿using DragonSpark.Application.Security;
 using DragonSpark.Compose;
-using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection.Alterations;
-using DragonSpark.Model.Selection.Stores;
 using DragonSpark.Model.Sequences.Memory;
 using DragonSpark.Text;
 using Microsoft.AspNetCore.Cryptography.KeyDerivation;
-using Microsoft.AspNetCore.Http;
 using System;
 
 namespace DragonSpark.Application.AspNet.Security;
@@ -42,20 +39,4 @@ public sealed class SaltedHash : IAlteration<string>
 		var result = $"{_text(data)}:{_text(bytes)}";
 		return result;
 	}
-}
-
-// TODO
-
-sealed class HttpContextNonce : ReferenceValueStore<HttpContext, string>
-{
-	public static HttpContextNonce Default { get; } = new();
-
-	HttpContextNonce() : base(_ => ContentPolicyNonce.Default.Get()) {}
-}
-
-sealed class ContentPolicyNonce : Result<string>
-{
-	public static ContentPolicyNonce Default { get; } = new();
-
-	ContentPolicyNonce() : base(HexNonce.Default.Then().Bind(16)) {}
 }
