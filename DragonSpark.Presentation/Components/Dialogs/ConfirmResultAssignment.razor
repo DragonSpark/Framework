@@ -16,7 +16,7 @@
     public bool EnableFocus { get; set; } = true;
 
     [Parameter]
-    public ICommand<ConfirmResult?> Assignment { get; set; } = null!;
+    public required ICommand<ConfirmResult?> Assignment { get; set; }
 
     protected override void OnAfterRender(bool firstRender)
     {
