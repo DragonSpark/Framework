@@ -28,7 +28,7 @@ sealed class Notifications : INotifications
 
     [Candidate(false)]
     public Notifications(Context context, NotificationChannelView channel)
-        : this(NotificationManagerCompat.From(context), delegate {}, context, channel) {}
+        : this(NotificationManagerCompat.From(context).Verify(), delegate {}, context, channel) {}
 
     // ReSharper disable once TooManyDependencies
     [Candidate(false)]

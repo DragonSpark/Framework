@@ -21,6 +21,9 @@
 	  <PackageReference Include="System.CodeDom" />
 	</ItemGroup>
 	<ItemGroup>
+	  <Compile Update="Platforms\Android\Attestation\Registrations.cs">
+	    <ExcludeFromCurrentConfiguration>true</ExcludeFromCurrentConfiguration>
+	  </Compile>
 	  <Compile Update="Platforms\iOS\Extensions.cs">
 	    <ExcludeFromCurrentConfiguration>false</ExcludeFromCurrentConfiguration>
 	  </Compile>
@@ -30,6 +33,9 @@
 	  <Compile Update="Platforms\iOS\Registrations.cs">
 	    <ExcludeFromCurrentConfiguration>false</ExcludeFromCurrentConfiguration>
 	  </Compile>
+	</ItemGroup>
+	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0-android'">
+	  <PackageReference Include="Xamarin.Google.Android.Play.Integrity" />
 	</ItemGroup>
 
 </Project>
