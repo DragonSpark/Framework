@@ -31,7 +31,7 @@ public sealed class InputQueryTests
 		{
 			await using var context = factory.CreateDbContext();
 			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
-			                          new Subject { Name = "Three" });
+									  new Subject { Name = "Three" });
 			await context.SaveChangesAsync();
 		}
 
@@ -39,10 +39,10 @@ public sealed class InputQueryTests
 
 		var evaluate =
 			new EvaluateToArray<string, string>(new NewContext<Context>(factory).Then().Scopes(),
-			                                    Selected.Default);
+												Selected.Default);
 		{
 			var results = await evaluate.Off(new("One", CancellationToken.None));
-			var open    = results.Open();
+			var open = results.Open();
 			open.Should().HaveCount(2);
 			open.Should().BeEquivalentTo("Two", "Three");
 		}
@@ -57,19 +57,19 @@ public sealed class InputQueryTests
 		{
 			await using var context = contexts.Get();
 			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
-			                          new Subject { Name = "Three" });
+									  new Subject { Name = "Three" });
 			await context.SaveChangesAsync();
 		}
 
 		const string name = "Two";
 
 		var sut = Start.A.Query<Subject>()
-		               .Accept<string>()
-		               .Where((s, subject) => subject.Name == name || subject.Name == s)
-		               .Invoke(contexts)
-		               .To.Array();
+					   .Accept<string>()
+					   .Where((s, subject) => subject.Name == name || subject.Name == s)
+					   .Invoke(contexts)
+					   .To.Array();
 		var subjects = await sut.Off(new("One", CancellationToken.None));
-		var open     = subjects.Open();
+		var open = subjects.Open();
 		open.Should().HaveCount(2);
 		open.Select(x => x.Name).Should().BeEquivalentTo("Two", "One");
 	}
@@ -82,19 +82,19 @@ public sealed class InputQueryTests
 		{
 			await using var context = contexts.Get();
 			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
-			                          new Subject { Name = "Three" });
+									  new Subject { Name = "Three" });
 			await context.SaveChangesAsync();
 		}
 
 		const string name = "Two";
 
 		var sut = Start.A.Query<Subject>()
-		               .Accept<string>()
-		               .Where((s, subject) => subject.Name == name || subject.Name == s)
-		               .Invoke(contexts)
-		               .To.Array();
+					   .Accept<string>()
+					   .Where((s, subject) => subject.Name == name || subject.Name == s)
+					   .Invoke(contexts)
+					   .To.Array();
 		var subjects = await sut.Off(new("One", CancellationToken.None));
-		var open     = subjects.Open();
+		var open = subjects.Open();
 		open.Should().HaveCount(2);
 		open.Select(x => x.Name).Should().BeEquivalentTo("Two", "One");
 	}
@@ -107,21 +107,21 @@ public sealed class InputQueryTests
 		{
 			await using var context = factory.Get();
 			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
-			                          new Subject { Name = "Three" });
+									  new Subject { Name = "Three" });
 			await context.SaveChangesAsync();
 		}
 
 		var evaluation = new EvaluateToArray<string, string>(factory.Then().Scopes(), Selected.Default);
 		{
 			var results = await evaluation.Off(new("One", CancellationToken.None));
-			var open    = results.Open();
+			var open = results.Open();
 			open.Should().HaveCount(2);
 			open.Should().BeEquivalentTo("Two", "Three");
 		}
 
 		{
 			var results = await evaluation.Off(new("Two", CancellationToken.None));
-			var open    = results.Open();
+			var open = results.Open();
 			open.Should().HaveCount(2);
 			open.Should().BeEquivalentTo("One", "Three");
 		}
@@ -144,10 +144,10 @@ public sealed class InputQueryTests
 
 		var evaluate =
 			new EvaluateToArray<Input, string>(new NewContext<ContextWithData>(contexts).Then().Scopes(),
-			                                   ComplexSelected.Default);
+											   ComplexSelected.Default);
 		{
 			var results = await evaluate.Off(new(new(id, "One"), CancellationToken.None));
-			var only    = results.Open().Only();
+			var only = results.Open().Only();
 			only.Should().NotBeNull();
 			only.Should().Be("One");
 		}
@@ -170,7 +170,7 @@ public sealed class InputQueryTests
 		var evaluate = contexts.Then().Use(ComplexSelected.Default).To.Array();
 		{
 			var results = await evaluate.Off(new(new(id, "One"), CancellationToken.None));
-			var only    = results.Open().Only();
+			var only = results.Open().Only();
 			only.Should().NotBeNull();
 			only.Should().Be("One");
 		}
@@ -188,14 +188,14 @@ public sealed class InputQueryTests
 		var id = new Guid("08013B99-3297-49F6-805E-0A94AE5B79A2");
 
 		var sut = Start.A.Query<Subject>()
-		               .Accept<Input>()
-		               .Where((input, subject) => subject.Name.StartsWith(input.Name))
-		               .Where((input, subject) => input.Identity == subject.Id)
-		               .Invoke(contexts)
-		               .To.Single();
+					   .Accept<Input>()
+					   .Where((input, subject) => subject.Name.StartsWith(input.Name))
+					   .Where((input, subject) => input.Identity == subject.Id)
+					   .Invoke(contexts)
+					   .To.Single();
 		{
 			await using var data = contexts.Get();
-			var             item = await sut.Off(new(new Input(id, "Two"), CancellationToken.None));
+			var item = await sut.Off(new(new Input(id, "Two"), CancellationToken.None));
 			item.Should().NotBeNull();
 			item.Id.Should().Be(id);
 			item.Name.Should().Be("Two");
@@ -215,12 +215,12 @@ public sealed class InputQueryTests
 		var id = new Guid("08013B99-3297-49F6-805E-0A94AE5B79A2");
 
 		var sut = Start.A.Query<Subject>()
-		               .Accept<Input>()
-		               .Where((input, subject) => subject.Name.StartsWith(input.Name))
-		               .Where((input, subject) => input.Identity == subject.Id)
-		               .Select(x => new Result(x.Id, x.Name))
-		               .Invoke(contexts)
-		               .To.Single();
+					   .Accept<Input>()
+					   .Where((input, subject) => subject.Name.StartsWith(input.Name))
+					   .Where((input, subject) => input.Identity == subject.Id)
+					   .Select(x => new Result(x.Id, x.Name))
+					   .Invoke(contexts)
+					   .To.Single();
 		{
 			var item = await sut.Off(new(new Input(id, "Two"), CancellationToken.None));
 			item.Identity.Should().Be(id);
@@ -230,7 +230,7 @@ public sealed class InputQueryTests
 
 	sealed class Context : DbContext
 	{
-		public Context(DbContextOptions options) : base(options) {}
+		public Context(DbContextOptions options) : base(options) { }
 
 		[UsedImplicitly]
 		public DbSet<Subject> Subjects { get; set; } = null!;
@@ -238,7 +238,7 @@ public sealed class InputQueryTests
 
 	sealed class ContextWithData : DbContext
 	{
-		public ContextWithData(DbContextOptions options) : base(options) {}
+		public ContextWithData(DbContextOptions options) : base(options) { }
 
 		[UsedImplicitly]
 		public DbSet<Subject> Subjects { get; set; } = null!;
@@ -247,15 +247,15 @@ public sealed class InputQueryTests
 		{
 			base.OnModelCreating(modelBuilder);
 			modelBuilder.Entity<Subject>()
-			            .HasData(new Subject { Id = new Guid("C750443A-19D0-4FD0-B45A-9D1722AD0DB3"), Name = "One" },
-			                     new Subject
-			                     {
-				                     Id = new Guid("08013B99-3297-49F6-805E-0A94AE5B79A2"), Name = "Two"
-			                     },
-			                     new Subject
-			                     {
-				                     Id = new Guid("5559B8B9-1F19-4F91-A6C8-DE3BB5E47603"), Name = "Three"
-			                     });
+						.HasData(new Subject { Id = new Guid("C750443A-19D0-4FD0-B45A-9D1722AD0DB3"), Name = "One" },
+								 new Subject
+								 {
+									 Id = new Guid("08013B99-3297-49F6-805E-0A94AE5B79A2"), Name = "Two"
+								 },
+								 new Subject
+								 {
+									 Id = new Guid("5559B8B9-1F19-4F91-A6C8-DE3BB5E47603"), Name = "Three"
+								 });
 		}
 	}
 
@@ -272,7 +272,7 @@ public sealed class InputQueryTests
 	{
 		public static Selected Default { get; } = new();
 
-		Selected() : base((s, queryable) => queryable.Where(y => y.Name != s).Select(y => y.Name)) {}
+		Selected() : base((s, queryable) => queryable.Where(y => y.Name != s).Select(y => y.Name)) { }
 	}
 
 	readonly record struct Input(Guid Identity, string Name);
@@ -285,37 +285,41 @@ public sealed class InputQueryTests
 
 		ComplexSelected()
 			: base((input, queryable)
-				       => queryable.Where(y => y.Id == input.Identity && y.Name == input.Name)
-				                   .Select(y => y.Name)) {}
+					   => queryable.Where(y => y.Id == input.Identity && y.Name == input.Name)
+								   .Select(y => y.Name))
+		{ }
 	}
 
 	public class Benchmarks
 	{
 		readonly INewContext<ContextWithData> _new;
-		readonly IStopAware<Input, Result>    _select;
+		readonly IStopAware<Input, Result> _select;
 
 		public Benchmarks() : this(new DbContextOptionsBuilder<ContextWithData>().UseInMemoryDatabase("0")
-		                                                                         .Options) {}
+																				 .Options)
+		{ }
 
 		Benchmarks(DbContextOptions<ContextWithData> options) :
-			this(new PooledDbContextFactory<ContextWithData>(options)) {}
+			this(new PooledDbContextFactory<ContextWithData>(options))
+		{ }
 
-		Benchmarks(IDbContextFactory<ContextWithData> factory) : this(new NewContext<ContextWithData>(factory)) {}
+		Benchmarks(IDbContextFactory<ContextWithData> factory) : this(new NewContext<ContextWithData>(factory)) { }
 
 		Benchmarks(INewContext<ContextWithData> @new)
 			: this(@new,
-			       Start.A.Query<Subject>()
-			            .Accept<Input>()
-			            .Where((input, subject)
-				                   => subject.Name.StartsWith(input.Name))
-			            .Where((input, subject) => input.Identity == subject.Id)
-			            .Select(x => new Result(x.Id, x.Name))
-			            .Invoke(@new)
-			            .To.Single()) {}
+				   Start.A.Query<Subject>()
+						.Accept<Input>()
+						.Where((input, subject)
+								   => subject.Name.StartsWith(input.Name))
+						.Where((input, subject) => input.Identity == subject.Id)
+						.Select(x => new Result(x.Id, x.Name))
+						.Invoke(@new)
+						.To.Single())
+		{ }
 
 		Benchmarks(INewContext<ContextWithData> @new, IStopAware<Input, Result> select)
 		{
-			_new    = @new;
+			_new = @new;
 			_select = @select;
 		}
 
@@ -323,12 +327,12 @@ public sealed class InputQueryTests
 		public async Task GlobalSetup()
 		{
 			await using var dbContext = _new.Get();
-			await dbContext.Database.EnsureCreatedAsync();
+			await dbContext.Database.EnsureCreatedAsync().Off();
 		}
 
 		[Benchmark]
 		public ValueTask<Result> MeasureCompiled()
 			=> _select.Get(new(new Input(new Guid("08013B99-3297-49F6-805E-0A94AE5B79A2"), "Tw"),
-			                   CancellationToken.None));
+							   CancellationToken.None));
 	}
 }

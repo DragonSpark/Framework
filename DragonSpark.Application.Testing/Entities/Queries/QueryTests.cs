@@ -38,13 +38,13 @@ public sealed class QueryTests
 		{
 			await using var context = factory.CreateDbContext();
 			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
-			                          new Subject { Name = "Three" });
+									  new Subject { Name = "Three" });
 			await context.SaveChangesAsync();
 		}
 
 		{
 			await using var context = factory.CreateDbContext();
-			var             only    = await context.Subjects.SingleOrDefaultAsync(x => x.Name == "One");
+			var only = await context.Subjects.SingleOrDefaultAsync(x => x.Name == "One");
 			only.Should().NotBeNull();
 		}
 	}
@@ -57,17 +57,17 @@ public sealed class QueryTests
 		{
 			await using var context = factory.CreateDbContext();
 			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
-			                          new Subject { Name = "Three" });
+									  new Subject { Name = "Three" });
 			await context.SaveChangesAsync();
 		}
 
 		counter.Get().Should().Be(1);
 
 		var contexts = new NewContext<Context>(factory);
-		var invoke   = new Reading<None, Subject>(new Scopes<Context>(contexts), Query.Default);
+		var invoke = new Reading<None, Subject>(new Scopes<Context>(contexts), Query.Default);
 		{
 			using var invocation = invoke.Get(None.Default);
-			var       elements   = await invocation.Elements.AsAsyncValueEnumerable().ToArrayAsync();
+			var elements = await invocation.Elements.AsAsyncValueEnumerable().ToArrayAsync();
 			elements.Should().HaveCount(2);
 			elements.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
 		}
@@ -83,7 +83,7 @@ public sealed class QueryTests
 		{
 			await using var context = factory.CreateDbContext();
 			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
-			                          new Subject { Name = "Three" });
+									  new Subject { Name = "Three" });
 			await context.SaveChangesAsync();
 		}
 
@@ -92,7 +92,7 @@ public sealed class QueryTests
 		var evaluate = new SubjectsNotTwo(new NewContext<Context>(factory));
 		{
 			var results = await evaluate.Off(CancellationToken.None);
-			var open    = results.Open();
+			var open = results.Open();
 			open.Should().HaveCount(2);
 			open.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
 		}
@@ -108,7 +108,7 @@ public sealed class QueryTests
 		{
 			await using var context = factory.CreateDbContext();
 			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
-			                          new Subject { Name = "Three" });
+									  new Subject { Name = "Three" });
 			await context.SaveChangesAsync();
 		}
 
@@ -117,7 +117,7 @@ public sealed class QueryTests
 		var evaluate = new SubjectsNotTwo(new NewContext<Context>(factory), Complex.Default);
 		{
 			var results = await evaluate.Off(CancellationToken.None);
-			var open    = results.Open();
+			var open = results.Open();
 			open.Should().HaveCount(2);
 			open.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
 		}
@@ -133,7 +133,7 @@ public sealed class QueryTests
 		{
 			await using var context = factory.CreateDbContext();
 			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
-			                          new Subject { Name = "Three" });
+									  new Subject { Name = "Three" });
 			await context.SaveChangesAsync();
 		}
 
@@ -142,7 +142,7 @@ public sealed class QueryTests
 		var evaluate = new SubjectsNotWithParameter(new NewContext<Context>(factory));
 		{
 			var results = await evaluate.Off(new("One", CancellationToken.None));
-			var open    = results.Open();
+			var open = results.Open();
 			open.Should().HaveCount(2);
 			open.Select(x => x.Name).Should().BeEquivalentTo("Two", "Three");
 		}
@@ -151,7 +151,7 @@ public sealed class QueryTests
 
 		{
 			var results = await evaluate.Off(new("Two", CancellationToken.None));
-			var open    = results.Open();
+			var open = results.Open();
 			open.Should().HaveCount(2);
 			open.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
 		}
@@ -167,21 +167,21 @@ public sealed class QueryTests
 		{
 			await using var context = factory.Get();
 			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
-			                          new Subject { Name = "Three" });
+									  new Subject { Name = "Three" });
 			await context.SaveChangesAsync();
 		}
 
 		var parameter = new SubjectsNotWithParameter(factory);
 		{
 			var results = await parameter.Off(new("One", CancellationToken.None));
-			var open    = results.Open();
+			var open = results.Open();
 			open.Should().HaveCount(2);
 			open.Select(x => x.Name).Should().BeEquivalentTo("Two", "Three");
 		}
 
 		{
 			var results = await parameter.Off(new("Two", CancellationToken.None));
-			var open    = results.Open();
+			var open = results.Open();
 			open.Should().HaveCount(2);
 			open.Select(x => x.Name).Should().BeEquivalentTo("One", "Three");
 		}
@@ -194,23 +194,23 @@ public sealed class QueryTests
 		{
 			await using var context = factory.CreateDbContext();
 			context.Subjects.AddRange(new Subject { Name = "One" }, new Subject { Name = "Two" },
-			                          new Subject { Name = "Three" });
+									  new Subject { Name = "Three" });
 			await context.SaveChangesAsync();
 		}
 
 		var evaluate = new SubjectsNotTwo(new NewContext<Context>(factory));
 		{
-			var             results  = await evaluate.Off(CancellationToken.None);
-			await using var context  = factory.CreateDbContext();
-			var             scoped   = new Scoped(context);
-			var             elements = await scoped.Get().ToArrayAsync();
+			var results = await evaluate.Off(CancellationToken.None);
+			await using var context = factory.CreateDbContext();
+			var scoped = new Scoped(context);
+			var elements = await scoped.Get().ToArrayAsync();
 			results.Open().Should().BeEquivalentTo(elements);
 		}
 	}
 
 	sealed class Context : DbContext
 	{
-		public Context(DbContextOptions options) : base(options) {}
+		public Context(DbContextOptions options) : base(options) { }
 
 		public DbSet<Subject> Subjects { get; set; } = null!;
 	}
@@ -226,79 +226,80 @@ public sealed class QueryTests
 
 	sealed class Scoped : AspNet.Entities.Queries.Runtime.Selection.Query<Subject>
 	{
-		public Scoped(Context instance) : base(instance.Set<Subject>().Where(x => x.Name != "Two")) {}
+		public Scoped(Context instance) : base(instance.Set<Subject>().Where(x => x.Name != "Two")) { }
 	}
 
 	sealed class Query : Start<Subject>
 	{
 		public static Query Default { get; } = new();
 
-		Query() : base(q => q.Where(x => x.Name != "Two")) {}
+		Query() : base(q => q.Where(x => x.Name != "Two")) { }
 	}
 
 	sealed class Selection : Projector<Subject, Subject>
 	{
 		public static Selection Default { get; } = new();
 
-		Selection() : base(q => q.Where(x => x.Name != "Two")) {}
+		Selection() : base(q => q.Where(x => x.Name != "Two")) { }
 	}
 
 	sealed class Parameter : StartInput<string, Subject>
 	{
 		public static Parameter Default { get; } = new();
 
-		Parameter() : base((@in, set) => set.Where(x => x.Name != @in)) {}
+		Parameter() : base((@in, set) => set.Where(x => x.Name != @in)) { }
 	}
 
 	sealed class Complex : Start<Subject>
 	{
 		public static Complex Default { get; } = new();
 
-		Complex() : this(Selection.Default) {}
+		Complex() : this(Selection.Default) { }
 
 		public Complex(Expression<Func<IQueryable<Subject>, IQueryable<Subject>>> @select)
-			: base((_, subjects) => select.Invoke(subjects)) {}
+			: base((_, subjects) => select.Invoke(subjects)) { }
 	}
 
 	sealed class SubjectsNotTwo : EvaluateToArray<None, Subject>
 	{
-		public SubjectsNotTwo(INewContext<Context> @new) : base(@new.Then().Scopes(), Query.Default) {}
+		public SubjectsNotTwo(INewContext<Context> @new) : base(@new.Then().Scopes(), Query.Default) { }
 
 		public SubjectsNotTwo(INewContext<Context> @new, IQuery<Subject> query)
-			: base(@new.Then().Scopes(), query.Get()) {}
+			: base(@new.Then().Scopes(), query.Get()) { }
 	}
 
 	sealed class SubjectsNotWithParameter : EvaluateToArray<string, Subject>
 	{
 		public SubjectsNotWithParameter(INewContext<Context> @new)
-			: base(@new.Then().Scopes(), Parameter.Default) {}
+			: base(@new.Then().Scopes(), Parameter.Default) { }
 	}
 
 	public class Benchmarks
 	{
-		readonly IStopAware<None, Array<Subject>>   _query;
+		readonly IStopAware<None, Array<Subject>> _query;
 		readonly IStopAware<string, Array<Subject>> _selected;
-		readonly IQueryable<Subject>                _scoped;
+		readonly IQueryable<Subject> _scoped;
 
-		public Benchmarks() : this(new DbContextOptionsBuilder<Context>().UseInMemoryDatabase("0").Options) {}
+		public Benchmarks() : this(new DbContextOptionsBuilder<Context>().UseInMemoryDatabase("0").Options) { }
 
-		Benchmarks(DbContextOptions<Context> options) : this(new PooledDbContextFactory<Context>(options)) {}
+		Benchmarks(DbContextOptions<Context> options) : this(new PooledDbContextFactory<Context>(options)) { }
 
 		Benchmarks(IDbContextFactory<Context> factory)
 			: this(new SubjectsNotTwo(new NewContext<Context>(factory)),
-			       new SubjectsNotWithParameter(new NewContext<Context>(factory)),
-			       new Scoped(factory.CreateDbContext()).Get()) {}
+				   new SubjectsNotWithParameter(new NewContext<Context>(factory)),
+				   new Scoped(factory.CreateDbContext()).Get())
+		{ }
 
 		Benchmarks(IStopAware<None, Array<Subject>> query, IStopAware<string, Array<Subject>> selected,
-		           IQueryable<Subject> scoped)
+				   IQueryable<Subject> scoped)
 		{
-			_query    = query;
+			_query = query;
 			_selected = selected;
-			_scoped   = scoped;
+			_scoped = scoped;
 		}
 
 		[Benchmark(Baseline = true)]
-		public async Task<Array> MeasureScoped() => await _scoped.ToArrayAsync();
+		public async Task<Array> MeasureScoped() => await _scoped.ToArrayAsync().Off();
 
 		[Benchmark]
 		public async Task<Array> MeasureCompiled() => await _query.Off(CancellationToken.None);

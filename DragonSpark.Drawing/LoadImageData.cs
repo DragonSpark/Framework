@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Operations.Selection;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations.Selection;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats;
 using System.IO;
@@ -15,7 +16,7 @@ public class LoadImageData : ISelecting<Image, byte[]>
 	public async ValueTask<byte[]> Get(Image parameter)
 	{
 		using var stream = new MemoryStream();
-		await parameter.SaveAsync(stream, _encoder);
+		await parameter.SaveAsync(stream, _encoder).Off();
 		stream.Seek(0, SeekOrigin.Begin);
 		return stream.ToArray();
 	}
