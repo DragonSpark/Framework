@@ -27,7 +27,7 @@ sealed class EntryTable : ITable<string, string?>
 	{
 		var previous = _previous.Get(parameter);
 		return previous is not null
-			       ? System.Buffers.Text.Base64.IsValid(previous) ? _decode.Get(previous) : previous
+			       ? System.Buffers.Text.Base64.IsValid(previous) ? _decode.Get(previous) : previous // TODO: Revert
 			       : null;
 	}
 

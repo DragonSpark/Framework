@@ -8,7 +8,6 @@ namespace DragonSpark.Testing.Text;
 [TestSubject(typeof(DecodedText))]
 public class DecodedTextTest
 {
-
 	[Fact]
 	public void Verify()
 	{
@@ -17,5 +16,14 @@ public class DecodedTextTest
 
 		var result = DecodedText.Default.Get(input);
 		result.Should().Be(expected);
+	}
+	
+	[Fact]
+	public void VerifyNotBase64()
+	{
+		const string input    = "Hello world";
+
+		var result = System.Buffers.Text.Base64.IsValid(input) ? DecodedText.Default.Get(input) : input;
+		result.Should().Be(input);
 	}
 }
