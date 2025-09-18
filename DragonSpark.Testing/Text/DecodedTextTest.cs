@@ -16,7 +16,6 @@ public class DecodedTextTest
 		const string expected = "Hello world";
 
 		var result = DecodedText.Default.Get(input);
-
 		result.Should().Be(expected);
 	}
 }
