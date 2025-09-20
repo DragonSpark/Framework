@@ -179,6 +179,9 @@ public static class Extensions
 
 	public static Task Invoke(this EventCallback @this) => @this.HasDelegate ? @this.InvokeAsync() : Task.CompletedTask;
 
+	public static Task Invoke(this EventCallback @this, object? parameter)
+		=> @this.HasDelegate ? @this.InvokeAsync(parameter) : Task.CompletedTask;
+
 	public static ConfiguredTaskAwaitable On(this EventCallback @this) => @this.Invoke().On();
 
 	public static ConfiguredTaskAwaitable On(this EventCallback<CancellationToken> @this, CancellationToken parameter)
