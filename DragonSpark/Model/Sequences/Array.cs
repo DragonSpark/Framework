@@ -1,8 +1,9 @@
+using DragonSpark.Model.Results;
+using NetFabric.Hyperlinq;
+using System;
 using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
-using DragonSpark.Model.Results;
-using NetFabric.Hyperlinq;
 
 namespace DragonSpark.Model.Sequences;
 
@@ -52,6 +53,9 @@ public readonly struct Array<T> : IResult<ImmutableArray<T>>
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public T[] Open() => _reference;
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public ReadOnlyMemory<T> AsMemory() => _reference.AsMemory();
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public ArrayExtensions.ArraySegmentValueEnumerable<T> AsValueEnumerable() => _reference.AsValueEnumerable();
