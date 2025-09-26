@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using DragonSpark.Application.Diagnostics;
 using DragonSpark.Compose;
+using DragonSpark.Model;
 
 namespace DragonSpark.Application.Mobile.Configuration;
 
@@ -22,4 +23,6 @@ public sealed class RemoteConfigurationMessage : RemoteConfigurationMessageBase,
         var       result = await client.GetAsync(_address, parameter).Off();
         return result;
     }
+
+    public bool Get(None parameter) => true;
 }

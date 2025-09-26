@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using DragonSpark.Application.Security.Data;
 using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Selection.Stop;
 using DragonSpark.Model.Results;
+using DragonSpark.Server.Mobile.Platforms.Android.Attestation.Records;
 using DragonSpark.Text;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.PlayIntegrity.v1;
@@ -15,9 +17,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Server.Mobile.Platforms.Android.Attestation;
 
-public sealed class Registrations : ICommand<IServiceCollection>
+public sealed class Registrations<T> : ICommand<IServiceCollection> where T : class, IVerificationRecord
 {
-    public static Registrations Default { get; } = new();
+    public static Registrations<T> Default { get; } = new();
 
     Registrations() {}
 
@@ -31,6 +33,18 @@ public sealed class Registrations : ICommand<IServiceCollection>
                  //
                  .Then.Start<IProcessIntegrityToken>()
                  .Forward<ProcessIntegrityToken>()
+                 .Singleton()
+                 //
+                 .Then.Start<IVerificationRecord<T>>()
+                 .Forward<VerificationRecord<T>>()
+                 .Include(x => x.Dependencies.Recursive())
+                 .Singleton()
+                 //
+                 .Then.Start<ILoadAttestation>()
+                 .Forward<LoadAttestation<T>>()
+                 .Singleton()
+                 .Then.Start<IValidVerification>()
+                 .Forward<ValidVerification>()
                  .Singleton();
     }
 }
@@ -111,4 +125,39 @@ public sealed record ApplicationIntegrity(bool IsTrusted, string Verdict)
     public ApplicationIntegrity(string Verdict) : this(Verdict == "PLAY_RECOGNIZED", Verdict) {}
 }
 
-public readonly record struct VerificationInput(string Challenge, string Input);
+public readonly record struct VerificationInput(string KeyHash, string Challenge, string Input);
+
+public interface ILoadAttestation : IStopAware<VerificationInput, IVerificationRecord?>;
+
+sealed class LoadAttestation<T> : ILoadAttestation where T : class, IVerificationRecord
+{
+    readonly IVerificationRecord<T> _record;
+
+    public LoadAttestation(IVerificationRecord<T> record) => _record = record;
+
+    public async ValueTask<IVerificationRecord?> Get(Stop<VerificationInput> parameter) => await _record.Off(parameter);
+}
+
+public interface IValidVerification : IDepending<VerificationInput>;
+
+sealed class ValidVerification : IValidVerification
+{
+    readonly IProcessIntegrityToken _token;
+    readonly IFormatter<string>     _formatter;
+
+    public ValidVerification(IProcessIntegrityToken token) : this(token, NonceFormatter.Default) {}
+
+    public ValidVerification(IProcessIntegrityToken token, IFormatter<string> formatter)
+    {
+        _token     = token;
+        _formatter = formatter;
+    }
+
+    public async ValueTask<bool> Get(Stop<VerificationInput> parameter)
+    {
+        var ((_, challenge, input), stop)          = parameter;
+        var (request, (application, _), (device, _)) = await _token.Off(new(input, stop));
+        var result = application && device && _formatter.Get(request.Nonce) == challenge;
+        return result;
+    }
+}

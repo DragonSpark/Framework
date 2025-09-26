@@ -1,11 +1,10 @@
 using System;
 using System.Threading.Tasks;
 using Android.Gms.Extensions;
-using Android.Gms.Tasks;
 using DragonSpark.Application.Mobile.Attestation;
+using DragonSpark.Application.Runtime.Objects;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
-using DragonSpark.Model.Selection;
 using Microsoft.Maui.ApplicationModel;
 using Xamarin.Google.Android.Play.Core.Integrity;
 
@@ -16,8 +15,7 @@ sealed class AttestationToken : IAttestationToken
     readonly IIntegrityManager _manager;
     readonly Request           _request;
 
-    public AttestationToken(Request request)
-        : this(IntegrityManagerFactory.Create(Platform.CurrentActivity.Verify()), request) {}
+    public AttestationToken(Request request) : this(IntegrityManagerFactory.Create(Platform.AppContext), request) {}
 
     public AttestationToken(IIntegrityManager manager, Request request)
     {
@@ -27,71 +25,38 @@ sealed class AttestationToken : IAttestationToken
 
     public async ValueTask<string> Get(Stop<string> parameter)
     {
-        var source  = new TaskCompletionSource<string>();
         var request = _request.Get(parameter);
-        var task    = _manager.RequestIntegrityToken(request).Verify();
-
-        await task.AddOnSuccessListener(new SuccessListener(source)).AddOnFailureListener(new FailureListener(source));
-
-        var result = await source.Task.Off();
-        return result;
-    }
-
-    sealed class SuccessListener : Java.Lang.Object, IOnSuccessListener
-    {
-        readonly TaskCompletionSource<string> _source;
-
-        public SuccessListener(TaskCompletionSource<string> source) => _source = source;
-
-        public void OnSuccess(Java.Lang.Object? result)
+        var token   = _manager.RequestIntegrityToken(request);
+        if (token is not null && await token is IntegrityTokenResponse response)
         {
-            if (result is IntegrityTokenResponse response)
+            var result = response.Token();
+            if (result is not null)
             {
-                var token = response.Token().Verify();
-                _source.TrySetResult(token);
-            }
-            else
-            {
-                _source.TrySetException(new InvalidOperationException($"Unexpected result type: {result?.GetType()}"));
+                return result;
             }
         }
-    }
-
-    sealed class FailureListener : Java.Lang.Object, IOnFailureListener
-    {
-        readonly TaskCompletionSource<string> _source;
-
-        public FailureListener(TaskCompletionSource<string> source) => _source = source;
-
-        public void OnFailure(Java.Lang.Exception exception)
-        {
-            _source.TrySetException(exception);
-        }
+        throw new InvalidOperationException("Could not determine integrity token");
     }
 }
 
-// TODO
-
-sealed class Request : ISelect<string, IntegrityTokenRequest>
+sealed class KeyAwareAttestationToken : IAttestationToken
 {
-    readonly ulong _project;
+    readonly IAttestationToken     _previous;
+    readonly IStorageValue<string> _key;
 
-    public Request(PlayStoreVerificationSettings settings) : this(settings.Project) {}
+    public KeyAwareAttestationToken(IAttestationToken previous) : this(previous, ClientKeyStorageValue.Default) {}
 
-    public Request(ulong project) => _project = project;
+    public KeyAwareAttestationToken(IAttestationToken previous, IStorageValue<string> key)
+    {
+        _previous = previous;
+        _key      = key;
+    }
 
-    public IntegrityTokenRequest Get(string parameter)
-        => IntegrityTokenRequest.InvokeBuilder()
-                                .Verify()
-                                .SetNonce(parameter)
-                                .Verify()
-                                .SetCloudProjectNumber((long)_project)
-                                .Verify()
-                                .Build()
-                                .Verify();
-}
-
-public sealed record PlayStoreVerificationSettings
-{
-    public ulong Project { get; set; }
+    public async ValueTask<string> Get(Stop<string> parameter)
+    {
+        var (_, stop) = parameter;
+        return await _key.Get(stop).Off() is not null
+                   ? await _previous.Off(parameter)
+                   : string.Empty;
+    }
 }

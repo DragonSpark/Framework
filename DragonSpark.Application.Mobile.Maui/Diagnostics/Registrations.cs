@@ -18,13 +18,16 @@ sealed class Registrations : ICommand<IServiceCollection>
         parameter.TryDecorate<ILastChanceExceptionHandler, LastChanceExceptionHandler>()
                  .Return(parameter)
                  //
-                 .Start<IConfigureExceptions>()
+                 .Start<InitializeApplication>().Singleton()
+                 //
+                 .Then.Start<IConfigureExceptions>()
                  .Forward<DefaultConfigureExceptions>()
                  .Singleton()
                  //
-                 .Then.Start<IMauiInitializeService>()
-                 .Forward<UnhandledExceptions>()
-                 .Include(x => x.Dependencies)
-                 .Singleton();
+                 .Then.Start<HandleApplicationException>()
+                 .Singleton()
+                 //
+                 .Then.AddSingleton<IMauiInitializeService>(UnhandledExceptions.Default)
+                 .AddSingleton<IMauiInitializeService>(AdjustDiagnostics.Default);
     }
 }

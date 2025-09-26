@@ -17,7 +17,16 @@ sealed class Registrations : ICommand<IServiceCollection>
                  //
                  .Start<IAttestationToken>()
                  .Forward<AttestationToken>()
+                 .Decorate<KeyAwareAttestationToken>()
                  .Include(x => x.Dependencies)
+                 .Singleton()
+                 //
+                 .Then.Start<IClientKey>()
+                 .Forward<ClientKey>()
+                 .Singleton()
+                 //
+                 .Then.Start<IClearClientKey>()
+                 .Forward<ClearClientKey>()
                  .Singleton();
     }
 }
