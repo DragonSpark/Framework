@@ -19,7 +19,7 @@
     </PackageReference>
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup> 
     <ProjectReference Include="..\DragonSpark.Application.Hosting.Server.Testing.Environment.Development\DragonSpark.Application.Hosting.Server.Testing.Environment.Development.csproj" />
     <ProjectReference Include="..\DragonSpark.Application.Hosting.Server.Testing.Environment.Production\DragonSpark.Application.Hosting.Server.Testing.Environment.Production.csproj" />
     <ProjectReference Include="..\DragonSpark.Application.Hosting.Server.Testing.Environment\DragonSpark.Application.Hosting.Server.Testing.Environment.csproj" />

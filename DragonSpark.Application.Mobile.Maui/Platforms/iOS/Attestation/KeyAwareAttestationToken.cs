@@ -19,7 +19,11 @@ sealed class KeyAwareAttestationToken : IAttestationToken
         _key      = key;
     }
 
-    public async ValueTask<string> Get(Stop<string> parameter) => await _key.Get(parameter.Token).Off() is not null
-                                                                      ? await _previous.Off(parameter)
-                                                                      : string.Empty;
+    public async ValueTask<string> Get(Stop<string> parameter)
+    {
+        var (_, stop) = parameter;
+        return await _key.Get(stop).Off() is not null
+                   ? await _previous.Off(parameter)
+                   : string.Empty;
+    }
 }

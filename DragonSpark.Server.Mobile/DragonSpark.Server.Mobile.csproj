@@ -5,6 +5,7 @@
     </PropertyGroup>
    <ItemGroup>
       <PackageReference Include="BouncyCastle.Cryptography" />
+      <PackageReference Include="Google.Apis.PlayIntegrity.v1" />
       <PackageReference Include="PeterO.Cbor" />
     </ItemGroup>
 

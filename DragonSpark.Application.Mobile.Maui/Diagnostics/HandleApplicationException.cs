@@ -13,8 +13,8 @@ sealed class HandleApplicationException : ICommand<HandleApplicationExceptionInp
 
     public HandleApplicationException(IApplicationErrorHandler handler, Func<IFlushLogging?> flush)
     {
-        _handler    = handler;
-        _flush = flush;
+        _handler = handler;
+        _flush   = flush;
     }
 
     public void Execute(object sender, object exception)
