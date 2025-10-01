@@ -41,13 +41,12 @@ public sealed class Registrations<T> : ICommand<IServiceCollection> where T : cl
                  //
                  .Then.Start<INewAttestation>()
                  .Forward<NewAttestation<T>>()
+                 .Include(x => x.Dependencies.Recursive())
                  .Singleton()
                  //
                  .Then.Start<IExistingAttestation>()
                  .Forward<ExistingAttestation<T>>()
-                 .Singleton()
-                 //
-                 .Then.Start<AttestationOperations>()
+                 .Include(x => x.Dependencies)
                  .Singleton()
             ;
     }

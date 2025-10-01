@@ -23,9 +23,6 @@ sealed class Registrations<T> : ICommand<IServiceCollection> where T : class, IA
                  .Then.Start<IExistingAttestation>()
                  .Forward<ExistingAttestation<T>>()
                  .Include(x => x.Dependencies.Recursive())
-                 .Singleton()
-                 //
-                 .Then.Start<AttestationOperations>()
                  .Singleton();
     }
 }

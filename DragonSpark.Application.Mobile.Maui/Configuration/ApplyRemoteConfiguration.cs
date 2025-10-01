@@ -31,6 +31,10 @@ sealed class ApplyRemoteConfiguration<T> : ICommand<MauiAppBuilder> where T : cl
                  .Forward<ClearAttestationIdentity>()
                  .Singleton()
                  //
+                 .Then.Start<SaveIdentity>()
+                 .Include(x => x.Dependencies)
+                 .Singleton()
+                 //
                  .Then.AddRemoteConfiguration(parameter.Configuration);
     }
 }
