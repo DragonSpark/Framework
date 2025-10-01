@@ -9,8 +9,5 @@ sealed class Registrations : ICommand<IServiceCollection>
 
     Registrations() {}
 
-    public void Execute(IServiceCollection parameter)
-    {
-        
-    }
+    public void Execute(IServiceCollection parameter) {}
 }

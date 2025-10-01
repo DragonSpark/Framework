@@ -8,7 +8,8 @@ namespace DragonSpark.Application.Mobile.Attestation;
 
 public class Attest<T> : StopAware<T>
 {
-    protected Attest(IAttest previous, Func<AttestationResult, T> select) : base(previous.Then().Select(select)) {}
+    protected Attest(IAttest previous, Func<NewAttestationResult, T> select)
+        : base(previous.Then().Select(x => x.To<NewAttestationResult>()).Select(select)) {}
 }
 
 sealed class Attest : IAttest
@@ -29,32 +30,6 @@ sealed class Attest : IAttest
         var key         = await _key.Off(parameter);
         var challenge   = await _challenge.Off(parameter);
         var attestation = await _token.Off(new(challenge, parameter));
-        return new(null, key, challenge, attestation);
+        return new NewAttestationResult(key, challenge, attestation);
     }
 }
-
-// TODO
-
-public class PreviousAttestationAwareAttest : IAttest
-{
-    readonly IAttestationIdentity _identity;
-    readonly IAttest              _previous;
-    readonly ClientHash           _key;
-
-    protected PreviousAttestationAwareAttest(IAttestationIdentity identity, IAttest previous, ClientHash key)
-    {
-        _identity = identity;
-        _previous = previous;
-        _key      = key;
-    }
-
-    public async ValueTask<AttestationResult> Get(CancellationToken parameter)
-    {
-        var identity = await _identity.Off(parameter);
-        return identity is not null
-                   ? new(identity, await _key.Off(parameter), string.Empty, string.Empty)
-                   : await _previous.Off(parameter);
-    }
-}
-
-public interface IAttestationIdentity : IStopAware<Guid?>;
