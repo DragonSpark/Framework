@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
-using DragonSpark.Model.Results;
+using System.Collections.Generic;
+using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Application.AspNet.Configuration;
 
-public interface IHostedConfiguration : IResult<IReadOnlyDictionary<string, object?>>;
+public interface IHostedConfiguration
+    : ISelect<IEnumerable<KeyValuePair<string, object?>>, IReadOnlyDictionary<string, object?>>;

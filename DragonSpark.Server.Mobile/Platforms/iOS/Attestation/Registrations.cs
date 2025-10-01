@@ -15,14 +15,17 @@ sealed class Registrations<T> : ICommand<IServiceCollection> where T : class, IA
     {
         parameter.Register<AttestationConfiguration>()
                  //
-                 .Start<ILoadAttestation>()
-                 .Forward<LoadAttestation<T>>()
-                 .Include(x => x.Dependencies)
+                 .Start<INewAttestation>()
+                 .Forward<NewAttestation<T>>()
+                 .Include(x => x.Dependencies.Recursive())
                  .Singleton()
                  //
-                 .Then.Start<IAttestationRecord<T>>()
-                 .Forward<AttestationRecord<T>>()
+                 .Then.Start<IExistingAttestation>()
+                 .Forward<ExistingAttestation<T>>()
                  .Include(x => x.Dependencies.Recursive())
+                 .Singleton()
+                 //
+                 .Then.Start<AttestationOperations>()
                  .Singleton();
     }
 }

@@ -8,5 +8,6 @@ public sealed class DefaultRegistrations : Commands<IServiceCollection>
 {
     public static DefaultRegistrations Default { get; } = new();
 
-    DefaultRegistrations() : base(Registrations.Default, Runtime.Registrations.Default) {}
+    DefaultRegistrations() : base(Registrations.Default, Attestation.Registrations.Default,
+                                  Runtime.Registrations.Default) {}
 }

@@ -14,7 +14,8 @@ sealed class ApplyRemoteConfiguration<T> : ICommand<MauiAppBuilder> where T : cl
 
     public void Execute(MauiAppBuilder parameter)
     {
-        parameter.Services.Register<RemoteConfigurationSettings>()
+        parameter.Services.AddSingleton<IMauiInitializeService>(InitializeRemoteConfiguration.Default)
+                 .Register<RemoteConfigurationSettings>()
                  .AddSingleton<IRemoteConfigurationMessage, T>()
                  //
                  .Start<T>()

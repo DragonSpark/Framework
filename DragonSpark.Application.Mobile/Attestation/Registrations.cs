@@ -2,7 +2,7 @@ using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Application.AspNet.Configuration;
+namespace DragonSpark.Application.Mobile.Attestation;
 
 sealed class Registrations : ICommand<IServiceCollection>
 {
@@ -12,9 +12,6 @@ sealed class Registrations : ICommand<IServiceCollection>
 
     public void Execute(IServiceCollection parameter)
     {
-        parameter.Register<HostedConfigurationSettings>()
-                 .Start<IHostedConfiguration>()
-                 .Forward<HostedConfiguration>()
-                 .Singleton();
+        parameter.Start<IAttest>().Forward<Attest>().Singleton();
     }
 }
