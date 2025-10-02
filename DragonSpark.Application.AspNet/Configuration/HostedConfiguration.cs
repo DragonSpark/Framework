@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using DragonSpark.Model.Sequences;
 using Microsoft.Extensions.Configuration;
 
@@ -18,12 +18,17 @@ sealed class HostedConfiguration : IHostedConfiguration
         _keys          = keys;
     }
 
-    public IReadOnlyDictionary<string, object?> Get()
+    public IReadOnlyDictionary<string, object?> Get(IEnumerable<KeyValuePair<string, object?>> parameter)
     {
         var result = new Dictionary<string, object?>();
         foreach (var key in _keys)
         {
             var value = _configuration[key];
+            result.Add(key, value);
+        }
+
+        foreach (var (key, value) in parameter)
+        {
             result.Add(key, value);
         }
 

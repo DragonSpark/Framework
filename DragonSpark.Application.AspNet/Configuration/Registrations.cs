@@ -1,4 +1,4 @@
-﻿using DragonSpark.Composition;
+using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,6 +12,9 @@ sealed class Registrations : ICommand<IServiceCollection>
 
     public void Execute(IServiceCollection parameter)
     {
-        parameter.Register<HostedConfigurationSettings>().Start<IHostedConfiguration>().Forward<HostedConfiguration>().Decorate<MemoryAwareHostedConfiguration>().Singleton();
+        parameter.Register<HostedConfigurationSettings>()
+                 .Start<IHostedConfiguration>()
+                 .Forward<HostedConfiguration>()
+                 .Singleton();
     }
 }

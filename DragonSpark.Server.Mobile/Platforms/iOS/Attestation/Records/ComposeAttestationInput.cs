@@ -1,8 +1,8 @@
-﻿using DragonSpark.Model.Selection;
+using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Server.Mobile.Platforms.iOS.Attestation.Records;
 
-sealed class ComposeAttestationInput : ISelect<AttestationRecordInput, AttestationInput>
+sealed class ComposeAttestationInput : ISelect<NewAttestationRecordInput, AttestationInput>
 {
     readonly string _bundle, _environment;
 
@@ -15,7 +15,7 @@ sealed class ComposeAttestationInput : ISelect<AttestationRecordInput, Attestati
         _environment = environment;
     }
 
-    public AttestationInput Get(AttestationRecordInput parameter)
+    public AttestationInput Get(NewAttestationRecordInput parameter)
     {
         var (keyHash, challenge, attestation) = parameter;
         return new(attestation, challenge, _bundle, keyHash, _environment);

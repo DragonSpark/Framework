@@ -27,12 +27,12 @@ sealed class NewRecord<T> : IStopAware<Attestation, T> where T : class, IAttesta
 
     public ValueTask<T> Get(Stop<Attestation> parameter)
     {
-        var (instance, _) = parameter;
-        var credential = instance.AuthenticationData.Credential.Credential;
-        var key        = credential.Key;
-        var result     = _new.Get();
-        result.KeyHash       = Convert.ToBase64String(SHA256.HashData(credential.Identifier.Value));
+        var (instance, _)     = parameter;
+        var (identifier, key) = instance.AuthenticationData.Credential.Credential;
+        var result = _new.Get();
+        result.KeyHash       = Convert.ToBase64String(SHA256.HashData(identifier.Value));
         result.Created       = _time.Get();
+        result.Identity      = Guid.NewGuid();
         result.Count         = instance.AuthenticationData.Count;
         result.PublicKey     = key.Value;
         result.PublicKeyHash = key.Hash;

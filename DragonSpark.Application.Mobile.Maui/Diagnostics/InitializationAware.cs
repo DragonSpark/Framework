@@ -1,6 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using DragonSpark.Application.Mobile.Runtime.Initialization;
 using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Model.Operations;
@@ -76,11 +75,4 @@ public class InitializationAware : IOperation
             throw;
         }
     }
-}
-
-// TODO
-
-public sealed class InitializeApplication : InitializationAware
-{
-    public InitializeApplication(IConfiguration configuration) : base(configuration, PerformInitialization.Default) {}
 }

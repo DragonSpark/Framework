@@ -35,17 +35,20 @@ public sealed class Registrations<T> : ICommand<IServiceCollection> where T : cl
                  .Forward<ProcessIntegrityToken>()
                  .Singleton()
                  //
-                 .Then.Start<IVerificationRecord<T>>()
-                 .Forward<VerificationRecord<T>>()
+                 .Then.Start<IValidVerification>()
+                 .Forward<ValidVerification>()
+                 .Singleton()
+                 //
+                 .Then.Start<INewAttestation>()
+                 .Forward<NewAttestation<T>>()
                  .Include(x => x.Dependencies.Recursive())
                  .Singleton()
                  //
-                 .Then.Start<ILoadAttestation>()
-                 .Forward<LoadAttestation<T>>()
+                 .Then.Start<IExistingAttestation>()
+                 .Forward<ExistingAttestation<T>>()
+                 .Include(x => x.Dependencies)
                  .Singleton()
-                 .Then.Start<IValidVerification>()
-                 .Forward<ValidVerification>()
-                 .Singleton();
+            ;
     }
 }
 
@@ -125,9 +128,8 @@ public sealed record ApplicationIntegrity(bool IsTrusted, string Verdict)
     public ApplicationIntegrity(string Verdict) : this(Verdict == "PLAY_RECOGNIZED", Verdict) {}
 }
 
-public readonly record struct VerificationInput(string KeyHash, string Challenge, string Input);
-
-public interface ILoadAttestation : IStopAware<VerificationInput, IVerificationRecord?>;
+/*public readonly record struct VerificationInput(Guid? Identity, string KeyHash, string Challenge, string Input);*/
+/*public interface ILoadAttestation : IStopAware<VerificationInput, IVerificationRecord?>;
 
 sealed class LoadAttestation<T> : ILoadAttestation where T : class, IVerificationRecord
 {
@@ -136,9 +138,9 @@ sealed class LoadAttestation<T> : ILoadAttestation where T : class, IVerificatio
     public LoadAttestation(IVerificationRecord<T> record) => _record = record;
 
     public async ValueTask<IVerificationRecord?> Get(Stop<VerificationInput> parameter) => await _record.Off(parameter);
-}
+}*/
 
-public interface IValidVerification : IDepending<VerificationInput>;
+public interface IValidVerification : IDepending<NewAttestationRecordInput>;
 
 sealed class ValidVerification : IValidVerification
 {
@@ -153,9 +155,9 @@ sealed class ValidVerification : IValidVerification
         _formatter = formatter;
     }
 
-    public async ValueTask<bool> Get(Stop<VerificationInput> parameter)
+    public async ValueTask<bool> Get(Stop<NewAttestationRecordInput> parameter)
     {
-        var ((_, challenge, input), stop)          = parameter;
+        var ((_, challenge, input), stop)            = parameter;
         var (request, (application, _), (device, _)) = await _token.Off(new(input, stop));
         var result = application && device && _formatter.Get(request.Nonce) == challenge;
         return result;

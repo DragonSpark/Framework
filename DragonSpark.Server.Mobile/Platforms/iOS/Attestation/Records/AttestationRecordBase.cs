@@ -14,6 +14,8 @@ public abstract class AttestationRecordBase : IAttestationRecord
 
     public DateTimeOffset Created { get; set; }
 
+    public required Guid Identity { get; set; } // The key identifier from the attestation
+
     public required byte[] PublicKeyHash { get; set; } // SHA256 hash of the public key
     public required byte[] PublicKey { get; set; }     // SHA256 hash of the public key
     public required byte[] Receipt { get; set; }       // Receipt from the attestation statement
