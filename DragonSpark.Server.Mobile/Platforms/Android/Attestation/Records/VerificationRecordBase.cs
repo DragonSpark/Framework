@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Server.Mobile.Platforms.Android.Attestation.Records;
 
-[Index(nameof(KeyHash), IsUnique = true)]
+[Index(nameof(KeyHash), nameof(Identity), IsUnique = true)]
 public abstract class VerificationRecordBase : IVerificationRecord
 {
     public uint Id { get; set; }

@@ -38,8 +38,8 @@ sealed class RemoteConfigurationProvider : JsonStreamConfigurationProvider
             response.EnsureSuccessStatusCode();
             switch (response.StatusCode)
             {
-                case HttpStatusCode.NoContent: // TODO: Throw
-                    break;
+                case HttpStatusCode.NoContent:
+                    throw new InvalidOperationException("No configuration returned.  This install may not be legitimate.");
                 default:
                     var stream = await response.Content.ReadAsStreamAsync().Off();
                     base.Load(stream);

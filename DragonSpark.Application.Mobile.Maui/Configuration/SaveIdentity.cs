@@ -1,31 +1,34 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using DragonSpark.Application.Mobile.Attestation;
 using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Stop;
 
 namespace DragonSpark.Application.Mobile.Maui.Configuration;
 
-sealed class SaveIdentity : IStopAware
+sealed class SaveIdentity : IOperation
 {
-    readonly RemoteConfigurationSettings                                                      _settings;
-    readonly ClientHash                                                                       _hash;
-    readonly DragonSpark.Model.Operations.Results.Stop.IStopAware<ExistingAttestationResult?> _identity;
+    readonly Func<RemoteConfigurationSettings>     _settings;
+    readonly ClientHash                            _hash;
+    readonly IStopAware<ExistingAttestationResult> _set;
 
-    public SaveIdentity(RemoteConfigurationSettings settings, ClientHash hash)
-        : this(settings, hash, AttestationIdentity.Default) {}
+    public SaveIdentity(Func<RemoteConfigurationSettings> settings, ClientHash hash)
+        : this(settings, hash, SaveAttestationIdentity.Default) {}
 
-    public SaveIdentity(RemoteConfigurationSettings settings, ClientHash hash,
-                        DragonSpark.Model.Operations.Results.Stop.IStopAware<ExistingAttestationResult?> identity)
+    public SaveIdentity(Func<RemoteConfigurationSettings> settings, ClientHash hash,
+                        IStopAware<ExistingAttestationResult> set)
     {
         _settings = settings;
         _hash     = hash;
-        _identity = identity;
+        _set      = set;
     }
 
-    public async ValueTask Get(CancellationToken parameter)
+    public async ValueTask Get()
     {
-        var hash = await _hash.Off(parameter);
-        await _identity.Off(new ExistingAttestationResult(_settings.Identity, hash).Stop(parameter));
+        var hash     = await _hash.Off(CancellationToken.None);
+        var identity = _settings().Identity;
+        await _set.Off(new(new(identity, hash), CancellationToken.None));
     }
 }
