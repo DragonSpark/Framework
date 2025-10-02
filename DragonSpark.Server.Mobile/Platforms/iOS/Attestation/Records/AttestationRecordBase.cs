@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Server.Mobile.Platforms.iOS.Attestation.Records;
 
-[Index(nameof(KeyHash), IsUnique = true)]
+[Index(nameof(KeyHash), nameof(Identity), IsUnique = true)]
 public abstract class AttestationRecordBase : IAttestationRecord
 {
     public uint Id { get; set; }

@@ -1,9 +1,7 @@
 using System;
-using System.Threading;
-using System.Threading.Tasks;
 using DragonSpark.Application.Mobile.Runtime.Initialization;
-using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
+using DragonSpark.Model.Operations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Maui.Hosting;
 
@@ -15,12 +13,12 @@ sealed class InitializeRemoteConfiguration : IMauiInitializeService
 
     InitializeRemoteConfiguration() : this(RegisterInitialization.Default) {}
 
-    readonly ICommand<Task> _register;
+    readonly ICommand<IOperation> _register;
 
-    public InitializeRemoteConfiguration(ICommand<Task> register) => _register = register;
+    public InitializeRemoteConfiguration(ICommand<IOperation> register) => _register = register;
 
     public void Initialize(IServiceProvider services)
     {
-        _register.Execute(services.GetRequiredService<SaveIdentity>().Allocate(CancellationToken.None));
+        _register.Execute(services.GetRequiredService<SaveIdentity>());
     }
 }

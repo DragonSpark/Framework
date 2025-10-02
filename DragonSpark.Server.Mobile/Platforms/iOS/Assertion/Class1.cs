@@ -120,7 +120,7 @@ sealed class DetermineCounter : ISelect<DetermineCounterInput, uint?>
     }
 }
 
-// TODO
+// TODO: Assertions
 public readonly record struct AttestationPayloadInput(Array<byte> Source, Array<byte> PublicKey);
 
 sealed class GetAttestationPayload : IArray<AttestationPayloadInput, byte>
