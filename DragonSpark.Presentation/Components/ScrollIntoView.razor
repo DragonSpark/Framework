@@ -10,7 +10,7 @@
 
 	protected override Task OnAfterRenderAsync(bool firstRender)
 	{
-		var enabled = Enabled && (firstRender || Signal is null || Signal.Down());
+		var enabled = Enabled && (Signal?.Down() ?? firstRender);
 		var result  = enabled ? Runtime.InvokeAsync<bool>("scrollToElementId", Identifier).AsTask() : base.OnAfterRenderAsync(false);
 		return result;
 	}
