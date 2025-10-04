@@ -7,13 +7,11 @@
 
 @inherits Templates.ManyActiveContentTemplateComponentBase<Page<T>>
 
-<ResultingContentView Content="@_subject"
-                      LoadingTemplate="@LoadingTemplate"
-                      NotFoundTemplate="@NotFoundTemplate"
-                      ExceptionTemplate="@ExceptionTemplate">
+<ResultingContentView Content="@_subject" LoadingTemplate="@LoadingTemplate" NotFoundTemplate="@NotFoundTemplate"
+                      ExceptionTemplate="@ExceptionTemplate" Rendering="@Rendering">
     @if (context.Count > 0)
     {
-        @ChildContent(context)
+        <CascadingValue Value="context" ChildContent="@ChildContent(context)" />
     }
     else
     {
@@ -25,7 +23,7 @@
     IResulting<Page<T>>? _subject;
 
     [Parameter]
-    public IPages<T> Input
+    public required IPages<T> Input
     {
         get;
         set
@@ -36,7 +34,7 @@
                 _subject = null;
             }
         }
-    } = null!;
+    }
 
     [Parameter]
     public bool IncludeTotalCount
@@ -93,6 +91,9 @@
             }
         }
     }
+
+    [Parameter]
+    public EventCallback<Page<T>> Rendering { get; set; }
 
     protected override void OnParametersSet()
     {

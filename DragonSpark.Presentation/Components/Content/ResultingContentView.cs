@@ -37,6 +37,9 @@ partial class ResultingContentView<T>
 	public ICondition<None>? UpdateMonitor { get; set; }
 
 	[Parameter]
+	public EventCallback<T> Rendering { get; set; }
+
+	[Parameter]
 	public EventCallback<T> Rendered { get; set; }
 
 	[Parameter]
@@ -81,22 +84,24 @@ partial class ResultingContentView<T>
 					   : base.OnParametersSetAsync();
 	}
 
-	Task Update()
+	async Task Update()
 	{
 		if (_subject is { Status.IsCompletedSuccessfully: true } && _loaded.Up())
 		{
 			// ReSharper disable once AsyncApostle.AsyncWait
 			var result = _subject.Value().Status.Result;
+			if (result is not null)
+			{
+				await Rendering.On(result);
+			}
 			var refresh = _fragment is not null;
 			_fragment = ContentTemplate?.Invoke(result) ??
 			            (result is not null ? ChildContent(result) : NotFoundTemplate);
 			if (result is not null)
 			{
 				var callback = refresh ? Refreshed : Rendered;
-				return callback.Invoke(result);
+				await callback.Off(result);
 			}
 		}
-
-		return Task.CompletedTask;
 	}
 }

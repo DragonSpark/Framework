@@ -17,7 +17,7 @@
 
 @foreach (var item in _items)
 {
-    @ChildContent(item)
+    <Fragment @key="item?.GetHashCode()" ChildContent="@ChildContent(item)" />
 }
 
 @if (_loading)
