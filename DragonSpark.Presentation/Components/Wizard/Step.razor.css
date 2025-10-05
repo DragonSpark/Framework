@@ -1,4 +1,5 @@
-﻿/* Wizard with steps */
+﻿/* ReSharper disable Html.AttributeNotResolved */
+/* Wizard with steps */
 .fluent-wizard > ol > li {
     position: relative;
     display: flex;
@@ -109,7 +110,7 @@
 /* Title */
 .fluent-wizard > ol > li .fluent-wizard-title {
     margin-block-start: 2px;
-    margin-block-end: 0px;
+    margin-block-end: 0;
     white-space: nowrap;
 }
 
@@ -124,7 +125,7 @@
 /* Summary */
 .fluent-wizard > ol > li ::deep .fluent-wizard-summary {
     margin-block-start: 4px;
-    margin-block-end: 0px;
+    margin-block-end: 0;
     font-size: smaller;
 }
 
