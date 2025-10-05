@@ -10,16 +10,16 @@
     <PackageVersion Include="Aspire.Microsoft.EntityFrameworkCore.SqlServer" Version="8.2.0" />
     <PackageVersion Include="Aspire.Hosting.Redis" Version="8.2.0" />
     <PackageVersion Include="Aspire.StackExchange.Redis.OutputCaching" Version="8.2.0" />
-    <PackageVersion Include="AspNet.Security.OAuth.Amazon" Version="9.4.0" />
-    <PackageVersion Include="AspNet.Security.OAuth.Coinbase" Version="9.4.0" />
-    <PackageVersion Include="AspNet.Security.OAuth.DeviantArt" Version="9.4.0" />
-    <PackageVersion Include="AspNet.Security.OAuth.Discord" Version="9.4.0" />
+    <PackageVersion Include="AspNet.Security.OAuth.Amazon" Version="9.4.1" />
+    <PackageVersion Include="AspNet.Security.OAuth.Coinbase" Version="9.4.1" />
+    <PackageVersion Include="AspNet.Security.OAuth.DeviantArt" Version="9.4.1" />
+    <PackageVersion Include="AspNet.Security.OAuth.Discord" Version="9.4.1" />
     <PackageVersion Include="AspNet.Security.OAuth.Mixcloud" Version="8.3.0" />
-    <PackageVersion Include="AspNet.Security.OAuth.Patreon" Version="9.4.0" />
-    <PackageVersion Include="AspNet.Security.OAuth.Paypal" Version="9.4.0" />
-    <PackageVersion Include="AspNet.Security.OAuth.Reddit" Version="9.4.0" />
-    <PackageVersion Include="AspNet.Security.OAuth.Twitter" Version="9.4.0" />
-    <PackageVersion Include="AspNet.Security.OAuth.Yahoo" Version="9.4.0" />
+    <PackageVersion Include="AspNet.Security.OAuth.Patreon" Version="9.4.1" />
+    <PackageVersion Include="AspNet.Security.OAuth.Paypal" Version="9.4.1" />
+    <PackageVersion Include="AspNet.Security.OAuth.Reddit" Version="9.4.1" />
+    <PackageVersion Include="AspNet.Security.OAuth.Twitter" Version="9.4.1" />
+    <PackageVersion Include="AspNet.Security.OAuth.Yahoo" Version="9.4.1" />
     <PackageVersion Include="AsyncUtilities" Version="1.1.1" />
     <PackageVersion Include="AutoBogus.Conventions" Version="2.13.1" />
     <PackageVersion Include="AutoFixture.AutoMoq" Version="4.18.1" />
@@ -60,10 +60,10 @@
     <PackageVersion Include="MatBlazor" Version="2.10.0" />
     <PackageVersion Include="Metalama.Extensions.DependencyInjection" Version="2025.1.14" />
     <PackageVersion Include="Metalama.Framework" Version="2025.1.14" />
-    <PackageVersion Include="Microsoft.AspNetCore.Authentication.Facebook" Version="9.0.8" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.Facebook" Version="9.0.9" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.Google" Version="9.0.9" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.9" />
-    <PackageVersion Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="9.0.8" />
+    <PackageVersion Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="9.0.9" />
     <PackageVersion Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" Version="9.0.9" />
     <PackageVersion Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="9.0.9" />
     <PackageVersion Include="Microsoft.AspNetCore.Identity" Version="2.3.1" />
@@ -71,17 +71,17 @@
     <PackageVersion Include="Microsoft.AspNetCore.Identity.UI" Version="9.0.9" />
     <PackageVersion Include="Microsoft.AspNetCore.Mvc.Testing" Version="9.0.9" />
     <PackageVersion Include="Microsoft.AspNetCore.OData" Version="9.4.0" />
-    <PackageVersion Include="Microsoft.AspNetCore.OutputCaching.StackExchangeRedis" Version="9.0.8" />
+    <PackageVersion Include="Microsoft.AspNetCore.OutputCaching.StackExchangeRedis" Version="9.0.9" />
     <PackageVersion Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.9" />
     <PackageVersion Include="Microsoft.Azure.WebJobs" Version="3.0.41" />
     <PackageVersion Include="Microsoft.Azure.WebJobs.Extensions.ServiceBus" Version="5.17.0" />
-    <PackageVersion Include="Microsoft.Azure.WebJobs.Extensions.Storage" Version="5.3.5" />
+    <PackageVersion Include="Microsoft.Azure.WebJobs.Extensions.Storage" Version="5.3.6" />
     <PackageVersion Include="Microsoft.Data.SqlClient.AlwaysEncrypted.AzureKeyVaultProvider" Version="6.1.2" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.InMemory" Version="9.0.9" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.9" />
     <PackageVersion Include="Microsoft.EntityFrameworkCore.SqlServer" Version="9.0.9" />
     <PackageVersion Include="Microsoft.Extensions.Caching.Abstractions" Version="9.0.9" />
-    <PackageVersion Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.8" />
+    <PackageVersion Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="9.0.9" />
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="9.0.9" />
     <PackageVersion Include="Microsoft.Extensions.Http" Version="9.0.9" />
     <PackageVersion Include="Microsoft.Extensions.Http.Polly" Version="9.0.9" />
@@ -128,7 +128,7 @@
     <PackageVersion Include="Syncfusion.Maui.Toolkit" Version="1.0.7" />
     <PackageVersion Include="System.CodeDom" Version="9.0.9" />
     <PackageVersion Include="System.ComponentModel.TypeConverter" Version="4.3.0" />
-    <PackageVersion Include="System.Drawing.Common" Version="9.0.8" />
+    <PackageVersion Include="System.Drawing.Common" Version="9.0.9" />
     <PackageVersion Include="System.Formats.Asn1" Version="9.0.9" />
     <PackageVersion Include="System.IdentityModel.Tokens.Jwt" Version="8.14.0" />
     <PackageVersion Include="System.Linq.Async" Version="6.0.3" />
@@ -145,7 +145,6 @@
     <PackageVersion Include="xunit" Version="2.9.3" />
     <PackageVersion Include="xunit.extensibility.execution" Version="2.9.3" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
-	
     <!--
 	<PackageVersion Include="Microsoft.Net.Compilers.Razor.Toolset" Version="9.0.0-preview.25425.6" />
 	<PackageVersion Include="Microsoft.Net.Compilers.Toolset" Version="4.15.0-1.25175.5" />
