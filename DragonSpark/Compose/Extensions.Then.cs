@@ -234,10 +234,6 @@ public static partial class ExtensionMethods
 	public static IStopAware<T> Out<T>(this ISelect<Stop<T>, ValueTask> @this)
 		=> @this.To(x => x as IStopAware<T> ?? new StopAware<T>(x.Get));
 
-	public static IContinuing<TIn, TOut> Out<TIn, TOut>(this Composer<Stop<TIn>, ValueTask<Stop<TOut>>> @this)
-		=> @this.Get().To(x => x as IContinuing<TIn, TOut> ?? new Continuing<TIn, TOut>(x.Get));
-
-
 	public static IAllocating<TIn, TOut> Out<TIn, TOut>(this Composer<TIn, Task<TOut>> @this) => @this.Get().Out();
 	public static IAllocating<TIn, TOut> Out<TIn, TOut>(this ISelect<TIn, Task<TOut>> @this)
 		=> new Allocating<TIn, TOut>(@this);
