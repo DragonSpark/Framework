@@ -25,7 +25,6 @@
     <PackageVersion Include="AutoFixture.AutoMoq" Version="4.18.1" />
     <PackageVersion Include="AutoFixture.Xunit2" Version="4.18.1" />
     <PackageVersion Include="Azure.AI.OpenAI" Version="2.1.0" />
-    <PackageVersion Include="Azure.Core" Version="1.49.0" />
     <PackageVersion Include="Azure.Extensions.AspNetCore.Configuration.Secrets" Version="1.4.0" />
     <PackageVersion Include="Azure.Extensions.AspNetCore.DataProtection.Blobs" Version="1.5.1" />
     <PackageVersion Include="Azure.Extensions.AspNetCore.DataProtection.Keys" Version="1.6.1" />
@@ -105,7 +104,6 @@
     <PackageVersion Include="Refit.HttpClientFactory" Version="8.0.0" />
     <PackageVersion Include="Scrutor" Version="6.1.0" />
     <PackageVersion Include="SendGrid.Extensions.DependencyInjection" Version="1.0.1" />
-    <PackageVersion Include="Sentry" Version="5.14.1" />
     <PackageVersion Include="Sentry.Maui" Version="5.16.0" />
     <PackageVersion Include="Seq.Extensions.Logging" Version="8.0.0" />
     <PackageVersion Include="Serilog.Extensions.Hosting" Version="9.0.0" />
@@ -143,16 +141,11 @@
     <PackageVersion Include="System.Text.Json" Version="9.0.9" />
     <PackageVersion Include="System.Text.RegularExpressions" Version="4.3.1" />
     <PackageVersion Include="TweetinviAPI" Version="5.0.4" />
-    <PackageVersion Include="Uno.Extensions.Authentication" Version="6.0.12" />
-    <PackageVersion Include="Uno.Extensions.Hosting.WinUI" Version="5.2.7" />
-    <PackageVersion Include="Uno.Extensions.Navigation" Version="6.0.12" />
-    <PackageVersion Include="Uno.Extensions.Navigation.Toolkit.WinUI" Version="5.2.7" />
-    <PackageVersion Include="Uno.UI" Version="5.5.87" />
-    <PackageVersion Include="Uno.WinUI.DevServer" Version="5.5.87" />
     <PackageVersion Include="Xamarin.Google.Android.Play.Integrity" Version="1.5.0" />
     <PackageVersion Include="xunit" Version="2.9.3" />
     <PackageVersion Include="xunit.extensibility.execution" Version="2.9.3" />
     <PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
+	
     <!--
 	<PackageVersion Include="Microsoft.Net.Compilers.Razor.Toolset" Version="9.0.0-preview.25425.6" />
 	<PackageVersion Include="Microsoft.Net.Compilers.Toolset" Version="4.15.0-1.25175.5" />

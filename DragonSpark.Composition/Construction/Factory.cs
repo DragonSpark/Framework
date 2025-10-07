@@ -1,5 +1,4 @@
 using System;
-using JetBrains.Annotations;
 using LightInject;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,7 +10,6 @@ sealed class Factory : IServiceProviderFactory<IServiceContainer>
 
     public Factory(IServiceProviderFactory<IServiceContainer> factory) => _factory = factory;
 
-    [MustDisposeResource]
     public IServiceContainer CreateBuilder(IServiceCollection services) => _factory.CreateBuilder(services);
 
     public IServiceProvider CreateServiceProvider(IServiceContainer containerBuilder)
