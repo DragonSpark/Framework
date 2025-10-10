@@ -73,7 +73,8 @@
     <PackageVersion Include="Microsoft.AspNetCore.OData" Version="9.4.0" />
     <PackageVersion Include="Microsoft.AspNetCore.OutputCaching.StackExchangeRedis" Version="9.0.9" />
     <PackageVersion Include="Microsoft.AspNetCore.SignalR.Client" Version="9.0.9" />
-    <PackageVersion Include="Microsoft.Azure.WebJobs" Version="3.0.41" />
+    <PackageVersion Include="Microsoft.Azure.StackExchangeRedis" Version="3.2.1" />
+    <PackageVersion Include="Microsoft.Azure.WebJobs" Version="3.0.42" />
     <PackageVersion Include="Microsoft.Azure.WebJobs.Extensions.ServiceBus" Version="5.17.0" />
     <PackageVersion Include="Microsoft.Azure.WebJobs.Extensions.Storage" Version="5.3.6" />
     <PackageVersion Include="Microsoft.Data.SqlClient.AlwaysEncrypted.AzureKeyVaultProvider" Version="6.1.2" />
