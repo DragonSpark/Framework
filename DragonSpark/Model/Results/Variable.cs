@@ -5,7 +5,7 @@ namespace DragonSpark.Model.Results;
 
 public class Variable<T> : IMutable<T?>
 {
-	public static implicit operator T(Variable<T> instance) => instance.Get();
+	public static implicit operator T?(Variable<T> instance) => instance.Get();
 
 	readonly T?[] _store = new T[1];
 
