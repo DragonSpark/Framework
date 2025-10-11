@@ -1,26 +1,23 @@
-﻿using DragonSpark.Model.Commands;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Commands;
 using Microsoft.Extensions.Caching.StackExchangeRedis;
-using System;
 
 namespace DragonSpark.Redis;
 
 public class ConfigureDistributedMemory : ICommand<RedisCacheOptions>
 {
-	readonly Uri     _connection;
-	readonly string? _instance;
+	readonly ManagedOptions _options;
+	readonly string?        _instance;
 
-	protected ConfigureDistributedMemory(DistributedMemoryConnection connection, string? instance)
-		: this(connection.Get(), instance) {}
-
-	protected ConfigureDistributedMemory(Uri connection, string? instance)
+	protected ConfigureDistributedMemory(ManagedOptions options, string? instance)
 	{
-		_connection = connection;
-		_instance   = instance;
+		_options  = options;
+		_instance = instance;
 	}
 
 	public void Execute(RedisCacheOptions parameter)
 	{
-		parameter.Configuration = _connection.ToString();
-		parameter.InstanceName  = _instance;
+		parameter.ConfigurationOptions = _options.Allocate().GetAwaiter().GetResult();
+		parameter.InstanceName         = _instance;
 	}
 }

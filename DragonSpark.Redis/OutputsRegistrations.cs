@@ -5,11 +5,11 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Redis;
 
-sealed class MemoryRegistrations<T> : ICommand<IServiceCollection> where T : ConfigureDistributedMemory
+sealed class OutputsRegistrations<T> : ICommand<IServiceCollection> where T : ConfigureDistributedOutputs
 {
-	public static MemoryRegistrations<T> Default { get; } = new();
+	public static OutputsRegistrations<T> Default { get; } = new();
 
-	MemoryRegistrations() {}
+	OutputsRegistrations() {}
 
 	public void Execute(IServiceCollection parameter)
 	{
@@ -17,6 +17,6 @@ sealed class MemoryRegistrations<T> : ICommand<IServiceCollection> where T : Con
 		         .Include(x => x.Dependencies.Recursive())
 		         .Singleton()
 		         //
-		         .Then.AddStackExchangeRedisCache(parameter.Deferred<T>().Assume());
+		         .Then.AddStackExchangeRedisOutputCache(parameter.Deferred<T>().Assume());
 	}
 }

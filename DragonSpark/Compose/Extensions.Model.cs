@@ -18,6 +18,7 @@ using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Runtime.Activation;
 using JetBrains.Annotations;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Action = System.Action;
 using CommandComposer = DragonSpark.Compose.Extents.Commands.CommandComposer;
@@ -134,9 +135,12 @@ public static partial class ExtensionMethods
 		return result;
 	}
 
-	public static bool Assign(this IMutable<bool> @this, bool parameter)
+	public static bool Assign<T>(this IMutable<T> @this, T parameter)
+		=> @this.Assign(parameter, EqualityComparer<T>.Default);
+
+	public static bool Assign<T>(this IMutable<T> @this, T parameter, IEqualityComparer<T> comparer)
 	{
-		var result = @this.Get() != parameter;
+		var result = !comparer.Equals(@this.Get(), parameter);
 		if (result)
 		{
 			@this.Execute(parameter);

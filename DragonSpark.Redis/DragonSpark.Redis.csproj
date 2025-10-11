@@ -5,11 +5,13 @@
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.OutputCaching.StackExchangeRedis" />
+		<PackageReference Include="Microsoft.Azure.StackExchangeRedis" />
 		<PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" />
 		<PackageReference Include="StackExchange.Redis.Extensions.AspNetCore" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\DragonSpark.Azure\DragonSpark.Azure.csproj" />
 		<ProjectReference Include="..\DragonSpark.Server\DragonSpark.Server.csproj" />
 	</ItemGroup>
 
