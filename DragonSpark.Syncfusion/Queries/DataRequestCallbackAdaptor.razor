@@ -1,4 +1,4 @@
-﻿@inherits DataAdaptor
+@inherits DataAdaptor
 @using DragonSpark.Compose
 @using DragonSpark.Presentation
 @using Syncfusion.Blazor
@@ -12,7 +12,7 @@
 	{
 		var result = new DataRequestResult(request, key);
 		await Requested.Invoke(result).Off();
-		return result.Get();
+		return result.Get().Verify();
 	}
 
 }

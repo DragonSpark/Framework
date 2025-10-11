@@ -23,7 +23,7 @@ sealed class Notifications : INotifications
     readonly NotificationManagerCompat _manager;
     readonly Context                   _context;
     readonly NotificationChannelView   _channel;
-    
+
     public Notifications(NotificationChannelView channel) : this(Platform.CurrentActivity.Verify(), channel) {}
 
     [Candidate(false)]
@@ -33,7 +33,7 @@ sealed class Notifications : INotifications
     // ReSharper disable once TooManyDependencies
     [Candidate(false)]
     public Notifications(NotificationManagerCompat manager, EventHandler received, Context context,
-                                      NotificationChannelView channel)
+                         NotificationChannelView channel)
     {
         _manager             = manager;
         _context             = context;
@@ -110,10 +110,15 @@ sealed class Notifications : INotifications
         var activity = PendingIntent.GetActivity(_context, pendingIntentId++, intent, flags);
         var notification = new NotificationCompat.Builder(_context, identity)
                            .SetContentIntent(activity)
+                           .Verify()
                            .SetContentTitle(title)
+                           .Verify()
                            .SetContentText(message)
+                           .Verify()
                            .SetLargeIcon(BitmapFactory.DecodeResource(_context.Resources, large))
+                           .Verify()
                            .SetSmallIcon(small)
+                           .Verify()
                            .Build();
         _manager.Notify(messageId++, notification);
     }
