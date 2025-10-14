@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Reflection.Assemblies;
 using DragonSpark.Runtime.Environment;
-using Humanizer;
 using Serilog.Core.Enrichers;
 
 namespace DragonSpark.Diagnostics;
@@ -12,5 +11,5 @@ sealed class AssemblyDeployInformationEnricher : PropertyEnricher
 	AssemblyDeployInformationEnricher() : this(PrimaryAssemblyDeployInformation.Default) {}
 
 	public AssemblyDeployInformationEnricher(AssemblyDeployInformation value)
-		: base(nameof(AssemblyDeployInformation).Humanize(), value, true) {}
+		: base(nameof(AssemblyDeployInformation), value, true) {}
 }
