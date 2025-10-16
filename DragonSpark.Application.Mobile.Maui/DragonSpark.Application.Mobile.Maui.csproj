@@ -7,31 +7,31 @@
 		<UseMaui>true</UseMaui>
 		<SingleProject>true</SingleProject>
 	</PropertyGroup>
-    <ItemGroup>
-        <ProjectReference Include="..\DragonSpark.Application.Mobile\DragonSpark.Application.Mobile.csproj" />
-    </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\DragonSpark.Application.Mobile\DragonSpark.Application.Mobile.csproj" />
+	</ItemGroup>
 	<ItemGroup>
 	  <PackageReference Include="CommunityToolkit.Mvvm" />
-      <PackageReference Include="CommunityToolkit.Maui" />
-      <PackageReference Include="Microsoft.Maui.Controls" />
-      <PackageReference Include="Sentry.Maui" />
-      <PackageReference Include="Syncfusion.Licensing" />
-      <PackageReference Include="Syncfusion.Maui.DataForm" />
+	  <PackageReference Include="CommunityToolkit.Maui" />
+	  <PackageReference Include="Microsoft.Maui.Controls" />
+	  <PackageReference Include="Sentry.Maui" />
+	  <PackageReference Include="Syncfusion.Licensing" />
+	  <PackageReference Include="Syncfusion.Maui.DataForm" />
 	  <PackageReference Include="Syncfusion.Maui.Toolkit" />
 	  <PackageReference Include="System.CodeDom" />
 	</ItemGroup>
 	<ItemGroup>
 	  <Compile Update="Platforms\Android\Attestation\Registrations.cs">
-	    <ExcludeFromCurrentConfiguration>true</ExcludeFromCurrentConfiguration>
+		<ExcludeFromCurrentConfiguration>true</ExcludeFromCurrentConfiguration>
 	  </Compile>
 	  <Compile Update="Platforms\iOS\Extensions.cs">
-	    <ExcludeFromCurrentConfiguration>false</ExcludeFromCurrentConfiguration>
+		<ExcludeFromCurrentConfiguration>false</ExcludeFromCurrentConfiguration>
 	  </Compile>
 	  <Compile Update="Platforms\iOS\Http\Registrations.cs">
-	    <ExcludeFromCurrentConfiguration>false</ExcludeFromCurrentConfiguration>
+		<ExcludeFromCurrentConfiguration>false</ExcludeFromCurrentConfiguration>
 	  </Compile>
 	  <Compile Update="Platforms\iOS\Registrations.cs">
-	    <ExcludeFromCurrentConfiguration>false</ExcludeFromCurrentConfiguration>
+		<ExcludeFromCurrentConfiguration>false</ExcludeFromCurrentConfiguration>
 	  </Compile>
 	</ItemGroup>
 	<ItemGroup Condition="'$(TargetFramework)' == 'net9.0-android'">
