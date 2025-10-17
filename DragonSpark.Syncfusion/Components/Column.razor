@@ -15,16 +15,21 @@
 	Type="@Type"
 	HeaderTextAlign="@HeaderTextAlign"
 	TextAlign="@TextAlign"
-	FilterSettings="@FilterSettings"
+    FilterSettings="@FilterSettings"
+    EditTemplate="@_edit"
+    ValidationRules="@ValidationRules"
+    IsPrimaryKey="@IsPrimaryKey"
+    AllowEditing="@AllowEditing"
 />
 
 @code {
-    RenderFragment<object>? _template, _header;
+    RenderFragment<object>? _template, _header, _edit;
 
     protected override void OnInitialized()
     {
-        _header = HeaderTemplate is not null ? x => HeaderTemplate((T)x) : null;
+        _header   = HeaderTemplate is not null ? x => HeaderTemplate((T)x) : null;
         _template = Template is not null ? x => Template((T)x) : null;
+        _edit     = EditTemplate is not null ? x => EditTemplate((T)x) : null;
         base.OnInitialized();
 
         if (!DisplayFilter)
@@ -38,6 +43,18 @@
 
 	[Parameter]
 	public RenderFragment<T>? Template { get; set; }
+
+    [Parameter]
+    public RenderFragment<T>? EditTemplate { get; set; }
+
+    [Parameter]
+    public ValidationRules? ValidationRules { get; set; }
+
+    [Parameter]
+    public bool IsPrimaryKey { get; set; }
+
+    [Parameter]
+    public bool AllowEditing { get; set; } = true;
 
 	[Parameter]
 	public bool AutoFit { get; set; }
