@@ -1,4 +1,8 @@
-﻿using Azure.Core.Serialization;
+using System;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
+using Azure.Core.Serialization;
 using Azure.Messaging.EventHubs.Processor;
 using Azure.Messaging.ServiceBus;
 using DragonSpark.Azure.Messaging.Messages.Queues;
@@ -8,10 +12,6 @@ using DragonSpark.Composition;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Selection;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Azure;
 
@@ -41,12 +41,12 @@ public static class Extensions
 	public static IDeleteContents DeleteContents(this IContainer @this) => new DeleteContents(@this.Get());
 
 	public static ValueTask<object?> ToObjectAsync(this BinaryData data, Type type,
-	                                               CancellationToken cancellationToken = default)
+												   CancellationToken cancellationToken = default)
 		=> data.ToObjectAsync(type, JsonObjectSerializer.Default, cancellationToken);
 
 	// ReSharper disable once TooManyArguments
 	public static ValueTask<object?> ToObjectAsync(this BinaryData data, Type type, ObjectSerializer serializer,
-	                                               CancellationToken cancellationToken = default)
+												   CancellationToken cancellationToken = default)
 		=> serializer.DeserializeAsync(data.ToStream(), type, cancellationToken);
 
 	public static ISend Send(this ISender @this, TimeSpan? life = null, TimeSpan? visibility = null)
@@ -54,10 +54,10 @@ public static class Extensions
 
 	public static RegistrationResult Storage<T>(this IServiceCollection @this) where T : class, IContainer
 		=> @this.Start<IContainer>()
-		        .Forward<T>()
-		        .Singleton()
-		        .Then.Start<T>()
-		        .Singleton();
+				.Forward<T>()
+				.Singleton()
+				.Then.Start<T>()
+				.Singleton();
 
 	public static IServiceCollection AddAzureKeyVaultSecret(this IServiceCollection @this)
 		=> Data.AddAzureKeyVaultSecret.Default.Parameter(@this);
@@ -65,15 +65,16 @@ public static class Extensions
 	/**/
 
 	public static T Get<T>(this ISelect<IReadOnlyDictionary<string, object>, T> @this,
-	                       ProcessMessageEventArgs parameter) => @this.Get(parameter.Message);
+						   ProcessMessageEventArgs parameter) => @this.Get(parameter.Message);
 
 	public static T Get<T>(this ISelect<IReadOnlyDictionary<string, object>, T> @this, ProcessEventArgs parameter)
 	{
 		var properties = parameter.Data.Properties;
+		// ReSharper disable once SuspiciousTypeConversion.Global
 		return @this.Get(properties as IReadOnlyDictionary<string, object> ?? properties.AsReadOnly());
 	}
 
 	public static T Get<T>(this ISelect<IReadOnlyDictionary<string, object>, T> @this,
-	                       ServiceBusReceivedMessage parameter)
+						   ServiceBusReceivedMessage parameter)
 		=> @this.Get(parameter.ApplicationProperties);
 }
