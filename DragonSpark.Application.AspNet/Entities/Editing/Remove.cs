@@ -14,7 +14,7 @@ public class Remove<TIn, T> : Modify<TIn, T> where T : class
 		: base(scopes, query, x => configure(x.Subject.Subject)) {}
 
 	protected Remove(IEnlistedScopes scopes, IQuery<TIn, T> query)
-		: this(scopes, query, (Edit<T> _) => Task.CompletedTask.ToOperation().Off()) {}
+		: this(scopes, query, (Edit<T> _) => ValueTask.CompletedTask.Off()) {}
 
 	protected Remove(IEnlistedScopes scopes, IQuery<TIn, T> query, IOperation<Edit<T>> configure)
 		: this(scopes, query, configure.AsStop().Off) {}
