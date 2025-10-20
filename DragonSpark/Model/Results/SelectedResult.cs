@@ -5,6 +5,8 @@ namespace DragonSpark.Model.Results;
 
 public class SelectedResult<TIn, TOut> : IResult<TOut>
 {
+	public static implicit operator TOut(SelectedResult<TIn, TOut> @this) => @this.Get();
+	
 	readonly Func<TIn>       _previous;
 	readonly Func<TIn, TOut> _source;
 
