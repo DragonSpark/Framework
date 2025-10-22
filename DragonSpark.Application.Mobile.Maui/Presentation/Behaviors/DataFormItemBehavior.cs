@@ -8,7 +8,7 @@ public sealed class DataFormItemBehavior : BehaviorBase<SfDataForm>
 {
     public readonly static BindableProperty PaddingProperty
         = BindableProperty.Create(nameof(Padding), typeof(Thickness), typeof(DataFormItemBehavior),
-                                  new Thickness(-10, 0, -10, 0));
+                                  new Thickness(0, 0, 0, 0));
 
     public readonly static BindableProperty IsReadOnlyProperty
         = BindableProperty.Create(nameof(IsReadOnly), typeof(bool), typeof(DataFormItemBehavior), false);
