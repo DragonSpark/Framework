@@ -1,4 +1,4 @@
-﻿using DragonSpark.Model.Selection;
+using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Text;
 
