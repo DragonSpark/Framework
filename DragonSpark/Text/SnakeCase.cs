@@ -1,8 +1,11 @@
-﻿using System;
+using System;
 using DragonSpark.Runtime;
 
 namespace DragonSpark.Text;
 
+/// <summary>
+/// Attribution (more like a starting point): https://x.com/i/grok/share/9dxRQrRy5bkkAbjPdokeRnIHO
+/// </summary>
 public sealed class SnakeCase : IFormatter<ReadOnlyMemory<char>>
 {
     public static SnakeCase Default { get; } = new();
@@ -14,7 +17,6 @@ public sealed class SnakeCase : IFormatter<ReadOnlyMemory<char>>
         var span   = parameter.Span;
         var length = span.Length;
 
-        // First pass: count underscores
         for (var i = 1; i < span.Length; i++)
         {
             if (char.IsUpper(span[i]))
