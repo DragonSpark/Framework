@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using DragonSpark.Text;
 using Refit;
 
-namespace DragonSpark.Application.Communication.Http;
+namespace DragonSpark.Application.Communication.Http.Messaging;
 
 public sealed class FormUrlEncodedContentSerializer : IHttpContentSerializer
 {
