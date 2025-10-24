@@ -1,4 +1,4 @@
-﻿using System.Net.Http;
+using System.Net.Http;
 using System.Threading.Tasks;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
@@ -25,9 +25,11 @@ public sealed class ApplyAmbientFormValues : IStopAware<HttpRequestMessage>
     {
         var (subject, stop) = parameter;
 
-        if (subject.Content is not null && _condition.Get(parameter))
+        if (_condition.Get(parameter))
         {
-            var content = await subject.Content.ReadAsStringAsync(stop).Off();
+            var content = subject.Content is not null
+                              ? await subject.Content.ReadAsStringAsync(stop).Off()
+                              : string.Empty;
             subject.Content = _parser.Get(content);
         }
     }
