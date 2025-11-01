@@ -23,6 +23,7 @@
 		<PackageReference Include="Majorsoft.Blazor.Components.Common.JsInterop" />
 		<PackageReference Include="Majorsoft.Blazor.Components.Debounce" />
 		<PackageReference Include="MatBlazor" />
+		<PackageReference Include="Microsoft.AspNetCore.Razor.Language" />
 		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components.Icons" />
 		<PackageReference Include="Microsoft.FluentUI.AspNetCore.Components" />
 		<PackageReference Include="Radzen.Blazor" />

@@ -6,7 +6,7 @@ namespace DragonSpark.Presentation.Components.Forms.Validation;
 public class FieldValidation<T> : ValidationComponent
 {
 	[Parameter]
-	public IValidateValue<T> Validator { get; set; } = null!;
+	public required IValidateValue<T> Validator { get; set; }
 
 	protected override bool Validate() => Validator.Get(Identifier.GetValue<T>());
 }

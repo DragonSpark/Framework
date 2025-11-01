@@ -17,8 +17,7 @@ sealed class Messages : ICommand<IEnumerable<ValidationResultMessage>>,
 	readonly ValidationMessageStore               _store;
 	readonly ICollection<ValidationResultMessage> _messages;
 
-	public Messages(EditContext edit, ValidationMessageStore store)
-		: this(edit, store, new List<ValidationResultMessage>()) {}
+	public Messages(EditContext edit, ValidationMessageStore store) : this(edit, store, []) {}
 
 	public Messages(EditContext edit, ValidationMessageStore store, ICollection<ValidationResultMessage> messages)
 	{
