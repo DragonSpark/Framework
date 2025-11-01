@@ -17,14 +17,3 @@ public sealed class DifferentValueValidator : IValidateValue<string>
 
 	public bool Get(string parameter) => !_other.Equals(parameter, _comparison);
 }
-
-// TODO
-
-public sealed class IsAssignedValidator<T> : IValidateValue<T?>
-{
-	public static IsAssignedValidator<T> Default { get; } = new();
-
-	IsAssignedValidator() {}
-	
-	public bool Get(T? parameter) => parameter is not null;
-}
