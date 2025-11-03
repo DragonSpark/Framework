@@ -7,7 +7,7 @@ using System.Collections.Generic;
 namespace DragonSpark.Presentation.Compose;
 
 sealed class ToSelectionListingCollection<T>
-	: ISelect<Memory<SelectionListing<T>>, SelectionListingCollection<T>>
+	: ISelect<Memory<Model.Option<T>>, SelectionListingCollection<T>>
 {
 	public static ToSelectionListingCollection<T> Default { get; } = new();
 
@@ -17,7 +17,7 @@ sealed class ToSelectionListingCollection<T>
 
 	public ToSelectionListingCollection(IEqualityComparer<T> comparer) => _comparer = comparer;
 
-	public SelectionListingCollection<T> Get(Memory<SelectionListing<T>> parameter)
+	public SelectionListingCollection<T> Get(Memory<Model.Option<T>> parameter)
 	{
 		var source = parameter.Span;
 		var result = new SelectionListingCollection<T>(_comparer) { Capacity = source.Length };
