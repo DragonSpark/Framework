@@ -35,4 +35,7 @@ public static class Extensions
 	public static Point Center(this Size @this, Rectangle size) => PositionCenter.Default.Get(new(@this, size));
 
 	public static Size Size(this FontRectangle @this) => new((int)@this.Width, (int)@this.Height);
+	
+	public static Color Convert(this System.Drawing.Color color) => Color.FromRgba(color.R, color.G, color.B, color.A);
+
 }
