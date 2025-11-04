@@ -1,3 +1,4 @@
+using DragonSpark.Application.Mobile.Maui.Security.Identity.Client;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -9,5 +10,6 @@ sealed class DefaultRegistrations : Commands<IServiceCollection>
 
     DefaultRegistrations()
         : base(Mobile.DefaultRegistrations.Default, LocalRegistrations.Default, Diagnostics.Registrations.Default,
-               Device.Camera.Registrations.Default, Runtime.Registrations.Default) {}
+               Device.Camera.Registrations.Default, Runtime.Registrations.Default,
+               Registrations.Default) {}
 }

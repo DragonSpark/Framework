@@ -12,6 +12,12 @@ sealed class Registrations : ICommand<IServiceCollection>
 
     public void Execute(IServiceCollection parameter)
     {
-        parameter.Start<IAttest>().Forward<Attest>().Singleton();
+        parameter.Start<IClientKeyHash>()
+                 .Forward<ClientKeyHash>()
+                 .Singleton()
+                 //
+                 .Then.Start<IAttest>()
+                 .Forward<Attest>()
+                 .Singleton();
     }
 }
