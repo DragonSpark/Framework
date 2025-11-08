@@ -9,5 +9,8 @@ sealed class DefaultServiceBusConfiguration : ICommand<ServiceBusOptions>
 
 	DefaultServiceBusConfiguration() {}
 
-	public void Execute(ServiceBusOptions parameter) {}
+	public void Execute(ServiceBusOptions parameter)
+	{
+		parameter.MaxConcurrentCalls = 4;
+	}
 }
