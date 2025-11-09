@@ -12,14 +12,13 @@ namespace DragonSpark.Presentation.Components.Forms;
 
 public sealed class ValidationStateMonitor : ComponentBase, IDisposable
 {
-	readonly Switch _start = new();
-
+	readonly Switch  _start  = new();
 	Func<Task>       _update = null!;
 	IOperation<None> _call   = null!;
 
 	protected override void OnInitialized()
 	{
-		_call = new ThrottleOperation<None>(StartUpdate, TimeSpan.FromMilliseconds(100)).Then().Out();
+		_call   = new ThrottleOperation<None>(StartUpdate, TimeSpan.FromMilliseconds(100)).Then().Out();
 		_update = Update;
 		base.OnInitialized();
 	}
@@ -42,13 +41,23 @@ public sealed class ValidationStateMonitor : ComponentBase, IDisposable
 				if (field is not null)
 				{
 					field.OnValidationStateChanged -= StateChanged;
+					field.OnFieldChanged           -= StateChanged;
 				}
 
 				if ((field = value) != null)
 				{
 					field.OnValidationStateChanged += StateChanged;
+					field.OnFieldChanged           += StateChanged;
 				}
 			}
+		}
+	}
+
+	void StateChanged(object? sender, FieldChangedEventArgs e)
+	{
+		if (_start.Up())
+		{
+			StateHasChanged();
 		}
 	}
 
