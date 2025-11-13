@@ -1,4 +1,4 @@
-﻿using DragonSpark.Model.Commands;
+using DragonSpark.Model.Commands;
 
 namespace DragonSpark.Model.Results;
 

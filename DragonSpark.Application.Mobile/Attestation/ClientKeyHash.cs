@@ -5,9 +5,9 @@ using DragonSpark.Model.Operations.Results.Stop;
 
 namespace DragonSpark.Application.Mobile.Attestation;
 
-public sealed class ClientHash : StopAware<string>
+sealed class ClientKeyHash : StopAware<string>, IClientKeyHash
 {
-    public ClientHash(IClientKey key)
+    public ClientKeyHash(IClientKey key)
         : base(key.Then()
                   .Select(Convert.FromBase64String)
                   .Select(SHA256.HashData)

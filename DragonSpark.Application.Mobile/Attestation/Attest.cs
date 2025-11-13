@@ -18,7 +18,7 @@ sealed class Attest : IAttest
     readonly IChallenge         _challenge;
     readonly IAttestationToken  _token;
 
-    public Attest(ClientHash key, IChallenge challenge, IAttestationToken token)
+    public Attest(IClientKeyHash key, IChallenge challenge, IAttestationToken token)
     {
         _key       = key;
         _challenge = challenge;

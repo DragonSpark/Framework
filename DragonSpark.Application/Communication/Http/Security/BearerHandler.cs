@@ -11,8 +11,8 @@ public sealed class BearerHandler : DelegatingHandler
 	
 	public BearerHandler(IAccessTokenProvider provider) => _provider = provider;
 
-    protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
-                                                                 CancellationToken cancellationToken)
+	protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request,
+																 CancellationToken cancellationToken)
 	{
 		var token = await _provider.Off(new(request, cancellationToken));
 		if (token is not null)
