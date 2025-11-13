@@ -16,7 +16,6 @@
 		<PackageReference Include="LinqKit.Microsoft.EntityFrameworkCore" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" />
 		<PackageReference Include="Serilog.Sinks.Console" />
-		<PackageReference Include="System.Linq.Async" />
 		<PackageReference Include="System.Linq.Dynamic.Core" />
 	</ItemGroup>
 

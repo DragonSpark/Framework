@@ -8,9 +8,6 @@
     <PackageReference Include="AutoFixture.AutoMoq" />
     <PackageReference Include="AutoFixture.Xunit2" />
     <PackageReference Include="FluentAssertions" />
-    <PackageReference Include="System.ComponentModel.TypeConverter" />
-    <PackageReference Include="System.Net.Http" />
-    <PackageReference Include="System.Text.RegularExpressions" />
     <PackageReference Include="xunit" />
     <PackageReference Include="xunit.extensibility.execution" />
   </ItemGroup>

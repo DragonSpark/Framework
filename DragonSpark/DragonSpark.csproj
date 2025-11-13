@@ -14,10 +14,8 @@
     <PackageReference Include="Ben.Demystifier" />
     <PackageReference Include="Microsoft.Extensions.Hosting" />
     <PackageReference Include="NetFabric.Hyperlinq" />
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" />
     <PackageReference Include="JetBrains.Annotations" />
     <PackageReference Include="Polly" />
-    <PackageReference Include="System.Text.Json" />
   </ItemGroup>
 
   <ItemGroup>
