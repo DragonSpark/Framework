@@ -1,7 +1,7 @@
 <Project>
   <PropertyGroup>
 	<TargetFramework>net8.0</TargetFramework>
-	<LangVersion>latest</LangVersion>
+	<LangVersion>12.0</LangVersion>
 	<Nullable>enable</Nullable>
 	<RunAnalyzersDuringLiveAnalysis>false</RunAnalyzersDuringLiveAnalysis>
 	<EnableNETAnalyzers>false</EnableNETAnalyzers>
