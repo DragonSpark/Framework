@@ -209,6 +209,8 @@ public static partial class ExtensionMethods
 
 	public static double Snap(this in float @this) => Math.Round(@this, 6);
 
+	public static double Snap(this in float @this) => Math.Round(@this, 6);
+
 	public static long Clip(this in float @this) => (long)@this;
 
     public static long Clip(this in double @this) => (long)@this;
