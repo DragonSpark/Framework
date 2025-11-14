@@ -1,13 +1,13 @@
+using DragonSpark.Model;
+using DragonSpark.Model.Selection;
+using DragonSpark.Runtime;
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using DragonSpark.Model;
-using DragonSpark.Model.Selection;
-using DragonSpark.Runtime;
-using JetBrains.Annotations;
 
 namespace DragonSpark.Compose;
 
@@ -206,8 +206,6 @@ public static partial class ExtensionMethods
     public static double Contract(this in decimal @this) => (double)@this;
 
     public static float Contract(this in double @this) => (float)@this;
-
-	public static double Snap(this in float @this) => Math.Round(@this, 6);
 
 	public static double Snap(this in float @this) => Math.Round(@this, 6);
 
