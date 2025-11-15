@@ -1,14 +1,15 @@
 <Project>
   <PropertyGroup>
-	<DefaultWindowsVersion>10.0.26100</DefaultWindowsVersion>
-	<DefaultWindowsTargetFramework>net9.0-windows$(DefaultWindowsVersion).0</DefaultWindowsTargetFramework>
+	<DefaultWindowsVersion>10.0.19041</DefaultWindowsVersion>
+	<DefaultWindowsTargetFramework>net10.0-windows$(DefaultWindowsVersion).0</DefaultWindowsTargetFramework>
 	<WindowsSdkPackageVersion>$(DefaultWindowsVersion).57</WindowsSdkPackageVersion>
-	<DefaultTargetFramework>net9.0</DefaultTargetFramework>
-	<DefaultMauiTargetFrameworks>net9.0-android;net9.0-ios</DefaultMauiTargetFrameworks>
+	<DefaultTargetFramework>net10.0</DefaultTargetFramework>
+	<DefaultMauiTargetFrameworks>net10.0-android;net10.0-ios</DefaultMauiTargetFrameworks>
 	
 	<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">15.0</SupportedOSPlatformVersion>
-	<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+	<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">23.0</SupportedOSPlatformVersion>
 	<SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+	<Configurations>Debug;Release;Testing</Configurations>
 	<!-- 
 		<TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
 		-->

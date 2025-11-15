@@ -15,7 +15,7 @@ sealed class WebHostBuilder : IWebHostBuilder, ISupportsStartup
 
 	public WebHostBuilder(WebApplication application) => _application = application;
 
-	[MustDisposeResource]
+	[MustDisposeResource, Obsolete("Obsolete")]
 	public IWebHost Build() => throw new InvalidOperationException();
 
 	public IWebHostBuilder ConfigureAppConfiguration(
