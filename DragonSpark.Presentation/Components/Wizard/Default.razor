@@ -167,7 +167,7 @@
     [CascadingParameter] IActivityMonitor? Monitor { get; set; }
     [CascadingParameter] IActivityReceiver? Receiver { get; set; }
 
-    bool Active => Monitor?.Active ?? (Receiver?.Active ?? false);
+    bool Active => Monitor?.Active ?? Receiver?.Active ?? false;
 
     /// <summary />
     protected virtual async Task OnNextHandlerAsync()
