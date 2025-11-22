@@ -12,5 +12,5 @@ public class Option<T>
 
 	public string? Tag { get; set; }
 
-	public string Icon { get; set; } = null!;
+	public string? Icon { get; set; }
 }
