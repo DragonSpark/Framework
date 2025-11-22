@@ -1,0 +1,42 @@
+﻿@using DragonSpark.Compose
+@using DragonSpark.Model.Selection
+@using DragonSpark.Presentation.Components.Content.Templates
+
+@typeparam TIn
+@typeparam TOut
+
+@inherits InteractiveComponentBase<TIn>
+
+<CascadingValue TValue="TOut" Value="@_out" ChildContent="@_body" />
+
+@code {
+    TOut           _out  = default!;
+    RenderFragment _body = null!;
+
+    protected override void OnInitialized()
+    {
+        _body = LoadingTemplate;
+        base.OnInitialized();
+    }
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        var changed = parameters.DidParameterChange(nameof(Input), Input);
+        await base.SetParametersAsync(parameters).On();
+        if (changed)
+        {
+            _out  = Selector.Get(Input);
+            _body = ChildContent(_out);
+        }
+        
+    }
+
+    [Parameter]
+    public required ISelect<TIn, TOut> Selector { set; get; }
+
+    [Parameter]
+    public required RenderFragment<TOut> ChildContent { get; set; }
+
+    [Parameter]
+    public required RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
+}
