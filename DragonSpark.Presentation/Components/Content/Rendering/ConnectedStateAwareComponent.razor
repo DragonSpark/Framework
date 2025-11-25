@@ -1,6 +1,5 @@
-﻿@using DragonSpark.Model.Results
-@using DragonSpark.Compose
-@using DragonSpark.Presentation.Components.Content.Templates
+﻿@using DragonSpark.Presentation.Components.Content.Templates
+
 @inject RenderStateStore Render
 
 @if (_render)
@@ -13,23 +12,16 @@ else
 }
 
 @code {
-    readonly Switch _render = new();
+    bool _render;
 
     protected override void OnInitialized()
     {
-        switch (Render.Get())
-        {
-            case RenderState.Ready:
-            case RenderState.Established:
-                _render.Up();
-                break;
-        }
-
+        _render = Render.IsConnected();
         base.OnInitialized();
     }
 
     [Parameter]
-    public RenderFragment ChildContent { get; set; } = null!;
+    public required RenderFragment ChildContent { get; set; }
 
     [Parameter]
     public RenderFragment LoadingTemplate { get; set; } = EmptyContentTemplate.Default;
