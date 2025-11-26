@@ -62,18 +62,14 @@ sealed class ActivityAwareOperation<T> : IOperation<T>
 
 	public async ValueTask Get(T parameter)
 	{
-		var operation = _operation.Get(parameter);
-		if (!operation.IsCompleted)
+		await _subject.On(_state);
+		try
 		{
-			await _subject.On(_state);
-			try
-			{
-				await operation.On();
-			}
-			finally
-			{
-				await _subject.Off();
-			}
+			await _operation.On(parameter);
+		}
+		finally
+		{
+			await _subject.Off();
 		}
 	}
 }

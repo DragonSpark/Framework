@@ -10,7 +10,7 @@ public class InteractiveComponentBase : ComponentBase
 	[CascadingParameter]
 	public required IActivityReceiver Receiver { get; set; }
 
-	protected override bool ShouldRender() => !Receiver.Active;
+	
 }
 
 public class InteractiveComponentBase<T> : InteractiveComponentBase

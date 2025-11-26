@@ -9,7 +9,7 @@
     readonly Switch _render = new();
 
     [Parameter]
-    public RenderFragment ChildContent { get; set; } = null!;
+    public required RenderFragment ChildContent { get; set; }
 
     void Render()
     {

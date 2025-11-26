@@ -11,7 +11,9 @@ using DragonSpark.Composition.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Results;
 using DragonSpark.Presentation.Components.Content;
+using DragonSpark.Presentation.Components.Content.Rendering;
 using DragonSpark.Presentation.Components.Forms;
 using DragonSpark.Presentation.Components.Forms.Validation;
 using DragonSpark.Presentation.Components.State;
@@ -148,15 +150,10 @@ public static class Extensions
 
 	/**/
 
-	public static SelectionListingCollection<T> ToSelectionListingCollection<T>(
-		this Memory<SelectionListing<T>> @this)
-		=> Compose.ToSelectionListingCollection<T>.Default.Get(@this);
+	public static OptionCollection<T> ToOptionCollection<T>(this Memory<Option<T>> @this)
+		=> Compose.ToOptionCollection<T>.Default.Get(@this);
 
-	public static SelectionListingCollection<T> ToSelectionListingCollection<T>(
-		this IEnumerable<SelectionListing<T>> @this) => new(@this);
-
-	public static SelectionListingCollection<T> ToSelectionListingCollection<T>(
-		this IEnumerable<SelectionListing<T>> @this, IEqualityComparer<T> comparer) => new(@this, comparer);
+	public static OptionCollection<T> ToOptionCollection<T>(this IEnumerable<Option<T>> @this) => new(@this);
 
 	/**/
 
@@ -203,4 +200,8 @@ public static class Extensions
 	public static CancelAwareActivityOptions Get(this IStopHandle @this, string message, IOperation? canceled = null,
 	                                             PostRenderAction action = PostRenderAction.None)
 		=> new(message, @this, PostRenderAction: action, Canceled: canceled);
+	
+	/**/
+	public static bool IsConnected(this IResult<RenderState> @this)
+		=> @this.Get() is RenderState.Ready or RenderState.Established;
 }

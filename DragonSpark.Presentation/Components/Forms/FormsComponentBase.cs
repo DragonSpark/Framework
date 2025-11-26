@@ -27,7 +27,9 @@ public class FormsComponentBase : InteractiveComponentBase
 	[CascadingParameter]
 	protected FieldRegistry Fields { get; set; } = null!;
 
-	protected override bool ShouldRender() => base.ShouldRender() && !_submitting;
+	protected sealed override bool ShouldRender() => AllowRender() && !_submitting;
+
+	protected virtual bool AllowRender() => base.ShouldRender();
 }
 
 public class FormsComponentBase<T> : InteractiveComponentBase<T>
@@ -50,6 +52,8 @@ public class FormsComponentBase<T> : InteractiveComponentBase<T>
 	[CascadingParameter]
 	protected FieldRegistry Fields { get; set; } = null!;
 
-	protected override bool ShouldRender() => base.ShouldRender() && !_submitting;
+	protected sealed override bool ShouldRender() => AllowRender() && !_submitting;
+
+	protected virtual bool AllowRender() => base.ShouldRender();
 }
 

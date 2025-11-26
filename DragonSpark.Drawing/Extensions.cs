@@ -16,12 +16,12 @@ public static class Extensions
 	public static Image ResizeToRatioMinimum(this Image @this, Size size)
 		=> Drawing.ResizeToRatioMinimum.Default.Parameter(new(@this, size)).Subject;
 
-	public static Image CloneToRatioMaximum(this Image @this, Image source) => ResizeToRatioMaximum(@this, source.Size);
+	public static Image CloneToRatioMaximum(this Image @this, Image source) => CloneToRatioMinimum(@this, source.Size);
 
 	public static Image CloneToRatioMaximum(this Image @this, Size size)
 		=> Drawing.CloneToRatioMaximum.Default.Get(new(@this, size));
 
-	public static Image ConeToRatioMinimum(this Image @this, Image source) => ResizeToRatioMinimum(@this, source.Size);
+	public static Image ConeToRatioMinimum(this Image @this, Image source) => CloneToRatioMinimum(@this, source.Size);
 
 	public static Image CloneToRatioMinimum(this Image @this, Size size)
 		=> Drawing.CloneToRatioMinimum.Default.Get(new(@this, size));
@@ -35,4 +35,7 @@ public static class Extensions
 	public static Point Center(this Size @this, Rectangle size) => PositionCenter.Default.Get(new(@this, size));
 
 	public static Size Size(this FontRectangle @this) => new((int)@this.Width, (int)@this.Height);
+	
+	public static Color Convert(this System.Drawing.Color color) => Color.FromRgba(color.R, color.G, color.B, color.A);
+
 }

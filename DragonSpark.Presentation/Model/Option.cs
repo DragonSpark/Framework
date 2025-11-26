@@ -1,8 +1,8 @@
 ﻿namespace DragonSpark.Presentation.Model;
 
-public class SelectionListing : SelectionListing<string>;
+public class Option : Option<string>;
 
-public class SelectionListing<T>
+public class Option<T>
 {
 	public T Value { get; set; } = default!;
 
@@ -12,5 +12,5 @@ public class SelectionListing<T>
 
 	public string? Tag { get; set; }
 
-	public string Icon { get; set; } = null!;
+	public string? Icon { get; set; }
 }
