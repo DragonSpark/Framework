@@ -28,10 +28,10 @@ public class AddClaim<T> : IStopAware<T, IdentityResult> where T : IdentityUser
 	public async ValueTask<IdentityResult> Get(Stop<T> parameter)
 	{
         // ReSharper disable once NotDisposedResource
-        using var edit   = await _edit.Get(parameter).On();
+        using var edit   = await _edit.On(parameter);
         using var users  = _users.Get();
         var       claim  = _claim(parameter);
-		var       result = await users.Subject.AddClaimAsync(parameter, claim).Off();
+		var       result = await users.Subject.AddClaimAsync(edit.Subject, claim).Off();
 		return result;
 	}
 }
