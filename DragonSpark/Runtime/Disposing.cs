@@ -1,7 +1,9 @@
-using DragonSpark.Model.Operations;
-using JetBrains.Annotations;
 using System;
 using System.Threading.Tasks;
+using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Results;
+using JetBrains.Annotations;
 
 namespace DragonSpark.Runtime;
 
@@ -15,4 +17,17 @@ public class Disposing : IAsyncDisposable
     protected Disposing(Operate operate) => _operate = operate;
 
     public ValueTask DisposeAsync() => _operate();
+}
+
+
+public class Disposing<T> : IAsyncDisposable
+{
+    readonly IResulting<T> _previous;
+
+    public Disposing(IResulting<T> previous) => _previous = previous;
+
+    public async ValueTask DisposeAsync()
+    {
+        await _previous.Off();
+    }
 }
