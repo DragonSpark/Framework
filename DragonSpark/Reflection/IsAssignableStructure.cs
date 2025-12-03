@@ -1,9 +1,9 @@
-using DragonSpark.Runtime;
 using System;
+using DragonSpark.Runtime;
 
 namespace DragonSpark.Reflection;
 
-sealed class IsAssignableStructure : IsAssigned<Type, Type>
+public sealed class IsAssignableStructure : IsAssigned<Type, Type>
 {
 	public static IsAssignableStructure Default { get; } = new();
 
