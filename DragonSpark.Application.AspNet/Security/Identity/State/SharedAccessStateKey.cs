@@ -1,5 +1,5 @@
-﻿using DragonSpark.Text;
-using Humanizer;
+﻿using DragonSpark.Compose;
+using DragonSpark.Text;
 using Microsoft.Extensions.Hosting;
 using System;
 

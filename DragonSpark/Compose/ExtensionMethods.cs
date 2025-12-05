@@ -1,8 +1,8 @@
-using System;
 using DragonSpark.Diagnostics.Logging;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Sequences;
 using Microsoft.Extensions.Logging;
+using System;
 using Exception = System.Exception;
 
 namespace DragonSpark.Compose;
@@ -248,6 +248,29 @@ public static partial class ExtensionMethods
 	                                                Exception exception, T1 first, T2 second, T3 third)
 		=> @this.Get(new(exception, (first, second, third)));
 
-	public static bool IsNullOrEmpty(this string? @this) => string.IsNullOrEmpty(@this);
-	public static bool IsNullOrWhiteSpace(this string? @this) => string.IsNullOrWhiteSpace(@this);
+	extension(string @this)
+	{
+		public string FormatWith<T>(T? first) => string.Format(@this, first);
+
+		public string FormatWith<T1, T2>(T1? first, T2? second) => string.Format(@this, first, second);
+
+		public string FormatWith<T1, T2, T3>(T1? first, T2? second, T3? third)
+			=> string.Format(@this, first, second, third);
+
+		public string FormatWith<T1, T2, T3, T4>(T1? first, T2? second, T3? third, T4? forth)
+			=> string.Format(@this, first, second, third, forth);
+
+		public string FormatWith(params object?[] args) => string.Format(@this, args);
+
+		// Culture-aware overload
+		public string FormatWith(IFormatProvider provider, params object?[] args)
+			=> string.Format(provider, @this, args);
+	}
+
+	extension(string? @this)
+	{
+		public bool IsNullOrEmpty() => string.IsNullOrEmpty(@this);
+
+		public bool IsNullOrWhiteSpace() => string.IsNullOrWhiteSpace(@this);
+	}
 }

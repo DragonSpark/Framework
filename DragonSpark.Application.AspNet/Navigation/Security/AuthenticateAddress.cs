@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Application.Navigation;
+using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Text;
-using Humanizer;
 
 namespace DragonSpark.Application.AspNet.Navigation.Security;
 
