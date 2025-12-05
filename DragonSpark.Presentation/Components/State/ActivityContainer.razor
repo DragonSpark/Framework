@@ -40,7 +40,7 @@
 @code
 {
     readonly List<IRenderAware> _renderings = new();
-    readonly Switch             _start      = false, _restore = false, _displaying = false, _render = true;
+    readonly Switch             _start      = false, _restore = false, _displaying = false, _render = true, _redraw = false;
     ActivityReceiverModel       _previous   = null!;
     RenderFragment              _content    = null!;
     string?                     _class, _outer;
@@ -118,6 +118,15 @@
         }
     }
 
+    protected override void OnParametersSet()
+    {
+        if (Active)
+        {
+            _redraw.Up();
+        }
+        base.OnParametersSet();
+    }
+
     public async ValueTask<ActivityReceiverState?> Get()
     {
         var result = await _previous.On();
@@ -132,11 +141,14 @@
                 await Monitor.On();
             }
 
-            switch (result.Value.Options.PostRenderAction)
+            var action = result.Value.Options.PostRenderAction;
+            if (_redraw.Down() || action == PostRenderAction.ForceRedraw)
             {
-                case PostRenderAction.ForceRedraw:
-                    StateHasChanged();
-                    break;
+                StateHasChanged();
+            }
+
+            switch (action)
+            {
                 case PostRenderAction.DeferredRedraw:
                     _render.Down();
                     break;
