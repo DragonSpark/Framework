@@ -44,14 +44,14 @@ public sealed class CallbackComposer : IResult<EventCallback>
 	{
 		var body      = _method.Start().Then().Structure().Out();
 		var operation = new ActivityAwareOperation(body, receiver, options);
-		return new(receiver, operation.Allocate);
+		return new(_method.Target ?? receiver, operation.Allocate);
 	}
 
 	public CallbackComposer UpdateActivity(IActivityReceiver receiver, CancelAwareActivityOptions options)
 	{
 		var body      = _method.Start().Then().Structure().Out();
 		var operation = new CancelAwareOperation(new ActivityAwareOperation(body, receiver, options), options);
-		return new(receiver, operation.Allocate);
+		return new(_method.Target ?? receiver, operation.Allocate);
 	}
 
 	public OperationCallbackComposer BlockFor(TimeSpan duration)
