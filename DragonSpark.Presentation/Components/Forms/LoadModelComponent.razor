@@ -9,7 +9,11 @@
 
 @inject ProblemLoadingState ProblemLoading
 
-@if (_model is not null)
+@if (_error.Get() is not null)
+{
+    @ExceptionTemplate
+}
+else if (_model is not null)
 {
     @ChildContent(_model)
 }
@@ -19,20 +23,22 @@ else
 }
 
 @code {
-    readonly Switch _call = new();
-    T?              _model;
-    EventCallback   _load;
+    readonly Switch               _call  = new();
+    readonly IMutable<Exception?> _error = new Variable<Exception>();
+    T?                            _model;
+    EventCallback                 _load;
 
     protected override void OnInitialized()
     {
-        _load = Start.A.Callback(LoadContent).UpdateActivity(Receiver);
+        _load = Start.A.Callback(LoadContent).UpdateActivity(Receiver).Handle(Exceptions);
         base.OnInitialized();
     }
 
     public override async Task SetParametersAsync(ParameterView parameters)
     {
+        var changed = _model is null && parameters.DidParameterChange(nameof(Model), Model);
         await base.SetParametersAsync(parameters);
-        if (_model is null || Load)
+        if (changed || Load)
         {
             await _load.Off();
         }
@@ -56,10 +62,25 @@ else
     [Parameter]
     public required IStopAware<T> Model { get; set; }
 
+    [Parameter]
+    public virtual RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
+
+    [Parameter]
+    public virtual RenderFragment ExceptionTemplate { get; set; } = DefaultExceptionTemplate.Default;
+
     async Task LoadContent()
     {
-        _model = await LoadModel().On();
-        _call.Up();
+        try
+        {
+            _error.Execute(null);
+            _model = await LoadModel().On();
+            _call.Execute(_model is not null);
+        }
+        catch (Exception e)
+        {
+            _error.Execute(e);
+            throw;
+        }
     }
 
     async Task<T> LoadModel()

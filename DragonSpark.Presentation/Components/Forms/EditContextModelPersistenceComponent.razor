@@ -77,9 +77,6 @@
 
     public void Dispose()
     {
-        if (_current is not null)
-        {
-            _current.OnFieldChanged -= FieldChanged;
-        }
+        _current?.OnFieldChanged -= FieldChanged;
     }
 }
