@@ -9,7 +9,7 @@ namespace DragonSpark.Presentation.Components.Forms;
 
 public class FormsComponentBase : InteractiveComponentBase
 {
-	DragonSpark.Model.Results.Switch _submitting = null!;
+	DragonSpark.Model.Results.Switch _submitting = false;
 
 	public override async Task SetParametersAsync(ParameterView parameters)
 	{
