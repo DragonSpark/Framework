@@ -1,8 +1,8 @@
+using System;
 using DragonSpark.Diagnostics.Logging;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Sequences;
 using Microsoft.Extensions.Logging;
-using System;
 using Exception = System.Exception;
 
 namespace DragonSpark.Compose;
@@ -273,4 +273,11 @@ public static partial class ExtensionMethods
 
 		public bool IsNullOrWhiteSpace() => string.IsNullOrWhiteSpace(@this);
 	}
+    extension(DateOnly @this)
+    {
+        public DateTime ToDateTimeLocal() => @this.ToDateTime(TimeOnly.MinValue);
+
+        public DateTime ToDateTime() => @this.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
+    }
+
 }
