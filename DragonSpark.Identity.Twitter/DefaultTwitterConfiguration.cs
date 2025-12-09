@@ -17,6 +17,9 @@ public sealed class DefaultTwitterConfiguration : ICommand<TwitterAuthentication
 
 	public void Execute(TwitterAuthenticationOptions parameter)
 	{
+		parameter.AuthorizationEndpoint   = parameter.AuthorizationEndpoint.Replace("twitter.com", "x.com");
+		parameter.TokenEndpoint           = parameter.TokenEndpoint.Replace("twitter.com", "x.com");
+		parameter.UserInformationEndpoint = parameter.UserInformationEndpoint.Replace("twitter.com", "x.com");
 		foreach (var fields in _fields)
 		{
 			parameter.UserFields.Add(fields);
