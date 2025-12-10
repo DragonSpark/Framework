@@ -120,7 +120,7 @@ public static partial class ExtensionMethods
 
 	public static Switch Switched(this Switch @this)
 	{
-		@this.Execute(!@this.Get());
+		@this.Execute(!@this);
 		return @this;
 	}
 
