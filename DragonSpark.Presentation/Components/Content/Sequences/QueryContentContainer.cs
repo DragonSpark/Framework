@@ -2,6 +2,7 @@
 using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
 using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Shape;
 using DragonSpark.Compose;
+using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.Components;
 using Radzen;
 using System;
@@ -11,6 +12,7 @@ namespace DragonSpark.Presentation.Components.Content.Sequences;
 
 partial class QueryContentContainer<T> : IPageContainer<T>
 {
+	readonly Switch   _ready = false;
 	IPages<T>?        _subject;
 	IPageContainer<T> _relay = null!;
 
@@ -30,6 +32,7 @@ partial class QueryContentContainer<T> : IPageContainer<T>
 		await base.SetParametersAsync(parameters).Off();
 		if (changed)
 		{
+			_ready.Down();
 			_subject = DetermineSubject();
 		}
 	}
@@ -43,11 +46,13 @@ partial class QueryContentContainer<T> : IPageContainer<T>
 
 	public void Execute(Page<T> parameter)
 	{
+		_ready.Up();
 		_relay.Execute(parameter);
 	}
 
 	public void Execute(Exception parameter)
 	{
+		_ready.Up();
 		_relay.Execute(parameter);
 	}
 
