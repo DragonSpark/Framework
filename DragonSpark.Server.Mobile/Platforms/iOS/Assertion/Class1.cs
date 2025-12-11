@@ -120,7 +120,7 @@ sealed class DetermineCounter : ISelect<DetermineCounterInput, uint?>
     }
 }
 
-// TODO: Assertions
+// ISSUE: Assertions is sort of a nebulous obscurity at the moment: https://github.com/dotnet/maui/discussions/31169
 public readonly record struct AttestationPayloadInput(Array<byte> Source, Array<byte> PublicKey);
 
 sealed class GetAttestationPayload : IArray<AttestationPayloadInput, byte>
