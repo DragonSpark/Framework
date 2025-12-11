@@ -58,6 +58,7 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         //
 		         .Then.Start<Radzen.DialogService>()
 		         .And<NotificationService>()
+		         .And<TooltipService>()
 		         .And<ScrollToFirstValidationMessage>()
 		         .And<ResourceExistsValidation>()
 		         .Scoped()
