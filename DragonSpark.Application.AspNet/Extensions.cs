@@ -121,7 +121,7 @@ partial class Extensions
 
     public static UserInput<T> Input<T>(this HttpContext @this, T subject) => @this.User.Input(subject);
 
-    public static Stop<uint> UserInput(this HttpContext @this)
+	public static Stop<uint> UserInput(this HttpContext @this)
         => new(@this.User.Number().Value(), @this.RequestAborted);
 
     public static Stop<T> Stop<T>(this HttpContext @this, T parameter) => new(parameter, @this.RequestAborted);
