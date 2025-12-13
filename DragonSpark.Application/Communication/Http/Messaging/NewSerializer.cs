@@ -1,14 +1,15 @@
-using System.Text.Json;
 using DragonSpark.Model.Selection;
 using Refit;
+using System.Text.Json;
 
 namespace DragonSpark.Application.Communication.Http.Messaging;
 
 public sealed class NewSerializer : ISelect<JsonSerializerOptions, IHttpContentSerializer>
 {
-    public static NewSerializer Default { get; } = new();
+	public static NewSerializer Default { get; } = new();
 
-    NewSerializer() {}
+	NewSerializer() {}
 
-    public IHttpContentSerializer Get(JsonSerializerOptions parameter) => new NoContentAwareSerializer(parameter);
+	public IHttpContentSerializer Get(JsonSerializerOptions parameter)
+		=> new PolymorphicAwareContentSerializer(parameter);
 }

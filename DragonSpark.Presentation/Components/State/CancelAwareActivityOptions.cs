@@ -6,6 +6,7 @@ namespace DragonSpark.Presentation.Components.State;
 public sealed record CancelAwareActivityOptions(
 	string Message,
 	IStopHandle Handle,
-	bool RedrawOnStart = false,
+	bool RedrawOnStart = true,
 	IOperation? Canceled = null,
-	PostRenderAction PostRenderAction = PostRenderAction.None) : ActivityOptions(RedrawOnStart, PostRenderAction);
+	PostRenderAction PostRenderAction = PostRenderAction.ForceRedraw)
+	: ActivityOptions(RedrawOnStart, PostRenderAction);
