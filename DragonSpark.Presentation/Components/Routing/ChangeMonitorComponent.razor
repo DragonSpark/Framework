@@ -4,20 +4,20 @@
 @inherits NavigationAwareComponent
 
 <ConfirmResultContext T="None" @ref="_confirm" Title="@Title" PrimaryClass="primary button fit" SecondaryClass="button fit">
-    @ChildContent
+	@ChildContent
 </ConfirmResultContext>
 
 @if (_enabled)
 {
-    <BrowserUnloadMonitor />
+	<BrowserUnloadMonitor />
 }
 
 @code
 { 
-    readonly Switch            _enabled = new();
-    ConfirmResultContext<None> _confirm = null!;
+	readonly Switch            _enabled = new();
+	ConfirmResultContext<None> _confirm = null!;
 
-    [Parameter]
+	[Parameter]
 	public string Title { get; set; } = "Changes Detected";
 
 	[Parameter]
@@ -27,12 +27,18 @@
 	[Parameter]
 	public bool Enabled { get; set; } = true;
 
-    [Parameter]
-    public bool EnableBrowserMonitor { get; set; } = true;
+	[Parameter]
+	public bool EnableBrowserMonitor { get; set; } = true;
 
-    [Parameter]
-    public EventCallback Updated { get; set; }
+	[Parameter]
+	public EventCallback Updated { get; set; }
 
 	protected override async ValueTask<bool> Allow(LocationChangingContext parameter)
-        => !Enabled || await _confirm.Confirm(None.Default) == DialogResult.Ok;
+		=> !Enabled || await _confirm.Confirm(None.Default) == DialogResult.Ok;
+
+	protected override void OnParametersSet()
+	{
+		_enabled.Execute(EnableBrowserMonitor && Enabled);
+		base.OnParametersSet();
+	}
 }
