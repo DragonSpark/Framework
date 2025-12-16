@@ -14,12 +14,7 @@ public sealed class Registrations : ICommand<IServiceCollection>
 
     public void Execute(IServiceCollection parameter)
     {
-        parameter.Start<ILogin>()
-                 .Forward<Login>()
-                 .Include(x => x.Dependencies)
-                 .Singleton()
-                 //
-                 .Then.Start<IAccessTokenStore>()
+        parameter.Start<IAccessTokenStore>()
                  .Forward<AccessTokenStore>()
                  .Include(x => x.Dependencies)
                  .Singleton()

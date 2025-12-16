@@ -1,5 +1,7 @@
+using DragonSpark.Application.Mobile.Maui.Device.Input;
 using DragonSpark.Application.Mobile.Maui.Device.Notifications;
 using DragonSpark.Application.Mobile.Maui.Diagnostics;
+using DragonSpark.Application.Mobile.Maui.Platforms.Android.Input;
 using DragonSpark.Application.Mobile.Maui.Platforms.Android.Notifications;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
@@ -20,6 +22,9 @@ sealed class Registrations : ICommand<IServiceCollection>
                  .Forward<Notifications.Notifications>()
                  .Decorate<PermissionAwareNotifications>()
                  .Singleton()
-                 ;
+                 //
+                 .Then.Start<IHideKeyboard>()
+                 .Forward<HideKeyboard>()
+                 .Singleton();
     }
 }

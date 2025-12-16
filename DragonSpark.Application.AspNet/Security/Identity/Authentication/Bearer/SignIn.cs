@@ -1,4 +1,4 @@
-﻿using System.Buffers;
+using System.Buffers;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using DragonSpark.Compose;
@@ -21,12 +21,27 @@ public class SignIn<T> : ISignIn<T> where T : class
 
     public async ValueTask<bool> Get(Stop<SignInInput<T>> parameter)
     {
-        var ((user, _), _) = parameter;
+        var ((user, (_, code)), _) = parameter;
         using var signin  = _signin.Get();
         using var claims  = _claims.Get(user).AsValueEnumerable().ToArray(ArrayPool<Claim>.Shared);
         var       subject = signin.Subject;
         subject.AuthenticationScheme = IdentityConstants.BearerScheme;
-        await subject.SignInWithClaimsAsync(user, null, claims).Off();
-        return true;
+
+        var result = await signin.Users.VerifyUserTokenAsync(user, TokenOptions.DefaultEmailProvider, Purpose.Default,
+                                                             code)
+                                 .Off();
+        if (result)
+        {
+            await subject.SignInWithClaimsAsync(user, null, claims).Off();
+        }
+
+        return result;
     }
+}
+
+public sealed class Purpose : Text.Text
+{
+    public static Purpose Default { get; } = new();
+
+    Purpose() : base("passwordless-login") {}
 }

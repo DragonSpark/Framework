@@ -4,18 +4,18 @@ using DragonSpark.Model.Operations;
 
 namespace DragonSpark.Application.Communication.Http.Security;
 
-public class SaveAwareChallenge : IChallenge
+public class SaveAwareLogin : ILogin
 {
-    readonly IChallenge        _previous;
+    readonly ILogin        _previous;
     readonly IUpdateTokenState _save;
 
-    protected SaveAwareChallenge(IChallenge previous, IUpdateTokenState save)
+    protected SaveAwareLogin(ILogin previous, IUpdateTokenState save)
     {
         _previous = previous;
         _save     = save;
     }
 
-    public async ValueTask<AccessTokenResponse?> Get(Stop<ChallengeRequest> parameter)
+    public async ValueTask<AccessTokenResponse?> Get(Stop<LoginRequest> parameter)
     {
         var ((address, _), stop) = parameter;
         var result  = await _previous.Off(parameter);
