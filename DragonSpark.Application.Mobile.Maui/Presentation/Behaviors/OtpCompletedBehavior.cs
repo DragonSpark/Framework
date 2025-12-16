@@ -1,6 +1,4 @@
-using System.Threading;
 using System.Windows.Input;
-using DragonSpark.Application.Mobile.Maui.Device.Input;
 using Microsoft.Maui.Controls;
 using Syncfusion.Maui.Toolkit.OtpInput;
 
@@ -25,7 +23,7 @@ public sealed class OtpCompletedBehavior : BehaviorBase<SfOtpInput>
         get => GetValue(CommandParameterProperty);
         set => SetValue(CommandParameterProperty, value);
     }
-
+    
     protected override void OnAttachedTo(SfOtpInput bindable)
     {
         base.OnAttachedTo(bindable);
@@ -44,10 +42,6 @@ public sealed class OtpCompletedBehavior : BehaviorBase<SfOtpInput>
             e.NewValue.Length == (int)bindable.Length && Command.CanExecute(CommandParameter))
         {
             Command.Execute(CommandParameter ?? e.NewValue);
-
-            _ = CurrentService<IHideKeyboard>.Default.Get().Get(CancellationToken.None);
-
-            bindable.Unfocus();
         }
     }
 }
