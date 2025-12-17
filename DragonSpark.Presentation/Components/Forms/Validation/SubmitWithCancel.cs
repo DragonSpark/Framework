@@ -14,7 +14,8 @@ sealed class Submit : IOperation<EditContext>
 	public Submit(IOperation<EditContext> valid, IOperation<EditContext> invalid)
 		: this(valid, invalid, ValidContext.Default.Get) {}
 
-	public Submit(IOperation<EditContext> valid, IOperation<EditContext> invalid, Operate<EditContext, bool> validate)
+	public Submit(IOperation<EditContext> valid, IOperation<EditContext> invalid,
+	              Operate<EditContext, bool> validate)
 	{
 		_valid    = valid;
 		_invalid  = invalid;
@@ -36,33 +37,34 @@ sealed class Submit : IOperation<EditContext>
 	}
 }
 
-sealed class Submit<T> : IOperation<SubmitInput<T>>
+sealed class SubmitWithCancel : IOperation<SubmittingInput>
 {
-	readonly IOperation<SubmitInput<T>> _valid, _invalid;
-	readonly Operate<EditContext, bool> _validate;
+	readonly IOperation<SubmittingInput> _valid, _invalid;
+	readonly Operate<EditContext, bool>  _validate;
 
-	public Submit(IOperation<SubmitInput<T>> valid, IOperation<SubmitInput<T>> invalid)
+	public SubmitWithCancel(IOperation<SubmittingInput> valid, IOperation<SubmittingInput> invalid)
 		: this(valid, invalid, ValidContext.Default.Get) {}
 
-	public Submit(IOperation<SubmitInput<T>> valid, IOperation<SubmitInput<T>> invalid, Operate<EditContext, bool> validate)
+	public SubmitWithCancel(IOperation<SubmittingInput> valid, IOperation<SubmittingInput> invalid,
+	                        Operate<EditContext, bool> validate)
 	{
 		_valid    = valid;
 		_invalid  = invalid;
 		_validate = validate;
 	}
 
-	public async ValueTask Get(SubmitInput<T> parameter)
+	public async ValueTask Get(SubmittingInput parameter)
 	{
-		var (context, _, @continue) = parameter;
-		var validate     = await _validate(context).On();
-		if (validate)
+		var (context, cancel) = parameter;
+		var valid = await _validate(context).On();
+		if (valid)
 		{
 			await _valid.Get(parameter).On();
 			context.MarkAsUnmodified();
 		}
 		else
 		{
-			@continue.Down();
+			cancel.Up();
 			await _invalid.Off(parameter);
 		}
 	}
