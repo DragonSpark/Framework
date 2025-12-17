@@ -1,3 +1,4 @@
+using DragonSpark.Application.Mobile.Maui.Device;
 using DragonSpark.Application.Mobile.Maui.Device.Input;
 using DragonSpark.Application.Mobile.Maui.Device.Notifications;
 using DragonSpark.Application.Mobile.Maui.Diagnostics;
@@ -25,6 +26,11 @@ sealed class Registrations : ICommand<IServiceCollection>
                  //
                  .Then.Start<IHideKeyboard>()
                  .Forward<HideKeyboard>()
-                 .Singleton();
+                 .Singleton()
+                 //
+                 .Then.Start<IIsSimulator>()
+                 .Forward<IsSimulator>()
+                 .Singleton()
+            ;
     }
 }
