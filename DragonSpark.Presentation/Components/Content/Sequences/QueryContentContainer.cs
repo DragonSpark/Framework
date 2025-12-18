@@ -48,12 +48,14 @@ partial class QueryContentContainer<T> : IPageContainer<T>
 	{
 		_ready.Up();
 		_relay.Execute(parameter);
+		StateHasChanged();
 	}
 
 	public void Execute(Exception parameter)
 	{
 		_ready.Up();
 		_relay.Execute(parameter);
+		StateHasChanged();
 	}
 
 	public Type Get() => _relay.Account()?.Get() ?? ReportedType ?? GetType();
