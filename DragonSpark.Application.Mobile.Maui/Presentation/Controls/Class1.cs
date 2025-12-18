@@ -5,18 +5,15 @@ using Microsoft.Maui.Controls;
 public sealed class TemplatedContentView : ContentView
 {
     public static readonly BindableProperty ItemProperty =
-        BindableProperty.Create(nameof(Item), typeof(object), typeof(TemplatedContentView), null,
+        BindableProperty.Create(nameof(Item), typeof(object), typeof(TemplatedContentView),
                                 propertyChanged: (b, _, _) => ((TemplatedContentView)b).UpdateContent());
 
     public static readonly BindableProperty ItemTemplateSelectorProperty =
         BindableProperty.Create(nameof(ItemTemplateSelector), typeof(DataTemplateSelector),
-                                typeof(TemplatedContentView), null,
+                                typeof(TemplatedContentView),
                                 propertyChanged: (b, _, _) => ((TemplatedContentView)b).UpdateContent());
 
-    public TemplatedContentView()
-    {
-        Loaded += (_, _) => UpdateContent();
-    }
+    public TemplatedContentView() => Loaded += (_, _) => UpdateContent();
 
     public object? Item
     {
@@ -29,7 +26,6 @@ public sealed class TemplatedContentView : ContentView
         get => (DataTemplateSelector)GetValue(ItemTemplateSelectorProperty);
         set => SetValue(ItemTemplateSelectorProperty, value);
     }
-
     
     void UpdateContent()
     {
