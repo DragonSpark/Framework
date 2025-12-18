@@ -1,11 +1,12 @@
 ﻿@using DragonSpark.Compose
+@using DragonSpark.Presentation.Components.Content.Templates
 @using System.Threading
 
 @typeparam T
 
 @inherits ContentComponentBase<T>
 
-<ApplicationContentView TValue="T" Content="@Content" ChildContent="@ChildContent" />
+<ApplicationContentView TValue="T" Content="@Content" ChildContent="@ChildContent" NotFoundTemplate="@NotFoundTemplate" />
 
 @code {
 
@@ -14,6 +15,9 @@
 
     [Parameter]
     public required RenderFragment<T> ChildContent { get; set; }
+
+    [Parameter]
+    public virtual RenderFragment NotFoundTemplate { get; set; } = DefaultNotFoundTemplate.Default;
 
     protected override ValueTask<T?> GetContent() => Factory(Stop).ToOperation();
 
