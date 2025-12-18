@@ -28,6 +28,10 @@ sealed class Registrations : ICommand<IServiceCollection>
                  .Forward<HideKeyboard>()
                  .Singleton()
                  //
+                 .Then.Start<IShowKeyboard>()
+                 .Forward<ShowKeyboard>()
+                 .Singleton()
+                 //
                  .Then.Start<IIsSimulator>()
                  .Forward<IsSimulator>()
                  .Singleton()

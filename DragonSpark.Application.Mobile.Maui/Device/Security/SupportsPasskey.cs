@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using DragonSpark.Application.Mobile.Maui.Presentation;
 using DragonSpark.Compose;
@@ -10,7 +10,7 @@ using Microsoft.Maui.Graphics;
 
 namespace DragonSpark.Application.Mobile.Maui.Device.Security;
 
-sealed class SupportsPasskey : ISupportsPasskey
+public sealed class SupportsPasskey : ISupportsPasskey
 {
     public static SupportsPasskey Default { get; } = new();
 
