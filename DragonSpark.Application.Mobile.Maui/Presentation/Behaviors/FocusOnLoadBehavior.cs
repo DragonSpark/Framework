@@ -1,12 +1,12 @@
-using System.ComponentModel;
+using System;
 using Microsoft.Maui.Controls;
 
 namespace DragonSpark.Application.Mobile.Maui.Presentation.Behaviors;
 
-public sealed class FocusOnVisibleBehavior : BehaviorBase<VisualElement>
+public sealed class FocusOnLoadBehavior : BehaviorBase<VisualElement>
 {
     public readonly static BindableProperty TargetElementProperty =
-        BindableProperty.Create(nameof(TargetElement), typeof(VisualElement), typeof(FocusOnVisibleBehavior));
+        BindableProperty.Create(nameof(TargetElement), typeof(VisualElement), typeof(FocusOnLoadBehavior));
 
     public VisualElement? TargetElement
     {
@@ -18,20 +18,17 @@ public sealed class FocusOnVisibleBehavior : BehaviorBase<VisualElement>
     {
         base.OnAttachedTo(bindable);
 
-        bindable.PropertyChanged += OnChanged;    
+        bindable.Loaded += OnChanged;    
     }
 
     protected override void OnDetachingFrom(VisualElement bindable)
     {
-        bindable.PropertyChanged -= OnChanged;
+        bindable.Loaded -= OnChanged;
         base.OnDetachingFrom(bindable);
     }
 
-    void OnChanged(object? sender, PropertyChangedEventArgs e)
+    void OnChanged(object? sender, EventArgs e)
     {
-        if (e.PropertyName == nameof(View.IsVisible) && (View?.IsVisible ?? false))
-        {
-            TargetElement?.Focus();
-        }
+        TargetElement?.Focus();
     }
 }
