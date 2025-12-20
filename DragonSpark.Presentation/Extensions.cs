@@ -96,6 +96,8 @@ public static class Extensions
 	public static EditContextCallbackComposer Callback(this ModelContext _, EditContext context) => new(context);
 
 	public static CallbackComposer Callback(this ResultComposer<ValueTask> @this) => new(@this.Then().Allocate());
+	public static CallbackComposer Callback(this ResultComposer<ValueTask> @this, object receiver)
+		=> new(receiver, @this.Then().Allocate());
 
 	public static CallbackComposer Callback(this ResultComposer<Task> @this) => new(@this);
 

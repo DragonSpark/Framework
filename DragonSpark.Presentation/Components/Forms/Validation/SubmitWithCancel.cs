@@ -27,8 +27,8 @@ sealed class Submit : IOperation<EditContext>
 		var validate = await _validate(parameter).On();
 		if (validate)
 		{
-			await _valid.Get(parameter).On();
 			parameter.MarkAsUnmodified();
+			await _valid.Off(parameter);
 		}
 		else
 		{

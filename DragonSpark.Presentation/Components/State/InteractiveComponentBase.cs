@@ -9,8 +9,6 @@ public class InteractiveComponentBase : ComponentBase
 
 	[CascadingParameter]
 	public required IActivityReceiver Receiver { get; set; }
-
-	
 }
 
 public class InteractiveComponentBase<T> : InteractiveComponentBase
