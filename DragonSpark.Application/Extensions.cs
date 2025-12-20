@@ -1,5 +1,4 @@
 using DragonSpark.Application.Components.Validation.Expressions;
-using DragonSpark.Application.Compose;
 using DragonSpark.Application.Compose.Runtime;
 using DragonSpark.Application.Compose.Store.Operations.Memory;
 using DragonSpark.Application.Model.Sequences;
@@ -8,6 +7,7 @@ using DragonSpark.Application.Runtime.Operations;
 using DragonSpark.Application.Runtime.Operations.Execution;
 using DragonSpark.Application.Security.Identity.Bearer;
 using DragonSpark.Compose;
+using DragonSpark.Compose.Model.Operations;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
@@ -129,15 +129,20 @@ partial class Extensions
 	public static string Ordinalize(this in uint @this) => ((int)@this).Ordinalize();
 
 /**/
-	public static OperationComposer<T> Then<T>(this DragonSpark.Compose.Model.Operations.OperationComposer<T> @this)
-		=> new(@this.Get());
+	public static Compose.OperationComposer<T> Then<T>(this OperationComposer<T> @this) => new(@this.Get());
 
+	public static Compose.OperationComposer<T> Throttle<T>(this OperationComposer<T> @this, TimeSpan @for)
+		where T : notnull
+		=> new(new ThrottleOperation<T>(@this.Get().Get, @for));
+
+	public static OperationComposer Throttle(this OperationComposer @this, TimeSpan @for)
+		=> new(new ThrottleOperation(@this.Get().Get, @for));
 /**/
 
 	public static IOperation<T> Ambient<T>(this IOperation<T> @this) => new DeferredOperation<T>(@this);
 
 /**/
-	public static DragonSpark.Compose.Model.Operations.OperationResultComposer<TIn, TOut> Using<TIn, TOut>(
+	public static OperationResultComposer<TIn, TOut> Using<TIn, TOut>(
 		this Compose.Store.Operations.StoreContext<TIn, TOut> @this, StoreProfile<TIn> profile)
 		=> @this.In(profile.Memory).For(profile.For).Using(profile.Key);
 /**/

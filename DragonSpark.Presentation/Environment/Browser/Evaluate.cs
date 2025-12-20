@@ -1,4 +1,5 @@
-﻿using Microsoft.JSInterop;
+﻿using DragonSpark.Compose;
+using Microsoft.JSInterop;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Environment.Browser;
@@ -10,7 +11,5 @@ sealed class Evaluate : IEvaluate
 	public Evaluate(IJSRuntime runtime) => _runtime = runtime;
 
 	public ValueTask Get(string parameter)
-		=> !string.IsNullOrWhiteSpace(parameter)
-			   ? _runtime.InvokeVoidAsync("eval", parameter)
-			   : ValueTask.CompletedTask;
+		=> !parameter.IsNullOrWhiteSpace() ? _runtime.InvokeVoidAsync("eval", parameter) : ValueTask.CompletedTask;
 }

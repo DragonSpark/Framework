@@ -3,7 +3,6 @@
 @using DragonSpark.Application.Diagnostics
 @using DragonSpark.Compose
 @using DragonSpark.Application
-@using DragonSpark.Application.Runtime
 
 @inject IEvaluate Model
 @inject IExceptions Exceptions
@@ -13,8 +12,8 @@
 
 	protected override void OnInitialized()
 	{
-	    var operate = new ExceptionAware<string>(Model, Exceptions, GetType()).Then();
-	    _call = new ThrottleOperation<string>(operate, TimeSpan.FromMilliseconds(250)).Then().Then().Out();
+		var operation = new ExceptionAware<string>(Model, Exceptions, GetType());
+		_call = operation.Then().Throttle(TimeSpan.FromMilliseconds(250)).Out();
 		base.OnInitialized();
 	}
 

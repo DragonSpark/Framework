@@ -91,7 +91,7 @@ public static class Extensions
 		=> new(callback.Target, Start.A.Command(callback).Operation().Allocate());
 
 	public static object Target(this IActivityReceiver @this, Delegate method) => @this.Target(method.Target ?? @this);
-	public static object Target(this IActivityReceiver @this, object other) => @this;
+	public static object Target(this IActivityReceiver _, object other) => other;
 
 	public static EditContextCallbackComposer Callback(this ModelContext _, EditContext context) => new(context);
 

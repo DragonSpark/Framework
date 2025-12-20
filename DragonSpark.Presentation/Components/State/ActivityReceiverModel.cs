@@ -1,13 +1,16 @@
-﻿using DragonSpark.Model.Commands;
+﻿using DragonSpark.Model;
+using DragonSpark.Model.Commands;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.State;
 
-sealed class ActivityReceiverModel : IActivityReceiver
+sealed class ActivityReceiverModel : IActivityReceiver, ICommand
 {
 	readonly Stack<ActivityReceiverState> _stack;
 	readonly Renderings                   _renderings;
+
+	public ActivityReceiverModel() : this(new()) {}
 
 	public ActivityReceiverModel(Renderings renderings) : this([], renderings) {}
 
@@ -35,5 +38,10 @@ sealed class ActivityReceiverModel : IActivityReceiver
 	{
 		var last = _stack.TryPop(out var state) && _stack.Count == 0 ? state : default(ActivityReceiverState?);
 		return new(last);
+	}
+
+	public void Execute(None parameter)
+	{
+		_renderings.Execute(parameter);
 	}
 }
