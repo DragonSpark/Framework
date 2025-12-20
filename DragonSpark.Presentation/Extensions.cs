@@ -90,6 +90,9 @@ public static class Extensions
 	public static CallbackComposer Callback(this ModelContext _, Action callback)
 		=> new(callback.Target, Start.A.Command(callback).Operation().Allocate());
 
+	public static object Target(this IActivityReceiver @this, Delegate method) => @this.Target(method.Target ?? @this);
+	public static object Target(this IActivityReceiver @this, object other) => @this;
+
 	public static EditContextCallbackComposer Callback(this ModelContext _, EditContext context) => new(context);
 
 	public static CallbackComposer Callback(this ResultComposer<ValueTask> @this) => new(@this.Then().Allocate());
@@ -200,8 +203,8 @@ public static class Extensions
 	/**/
 	// ReSharper disable once TooManyArguments
 	public static CancelAwareActivityOptions Get(this IStopHandle @this, string message, IOperation? canceled = null,
-	                                             PostRenderAction action = PostRenderAction.None)
-		=> new(message, @this, PostRenderAction: action, Canceled: canceled);
+	                                             bool RedrawOnFinish = false)
+		=> new(message, @this, RedrawOnFinish: RedrawOnFinish, Canceled: canceled);
 	
 	/**/
 	public static bool IsConnected(this IResult<RenderState> @this)

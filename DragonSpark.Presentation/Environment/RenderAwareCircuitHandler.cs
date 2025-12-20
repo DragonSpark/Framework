@@ -13,7 +13,14 @@ sealed class RenderAwareCircuitHandler : CircuitHandler
 
 	public override Task OnConnectionUpAsync(Circuit circuit, CancellationToken cancellationToken)
 	{
-		_store.Execute(RenderState.Established);
+		switch (_store.Get())
+		{
+			case RenderState.Default:
+			case RenderState.Ready:
+				_store.Execute(RenderState.Established);
+				break;
+		}
+		
 		return base.OnConnectionUpAsync(circuit, cancellationToken);
 	}
 

@@ -44,14 +44,14 @@ public sealed class CallbackComposer : IResult<EventCallback>
 	{
 		var body      = _method.Start().Then().Structure().Out();
 		var operation = new ActivityAwareOperation(body, receiver, options);
-		return new(_method.Target ?? receiver, operation.Allocate);
+		return new(receiver.Target(_method), operation.Allocate);
 	}
 
 	public CallbackComposer UpdateActivity(IActivityReceiver receiver, CancelAwareActivityOptions options)
 	{
 		var body      = _method.Start().Then().Structure().Out();
 		var operation = new CancelAwareOperation(new ActivityAwareOperation(body, receiver, options), options);
-		return new(_method.Target ?? receiver, operation.Allocate);
+		return new(receiver.Target(_method), operation.Allocate);
 	}
 
 	public OperationCallbackComposer BlockFor(TimeSpan duration)
@@ -96,14 +96,14 @@ public class CallbackComposer<T> : IResult<EventCallback<T>>
 	{
 		var body      = Start.A.Selection(_method).Then().Structure().Out();
 		var operation = new ActivityAwareOperation<T>(body, receiver, options);
-		return new(_receiver, operation.Allocate);
+		return new(receiver.Target(_method), operation.Allocate);
 	}
 
 	public CallbackComposer<T> UpdateActivity(IActivityReceiver receiver, CancelAwareActivityOptions options)
 	{
 		var body      = Start.A.Selection(_method).Then().Structure().Out();
 		var operation = new CancelAwareOperation<T>(new ActivityAwareOperation<T>(body, receiver, options), options);
-		return new(receiver, operation.Allocate);
+		return new(receiver.Target(_method), operation.Allocate);
 	}
 
 	public OperationCallbackComposer<T> Handle<TReported>(IExceptions exceptions)

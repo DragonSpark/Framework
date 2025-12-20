@@ -11,8 +11,5 @@ sealed class RestoreFocusedElement : IOperation
 
 	public RestoreFocusedElement(IFocusHandler focus) => _focus = focus;
 
-	public ValueTask Get()
-	{
-		return _focus.RestoreStoredElementFocusAsync().ToOperation();
-	}
+	public ValueTask Get() => _focus.RestoreStoredElementFocusAsync().ToOperation();
 }

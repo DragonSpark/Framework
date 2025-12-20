@@ -40,7 +40,7 @@
 @code
 {
     readonly List<IRenderAware> _renderings = new();
-    readonly Switch             _start      = false, _restore = false, _displaying = false, _render = true, _redraw = false;
+    readonly Switch             _start      = false, _restore = false, _displaying = false, _redraw = false;
     ActivityReceiverModel       _previous   = null!;
     RenderFragment              _content    = null!;
     string?                     _class, _outer;
@@ -75,7 +75,7 @@
     {
         get
         {
-            var render = !Active && (_render || !_render.Up());
+            var render = !Active;
             return render;
         }
     }
@@ -141,17 +141,9 @@
                 await Monitor.On();
             }
 
-            var action = result.Value.Options.PostRenderAction;
-            if (_redraw.Down() || action == PostRenderAction.ForceRedraw)
+            if (_redraw.Down() || result?.Options.RedrawOnFinish == true)
             {
                 StateHasChanged();
-            }
-
-            switch (action)
-            {
-                case PostRenderAction.DeferredRedraw:
-                    _render.Down();
-                    break;
             }
         }
         return result;

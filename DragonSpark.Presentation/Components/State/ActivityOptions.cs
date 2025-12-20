@@ -1,10 +1,8 @@
 ﻿namespace DragonSpark.Presentation.Components.State;
 
-public record ActivityOptions(bool RedrawOnStart = false, PostRenderAction PostRenderAction = PostRenderAction.None)
+public record ActivityOptions(bool RedrawOnStart = false, bool RedrawOnFinish = false)
 {
 	public static ActivityOptions Default { get; } = new();
-	public static ActivityOptions Redraw { get; } = new(true, PostRenderAction: PostRenderAction.ForceRedraw);
-	public static ActivityOptions PostRedraw { get; } = new(PostRenderAction: PostRenderAction.ForceRedraw);
-	
-	public static ActivityOptions SkipPostRender { get; } = new(PostRenderAction: PostRenderAction.DeferredRedraw);
+	public static ActivityOptions Redraw { get; } = new(true, true); // TODO: Audit
+	public static ActivityOptions PostRedraw { get; } = new(RedrawOnFinish: true);
 }

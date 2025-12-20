@@ -3,14 +3,14 @@
 @inherits TextInputComponent
 @implements IDisposable
 
-@inject IFocusHandler Focus
+@inject IFocus Focus
 
 @using MatBlazor
 @using System.Linq.Expressions
 @using System.Timers
 @using DragonSpark.Model.Results
 @using DragonSpark.Compose
-@using Majorsoft.Blazor.Components.Common.JsInterop.Focus
+@using DragonSpark.Presentation.Environment.Browser.Document
 
 <MatTextField TValue="string"
     Id="@Id"
@@ -55,19 +55,16 @@
 @code
 {
     readonly Switch _focus = new(), _active = new();
-    readonly Timer _timer = new (750) { AutoReset = false };
-    Func<Task> _tick = null!;
+    readonly Timer  _timer = new(750) { AutoReset = false };
+    Func<Task>      _tick  = null!;
     FieldIdentifier _identifier;
-    string _stored = string.Empty, _current = string.Empty;
+    string          _stored = string.Empty, _current = string.Empty;
 
     [Parameter]
     public string Value { get; set; } = null!;
 
     [Parameter]
     public EventCallback<string> ValueChanged { get; set; }
-
-    [Parameter]
-    public EventCallback Updated { get; set; }
 
     [Parameter]
     public Expression<Func<string>> ValueExpression
@@ -82,12 +79,6 @@
             }
         }
     } = null!;
-
-    [CascadingParameter]
-    EditContext? EditContext { get; set; }
-
-    [CascadingParameter]
-    IActivityReceiver? Receiver { get; set; }
 
     string Current => _active ? _stored : Value;
 
@@ -144,12 +135,11 @@
     {
         _timer.Stop();
         _focus.Up();
-        switch (parameter.Key)
+        return parameter.Key switch
         {
-            case "Enter":
-                return OnCommit(_current);
-        }
-        return OnKeyDown.Invoke(parameter);
+            "Enter" => OnCommit(_current),
+            _ => OnKeyDown.Invoke(parameter)
+        };
     }
 
     Task Input(ChangeEventArgs parameter)
@@ -170,8 +160,8 @@
         await Commit();
         if (_focus.Down())
         {
-            await Task.Delay(250);
-            await Focus.FocusElementAsync(RefBack.Current).Off();
+            await Task.Delay(250, Stop);
+            await Focus.Off(new(RefBack.Current, Stop));
         }
     }
 
@@ -180,9 +170,9 @@
         if (Value != _current)
         {
             Value = _current;
-            await ValueChanged.Invoke(Value);
-            EditContext?.NotifyFieldChanged(in _identifier);
-            await Updated.Invoke();
+            await ValueChanged.On(Value);
+            EditContext.Account()?.NotifyFieldChanged(in _identifier);
+            await Updated.Off();
         }
     }
 
@@ -195,7 +185,7 @@
 
     async Task HandleFocusOut(FocusEventArgs parameter)
     {
-        if (Receiver?.Active ?? false)
+        if (Receiver.Account()?.Active ?? false)
         {
             _active.Up();
             _focus.Up();
@@ -206,7 +196,7 @@
             _timer.Stop();
         }
 
-        await OnFocusOut.Invoke(parameter).Off();
+        await OnFocusOut.Off(parameter);
     }
 
     public void Dispose()

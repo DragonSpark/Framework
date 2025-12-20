@@ -26,7 +26,7 @@ sealed class ExitAwareState<T> : ISelect<AuthenticationState<T>, AuthenticationS
 	{
 		if (_state.Get(parameter) is ProfileStatus.Invalid)
 		{
-			ExtensionMethods.Execute(_exit);
+			_exit.Execute();
 			return _default;
 		}
 
