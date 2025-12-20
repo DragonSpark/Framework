@@ -1,8 +1,8 @@
 ﻿namespace DragonSpark.Presentation.Components.State;
 
-public record ActivityOptions(bool RedrawOnStart = false, bool RedrawOnFinish = false)
+// TODO: If target is the element, RedrawOnFinish=true.  If target is the ActivityReceiver, RedrawOnFinish=false
+public record ActivityOptions(bool RedrawOnStart = false, bool RedrawOnFinish = true)
 {
 	public static ActivityOptions Default { get; } = new();
-	public static ActivityOptions Redraw { get; } = new(true, true); // TODO: Audit
-	public static ActivityOptions PostRedraw { get; } = new(RedrawOnFinish: true);
+	public static ActivityOptions Redraw { get; } = new(true); // TODO: Audit
 }
