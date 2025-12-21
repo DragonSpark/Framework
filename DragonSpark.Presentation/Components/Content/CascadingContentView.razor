@@ -1,6 +1,7 @@
-﻿@typeparam T
+﻿@using DragonSpark.Model.Results
+@typeparam T
 
-<EqualityRenderGate T="T" Input="@Input" ChildContent="@ChildContent" />
+<EqualityRenderGate T="T" Input="@Input" ChildContent="@ChildContent" Refresh="@Refresh" />
 
 @code {
     [CascadingParameter]
@@ -8,4 +9,7 @@
 
     [Parameter]
     public required RenderFragment<T> ChildContent { get; set; }
+
+    [Parameter]
+    public required Switch? Refresh { get; set; }
 }
