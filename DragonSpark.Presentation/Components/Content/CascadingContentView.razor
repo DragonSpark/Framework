@@ -1,0 +1,11 @@
+﻿@typeparam T
+
+<EqualityRenderGate T="T" Input="@Input" ChildContent="@ChildContent" />
+
+@code {
+    [CascadingParameter]
+    public required T Input { get; set; }
+
+    [Parameter]
+    public required RenderFragment<T> ChildContent { get; set; }
+}
