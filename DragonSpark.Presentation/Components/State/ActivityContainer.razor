@@ -2,6 +2,7 @@
 @using DragonSpark.Model.Commands
 @using DragonSpark.Model.Results
 @using DragonSpark.Presentation.Environment.Browser.Document
+@using MatBlazor
 
 @inherits Components.ComponentBase
 
@@ -28,7 +29,7 @@
             @if (!_displaying)
             {
                 <ul class="actions">
-                    <li><button class="small button" disabled="@_displaying" @onclick="@OnCancel">Cancel</button></li>
+                    <li><MatButton Class="small button" Type="button" Disabled="@_displaying" OnClick="@OnCancel">Cancel</MatButton></li>
                 </ul>
             }
         </div>
