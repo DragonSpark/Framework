@@ -11,7 +11,7 @@ public sealed class ActivityAwareActiveContent<T> : Resulting<T?>, IActiveConten
 	readonly ICommand _previous;
 
 	public ActivityAwareActiveContent(IActiveContent<T> previous, IActivityReceiver receiver)
-		: this(previous, receiver, ActivityOptions.Default) {}
+		: this(previous, receiver, ActivityOptions.SkipPostRedraw) {}
 
 	public ActivityAwareActiveContent(IActiveContent<T> previous, IActivityReceiver receiver, ActivityOptions input)
 		: this(previous, previous.Condition, new ActivityAwareResult<T>(previous, receiver, input)) {}
