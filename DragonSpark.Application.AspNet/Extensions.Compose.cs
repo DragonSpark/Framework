@@ -51,8 +51,12 @@ public static partial class Extensions
 		=> @this.Append(new ConfigureSqlServer<T>(configure));
 
 	public static StorageConfigurationBuilder WithSqlServer<T>(this StorageConfigurationBuilder @this, string name)
+		where T : DbContext => @this.WithSqlServer<T>(name, _ => {});
+
+	public static StorageConfigurationBuilder WithSqlServer<T>(this StorageConfigurationBuilder @this, string name,
+	                                                           Action<SqlServerDbContextOptionsBuilder> configure)
 		where T : DbContext
-		=> @this.Append(new ConfigureSqlServerWithMigration<T>(name));
+		=> @this.Append(new ConfigureSqlServerWithMigration<T>(name, configure));
 
 	public static StorageConfigurationBuilder ApplySeeding(this StorageConfigurationBuilder @this)
 		=> ApplySeeding(@this, ApplyMigrationRegistry.Default.Get);
