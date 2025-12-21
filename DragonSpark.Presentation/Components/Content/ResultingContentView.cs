@@ -13,7 +13,7 @@ namespace DragonSpark.Presentation.Components.Content;
 
 partial class ResultingContentView<T>
 {
-	readonly Switch _loaded = false;
+	readonly Switch _loaded = false, _render = true;
 	RenderFragment? _fragment;
 	Func<Task>      _update = null!;
 	Worker<T?>?     _subject;
@@ -32,6 +32,8 @@ partial class ResultingContentView<T>
 			}
 		}
 	}
+
+	protected override bool ShouldRender() => _render || !_render.Up();
 
 	[Parameter]
 	public ICondition<None>? UpdateMonitor { get; set; }
@@ -64,6 +66,7 @@ partial class ResultingContentView<T>
 	{
 		if (UpdateMonitor?.Get() ?? false)
 		{
+			_render.Down();
 			_loaded.Down();
 			_subject = null;
 		}
@@ -76,12 +79,11 @@ partial class ResultingContentView<T>
 		var first = _subject is null;
 		_subject ??= Working();
 		var task = _subject.Value.AsTask();
-		var successfully = task.IsCompletedSuccessfully;
-		return successfully
-				   ? Update()
-				   : first && (ForceRender || Render.Get() > RenderState.Default) && !(_fragment is null ? Rendered : Refreshed).HasDelegate
-					   ? task
-					   : base.OnParametersSetAsync();
+		return task.IsCompletedSuccessfully
+			       ? Update()
+			       : first && (ForceRender || Render > RenderState.Default) && !(_fragment is null ? Rendered : Refreshed).HasDelegate
+				       ? task
+				       : base.OnParametersSetAsync();
 	}
 
 	async Task Update()

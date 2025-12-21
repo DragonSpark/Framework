@@ -20,7 +20,7 @@ public abstract class ContentComponentBase<T> : ComponentBase
 
 	protected void Reset()
 	{
-		var start = Start.A.Result<ValueTask<T?>>().By.Calling(GetContent).Out();
+		var start = Start.A.Result(GetContent).Out();
 		Content = Contents.Get(new(this, start));
 	}
 
@@ -28,13 +28,9 @@ public abstract class ContentComponentBase<T> : ComponentBase
 
 	protected abstract ValueTask<T?> GetContent();
 
-	protected virtual void RequestNewContent(bool redraw = false)
+	protected virtual void RequestNewContent()
 	{
 		Content.Execute();
-		if (redraw)
-		{
-			StateHasChanged();
-		}
 	}
 
 	protected override ValueTask RefreshState()

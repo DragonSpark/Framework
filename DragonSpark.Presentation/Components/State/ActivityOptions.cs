@@ -5,4 +5,6 @@ public record ActivityOptions(bool RedrawOnStart = true, bool RedrawOnFinish = t
 {
 	public static ActivityOptions Default { get; } = new();
 	public static ActivityOptions Redraw { get; } = new(); // TODO: Audit
+
+	
 }

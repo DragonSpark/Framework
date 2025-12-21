@@ -37,7 +37,7 @@
 
 @code
 {
-    readonly Switch                _start   = false, _restore = false, _displaying = false;
+    readonly Switch                _start   = false, _restore = false, _displaying = false, _render = true;
     readonly ActivityReceiverModel _model   = new();
     RenderFragment                 _content = null!;
     string?                        _class, _outer;
@@ -71,7 +71,7 @@
     {
         get
         {
-            var result = !Active;
+            var result = !Active && (_render || !_render.Up());
             return result;
         }
     }
@@ -132,10 +132,8 @@
             await Monitor.On();
         }
 
-        if (options?.RedrawOnFinish == true)
-        {
-            StateHasChanged();
-        }
+        _render.Execute(options?.RedrawOnFinish == true);
+        StateHasChanged();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
