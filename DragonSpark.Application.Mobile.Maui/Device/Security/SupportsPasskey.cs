@@ -36,7 +36,7 @@ public sealed class SupportsPasskey : ISupportsPasskey
         await _push.Off(new(page, false));
 
         content.Navigated += handler;
-        content.Source    =  "about:blank";
+        content.Source    =  "default.html";
 
         var result = await source.Task.Off();
 

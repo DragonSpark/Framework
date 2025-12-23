@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using DragonSpark.Application.Mobile.Maui.Presentation;
 using DragonSpark.Compose;
@@ -27,13 +27,13 @@ sealed class DeterminePasskeySupportViaBrowser : IAllocated<DeterminePasskeySupp
         try
         {
             await subject.EvaluateJavaScriptAsync(_script).On();
-            var evaluate = await subject.EvaluateJavaScriptAsync("result").Off();
+            var evaluate = await subject.EvaluateJavaScriptAsync("window.result").Off();
             var result   = evaluate.Trim().Equals(bool.TrueString, StringComparison.OrdinalIgnoreCase);
             source.SetResult(result);
         }
-        catch
+        catch(Exception error)
         {
-            source.SetResult(false);
+            source.SetException(error);
         }
         finally
         {

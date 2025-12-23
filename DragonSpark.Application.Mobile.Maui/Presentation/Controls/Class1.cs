@@ -1,3 +1,5 @@
+using DragonSpark.Compose;
+
 namespace DragonSpark.Application.Mobile.Maui.Presentation.Controls;
 
 using Microsoft.Maui.Controls;
@@ -29,6 +31,8 @@ public sealed class TemplatedContentView : ContentView
     
     void UpdateContent()
     {
-        Content = Item is not null ? ItemTemplateSelector.SelectTemplate(Item, this)?.CreateContent() as View : null;
+        Content = Item is not null
+                      ? ItemTemplateSelector.Account()?.SelectTemplate(Item, this)?.CreateContent() as View
+                      : null;
     }
 }

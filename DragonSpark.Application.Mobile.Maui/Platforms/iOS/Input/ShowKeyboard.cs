@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using DragonSpark.Application.Mobile.Maui.Device.Input;
+using DragonSpark.Composition;
 using DragonSpark.Model.Operations;
 using Microsoft.Maui.Controls;
 using UIKit;
@@ -14,6 +15,7 @@ sealed class ShowKeyboard : IShowKeyboard
     
     readonly UIApplication _application;
 
+    [Candidate(false)]
     public ShowKeyboard(UIApplication application) => _application = application;
 
     public ValueTask Get(Stop<VisualElement> parameter)
