@@ -1,13 +1,11 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
 using DragonSpark.Model.Commands;
-using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
-using DragonSpark.Model.Selection.Stores;
 using Syncfusion.Blazor;
 
 namespace DragonSpark.SyncfusionRendering.Queries;
 
-sealed class SelectQueryInput : ISelect<Stop<DataManagerRequest>, Stop<PageInput>>
+sealed class SelectQueryInput : ISelect<DataManagerRequest, PageInput>
 {
 	public static SelectQueryInput Default { get; } = new();
 
@@ -17,22 +15,14 @@ sealed class SelectQueryInput : ISelect<Stop<DataManagerRequest>, Stop<PageInput
 
 	public SelectQueryInput(IAssign<PageInput, DataManagerRequest> assign) => _assign = assign;
 
-	public Stop<PageInput> Get(Stop<DataManagerRequest> parameter)
+	public PageInput Get(DataManagerRequest parameter)
 	{
-		var (subject, stop) = parameter;
-		var input = new PageInput(subject.RequiresCounts, null, null, subject.Skip > 0 || subject.Take > 0
-			                                                              ? new(subject.Skip > 0 ? subject.Skip : null,
-			                                                                    subject.Take > 0 ? subject.Take : null)
-			                                                              : null);
-		_assign.Execute(new(input, subject));
-		return new(input, stop);
+		var result = new PageInput(parameter.RequiresCounts, null, null,
+		                           parameter.Skip > 0 || parameter.Take > 0
+			                           ? new(parameter.Skip > 0 ? parameter.Skip : null,
+			                                 parameter.Take > 0 ? parameter.Take : null)
+			                           : null);
+		_assign.Execute(new(result, parameter));
+		return result;
 	}
-}
-
-// TODO
-sealed class DataManagerRequests : ReferenceValueTable<PageInput, DataManagerRequest>
-{
-	public static DataManagerRequests Default { get; } = new();
-
-	DataManagerRequests() {}
 }

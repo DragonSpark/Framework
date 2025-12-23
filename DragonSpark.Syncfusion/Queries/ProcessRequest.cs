@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Selection;
 using Syncfusion.Blazor;
 using Syncfusion.Blazor.Data;
 using System.Threading.Tasks;
@@ -9,15 +10,22 @@ namespace DragonSpark.SyncfusionRendering.Queries;
 
 sealed class ProcessRequest<T> : IDataRequest
 {
-	readonly Await<Stop<DataManagerRequest>, Page<T>> _current;
+	readonly IPages<T>                              _pages;
+	readonly ISelect<DataManagerRequest, PageInput> _select;
 
-	public ProcessRequest(IPages<T> pages) : this(SelectQueryInput.Default.Then().Select(pages).Then()) {}
+	public ProcessRequest(IPages<T> pages) : this(pages, SelectQueryInput.Default) {}
 
-	public ProcessRequest(Await<Stop<DataManagerRequest>, Page<T>> current) => _current = current;
+	public ProcessRequest(IPages<T> pages, ISelect<DataManagerRequest, PageInput> select)
+	{
+		_pages  = pages;
+		_select = select;
+	}
 
 	public async ValueTask<DataResult> Get(Stop<DataManagerRequest> parameter)
 	{
-		var evaluate = await _current(parameter);
-		return new()  { Result = evaluate, Count = evaluate.Total?.Degrade() ?? -1 };
+		var (subject, stop) = parameter;
+		var input    = _select.Get(subject);
+		var evaluate = await _pages.Off(new(input, stop));
+		return new() { Result = evaluate, Count = evaluate.Total?.Degrade() ?? -1 };
 	}
 }

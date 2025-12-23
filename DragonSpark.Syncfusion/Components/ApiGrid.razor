@@ -1,7 +1,8 @@
-﻿@using DragonSpark.Model.Operations
+﻿@using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination
+@using DragonSpark.Compose
+@using DragonSpark.Model.Operations
 @using DragonSpark.SyncfusionRendering.Queries
 @using Syncfusion.Blazor
-@using Syncfusion.Blazor.Data
 
 @typeparam T
 @inherits DataGridQueryBase<T>
@@ -43,7 +44,7 @@
 
 @code {
     [Parameter]
-    public required Func<Stop<DataManagerRequest>, Task<DataResult>> Factory { get; set; }
+    public required Func<Stop<PageInput>, Task<Page<T>>> Factory { get; set; }
 
-    protected override IDataRequest GetRequest() => new DataRequest(Factory);
+    protected override IDataRequest GetRequest() => new DataRequest(new ComposePage<T>(Factory).Allocate);
 }
