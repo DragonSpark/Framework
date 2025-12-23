@@ -87,7 +87,7 @@
             StateHasChanged();
             try
             {
-                var page = await Input.Get(new(true, OrderBy, Filter, new(_items.Count, PageSize), _source.Token));
+                var page = await Input.Get(new(new(true, OrderBy, Filter, new(_items.Count, PageSize)), _source.Token));
                 if (!_source?.IsCancellationRequested ?? false)
                 {
                     await Load(page);

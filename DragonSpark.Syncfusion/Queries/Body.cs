@@ -1,5 +1,8 @@
-﻿using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Shape;
+﻿using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
+using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Shape;
 using DragonSpark.Compose;
+using DragonSpark.Model.Selection;
+using Syncfusion.Blazor;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,14 +14,21 @@ public sealed class Body<T> : IBody<T>
 
 	Body() : this(BodyQuery<T>.Default) {}
 
-	readonly IQuery<T> _body;
+	readonly IQuery<T>                              _body;
+	readonly ISelect<PageInput, DataManagerRequest> _select;
 
-	public Body(IQuery<T> body) => _body = body;
+	public Body(IQuery<T> body) : this(body, DataManagerRequests.Default) {}
+
+	public Body(IQuery<T> body, ISelect<PageInput, DataManagerRequest> select)
+	{
+		_body        = body;
+		_select = select;
+	}
 
 	public async ValueTask<IQueryable<T>> Get(ComposeInput<T> parameter)
 	{
 		var (input, current) = parameter;
-		var (_, result, _)   = await _body.Off(new(input.To<SyncfusionPageInput>().Request, current));
+		var (_, result, _)   = await _body.Off(new(_select.Get(input), current));
 		return result;
 	}
 }

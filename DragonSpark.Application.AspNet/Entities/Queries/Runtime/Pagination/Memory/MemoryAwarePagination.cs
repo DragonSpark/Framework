@@ -1,12 +1,13 @@
 ﻿using DragonSpark.Application.Compose.Store.Operations.Memory;
+using DragonSpark.Model.Operations;
 
 namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination.Memory;
 
 public class MemoryAwarePagination<T> : IPagination<T>
 {
-	readonly StoreProfile<PageInput> _profile;
+	readonly StoreProfile<Stop<PageInput>> _profile;
 
-	protected MemoryAwarePagination(StoreProfile<PageInput> profile) => _profile = profile;
+	protected MemoryAwarePagination(StoreProfile<Stop<PageInput>> profile) => _profile = profile;
 
 	public IPages<T> Get(IPages<T> parameter) => new MemoryAwarePages<T>(parameter, _profile);
 }

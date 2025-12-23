@@ -1,0 +1,52 @@
+﻿using DragonSpark.Application;
+using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
+using DragonSpark.SyncfusionRendering.Queries;
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using Syncfusion.Blazor;
+using Syncfusion.Blazor.Data;
+using System;
+using System.Threading.Tasks;
+
+namespace DragonSpark.SyncfusionRendering.Components;
+
+public abstract class DataGridQueryBase<T> : DataGridBase<T>
+{
+	protected readonly Model.Results.Switch           _active = true;
+	Func<Stop<DataManagerRequest>, Task<DataResult>>? _factory;
+
+	[Inject]
+	public required ProtectedSessionStorage Session { get; set; }
+	
+	Func<Stop<DataManagerRequest>, Task<DataResult>> ComposeFactory()
+		=> new StateAwareDataRequest(GetRequest(), new GridStateVariable(_identity, Session), _active)
+		   .Then().Then().Handle(EmptyDataResult.Default.Get()).Allocate();
+
+	protected void RequestNewFactory()
+	{
+		_factory = null;
+	}
+
+	public override async Task SetParametersAsync(ParameterView parameters)
+	{
+		var previous = _identity;
+		await base.SetParametersAsync(parameters).Off();
+		if (_identity != previous)
+		{
+			RequestNewFactory();
+		}
+
+		_factory ??= ComposeFactory();
+	}
+
+
+	protected abstract IDataRequest GetRequest();
+
+	protected virtual async Task OnRequest(DataRequestResult parameter)
+	{
+		var data = await _factory.Verify()(new(parameter.Request, Stop));
+		parameter.Execute(data);
+	}
+
+}

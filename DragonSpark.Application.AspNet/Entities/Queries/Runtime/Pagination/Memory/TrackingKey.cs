@@ -1,9 +1,10 @@
-﻿using DragonSpark.Text;
+﻿using DragonSpark.Model.Operations;
+using DragonSpark.Text;
 using System.Collections.Concurrent;
 
 namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination.Memory;
 
-public class TrackingKey<T> : IFormatter<T>
+public class TrackingKey<T> : IFormatter<Stop<T>>
 {
 	readonly IFormatter<T>         _previous;
 	readonly ConcurrentBag<string> _track;
@@ -14,7 +15,7 @@ public class TrackingKey<T> : IFormatter<T>
 		_track    = track;
 	}
 
-	public string Get(T parameter)
+	public string Get(Stop<T> parameter)
 	{
 		var result = _previous.Get(parameter);
 		_track.Add(result);

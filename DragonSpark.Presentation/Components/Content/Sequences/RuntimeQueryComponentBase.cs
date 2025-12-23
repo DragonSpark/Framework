@@ -18,7 +18,7 @@ public abstract class RuntimeQueryComponentBase<T> : InstanceComponentBase<IQuer
 		var instance = Instance;
 		if (instance is not null)
 		{
-			await Publisher.Get(new(instance));
+			await Publisher.On(new(instance));
 		}
 		await base.RefreshState().Off();
 	}

@@ -1,15 +1,14 @@
-﻿@using DragonSpark.Compose
+﻿@using DragonSpark.Model.Operations
 @using DragonSpark.SyncfusionRendering.Queries
-@using Radzen
 @using Syncfusion.Blazor
+@using Syncfusion.Blazor.Data
 
 @typeparam T
 @inherits DataGridQueryBase<T>
 
-<DataGrid T="T"
+<DragonSpark.SyncfusionRendering.Components.DataGrid T="T"
           @ref="@_subject"
           Id="@_identity"
-          Enabled="@_active"
           FilterType="@FilterType"
           Columns="@Columns"
           AllowSelection="@AllowSelection"
@@ -32,31 +31,19 @@
           @attributes="@AdditionalAttributes">
     <ChildContent>
         <Syncfusion.Blazor.Data.SfDataManager Adaptor="Adaptors.CustomAdaptor">
-            <DataRequestCallbackAdaptor Requested="@OnRequest"/>
+            <DataRequestCallbackAdaptor Requested="@OnRequest" />
         </Syncfusion.Blazor.Data.SfDataManager>
+
         @if (ChildContent is not null)
         {
             @ChildContent
         }
     </ChildContent>
-</DataGrid>
+</DragonSpark.SyncfusionRendering.Components.DataGrid>
 
 @code {
-
     [Parameter]
-    public required IDataRequest Content { get; set; }
+    public required Func<Stop<DataManagerRequest>, Task<DataResult>> Factory { get; set; }
 
-    protected override IDataRequest GetRequest() => Content;
-
-    public override async Task SetParametersAsync(ParameterView parameters)
-    {
-        var changed = parameters.DidParameterChange(nameof(Content), Content);
-        if (changed)
-        {
-            RequestNewFactory();
-        }
-        await base.SetParametersAsync(parameters).Off();
-        
-    }
-
+    protected override IDataRequest GetRequest() => new DataRequest(Factory);
 }

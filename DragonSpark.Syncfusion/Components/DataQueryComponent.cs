@@ -4,13 +4,14 @@ using DragonSpark.SyncfusionRendering.Queries;
 using Microsoft.AspNetCore.Components;
 using Radzen;
 using Syncfusion.Blazor;
+using Syncfusion.Blazor.Data;
 using System.Threading.Tasks;
 
 namespace DragonSpark.SyncfusionRendering.Components;
 
 public abstract class DataQueryComponent : DataComponent
 {
-	Await<Stop<DataManagerRequest>, object>? _input;
+	Await<Stop<DataManagerRequest>, DataResult>? _input;
 
 	[Parameter]
 	public required IDataRequest Content { get; set; }
@@ -25,7 +26,7 @@ public abstract class DataQueryComponent : DataComponent
 		}
 	}
 
-	protected abstract Await<Stop<DataManagerRequest>, object> CreateInput();
+	protected abstract Await<Stop<DataManagerRequest>, DataResult> CreateInput();
 
 	protected virtual async Task OnRequest(DataRequestResult parameter)
 	{

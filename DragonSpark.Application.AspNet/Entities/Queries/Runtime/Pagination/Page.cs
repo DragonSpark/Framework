@@ -1,16 +1,15 @@
 ﻿using DragonSpark.Model;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
 
-public sealed class Page<T> : Collection<T>
+public sealed class Page<T> : List<T>
 {
 	public static Page<T> Default { get; } = new();
 
 	Page() : this(Empty.Array<T>(), null) {}
 
-	public Page(IList<T> list, ulong? total) : base(list) => Total = total;
+	public Page(IEnumerable<T> list, ulong? total) : base(list) => Total = total;
 
 	public ulong? Total { get; }
 }

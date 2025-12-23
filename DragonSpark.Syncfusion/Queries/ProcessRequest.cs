@@ -15,12 +15,9 @@ sealed class ProcessRequest<T> : IDataRequest
 
 	public ProcessRequest(Await<Stop<DataManagerRequest>, Page<T>> current) => _current = current;
 
-	public async ValueTask<object> Get(Stop<DataManagerRequest> parameter)
+	public async ValueTask<DataResult> Get(Stop<DataManagerRequest> parameter)
 	{
 		var evaluate = await _current(parameter);
-		var result = evaluate.Total.HasValue
-			             ? new DataResult { Result = evaluate, Count = evaluate.Total.Value.Degrade() }
-			             : (object)evaluate;
-		return result;
+		return new()  { Result = evaluate, Count = evaluate.Total?.Degrade() ?? -1 };
 	}
 }
