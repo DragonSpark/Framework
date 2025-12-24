@@ -12,23 +12,25 @@ public sealed class Body<T> : IBody<T>
 {
 	public static Body<T> Default { get; } = new();
 
-	Body() : this(BodyQuery<T>.Default) {}
+	Body() : this(ComposeBody<T>.Default) {}
 
 	readonly IQuery<T>                              _body;
 	readonly ISelect<PageInput, DataManagerRequest> _select;
 
 	public Body(IQuery<T> body) : this(body, DataManagerRequests.Default) {}
 
+	public Body(ISelect<PageInput, DataManagerRequest> select) : this(ComposeBody<T>.Default, select) {}
+
 	public Body(IQuery<T> body, ISelect<PageInput, DataManagerRequest> select)
 	{
-		_body        = body;
+		_body   = body;
 		_select = select;
 	}
 
 	public async ValueTask<IQueryable<T>> Get(ComposeInput<T> parameter)
 	{
 		var (input, current) = parameter;
-		var (_, result, _)   = await _body.Off(new(_select.Get(input), current));
+		var (_, result)   = await _body.Off(new(_select.Get(input), current));
 		return result;
 	}
 }

@@ -13,7 +13,7 @@ sealed class ProcessRequest<T> : IDataRequest
 	readonly IPages<T>                              _pages;
 	readonly ISelect<DataManagerRequest, PageInput> _select;
 
-	public ProcessRequest(IPages<T> pages) : this(pages, SelectQueryInput.Default) {}
+	public ProcessRequest(IPages<T> pages) : this(pages, ComposePageInput.Default) {}
 
 	public ProcessRequest(IPages<T> pages, ISelect<DataManagerRequest, PageInput> select)
 	{

@@ -12,9 +12,9 @@ sealed class Sort<T> : IQuery<T>
 
 	public ValueTask<Parameter<T>> Get(Parameter<T> parameter)
 	{
-		var (request, query, count) = parameter;
+		var (request, query) = parameter;
 		var data = request.Sorted.Account()?.Count > 0
-			           ? new(request, DataOperations.PerformSorting(query, request.Sorted), count)
+			           ? new(request, DataOperations.PerformSorting(query, request.Sorted))
 			           : parameter;
 		var result = data.ToOperation();
 		return result;

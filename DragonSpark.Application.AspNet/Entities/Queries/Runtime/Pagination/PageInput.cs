@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
 
-public sealed record PageInput(bool IncludeTotalCount, string? OrderBy, string? Filter, Partition? Partition);
+public record PageInput(bool IncludeTotalCount, string? OrderBy, string? Filter, Partition? Partition);

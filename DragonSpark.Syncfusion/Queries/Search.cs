@@ -12,9 +12,9 @@ sealed class Search<T> : IQuery<T>
 
 	public ValueTask<Parameter<T>> Get(Parameter<T> parameter)
 	{
-		var (request, query, count) = parameter;
+		var (request, query) = parameter;
 		var data = request.Search.Account()?.Count > 0
-			           ? new(request, DataOperations.PerformSearching(query, request.Search), count)
+			           ? new(request, DataOperations.PerformSearching(query, request.Search))
 			           : parameter;
 		var result = data.ToOperation();
 		return result;

@@ -1,9 +1,11 @@
 ﻿@using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination
 @using DragonSpark.Compose
 @using DragonSpark.Model.Operations
+@using DragonSpark.Model.Selection
 @using DragonSpark.SyncfusionRendering.Queries
 @using Syncfusion.Blazor
 
+@typeparam TIn where TIn : PageInput
 @typeparam T
 @inherits DataGridQueryBase<T>
 
@@ -44,7 +46,10 @@
 
 @code {
     [Parameter]
-    public required Func<Stop<PageInput>, Task<Page<T>>> Factory { get; set; }
+    public required Func<Stop<TIn>, Task<Page<T>>> Factory { get; set; }
 
-    protected override IDataRequest GetRequest() => new DataRequest(new ComposePage<T>(Factory).Allocate);
+    [Parameter]
+    public required ISelect<DataManagerRequest, TIn> Select { get; set; }
+
+    protected override IDataRequest GetRequest() => new DataRequest(new ComposePage<TIn, T>(Factory, Select).Allocate);
 }
