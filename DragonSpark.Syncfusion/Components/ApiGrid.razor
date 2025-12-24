@@ -25,12 +25,14 @@
           CssClass="@CssClass"
           PageSize="@PageSize"
           LoadingTemplate="@LoadingTemplate"
+          ProblemTemplate="@ProblemTemplate"
           EmptyElementsTemplate="@EmptyElementsTemplate"
           Updated="@Updated"
           Editing="@Editing"
           Created="@Created"
           Ready="@Ready"
           Empty="@Empty"
+          ReportedType="@ReportedType"
           @attributes="@AdditionalAttributes">
     <ChildContent>
         <Syncfusion.Blazor.Data.SfDataManager Adaptor="Adaptors.CustomAdaptor">
@@ -52,4 +54,5 @@
     public required ISelect<DataManagerRequest, TIn> Select { get; set; }
 
     protected override IDataRequest GetRequest() => new DataRequest(new ComposePage<TIn, T>(Factory, Select).Allocate);
+
 }

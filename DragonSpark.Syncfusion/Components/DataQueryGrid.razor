@@ -1,7 +1,10 @@
 ﻿@using DragonSpark.Compose
+@using DragonSpark.Model.Operations.Selection.Stop
+@using DragonSpark.Presentation
 @using DragonSpark.SyncfusionRendering.Queries
 @using Radzen
 @using Syncfusion.Blazor
+@using Syncfusion.Blazor.Data
 
 @typeparam T
 @inherits DataGridQueryBase<T>
@@ -24,11 +27,13 @@
           PageSize="@PageSize"
           LoadingTemplate="@LoadingTemplate"
           EmptyElementsTemplate="@EmptyElementsTemplate"
+          ProblemTemplate="@ProblemTemplate"
           Updated="@Updated"
           Editing="@Editing"
           Created="@Created"
           Ready="@Ready"
           Empty="@Empty"
+          ReportedType="@ReportedType"
           @attributes="@AdditionalAttributes">
     <ChildContent>
         <Syncfusion.Blazor.Data.SfDataManager Adaptor="Adaptors.CustomAdaptor">
@@ -46,8 +51,6 @@
     [Parameter]
     public required IDataRequest Content { get; set; }
 
-    protected override IDataRequest GetRequest() => Content;
-
     public override async Task SetParametersAsync(ParameterView parameters)
     {
         var changed = parameters.DidParameterChange(nameof(Content), Content);
@@ -55,8 +58,17 @@
         {
             RequestNewFactory();
         }
+
         await base.SetParametersAsync(parameters).Off();
-        
     }
+
+    protected override IStopAware<DataManagerRequest, DataResult> ComposeFactory()
+    {
+        var start  = base.ComposeFactory();
+        var result = start.Then().Then().Handle(EmptyDataResult.Default).Out();
+        return result;
+    }
+
+    protected override IDataRequest GetRequest() => Content;
 
 }

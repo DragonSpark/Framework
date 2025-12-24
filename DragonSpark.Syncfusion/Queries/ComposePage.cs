@@ -24,7 +24,7 @@ sealed class ComposePage<TIn, T> : IStopAware<DataManagerRequest, DataResult> wh
 	public async ValueTask<DataResult> Get(Stop<DataManagerRequest> parameter)
 	{
 		var (subject, stop) = parameter;
-		var input = _select.Get(subject); // TODO
+		var input = _select.Get(subject);
 		var page  = await _page(new((TIn)input, stop)).Off();
 		return new() { Result = page, Count = page.Total?.Degrade() ?? page.Count };
 	}

@@ -1,6 +1,7 @@
 ﻿using BlazorPro.BlazorSize;
 using DragonSpark.Compose;
 using DragonSpark.Presentation.Components;
+using DragonSpark.Presentation.Components.Content.Templates;
 using DragonSpark.SyncfusionRendering.Entities;
 using Microsoft.AspNetCore.Components;
 using Radzen;
@@ -56,7 +57,9 @@ public class DataGridBase<T> : DataComponent
 
 	[Parameter]
 	public RenderFragment EmptyElementsTemplate { get; set; } = DefaultEmptyResultTemplate.Default;
-
+	
+	[Parameter]
+	public required RenderFragment ProblemTemplate { get; set; } = DefaultExceptionTemplate.Default;
 	[Parameter]
 	public ICollection<string>? DesktopToolbar { get; set; }
 
