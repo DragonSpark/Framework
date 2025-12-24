@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using DragonSpark.Diagnostics.Logging;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Sequences;
@@ -267,7 +268,7 @@ public static partial class ExtensionMethods
 			=> string.Format(provider, @this, args);
 	}
 
-	extension(string? @this)
+	extension([NotNullWhen(false)]string? @this)
 	{
 		public bool IsNullOrEmpty() => string.IsNullOrEmpty(@this);
 

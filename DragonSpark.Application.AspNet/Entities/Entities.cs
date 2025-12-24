@@ -4,43 +4,42 @@ using DragonSpark.Application.AspNet.Security.Identity;
 using DragonSpark.Model.Commands;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
+using IdentityUser = DragonSpark.Application.AspNet.Security.Identity.IdentityUser;
 
 namespace DragonSpark.Application.AspNet.Entities;
 
 [MustDisposeResource]
 public class Entities : DbContext
 {
-	readonly ICommand<ModelCreating> _configure;
+    readonly ICommand<ModelCreating> _configure;
 
-	protected Entities(DbContextOptions options) : this(options, EmptyCommand<ModelCreating>.Default) {}
+    protected Entities(DbContextOptions options) : this(options, EmptyCommand<ModelCreating>.Default) {}
 
-	protected Entities(DbContextOptions options, ICommand<ModelCreating> configure) : base(options)
-		=> _configure = configure;
+    protected Entities(DbContextOptions options, ICommand<ModelCreating> configure) : base(options)
+        => _configure = configure;
 
-	protected override void OnModelCreating(ModelBuilder builder)
-	{
-		builder.Entity<Setting>();
-		_configure.Execute(new(this, builder));
-		base.OnModelCreating(builder);
-	}
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        builder.Entity<Setting>();
+        _configure.Execute(new(this, builder));
+        base.OnModelCreating(builder);
+    }
 }
 
 [MustDisposeResource]
 public class Entities<T> : IdentityDbContext<T> where T : IdentityUser
 {
-	readonly ICommand<ModelCreating> _configure;
+    readonly ICommand<ModelCreating> _configure;
 
-	protected Entities(DbContextOptions options) : this(options, EmptyCommand<ModelCreating>.Default) {}
+    protected Entities(DbContextOptions options) : this(options, EmptyCommand<ModelCreating>.Default) {}
 
-	protected Entities(DbContextOptions options, ICommand<ModelCreating> configure) : base(options)
-	{
-		_configure = configure;
-	}
+    protected Entities(DbContextOptions options, ICommand<ModelCreating> configure) : base(options)
+        => _configure = configure;
 
-	protected override void OnModelCreating(ModelBuilder builder)
-	{
-		builder.Entity<Setting>();
-		_configure.Execute(new(this, builder));
-		base.OnModelCreating(builder);
-	}
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        builder.Entity<Setting>();
+        _configure.Execute(new(this, builder));
+        base.OnModelCreating(builder);
+    }
 }

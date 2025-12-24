@@ -1,4 +1,4 @@
-﻿using DragonSpark.Model.Commands;
+using DragonSpark.Model.Commands;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace DragonSpark.Application.AspNet.Entities.Initialization;
