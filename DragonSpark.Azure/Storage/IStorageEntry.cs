@@ -6,8 +6,8 @@ using System.IO;
 namespace DragonSpark.Azure.Storage;
 
 public interface IStorageEntry : IStopAware<Stream>,
-                                 IAltering<Stream>,
-                                 Model.Operations.Stop.IStopAware<IDictionary<string, string?>>
+								 IAltering<Stream>,
+								 Model.Operations.Stop.IStopAware<IDictionary<string, string?>>
 {
 	StorageEntryProperties Properties { get; }
 }
