@@ -13,12 +13,12 @@ public sealed class FocusOnLoadBehavior : BehaviorBase<VisualElement>
         get => (VisualElement?)GetValue(TargetElementProperty);
         set => SetValue(TargetElementProperty, value);
     }
-    
+
     protected override void OnAttachedTo(VisualElement bindable)
     {
         base.OnAttachedTo(bindable);
 
-        bindable.Loaded += OnChanged;    
+        bindable.Loaded += OnChanged;
     }
 
     protected override void OnDetachingFrom(VisualElement bindable)

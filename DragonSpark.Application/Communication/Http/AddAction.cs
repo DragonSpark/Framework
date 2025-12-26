@@ -32,7 +32,7 @@ sealed class AddAction : ICommand<HttpMessageHandlerBuilder>
                 current              = span[i];
             }
 
-            current.InnerHandler       = parameter.PrimaryHandler;
+            current.InnerHandler     = parameter.Services.GetService<HttpMessageHandler>() ?? parameter.PrimaryHandler;
             parameter.PrimaryHandler = span[0];
         }
     }
