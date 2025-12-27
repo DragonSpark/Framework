@@ -1,7 +1,10 @@
 ﻿using DragonSpark.Application.AspNet;
+using DragonSpark.Application.Security;
+using DragonSpark.Compose;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.OutputCaching;
 using System;
+using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -20,25 +23,36 @@ public class UserOutputCachePolicy : Text.Text, IOutputsPolicy
 		_for = @for;
 	}
 
-	ValueTask IOutputCachePolicy.CacheRequestAsync(OutputCacheContext context, CancellationToken cancellationToken)
+	async ValueTask IOutputCachePolicy.CacheRequestAsync(OutputCacheContext context, CancellationToken cancellationToken)
 	{
 		var http   = context.HttpContext;
 		var method = http.Request.Method;
-		var allow  = HttpMethods.IsGet(method) || HttpMethods.IsHead(method);
+		var post   = HttpMethods.IsPost(method);
+		var allow  = HttpMethods.IsGet(method) || HttpMethods.IsHead(method) || post;
 		var rules  = context.CacheVaryByRules;
-		var number = http.User.Number().GetValueOrDefault();
+		var number = http.User.Number() ?? 0;
 		context.EnableOutputCaching        = true;
 		context.AllowCacheLookup           = allow;
 		context.AllowCacheStorage          = allow;
 		context.AllowLocking               = true;
 		context.ResponseExpirationTimeSpan = _for;
 		rules.CacheKeyPrefix               = $"{number}_";
-		rules.QueryKeys                    = "*";
+
+		if (post)
+		{
+			http.Request.EnableBuffering();
+			using var reader = new StreamReader(http.Request.Body, leaveOpen: true);
+			var       body   = await reader.ReadToEndAsync(cancellationToken).Off();
+			http.Request.Body.Position = 0;
+			context.CacheVaryByRules.VaryByValues.Add("body", Hash.Default.Get(body));
+		}
+		else
+		{
+			rules.QueryKeys = "*";
+		}
 
 		var tag = _key.Get(new UserIdentity(number));
 		context.Tags.Add(tag);
-
-		return ValueTask.CompletedTask;
 	}
 
 	ValueTask IOutputCachePolicy.ServeFromCacheAsync(OutputCacheContext context, CancellationToken cancellationToken)
