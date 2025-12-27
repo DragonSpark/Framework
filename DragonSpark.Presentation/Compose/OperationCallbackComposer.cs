@@ -34,10 +34,11 @@ public sealed class OperationCallbackComposer : IResult<EventCallback>
 		=> UpdateActivity(receiver, ActivityOptions.Default);
 
 	public OperationCallbackComposer UpdateActivity(IActivityReceiver receiver, CancelAwareActivityOptions options)
-		=> new(receiver, new CancelAwareOperation(new ActivityAwareOperation(_operation, receiver, options), options));
+		=> new(receiver.Target(_receiver), 
+		       new CancelAwareOperation(new ActivityAwareOperation(_operation, receiver, options), options));
 
 	public OperationCallbackComposer UpdateActivity(IActivityReceiver receiver, ActivityOptions options)
-		=> new(receiver, new ActivityAwareOperation(_operation, receiver, options));
+		=> new(receiver.Target(_receiver), new ActivityAwareOperation(_operation, receiver, options));
 
 	public OperationCallbackComposer Watching(IRenderState parameter)
 		=> new(_receiver, new ActiveRenderAwareOperation(_operation, parameter));
@@ -67,7 +68,7 @@ public sealed class OperationCallbackComposer<T> : IResult<EventCallback<T>>
 		=> UpdateActivity(receiver, ActivityOptions.Default);
 
 	public OperationCallbackComposer<T> UpdateActivity(IActivityReceiver receiver, ActivityOptions options)
-		=> new(_receiver, new ActivityAwareOperation<T>(_operation, receiver, options));
+		=> new(receiver.Target(_receiver), new ActivityAwareOperation<T>(_operation, receiver, options));
 
 	public OperationCallbackComposer<T> Monitoring(Switch subject)
 		=> new(_receiver, new MonitoredOperation<T>(_operation, subject));

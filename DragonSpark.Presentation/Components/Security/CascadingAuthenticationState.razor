@@ -1,41 +1,43 @@
-﻿@implements IDisposable
+﻿@using DragonSpark.Application.AspNet.Security.Identity.Authentication
+@using DragonSpark.Presentation.Components.Content.Rendering
+@implements IDisposable
+
 @inject AuthenticationStateProvider Provider
+@inject RenderStateStore State
+@inject IAdapters Adapters
 
 <CascadingValue Value="@_task" ChildContent="@ChildContent"/>
 
 @code
 {
-	Task<AuthenticationState>? _task;
-	AuthenticationStateChangedHandler _handler = null!;
+    Task<AuthenticationState>?        _task;
+    AuthenticationStateChangedHandler _handler = null!;
+    Action                            _update  = null!;
 
-	[Parameter]
-	public RenderFragment? ChildContent { get; set; }
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
 
-	protected override void OnInitialized()
-	{
-        _handler = OnAuthenticationStateChanged;
-		Provider.AuthenticationStateChanged += _handler;
+    protected override void OnInitialized()
+    {
+        _handler                            =  OnAuthenticationStateChanged;
+        Provider.AuthenticationStateChanged += _handler;
+        _update                             =  StateHasChanged;
+        _task                               =  Provider.GetAuthenticationStateAsync();
+    }
 
-		_task = Provider.GetAuthenticationStateAsync();
-	}
+    protected override Task OnParametersSetAsync() => _task ?? base.OnParametersSetAsync();
 
-	protected override Task OnParametersSetAsync() => _task ?? base.OnParametersSetAsync();
+    void OnAuthenticationStateChanged(Task<AuthenticationState> parameter)
+    {
+        if (State.Get() is not RenderState.Destroyed)
+        {
+            _task = Adapters.Get(parameter);
+            InvokeAsync(_update);
+        }
+    }
 
-	void OnAuthenticationStateChanged(Task<AuthenticationState> _)
-	{
-		InvokeAsync(() =>
-		            {
-                        var task = Provider.GetAuthenticationStateAsync();
-                        if (_task != task)
-                        {
-                            _task = task;
-                            StateHasChanged();
-                        }
-		            });
-	}
-
-	void IDisposable.Dispose()
-	{
-		Provider.AuthenticationStateChanged -= _handler;
-	}
+    void IDisposable.Dispose()
+    {
+        Provider.AuthenticationStateChanged -= _handler;
+    }
 }

@@ -11,7 +11,7 @@ sealed class ActivityMonitor : Membership<IActivityReceiver>, IActivityMonitor
 	readonly IPublisher<ActivityUpdatedMessage> _publisher;
 	readonly HashSet<IActivityReceiver>         _receivers;
 
-	public ActivityMonitor(IPublisher<ActivityUpdatedMessage> publisher) : this(publisher, new()) {}
+	public ActivityMonitor(IPublisher<ActivityUpdatedMessage> publisher) : this(publisher, []) {}
 
 	public ActivityMonitor(IPublisher<ActivityUpdatedMessage> publisher, HashSet<IActivityReceiver> receivers)
 		: base(receivers)

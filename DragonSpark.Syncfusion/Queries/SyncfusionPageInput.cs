@@ -1,11 +1,14 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
+using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Shape;
 using Syncfusion.Blazor;
-using System.Threading;
+using System.Text.Json.Serialization;
 
 namespace DragonSpark.SyncfusionRendering.Queries;
 
-public sealed record SyncfusionPageInput(DataManagerRequest Request, CancellationToken Stop)
-	: PageInput(Request.RequiresCounts, null, null, Request.Skip > 0 || Request.Take > 0
-		                                                ? new(Request.Skip > 0 ? Request.Skip : null,
-		                                                      Request.Take > 0 ? Request.Take : null)
-		                                                : null, Stop);
+[method: JsonConstructor]
+public sealed record SyncfusionPageInput(DataManagerRequest Request, bool IncludeTotalCount, Partition? Partition)
+	: PageInput(IncludeTotalCount, null, null, Partition)
+{
+	public SyncfusionPageInput(DataManagerRequest Request)
+		: this(Request, Request.RequiresCounts, Request.Partition()) {}
+}

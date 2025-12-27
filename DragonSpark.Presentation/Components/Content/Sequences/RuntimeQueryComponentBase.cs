@@ -11,14 +11,14 @@ public abstract class RuntimeQueryComponentBase<T> : InstanceComponentBase<IQuer
 	[Inject]
 	IPublisher<RefreshObjectMessage> Publisher { get; set; } = null!;
 
-	protected override void RequestNewContent(bool redraw = false) {}
+	protected override void RequestNewContent() {}
 
 	protected override async ValueTask RefreshState()
 	{
 		var instance = Instance;
 		if (instance is not null)
 		{
-			await Publisher.Get(new(instance));
+			await Publisher.On(new(instance));
 		}
 		await base.RefreshState().Off();
 	}

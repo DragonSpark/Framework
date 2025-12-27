@@ -10,7 +10,7 @@ public abstract class InstanceComponentBase<T> : ContentComponentBase<T>
 
 	protected override ValueTask<T?> GetContent() => GetInstance().ToOperation();
 
-	protected override void RequestNewContent(bool redraw = false)
+	protected override void RequestNewContent()
 	{
 		RefreshContent();
 	}

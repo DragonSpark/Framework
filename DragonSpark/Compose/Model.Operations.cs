@@ -17,20 +17,20 @@ namespace DragonSpark.Compose;
 public static partial class ExtensionMethods
 {
 	public static OperationResultComposer<TIn, TOut> Or<TIn, TOut>(this OperationResultComposer<TIn, TOut?> @this,
-	                                                               ISelecting<TIn, TOut> second)
+																   ISelecting<TIn, TOut> second)
 		where TOut : class => @this.Or(second.Off);
 
 	public static OperationResultComposer<TIn, TOut> Or<TIn, TOut>(this OperationResultComposer<TIn, TOut?> @this,
-	                                                               DragonSpark.Model.Operations.Await<TIn, TOut> next)
+																   DragonSpark.Model.Operations.Await<TIn, TOut> next)
 		where TOut : class
 		=> new DragonSpark.Model.Operations.Selection.Coalesce<TIn, TOut>(@this, next).Then();
 
 	public static OperationResultComposer<TIn, TOut?> OrMaybe<TIn, TOut>(this OperationResultComposer<TIn, TOut?> @this,
-	                                                                     ISelecting<TIn, TOut?> second)
+																		 ISelecting<TIn, TOut?> second)
 		where TOut : class => @this.OrMaybe(second.Off);
 
 	public static OperationResultComposer<TIn, TOut?> OrMaybe<TIn, TOut>(this OperationResultComposer<TIn, TOut?> @this,
-	                                                                     DragonSpark.Model.Operations.Await<TIn, TOut?> next)
+																		 DragonSpark.Model.Operations.Await<TIn, TOut?> next)
 		where TOut : class
 		=> new DragonSpark.Model.Operations.Selection.Maybe<TIn, TOut>(@this, next).Then();
 
@@ -40,10 +40,10 @@ public static partial class ExtensionMethods
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static ValueTask<T> ToOperation<T>(this Task<T> @this) => new(@this);
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public static ValueTask<T> ToOperation<T>(this T @this) => new(@this);
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static ValueTask<T> ToOperation<T>(this T @this) => new(@this);
 
-    /**/
+	/**/
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining), Obsolete("Use Off instead")]
 	public static ConfiguredTaskAwaitable<T> Await<T>(this Task<T> @this) => @this.ConfigureAwait(false);
@@ -56,7 +56,7 @@ public static partial class ExtensionMethods
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining), Obsolete("Use Off instead")]
 	public static ConfiguredValueTaskAwaitable<TOut> Await<TIn, TOut>(this ISelect<TIn, ValueTask<TOut>> @this,
-	                                                                  TIn parameter)
+																	  TIn parameter)
 		=> @this.Get(parameter).ConfigureAwait(false);
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining), Obsolete("Use Off instead")]
@@ -108,8 +108,8 @@ public static partial class ExtensionMethods
 	public static ConfiguredTaskAwaitable<T> Await<T>(this IResult<Task<T>> @this)
 		=> @this.Get().ConfigureAwait(false);
 
-    /**/
-    [MethodImpl(MethodImplOptions.AggressiveInlining), Obsolete("Use On instead")]
+	/**/
+	[MethodImpl(MethodImplOptions.AggressiveInlining), Obsolete("Use On instead")]
 	public static ConfiguredTaskAwaitable<T> Go<T>(this Task<T> @this) => @this.ConfigureAwait(true);
 	[MethodImpl(MethodImplOptions.AggressiveInlining), Obsolete("Use On instead")]
 	public static ConfiguredValueTaskAwaitable<T> Go<T>(this ValueTask<T> @this) => @this.ConfigureAwait(true);
@@ -120,7 +120,7 @@ public static partial class ExtensionMethods
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining), Obsolete("Use On instead")]
 	public static ConfiguredValueTaskAwaitable<TOut> Go<TIn, TOut>(this ISelect<TIn, ValueTask<TOut>> @this,
-	                                                               TIn parameter)
+																   TIn parameter)
 		=> @this.Get(parameter).ConfigureAwait(true);
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining), Obsolete("Use On instead")]
@@ -170,7 +170,7 @@ public static partial class ExtensionMethods
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining), Obsolete("Use On instead")]
 	public static ConfiguredTaskAwaitable<T> Go<T>(this IResult<Task<T>> @this) => @this.Get().ConfigureAwait(true);
-    /**/
+	/**/
 
 	public static Task Allocate(this IOperation<None> @this) => @this.Get().AsTask();
 

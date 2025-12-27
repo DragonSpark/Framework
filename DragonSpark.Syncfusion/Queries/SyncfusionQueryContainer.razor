@@ -26,7 +26,7 @@
 		Content="@context"
 		Reporter="@Reporter"
 		ChildContent="@ChildContent"
-        LoadingTemplate="@EmptyContentTemplate.Default"
+		LoadingTemplate="@EmptyContentTemplate.Default"
 		ExceptionTemplate="@ExceptionTemplate"
 		NotFoundTemplate="@NotFoundTemplate"
 	/>
@@ -40,8 +40,8 @@
 	[Parameter]
 	public ICompose<T> Compose { get; set; } = SyncfusionCompose<T>.Default;
 
-    [Parameter]
-    public ICondition<bool?> Results { get; set; } = HasResults.Default;
+	[Parameter]
+	public ICondition<bool?> Results { get; set; } = HasResults.Default;
 
 	[Parameter]
 	public IReporter<IDataRequest>? Reporter { get; set; } = Queries.Reporter.Default;
@@ -50,8 +50,8 @@
 	public Type? ReportedType { get; set; }
 
 	[Parameter]
-    public RenderFragment<PagingRenderState<T>>? HeaderTemplate { get; set; }
+	public RenderFragment<PagingRenderState<T>>? HeaderTemplate { get; set; }
 
 	[Parameter]
-    public RenderFragment<PagingRenderState<T>>? FooterTemplate { get; set; }
+	public RenderFragment<PagingRenderState<T>>? FooterTemplate { get; set; }
 }

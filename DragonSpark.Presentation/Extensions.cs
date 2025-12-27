@@ -68,8 +68,10 @@ public static class Extensions
 	public static CallbackComposer Callback(this ModelContext _, Func<Task> method) => new(method);
 
 	public static SubmitCallbackComposer Callback(this ModelContext _, Func<EditContext, Task> submit) => new(submit);
+	public static SubmitCallbackComposer Callback(this ModelContext _, Func<EditContext, Task> submit, IOperation invalid)
+		=> new(submit, invalid);
 
-	public static SubmitCallbackComposer<T> Submit<T>(this ModelContext _, Func<SubmitInput<T>, Task> submit)
+	public static SubmitWithCancelCallbackComposer Callback(this ModelContext _, Func<SubmittingInput, Task> submit)
 		=> new(submit);
 
 	public static CallbackComposer<object> Callback(this ModelContext _, Func<object, Task> method) => new(method);
@@ -88,9 +90,14 @@ public static class Extensions
 	public static CallbackComposer Callback(this ModelContext _, Action callback)
 		=> new(callback.Target, Start.A.Command(callback).Operation().Allocate());
 
+	public static object Target(this IActivityReceiver @this, Delegate method) => @this.Target(method.Target ?? @this);
+	public static object Target(this IActivityReceiver _, object other) => other;
+
 	public static EditContextCallbackComposer Callback(this ModelContext _, EditContext context) => new(context);
 
 	public static CallbackComposer Callback(this ResultComposer<ValueTask> @this) => new(@this.Then().Allocate());
+	public static CallbackComposer Callback(this ResultComposer<ValueTask> @this, object receiver)
+		=> new(receiver, @this.Then().Allocate());
 
 	public static CallbackComposer Callback(this ResultComposer<Task> @this) => new(@this);
 
@@ -198,8 +205,8 @@ public static class Extensions
 	/**/
 	// ReSharper disable once TooManyArguments
 	public static CancelAwareActivityOptions Get(this IStopHandle @this, string message, IOperation? canceled = null,
-	                                             PostRenderAction action = PostRenderAction.None)
-		=> new(message, @this, PostRenderAction: action, Canceled: canceled);
+	                                             bool RedrawOnFinish = false)
+		=> new(message, @this, RedrawOnFinish: RedrawOnFinish, Canceled: canceled);
 	
 	/**/
 	public static bool IsConnected(this IResult<RenderState> @this)

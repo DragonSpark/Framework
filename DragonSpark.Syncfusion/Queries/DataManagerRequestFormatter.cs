@@ -2,7 +2,6 @@
 using DragonSpark.Model;
 using DragonSpark.Text;
 using Syncfusion.Blazor;
-using Syncfusion.Blazor.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,10 +14,10 @@ public sealed class DataManagerRequestFormatter : IFormatter<DataManagerRequest>
 
 	DataManagerRequestFormatter() : this(WhereFilterFormatter.Default.Get, Empty.Enumerable<string>()) {}
 
-	readonly Func<WhereFilter, string> _where;
-	readonly IEnumerable<string>       _empty;
+	readonly Func<Syncfusion.Blazor.Data.WhereFilter, string> _where;
+	readonly IEnumerable<string>                              _empty;
 
-	public DataManagerRequestFormatter(Func<WhereFilter, string> where, IEnumerable<string> empty)
+	public DataManagerRequestFormatter(Func<Syncfusion.Blazor.Data.WhereFilter, string> where, IEnumerable<string> empty)
 	{
 		_where = where;
 		_empty = empty;

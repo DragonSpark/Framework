@@ -15,9 +15,9 @@
 
 <SfComboBox TItem="TItem" TValue="TValue" @ref="_subject" Value="@Value" Placeholder="@Placeholder" AllowFiltering="@AllowFiltering"
             CssClass="@CssClass" ShowClearButton="true" FilterType="FilterType.Contains" EnableVirtualization="@Virtualization.HasValue" Query="@_display">
-    <ComboBoxTemplates TItem="TItem" HeaderTemplate="@HeaderTemplate" ItemTemplate="@ItemTemplate"/>
+    <ComboBoxTemplates TItem="TItem" HeaderTemplate="@HeaderTemplate" ItemTemplate="@ItemTemplate" />
     <SfDataManager Adaptor="Adaptors.CustomAdaptor">
-        <DataRequestCallbackAdaptor Requested="@OnRequest"/>
+        <DataRequestCallbackAdaptor Requested="@OnRequest" />
     </SfDataManager>
     @if (ChildContent is not null)
     {
@@ -26,6 +26,7 @@
 </SfComboBox>
 
 @code {
+    Query?                    _display = new Query().Take(DefaultPageSize.Default);
     SfComboBox<TValue, TItem> _subject = null!;
 
     [Parameter]
@@ -51,13 +52,11 @@
         {
             if (field != value)
             {
-                field    = value;
+                field = value;
                 _display = field.HasValue ? new Query().Take(field.Value) : null;
             }
         }
     } = DefaultPageSize.Default;
-
-    Query? _display = new Query().Take(DefaultPageSize.Default);
 
     [Parameter]
     public IRequests Requests { get; set; } = Components.Requests.Default;
@@ -66,14 +65,11 @@
     {
         parameter.Request.RequiresCounts = true;
         await base.OnRequest(parameter);
-        await Requested.Invoke(parameter).Off();
+        await Requested.Off(parameter);
     }
 
-    protected override Await<Stop<DataManagerRequest>, object> CreateInput()
-        => Requests.Get(Content)
-                   .Then()
-                   .Then()
-                   .Handle(EmptyDataResult.Default);
+    protected override Await<Stop<DataManagerRequest>, DataResult> CreateInput()
+        => Requests.Get(Content).Then().Then().Handle(EmptyDataResult.Default);
 
     public Task Display() => _subject.ShowPopupAsync();
     public Task Blur() => _subject.FocusOutAsync();

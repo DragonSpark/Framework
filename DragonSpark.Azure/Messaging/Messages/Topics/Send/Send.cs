@@ -5,6 +5,13 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Messaging.Messages.Topics.Send;
 
+public class Send<T> : Send<T, T> where T: Message
+{
+	protected Send(IProducer producer) : base(producer, x => x) {}
+
+	protected Send(IProducer producer, ICreateEventData create) : base(producer, x => x, create) {}
+}
+
 public class Send<T, U> : IStopAware<T> where U : Message
 {
 	readonly IProducer        _producer;

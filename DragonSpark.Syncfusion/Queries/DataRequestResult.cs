@@ -3,15 +3,9 @@ using Syncfusion.Blazor;
 
 namespace DragonSpark.SyncfusionRendering.Queries;
 
-public sealed class DataRequestResult : Variable<object>
+public sealed class DataRequestResult(DataManagerRequest request, string? key = null) : Variable<object>
 {
-	public DataRequestResult(DataManagerRequest request, string? key = null)
-	{
-		Request = request;
-		Key     = key;
-	}
+	public DataManagerRequest Request { get; } = request;
 
-	public DataManagerRequest Request { get; }
-
-	public string? Key { get; }
+	public string? Key { get; } = key;
 }

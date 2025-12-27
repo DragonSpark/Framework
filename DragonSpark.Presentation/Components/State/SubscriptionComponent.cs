@@ -41,7 +41,7 @@ public abstract class SubscriptionComponent<T> : ComponentBase, IAsyncDisposable
 
 	Task Dispatch(T parameter) => InvokeAsync(() => Received.Invoke(parameter));
 
-	public ValueTask DisposeAsync() => _connection?.DisposeAsync() ?? Task.CompletedTask.ToOperation();
+	public ValueTask DisposeAsync() => _connection?.DisposeAsync() ?? ValueTask.CompletedTask;
 }
 
 public abstract class SubscriptionComponent : SubscriptionComponent<None>;

@@ -13,8 +13,10 @@ sealed class ConfigureSqlServerWithMigration<T> : ConfigureSqlServerWithMigratio
 {
 	public ConfigureSqlServerWithMigration(Type type) : this(type.Assembly.GetName().Name.Verify()) {}
 
-	public ConfigureSqlServerWithMigration(string name)
-		: this(ConnectionString<T>.Default, new SqlServerMigrations(name).Execute) {}
+	public ConfigureSqlServerWithMigration(string name) : this(name, _ => {}) {}
+
+	public ConfigureSqlServerWithMigration(string name, Action<SqlServerDbContextOptionsBuilder> configure)
+		: this(ConnectionString<T>.Default, new SqlServerMigrations(name).Then().Append(configure)) {}
 
 	public ConfigureSqlServerWithMigration(IFormatter<IConfiguration> connection,
 	                                       Action<SqlServerDbContextOptionsBuilder> configure)

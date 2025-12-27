@@ -6,11 +6,12 @@ using DragonSpark.Model.Operations.Selection;
 using DragonSpark.SyncfusionRendering.Components;
 using Microsoft.Extensions.Caching.Memory;
 using Syncfusion.Blazor;
+using Syncfusion.Blazor.Data;
 using System;
 
 namespace DragonSpark.SyncfusionRendering.Queries;
 
-sealed class MemoryAwareDataRequest : Selecting<Stop<DataManagerRequest>, object>, IDataRequest
+sealed class MemoryAwareDataRequest : Selecting<Stop<DataManagerRequest>, DataResult>, IDataRequest
 {
 	public MemoryAwareDataRequest(IDataRequest previous, IMemoryCache memory, Func<string> key)
 		: this(previous,

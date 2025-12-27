@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Allocated;
 using DragonSpark.Model.Selection;
@@ -33,4 +34,18 @@ public class ThrottleOperation<T> : IOperation<T> where T : notnull
 		subject.Start();
 		return ValueTask.CompletedTask;
 	}
+}
+
+public class ThrottleOperation : ThrottleOperation<None>, IOperation
+{
+	public ThrottleOperation(Func<Task> subject, TimeSpan interval) : base(_ => subject(), interval) {}
+
+	public ThrottleOperation(Operate subject, TimeSpan interval) : base(_ => subject(), interval) {}
+
+	public ThrottleOperation(Operate subject, TimeSpan interval, ConcurrentDictionary<None, Timer> store) 
+		: base(_ => subject(), interval, store) {}
+
+	public ThrottleOperation(ISelect<None, Timer> timers) : base(timers) {}
+
+	public ValueTask Get() => Get(None.Default);
 }

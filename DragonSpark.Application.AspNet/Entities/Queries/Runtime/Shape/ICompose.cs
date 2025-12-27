@@ -1,5 +1,5 @@
-﻿using DragonSpark.Model.Operations.Selection;
+﻿using DragonSpark.Model.Operations.Selection.Stop;
 
 namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Shape;
 
-public interface ICompose<T> : ISelecting<ComposeInput<T>, Composition<T>>;
+public interface ICompose<T> : IStopAware<ComposeInput<T>, Composition<T>>;

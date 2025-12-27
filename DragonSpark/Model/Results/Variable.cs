@@ -9,7 +9,7 @@ public class Variable<T> : IMutable<T?>
 
 	readonly T?[] _store = new T[1];
 
-	public Variable(T? instance = default) => Execute(instance!);
+	public Variable(T? instance = default) => Execute(instance);
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public T? Get()

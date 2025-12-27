@@ -1,0 +1,58 @@
+﻿@using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination
+@using DragonSpark.Compose
+@using DragonSpark.Model.Operations
+@using DragonSpark.Model.Selection
+@using DragonSpark.SyncfusionRendering.Queries
+@using Syncfusion.Blazor
+
+@typeparam TIn where TIn : PageInput
+@typeparam T
+@inherits DataGridQueryBase<T>
+
+<DragonSpark.SyncfusionRendering.Components.DataGrid T="T"
+          @ref="@_subject"
+          Id="@_identity"
+          FilterType="@FilterType"
+          Columns="@Columns"
+          AllowSelection="@AllowSelection"
+          AllowPaging="@AllowPaging"
+          AllowFiltering="@AllowFiltering"
+          AllowSorting="@AllowSorting"
+          AllowExport="@AllowExport"
+          Breakpoint="@Breakpoint"
+          DesktopToolbar="@DesktopToolbar"
+          MobileToolbar="@MobileToolbar"
+          CssClass="@CssClass"
+          PageSize="@PageSize"
+          LoadingTemplate="@LoadingTemplate"
+          ProblemTemplate="@ProblemTemplate"
+          EmptyElementsTemplate="@EmptyElementsTemplate"
+          Updated="@Updated"
+          Editing="@Editing"
+          Created="@Created"
+          Ready="@Ready"
+          Empty="@Empty"
+          ReportedType="@ReportedType"
+          @attributes="@AdditionalAttributes">
+    <ChildContent>
+        <Syncfusion.Blazor.Data.SfDataManager Adaptor="Adaptors.CustomAdaptor">
+            <DataRequestCallbackAdaptor Requested="@OnRequest" />
+        </Syncfusion.Blazor.Data.SfDataManager>
+
+        @if (ChildContent is not null)
+        {
+            @ChildContent
+        }
+    </ChildContent>
+</DragonSpark.SyncfusionRendering.Components.DataGrid>
+
+@code {
+    [Parameter]
+    public required Func<Stop<TIn>, Task<Page<T>>> Factory { get; set; }
+
+    [Parameter]
+    public required ISelect<DataManagerRequest, TIn> Select { get; set; }
+
+    protected override IDataRequest GetRequest() => new DataRequest(new ComposePage<TIn, T>(Factory, Select).Allocate);
+
+}

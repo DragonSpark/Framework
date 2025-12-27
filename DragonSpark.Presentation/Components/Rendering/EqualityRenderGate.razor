@@ -1,0 +1,28 @@
+﻿@using DragonSpark.Compose
+@using DragonSpark.Model.Results
+
+@typeparam T
+
+@ChildContent(Input)
+
+@code {
+    readonly Switch _render = true;
+
+    [Parameter]
+    public required T Input { get; set; }
+
+    [Parameter]
+    public required RenderFragment<T> ChildContent { get; set; }
+
+    [Parameter]
+    public required Switch? Refresh { get; set; }
+
+    protected override bool ShouldRender() => _render;
+
+    public override Task SetParametersAsync(ParameterView parameters)
+    {
+        var changed = parameters.DidParameterChange(nameof(Input), Input);
+        _render.Execute(changed || Refresh?.Down() == true);
+        return base.SetParametersAsync(parameters);
+    }
+}

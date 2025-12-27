@@ -1,34 +1,35 @@
 ﻿@typeparam T where T : class
+@using DragonSpark.Application
 @using DragonSpark.Compose
 @using DragonSpark.Model.Results
 @using DragonSpark.Model.Sequences
 @using DragonSpark.Presentation.Components.Eventing
 
 @inherits ModelPersistenceComponentBase<T>
-@implements IDisposable
+@implements IAsyncDisposable
 
 @inject IPublisher<SaveModelMessage> Save
 
 @code {
-    readonly Switch _save  = new();
-    Array<string>   _skip  = Array<string>.Empty;
-    T               _model = null!;
-    EditContext?    _current;
+    readonly Variable<ValueTask?> _save  = new();
+    Array<string>            _skip  = Array<string>.Empty;
+    T                        _model = null!;
+    EditContext?             _context;
 
     protected override void OnParametersSet()
     {
         var context = ResolvedContext;
-        if (_current != context)
+        if (_context != context)
         {
-            if (_current is not null)
+            if (_context is not null)
             {
-                _current.OnFieldChanged -= FieldChanged;
+                _context.OnFieldChanged -= FieldChanged;
             }
 
-            if ((_current = context) != null)
+            if ((_context = context) != null)
             {
-                _current.OnFieldChanged += FieldChanged;
-                _model = Model ?? _current.Model.To<T>();
+                _context.OnFieldChanged += FieldChanged;
+                _model = Model ?? _context.Model.To<T>();
             }
         }
 
@@ -48,7 +49,7 @@
     public EditContext? EditContext { get; set; }
 
     [Parameter]
-    public string FieldsToSkip
+    public required string FieldsToSkip
     {
         get;
         set
@@ -59,24 +60,26 @@
                 _skip = field.Split(',', StringSplitOptions.RemoveEmptyEntries);
             }
         }
-    } = null!;
+    }
 
     [CascadingParameter]
     EditContext? ParentEditContext { get; set; }
 
     void FieldChanged(object? sender, FieldChangedEventArgs args)
     {
-        if (Enabled && !_skip.Open().Contains(args.FieldIdentifier.FieldName) && _save.Up())
+        if (Enabled && !_skip.Open().Contains(args.FieldIdentifier.FieldName) && _save.Get() is null)
         {
+            _save.Execute(Save.Get(new(_model)));
             StateHasChanged();
         }
     }
 
     protected override Task OnAfterRenderAsync(bool firstRender)
-        => _save.Down() ? Save.Allocate(new(_model)) : base.OnAfterRenderAsync(firstRender);
+        => _save.TryPop(out var save) && save is not null ? save.Value.AsTask() : base.OnAfterRenderAsync(firstRender);
 
-    public void Dispose()
+    public ValueTask DisposeAsync()
     {
-        _current?.OnFieldChanged -= FieldChanged;
+        _context?.OnFieldChanged -= FieldChanged;
+        return _save.TryPop(out var save) && save is not null ? save.Value : ValueTask.CompletedTask;
     }
 }

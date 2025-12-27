@@ -28,9 +28,9 @@ sealed class RadzenPaging<T> : IRadzenPaging<T>
 		var input = new PageInput(_includeCount, subject.OrderBy, subject.Filter,
 		                          subject.Skip.HasValue || subject.Top.HasValue
 			                          ? new(subject.Skip, subject.Top)
-			                          : null, stop);
+			                          : null);
 
-		var current      = _pages.Get(input);
+		var current      = _pages.Get(new(input, stop));
 		var successfully = current.IsCompletedSuccessfully;
 		var evaluate     = successfully ? current.Result : await current.Off();
 		Current = evaluate;

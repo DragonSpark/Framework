@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Diagnostics;
 
-public class PolicyAwareSelecting<TIn, TOut> : ISelecting<TIn, TOut>
+public class PolicyAwareSelecting<TIn, TOut> : ISelecting<TIn, TOut>  // TODO: StopAware
 {
 	readonly OperationResultComposer<TIn, TOut> _previous;
 	readonly IAsyncPolicy<TOut>                 _policy;

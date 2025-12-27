@@ -2,8 +2,7 @@
 @using DragonSpark.Model.Commands
 @using DragonSpark.Model.Results
 @using DragonSpark.Presentation.Environment.Browser.Document
-@using NetFabric.Hyperlinq
-@using System.Buffers
+@using MatBlazor
 
 @inherits Components.ComponentBase
 
@@ -20,7 +19,7 @@
             </ShouldRenderComponent>
         </fieldset>
     </div>
-    @if (Active && _previous.Current is CancelAwareActivityOptions cancel)
+    @if (Active && _model.Current is CancelAwareActivityOptions cancel)
     {
         <div class="position-absolute top-0 d-flex w-100 h-100 flex-column align-items-center justify-content-center">
             <div class="d-flex gap-2">
@@ -30,7 +29,7 @@
             @if (!_displaying)
             {
                 <ul class="actions">
-                    <li><button class="small button" disabled="@_displaying" @onclick="@OnCancel">Cancel</button></li>
+                    <li><MatButton Class="small button" Type="button" Disabled="@_displaying" OnClick="@OnCancel">Cancel</MatButton></li>
                 </ul>
             }
         </div>
@@ -39,16 +38,14 @@
 
 @code
 {
-    readonly List<IRenderAware> _renderings = new();
-    readonly Switch             _start      = false, _restore = false, _displaying = false, _render = true, _redraw = false;
-    ActivityReceiverModel       _previous   = null!;
-    RenderFragment              _content    = null!;
-    string?                     _class, _outer;
+    readonly Switch                _start   = false, _restore = false, _displaying = false, _render = true;
+    readonly ActivityReceiverModel _model   = new();
+    RenderFragment                 _content = null!;
+    string?                        _class, _outer;
 
     protected override void OnInitialized()
     {
-        _previous = new(new(_renderings));
-        _content  = ChildContent(this);
+        _content = ChildContent(this);
         Monitor?.Add.Execute(this);
         base.OnInitialized();
     }
@@ -60,7 +57,7 @@
     public string ActiveStyle { get; set; } = "dragonspark-activity-active";
 
     [Parameter]
-    public RenderFragment<IActivityReceiver> ChildContent { get; set; } = null!;
+    public required RenderFragment<IActivityReceiver> ChildContent { get; set; }
 
     [CascadingParameter] IActivityMonitor? Monitor { get; set; }
 
@@ -75,14 +72,14 @@
     {
         get
         {
-            var render = !Active && (_render || !_render.Up());
-            return render;
+            var result = !Active && (_render || !_render.Up());
+            return result;
         }
     }
 
-    public bool Active => _previous.Active;
+    public bool Active => _model.Active;
 
-    void Update() => Update(_previous.Current);
+    void Update() => Update(_model.Current);
 
     void Update(ActivityOptions? parameter)
     {
@@ -92,7 +89,7 @@
 
     public async ValueTask Get(ActivityReceiverState parameter)
     {
-        await _previous.On(parameter);
+        await _model.On(parameter);
         Update();
         if (_start && !_restore)
         {
@@ -110,51 +107,34 @@
                 await Monitor.On();
             }
 
-            using var renderings = _renderings.AsValueEnumerable().ToArray(ArrayPool<IRenderAware>.Shared);
-            foreach (var i in renderings)
-            {
-                i.Execute();
-            }
+            _model.Execute();
         }
-    }
-
-    protected override void OnParametersSet()
-    {
-        if (Active)
-        {
-            _redraw.Up();
-        }
-        base.OnParametersSet();
     }
 
     public async ValueTask<ActivityReceiverState?> Get()
     {
-        var result = await _previous.On();
-        Update(result?.Options);
+        var result  = await _model.On();
+        var options = result?.Options;
+        Update(options);
         if (result is not null)
         {
-            _restore.Up();
-            _displaying.Down();
-
-            if (Monitor is not null)
-            {
-                await Monitor.On();
-            }
-
-            var action = result.Value.Options.PostRenderAction;
-            if (_redraw.Down() || action == PostRenderAction.ForceRedraw)
-            {
-                StateHasChanged();
-            }
-
-            switch (action)
-            {
-                case PostRenderAction.DeferredRedraw:
-                    _render.Down();
-                    break;
-            }
+            await Redraw(options).Off();
         }
         return result;
+    }
+
+    async ValueTask Redraw(ActivityOptions? options)
+    {
+        _restore.Up();
+        _displaying.Down();
+
+        if (Monitor is not null)
+        {
+            await Monitor.On();
+        }
+
+        _render.Execute(options?.RedrawOnFinish == true);
+        StateHasChanged();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -172,7 +152,7 @@
 
     async Task OnCancel()
     {
-        if (_previous.Current is CancelAwareActivityOptions cancel)
+        if (_model.Current is CancelAwareActivityOptions cancel)
         {
             _displaying.Up();
             await cancel.Handle.On();
@@ -183,9 +163,9 @@
         }
     }
 
-    public ICommand<IRenderAware> Add => _previous.Add;
+    public ICommand<IRenderAware> Add => _model.Add;
 
-    public ICommand<IRenderAware> Remove => _previous.Remove;
+    public ICommand<IRenderAware> Remove => _model.Remove;
 
     public ValueTask DisposeAsync()
     {

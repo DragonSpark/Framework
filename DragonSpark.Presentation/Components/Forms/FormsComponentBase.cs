@@ -1,4 +1,5 @@
-﻿using DragonSpark.Presentation.Components.Forms.Validation;
+﻿using DragonSpark.Compose;
+using DragonSpark.Presentation.Components.Forms.Validation;
 using DragonSpark.Presentation.Components.State;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
@@ -15,7 +16,7 @@ public class FormsComponentBase : InteractiveComponentBase
 	{
 		var change = parameters.DidParameterChange(nameof(EditContext), EditContext);
 		await base.SetParametersAsync(parameters);
-		if (change)
+		if (change && EditContext.Account() is not null)
 		{
 			_submitting = Submitting.Default.Get(EditContext);
 		}

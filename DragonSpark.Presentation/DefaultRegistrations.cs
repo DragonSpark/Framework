@@ -125,6 +125,10 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Decorate<StoreAwareResourceQuery>()
 		         .Singleton()
 		         //
+		         .Then.Start<IFocus>()
+		         .Forward<Focus>()
+		         .Scoped()
+		         //
 		         .Then.Start<IFocusedElement>()
 		         .Forward<FocusedElement>()
 		         .Include(x => x.Dependencies.Recursive())

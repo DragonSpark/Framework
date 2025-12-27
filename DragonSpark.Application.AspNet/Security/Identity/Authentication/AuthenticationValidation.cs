@@ -21,8 +21,8 @@ sealed class AuthenticationValidation<T> : IAuthenticationValidation where T : I
 
 	public AuthenticationValidation(IStateViews<T> views, string type, ICondition<ClaimsPrincipal> application)
 	{
-		_views            = views;
-		_type             = type;
+		_views       = views;
+		_type        = type;
 		_application = application;
 	}
 

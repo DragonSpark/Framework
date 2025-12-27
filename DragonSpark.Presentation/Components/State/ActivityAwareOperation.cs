@@ -25,27 +25,23 @@ sealed class ActivityAwareOperation : IOperation
 
 	public async ValueTask Get()
 	{
-		var operation = _operation.Get();
-		if (!operation.IsCompleted)
+		await _subject.On(_state);
+		try
 		{
-			await _subject.On(_state);
-			try
-			{
-				await operation.On();
-			}
-			finally
-			{
-				await _subject.Off();
-			}
+			await _operation.On();
+		}
+		finally
+		{
+			await _subject.Off();
 		}
 	}
 }
 
 sealed class ActivityAwareOperation<T> : IOperation<T>
 {
-	readonly IOperation<T>           _operation;
-	readonly IActivityReceiver       _subject;
-	readonly ActivityReceiverState   _state;
+	readonly IOperation<T>         _operation;
+	readonly IActivityReceiver     _subject;
+	readonly ActivityReceiverState _state;
 
 	public ActivityAwareOperation(IOperation<T> operation, IActivityReceiver subject)
 		: this(operation, subject, ActivityOptions.Default) {}
