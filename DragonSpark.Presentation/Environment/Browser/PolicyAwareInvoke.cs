@@ -1,9 +1,9 @@
 ﻿using DragonSpark.Diagnostics;
-using DragonSpark.Model.Operations.Selection;
+using DragonSpark.Model.Operations.Selection.Stop;
 
 namespace DragonSpark.Presentation.Environment.Browser;
 
-public class PolicyAwareInvoke<TIn, TOut> : PolicyAwareSelecting<TIn, TOut>
+public class PolicyAwareInvoke<TIn, TOut> : PolicyAware<TIn, TOut>
 {
-	protected PolicyAwareInvoke(ISelecting<TIn, TOut> previous) : base(previous, DurableEvaluatePolicy.Default.Get()) {}
+	protected PolicyAwareInvoke(IStopAware<TIn, TOut> previous) : base(previous, DurableEvaluatePolicy.Default) {}
 }

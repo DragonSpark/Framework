@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Selection.Stop;
 using DragonSpark.Model.Operations.Stop;
 using DragonSpark.Model.Results;
 using Polly;
@@ -51,4 +52,31 @@ public class PolicyAware : IStopAware
 	}
 
 	public ValueTask Get(CancellationToken parameter) => _policy.ExecuteAsync(_previous, parameter).ToOperation();
+}
+
+public class PolicyAware<TIn, TOut> : IStopAware<TIn, TOut>
+{
+	readonly IStopAware<TIn, TOut> _previous;
+	readonly IAsyncPolicy<TOut>    _policy;
+
+	protected PolicyAware(IStopAware<TIn, TOut> previous, IResult<IAsyncPolicy> policy)
+		: this(previous, policy.Get()) {}
+
+	protected PolicyAware(IStopAware<TIn, TOut> previous, IAsyncPolicy policy)
+		: this(previous, policy.AsAsyncPolicy<TOut>()) {}
+
+	protected PolicyAware(IStopAware<TIn, TOut> previous, IResult<IAsyncPolicy<TOut>> policy)
+		: this(previous, policy.Get()) {}
+
+	protected PolicyAware(IStopAware<TIn, TOut> previous, IAsyncPolicy<TOut> policy)
+	{
+		_previous = previous;
+		_policy   = policy;
+	}
+
+	public ValueTask<TOut> Get(Stop<TIn> parameter)
+	{
+		var (subject, stop) = parameter;
+		return _policy.ExecuteAsync(x => _previous.Allocate(new(subject, x)), stop).ToOperation();
+	}
 }

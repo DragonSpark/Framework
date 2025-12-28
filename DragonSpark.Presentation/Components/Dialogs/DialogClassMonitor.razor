@@ -1,5 +1,6 @@
 ﻿@using DragonSpark.Compose
 @using DragonSpark.Presentation.Environment.Browser.Document
+@using System.Threading
 
 @implements IAsyncDisposable
 
@@ -10,6 +11,9 @@
 
     [Parameter]
     public string ClassName { get; set; } = null!;
+
+    [CascadingParameter]
+    public required CancellationToken Stop { get; set; } = CancellationToken.None;
 
     Func<Task> _apply  = null!;
 
@@ -32,7 +36,7 @@
     {
         if (firstRender)
         {
-            _element = await Create.Off();
+            _element = await Create.Off(Stop);
             await Apply().Off();
         }
     }

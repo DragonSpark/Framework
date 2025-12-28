@@ -151,7 +151,7 @@
 
     async Task<IJSObjectReference?> Instance(ElementReference parameter)
     {
-        var result = await Model.Off(new(parameter, DotNetObjectReference.Create(this), (byte)Direction));
+        var result = await Model.Off(new(new(parameter, DotNetObjectReference.Create(this), (byte)Direction), Stop));
         _active &= result is not null;
         return result;
     }

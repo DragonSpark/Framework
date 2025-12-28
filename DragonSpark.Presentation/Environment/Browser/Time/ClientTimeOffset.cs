@@ -1,10 +1,10 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Model.Operations.Results;
+using DragonSpark.Model.Operations.Results.Stop;
 using System;
 
 namespace DragonSpark.Presentation.Environment.Browser.Time;
 
-sealed class ClientTimeOffset : Resulting<TimeSpan>
+sealed class ClientTimeOffset : StopAware<TimeSpan>
 {
 	public ClientTimeOffset(LoadModule<ClientTimeOffset> load) : this(load, GetClientTimeOffset.Default) {}
 

@@ -1,11 +1,11 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Model.Operations.Results;
+using DragonSpark.Model.Operations.Results.Stop;
 using Microsoft.JSInterop;
 using System;
 
 namespace DragonSpark.Presentation.Environment.Browser;
 
-public class LoadModule : Resulting<IJSObjectReference>
+public class LoadModule : StopAware<IJSObjectReference>
 {
 	protected LoadModule(ModuleReference load, Type reference)
 		: this(load, ModuleResourcePath.Default.Get(reference)) {}

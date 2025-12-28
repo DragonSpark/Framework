@@ -1,10 +1,11 @@
-﻿using DragonSpark.Model.Operations.Selection;
+﻿using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Selection.Stop;
 using Microsoft.JSInterop;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Environment.Browser;
 
-public sealed class ModuleReference : ISelecting<string, IJSObjectReference>
+public sealed class ModuleReference : IStopAware<string, IJSObjectReference>
 {
 	readonly IJSRuntime _runtime;
 	readonly string     _import;
@@ -15,6 +16,9 @@ public sealed class ModuleReference : ISelecting<string, IJSObjectReference>
 		_import  = import;
 	}
 
-	public ValueTask<IJSObjectReference> Get(string parameter)
-		=> _runtime.InvokeAsync<IJSObjectReference>(_import, parameter);
+	public ValueTask<IJSObjectReference> Get(Stop<string> parameter)
+	{
+		var (subject, stop) = parameter;
+		return _runtime.InvokeAsync<IJSObjectReference>(_import, stop, subject);
+	}
 }
