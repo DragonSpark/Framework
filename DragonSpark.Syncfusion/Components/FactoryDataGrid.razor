@@ -1,0 +1,50 @@
+﻿@using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination
+@using DragonSpark.Compose
+@using DragonSpark.Contracts.Queries
+@using DragonSpark.Model.Operations
+@using DragonSpark.SyncfusionRendering.Queries.Data
+@using Radzen
+
+@typeparam T
+@inherits DataGridBase<T>
+
+<SelectedDataGrid T="T" TIn="PageRequest" Select="@ComposePageInput.Default" Factory="@_factory"
+    Id="@Id"
+    FilterType="@FilterType"
+    Columns="@Columns"
+    AllowSelection="@AllowSelection"
+    AllowPaging="@AllowPaging"
+    AllowFiltering="@AllowFiltering"
+    AllowSorting="@AllowSorting"
+    AllowExport="@AllowExport"
+    Breakpoint="@Breakpoint"
+    DesktopToolbar="@DesktopToolbar"
+    MobileToolbar="@MobileToolbar"
+    CssClass="@CssClass"
+    PageSize="@PageSize"
+    LoadingTemplate="@LoadingTemplate"
+    EmptyElementsTemplate="@EmptyElementsTemplate"
+    Updated="@Updated"
+    Editing="@Editing"
+    Created="@Created"
+    Ready="@Ready"
+    Empty="@Empty"
+    ChildContent="@ChildContent"
+    ReportedType="@ReportedType"
+    @attributes="@AdditionalAttributes"
+    />
+
+@code {
+    Func<Stop<PageRequest>, Task<Page<T>>> _factory = null!;
+
+    [Parameter]
+    public required Func<Stop<PageRequest>, Task<PageResult<T>>> Factory { get; set; }
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        var changed = parameters.DidParameterChange(nameof(Factory), Factory);
+        await base.SetParametersAsync(parameters).Off();
+        _factory = changed ? new PagedResult<T>(Factory).Get : _factory;
+    }
+
+}

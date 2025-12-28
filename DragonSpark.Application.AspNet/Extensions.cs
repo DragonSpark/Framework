@@ -1,7 +1,6 @@
 using DragonSpark.Application.AspNet.Compose;
 using DragonSpark.Application.AspNet.Entities.Diagnostics;
 using DragonSpark.Application.AspNet.Entities.Editing;
-using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
 using DragonSpark.Application.AspNet.Entities.Transactions;
 using DragonSpark.Application.AspNet.Model.Content;
 using DragonSpark.Application.AspNet.Security;
@@ -11,6 +10,7 @@ using DragonSpark.Application.Model;
 using DragonSpark.Application.Security.Identity.Claims;
 using DragonSpark.Compose;
 using DragonSpark.Composition.Compose;
+using DragonSpark.Contracts.Queries;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Stop;
 using DragonSpark.Model.Selection;

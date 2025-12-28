@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
+﻿using DragonSpark.Contracts.Queries;
 using DragonSpark.Model.Selection;
 using Syncfusion.Blazor;
 using System;

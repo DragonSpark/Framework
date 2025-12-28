@@ -1,4 +1,5 @@
 using DragonSpark.Compose;
+using DragonSpark.Contracts.Queries;
 using DragonSpark.Model.Operations;
 using System;
 using System.Threading.Tasks;

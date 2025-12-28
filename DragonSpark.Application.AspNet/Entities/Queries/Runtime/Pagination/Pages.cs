@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Contracts.Queries;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Selection.Stop;
 using System;
 using System.Threading.Tasks;

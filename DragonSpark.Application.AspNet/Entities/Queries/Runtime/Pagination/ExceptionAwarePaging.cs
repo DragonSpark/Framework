@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Application.Diagnostics;
+using DragonSpark.Contracts.Queries;
 using DragonSpark.Model.Operations;
 using System;
 

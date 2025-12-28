@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Operations.Selection.Stop;
+﻿using DragonSpark.Contracts.Queries;
+using DragonSpark.Model.Operations.Selection.Stop;
 
 namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
 

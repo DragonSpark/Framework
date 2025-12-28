@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Application.Compose.Store.Operations.Memory;
+using DragonSpark.Contracts.Queries;
 using DragonSpark.Model.Operations;
 
 namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination.Memory;

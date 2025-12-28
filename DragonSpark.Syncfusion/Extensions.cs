@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Application.AspNet.Compose;
-using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Shape;
 using DragonSpark.Compose;
+using DragonSpark.Contracts.Queries;
 using Syncfusion.Blazor;
 
 namespace DragonSpark.SyncfusionRendering;
