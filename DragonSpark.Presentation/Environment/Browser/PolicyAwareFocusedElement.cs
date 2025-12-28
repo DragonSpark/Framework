@@ -2,7 +2,7 @@
 
 namespace DragonSpark.Presentation.Environment.Browser;
 
-sealed class PolicyAwareFocusedElement : ConnectionAware
+sealed class PolicyAwareFocusedElement : ConnectionAwareOperation
 {
 	public PolicyAwareFocusedElement(StoreFocusedElement previous) : base(previous) {}
 }

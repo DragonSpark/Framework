@@ -12,6 +12,7 @@ using DragonSpark.Application.Security.Identity.Claims;
 using DragonSpark.Compose;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Stop;
 using DragonSpark.Model.Selection;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -111,7 +112,7 @@ partial class Extensions
 
 	public static ITransactions Ambient(this ITransactions @this) => new AmbientAwareTransactions(@this);
 
-	public static IOperation<T> ReloadAware<T>(this IOperation<T> @this) => new ReloadAware<T>(@this);
+	public static IStopAware<T> ReloadAware<T>(this IStopAware<T> @this) => new ReloadAware<T>(@this);
 
 	/**/
 	public static UserInput Input(this ClaimsPrincipal @this, Guid subject) => new(@this.Number().Value(), subject);

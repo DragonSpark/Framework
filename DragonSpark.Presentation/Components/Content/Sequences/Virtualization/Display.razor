@@ -39,7 +39,7 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        _dispose = new ConnectionAware(this);
+        _dispose = new ConnectionAwareOperation(this);
     }
 
     [Parameter]

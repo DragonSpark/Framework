@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using Microsoft.JSInterop;
 using System.Threading.Tasks;
 
@@ -10,6 +11,11 @@ sealed class Evaluate : IEvaluate
 
 	public Evaluate(IJSRuntime runtime) => _runtime = runtime;
 
-	public ValueTask Get(string parameter)
-		=> !parameter.IsNullOrWhiteSpace() ? _runtime.InvokeVoidAsync("eval", parameter) : ValueTask.CompletedTask;
+	public ValueTask Get(Stop<string> parameter)
+	{
+		var (subject, stop) = parameter;
+		return !subject.IsNullOrWhiteSpace()
+			       ? _runtime.InvokeVoidAsync("eval", stop, subject)
+			       : ValueTask.CompletedTask;
+	}
 }

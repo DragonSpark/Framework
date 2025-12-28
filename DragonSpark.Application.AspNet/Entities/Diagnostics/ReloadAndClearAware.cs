@@ -1,14 +1,14 @@
 ﻿using DragonSpark.Diagnostics;
-using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Selection;
+using DragonSpark.Model.Operations.Stop;
 using JetBrains.Annotations;
 
 namespace DragonSpark.Application.AspNet.Entities.Diagnostics;
 
 [UsedImplicitly]
-public class ReloadAndClearAware<T> : PolicyAwareOperation<T>
+public class ReloadAndClearAware<T> : PolicyAware<T>
 {
-	public ReloadAndClearAware(IOperation<T> previous) : base(previous, ReloadAndClearPolicy.Default.Get()) {}
+	public ReloadAndClearAware(IStopAware<T> previous) : base(previous, ReloadAndClearPolicy.Default.Get()) {}
 }
 
 public class ReloadAndClearAware<TIn, TOut> : PolicyAwareSelecting<TIn, TOut>

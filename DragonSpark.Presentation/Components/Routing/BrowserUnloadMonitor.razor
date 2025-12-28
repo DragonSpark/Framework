@@ -1,11 +1,14 @@
-﻿@implements IAsyncDisposable
+﻿@inherits Components.ComponentBase
+
+@using System.Threading
+@implements IAsyncDisposable
 
 @inject ISetPageExitCheck Model
 
 @code {
 
-    protected override Task OnInitializedAsync() => Model.Get(true).AsTask();
+    protected override Task OnInitializedAsync() => Model.Get(new(true, Stop)).AsTask();
 
-    public ValueTask DisposeAsync() => Model.Get(false);
+    public ValueTask DisposeAsync() => Model.Get(new(false, CancellationToken.None));
 
 }

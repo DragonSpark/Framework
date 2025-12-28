@@ -13,7 +13,7 @@ public sealed class ConnectionAwareClientVariableAccessor<T> : IClientVariableAc
 	readonly IOperation<Pair<string, T>>                          _set;
 
 	public ConnectionAwareClientVariableAccessor(IClientVariableAccessor<T> previous)
-		: this(previous, new ConnectionAware<Pair<string, T>>(previous), previous.Remove) {}
+		: this(previous, new ConnectionAwareOperation<Pair<string, T>>(previous), previous.Remove) {}
 
 	public ConnectionAwareClientVariableAccessor(ISelecting<string, ProtectedBrowserStorageResult<T>> get,
 	                                             IOperation<Pair<string, T>> set, IRemove remove)

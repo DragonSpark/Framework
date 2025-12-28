@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Compose.Model.Operations;
 using DragonSpark.Compose.Model.Operations.Allocated;
 using DragonSpark.Compose.Model.Selection;
+using DragonSpark.Diagnostics.Logging;
 using DragonSpark.Model;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Results;
@@ -55,6 +56,13 @@ public static partial class ExtensionMethods
 	public static TaskComposer<T> Bind<T>(this TaskComposer<Stop<T>> @this, CancellationToken parameter)
 		=> new(new DragonSpark.Model.Operations.Allocated.Stop.ParameterBinding<T>(@this.Get(), parameter));
 
+	public static SelectedLogOperationExceptionComposer<T, TOther> Use<T, TOther>(this OperationComposer<Stop<T>> @this,
+	                                                                              ILogException<TOther> log)
+		=> new(@this.Out(), log);
+	public static PolicyAwareLogOperationExceptionComposer<T> UsePolicy<T>(this OperationComposer<Stop<T>> @this, 
+	                                                                       ILogException<T> log)
+		=> new(@this.Get().Out(), log);
+	
 	/* SELECTING */
 
 	public static IStopAware<TIn, TOut> AsStop<TIn, TOut>(this ISelecting<TIn, TOut> @this)

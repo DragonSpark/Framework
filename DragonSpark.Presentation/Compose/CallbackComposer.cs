@@ -112,7 +112,7 @@ public class CallbackComposer<T> : IResult<EventCallback<T>>
 	public OperationCallbackComposer<T> Handle(IExceptions exceptions, Type? reportedType = null)
 	{
 		var receiver  = _receiver.Verify();
-		var operation = new ExceptionAwareOperation<T>(reportedType ?? receiver.GetType(), exceptions, _method);
+		var operation = new Components.Diagnostics.ExceptionAwareOperation<T>(reportedType ?? receiver.GetType(), exceptions, _method);
 		var result    = new OperationCallbackComposer<T>(receiver, operation);
 		return result;
 	}

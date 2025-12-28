@@ -1,5 +1,5 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model.Operations.Stop;
 
 namespace DragonSpark.Presentation.Environment.Browser;
 
-public interface IEvaluate : IOperation<string>;
+public interface IEvaluate : IStopAware<string>;

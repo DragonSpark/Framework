@@ -1,5 +1,5 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model.Operations.Stop;
 
 namespace DragonSpark.Presentation.Components.Routing;
 
-public interface ISetPageExitCheck : IOperation<bool>;
+public interface ISetPageExitCheck : IStopAware<bool>;

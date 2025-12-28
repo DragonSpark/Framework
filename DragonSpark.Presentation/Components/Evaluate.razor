@@ -1,14 +1,15 @@
 ﻿@using DragonSpark.Presentation.Environment.Browser
-@using DragonSpark.Model.Operations
 @using DragonSpark.Application.Diagnostics
 @using DragonSpark.Compose
 @using DragonSpark.Application
+@using DragonSpark.Model.Operations.Stop
+
+@inherits ComponentBase
 
 @inject IEvaluate Model
-@inject IExceptions Exceptions
 
 @code {
-	IOperation<string> _call = null!;
+	IStopAware<string> _call = null!;
 
 	protected override void OnInitialized()
 	{
@@ -35,7 +36,7 @@
 			var script = ChildContent?.Text();
 			if (!string.IsNullOrEmpty(script))
 			{
-				return _call.Get(script).AsTask();
+				return _call.Allocate(new(script, Stop));
 			}
 		}
 		return Task.CompletedTask;

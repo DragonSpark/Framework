@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Diagnostics.Logging;
+using DragonSpark.Model.Operations;
 using Microsoft.JSInterop;
 using System.Threading.Tasks;
 
@@ -11,7 +12,7 @@ sealed class LogAwareEvaluate : IEvaluate
 
 	public LogAwareEvaluate(IEvaluate previous) => _previous = previous;
 
-	public async ValueTask Get(string parameter)
+	public async ValueTask Get(Stop<string> parameter)
 	{
 		try
 		{

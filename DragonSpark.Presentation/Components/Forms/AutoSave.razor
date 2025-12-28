@@ -1,11 +1,11 @@
-﻿@using DragonSpark.Presentation.Environment.Browser
+﻿@using DragonSpark.Application
+@using DragonSpark.Presentation.Environment.Browser
 @using DragonSpark.Model.Results
 @using DragonSpark.Compose
 @using DragonSpark.Model
 @using DragonSpark.Model.Operations
 @using DragonSpark.Model.Sequences
 @using DragonSpark.Text
-@using DragonSpark.Application.Runtime
 @using DragonSpark.Application.Diagnostics
 
 @inject IExceptions Exceptions
@@ -21,8 +21,7 @@
     protected override void OnInitialized()
     {
         _update = OnUpdate;
-        var operate = new ExceptionAware<None>(OnUpdate, Exceptions, GetType()).Then();
-        _call = new ThrottleOperation<None>(operate, TimeSpan.FromMilliseconds(100)).Then().Out();
+        _call   = new ExceptionAwareOperation<None>(OnUpdate, Exceptions, GetType()).Then().Throttle(TimeSpan.FromMilliseconds(100)).Out();
         base.OnInitialized();
     }
 

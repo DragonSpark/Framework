@@ -1,16 +1,15 @@
 ﻿using DragonSpark.Diagnostics.Logging;
-using DragonSpark.Model.Selection;
+using DragonSpark.Model.Operations.Stop;
 using System;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Compose.Model.Operations;
 
 public class SelectedLogOperationExceptionComposer<TIn, TOut>
 {
-	readonly ILogException<TOut>     _log;
-	readonly ISelect<TIn, ValueTask> _operation;
+	readonly ILogException<TOut> _log;
+	readonly IStopAware<TIn>     _operation;
 
-	public SelectedLogOperationExceptionComposer(ISelect<TIn, ValueTask> operation, ILogException<TOut> log)
+	public SelectedLogOperationExceptionComposer(IStopAware<TIn> operation, ILogException<TOut> log)
 	{
 		_operation = operation;
 		_log       = log;
