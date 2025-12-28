@@ -1,0 +1,43 @@
+﻿@typeparam T where T : class
+@using DragonSpark.Compose
+@using MatBlazor
+@inherits EditFormContainerBase<T>
+
+<SubmissionContainer Completed="@Completed" Submitting="@Submitting" Submitted="@Submitted" Context="submit">
+    <EditForm Model="@Input" OnSubmit="@submit" Context="edit">
+        <DragonSpark.Presentation.Components.Forms.Validation.FieldRegistryContainer Context="registry">
+            <DataAnnotationsValidator/>
+            <DragonSpark.Presentation.Components.Routing.FormChangeMonitor Enabled="@EnableChangeMonitor"/>
+
+            <div class="mat-layout-grid">
+                <div class="mat-layout-grid-inner">
+                    <div class="mat-layout-grid-cell mat-layout-grid-cell-span-12">
+                        @ChildContent(Input)
+
+                        <Microsoft.AspNetCore.Components.Forms.ValidationSummary/>
+                    </div>
+
+                    <DragonSpark.Presentation.Components.Forms.RefreshDisplayModelMonitor>
+                        <ul class="actions">
+                            <li>
+                                <MatButton Class="@ButtonCssClass" Type="button" OnClick="@Completed">@CancelText</MatButton>
+                            </li>
+                            <li>
+                                <MatButton Class="@SaveButtonCssClass" Type="submit" Disabled="@edit.CanSubmit(Receiver).Inverse()">@SaveText</MatButton>
+                            </li>
+                        </ul>
+                    </DragonSpark.Presentation.Components.Forms.RefreshDisplayModelMonitor>
+                </div>
+            </div>
+        </DragonSpark.Presentation.Components.Forms.Validation.FieldRegistryContainer>
+    </EditForm>
+</SubmissionContainer>
+
+
+@code {
+    [Parameter]
+    public required RenderFragment<T> ChildContent { get; set; }
+
+    [Parameter]
+    public EventCallback Completed { get; set; }
+}

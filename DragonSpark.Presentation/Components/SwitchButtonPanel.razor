@@ -1,0 +1,127 @@
+﻿@using DragonSpark.Compose
+@using DragonSpark.Presentation.Components.Forms.Validation
+@using MatBlazor
+<SwitchPanel ViewState="@ViewState" Back="@OnBack" Next="@OnNext">
+    <ChildContent Context="next">
+        @if (ChildContent is not null)
+        {
+            @ChildContent
+        }
+
+        <ul class="@ButtonContainerCssClass">
+            <li><MatButton Class="@ButtonCssClass" Type="button" OnClick="@next">@NextText</MatButton></li>
+            @if (ButtonTemplate is not null)
+            {
+                @ButtonTemplate
+            }
+        </ul>
+    </ChildContent>
+    <AlternateContent Context="back">
+        @EditTemplate(back)
+
+        <ul class="@ButtonContainerCssClass">
+            <li><MatButton Class="@ButtonCssClass" Type="button" OnClick="@back">@CancelText</MatButton></li>
+            @if (!SaveText.IsNullOrEmpty())
+            {
+                <li><MatButton Class="@SaveButtonCssClass" type="button" Disabled="@(!AllowSave)" OnClick="@(() => OnSaved(back))">@SaveText</MatButton></li>
+            }
+
+            @if (EditButtonTemplate is not null)
+            {
+                @EditButtonTemplate
+            }
+        </ul>
+    </AlternateContent>
+</SwitchPanel>
+
+@code {
+    readonly DragonSpark.Model.Results.Switch _saving = false;
+
+    [Parameter]
+    public required DragonSpark.Model.Results.Switch ViewState { get; set; } = false;
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public required RenderFragment? ButtonTemplate { get; set; }
+
+    [Parameter]
+    public required RenderFragment? EditButtonTemplate { get; set; }
+
+    [Parameter]
+    public required RenderFragment<EventCallback> EditTemplate { get; set; }
+
+    [Parameter]
+    public string NextText { get; set; } = "Edit...";
+
+    [Parameter]
+    public string CancelText { get; set; } = "Cancel";
+
+    [Parameter]
+    public string? SaveText { get; set; } = "Save";
+
+    [Parameter]
+    public string ButtonContainerCssClass { get; set; } = "actions mb-2";
+
+    [Parameter]
+    public string ButtonCssClass { get; set; } = "button";
+
+    [Parameter]
+    public string SaveButtonCssClass { get; set; } = "primary button";
+
+    [Parameter]
+    public bool AllowSave { get; set; } = true;
+
+    [Parameter]
+    public EventCallback<Cancel> Starting { get; set; }
+
+    [Parameter]
+    public EventCallback Started { get; set; }
+
+    [Parameter]
+    public EventCallback Canceled { get; set; }
+
+    [Parameter]
+    public EventCallback Closed { get; set; }
+
+    [Parameter]
+    public EventCallback<Cancel> Saving { get; set; }
+
+    [Parameter]
+    public EventCallback Saved { get; set; }
+
+    async Task OnSaved(EventCallback previous)
+    {
+        var parameter = new Cancel();
+        await Saving.On(parameter);
+        if (!parameter)
+        {
+            await Saved.On();
+            using var _ = _saving.Assigned(true);
+            await previous.Off();
+        }
+    }
+
+    async Task OnBack()
+    {
+        if (!_saving)
+        {
+            await Canceled.On();
+        }
+
+        await Closed.Off();
+    }
+
+    async Task OnNext()
+    {
+        ViewState.Down();
+        var cancel = new Cancel();
+        await Starting.On(cancel);
+        if (!cancel)
+        {
+            ViewState.Up();
+            await Started.Off();
+        }
+    }
+}

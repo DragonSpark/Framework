@@ -1,0 +1,81 @@
+﻿@using DragonSpark.Compose
+@using DragonSpark.Model.Results
+@using MatBlazor
+
+@typeparam T where T : class
+
+@inherits EditFormContainerBase<T>
+
+<SwitchPanel ViewState="@ViewState" Back="@OnCancel" Next="@OnEditing">
+    <ChildContent Context="next">
+        @if (ChildContent is not null)
+        {
+            @ChildContent
+        }
+
+        @if (AllowEdit)
+        {
+            <ul class="actions">
+                <li>
+                    <MatButton Class="@ButtonCssClass" Type="button" OnClick="@next">@EditText</MatButton>
+                </li>
+            </ul>
+        }
+    </ChildContent>
+    <AlternateContent Context="back">
+        @if (_current.Account() is not null)
+        {
+            <EditFormContainer T="T" Input="@_current"
+                               Completed="@back" 
+                               ChildContent="@EditTemplate"
+                               AllowEdit="@AllowEdit"
+                               ButtonCssClass="@ButtonCssClass"
+                               Canceled="@Canceled"
+                               CancelText="@CancelText"
+                               Editing="@Editing"
+                               EditText="@EditText"
+                               EnableChangeMonitor="@EnableChangeMonitor"
+                               LoadingTemplate="@LoadingTemplate"
+                               SaveButtonCssClass="@SaveButtonCssClass"
+                               SaveText="@SaveText"
+                               Submitting="@Submitting"
+                               Submitted="@Submitted"
+            />
+        }
+        else
+        {
+            @LoadingTemplate
+        }
+    </AlternateContent>
+</SwitchPanel>
+
+@code {
+    T _current = null!;
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    [Parameter]
+    public required RenderFragment<T> EditTemplate { get; set; }
+
+    [Parameter]
+    public required Switch ViewState { get; set; } = false;
+
+    async Task OnEditing()
+    {
+        var variable = new Variable<T>();
+        await Editing.Off(variable);
+        var current = variable.Get();
+        if (current is not null)
+        {
+            _current = current;
+        }
+        else
+        {
+            ViewState.Down();
+            await Canceled.Off();
+        }
+    }
+
+    Task OnCancel() => Canceled.Invoke();
+}
