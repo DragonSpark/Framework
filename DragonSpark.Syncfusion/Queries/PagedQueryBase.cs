@@ -9,10 +9,10 @@ using Syncfusion.Blazor;
 
 namespace DragonSpark.SyncfusionRendering.Queries;
 
-public class PagedQueryBase<TIn, TOut> : PagedQuery<TIn, TOut>
+public class PagedQueryBase<TIn, TOut> : Application.AspNet.Entities.Queries.Runtime.Pagination.PagedQueryBase<TIn, TOut>
 {
 	protected PagedQueryBase(IRuntimeQuery<TIn, TOut> query, ISelect<PageInput, DataManagerRequest> select,
-	                     IPaging<TOut> paging)
+	                         IPaging<TOut> paging)
 		: this(query, new SyncfusionCompose<TOut>(select), paging) {}
 
 	protected PagedQueryBase(IRuntimeQuery<TIn, TOut> query, ICompose<TOut> compose, IPaging<TOut> paging)

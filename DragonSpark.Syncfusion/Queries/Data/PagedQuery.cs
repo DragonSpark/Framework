@@ -9,7 +9,7 @@ namespace DragonSpark.SyncfusionRendering.Queries.Data;
 
 public class PagedQuery<TIn, TOut> : PagedQueryBase<TIn, TOut>
 {
-	protected PagedQuery(IScopes scopes, IQuery<TIn, TOut> query, IPaging<TOut> paging)
+	protected PagedQuery(IScopes scopes, IPaging<TOut> paging, IQuery<TIn, TOut> query)
 		: base(new RuntimeQuery(scopes, query),
 		       DataManagerRequests.Default.Then().Accept<PageInput>(x => (PageRequest)x).Get(),
 		       paging) {}

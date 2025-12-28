@@ -123,10 +123,16 @@ partial class Extensions
 
 	public static UserInput<T> Input<T>(this HttpContext @this, T subject) => @this.User.Input(subject);
 
-	public static Stop<PageQueryInput<uint>> PagingInput(this HttpContext @this, PageInput page)
+	public static Stop<PageQueryInput<uint>> PagingUserInput(this HttpContext @this, PageRequest page)
 		=> @this.PagingInput(@this.User.Number().Value(), page);
+	
+	public static Stop<PageQueryInput<UserInput>> PagingUserInput(this HttpContext @this, Guid parameter, PageRequest page)
+		=> @this.PagingInput(new UserInput(@this.User.Number().Value(), parameter), page);
+	public static Stop<PageQueryInput<UserInput<T>>> PagingUserInput<T>(this HttpContext @this, T parameter, 
+	                                                                    PageRequest page)
+		=> @this.PagingInput(new UserInput<T>(@this.User.Number().Value(), parameter), page);
 
-	public static Stop<PageQueryInput<T>> PagingInput<T>(this HttpContext @this, T parameter, PageInput page)
+	public static Stop<PageQueryInput<T>> PagingInput<T>(this HttpContext @this, T parameter, PageRequest page)
 		=> new(new(parameter, page), @this.RequestAborted);
 
 	public static Stop<uint> UserInput(this HttpContext @this)
