@@ -6,20 +6,20 @@ using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Model.Operations.Results.Stop;
 
-public class ProcessStoring<T> : IStopAware<T>
+public class Storing<T> : IStopAware<T>
 {
     readonly IMutationAware<T?>          _store;
     readonly Await<CancellationToken, T> _source;
 
-    protected ProcessStoring(ISelect<CancellationToken, ValueTask<T>> source) : this(new Variable<T>(), source) {}
+    protected Storing(ISelect<CancellationToken, ValueTask<T>> source) : this(new Variable<T>(), source) {}
 
-    protected ProcessStoring(IMutable<T?> mutable, ISelect<CancellationToken, ValueTask<T>> source)
+    protected Storing(IMutable<T?> mutable, ISelect<CancellationToken, ValueTask<T>> source)
         : this(new AssignedAwareVariable<T>(mutable), source) {}
 
-    protected ProcessStoring(IMutationAware<T?> store, ISelect<CancellationToken, ValueTask<T>> source)
+    protected Storing(IMutationAware<T?> store, ISelect<CancellationToken, ValueTask<T>> source)
         : this(store, source.Off) {}
 
-    protected ProcessStoring(IMutationAware<T?> store, Await<CancellationToken, T> source)
+    protected Storing(IMutationAware<T?> store, Await<CancellationToken, T> source)
     {
         _store  = store;
         _source = source;
