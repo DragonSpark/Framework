@@ -5,11 +5,11 @@
 
 @typeparam T
 
-@inherits Templates.ManyActiveContentTemplateComponentBase<Page<T>>
+@inherits Templates.ManyActiveContentTemplateComponentBase<PageResult<T>>
 
 <ResultingContentView Content="@_subject" LoadingTemplate="@LoadingTemplate" NotFoundTemplate="@NotFoundTemplate"
                       ExceptionTemplate="@ExceptionTemplate" Rendering="@Rendering">
-    @if (context.Count > 0)
+    @if (context.Page.Length > 0)
     {
         <CascadingValue Value="context" ChildContent="@ChildContent(context)" />
     }
@@ -20,7 +20,7 @@
 </ResultingContentView>
 
 @code {
-    IResulting<Page<T>>? _subject;
+    IResulting<PageResult<T>>? _subject;
 
     [Parameter]
     public required IPages<T> Input
@@ -93,7 +93,7 @@
     }
 
     [Parameter]
-    public EventCallback<Page<T>> Rendering { get; set; }
+    public EventCallback<PageResult<T>> Rendering { get; set; }
 
     protected override void OnParametersSet()
     {

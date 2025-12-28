@@ -17,7 +17,7 @@ sealed class ContainerAwarePages<T> : IPages<T>
 		_pages     = pages;
 	}
 
-	public async ValueTask<Page<T>> Get(Stop<PageInput> parameter)
+	public async ValueTask<PageResult<T>> Get(Stop<PageInput> parameter)
 	{
 		try
 		{

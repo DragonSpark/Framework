@@ -3,6 +3,7 @@
 *@
 @using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination
 @using DragonSpark.Compose
+@using DragonSpark.Contracts.Queries
 @using DragonSpark.Model.Operations
 @using DragonSpark.Model.Results
 @using DragonSpark.Presentation.Environment.Browser
@@ -103,14 +104,15 @@
         }
     }
 
-    async Task Load(Page<T> page)
+    async Task Load(PageResult<T> page)
     {
-        if (page.Count > 0)
+        var (items, total) = page;
+        if (items.Length > 0)
         {
-            _items.AddRange(page);
+            _items.AddRange(items);
         }
 
-        if (_items.Count < (int)page.Total.Value())
+        if (_items.Count < (int)total.Value())
         {
             await Notify().Off();
         }

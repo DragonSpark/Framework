@@ -25,9 +25,9 @@ sealed class RenderStateAwarePagingContents<T> : ISelect<RenderStateAwarePagingC
 		return new Selection(source, _state, new(_memory, key));
 	}
 
-	sealed class Selection : RenderAwareSelection<Stop<PageInput>, Page<T>>, IPages<T>
+	sealed class Selection : RenderAwareSelection<Stop<PageInput>, PageResult<T>>, IPages<T>
 	{
-		public Selection(IPages<T> previous, RenderStateStore state, RenderVariable<Page<T>> variable)
+		public Selection(IPages<T> previous, RenderStateStore state, RenderVariable<PageResult<T>> variable)
 			: base(previous, state, variable) {}
 	}
 }

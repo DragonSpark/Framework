@@ -1,3 +1,5 @@
-﻿namespace DragonSpark.Contracts.Queries;
+﻿using System.Collections.Immutable;
 
-public sealed record PageResult<T>(IReadOnlyCollection<T> Items, ulong? Count);
+namespace DragonSpark.Contracts.Queries;
+
+public sealed record PageResult<T>(ImmutableArray<T> Page, ulong? Total);

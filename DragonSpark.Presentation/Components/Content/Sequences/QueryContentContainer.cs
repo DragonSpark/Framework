@@ -2,6 +2,7 @@
 using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
 using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Shape;
 using DragonSpark.Compose;
+using DragonSpark.Contracts.Queries;
 using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.Components;
 using Radzen;
@@ -44,7 +45,7 @@ partial class QueryContentContainer<T> : IPageContainer<T>
 		return result;
 	}
 
-	public void Execute(Page<T> parameter)
+	public void Execute(PageResult<T> parameter)
 	{
 		_ready.Up();
 		_relay.Execute(parameter);

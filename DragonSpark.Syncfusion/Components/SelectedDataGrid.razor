@@ -1,5 +1,4 @@
-﻿@using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination
-@using DragonSpark.Compose
+﻿@using DragonSpark.Compose
 @using DragonSpark.Contracts.Queries
 @using DragonSpark.Model.Operations
 @using DragonSpark.Model.Selection
@@ -49,7 +48,7 @@
 
 @code {
     [Parameter]
-    public required Func<Stop<TIn>, Task<Page<T>>> Factory { get; set; }
+    public required Func<Stop<TIn>, Task<PageResult<T>>> Factory { get; set; }
 
     [Parameter]
     public required ISelect<DataManagerRequest, TIn> Select { get; set; }

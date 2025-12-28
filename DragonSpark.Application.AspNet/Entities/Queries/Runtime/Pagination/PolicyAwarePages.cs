@@ -4,7 +4,7 @@ using DragonSpark.Diagnostics;
 
 namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
 
-sealed class PolicyAwarePages<T> : PolicyAware<PageInput, Page<T>>, IPages<T>
+sealed class PolicyAwarePages<T> : PolicyAware<PageInput, PageResult<T>>, IPages<T>
 {
 	public PolicyAwarePages(IPages<T> previous) : base(previous, DurableConnectionPolicy.Default) {}
 }

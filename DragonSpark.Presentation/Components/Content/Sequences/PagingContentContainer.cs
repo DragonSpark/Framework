@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
 using DragonSpark.Compose;
+using DragonSpark.Contracts.Queries;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.Components;
@@ -34,7 +35,7 @@ partial class PagingContentContainer<T> : IPageContainer<T>
 		_loading.Execute(!_error && _results is null);
 	}
 
-	void ICommand<Page<T>>.Execute(Page<T> parameter)
+	void ICommand<PageResult<T>>.Execute(PageResult<T> parameter)
 	{
 		Update(_results ?? parameter.Total is > 0);
 	}

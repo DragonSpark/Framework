@@ -33,8 +33,8 @@ sealed class RadzenPaging<T> : IRadzenPaging<T>
 
 		var current      = _pages.Get(new(input, stop));
 		var successfully = current.IsCompletedSuccessfully;
-		var evaluate     = successfully ? current.Result : await current.Off();
-		Current = evaluate;
-		Count   = evaluate.Total ?? evaluate.Count.Grade();
+		var (page, total) = successfully ? current.Result : await current.Off();
+		Current           = page;
+		Count             = total ?? page.Length.Grade();
 	}
 }

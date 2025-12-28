@@ -19,7 +19,7 @@ public class PagedQuery<TIn, TOut> : IPagedQuery<TIn, TOut>
 		_paging  = paging;
 	}
 
-	public async ValueTask<Page<TOut>> Get(Stop<PageQueryInput<TIn>> parameter)
+	public async ValueTask<PageResult<TOut>> Get(Stop<PageQueryInput<TIn>> parameter)
 	{
 		var ((subject, input), stop) = parameter;
 		var queries = _query.Get(subject);

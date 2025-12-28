@@ -1,14 +1,11 @@
-﻿@using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination
-@using DragonSpark.Compose
-@using DragonSpark.Contracts.Queries
+﻿@using DragonSpark.Contracts.Queries
 @using DragonSpark.Model.Operations
 @using DragonSpark.SyncfusionRendering.Queries.Data
-@using Radzen
 
 @typeparam T
 @inherits DataGridBase<T>
 
-<SelectedDataGrid T="T" TIn="PageRequest" Select="@ComposePageInput.Default" Factory="@_factory"
+<SelectedDataGrid T="T" TIn="PageRequest" Select="@ComposePageInput.Default" Factory="@Factory"
     Id="@Id"
     FilterType="@FilterType"
     Columns="@Columns"
@@ -35,16 +32,10 @@
     />
 
 @code {
-    Func<Stop<PageRequest>, Task<Page<T>>> _factory = null!;
-
+    
     [Parameter]
     public required Func<Stop<PageRequest>, Task<PageResult<T>>> Factory { get; set; }
 
-    public override async Task SetParametersAsync(ParameterView parameters)
-    {
-        var changed = parameters.DidParameterChange(nameof(Factory), Factory);
-        await base.SetParametersAsync(parameters).Off();
-        _factory = changed ? new PagedResult<T>(Factory).Get : _factory;
-    }
+    
 
 }
