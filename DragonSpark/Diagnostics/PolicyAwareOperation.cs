@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Diagnostics;
 
-public class PolicyAwareOperation<T> : IOperation<T>
+public class PolicyAwareOperation<T> : IOperation<T> // TODO: StopAware
 {
 	readonly IOperation<T> _previous;
 	readonly IAsyncPolicy  _policy;
