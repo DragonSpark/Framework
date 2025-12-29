@@ -8,6 +8,7 @@ using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using System;
 using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Compose;
@@ -176,7 +177,8 @@ public static partial class ExtensionMethods
 
 	public static Task Allocate(this IResult<ValueTask> @this) => @this.Get().AsTask();
 	public static Task<T> Allocate<T>(this IResult<ValueTask<T>> @this) => @this.Get().AsTask();
-
+	public static Task Allocate(this Func<CancellationToken, ValueTask> @this, CancellationToken parameter)
+		=> @this(parameter).AsTask();
 	public static Task Allocate(this Func<ValueTask> @this) => @this().AsTask();
 
 	public static Task Allocate<T>(this ISelect<T, ValueTask> @this, T parameter) => @this.Get(parameter).AsTask();

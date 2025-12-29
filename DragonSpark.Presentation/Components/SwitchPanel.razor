@@ -1,0 +1,51 @@
+﻿@using DragonSpark.Compose
+@using Switch = DragonSpark.Model.Results.Switch
+
+@switch (ViewState.Get())
+{
+    case false:
+        @ChildContent(_next)
+        break;
+    default:
+        @AlternateContent(_back)
+        break;
+}
+
+@code {
+    EventCallback _next, _back;
+
+    protected override void OnInitialized()
+    {
+        _next = Start.A.Callback(OnNext);
+        _back = Start.A.Callback(OnBack);
+
+        base.OnInitialized();
+    }
+
+    [Parameter]
+    public required Switch ViewState { get; set; } = false;
+
+    [Parameter]
+    public required RenderFragment<EventCallback> ChildContent { get; set; }
+
+    [Parameter]
+    public required RenderFragment<EventCallback> AlternateContent { get; set; }
+
+    [Parameter]
+    public EventCallback Next { get; set; }
+
+    [Parameter]
+    public EventCallback Back { get; set; }
+
+    Task OnNext()
+    {
+        ViewState.Up();
+        return Next.Invoke();
+    }
+
+    Task OnBack()
+    {
+        ViewState.Down();
+        return Back.Invoke();
+    }
+}

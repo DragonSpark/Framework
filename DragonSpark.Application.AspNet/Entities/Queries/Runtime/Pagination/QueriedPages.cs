@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Materialize;
 using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Shape;
 using DragonSpark.Compose;
+using DragonSpark.Contracts.Queries;
 using DragonSpark.Model.Operations;
 using System.Threading.Tasks;
 
@@ -21,12 +22,12 @@ sealed class QueriedPages<T> : IPages<T>
 		_materialize = materialize;
 	}
 
-	public async ValueTask<Page<T>> Get(Stop<PageInput> parameter)
+	public async ValueTask<PageResult<T>> Get(Stop<PageInput> parameter)
 	{
 		var (subject, stop) = parameter;
 		using var session = await _queries.Off(stop);
 		var (query, count) = await _compose.Off(new(new(subject, session.Subject), stop));
-		var materialize = await _materialize.Off(new(query, stop));
-		return new(materialize.Open(), count);
+		var page = await _materialize.Off(new(query, stop));
+		return new(page, count);
 	}
 }

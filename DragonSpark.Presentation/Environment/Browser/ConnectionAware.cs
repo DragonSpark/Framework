@@ -1,17 +1,17 @@
 ﻿using DragonSpark.Diagnostics;
-using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Stop;
 using Polly;
 
 namespace DragonSpark.Presentation.Environment.Browser;
 
-public class ConnectionAware : PolicyAwareOperation
+public class ConnectionAware : PolicyAware
 {
-	public ConnectionAware(IOperation previous) : this(previous, ConnectionAwarePolicy.Default.Get()) {}
+	public ConnectionAware(IStopAware previous) : this(previous, ConnectionAwarePolicy.Default.Get()) {}
 
-	protected ConnectionAware(IOperation previous, IAsyncPolicy policy) : base(previous, policy) {}
+	protected ConnectionAware(IStopAware previous, IAsyncPolicy policy) : base(previous, policy) {}
 }
 
-public class ConnectionAware<T> : PolicyAwareOperation<T>
+public class ConnectionAware<T> : PolicyAware<T>
 {
-	public ConnectionAware(IOperation<T> previous) : base(previous, ConnectionAwarePolicy.Default) {}
+	public ConnectionAware(IStopAware<T> previous) : base(previous, ConnectionAwarePolicy.Default) {}
 }

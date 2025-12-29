@@ -18,14 +18,9 @@ public class OperationComposer<T> : DragonSpark.Compose.Model.Operations.Operati
 	public OperationComposer<T> Handle(IExceptionLogger exceptions, Type reportedType)
 		=> new(new ExceptionLoggingAware<T>(_subject, exceptions, reportedType));
 
-	public OperationComposer<T> Catch<TReported>(IExceptions exceptions) => Catch(exceptions, A.Type<TReported>());
+	public OperationComposer<T> Throw<TReported>(IExceptions exceptions)
+		=> Throw(exceptions, A.Type<TReported>());
 
-	public OperationComposer<T> Catch(IExceptions exceptions, Type reportedType)
-		=> new(new ExceptionAware<T>(_subject, exceptions, reportedType));
-
-	public OperationComposer<T> Handle<TReported>(IExceptions exceptions)
-		=> Handle(exceptions, A.Type<TReported>());
-
-	public OperationComposer<T> Handle(IExceptions exceptions, Type reportedType)
+	public OperationComposer<T> Throw(IExceptions exceptions, Type reportedType)
 		=> new(new ThrowingAware<T>(_subject, exceptions, reportedType));
 }

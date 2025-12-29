@@ -1,10 +1,12 @@
 ﻿using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Stop;
 using Microsoft.JSInterop;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Environment.Browser;
 
-public class BrowserCommand<T> : IOperation<T>
+public class BrowserCommand<T> : IStopAware<T>
 {
 	readonly IJSRuntime _runtime;
 	readonly string     _name;
@@ -15,10 +17,10 @@ public class BrowserCommand<T> : IOperation<T>
 		_name    = name;
 	}
 
-	public ValueTask Get(T parameter) => _runtime.InvokeVoidAsync(_name, parameter);
+	public ValueTask Get(Stop<T> parameter) => _runtime.InvokeVoidAsync(_name, parameter.Token, parameter.Subject);
 }
 
-public class BrowserCommand : IOperation
+public class BrowserCommand : IStopAware
 {
 	readonly IJSRuntime _runtime;
 	readonly string     _name;
@@ -29,5 +31,5 @@ public class BrowserCommand : IOperation
 		_name    = name;
 	}
 
-	public ValueTask Get() => _runtime.InvokeVoidAsync(_name);
+	public ValueTask Get(CancellationToken parameter) => _runtime.InvokeVoidAsync(_name, parameter);
 }

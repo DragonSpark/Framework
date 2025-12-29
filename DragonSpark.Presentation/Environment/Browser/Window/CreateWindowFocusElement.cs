@@ -1,10 +1,11 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Model.Operations.Selection;
+using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Selection.Stop;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Environment.Browser.Window;
 
-sealed class CreateWindowFocusElement : ISelecting<NewWindowFocusElementInput, WindowFocusElement>
+sealed class CreateWindowFocusElement : IStopAware<NewWindowFocusElementInput, WindowFocusElement>
 {
 	readonly LoadModule<WindowFocusElement> _load;
 	readonly NewWindowFocusElement          _new;
@@ -17,10 +18,11 @@ sealed class CreateWindowFocusElement : ISelecting<NewWindowFocusElementInput, W
 		_new  = @new;
 	}
 
-	public async ValueTask<WindowFocusElement> Get(NewWindowFocusElementInput parameter)
+	public async ValueTask<WindowFocusElement> Get(Stop<NewWindowFocusElementInput> parameter)
 	{
-		var module    = await _load.Off();
-		var reference = await _new.Off(new(module, parameter));
+		var (subject, stop) = parameter;
+		var module       = await _load.Off(stop);
+		var reference    = await _new.Off(new(new(module, subject), stop));
 		return new(reference);
 	}
 }

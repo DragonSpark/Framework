@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Environment.Browser.Document;
 
-public sealed class DisposeReference : ConnectionAware
+public sealed class DisposeReference : ConnectionAwareOperation
 {
 	public DisposeReference(IJSObjectReference instance) : this(instance, ConnectionAwarePolicy.Default.Get()) {}
 

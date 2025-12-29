@@ -1,4 +1,5 @@
 using DragonSpark.Compose;
+using DragonSpark.Contracts.Queries;
 using DragonSpark.Model.Operations;
 using System;
 using System.Threading.Tasks;
@@ -16,7 +17,7 @@ sealed class ContainerAwarePages<T> : IPages<T>
 		_pages     = pages;
 	}
 
-	public async ValueTask<Page<T>> Get(Stop<PageInput> parameter)
+	public async ValueTask<PageResult<T>> Get(Stop<PageInput> parameter)
 	{
 		try
 		{

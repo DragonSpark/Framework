@@ -11,6 +11,7 @@ using DragonSpark.Composition.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Stop;
 using DragonSpark.Model.Results;
 using DragonSpark.Presentation.Components.Content;
 using DragonSpark.Presentation.Components.Content.Rendering;
@@ -68,6 +69,11 @@ public static class Extensions
 	public static CallbackComposer Callback(this ModelContext _, Func<Task> method) => new(method);
 
 	public static SubmitCallbackComposer Callback(this ModelContext _, Func<EditContext, Task> submit) => new(submit);
+
+	// ReSharper disable once TooManyArguments
+	public static SubmitCallbackComposer Callback(this ModelContext _, Func<EditContext, Task> submit,
+	                                              IStopAware invalid, CancellationToken stop)
+		=> _.Callback(submit, invalid.Then().Bind(stop).Out());
 	public static SubmitCallbackComposer Callback(this ModelContext _, Func<EditContext, Task> submit, IOperation invalid)
 		=> new(submit, invalid);
 

@@ -1,5 +1,6 @@
 ﻿@using DragonSpark.Compose
 @using DragonSpark.Presentation.Environment.Browser.Window
+@using System.Threading
 
 @implements IAsyncDisposable
 
@@ -14,11 +15,14 @@
     [JSInvokable]
     public Task OnFocus() => Focused.Invoke();
 
+    [CascadingParameter]
+    public required CancellationToken Stop { get; set; } = CancellationToken.None;
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
-            _element = await Create.Get(new (this));
+            _element = await Create.Get(new(new(this), Stop));
             await _element.Start().Off();
         }
     }

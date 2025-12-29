@@ -3,6 +3,7 @@
 *@
 @using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination
 @using DragonSpark.Compose
+@using DragonSpark.Contracts.Queries
 @using DragonSpark.Model.Operations
 @using DragonSpark.Model.Results
 @using DragonSpark.Presentation.Environment.Browser
@@ -39,7 +40,7 @@
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        _dispose = new ConnectionAware(this);
+        _dispose = new ConnectionAwareOperation(this);
     }
 
     [Parameter]
@@ -103,14 +104,15 @@
         }
     }
 
-    async Task Load(Page<T> page)
+    async Task Load(PageResult<T> page)
     {
-        if (page.Count > 0)
+        var (items, total) = page;
+        if (items.Length > 0)
         {
-            _items.AddRange(page);
+            _items.AddRange(items);
         }
 
-        if (_items.Count < (int)page.Total.Value())
+        if (_items.Count < (int)total.Value())
         {
             await Notify().Off();
         }
@@ -151,7 +153,7 @@
 
     async Task<IJSObjectReference?> Instance(ElementReference parameter)
     {
-        var result = await Model.Off(new(parameter, DotNetObjectReference.Create(this), (byte)Direction));
+        var result = await Model.Off(new(new(parameter, DotNetObjectReference.Create(this), (byte)Direction), Stop));
         _active &= result is not null;
         return result;
     }

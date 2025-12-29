@@ -1,7 +1,6 @@
 using DragonSpark.Application.AspNet.Compose;
 using DragonSpark.Application.AspNet.Entities.Diagnostics;
 using DragonSpark.Application.AspNet.Entities.Editing;
-using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
 using DragonSpark.Application.AspNet.Entities.Transactions;
 using DragonSpark.Application.AspNet.Model.Content;
 using DragonSpark.Application.AspNet.Security;
@@ -11,7 +10,9 @@ using DragonSpark.Application.Model;
 using DragonSpark.Application.Security.Identity.Claims;
 using DragonSpark.Compose;
 using DragonSpark.Composition.Compose;
+using DragonSpark.Contracts.Queries;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Stop;
 using DragonSpark.Model.Selection;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -111,7 +112,7 @@ partial class Extensions
 
 	public static ITransactions Ambient(this ITransactions @this) => new AmbientAwareTransactions(@this);
 
-	public static IOperation<T> ReloadAware<T>(this IOperation<T> @this) => new ReloadAware<T>(@this);
+	public static IStopAware<T> ReloadAware<T>(this IStopAware<T> @this) => new ReloadAware<T>(@this);
 
 	/**/
 	public static UserInput Input(this ClaimsPrincipal @this, Guid subject) => new(@this.Number().Value(), subject);
@@ -122,10 +123,16 @@ partial class Extensions
 
 	public static UserInput<T> Input<T>(this HttpContext @this, T subject) => @this.User.Input(subject);
 
-	public static Stop<PageQueryInput<uint>> PagingInput(this HttpContext @this, PageInput page)
+	public static Stop<PageQueryInput<uint>> PagingUserInput(this HttpContext @this, PageRequest page)
 		=> @this.PagingInput(@this.User.Number().Value(), page);
+	
+	public static Stop<PageQueryInput<UserInput>> PagingUserInput(this HttpContext @this, Guid parameter, PageRequest page)
+		=> @this.PagingInput(new UserInput(@this.User.Number().Value(), parameter), page);
+	public static Stop<PageQueryInput<UserInput<T>>> PagingUserInput<T>(this HttpContext @this, T parameter, 
+	                                                                    PageRequest page)
+		=> @this.PagingInput(new UserInput<T>(@this.User.Number().Value(), parameter), page);
 
-	public static Stop<PageQueryInput<T>> PagingInput<T>(this HttpContext @this, T parameter, PageInput page)
+	public static Stop<PageQueryInput<T>> PagingInput<T>(this HttpContext @this, T parameter, PageRequest page)
 		=> new(new(parameter, page), @this.RequestAborted);
 
 	public static Stop<uint> UserInput(this HttpContext @this)

@@ -56,10 +56,6 @@ public class OperationComposer<T> : Composer<T, ValueTask>
 	public OperationComposer<CancellationToken> Bind(Func<CancellationToken, ValueTask<T>> parameter)
 		=> new(new StopAwareBinding<T>(Get(), parameter));*/
 
-	public SelectedLogOperationExceptionComposer<T, TOther> Use<TOther>(ILogException<TOther> log) => new(_subject, log);
-
-	public PolicyAwareLogOperationExceptionComposer<T> Use(ILogException<T> log) => new(_subject, log);
-
 	public OperationComposer<T> Watching(CancellationToken token) => Watching(Start.A.Result(token));
 
 	public OperationComposer<T> Watching(IResult<CancellationToken> token) => Watching(token.Get);

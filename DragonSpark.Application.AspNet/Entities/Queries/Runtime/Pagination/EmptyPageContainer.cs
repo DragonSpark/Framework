@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Contracts.Queries;
 using DragonSpark.Model.Results;
 using System;
 
@@ -10,7 +11,7 @@ public sealed class EmptyPageContainer<T> : Instance<Type>, IPageContainer<T>
 
 	EmptyPageContainer() : base(A.Type<EmptyPageContainer<T>>()) {}
 
-	public void Execute(Page<T> parameter) {}
+	public void Execute(PageResult<T> parameter) {}
 
 	public void Execute(Exception parameter) {}
 

@@ -1,4 +1,5 @@
-﻿using System.Collections.Concurrent;
+﻿using DragonSpark.Contracts.Queries;
+using System.Collections.Concurrent;
 
 namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination.Memory;
 

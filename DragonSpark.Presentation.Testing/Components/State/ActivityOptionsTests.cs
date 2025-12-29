@@ -9,6 +9,6 @@ public sealed class ActivityOptionsTests
 	[Fact]
 	public void Verify()
 	{
-		ActivityOptions.Default.RedrawOnFinish.Should().Be(false);
+		ActivityOptions.Default.RedrawOnFinish.Should().Be(true);
 	}
 }

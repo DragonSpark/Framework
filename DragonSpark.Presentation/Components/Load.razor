@@ -25,7 +25,7 @@
 @code {
 
     [Parameter]
-    public string Source { get; set; } = null!;
+    public required string Source { get; set; }
 
     [Parameter]
     public string Type { get; set; } = "text/javascript";

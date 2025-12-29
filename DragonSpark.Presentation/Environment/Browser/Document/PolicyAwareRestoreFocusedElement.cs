@@ -1,6 +1,6 @@
 ﻿namespace DragonSpark.Presentation.Environment.Browser.Document;
 
-sealed class PolicyAwareRestoreFocusedElement : ConnectionAware
+sealed class PolicyAwareRestoreFocusedElement : ConnectionAwareOperation
 {
 	public PolicyAwareRestoreFocusedElement(RestoreFocusedElement previous) : base(previous) {}
 }

@@ -1,5 +1,6 @@
 using DragonSpark.Compose;
-using DragonSpark.Model.Operations.Selection;
+using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Selection.Stop;
 using DragonSpark.Presentation.Environment.Browser;
 using DragonSpark.Presentation.Environment.Browser.Document;
 using Microsoft.JSInterop;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content.Sequences.Virtualization;
 
-sealed class Virtualization : ISelecting<InitializeInput, IJSObjectReference?>
+sealed class Virtualization : IStopAware<InitializeInput, IJSObjectReference?>
 {
 	readonly LoadModule<Virtualization>        _load;
 	readonly ICreateReference<InitializeInput> _initialize;
@@ -20,11 +21,11 @@ sealed class Virtualization : ISelecting<InitializeInput, IJSObjectReference?>
 		_initialize = initialize;
 	}
 
-	public async ValueTask<IJSObjectReference?> Get(InitializeInput parameter)
+	public async ValueTask<IJSObjectReference?> Get(Stop<InitializeInput> parameter)
 	{
-		var (_, disposable, _) = parameter;
-		var module       = new VirutalizationReference(new PolicyAwareJSObjectReference(await _load.Off()));
-		var instance     = await _initialize.Off(new(module, parameter));
+		var ((_, disposable, _), stop) = parameter;
+		var module       = new VirutalizationReference(new PolicyAwareJSObjectReference(await _load.Off(stop)));
+		var instance     = await _initialize.Off(new(new(module, parameter), stop));
 		var result = instance.Account() is not null
 			             ? new ConnectionAwareReference(new ModuleReference(module, instance), disposable)
 			             : null;
