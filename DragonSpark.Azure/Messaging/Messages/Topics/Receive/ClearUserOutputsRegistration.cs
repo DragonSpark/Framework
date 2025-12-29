@@ -12,7 +12,7 @@ public class ClearUserOutputsRegistration<TIn, T> : EventRegistration<T, TIn> wh
 		: this(user.Start().Operation().Out().AsStop(), output, key) {}
 
 	protected ClearUserOutputsRegistration(IStopAware<TIn, uint> user, IOutputCacheStore output, IUserOutputKey key)
-		: base(new ClearOutputs<TIn>(user, output, key)) {}
+		: base(new ClearUserOutputs<TIn>(user, output, key)) {}
 }
 
 public class ClearUserOutputsRegistration<T> : EventRegistration<T> where T : Message
@@ -21,5 +21,5 @@ public class ClearUserOutputsRegistration<T> : EventRegistration<T> where T : Me
 		: this(user.Start().Operation().Out().AsStop(), output, key) {}
 
 	protected ClearUserOutputsRegistration(IStopAware<T, uint> user, IOutputCacheStore output, IUserOutputKey key)
-		: base(new ClearOutputs<T>(user, output, key)) {}
+		: base(new ClearUserOutputs<T>(user, output, key)) {}
 }
