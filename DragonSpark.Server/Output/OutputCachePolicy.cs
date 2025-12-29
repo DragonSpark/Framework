@@ -32,12 +32,9 @@ public class OutputCachePolicy : Text.Text, IOutputsPolicy
 		context.AllowCacheStorage          = allow;
 		context.AllowLocking               = true;
 		context.ResponseExpirationTimeSpan = _for;
-		rules.CacheKeyPrefix               = "";
 		rules.QueryKeys                    = "*";
-
 		var tag = _key.Get(None.Default);
 		context.Tags.Add(tag);
-
 		return ValueTask.CompletedTask;
 	}
 
@@ -49,4 +46,5 @@ public class OutputCachePolicy : Text.Text, IOutputsPolicy
 		context.AllowCacheStorage = true;
 		return ValueTask.CompletedTask;
 	}
+
 }

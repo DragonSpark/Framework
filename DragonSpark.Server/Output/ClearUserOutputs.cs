@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Server.Output;
 
-public class ClearUserOutputs<T> : IStopAware<T>
+public sealed class ClearUserOutputs<T> : IStopAware<T>
 {
 	readonly IStopAware<T, uint> _user;
 	readonly IOutputCacheStore   _output;
 	readonly IUserOutputKey      _key;
 
-	protected ClearUserOutputs(IStopAware<T, uint> user, IOutputCacheStore output, IUserOutputKey key)
+	public ClearUserOutputs(IStopAware<T, uint> user, IOutputCacheStore output, IUserOutputKey key)
 	{
 		_user   = user;
 		_output = output;

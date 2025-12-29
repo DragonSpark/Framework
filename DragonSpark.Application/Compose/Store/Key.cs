@@ -1,8 +1,18 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model;
 using DragonSpark.Text;
 using System;
 
 namespace DragonSpark.Application.Compose.Store;
+
+public class Key : Key<None>
+{
+	public Key(string prefix, Func<None, string> key) : base(prefix, _ => string.Empty) {}
+
+	protected Key(Type prefix) : base(prefix, _ => string.Empty) {}
+
+	protected Key(string prefix, char delimiter) : base(prefix, delimiter, _ => string.Empty) {}
+}
 
 public class Key<T> : IFormatter<T>
 {
