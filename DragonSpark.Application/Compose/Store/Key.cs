@@ -7,7 +7,7 @@ namespace DragonSpark.Application.Compose.Store;
 
 public class Key : Key<None>
 {
-	public Key(string prefix, Func<None, string> key) : base(prefix, _ => string.Empty) {}
+	public Key(string prefix) : base(prefix, _ => string.Empty) {}
 
 	protected Key(Type prefix) : base(prefix, _ => string.Empty) {}
 
