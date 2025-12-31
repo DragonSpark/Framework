@@ -36,6 +36,3 @@ public sealed class TemplatedContentView : ContentView
         Content                 = content;
     }
 }
-
-// TODO
-

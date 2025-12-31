@@ -3,17 +3,21 @@ using Microsoft.Maui.Controls;
 
 namespace DragonSpark.Application.Mobile.Maui.Presentation.Markup;
 
-public sealed class ToStringTemplateSelector : DataTemplateSelector
+public sealed class TypeNameTemplateSelector : DataTemplateSelector
 {
-    public static ToStringTemplateSelector Default { get; } = new();
+    public static TypeNameTemplateSelector Default { get; } = new();
 
-    ToStringTemplateSelector() {}
+    TypeNameTemplateSelector() : this("Default") {}
+
+    readonly string _default;
+
+    public TypeNameTemplateSelector(string @default) => _default = @default;
 
     protected override DataTemplate OnSelectTemplate(object item, BindableObject container)
     {
         if (container is VisualElement visual)
         {
-            var key = item.ToString().Verify();
+            var key = item.Account()?.GetType().Name ?? _default;
             if (visual.FindByName<DataTemplate>(key) is {} template)
             {
                 return template;
