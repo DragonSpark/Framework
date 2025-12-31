@@ -10,7 +10,7 @@ public sealed class TextValidationBehavior : CommunityToolkit.Maui.Behaviors.Tex
     protected override void OnAttachedTo(BindableObject bindable)
     {
         _monitor?.Dispose();
-        _monitor = new AttachmentMonitor(this, (VisualElement)bindable, _ => {}, OnDetachingFrom);
+        _monitor = new AttachmentMonitor(this, (VisualElement)bindable, OnDetachingFrom);
         _monitor.Execute();
         base.OnAttachedTo(bindable);
     }

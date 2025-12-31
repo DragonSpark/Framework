@@ -5,27 +5,32 @@ using Microsoft.Maui.Controls;
 
 namespace DragonSpark.Application.Mobile.Maui.Presentation.Behaviors;
 
+public sealed record AttachmentMonitorEvents(Action<BindableObject> Changed, Action<VisualElement> Detaching)
+{
+    public AttachmentMonitorEvents(Action<VisualElement> Detaching) : this(_ => {}, Detaching) {}
+}
+
 sealed class AttachmentMonitor : ICommand, IDisposable
 {
-    readonly Behavior               _host;
-    readonly VisualElement          _subject;
-    readonly Action<BindableObject> _changed;
-    readonly Action<VisualElement>  _detaching;
+    readonly Behavior                _host;
+    readonly VisualElement           _subject;
+    readonly AttachmentMonitorEvents _events;
 
     // ReSharper disable once TooManyDependencies
-    public AttachmentMonitor(Behavior host, VisualElement subject, Action<BindableObject> changed,
-                             Action<VisualElement> detaching)
+    public AttachmentMonitor(Behavior host, VisualElement subject, Action<VisualElement> detaching)
+        : this(host, subject, new AttachmentMonitorEvents(detaching)) {}
+
+    public AttachmentMonitor(Behavior host, VisualElement subject, AttachmentMonitorEvents events)
     {
-        _host      = host;
-        _subject   = subject;
-        _changed   = changed;
-        _detaching = detaching;
+        _host    = host;
+        _subject = subject;
+        _events  = events;
     }
 
     public void Execute(None parameter)
     {
         _subject.Unloaded              += OnUnloaded;
-        _subject.BindingContextChanged += Bindable_BindingContextChanged;
+        _subject.BindingContextChanged += Changed;
         _host.BindingContext           =  _subject.BindingContext;
     }
 
@@ -33,22 +38,22 @@ sealed class AttachmentMonitor : ICommand, IDisposable
     {
         if (sender is VisualElement view)
         {
-            _host.BindingContext = view.BindingContext;
-            _detaching(view);
+            _events.Detaching(view);
         }
     }
 
-    void Bindable_BindingContextChanged(object? sender, EventArgs e)
+    void Changed(object? sender, EventArgs e)
     {
         if (sender is BindableObject b)
         {
-            _changed(b);
+            _host.BindingContext = b.BindingContext;
+            _events.Changed(b);
         }
     }
 
     public void Dispose()
     {
         _subject.Unloaded              -= OnUnloaded;
-        _subject.BindingContextChanged -= Bindable_BindingContextChanged;
+        _subject.BindingContextChanged -= Changed;
     }
 }

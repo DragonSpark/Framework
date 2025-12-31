@@ -13,7 +13,8 @@ public class BehaviorBase<T> : BaseBehavior<T> where T : VisualElement
     protected sealed override void OnAttachedTo(T bindable)
     {
         _monitor?.Dispose();
-        _monitor = new AttachmentMonitor(this, bindable, OnBindingContextChanged, OnDetachingFrom);
+        _monitor = new AttachmentMonitor(this, bindable, 
+                                         new AttachmentMonitorEvents(OnBindingContextChanged, OnDetachingFrom));
         _monitor.Execute();
 
         base.OnAttachedTo(bindable);

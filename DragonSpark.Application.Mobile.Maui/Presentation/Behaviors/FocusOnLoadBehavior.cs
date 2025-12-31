@@ -29,6 +29,7 @@ public sealed class FocusOnLoadBehavior : BehaviorBase<VisualElement>
 
     void OnChanged(object? sender, EventArgs e)
     {
-        TargetElement?.Focus();
+        var element = TargetElement ?? View;
+        element?.Focus();
     }
 }
