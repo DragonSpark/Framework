@@ -24,16 +24,16 @@ public sealed class OtpCompletedBehavior : BehaviorBase<SfOtpInput>
         set => SetValue(CommandParameterProperty, value);
     }
     
-    protected override void OnAttachedTo(SfOtpInput bindable)
+    protected override void OnAttached(SfOtpInput bindable)
     {
-        base.OnAttachedTo(bindable);
+        base.OnAttached(bindable);
         bindable.ValueChanged += OnValueChanged;
     }
 
-    protected override void OnDetachingFrom(SfOtpInput bindable)
+    protected override void OnDetached(SfOtpInput bindable)
     {
         bindable.ValueChanged -= OnValueChanged;
-        base.OnDetachingFrom(bindable);
+        base.OnDetached(bindable);
     }
 
     void OnValueChanged(object? sender, OtpInputValueChangedEventArgs e)

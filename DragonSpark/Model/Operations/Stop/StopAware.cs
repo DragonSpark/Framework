@@ -1,12 +1,20 @@
-﻿using DragonSpark.Model.Selection;
 using System;
+using System.Threading;
 using System.Threading.Tasks;
+using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Model.Operations.Stop;
 
+public class StopAware : Select<CancellationToken, ValueTask>, IStopAware
+{
+    protected StopAware(ISelect<CancellationToken, ValueTask> select) : base(select) {}
+
+    protected StopAware(Func<CancellationToken, ValueTask> select) : base(select) {}
+}
+
 public class StopAware<T> : Operation<Stop<T>>, IStopAware<T>
 {
-	public StopAware(ISelect<Stop<T>, ValueTask> select) : base(select) {}
+    protected StopAware(ISelect<Stop<T>, ValueTask> select) : base(select) {}
 
-	public StopAware(Func<Stop<T>, ValueTask> select) : base(select) {}
+    public StopAware(Func<Stop<T>, ValueTask> select) : base(select) {}
 }

@@ -15,8 +15,6 @@ public sealed class TemplatedContentView : ContentView
                                 typeof(TemplatedContentView),
                                 propertyChanged: (b, _, _) => ((TemplatedContentView)b).UpdateContent());
 
-    public TemplatedContentView() => Loaded += (_, _) => UpdateContent();
-
     public object? Item
     {
         get => GetValue(ItemProperty);
@@ -31,8 +29,13 @@ public sealed class TemplatedContentView : ContentView
     
     void UpdateContent()
     {
-        Content = Item is not null
-                      ? ItemTemplateSelector.Account()?.SelectTemplate(Item, this)?.CreateContent() as View
-                      : null;
+        var content = Item is not null
+                          ? ItemTemplateSelector.Account()?.SelectTemplate(Item, this)?.CreateContent() as View
+                          : null;
+        content?.BindingContext = Item;
+        Content                 = content;
     }
 }
+
+// TODO
+

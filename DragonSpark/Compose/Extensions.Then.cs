@@ -1,4 +1,10 @@
-﻿using DragonSpark.Compose.Model.Commands;
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
+using DragonSpark.Compose.Model.Commands;
 using DragonSpark.Compose.Model.Operations;
 using DragonSpark.Compose.Model.Operations.Allocated;
 using DragonSpark.Compose.Model.Results;
@@ -19,12 +25,6 @@ using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Selection.Stores;
 using DragonSpark.Model.Sequences;
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
 using IDepending = DragonSpark.Model.Operations.Selection.Conditions.IDepending;
 
 namespace DragonSpark.Compose;
@@ -222,8 +222,10 @@ public static partial class ExtensionMethods
 
 	public static DragonSpark.Model.Operations.Results.Stop.IStopAware<T> Out<T>(
 		this Composer<CancellationToken, ValueTask<T>> @this) => @this.Get().Out();
-	public static DragonSpark.Model.Operations.Results.Stop.IStopAware<T> Out<T>(this ISelect<CancellationToken, ValueTask<T>> @this)
-		=> @this.To(x => x as DragonSpark.Model.Operations.Results.Stop.IStopAware<T> ?? new DragonSpark.Model.Operations.Results.Stop.StopAware<T>(x.Get));
+    public static DragonSpark.Model.Operations.Results.Stop.IStopAware<T> Out<T>(
+        this ISelect<CancellationToken, ValueTask<T>> @this)
+        => @this.To(x => x as DragonSpark.Model.Operations.Results.Stop.IStopAware<T> ??
+                         new DragonSpark.Model.Operations.Results.Stop.StopAware<T>(x.Get));
 
 	public static ISelecting<TIn, TOut> Out<TIn, TOut>(this Composer<TIn, ValueTask<TOut>> @this)
 		=> @this.Get().To(x => x as ISelecting<TIn, TOut> ?? new Selecting<TIn, TOut>(x.Get));

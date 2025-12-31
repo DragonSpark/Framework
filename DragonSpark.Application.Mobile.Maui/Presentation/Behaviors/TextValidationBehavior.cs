@@ -5,7 +5,7 @@ namespace DragonSpark.Application.Mobile.Maui.Presentation.Behaviors;
 
 public sealed class TextValidationBehavior : CommunityToolkit.Maui.Behaviors.TextValidationBehavior
 {
-    protected override void OnAttachedTo(BindableObject bindable)
+    protected override void OnAttachedTo(BindableObject bindable) // TODO
     {
         BindingContext                 =  bindable.BindingContext;
         bindable.BindingContextChanged += Bindable_BindingContextChanged;
@@ -20,7 +20,7 @@ public sealed class TextValidationBehavior : CommunityToolkit.Maui.Behaviors.Tex
         }
     }
 
-    protected override void OnDetachingFrom(BindableObject bindable)
+    protected override void OnDetachingFrom(BindableObject bindable) // TODO
     {
         bindable.BindingContextChanged -= Bindable_BindingContextChanged;
         base.OnDetachingFrom(bindable);

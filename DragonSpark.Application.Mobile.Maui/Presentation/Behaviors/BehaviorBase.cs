@@ -4,14 +4,34 @@ using Microsoft.Maui.Controls;
 
 namespace DragonSpark.Application.Mobile.Maui.Presentation.Behaviors;
 
+public class BehaviorBase : BehaviorBase<VisualElement>;
+
 public class BehaviorBase<T> : BaseBehavior<T> where T : VisualElement
 {
-    protected override void OnAttachedTo(T bindable)
+    protected sealed override void OnAttachedTo(T bindable)
     {
+        bindable.Unloaded              += OnUnloaded;
         bindable.BindingContextChanged += Bindable_BindingContextChanged;
         BindingContext                 =  bindable.BindingContext;
         base.OnAttachedTo(bindable);
+        OnAttached(bindable);
     }
+
+    void FireDetachedFrom(T bindable)
+    {
+        OnDetachingFrom(bindable);
+    }
+
+    void OnUnloaded(object? sender, EventArgs e)
+    {
+        if (sender is T view)
+        {
+            FireDetachedFrom(view);
+        }
+    }
+
+    protected virtual void OnAttached(T bindable) {}
+    protected virtual void OnDetached(T bindable) {}
 
     void Bindable_BindingContextChanged(object? sender, EventArgs e)
     {
@@ -26,9 +46,11 @@ public class BehaviorBase<T> : BaseBehavior<T> where T : VisualElement
         BindingContext = b.BindingContext;
     }
 
-    protected override void OnDetachingFrom(T bindable)
+    protected sealed override void OnDetachingFrom(T bindable)
     {
+        bindable.Unloaded              -= OnUnloaded;
         bindable.BindingContextChanged -= Bindable_BindingContextChanged;
+        OnDetached(bindable);
         base.OnDetachingFrom(bindable);
     }
 }

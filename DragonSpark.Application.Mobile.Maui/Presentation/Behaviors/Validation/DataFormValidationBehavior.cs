@@ -26,7 +26,7 @@ public sealed class DataFormValidationBehavior : DataFormValidationBehaviorBase
         set { SetValue(DefaultValidationModeProperty, value); }
     }
 
-    protected override void OnAttachedTo(SfDataForm bindable)
+    protected override void OnAttached(SfDataForm bindable)
     {
         BindingContext            =  bindable.BindingContext;
         bindable.ValidationMode   =  DefaultValidationMode;
@@ -49,11 +49,11 @@ public sealed class DataFormValidationBehavior : DataFormValidationBehaviorBase
         Command.NotifyCanExecuteChanged();
     }
 
-    protected override void OnDetachingFrom(SfDataForm bindable)
+    protected override void OnDetached(SfDataForm bindable)
     {
         bindable.ValidateProperty -= BindableOnValidateProperty;
 
-        base.OnDetachingFrom(bindable);
+        base.OnDetached(bindable);
     }
 
     public readonly static BindableProperty CommandProperty

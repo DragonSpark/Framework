@@ -18,17 +18,17 @@ public sealed class FocusOnAppearingBehavior : BehaviorBase<Page>
     }
 
     
-    protected override void OnAttachedTo(Page bindable)
+    protected override void OnAttached(Page bindable)
     {
-        base.OnAttachedTo(bindable);
+        base.OnAttached(bindable);
 
         bindable.Appearing += OnPageAppearing;    
     }
 
-    protected override void OnDetachingFrom(Page bindable)
+    protected override void OnDetached(Page bindable)
     {
         bindable.Appearing -= OnPageAppearing;
-        base.OnDetachingFrom(bindable);
+        base.OnDetached(bindable);
     }
 
     void OnPageAppearing(object? sender, EventArgs e)

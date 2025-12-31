@@ -5,10 +5,13 @@ using Microsoft.Maui.Controls;
 
 namespace DragonSpark.Application.Mobile.Maui.Presentation.Behaviors;
 
-public sealed class MessageBehavior<T> : BehaviorBase<View> where T : class
+public sealed class MessageBehavior<T> : BehaviorBase, IRecipient<T> where T : class
 {
-    public static readonly BindableProperty CommandProperty =
-        BindableProperty.Create(nameof(Command), typeof(ICommand), typeof(MessageBehavior<T>));
+    readonly IMessenger _messenger;
+
+    public MessageBehavior() : this(WeakReferenceMessenger.Default) {}
+
+    public MessageBehavior(IMessenger messenger) => _messenger = messenger;
 
     public ICommand Command
     {
@@ -16,23 +19,27 @@ public sealed class MessageBehavior<T> : BehaviorBase<View> where T : class
         set => SetValue(CommandProperty, value);
     }
 
-    protected override void OnAttachedTo(View bindable)
-    {
-        base.OnAttachedTo(bindable);
+    public static readonly BindableProperty CommandProperty =
+        BindableProperty.Create(nameof(Command), typeof(ICommand), typeof(MessageBehavior<T>));
 
-        WeakReferenceMessenger.Default.Register<T>(this,
-                                                   (_, message) =>
-                                                   {
-                                                       if (Command.Account()?.CanExecute(message) == true)
-                                                       {
-                                                           Command.Execute(message);
-                                                       }
-                                                   });
+    protected override void OnAttached(VisualElement bindable)
+    {
+        base.OnAttached(bindable);
+
+        _messenger.Register(this);
     }
 
-    protected override void OnDetachingFrom(View bindable)
+    public void Receive(T message)
     {
-        WeakReferenceMessenger.Default.Unregister<T>(this);
-        base.OnDetachingFrom(bindable);
+        if (Command.Account()?.CanExecute(message) == true)
+        {
+            Command.Execute(message);
+        }
+    }
+
+    protected override void OnDetached(VisualElement bindable)
+    {
+        _messenger.Unregister<T>(this);
+        base.OnDetached(bindable);
     }
 }

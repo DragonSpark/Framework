@@ -34,16 +34,16 @@ public sealed class NavigatingCommandBehavior : BehaviorBase<WebView>
         set => SetValue(CommandParameterProperty, value);
     }
 
-    protected override void OnAttachedTo(WebView webView)
+    protected override void OnAttached(WebView webView)
     {
-        base.OnAttachedTo(webView);
+        base.OnAttached(webView);
         webView.Navigating += OnNavigating;
     }
 
-    protected override void OnDetachingFrom(WebView webView)
+    protected override void OnDetached(WebView webView)
     {
         webView.Navigating -= OnNavigating;
-        base.OnDetachingFrom(webView);
+        base.OnDetached(webView);
     }
 
     void OnNavigating(object? sender, WebNavigatingEventArgs e)

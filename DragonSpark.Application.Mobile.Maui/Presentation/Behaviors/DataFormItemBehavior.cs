@@ -25,16 +25,16 @@ public sealed class DataFormItemBehavior : BehaviorBase<SfDataForm>
         set { SetValue(PaddingProperty, value); }
     }
 
-    protected override void OnAttachedTo(SfDataForm bindable)
+    protected override void OnAttached(SfDataForm bindable)
     {
         bindable.GenerateDataFormItem += BindableOnGenerateDataFormItem;
-        base.OnAttachedTo(bindable);
+        base.OnAttached(bindable);
     }
 
-    protected override void OnDetachingFrom(SfDataForm bindable)
+    protected override void OnDetached(SfDataForm bindable)
     {
+        base.OnDetached(bindable);
         bindable.GenerateDataFormItem -= BindableOnGenerateDataFormItem;
-        base.OnDetachingFrom(bindable);
     }
 
     void BindableOnGenerateDataFormItem(object? sender, GenerateDataFormItemEventArgs e)
