@@ -64,4 +64,8 @@ public class StartWhereSelection<TIn, T, TTo> : WhereSelection<TIn, T, TTo> wher
 	protected StartWhereSelection(Expression<Func<TIn, T, bool>> where,
 	                              Expression<Func<DbContext, TIn, IQueryable<T>, IQueryable<TTo>>> select)
 		: base(Set<TIn, T>.Default, where, select) {}
+
+	protected StartWhereSelection(Expression<Func<DbContext, TIn, T, bool>> where,
+	                              Expression<Func<DbContext, TIn, IQueryable<T>, IQueryable<TTo>>> select)
+		: base(Set<TIn, T>.Default, where, select) {}
 }

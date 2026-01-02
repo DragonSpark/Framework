@@ -41,4 +41,10 @@ public class WhereSelection<TIn, T, TTo> : Combine<TIn, T, TTo>
 	                         Expression<Func<TIn, T, bool>> where,
 	                         Expression<Func<DbContext, TIn, IQueryable<T>, IQueryable<TTo>>> select)
 		: base(previous, (context, @in, q) => select.Invoke(context, @in, q.Where(x => where.Invoke(@in, x)))) {}
+
+	protected WhereSelection(Expression<Func<DbContext, TIn, IQueryable<T>>> previous,
+	                         Expression<Func<DbContext, TIn, T, bool>> where,
+	                         Expression<Func<DbContext, TIn, IQueryable<T>, IQueryable<TTo>>> select)
+		: base(previous, (d, @in, q) => select.Invoke(d, @in, q.Where(x => where.Invoke(d, @in, x)))) {}
+
 }
