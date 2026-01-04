@@ -15,7 +15,7 @@ public abstract class InjectedInteractionHandlerComponentBase<THandler, T> : Com
 		get;
 		set
 		{
-			if (field != value)
+			if (!Equals(field, value))
 			{
 				field   = value;
 				Current = null;
