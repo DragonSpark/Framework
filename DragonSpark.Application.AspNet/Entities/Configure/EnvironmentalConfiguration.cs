@@ -1,6 +1,6 @@
-using System.IO;
 using DragonSpark.Model.Results;
 using Microsoft.Extensions.Configuration;
+using System.IO;
 
 namespace DragonSpark.Application.AspNet.Entities.Configure;
 
@@ -8,7 +8,8 @@ sealed class EnvironmentalConfiguration : Result<IConfiguration>
 {
 	public static EnvironmentalConfiguration Default { get; } = new();
 
-	EnvironmentalConfiguration() : this(EnvironmentName.Default) {}
+	EnvironmentalConfiguration()
+		: this(EnvironmentName.Default.Get() ?? AspNet.Configuration.EnvironmentName.Default) {}
 
 	public EnvironmentalConfiguration(string environment)
 		: base(new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory())

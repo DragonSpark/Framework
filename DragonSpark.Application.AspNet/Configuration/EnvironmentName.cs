@@ -1,10 +1,10 @@
 ﻿using DragonSpark.Runtime;
 
-namespace DragonSpark.Application;
+namespace DragonSpark.Application.AspNet.Configuration;
 
 public sealed class EnvironmentName : EnvironmentVariable
 {
 	public static EnvironmentName Default { get; } = new();
 
-	EnvironmentName() : base("DOTNET_ENVIRONMENT") {}
+	EnvironmentName() : base("ASPNETCORE_ENVIRONMENT") {}
 }
