@@ -206,7 +206,10 @@ public sealed class Mapping<TFrom, TTo> : IMapping<TFrom, TTo> where TFrom : cla
 	}
 }
 
-public sealed record Batching<T>(DbContext Source, DbContext Destination, IQueryable<T> Subject);
+public record Batching(DbContext Source, DbContext Destination);
+
+public sealed record Batching<T>(DbContext Source, DbContext Destination, IQueryable<T> Subject)
+	: Batching(Source, Destination);
 
 public class Migration<T> : Migration
 {
@@ -241,9 +244,9 @@ public class Migration : ICommand<ushort>, ICommand
 	}
 }
 
-public interface IBatches : ICommand<BatchesInput>;
+public interface IBatches : ICommand<BatchesInput>, IResult<Batching>;
 
-public class Batches<TFrom, TTo> : IBatches where TFrom : class where TTo : class
+public class Batches<TFrom, TTo> : Instance<Batching>, IBatches where TFrom : class where TTo : class
 {
 	readonly Batching<TFrom>    _batching;
 	readonly IBatch<TFrom, TTo> _batch;
@@ -253,7 +256,7 @@ public class Batches<TFrom, TTo> : IBatches where TFrom : class where TTo : clas
 
 	protected Batches(Batching<TFrom> batching) : this(batching, Batch<TFrom, TTo>.Default) {}
 
-	protected Batches(Batching<TFrom> batching, IBatch<TFrom, TTo> batch)
+	protected Batches(Batching<TFrom> batching, IBatch<TFrom, TTo> batch) : base(batching)
 	{
 		_batching = batching;
 		_batch    = batch;
@@ -319,21 +322,25 @@ public sealed class Batch<TFrom, TTo> : IBatch<TFrom, TTo> where TFrom : class w
 
 public static class Extensions
 {
-	public static IBatch<TFrom, TTo> Flatten<TFrom, TTo>(this IBatch<TFrom, TTo> @this) where TTo : class
-		=> new FlattenAwareBatches<TFrom, TTo>(@this);
+	public static IBatches Flatten<TFrom, TTo>(this Batches<TFrom, TTo> @this) where TTo : class where TFrom : class
+		=> new FlattenAwareBatches<TTo>(@this);
 }
 
-sealed class FlattenAwareBatches<TFrom, TTo> : IBatch<TFrom, TTo> where TTo : class
+sealed class FlattenAwareBatches<T> : IBatches where T : class
 {
-	readonly IBatch<TFrom, TTo> _previous;
+	readonly IBatches _previous;
 
-	public FlattenAwareBatches(IBatch<TFrom, TTo> previous) => _previous = previous;
+	public FlattenAwareBatches(IBatches previous) => _previous = previous;
 
-	public void Execute(BatchInput<TFrom, TTo> parameter)
+	public void Execute(BatchesInput parameter)
 	{
-		var (logger, _, _, _, to, _, _) = parameter;
+		var (logger, _)      = parameter;
+		var (_, destination) = _previous.Get();
+		var to      = destination.Set<T>();
 		var cleared = to.ExecuteDelete();
-		logger.LogInformation("Cleared {Set} of {Count} entries", to.GetType().Name, cleared);
+		logger.LogInformation("Cleared {Set} of {Count} entries", to.GetType(), cleared);
 		_previous.Execute(parameter);
 	}
+
+	public Batching Get() => _previous.Get();
 }
