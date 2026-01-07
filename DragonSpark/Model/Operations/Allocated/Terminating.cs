@@ -8,7 +8,7 @@ public class Terminating<T> : IOperation
 {
 	readonly AwaitOf<T> _await;
 
-	protected Terminating(IAllocatedResult<T> operation) : this(new AwaitOf<T>(operation.Await)) {}
+	protected Terminating(IAllocatedResult<T> operation) : this(operation.Await) {}
 
 	protected Terminating(Func<Task<T>> operation) : this(operation.Start().Out()) {}
 
