@@ -316,3 +316,24 @@ public sealed class Batch<TFrom, TTo> : IBatch<TFrom, TTo> where TFrom : class w
 		                offset + count, total, (offset + count) / (double)total * 100);
 	}
 }
+
+public static class Extensions
+{
+	public static IBatch<TFrom, TTo> Flatten<TFrom, TTo>(this IBatch<TFrom, TTo> @this) where TTo : class
+		=> new FlattenAwareBatches<TFrom, TTo>(@this);
+}
+
+sealed class FlattenAwareBatches<TFrom, TTo> : IBatch<TFrom, TTo> where TTo : class
+{
+	readonly IBatch<TFrom, TTo> _previous;
+
+	public FlattenAwareBatches(IBatch<TFrom, TTo> previous) => _previous = previous;
+
+	public void Execute(BatchInput<TFrom, TTo> parameter)
+	{
+		var (logger, _, _, _, to, _, _) = parameter;
+		var cleared = to.ExecuteDelete();
+		logger.LogInformation("Cleared {Set} of {Count} entries", to.GetType().Name, cleared);
+		_previous.Execute(parameter);
+	}
+}
