@@ -5,11 +5,6 @@ using Microsoft.Maui.Controls;
 
 namespace DragonSpark.Application.Mobile.Maui.Presentation.Behaviors;
 
-public sealed record AttachmentMonitorEvents(Action<BindableObject> Changed, Action<VisualElement> Detaching)
-{
-    public AttachmentMonitorEvents(Action<VisualElement> Detaching) : this(_ => {}, Detaching) {}
-}
-
 sealed class AttachmentMonitor : ICommand, IDisposable
 {
     readonly Behavior                _host;
@@ -17,6 +12,8 @@ sealed class AttachmentMonitor : ICommand, IDisposable
     readonly AttachmentMonitorEvents _events;
 
     // ReSharper disable once TooManyDependencies
+    public AttachmentMonitor(Behavior host, VisualElement subject) : this(host, subject, _ => {}) {}
+
     public AttachmentMonitor(Behavior host, VisualElement subject, Action<VisualElement> detaching)
         : this(host, subject, new AttachmentMonitorEvents(detaching)) {}
 

@@ -10,6 +10,6 @@ sealed class DefaultRegistrations : Commands<IServiceCollection>
 
     DefaultRegistrations()
         : base(Mobile.DefaultRegistrations.Default, LocalRegistrations.Default, Diagnostics.Registrations.Default,
-               Device.Camera.Registrations.Default, Device.Security.Registrations.Default,
+               Device.Camera.Registrations.Default, Device.Security.Passkey.Registrations.Default,
                Runtime.Registrations.Default, Registrations.Default) {}
 }

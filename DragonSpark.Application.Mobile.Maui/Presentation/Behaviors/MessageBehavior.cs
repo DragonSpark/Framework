@@ -25,8 +25,7 @@ public sealed class MessageBehavior<T> : BehaviorBase, IRecipient<T> where T : c
     protected override void OnAttached(VisualElement bindable)
     {
         base.OnAttached(bindable);
-
-        _messenger.Register(this);
+        _messenger.Register(this);        
     }
 
     public void Receive(T message)

@@ -27,6 +27,6 @@ public sealed class Mask : IAlteration<string>
 			return result;
 		}
 
-		return new string(_mask, length);
+		return new(_mask, length);
 	}
 }

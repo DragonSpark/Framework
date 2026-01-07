@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations.Allocated;
 using DragonSpark.Model.Selection;
 using Microsoft.Maui.Controls;
 
-namespace DragonSpark.Application.Mobile.Maui.Device.Security;
+namespace DragonSpark.Application.Mobile.Maui.Device.Security.Passkey;
 
 sealed class PasskeyHandler : ISelect<DeterminePasskeySupportViaBrowserInput, EventHandler<WebNavigatedEventArgs>>
 {

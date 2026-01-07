@@ -4,7 +4,7 @@ using DragonSpark.Application.Mobile.Maui.Presentation;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations.Allocated;
 
-namespace DragonSpark.Application.Mobile.Maui.Device.Security;
+namespace DragonSpark.Application.Mobile.Maui.Device.Security.Passkey;
 
 sealed class DeterminePasskeySupportViaBrowser : IAllocated<DeterminePasskeySupportViaBrowserInput>
 {

@@ -1,3 +1,4 @@
+using System;
 using CommunityToolkit.Maui.Behaviors;
 using DragonSpark.Compose;
 using Microsoft.Maui.Controls;
@@ -12,7 +13,6 @@ public class BehaviorBase<T> : BaseBehavior<T> where T : VisualElement
 
     protected sealed override void OnAttachedTo(T bindable)
     {
-        _monitor?.Dispose();
         _monitor = new AttachmentMonitor(this, bindable, 
                                          new AttachmentMonitorEvents(OnBindingContextChanged, OnDetachingFrom));
         _monitor.Execute();
@@ -33,5 +33,15 @@ public class BehaviorBase<T> : BaseBehavior<T> where T : VisualElement
         _monitor = null;
         OnDetached(bindable);
         base.OnDetachingFrom(bindable);
+        bindable.Loaded += OnLoaded;
+    }
+
+    void OnLoaded(object? sender, EventArgs e)
+    {
+        if (sender is T view)
+        {
+            view.Loaded -= OnLoaded;
+            OnAttachedTo(view);    
+        }
     }
 }

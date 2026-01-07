@@ -1,4 +1,4 @@
-namespace DragonSpark.Application.Mobile.Maui.Device.Security;
+namespace DragonSpark.Application.Mobile.Maui.Device.Security.Passkey;
 
 sealed class PasskeyBrowserDetectionScript : Text.Text
 {

@@ -8,7 +8,7 @@ using DragonSpark.Model.Selection;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Graphics;
 
-namespace DragonSpark.Application.Mobile.Maui.Device.Security;
+namespace DragonSpark.Application.Mobile.Maui.Device.Security.Passkey;
 
 public sealed class SupportsPasskey : ISupportsPasskey
 {

@@ -1,8 +1,8 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using DragonSpark.Compose;
 using DragonSpark.Model;
 
-namespace DragonSpark.Application.Mobile.Maui.Device.Security;
+namespace DragonSpark.Application.Mobile.Maui.Device.Security.Passkey;
 
 sealed class SimulatorAwareSupportsPasskey : ISupportsPasskey
 {
