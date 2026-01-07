@@ -6,7 +6,6 @@ using DragonSpark.Compose.Model.Operations;
 using DragonSpark.Compose.Model.Operations.Allocated;
 using DragonSpark.Compose.Model.Results;
 using DragonSpark.Compose.Model.Selection;
-using DragonSpark.Diagnostics.Logging;
 using DragonSpark.Model;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Results;
