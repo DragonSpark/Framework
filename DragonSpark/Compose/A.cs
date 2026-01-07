@@ -10,6 +10,8 @@ namespace DragonSpark.Compose;
 
 public static class A
 {
+	public static T New<T>() => Runtime.Activation.New<T>.Default.Get();
+
 	public static T Default<T>() => DragonSpark.Model.Results.Default<T>.Instance.Get();
 
 	public static T Of<T>() => Start.An.Instance<T>();
