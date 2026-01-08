@@ -5,6 +5,7 @@
 
 
 	<ItemGroup>
+		<PackageReference Include="EFCore.BulkExtensions.SqlServer" />
 		<PackageReference Include="Microsoft.Extensions.Http.Polly" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" />
 		<PackageReference Include="Microsoft.AspNetCore.Cryptography.KeyDerivation" />

@@ -7,6 +7,8 @@ using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Reflection.Members;
+using DragonSpark.Runtime.Invocation.Expressions;
+using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using NetFabric.Hyperlinq;
@@ -15,6 +17,7 @@ using System.Buffers;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reflection;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration;
@@ -248,15 +251,15 @@ public interface IBatches : ICommand<BatchesInput>, IResult<Batching>;
 
 public class Batches<TFrom, TTo> : Instance<Batching>, IBatches where TFrom : class where TTo : class
 {
-	readonly Batching<TFrom>    _batching;
-	readonly IBatch<TFrom, TTo> _batch;
+	readonly Batching<TFrom> _batching;
+	readonly IBatch<TFrom>   _batch;
 
 	protected Batches(DbContext Source, DbContext Destination, IQueryable<TFrom> Subject)
 		: this(new(Source, Destination, Subject)) {}
 
 	protected Batches(Batching<TFrom> batching) : this(batching, Batch<TFrom, TTo>.Default) {}
 
-	protected Batches(Batching<TFrom> batching, IBatch<TFrom, TTo> batch) : base(batching)
+	protected Batches(Batching<TFrom> batching, IBatch<TFrom> batch) : base(batching)
 	{
 		_batching = batching;
 		_batch    = batch;
@@ -266,39 +269,37 @@ public class Batches<TFrom, TTo> : Instance<Batching>, IBatches where TFrom : cl
 	{
 		var (logger, size)                 = parameter;
 		var (source, destination, subject) = _batching;
-		var to    = destination.Set<TTo>();
 		var total = subject.Count().Grade();
 		for (var offset = 0; offset < total; offset += size)
 		{
-			_batch.Execute(new(logger, source, destination, subject, to, new(offset, size), total));
+			_batch.Execute(new(logger, source, destination, subject, new(offset, size), total));
 		}
 	}
 }
 
-public sealed record BatchInput<TFrom, TTo>(
+public sealed record BatchInput<T>(
 	ILogger Logger,
 	DbContext Source,
 	DbContext Destination,
-	IQueryable<TFrom> From,
-	DbSet<TTo> To,
+	IQueryable<T> From,
 	Partition Partition,
-	uint Total) where TTo : class;
+	uint Total);
 
-public interface IBatch<TFrom, TTo> : ICommand<BatchInput<TFrom, TTo>> where TTo : class;
+public interface IBatch<T> : ICommand<BatchInput<T>>;
 
-public sealed class Batch<TFrom, TTo> : IBatch<TFrom, TTo> where TFrom : class where TTo : class
+public sealed class Batch<T, TTo> : IBatch<T> where T : class where TTo : class
 {
-	public static Batch<TFrom, TTo> Default { get; } = new();
+	public static Batch<T, TTo> Default { get; } = new();
 
-	Batch() : this(Mapping<TFrom, TTo>.Default) {}
+	Batch() : this(Mapping<T, TTo>.Default) {}
 
-	readonly IMapping<TFrom, TTo> _map;
+	readonly IMapping<T, TTo> _map;
 
-	public Batch(IMapping<TFrom, TTo> map) => _map = map;
+	public Batch(IMapping<T, TTo> map) => _map = map;
 
-	public void Execute(BatchInput<TFrom, TTo> parameter)
+	public void Execute(BatchInput<T> parameter)
 	{
-		var (logger, source, destination, from, to, (skip, top), total) = parameter;
+		var (logger, source, destination, from, (skip, top), total) = parameter;
 		var watch  = Stopwatch.StartNew();
 		var offset = skip.Value();
 		using var batch = from.AsValueEnumerable()
@@ -307,12 +308,13 @@ public sealed class Batch<TFrom, TTo> : IBatch<TFrom, TTo> where TFrom : class w
 		                      .Select(x => _map.Get(new(source, destination, x)))
 		                      .ToArray(ArrayPool<TTo>.Shared);
 
-		to.AddRange(batch);
+		var configuration = new BulkConfig { BatchSize = batch.Length, CalculateStats = true };
+		destination.BulkInsertOrUpdate(batch, configuration);
 
-		var count = destination.SaveChanges();
-
+		var info  = configuration.StatsInfo.Verify();
+		var count = info.StatsNumberInserted + info.StatsNumberUpdated;
 		logger.LogInformation("{From} -> {To}: Batch of {Count} processed in {Elapsed:mm\\:ss\\.fff} ({Rate:F1} entities/sec)",
-		                      A.Type<TFrom>(), A.Type<TTo>(), count, watch.Elapsed,
+		                      A.Type<T>(), A.Type<TTo>(), count, watch.Elapsed,
 		                      count / watch.Elapsed.TotalSeconds);
 
 		logger.LogDebug("Progress: {Processed}/{Total} ({Percent:F1}%)",
@@ -322,24 +324,47 @@ public sealed class Batch<TFrom, TTo> : IBatch<TFrom, TTo> where TFrom : class w
 
 public static class Extensions
 {
-	public static IBatches Flatten<TFrom, TTo>(this Batches<TFrom, TTo> @this) where TTo : class where TFrom : class
-		=> new FlattenAwareBatches<TTo>(@this);
+	public static IBatches Flatten<TFrom, TKey, TTo>(this Batches<TFrom, TTo> @this, Expression<Func<TFrom, TKey>> key)
+		where TTo : class where TFrom : class
+		=> new FlattenAwareBatches<TFrom, TKey, TTo>(@this, key);
 }
 
-sealed class FlattenAwareBatches<T> : IBatches where T : class
+sealed class FlattenAwareBatches<TFrom, TKey, TTo> : IBatches where TTo : class where TFrom : class
 {
-	readonly IBatches _previous;
+	readonly IBatches                      _previous;
+	readonly Expression<Func<TFrom, TKey>> _key;
+	readonly string                        _name;
 
-	public FlattenAwareBatches(IBatches previous) => _previous = previous;
+	public FlattenAwareBatches(IBatches previous, Expression<Func<TFrom, TKey>> key)
+		: this(previous, key, key.GetMemberInfo().Name) {}
+
+	public FlattenAwareBatches(IBatches previous, Expression<Func<TFrom, TKey>> key, string name)
+	{
+		_previous = previous;
+		_key      = key;
+		_name     = name;
+	}
 
 	public void Execute(BatchesInput parameter)
 	{
-		var (logger, _)      = parameter;
-		var (_, destination) = _previous.Get();
-		var to      = destination.Set<T>();
-		var cleared = to.ExecuteDelete();
-		logger.LogInformation("Cleared {Set} of {Count} entries", to.GetType(), cleared);
-		_previous.Execute(parameter);
+		var (logger, _)           = parameter;
+		var (source, destination) = _previous.Get();
+
+		// Query source PKs (assume Id property—adjust if key different)
+		var existing = destination.Set<TTo>().Select(x => EF.Property<TKey>(x, _name));
+		var exists   = source.Set<TFrom>().Select(_key).ToHashSet().IsSubsetOf(existing);
+		var to       = destination.Set<TTo>();
+		if (exists)
+		{
+			logger.LogInformation("Flatten {Set}: All source keys already present in destination (idempotent, no missing data)",
+			                      to.GetType());
+		}
+		else
+		{
+			var cleared = to.ExecuteDelete();
+			logger.LogInformation("Flatten {Set}: Cleared of {Count} entries", to.GetType(), cleared);
+			_previous.Execute(parameter);
+		}
 	}
 
 	public Batching Get() => _previous.Get();
