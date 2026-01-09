@@ -3,7 +3,6 @@ using DragonSpark.Compose;
 using DragonSpark.Diagnostics.Logging;
 using DragonSpark.Model;
 using DragonSpark.Model.Operations;
-using DragonSpark.Model.Results;
 using Microsoft.Extensions.Logging;
 using Plugin.Maui.Biometric;
 using Exception = System.Exception;
@@ -65,15 +64,4 @@ sealed class RequestUserBiometric : IRequestUserBiometric
         public BiometricsError(ILogger<BiometricsError> logger)
             : base(logger, "There was a problem while handling the biometrics for user") {}
     }
-}
-
-public class BuildAuthenticationRequest : Instance<AuthenticationRequest>
-{
-    // ReSharper disable once TooManyDependencies
-    protected BuildAuthenticationRequest(string title, string subtitle, string cancel = "Cancel",
-                                         AuthenticatorStrength level = AuthenticatorStrength.Strong)
-        : base(new()
-        {
-            Title = title, Subtitle = subtitle, NegativeText = cancel, AuthStrength = level
-        }) {}
 }
