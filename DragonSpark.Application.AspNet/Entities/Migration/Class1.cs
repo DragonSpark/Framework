@@ -5,6 +5,7 @@ using DragonSpark.Model;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
+using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Reflection.Members;
 using DragonSpark.Runtime.Invocation.Expressions;
@@ -79,11 +80,10 @@ sealed class EnumerationAwareProperty : IProperty
 
 	EnumerationAwareProperty() : this(Property.Default, ConvertEnumeration.Default) {}
 
-	readonly IProperty                                                                  _previous;
-	readonly DragonSpark.Model.Selection.Conditions.ICondition<ConvertEnumerationInput> _convert;
+	readonly IProperty                           _previous;
+	readonly ICondition<ConvertEnumerationInput> _convert;
 
-	public EnumerationAwareProperty(IProperty previous,
-	                                DragonSpark.Model.Selection.Conditions.ICondition<ConvertEnumerationInput> convert)
+	public EnumerationAwareProperty(IProperty previous, ICondition<ConvertEnumerationInput> convert)
 	{
 		_previous = previous;
 		_convert  = convert;
@@ -101,7 +101,7 @@ sealed class EnumerationAwareProperty : IProperty
 
 public readonly record struct ConvertEnumerationInput(InstanceInput From, InstanceInput To);
 
-sealed class ConvertEnumeration : DragonSpark.Model.Selection.Conditions.ICondition<ConvertEnumerationInput>
+sealed class ConvertEnumeration : ICondition<ConvertEnumerationInput>
 {
 	public static ConvertEnumeration Default { get; } = new();
 
