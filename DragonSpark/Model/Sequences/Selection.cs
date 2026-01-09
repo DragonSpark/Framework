@@ -1,6 +1,8 @@
-﻿namespace DragonSpark.Model.Sequences;
+﻿using System;
 
-public readonly struct Selection
+namespace DragonSpark.Model.Sequences;
+
+public readonly struct Selection : IEquatable<Selection>
 {
 	public static Selection Default { get; } = new(0);
 
@@ -20,7 +22,7 @@ public readonly struct Selection
 
 	public static bool operator !=(Selection left, Selection right) => !left.Equals(right);
 
-	bool Equals(Selection other) => Start == other.Start && Length == other.Length;
+	public bool Equals(Selection other) => Start == other.Start && Length == other.Length;
 
 	public override bool Equals(object? obj) => obj is Selection other && Equals(other);
 

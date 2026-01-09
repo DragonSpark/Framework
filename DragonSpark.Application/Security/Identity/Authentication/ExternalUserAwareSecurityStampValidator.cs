@@ -30,6 +30,7 @@ public sealed class ExternalUserAwareSecurityStampValidator : ISecurityStampVali
 			{
 				await _previous.ValidateAsync(context).ConfigureAwait(false);
 			}
+			// ReSharper disable once UncatchableException
 			catch (ArgumentException)
 			{
 				context.RejectPrincipal();

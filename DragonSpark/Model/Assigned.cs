@@ -1,6 +1,8 @@
-﻿namespace DragonSpark.Model;
+﻿using System;
 
-public readonly struct Assigned<T> where T : struct
+namespace DragonSpark.Model;
+
+public readonly struct Assigned<T> : IEquatable<Assigned<T>> where T : struct
 {
 	public static Assigned<T> Unassigned { get; } = new(default, false);
 
@@ -22,7 +24,7 @@ public readonly struct Assigned<T> where T : struct
 
 	public override string? ToString() => IsAssigned ? Instance.ToString() : string.Empty;
 
-	bool Equals(Assigned<T> other) => Instance.Equals(other.Instance);
+	public bool Equals(Assigned<T> other) => Instance.Equals(other.Instance);
 
 	public override bool Equals(object? obj) => obj is Assigned<T> other && Equals(other);
 

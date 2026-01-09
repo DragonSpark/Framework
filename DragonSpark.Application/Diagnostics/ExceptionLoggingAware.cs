@@ -55,7 +55,7 @@ public class ExceptionLoggingAware : IOperation
 	{
 		try
 		{
-			await _previous.Invoke().ConfigureAwait(false);
+			await _previous().ConfigureAwait(false);
 		}
 		catch (Exception e)
 		{
