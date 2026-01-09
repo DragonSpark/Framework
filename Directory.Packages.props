@@ -96,6 +96,7 @@
     <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.14.0" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.14.0" />
     <PackageVersion Include="PeterO.Cbor" Version="4.5.5" />
+    <PackageVersion Include="Plugin.Maui.Biometric" Version="0.1.0" />
     <PackageVersion Include="Polly" Version="8.6.5" />
     <PackageVersion Include="Radzen.Blazor" Version="8.3.9" />
     <PackageVersion Include="Refit.HttpClientFactory" Version="9.0.2" />

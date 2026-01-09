@@ -1,13 +1,12 @@
-using System;
+using DragonSpark.Compose;
 using Microsoft.Maui.Controls;
 
 namespace DragonSpark.Application.Mobile.Maui.Presentation.Behaviors;
 
 public sealed class TextValidationBehavior : CommunityToolkit.Maui.Behaviors.TextValidationBehavior
 {
-    /*
     AttachmentMonitor? _monitor;
-
+    /*
     protected override void OnAttachedTo(BindableObject bindable)
     {
         _monitor?.Dispose();
@@ -23,7 +22,7 @@ public sealed class TextValidationBehavior : CommunityToolkit.Maui.Behaviors.Tex
         base.OnDetachingFrom(bindable);
     }*/
 
-    /*protected override void OnAttachedTo(VisualElement bindable)
+    protected override void OnAttachedTo(VisualElement bindable)
     {
         base.OnAttachedTo(bindable);
         _monitor?.Dispose();
@@ -36,8 +35,8 @@ public sealed class TextValidationBehavior : CommunityToolkit.Maui.Behaviors.Tex
         _monitor?.Dispose();
         _monitor = null;
         base.OnDetachingFrom(bindable);
-    }*/
-    protected override void OnAttachedTo(BindableObject bindable) // TODO
+    }
+    /*protected override void OnAttachedTo(BindableObject bindable)
     {
         BindingContext                 =  bindable.BindingContext;
         bindable.BindingContextChanged += Bindable_BindingContextChanged;
@@ -52,9 +51,9 @@ public sealed class TextValidationBehavior : CommunityToolkit.Maui.Behaviors.Tex
         }
     }
 
-    protected override void OnDetachingFrom(BindableObject bindable) // TODO
+    protected override void OnDetachingFrom(BindableObject bindable)
     {
         bindable.BindingContextChanged -= Bindable_BindingContextChanged;
         base.OnDetachingFrom(bindable);
-    }
+    }*/
 }

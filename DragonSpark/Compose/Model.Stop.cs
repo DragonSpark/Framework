@@ -95,7 +95,7 @@ public static partial class ExtensionMethods
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ConfiguredValueTaskAwaitable<T> On<T>(this ISelect<Stop<None>, ValueTask<T>> @this,
                                                         CancellationToken stop)
-        => @this.Get(new(None.Default, stop)).ConfigureAwait(false);
+        => @this.Get(new(None.Default, stop)).ConfigureAwait(true);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ConfiguredValueTaskAwaitable<TOut> Off<TOut>(this ISelect<Stop<None>, ValueTask<TOut>> @this,
