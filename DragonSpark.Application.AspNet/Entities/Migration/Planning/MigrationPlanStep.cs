@@ -17,24 +17,16 @@ sealed class MigrationPlanStep : ICommand<MigrationPlanStepInput>
 		var (key, graph, type, references) = parameter;
 		var principal = key.PrincipalEntityType;
 		using var types = principal.GetDerivedTypes()
+		                           .Append(principal)
 		                           .Where(d => !d.ClrType.IsAbstract)
 		                           .AsValueEnumerable()
+		                           .Distinct()
 		                           .ToArray(ArrayPool<IEntityType>.Shared);
-		if (types.Any())
+		foreach (var d in types)
 		{
-			foreach (var d in types)
+			if (graph.Get(d).Add(type))
 			{
-				if (graph.Get(d).Add(type))
-				{
-					references[type].Add(d);
-				}
-			}
-		}
-		else
-		{
-			if (graph.Get(principal).Add(type))
-			{
-				references[type].Add(principal);
+				references[type].Add(d);
 			}
 		}
 	}

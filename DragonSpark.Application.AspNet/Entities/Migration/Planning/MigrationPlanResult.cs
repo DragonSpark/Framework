@@ -1,8 +1,14 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
-using System.Collections.Generic;
+﻿using DragonSpark.Model.Sequences;
+using Microsoft.EntityFrameworkCore.Metadata;
+using System.Linq;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Planning;
 
 public readonly record struct MigrationPlanResult(
-	IReadOnlyCollection<IEntityType> Resolved,
-	IReadOnlyCollection<Depending> Unresolved);
+	Array<IEntityType> Linear,
+	Array<Array<IEntityType>> Cycled,
+	Array<IEntityType> All)
+{
+	public MigrationPlanResult(Array<IEntityType> Linear, Array<Array<IEntityType>> Cycled)
+		: this(Linear, Cycled, Linear.Open().Concat(Cycled.Open().SelectMany(x => x.Open())).ToArray()) {}
+}

@@ -4,16 +4,16 @@ using System.Linq;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Planning;
 
-sealed class IsStructurallyExact : ICondition<IsExactInput>
+sealed class IsEntirelyExact : ICondition<IsExactInput>
 {
-	public static IsStructurallyExact Default { get; } = new();
+	public static IsEntirelyExact Default { get; } = new();
 
-	IsStructurallyExact() : this(IsExact.Default, HashSet<string>.CreateSetComparer()) {}
+	IsEntirelyExact() : this(IsExact.Default, HashSet<string>.CreateSetComparer()) {}
 
 	readonly ICondition<IsExactInput>           _previous;
 	readonly IEqualityComparer<HashSet<string>> _comparer;
 
-	public IsStructurallyExact(ICondition<IsExactInput> previous, IEqualityComparer<HashSet<string>> comparer)
+	public IsEntirelyExact(ICondition<IsExactInput> previous, IEqualityComparer<HashSet<string>> comparer)
 	{
 		_previous = previous;
 		_comparer = comparer;
