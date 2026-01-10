@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
+using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Selection.Stores;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -22,10 +23,11 @@ public readonly record struct Depending(IEntityType Type, ushort Dependents);
 
 public sealed class MigrationPlan : ISelect<IModel, MigrationPlanResult>
 {
-	readonly ICommand<ProcessDependentsInput> _process;
 	public static MigrationPlan Default { get; } = new();
 
 	MigrationPlan() : this(ProcessDependents.Default) {}
+
+	readonly ICommand<ProcessDependentsInput> _process;
 
 	public MigrationPlan(ICommand<ProcessDependentsInput> process) => _process = process;
 
@@ -119,28 +121,80 @@ public sealed class DestinationModelChecker : ISelect<DestinationModelCheckerInp
 {
 	public static DestinationModelChecker Default { get; } = new();
 
-	DestinationModelChecker() {}
+	DestinationModelChecker() : this(IsExact.Default) {}
+
+	readonly ICondition<IsExactInput> _exact;
+
+	public DestinationModelChecker(ICondition<IsExactInput> exact) => _exact = exact;
 
 	public DestinationModelResult Get(DestinationModelCheckerInput parameter)
 	{
 		var (types, destination) = parameter;
 
-		var entities = destination.GetEntityTypes().Select(t => t.ClrType.FullName.Verify()).ToHashSet();
-		var found    = new List<IEntityType>();
-		var missing  = new List<IEntityType>();
+		var entities  = destination.GetEntityTypes().ToDictionary(t => t.Name);
+		var exact     = new List<IEntityType>();
+		var differing = new List<IEntityType>();
+		var missing   = new List<IEntityType>();
 
-		foreach (var type in types)
+		foreach (var from in types)
 		{
-			var collection = entities.Contains(type.ClrType.FullName.Verify()) ? found : missing;
-			collection.Add(type);
+			var collection = entities.TryGetValue(from.Name, out var to)
+				                 ? _exact.Get(new(from, to)) ? exact : differing
+				                 : missing;
+			collection.Add(from);
 		}
 
-		return new(found.AsReadOnly(), missing.AsReadOnly());
+		return new(new(exact.AsReadOnly(), differing.AsReadOnly()), missing.AsReadOnly());
 	}
 }
 
+public readonly record struct IsExactInput(IEntityType Source, IEntityType Destination);
+
+sealed class IsExact : ICondition<IsExactInput>
+{
+	public static IsExact Default { get; } = new();
+
+	IsExact() : this(HashSet<string>.CreateSetComparer()) {}
+
+	readonly IEqualityComparer<HashSet<string>> _comparer;
+
+	public IsExact(IEqualityComparer<HashSet<string>> comparer) => _comparer = comparer;
+
+	public bool Get(IsExactInput parameter)
+	{
+		var (source, destination) = parameter;
+
+		// Property names set
+		var properties = source.GetProperties()
+		                       .Select(p => p.Name)
+		                       .ToHashSet()
+		                       .SetEquals(destination.GetProperties().Select(p => p.Name).ToHashSet());
+		return properties
+		       /*&& destination.GetKeys()
+		                     .Select(k => k.Properties.Select(p => p.Name).ToHashSet())
+		                     .ToHashSet(_comparer)
+		                     .SetEquals(source.GetKeys()
+		                                      .Select(k => k.Properties.Select(p => p.Name).ToHashSet())
+		                                      .ToHashSet(_comparer))
+		       && source.GetIndexes()
+		                .Select(i => i.Properties.Select(p => p.Name).ToHashSet())
+		                .ToHashSet(_comparer)
+		                .SetEquals(destination.GetIndexes()
+		                                      .Select(i => i.Properties.Select(p => p.Name).ToHashSet())
+		                                      .ToHashSet(_comparer))*/
+		       && source.GetNavigations()
+		                .Select(n => n.Name)
+		                .ToHashSet()
+		                .SetEquals(destination.GetNavigations().Select(n => n.Name).ToHashSet());
+	}
+}
+
+public readonly record struct FoundModelsResult(
+	IReadOnlyCollection<IEntityType> Exact,
+	IReadOnlyCollection<IEntityType> Modified);
+
 public readonly record struct DestinationModelResult(
-	IReadOnlyCollection<IEntityType> Found,
+	FoundModelsResult Found,
 	IReadOnlyCollection<IEntityType> Missing);
 
 public sealed class VerifyMigrationPlan : ISelect<IReadOnlyCollection<IEntityType>, IReadOnlyCollection<string>>
