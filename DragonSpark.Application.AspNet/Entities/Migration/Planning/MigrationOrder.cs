@@ -119,33 +119,15 @@ sealed class Dependencies : ISelect<IEntityType, HashSet<IEntityType>>
 	                                                                   .ToHashSet();
 }
 
-sealed class TopologicalSort : ITopologicalSort
+sealed class TopologicalSort : ArraySelection<Lease<IEntityType>, IEntityType>, ITopologicalSort
 {
 	public static TopologicalSort Default { get; } = new();
 
 	TopologicalSort() : this(ComposeGraph.Default, ComposeDependents.Default, ComposeEntities.Default) {}
 
-	readonly IComposeGraph                   _graph;
-	readonly IDetermineDependents            _dependents;
-	readonly IArray<Dependents, IEntityType> _entities;
-
 	public TopologicalSort(IComposeGraph graph, IDetermineDependents dependents,
 	                       IArray<Dependents, IEntityType> entities)
-	{
-		_graph      = graph;
-		_dependents = dependents;
-		_entities   = entities;
-	}
-
-	public Array<IEntityType> Get(Lease<IEntityType> parameter)
-	{
-		var graph      = _graph.Get(parameter);
-		var root       = parameter.Single(x => x.Name == "Starbeam.Entities.Identity.Authentication"); // TODO
-		var filtered   = RootedFrom.Default.Get(new(graph, root));
-		var dependents = _dependents.Get(filtered);
-		var result     = _entities.Get(dependents);
-		return result;
-	}
+		: base(graph.Then().Select(dependents).Select(entities)) {}
 }
 
 public interface IComposeGraph : ISelect<Lease<IEntityType>, Dictionary<IEntityType, HashSet<IEntityType>>>;
