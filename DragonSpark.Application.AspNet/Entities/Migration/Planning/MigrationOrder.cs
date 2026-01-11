@@ -163,89 +163,23 @@ sealed class TopologicalSort : ITopologicalSort
 
 	public MigrationOrderResult Get(Lease<IEntityType> parameter)
 	{
-		// 1. Build entity-level dependency graph: entity -> dependencies
-		var graph = _graph.Get(parameter);
-
-		// 2. Collapse SCCs and topo-sort the SCC graph
+		var graph      = _graph.Get(parameter);
 		var dependents = _dependents.Get(graph);
 		var groups     = _cycles.Get(dependents);
 
-		// 3. Flatten SCC groups in topo order to get a valid topological order of entities
-		using var topoLease = groups.SelectMany(g => g).AsValueEnumerable().ToArray(ArrayPool<IEntityType>.Shared);
-		var       span      = topoLease.Memory.Span;
+		// Acyclic entities: SCCs of size 1
+		var linear = groups
+		             .Where(x => x.Count == 1)
+		             .SelectMany(x => x)
+		             .Result();
 
-		// 4. Build an index map: entity -> topo index (for deterministic child ordering)
-		var index = new Dictionary<IEntityType, int>(span.Length);
-		for (var i = 0; i < span.Length; i++)
-		{
-			index[span[i]] = i;
-		}
+		// Cycles: SCCs of size > 1
+		var cycles = groups
+		             .Where(x => x.Count > 1)
+		             .Select(x => x.Result())
+		             .Result();
 
-		// 5. Build reverse graph: dependency -> dependents
-		var reverse = new Dictionary<IEntityType, List<IEntityType>>(graph.Count);
-		foreach (var (entity, dependencies) in graph)
-		{
-			foreach (var dep in dependencies)
-			{
-				if (!reverse.TryGetValue(dep, out var list))
-				{
-					list         = new List<IEntityType>();
-					reverse[dep] = list;
-				}
-
-				list.Add(entity);
-			}
-		}
-
-		// Ensure dependents of a node are visited in topo order
-		foreach (var list in reverse.Values)
-		{
-			list.Sort((a, b) => index[a].CompareTo(index[b]));
-		}
-
-		// 6. Dependency-driven expansion:
-		//    Start from topo roots (no dependencies), DFS through dependents in topo order
-		var visited = new HashSet<IEntityType>();
-		var linear  = new List<IEntityType>(span.Length);
-
-		// Roots = entities with no dependencies
-		foreach (var root in span)
-		{
-			if (graph[root].Count == 0)
-			{
-				DFS(root);
-			}
-		}
-
-		// There might be nodes not reachable from roots (isolated / cycles handled by SCC),
-		// so we ensure everything in topo is visited.
-		foreach (var entity in span)
-		{
-			DFS(entity);
-		}
-
-		return new(linear.ToArray(), // final, dependency-expanded order
-		           groups.Where(x => x.Count > 1).Select(x => x.Result()).Result(),
-		           graph);
-
-		// Local function: DFS over dependents, respecting topo ordering via `reverse`
-		void DFS(IEntityType type)
-		{
-			if (!visited.Add(type))
-			{
-				return;
-			}
-
-			linear.Add(type);
-
-			if (reverse.TryGetValue(type, out var children))
-			{
-				foreach (var child in children)
-				{
-					DFS(child);
-				}
-			}
-		}
+		return new(linear, cycles, graph);
 	}
 }
 
@@ -298,7 +232,7 @@ sealed class ComposeCycles : ISelect<Dependents, Cycles>
 		while (true)
 		{
 			using var ready = remaining.AsValueEnumerable()
-			                           .Where(x => x.Value.Count == 0)
+			                           .Where(x => x.Value.Count == 0) // no dependencies
 			                           .Select(x => x.Key)
 			                           .ToArray(ArrayPool<List<IEntityType>>.Shared);
 
@@ -319,7 +253,7 @@ sealed class ComposeCycles : ISelect<Dependents, Cycles>
 			}
 		}
 
-		result.AddRange(remaining.Keys);
+		result.AddRange(remaining.Keys); // remaining are cyclic groups
 
 		return result;
 	}
@@ -348,7 +282,6 @@ sealed class ComposeDependents : IDetermineDependents
 		                         .Select(g => g.ToList())
 		                         .ToArray(ArrayPool<List<IEntityType>>.Shared);
 
-		// For each group, record which other groups it depends on
 		foreach (var g in lease)
 		{
 			result[g] = [];
@@ -358,10 +291,11 @@ sealed class ComposeDependents : IDetermineDependents
 				                                .Select(x => lease.First(y => y.Contains(x)))
 				                                .Where(y => y != g))
 				{
-					result[dependencyGroup].Add(g);
+					result[g].Add(dependencyGroup);
 				}
 			}
 		}
+
 
 		return result;
 	}
