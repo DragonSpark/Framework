@@ -1,9 +1,9 @@
-using System;
 using DragonSpark.Model.Selection.Conditions;
+using System;
 
 namespace DragonSpark.Runtime.Activation;
 
-sealed class CanConstruct : ICondition<Type>
+public sealed class CanConstruct : ICondition<Type>
 {
 	public static CanConstruct Default { get; } = new();
 

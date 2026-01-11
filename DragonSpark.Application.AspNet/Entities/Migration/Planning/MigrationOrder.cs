@@ -1,5 +1,7 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
+using DragonSpark.Model.Sequences;
+using DragonSpark.Runtime.Activation;
 using Microsoft.EntityFrameworkCore.Metadata;
 using NetFabric.Hyperlinq;
 using System;
@@ -9,7 +11,7 @@ using System.Linq;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Planning;
 
-public class MigrationOrder : ISelect<IModel, MigrationOrderResult>
+public class MigrationOrder : IArray<IModel, IEntityType>
 {
 	readonly ITopologicalSort _sort;
 
@@ -17,7 +19,7 @@ public class MigrationOrder : ISelect<IModel, MigrationOrderResult>
 
 	public MigrationOrder(ITopologicalSort sort) => _sort = sort;
 
-	public MigrationOrderResult Get(IModel parameter)
+	public Array<IEntityType> Get(IModel parameter)
 	{
 		using var entities = parameter.GetEntityTypes()
 		                              .Where(t => !t.IsOwned() && t.FindPrimaryKey() != null)
@@ -30,9 +32,9 @@ public class MigrationOrder : ISelect<IModel, MigrationOrderResult>
 
 // TODO
 
-public interface ITopologicalSort : ISelect<Lease<IEntityType>, MigrationOrderResult>;
+public interface ITopologicalSort : IArray<Lease<IEntityType>, IEntityType>;
 
-public interface ITarjan : ISelect<Dictionary<IEntityType, HashSet<IEntityType>>, Cycles>;
+public interface ITarjan : ISelect<Dictionary<IEntityType, HashSet<IEntityType>>, Entities>;
 
 sealed class Tarjan : ITarjan
 {
@@ -44,14 +46,14 @@ sealed class Tarjan : ITarjan
 
 	public Tarjan(IEqualityComparer<IEntityType> comparer) => _comparer = comparer;
 
-	public Cycles Get(Dictionary<IEntityType, HashSet<IEntityType>> parameter)
+	public Entities Get(Dictionary<IEntityType, HashSet<IEntityType>> parameter)
 	{
 		var index   = 0;
 		var stack   = new Stack<IEntityType>();
 		var indices = new Dictionary<IEntityType, int>();
 		var lowlink = new Dictionary<IEntityType, int>();
-		var onStack = new HashSet<IEntityType>();
-		var result  = new Cycles();
+		var on      = new HashSet<IEntityType>();
+		var result  = new Entities();
 
 		foreach (var v in parameter.Keys)
 		{
@@ -69,7 +71,7 @@ sealed class Tarjan : ITarjan
 			lowlink[v] = index;
 			index++;
 			stack.Push(v);
-			onStack.Add(v);
+			on.Add(v);
 
 			foreach (var w in parameter[v])
 			{
@@ -78,7 +80,7 @@ sealed class Tarjan : ITarjan
 					StrongConnect(w);
 					lowlink[v] = Math.Min(lowlink[v], lowlink[w]);
 				}
-				else if (onStack.Contains(w))
+				else if (on.Contains(w))
 				{
 					lowlink[v] = Math.Min(lowlink[v], i);
 				}
@@ -91,7 +93,7 @@ sealed class Tarjan : ITarjan
 				do
 				{
 					w = stack.Pop();
-					onStack.Remove(w);
+					on.Remove(w);
 					scc.Add(w);
 				} while (!_comparer.Equals(w, v));
 
@@ -101,7 +103,7 @@ sealed class Tarjan : ITarjan
 	}
 }
 
-public sealed class Cycles : List<List<IEntityType>>;
+public sealed class Entities : List<List<IEntityType>>;
 
 sealed class Dependencies : Select<IEntityType, HashSet<IEntityType>>
 {
@@ -148,38 +150,28 @@ sealed class TopologicalSort : ITopologicalSort
 {
 	public static TopologicalSort Default { get; } = new();
 
-	TopologicalSort() : this(ComposeGraph.Default, ComposeDependents.Default, ComposeCycles.Default) {}
+	TopologicalSort() : this(ComposeGraph.Default, ComposeDependents.Default, ComposeEntities.Default) {}
 
-	readonly IComposeGraph               _graph;
-	readonly IDetermineDependents        _dependents;
-	readonly ISelect<Dependents, Cycles> _cycles;
+	readonly IComposeGraph                   _graph;
+	readonly IDetermineDependents            _dependents;
+	readonly IArray<Dependents, IEntityType> _entities;
 
-	public TopologicalSort(IComposeGraph graph, IDetermineDependents dependents, ISelect<Dependents, Cycles> cycles)
+	public TopologicalSort(IComposeGraph graph, IDetermineDependents dependents,
+	                       IArray<Dependents, IEntityType> entities)
 	{
 		_graph      = graph;
 		_dependents = dependents;
-		_cycles     = cycles;
+		_entities   = entities;
 	}
 
-	public MigrationOrderResult Get(Lease<IEntityType> parameter)
+	public Array<IEntityType> Get(Lease<IEntityType> parameter)
 	{
 		var graph      = _graph.Get(parameter);
-		var dependents = _dependents.Get(graph);
-		var groups     = _cycles.Get(dependents);
-
-		// Acyclic entities: SCCs of size 1
-		var linear = groups
-		             .Where(x => x.Count == 1)
-		             .SelectMany(x => x)
-		             .Result();
-
-		// Cycles: SCCs of size > 1
-		var cycles = groups
-		             .Where(x => x.Count > 1)
-		             .Select(x => x.Result())
-		             .Result();
-
-		return new(linear, cycles, graph);
+		var root       = parameter.Single(x => x.Name == "Starbeam.Entities.Identity.Authentication"); // TODO
+		var filtered   = RootedFrom.Default.Get(new(graph, root));
+		var dependents = _dependents.Get(filtered);
+		var result     = _entities.Get(dependents);
+		return result;
 	}
 }
 
@@ -197,13 +189,48 @@ sealed class ComposeGraph : IComposeGraph
 
 	public Dictionary<IEntityType, HashSet<IEntityType>> Get(Lease<IEntityType> parameter)
 	{
-		var result = parameter.ToDictionary(x => x, _dependencies);
-		
-		foreach (var key in result.Keys)
+		using var concrete = parameter.AsValueEnumerable()
+		                              .Where(t => !t.IsAbstract())
+		                              .ToArray(ArrayPool<IEntityType>.Shared);
+
+		var result = new Dictionary<IEntityType, HashSet<IEntityType>>();
+
+		foreach (var entity in parameter)
 		{
-			result[key].RemoveWhere(x => !result.Keys.Contains(x));
+			result[entity] = ExpandDependencies(_dependencies(entity), concrete);
 		}
 
+		foreach (var key in result.Keys)
+		{
+			result[key].RemoveWhere(x => !result.ContainsKey(x));
+		}
+
+		return result;
+	}
+
+	static HashSet<IEntityType> ExpandDependencies(HashSet<IEntityType> dependencies, Lease<IEntityType> concrete)
+	{
+		var result = new HashSet<IEntityType>();
+
+		foreach (var item in dependencies)
+		{
+			if (item.IsAbstract())
+			{
+				foreach (var derived in item.GetDerivedTypes())
+				{
+					if (concrete.Contains(derived))
+					{
+						result.Add(derived);
+					}
+				}
+			}
+			else
+			{
+				result.Add(item);
+			}
+		}
+
+		result.RemoveWhere(x => !concrete.Contains(x));
 		return result;
 	}
 }
@@ -218,17 +245,22 @@ sealed class ComposeGraph : IComposeGraph
 // -------------------------------
 // Topological sort of SCC groups
 // -------------------------------
-sealed class ComposeCycles : ISelect<Dependents, Cycles>
+sealed class ComposeEntities : IArray<Dependents, IEntityType>
 {
-	public static ComposeCycles Default { get; } = new();
+	public static ComposeEntities Default { get; } = new();
 
-	ComposeCycles() {}
+	ComposeEntities() : this(Start.A.Selection<IEntityType>()
+	                              .By.Calling(x => x.ClrType)
+	                              .Select(CanConstruct.Default)) {}
 
-	public Cycles Get(Dependents parameter)
+	readonly Func<IEntityType, bool> _where;
+
+	public ComposeEntities(Func<IEntityType, bool> where) => _where = where;
+
+	public Array<IEntityType> Get(Dependents parameter)
 	{
-		var result    = new Cycles();
+		var entities  = new Entities();
 		var remaining = parameter.ToDictionary(x => x.Key, x => x.Value.ToHashSet());
-
 		while (true)
 		{
 			using var ready = remaining.AsValueEnumerable()
@@ -243,7 +275,7 @@ sealed class ComposeCycles : ISelect<Dependents, Cycles>
 
 			foreach (var r in ready)
 			{
-				result.Add(r);
+				entities.Add(r);
 				remaining.Remove(r);
 
 				foreach (var d in remaining.Values)
@@ -253,8 +285,9 @@ sealed class ComposeCycles : ISelect<Dependents, Cycles>
 			}
 		}
 
-		result.AddRange(remaining.Keys); // remaining are cyclic groups
+		entities.AddRange(remaining.Keys);
 
+		var result = entities.SelectMany(x => x.AsEnumerable().Reverse()).Where(_where).Result();
 		return result;
 	}
 }
@@ -296,7 +329,39 @@ sealed class ComposeDependents : IDetermineDependents
 			}
 		}
 
-
 		return result;
+	}
+}
+
+public readonly record struct RootedFromInput(Dictionary<IEntityType, HashSet<IEntityType>> Graph, IEntityType Root);
+
+sealed class RootedFrom : ISelect<RootedFromInput, Dictionary<IEntityType, HashSet<IEntityType>>>
+{
+	public static RootedFrom Default { get; } = new();
+
+	RootedFrom() {}
+
+	public Dictionary<IEntityType, HashSet<IEntityType>> Get(RootedFromInput parameter)
+	{
+		var (graph, root) = parameter;
+		var known = new HashSet<IEntityType>();
+		var stack = new Stack<IEntityType>();
+		stack.Push(root);
+		while (stack.Count > 0)
+		{
+			var current = stack.Pop();
+			if (!known.Add(current))
+			{
+				continue;
+			}
+
+			foreach (var dep in graph[current])
+			{
+				stack.Push(dep);
+			}
+		}
+
+		return graph.Where(kvp => known.Contains(kvp.Key))
+		            .ToDictionary(kvp => kvp.Key, kvp => kvp.Value.Where(known.Contains).ToHashSet());
 	}
 }
