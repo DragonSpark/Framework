@@ -1,7 +1,12 @@
-﻿namespace DragonSpark.Model;
+﻿using System.Collections.Generic;
+
+namespace DragonSpark.Model;
 
 public readonly record struct Pair<TKey, TValue>(TKey Key, TValue Value)
 {
+	public static implicit operator KeyValuePair<TKey, TValue>(Pair<TKey, TValue> instance)
+		=> new(instance.Key, instance.Value);
+
 	public static implicit operator (TKey, TValue)(Pair<TKey, TValue> instance) => (instance.Key, instance.Value);
 
 	public static implicit operator Pair<TKey, TValue>((TKey, TValue) instance)
