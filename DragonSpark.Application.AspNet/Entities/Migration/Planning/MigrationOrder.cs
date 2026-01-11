@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
-using DragonSpark.Runtime.Activation;
 using Microsoft.EntityFrameworkCore.Metadata;
 using NetFabric.Hyperlinq;
 using System;
@@ -105,47 +104,21 @@ sealed class Tarjan : ITarjan
 
 public sealed class Entities : List<List<IEntityType>>;
 
-sealed class Dependencies : Select<IEntityType, HashSet<IEntityType>>
+sealed class Dependencies : ISelect<IEntityType, HashSet<IEntityType>>
 {
 	public static Dependencies Default { get; } = new();
 
-	Dependencies()
-		: base(e => e.GetForeignKeys()
-		             .Where(x => !x.IsOwnership)
-		             .Select(x => x.PrincipalEntityType)
-		             .Where(t => t.FindPrimaryKey() != null)
-		             .ToHashSet()) {}
+	Dependencies() {}
+
+	public HashSet<IEntityType> Get(IEntityType parameter) => parameter.GetForeignKeys()
+	                                                                   .Where(x => !x.IsOwnership)
+	                                                                   .Select(x => x.PrincipalEntityType)
+	                                                                   .Where(t => t.FindPrimaryKey() != null)
+	                                                                   .SelectMany(x => x.GetDerivedTypes().Prepend(x))
+	                                                                   .Where(x => !x.IsAbstract())
+	                                                                   .ToHashSet();
 }
 
-/*
-sealed class TopologicalSort : ITopologicalSort
-{
-	public static TopologicalSort Default { get; } = new();
-
-	TopologicalSort() : this(ComposeGraph.Default, ComposeDependents.Default, ComposeCycles.Default) {}
-
-	readonly IComposeGraph               _graph;
-	readonly IDetermineDependents        _dependents;
-	readonly ISelect<Dependents, Cycles> _cycles;
-
-	public TopologicalSort(IComposeGraph graph, IDetermineDependents dependents, ISelect<Dependents, Cycles> cycles)
-	{
-		_graph      = graph;
-		_dependents = dependents;
-		_cycles     = cycles;
-	}
-
-	public MigrationOrderResult Get(Lease<IEntityType> parameter)
-	{
-		var graph      = _graph.Get(parameter);
-		var dependents = _dependents.Get(graph);
-		var groups     = _cycles.Get(dependents);
-		var linear     = groups.Where(x => x.Count == 1).SelectMany(x => x).Result();
-		var cycles     = groups.Where(x => x.Count > 1).Select(x => x.Result()).Result();
-		return new(linear, cycles, graph);
-	}
-}
-*/
 sealed class TopologicalSort : ITopologicalSort
 {
 	public static TopologicalSort Default { get; } = new();
@@ -189,48 +162,13 @@ sealed class ComposeGraph : IComposeGraph
 
 	public Dictionary<IEntityType, HashSet<IEntityType>> Get(Lease<IEntityType> parameter)
 	{
-		using var concrete = parameter.AsValueEnumerable()
-		                              .Where(t => !t.IsAbstract())
-		                              .ToArray(ArrayPool<IEntityType>.Shared);
-
-		var result = new Dictionary<IEntityType, HashSet<IEntityType>>();
-
-		foreach (var entity in parameter)
-		{
-			result[entity] = ExpandDependencies(_dependencies(entity), concrete);
-		}
+		var result = parameter.ToDictionary(x => x, _dependencies);
 
 		foreach (var key in result.Keys)
 		{
 			result[key].RemoveWhere(x => !result.ContainsKey(x));
 		}
 
-		return result;
-	}
-
-	static HashSet<IEntityType> ExpandDependencies(HashSet<IEntityType> dependencies, Lease<IEntityType> concrete)
-	{
-		var result = new HashSet<IEntityType>();
-
-		foreach (var item in dependencies)
-		{
-			if (item.IsAbstract())
-			{
-				foreach (var derived in item.GetDerivedTypes())
-				{
-					if (concrete.Contains(derived))
-					{
-						result.Add(derived);
-					}
-				}
-			}
-			else
-			{
-				result.Add(item);
-			}
-		}
-
-		result.RemoveWhere(x => !concrete.Contains(x));
 		return result;
 	}
 }
@@ -249,9 +187,7 @@ sealed class ComposeEntities : IArray<Dependents, IEntityType>
 {
 	public static ComposeEntities Default { get; } = new();
 
-	ComposeEntities() : this(Start.A.Selection<IEntityType>()
-	                              .By.Calling(x => x.ClrType)
-	                              .Select(CanConstruct.Default)) {}
+	ComposeEntities() : this(x => !x.IsAbstract()) {}
 
 	readonly Func<IEntityType, bool> _where;
 
