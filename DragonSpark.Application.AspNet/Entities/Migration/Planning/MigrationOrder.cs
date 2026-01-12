@@ -35,6 +35,16 @@ public interface ITopologicalSort : IArray<Lease<IEntityType>, IEntityType>;
 
 public interface ITarjan : ISelect<Dictionary<IEntityType, HashSet<IEntityType>>, Entities>;
 
+/// <summary>
+/// ATTRIBUTION: Copilot
+/// </summary>
+// -------------------------------
+// Tarjan SCC implementation
+// -------------------------------
+
+// -------------------------------
+// Topological sort of SCC groups
+// -------------------------------
 sealed class Tarjan : ITarjan
 {
 	public static Tarjan Default { get; } = new();
@@ -155,16 +165,6 @@ sealed class ComposeGraph : IComposeGraph
 	}
 }
 
-/// <summary>
-/// ATTRIBUTION: Copilot
-/// </summary>
-// -------------------------------
-// Tarjan SCC implementation
-// -------------------------------
-
-// -------------------------------
-// Topological sort of SCC groups
-// -------------------------------
 sealed class ComposeEntities : IArray<Dependents, IEntityType>
 {
 	public static ComposeEntities Default { get; } = new();
