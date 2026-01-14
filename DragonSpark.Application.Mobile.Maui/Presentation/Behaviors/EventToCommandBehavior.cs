@@ -15,6 +15,14 @@ public sealed class EventToCommandBehavior : CommunityToolkit.Maui.Behaviors.Eve
         base.OnAttachedTo(bindable);
     }
 
+    protected override void OnTriggerHandled(object? sender = null, object? eventArgs = null)
+    {
+        if (EventName != nameof(Page.NavigatedTo) || !Popped.Default.Down()) // Could probably simplify this
+        {
+            base.OnTriggerHandled(sender, eventArgs);
+        }
+    }
+
     protected override void OnDetachingFrom(VisualElement bindable)
     {
         _monitor?.Dispose();

@@ -1,3 +1,7 @@
+using System;
+using System.Security.Claims;
+using System.Threading;
+using System.Threading.Tasks;
 using DragonSpark.Application.AspNet.Compose;
 using DragonSpark.Application.AspNet.Entities.Diagnostics;
 using DragonSpark.Application.AspNet.Entities.Editing;
@@ -22,10 +26,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Security.Claims;
-using System.Threading;
-using System.Threading.Tasks;
 using IdentityUser = DragonSpark.Application.AspNet.Security.Identity.IdentityUser;
 
 namespace DragonSpark.Application.AspNet;
@@ -69,6 +69,8 @@ partial class Extensions
 	public static string DisplayName(this ClaimsPrincipal @this) => UserDisplayName.Default.Get(@this);
 
 	public static string UserName(this ClaimsPrincipal @this) => Security.Identity.UserName.Default.Get(@this);
+
+    public static string Name(this ClaimsPrincipal @this) => @this.Identity.Verify().Name.Verify();
 
 	public static string? Get(this IValueProvider @this, string key)
 	{

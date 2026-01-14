@@ -1,11 +1,17 @@
-﻿namespace DragonSpark.Model.Commands;
+using System;
+using System.Linq;
+using DragonSpark.Compose;
+
+namespace DragonSpark.Model.Commands;
 
 public class Commands<T> : ICommand<T>
 {
 	readonly ICommand<T>[] _items;
 	readonly uint        _length;
 
-	public Commands(params ICommand<T>[] items) : this(items, (uint)items.Length) {}
+    public Commands(params Action<T>[] items) : this(items.Select(Start.A.Command<T>).Select(x => x.Get()).ToArray()) {}
+
+    public Commands(params ICommand<T>[] items) : this(items, (uint)items.Length) {}
 
 	public Commands(ICommand<T>[] items, uint length)
 	{

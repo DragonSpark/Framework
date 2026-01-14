@@ -3,4 +3,4 @@ public sealed record AccessTokenResponse(
     string AccessToken,
     string RefreshToken,
     long ExpiresIn,
-    string TokenType = "Bearer");
+    string TokenType = "Bearer"); // TODO: Move to Contracts

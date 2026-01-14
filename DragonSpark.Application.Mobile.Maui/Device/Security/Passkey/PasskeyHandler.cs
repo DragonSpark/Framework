@@ -14,10 +14,7 @@ sealed class PasskeyHandler : ISelect<DeterminePasskeySupportViaBrowserInput, Ev
 
     readonly IAllocated<DeterminePasskeySupportViaBrowserInput> _support;
 
-    public PasskeyHandler(IAllocated<DeterminePasskeySupportViaBrowserInput> support)
-    {
-        _support = support;
-    }
+    public PasskeyHandler(IAllocated<DeterminePasskeySupportViaBrowserInput> support) => _support = support;
 
     public EventHandler<WebNavigatedEventArgs> Get(DeterminePasskeySupportViaBrowserInput parameter)
     {

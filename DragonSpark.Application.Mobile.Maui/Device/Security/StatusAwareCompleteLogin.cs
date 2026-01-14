@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using DragonSpark.Application.Communication.Http.Security;
 using DragonSpark.Application.Runtime.Objects;
 using DragonSpark.Compose;
@@ -7,14 +7,14 @@ using DragonSpark.Model.Operations;
 
 namespace DragonSpark.Application.Mobile.Maui.Device.Security;
 
-public class StatusAwareLogin : ILogin
+public class StatusAwareCompleteLogin : ICompleteLogin
 {
-    readonly ILogin                     _previous;
+    readonly ICompleteLogin             _previous;
     readonly IStorageValue<LoginStatus> _save;
 
-    protected StatusAwareLogin(ILogin previous) : this(previous, LoginStatusStorageValue.Default) {}
+    protected StatusAwareCompleteLogin(ICompleteLogin previous) : this(previous, LoginStatusStorageValue.Default) {}
 
-    protected StatusAwareLogin(ILogin previous, IStorageValue<LoginStatus> save)
+    protected StatusAwareCompleteLogin(ICompleteLogin previous, IStorageValue<LoginStatus> save)
     {
         _previous = previous;
         _save     = save;

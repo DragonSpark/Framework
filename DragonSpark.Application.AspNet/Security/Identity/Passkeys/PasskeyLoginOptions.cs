@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Passkeys;
 
-public class PasskeyLoginOptions<T> : ISelecting<LoginRequest, IResult> where T : class
+public class PasskeyLoginOptions<T> : ISelecting<string, IResult> where T : class
 {
     readonly IAuthentications<T> _sessions;
     readonly PasskeySettings     _settings;
@@ -20,11 +20,11 @@ public class PasskeyLoginOptions<T> : ISelecting<LoginRequest, IResult> where T 
         _context  = context;
     }
 
-    public async ValueTask<IResult> Get(LoginRequest parameter)
+    public async ValueTask<IResult> Get(string parameter)
     {
         using var session = _sessions.Get();
         var (subject, users) = session;
-        var user = await users.FindByEmailAsync(parameter.Email).Off();
+        var user = await users.FindByEmailAsync(parameter).Off();
         if (user is not null)
         {
             var options = await subject.MakePasskeyRequestOptionsAsync(null).Off();

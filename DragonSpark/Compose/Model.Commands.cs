@@ -1,11 +1,11 @@
-﻿using DragonSpark.Compose.Model.Commands;
+using System;
+using System.Threading.Tasks;
+using DragonSpark.Compose.Model.Commands;
 using DragonSpark.Model;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Model.Sequences.Collections;
-using System;
-using System.Threading.Tasks;
 
 // ReSharper disable TooManyArguments
 
@@ -68,6 +68,16 @@ public static partial class ExtensionMethods
 		@this.Execute();
 		return @this;
 	}
+
+    public static T Configured<T>(this T @this, params ReadOnlySpan<ICommand<T>> commands)
+    {
+        foreach (var command in commands)
+        {
+            command.Execute(@this);
+        }
+
+        return @this;
+    }
 
 	public static IAssign<TIn, TOut> ToAssignment<TIn, TOut>(this ISelect<TIn, IMembership<TOut>> @this)
 		=> @this.Select(x => x.Add).Then().ToAssignment();

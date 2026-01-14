@@ -4,12 +4,12 @@ using DragonSpark.Model.Operations;
 
 namespace DragonSpark.Application.Communication.Http.Security;
 
-public class SaveAwareLogin : ILogin
+public class SaveAwareCompleteLogin : ICompleteLogin
 {
-    readonly ILogin        _previous;
+    readonly ICompleteLogin        _previous;
     readonly IUpdateTokenState _save;
 
-    protected SaveAwareLogin(ILogin previous, IUpdateTokenState save)
+    protected SaveAwareCompleteLogin(ICompleteLogin previous, IUpdateTokenState save)
     {
         _previous = previous;
         _save     = save;
