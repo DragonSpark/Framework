@@ -1,14 +1,14 @@
-﻿using System;
+using System;
 
 namespace DragonSpark.Application.Security.Identity.Bearer;
 
-public sealed class BearerSettings
+public sealed record BearerSettings
 {
-	public string Key { get; set; } = null!;
+	public required string Key { get; set; }
 
-	public string Issuer { get; set; } = null!;
+	public required string Issuer { get; set; }
 
-	public string Audience { get; set; } = null!;
+	public required string Audience { get; set; }
 
 	public TimeSpan Window { get; set; } = TimeSpan.FromHours(1);
 }

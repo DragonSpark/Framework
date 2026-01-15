@@ -33,13 +33,17 @@ public static class Extensions
                                   configure(x);
                               });
 
-    public static AuthenticationBuilder AddBearer(this IServiceCollection @this,
-                                                  string name = nameof(BearerAwarePolicyScheme))
-        => @this.AddBearer(_ => {}, name);
+    public static AuthenticationBuilder AddBearer(this IServiceCollection @this) => @this.AddBearer(_ => {});
+
+    public static AuthenticationBuilder AddBearer(this IServiceCollection @this, Action<JwtBearerOptions> configure)
+        => @this.AddBearer(configure, IdentityApplicationPolicySelector.Default);
 
     public static AuthenticationBuilder AddBearer(this IServiceCollection @this, Action<JwtBearerOptions> configure,
-                                                  string name = nameof(BearerAwarePolicyScheme))
-        => @this.AddAuthentication(x => x.DefaultScheme = x.DefaultChallengeScheme = name)
-                .AddJwtBearer(@this.Deferred<BearerConfiguration>().Assume().Append(configure))
-                .AddPolicyScheme(name, name.Humanize(), BearerAwarePolicyScheme.Default.Execute);
+                                                  IPolicySelector selector)
+    {
+        var name = selector.GetType().Name;
+        return @this.AddAuthentication(x => x.DefaultScheme = x.DefaultChallengeScheme = name)
+                    .AddJwtBearer(@this.Deferred<BearerConfiguration>().Assume().Append(configure))
+                    .AddPolicyScheme(name, name.Humanize(LetterCasing.Title), new PolicyScheme(selector).Execute);
+    }
 }

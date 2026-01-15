@@ -28,7 +28,7 @@ sealed class RequestUserBiometric : IRequestUserBiometric
     public async ValueTask<bool> Get(Stop<None> parameter)
     {
         var (_, stop) = parameter;
-        var status = await _service.GetAuthenticationStatusAsync().Off();
+        var status = await _service.GetAuthenticationStatusAsync().On();
         switch (status)
         {
             case BiometricHwStatus.PresentButNotEnrolled:

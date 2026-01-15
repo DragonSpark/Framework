@@ -30,7 +30,7 @@ public class PasskeyCreationOptions<T> : IResulting<IResult> where T : IdentityU
         var       context = _context.Get();
         var       user    = await users.GetUserAsync(context.User).Off();
         return user is not null
-                   ? TypedResults.Content(await _options.Off(new(context, signin, user)), "application/json")
+                   ? Results.Content(await _options.Off(new(signin, user)), "application/json")
                    : Results.Unauthorized();
     }
 }

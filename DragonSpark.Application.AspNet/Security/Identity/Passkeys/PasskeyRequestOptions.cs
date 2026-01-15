@@ -17,6 +17,6 @@ public class PasskeyRequestOptions<T> : ISelecting<string?, IResult> where T : c
         using var session = _authentications.Get();
         var       user    = !parameter.IsNullOrEmpty() ? await session.Users.FindByNameAsync(parameter).Off() : null;
         var       content = await session.Subject.MakePasskeyRequestOptionsAsync(user).Off();
-        return TypedResults.Content(content, "application/json");
+        return Results.Content(content, "application/json");
     }
 }

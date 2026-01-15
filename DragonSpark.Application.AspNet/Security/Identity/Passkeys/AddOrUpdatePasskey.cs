@@ -11,22 +11,17 @@ public class AddOrUpdatePasskey<T> : ISelecting<JsonElement, IResult> where T : 
 {
     readonly IAuthentications<T> _authentications;
     readonly ICurrentContext     _context;
-    readonly PasskeySettings     _settings;
 
-    protected AddOrUpdatePasskey(IAuthentications<T> authentications, ICurrentContext context, PasskeySettings settings)
+    protected AddOrUpdatePasskey(IAuthentications<T> authentications, ICurrentContext context)
     {
         _authentications = authentications;
         _context         = context;
-        _settings        = settings;
     }
 
     public async ValueTask<IResult> Get(JsonElement parameter)
     {
         if (parameter.TryGetProperty("credentialJson", out var property) && property.ValueKind == JsonValueKind.String)
         {
-            var context = _context.Get();
-            context.Request.Host = _settings.Host is not null ? new(_settings.Host) : context.Request.Host;
-
             var credential = property.GetString();
             if (credential is not null)
             {
@@ -35,7 +30,7 @@ public class AddOrUpdatePasskey<T> : ISelecting<JsonElement, IResult> where T : 
                 var attest = await subject.PerformPasskeyAttestationAsync(credential).Off();
                 if (attest.Succeeded)
                 {
-                    var user = await users.GetUserAsync(context.User).Off();
+                    var user    = await users.GetUserAsync(_context.Get().User).Off();
                     await users.AddOrUpdatePasskeyAsync(user.Verify(), attest.Passkey).Off();
                     return Results.Ok();
                 }
