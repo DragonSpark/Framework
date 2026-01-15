@@ -11,6 +11,7 @@ using DragonSpark.Reflection.Members;
 using DragonSpark.Runtime.Invocation.Expressions;
 using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.Logging;
 using NetFabric.Hyperlinq;
 using System;
@@ -35,7 +36,10 @@ public readonly record struct BatchesInput(ILogger Logger, ushort BatchSize)
 	public BatchesInput(ILogger logger) : this(logger, DefaultBatchSize.Default) {}
 }
 
-public readonly record struct MapInput(DbContext Source, DbContext Destination, object From, object To);
+public readonly record struct MapInput(EntityEntry From, EntityEntry To)
+{
+	public static MapInput New<T>(EntityEntry from, DbContext to) where T : class => new (from, to.Entry(A.New<T>()));
+}
 
 public interface IMap : ICommand<MapInput>;
 
@@ -51,18 +55,23 @@ public sealed class Map : IMap
 
 	public void Execute(MapInput parameter)
 	{
-		var (source, destination, from, to) = parameter;
-		var type = to.GetType();
-		foreach (var propertyInfo in from.GetType().GetProperties())
+		var (from, to) = parameter;
+		var type = to.Entity.GetType();
+		foreach (var propertyInfo in from.Entity.GetType().GetProperties())
 		{
 			var property = type.GetProperty(propertyInfo.Name);
 			if (property is not null)
 			{
-				_property.Execute(new(source, destination, new(from, propertyInfo), new(to, property)));
+				_property.Execute(new(from.Context, to.Context, new(from, propertyInfo), new(to, property)));
 			}
 		}
 	}
 }
+
+// TODO
+
+
+
 
 public readonly record struct InstanceInput(object Instance, PropertyInfo Metadata);
 
@@ -116,20 +125,6 @@ sealed class ConvertEnumeration : ICondition<ConvertEnumerationInput>
 		_assign = assign;
 	}
 
-	public bool Get(ConvertEnumerationInput parameter)
-	{
-		var (from, to) = parameter;
-		if (from.Metadata.PropertyType.IsEnum && to.Metadata.PropertyType.IsEnum)
-		{
-			var previous = Enum.GetUnderlyingType(from.Metadata.PropertyType);
-			var next     = Enum.GetUnderlyingType(to.Metadata.PropertyType);
-			var result   = TypeDescriptor.GetConverter(previous).CanConvertTo(next) && Convert(from, to, next);
-			return result;
-		}
-
-		return false;
-	}
-
 	bool Convert(InstanceInput from, InstanceInput to, Type underlying)
 	{
 		var get = _get.Get(new(from.Metadata.ReflectedType ?? from.GetType(), from.Metadata.Name));
@@ -143,6 +138,20 @@ sealed class ConvertEnumeration : ICondition<ConvertEnumerationInput>
 				_assign.Get(to.Metadata)(to.Instance, converted);
 				return true;
 			}
+		}
+
+		return false;
+	}
+
+	public bool Get(ConvertEnumerationInput parameter)
+	{
+		var (from, to) = parameter;
+		if (from.Metadata.PropertyType.IsEnum && to.Metadata.PropertyType.IsEnum)
+		{
+			var previous = Enum.GetUnderlyingType(from.Metadata.PropertyType);
+			var next     = Enum.GetUnderlyingType(to.Metadata.PropertyType);
+			var result   = TypeDescriptor.GetConverter(previous).CanConvertTo(next) && Convert(from, to, next);
+			return result;
 		}
 
 		return false;
@@ -204,7 +213,7 @@ public sealed class Mapping<TFrom, TTo> : IMapping<TFrom, TTo> where TFrom : cla
 	{
 		var (source, destination, from) = parameter;
 		var result = _new();
-		_map.Execute(new(source, destination, from, result));
+		_map.Execute(new(source.Entry(from), destination.Entry(result)));
 		return result;
 	}
 }
@@ -232,6 +241,11 @@ public class Migration : ICommand<ushort>, ICommand
 		_batches = batches;
 	}
 
+	public void Execute(None parameter)
+	{
+		Execute(DefaultBatchSize.Default);
+	}
+
 	public void Execute(ushort parameter)
 	{
 		var input = new BatchesInput(_logger, parameter);
@@ -239,11 +253,6 @@ public class Migration : ICommand<ushort>, ICommand
 		{
 			batch.Execute(input);
 		}
-	}
-
-	public void Execute(None parameter)
-	{
-		Execute(DefaultBatchSize.Default);
 	}
 }
 

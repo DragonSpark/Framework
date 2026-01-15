@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata;
+using System.Collections.Generic;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Planning;
 
-public readonly record struct IsExactInput(IEntityType Source, IEntityType Destination);
+public sealed class Entities : List<List<IEntityType>>;
