@@ -1,0 +1,31 @@
+﻿using System;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+
+namespace DragonSpark.Application.AspNet.Security.Identity.Bearer;
+
+public sealed class JwtPolicySelector : IPolicySelector
+{
+    public static JwtPolicySelector Default { get; } = new();
+
+    JwtPolicySelector() : this("Bearer ", JwtBearerDefaults.AuthenticationScheme, IdentityConstants.BearerScheme) {}
+
+    readonly string _key, _default, _identity;
+
+    public JwtPolicySelector(string key, string @default, string identity)
+    {
+        _key      = key;
+        _default  = @default;
+        _identity = identity;
+    }
+
+    public string Get(HttpContext parameter)
+    {
+        var header = parameter.Request.Headers.Authorization.ToString();
+        return header.StartsWith(_key, StringComparison.OrdinalIgnoreCase)
+               && header[_key.Length..].Trim().Count('.') != 2
+                   ? _identity
+                   : _default;
+    }
+}

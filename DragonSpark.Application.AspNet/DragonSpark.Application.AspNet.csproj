@@ -21,7 +21,6 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\DragonSpark.Application\DragonSpark.Application.csproj" />
-		<ProjectReference Include="..\DragonSpark.Contracts\DragonSpark.Contracts.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

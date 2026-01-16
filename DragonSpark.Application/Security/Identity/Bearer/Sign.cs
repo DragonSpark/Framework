@@ -18,7 +18,19 @@ sealed class Sign : Formatter<ClaimsIdentity>, ISign
         : base(descriptor.Then().Select(IdentityTokenFormatter.Default)) {}
 }
 
-// TODO
+// TODO: Move back to AspNet
+// 
+public interface IMessageBearer : IFormatter<ClaimsIdentity>;
+sealed class MessageBearer : Formatter<ClaimsIdentity>, IMessageBearer
+{
+    public MessageBearer(BearerIdentity bearer, IToken token, MessageBearerSettings settings)
+        : base(bearer.Then().Select(x => new ClaimsSecurityDescriptorInput(x, settings.Expires)).Select(token)) {}
+}
+
+public sealed record MessageBearerSettings
+{
+    public TimeSpan Expires { get; set; } = TimeSpan.FromMinutes(1);
+}
 sealed class WebTokenHandler : Instance<JsonWebTokenHandler>
 {
     public static WebTokenHandler Default { get; } = new();

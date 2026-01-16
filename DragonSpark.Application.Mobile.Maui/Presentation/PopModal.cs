@@ -3,7 +3,6 @@ using DragonSpark.Compose;
 using DragonSpark.Model.Operations.Allocated;
 using DragonSpark.Model.Results;
 using Microsoft.Maui.Controls;
-using Switch = DragonSpark.Model.Results.Switch;
 
 namespace DragonSpark.Application.Mobile.Maui.Presentation;
 
@@ -27,13 +26,4 @@ public sealed class PopModal : IAllocated<bool>
         _switch.Up();
         return _navigation.Get().PopModalAsync(parameter);
     }
-}
-
-// TODO:
-
-public sealed class Popped : Switch
-{
-    public static Popped Default { get; } = new();
-
-    Popped() {}
 }

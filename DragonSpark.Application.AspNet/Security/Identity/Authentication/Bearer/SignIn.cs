@@ -1,47 +1,9 @@
-using System.Buffers;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using DragonSpark.Compose;
-using DragonSpark.Model.Operations;
-using Microsoft.AspNetCore.Identity;
-using NetFabric.Hyperlinq;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.Bearer;
 
-public class SignIn<T> : ISignIn<T> where T : class
+public class SignIn<T> : SignInBase<T> where T : class
 {
-    readonly IAuthentications<T> _signin;
-    readonly IComposeClaims<T>   _claims;
-
-    public SignIn(IAuthentications<T> signin, IComposeClaims<T> claims)
-    {
-        _signin = signin;
-        _claims = claims;
-    }
-
-    public async ValueTask<bool> Get(Stop<SignInInput<T>> parameter)
-    {
-        var ((user, (_, code)), _) = parameter;
-        using var signin  = _signin.Get();
-        using var claims  = _claims.Get(user).AsValueEnumerable().ToArray(ArrayPool<Claim>.Shared);
-        var       subject = signin.Subject;
-        subject.AuthenticationScheme = IdentityConstants.BearerScheme;
-
-        var result = await signin.Users.VerifyUserTokenAsync(user, TokenOptions.DefaultEmailProvider, Purpose.Default,
-                                                             code)
-                                 .Off();
-        if (result)
-        {
-            await subject.SignInWithClaimsAsync(user, null, claims).Off();
-        }
-
-        return result;
-    }
-}
-
-public sealed class Purpose : Text.Text
-{
-    public static Purpose Default { get; } = new();
-
-    Purpose() : base("passwordless-login") {}
+    protected SignIn(IAuthentications<T> signin, IComposeClaims<T> claims)
+        : base(Is.Always<ValidateSignInInput<T>>().Operation().Out().AsStop().Out(), signin, claims) {}
 }

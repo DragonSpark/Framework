@@ -1,3 +1,8 @@
+using System;
+using System.Buffers;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading;
 using DragonSpark.Application.Components.Validation.Expressions;
 using DragonSpark.Application.Compose.Runtime;
 using DragonSpark.Application.Compose.Store.Operations.Memory;
@@ -16,11 +21,6 @@ using DragonSpark.Model.Sequences.Memory;
 using Humanizer;
 using Microsoft.Extensions.Hosting;
 using NetFabric.Hyperlinq;
-using System;
-using System.Buffers;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Threading;
 
 namespace DragonSpark.Application;
 
@@ -34,7 +34,7 @@ partial class Extensions
 
 	/**/
 	public static BuildHostContext WithHttp(this BuildHostContext @this)
-		=> @this.Configure(Communication.Http.Registrations.Default);
+		=> @this.Configure(Communication.Http.Registrations.Default, Communication.Http.Security.Registrations.Default);
 
 	public static bool HasClaim(this ClaimsPrincipal @this, string claim) => @this.HasClaim(x => x.Type == claim);
 

@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Operations;
@@ -11,6 +11,8 @@ public class ClearState<T> : IDepending
 {
     readonly IMutable<T?> _store;
     readonly IDepending   _storage;
+
+    protected ClearState(IDepending storage) : this(new Variable<T>(), storage) {}
 
     protected ClearState(IMutable<T?> store, IDepending storage)
     {

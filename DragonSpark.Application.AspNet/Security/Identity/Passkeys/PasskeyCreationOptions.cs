@@ -1,9 +1,7 @@
 using System.Threading.Tasks;
 using DragonSpark.Application.AspNet.Security.Identity.Authentication;
 using DragonSpark.Compose;
-using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Results;
-using DragonSpark.Model.Operations.Selection.Stop;
 using Microsoft.AspNetCore.Http;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Passkeys;
@@ -32,22 +30,5 @@ public class PasskeyCreationOptions<T> : IResulting<IResult> where T : IdentityU
         return user is not null
                    ? Results.Content(await _options.Off(new(signin, user)), "application/json")
                    : Results.Unauthorized();
-    }
-}
-
-// TODO
-
-public class HasPasskeys<T> : IDepending<string> where T : class
-{
-    readonly IUsers<T> _users;
-
-    protected HasPasskeys(IUsers<T> users) => _users = users;
-
-    public async ValueTask<bool> Get(Stop<string> parameter)
-    {
-        using var session = _users.Get();
-        var       user    = await session.Subject.FindByEmailAsync(parameter).Off();
-        var       result  = user is not null && await session.Subject.GetPasskeysAsync(user).Off() is { Count: > 0 };
-        return result;
     }
 }

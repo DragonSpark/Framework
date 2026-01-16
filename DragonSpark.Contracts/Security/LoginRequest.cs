@@ -1,3 +1,3 @@
 namespace DragonSpark.Contracts.Security;
 
-public sealed record LoginRequest(string Email);
+public record LoginRequest(string Address);
