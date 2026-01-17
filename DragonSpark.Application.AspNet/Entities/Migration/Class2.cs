@@ -1,20 +1,22 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
+using DragonSpark.Model.Selection;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Metadata;
 using System.Linq;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration;
 
-sealed class MapEntries : IMap
+sealed class Map : IMap
 {
-	public static MapEntries Default { get; } = new();
+	public static Map Default { get; } = new();
 
-	MapEntries() : this(CopyValues.Default, MapOwned.Default) {}
+	Map() : this(CopyValues.Default, MapOwned.Default) {}
 
 	readonly ICommand<MapInput>                _copy;
 	readonly ICommand<MapNavigationEntryInput> _owned;
 
-	public MapEntries(ICommand<MapInput> copy, ICommand<MapNavigationEntryInput> owned)
+	public Map(ICommand<MapInput> copy, ICommand<MapNavigationEntryInput> owned)
 	{
 		_copy  = copy;
 		_owned = owned;
@@ -47,9 +49,22 @@ sealed class CopyValues : ICommand<MapInput>
 	{
 		var (from, to) = parameter;
 
-		var values = from.CurrentValues.Properties.ToDictionary(x => x.Name, x => from.CurrentValues[x]);
+		var compose = new DetermineValue(from.CurrentValues);
+		var values  = from.CurrentValues.Properties.ToDictionary(x => x.Name, compose.Get);
 		to.CurrentValues.SetValues(values);
 	}
+}
+
+sealed class DetermineValue : ISelect<IProperty, object?>
+{
+	readonly PropertyValues _previous;
+
+	public DetermineValue(PropertyValues previous) => _previous = previous;
+
+	public object? Get(IProperty parameter)
+		=> /*parameter.ClrType.IsEnum
+			   ? Convert.ChangeType(_previous[parameter], parameter.ClrType.GetEnumUnderlyingType())
+			   :*/ _previous[parameter];
 }
 
 public readonly record struct MapNavigationEntryInput(NavigationEntry From, NavigationEntry To);

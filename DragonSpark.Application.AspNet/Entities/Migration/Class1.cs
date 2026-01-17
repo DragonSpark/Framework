@@ -5,9 +5,7 @@ using DragonSpark.Model;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
-using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences;
-using DragonSpark.Reflection.Members;
 using DragonSpark.Runtime.Invocation.Expressions;
 using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
@@ -16,11 +14,9 @@ using Microsoft.Extensions.Logging;
 using NetFabric.Hyperlinq;
 using System;
 using System.Buffers;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Reflection;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration;
 
@@ -43,148 +39,7 @@ public readonly record struct MapInput(EntityEntry From, EntityEntry To)
 
 public interface IMap : ICommand<MapInput>;
 
-public sealed class Map : IMap
-{
-	public static Map Default { get; } = new();
-
-	Map() : this(EnumerationAwareProperty.Default) {}
-
-	readonly IProperty _property;
-
-	public Map(IProperty property) => _property = property;
-
-	public void Execute(MapInput parameter)
-	{
-		var (from, to) = parameter;
-		var type = to.Entity.GetType();
-		foreach (var propertyInfo in from.Entity.GetType().GetProperties())
-		{
-			var property = type.GetProperty(propertyInfo.Name);
-			if (property is not null)
-			{
-				_property.Execute(new(from.Context, to.Context, new(from.Entity, propertyInfo),
-				                      new(to.Entity, property)));
-			}
-		}
-	}
-}
-
 // TODO
-
-public readonly record struct InstanceInput(object Instance, PropertyInfo Metadata);
-
-public readonly record struct PropertyInput(
-	DbContext Source,
-	DbContext Destination,
-	InstanceInput From,
-	InstanceInput To);
-
-public interface IProperty : ICommand<PropertyInput>;
-
-sealed class EnumerationAwareProperty : IProperty
-{
-	public static EnumerationAwareProperty Default { get; } = new();
-
-	EnumerationAwareProperty() : this(Property.Default, ConvertEnumeration.Default) {}
-
-	readonly IProperty                           _previous;
-	readonly ICondition<ConvertEnumerationInput> _convert;
-
-	public EnumerationAwareProperty(IProperty previous, ICondition<ConvertEnumerationInput> convert)
-	{
-		_previous = previous;
-		_convert  = convert;
-	}
-
-	public void Execute(PropertyInput parameter)
-	{
-		var (_, _, from, to) = parameter;
-		if (!_convert.Get(new(from, to)))
-		{
-			_previous.Execute(parameter);
-		}
-	}
-}
-
-public readonly record struct ConvertEnumerationInput(InstanceInput From, InstanceInput To);
-
-sealed class ConvertEnumeration : ICondition<ConvertEnumerationInput>
-{
-	public static ConvertEnumeration Default { get; } = new();
-
-	ConvertEnumeration() : this(PropertyDelegates.Default, PropertyAssignmentDelegates.Default) {}
-
-	readonly IPropertyDelegates          _get;
-	readonly IPropertyAssignmentDelegate _assign;
-
-	public ConvertEnumeration(IPropertyDelegates get, IPropertyAssignmentDelegate assign)
-	{
-		_get    = get;
-		_assign = assign;
-	}
-
-	bool Convert(InstanceInput from, InstanceInput to, Type underlying)
-	{
-		var get = _get.Get(new(from.Metadata.ReflectedType ?? from.GetType(), from.Metadata.Name));
-		if (get is not null)
-		{
-			var value   = get(from.Instance);
-			var changed = System.Convert.ChangeType(value, underlying);
-			if (changed is not null)
-			{
-				var converted = Enum.ToObject(to.Metadata.PropertyType, changed);
-				_assign.Get(to.Metadata)(to.Instance, converted);
-				return true;
-			}
-		}
-
-		return false;
-	}
-
-	public bool Get(ConvertEnumerationInput parameter)
-	{
-		var (from, to) = parameter;
-		if (from.Metadata.PropertyType.IsEnum && to.Metadata.PropertyType.IsEnum)
-		{
-			var previous = Enum.GetUnderlyingType(from.Metadata.PropertyType);
-			var next     = Enum.GetUnderlyingType(to.Metadata.PropertyType);
-			var result   = TypeDescriptor.GetConverter(previous).CanConvertTo(next) && Convert(from, to, next);
-			return result;
-		}
-
-		return false;
-	}
-}
-
-sealed class Property : IProperty
-{
-	public static Property Default { get; } = new();
-
-	Property() : this(PropertyDelegates.Default, PropertyAssignmentDelegates.Default) {}
-
-	readonly IPropertyDelegates          _get;
-	readonly IPropertyAssignmentDelegate _assign;
-
-	public Property(IPropertyDelegates get, IPropertyAssignmentDelegate assign)
-	{
-		_get    = get;
-		_assign = assign;
-	}
-
-	public void Execute(PropertyInput parameter)
-	{
-		var (_, _, from, to) = parameter;
-
-		if (to.Metadata.PropertyType.IsAssignableFrom(from.Metadata.PropertyType))
-		{
-			var get = _get.Get(new(from.Metadata.ReflectedType ?? from.GetType(), from.Metadata.Name));
-			if (get is not null)
-			{
-				_assign.Get(to.Metadata)(to.Instance, get(from.Instance));
-			}
-		}
-	}
-}
 
 public readonly record struct MappingInput<T>(DbContext Source, DbContext Destination, T From);
 

@@ -13,10 +13,10 @@ sealed class ComposeDefinitions : ISelect<EntityDefinitionInput, ComparisonInput
 		: this(x => new(x.Name, x.ClrType),
 		       x => new(x.Name, x.TargetEntityType, x.IsCollection, x.IsOnDependent)) {}
 
-	readonly Func<Microsoft.EntityFrameworkCore.Metadata.IProperty, PropertyRecord> _property;
-	readonly Func<INavigation, NavigationRecord>                                    _navigation;
+	readonly Func<IProperty, PropertyRecord>     _property;
+	readonly Func<INavigation, NavigationRecord> _navigation;
 
-	public ComposeDefinitions(Func<Microsoft.EntityFrameworkCore.Metadata.IProperty, PropertyRecord> property,
+	public ComposeDefinitions(Func<IProperty, PropertyRecord> property,
 	                          Func<INavigation, NavigationRecord> navigation)
 	{
 		_property   = property;

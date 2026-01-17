@@ -12,7 +12,7 @@ using Xunit;
 
 namespace DragonSpark.Application.Testing.Entities.Migration;
 
-public sealed class MapInstanceTests
+public sealed class MapTests
 {
 	[Fact]
 	public async Task VerifyBasicMappingWorksAsExpected()
@@ -20,7 +20,7 @@ public sealed class MapInstanceTests
 		await using var sources      = await new SqlLiteNewContext<FromContext>().Initialize();
 		await using var destinations = await new SqlLiteNewContext<ToContext>().Initialize();
 
-		var subject = MapEntries.Default;
+		var subject = Map.Default;
 
 		{
 			await using var seed = sources.Get();
@@ -64,7 +64,7 @@ public sealed class MapInstanceTests
 		await using var sources      = await new SqlLiteNewContext<FromContext>().Initialize();
 		await using var destinations = await new SqlLiteNewContext<ToContext>().Initialize();
 
-		var subject = MapEntries.Default;
+		var subject = Map.Default;
 
 		{
 			await using var seed = sources.Get();
@@ -108,7 +108,7 @@ public sealed class MapInstanceTests
 		await using var sources      = await new SqlLiteNewContext<FromContext>().Initialize();
 		await using var destinations = await new SqlLiteNewContext<ToContext>().Initialize();
 
-		var subject = MapEntries.Default;
+		var subject = Map.Default;
 
 		{
 			await using var seed = sources.Get();
@@ -269,7 +269,7 @@ public sealed class MapInstanceTests
 		public required ToEnum Enumeration { get; set; }
 	}
 
-	enum ToEnum : byte { One, Two, Three, Four }
+	enum ToEnum : byte { [UsedImplicitly]One, [UsedImplicitly]Two, [UsedImplicitly]Three, [UsedImplicitly] Four }
 
 	sealed class ToOwned
 	{
