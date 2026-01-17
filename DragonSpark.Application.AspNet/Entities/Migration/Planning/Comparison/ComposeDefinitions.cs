@@ -1,5 +1,4 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Selection;
+﻿using DragonSpark.Model.Selection;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Linq;
@@ -10,9 +9,9 @@ sealed class ComposeDefinitions : ISelect<EntityDefinitionInput, ComparisonInput
 {
 	public static ComposeDefinitions Default { get; } = new();
 
-	ComposeDefinitions() : this(x => new PropertyRecord(x.Name, x.ClrType.IsEnum ? typeof(Enum) : x.ClrType),
-	                            x => new NavigationRecord(x.Name, x.TargetEntityType.ClrType.FullName.Verify(),
-	                                                      x.IsCollection, x.IsOnDependent)) {}
+	ComposeDefinitions()
+		: this(x => new(x.Name, x.ClrType),
+		       x => new(x.Name, x.TargetEntityType, x.IsCollection, x.IsOnDependent)) {}
 
 	readonly Func<Microsoft.EntityFrameworkCore.Metadata.IProperty, PropertyRecord> _property;
 	readonly Func<INavigation, NavigationRecord>                                    _navigation;
@@ -28,9 +27,9 @@ sealed class ComposeDefinitions : ISelect<EntityDefinitionInput, ComparisonInput
 	{
 		var (source, destination) = parameter;
 
-		var from = new EntityDefinition(source.GetProperties().Select(_property).ToHashSet(),
+		var from = new EntityDefinition(source, source.GetFlattenedProperties().Select(_property).ToHashSet(),
 		                                source.GetNavigations().Select(_navigation).ToHashSet());
-		var to = new EntityDefinition(destination.GetProperties().Select(_property).ToHashSet(),
+		var to = new EntityDefinition(destination, destination.GetFlattenedProperties().Select(_property).ToHashSet(),
 		                              destination.GetNavigations().Select(_navigation).ToHashSet());
 		return new(from, to);
 	}

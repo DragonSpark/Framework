@@ -38,7 +38,7 @@ public readonly record struct BatchesInput(ILogger Logger, ushort BatchSize)
 
 public readonly record struct MapInput(EntityEntry From, EntityEntry To)
 {
-	public static MapInput New<T>(EntityEntry from, DbContext to) where T : class => new (from, to.Entry(A.New<T>()));
+	public static MapInput New<T>(EntityEntry from, DbContext to) where T : class => new(from, to.Entry(A.New<T>()));
 }
 
 public interface IMap : ICommand<MapInput>;
@@ -62,16 +62,14 @@ public sealed class Map : IMap
 			var property = type.GetProperty(propertyInfo.Name);
 			if (property is not null)
 			{
-				_property.Execute(new(from.Context, to.Context, new(from, propertyInfo), new(to, property)));
+				_property.Execute(new(from.Context, to.Context, new(from.Entity, propertyInfo),
+				                      new(to.Entity, property)));
 			}
 		}
 	}
 }
 
 // TODO
-
-
-
 
 public readonly record struct InstanceInput(object Instance, PropertyInfo Metadata);
 

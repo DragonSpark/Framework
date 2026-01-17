@@ -5,20 +5,13 @@ using System.Collections.Generic;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Planning;
 
-public class ModelStatus : ISelect<DestinationModelCheckerInput, ModelStatusResult>
+public class ModelStatus : ISelect<ModelStatusInput, ModelStatusResult>
 {
-	readonly IModelTypes                       _types;
-	readonly IEntityComparison                 _comparison;
+	readonly IModelTypes _types;
 
-	protected ModelStatus(IModelTypes types) : this(types, EntityComparison.Default) {}
+	protected ModelStatus(IModelTypes types) => _types = types;
 
-	protected ModelStatus(IModelTypes types, IEntityComparison comparison)
-	{
-		_types      = types;
-		_comparison = comparison;
-	}
-
-	public ModelStatusResult Get(DestinationModelCheckerInput parameter)
+	public ModelStatusResult Get(ModelStatusInput parameter)
 	{
 		var (types, destination) = parameter;
 
@@ -26,13 +19,14 @@ public class ModelStatus : ISelect<DestinationModelCheckerInput, ModelStatusResu
 		var exact     = new List<IEntityType>();
 		var differing = new List<ComparisonResult>();
 		var missing   = new List<IEntityType>();
+		var entities  = new EntityComparison(locate);
 
 		foreach (var from in types)
 		{
-			var to         = locate.Get(from);
+			var to = locate.Get(from);
 			if (to is not null)
 			{
-				var comparison = _comparison.Get(new(from, to));
+				var comparison = entities.Get(new(from, to));
 				if (comparison.Changes > 0)
 				{
 					differing.Add(comparison);
@@ -48,6 +42,7 @@ public class ModelStatus : ISelect<DestinationModelCheckerInput, ModelStatusResu
 			}
 		}
 
+		differing.Sort((x, y) => x.Changes.CompareTo(y.Changes));
 		return new(new(exact.AsReadOnly(), differing.AsReadOnly()), missing.AsReadOnly());
 	}
 }

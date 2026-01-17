@@ -4,16 +4,16 @@ namespace DragonSpark.Application.AspNet.Entities.Migration.Planning.Comparison;
 
 public sealed class EntityComparison : IEntityComparison
 {
-	readonly ISelect<EntityDefinitionInput, ComparisonInput> _input;
-	readonly ISelect<ComparisonInput, PropertyComparison>    _properties;
-	readonly ISelect<ComparisonInput, NavigationComparison>  _navigation;
-	public static EntityComparison Default { get; } = new();
+	readonly ISelect<EntityDefinitionInput, ComparisonInput>        _input;
+	readonly ISelect<ComparePropertiesInput, PropertyComparison>    _properties;
+	readonly ISelect<CompareNavigationsInput, NavigationComparison> _navigation;
 
-	EntityComparison() : this(ComposeDefinitions.Default, CompareProperties.Default, CompareNavigations.Default) {}
+	public EntityComparison(IEntityTypes types)
+		: this(ComposeDefinitions.Default, CompareProperties.Default, new CompareNavigations(types)) {}
 
 	public EntityComparison(ISelect<EntityDefinitionInput, ComparisonInput> input,
-	                        ISelect<ComparisonInput, PropertyComparison> properties,
-	                        ISelect<ComparisonInput, NavigationComparison> navigation)
+	                        ISelect<ComparePropertiesInput, PropertyComparison> properties,
+	                        ISelect<CompareNavigationsInput, NavigationComparison> navigation)
 	{
 		_input      = input;
 		_properties = properties;
@@ -22,10 +22,10 @@ public sealed class EntityComparison : IEntityComparison
 
 	public ComparisonResult Get(EntityDefinitionInput parameter)
 	{
-		var (from, to) = parameter;
-		var input      = _input.Get(parameter);
-		var properties = _properties.Get(input);
-		var navigation = _navigation.Get(input);
-		return new(from, to, properties, navigation);
+		var (source, destination) = parameter;
+		var (from, to)            = _input.Get(parameter);
+		var properties = _properties.Get(new(from.Properties, to.Properties));
+		var navigation = _navigation.Get(new(from.Navigations, to.Navigations));
+		return new(source, destination, properties, navigation);
 	}
 }

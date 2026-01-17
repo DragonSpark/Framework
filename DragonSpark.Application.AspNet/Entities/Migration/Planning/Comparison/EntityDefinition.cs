@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
+using System.Collections.Generic;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Planning.Comparison;
 
 public readonly record struct EntityDefinition(PropertyDefinition Properties, NavigationDefinition Navigations)
 {
-	public EntityDefinition(HashSet<PropertyRecord> properties,
+	public EntityDefinition(IEntityType owner, HashSet<PropertyRecord> properties,
 	                        HashSet<NavigationRecord> navigation)
-		: this(new PropertyDefinition(properties), new(navigation)) {}
+		: this(new PropertyDefinition(owner, properties), new(owner, navigation)) {}
 }

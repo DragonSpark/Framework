@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -23,9 +24,9 @@ public sealed class MapInstanceTests
 
 		{
 			await using var seed = sources.Get();
-			seed.Basic.AddRange(new() { Name = "One", Created   = Time.Default },
-			                    new() { Name = "Two", Created   = Time.Default },
-			                    new() { Name = "Three", Created = Time.Default });
+			seed.Basic.AddRange(new() { Name = "One", Created   = Time.Default, Enumeration = FromEnum.Four},
+			                    new() { Name = "Two", Created   = Time.Default, Enumeration = FromEnum.Two },
+			                    new() { Name = "Three", Created = Time.Default, Enumeration = FromEnum.One });
 			await seed.SaveChangesAsync();
 		}
 
@@ -52,6 +53,7 @@ public sealed class MapInstanceTests
 				var from = await source.Basic.SingleAsync(x => x.Id == to.Id);
 				from.Should().BeEquivalentTo(to);
 				to.Id.Should().Be(from.Id);
+				Convert.ToByte(to.Enumeration).Should().Be(Convert.ToByte(from.Enumeration));
 			}
 		}
 	}
@@ -100,13 +102,79 @@ public sealed class MapInstanceTests
 		}
 	}
 
-
-	/*sealed class ModelTypes : AspNet.Entities.Migration.ModelTypes
+	[Fact]
+	public async Task VerifyAssociatedMappingWorksAsExpected()
 	{
-		public static ModelTypes Default { get; } = new();
+		await using var sources      = await new SqlLiteNewContext<FromContext>().Initialize();
+		await using var destinations = await new SqlLiteNewContext<ToContext>().Initialize();
 
-		ModelTypes() : base(new ForwardedType(typeof(From), typeof(To))) {}
-	}*/
+		var subject = MapEntries.Default;
+
+		{
+			await using var seed = sources.Get();
+			seed.Associated.AddRange(new()
+			                         {
+				                         Name = "One", Created = Time.Default, Association = new() { Message = "First" }
+			                         },
+			                         new()
+			                         {
+				                         Name        = "Two", Created = Time.Default,
+				                         Association = new() { Message = "Second" }
+			                         },
+			                         new()
+			                         {
+				                         Name        = "Three", Created = Time.Default,
+				                         Association = new() { Message = "Third" }
+			                         });
+			await seed.SaveChangesAsync();
+		}
+
+		{
+			await using var source      = sources.Get();
+			await using var destination = destinations.Get();
+
+			foreach (var from in source.Associations)
+			{
+				subject.Execute(MapInput.New<ToAssociation>(source.Entry(from), destination));
+			}
+
+			foreach (var from in source.Associated)
+			{
+				subject.Execute(MapInput.New<ToAssociated>(source.Entry(from), destination));
+			}
+
+			var changes = await destination.SaveChangesAsync();
+			changes.Should().Be(6);
+		}
+
+		{
+			await using var source      = sources.Get();
+			await using var destination = destinations.Get();
+			var             count       = await destination.Associations.CountAsync();
+			count.Should().Be(3);
+			foreach (var to in destination.Associations)
+			{
+				var from = await source.Associations.SingleAsync(x => x.Id == to.Id);
+				from.Should().BeEquivalentTo(to);
+				to.Id.Should().Be(from.Id);
+			}
+		}
+
+		{
+			await using var source      = sources.Get();
+			await using var destination = destinations.Get();
+			var             count       = await destination.Associated.CountAsync();
+			count.Should().Be(3);
+			foreach (var to in destination.Associated.Include(x => x.Association))
+			{
+				var from = await source.Associated.Include(x => x.Association).SingleAsync(x => x.Id == to.Id);
+				from.Should().BeEquivalentTo(to);
+				to.Id.Should().Be(from.Id);
+				from.Association.Should().NotBeNull();
+				from.Association.Should().BeEquivalentTo(to.Association);
+			}
+		}
+	}
 
 	sealed class FromContext : DbContext
 	{
@@ -115,6 +183,10 @@ public sealed class MapInstanceTests
 		public required DbSet<From> Basic { get; [UsedImplicitly] init; }
 
 		public required DbSet<FromOwned> Owned { get; [UsedImplicitly] init; }
+
+		public required DbSet<FromAssociated> Associated { get; [UsedImplicitly] init; }
+
+		public required DbSet<FromAssociation> Associations { get; [UsedImplicitly] init; }
 	}
 
 	sealed class From
@@ -125,7 +197,11 @@ public sealed class MapInstanceTests
 
 		[MaxLength(16)]
 		public required string Name { get; init; }
+
+		public required FromEnum Enumeration { get; init; }
 	}
+
+	enum FromEnum : byte { One, Two, [UsedImplicitly] Three, Four }
 
 	sealed class FromOwned
 	{
@@ -146,6 +222,27 @@ public sealed class MapInstanceTests
 		public required string Message { get; set; }
 	}
 
+	sealed class FromAssociated
+	{
+		public Guid Id { get; init; }
+
+		public required DateTimeOffset Created { get; init; }
+
+		[MaxLength(16)]
+		public required string Name { get; init; }
+
+		[ForeignKey("AssociationId")]
+		public required FromAssociation Association { get; set; }
+	}
+
+	sealed class FromAssociation
+	{
+		public uint Id { get; init; }
+
+		[MaxLength(64), UsedImplicitly]
+		public required string Message { get; set; }
+	}
+
 	/**/
 
 	sealed class ToContext : DbContext
@@ -155,6 +252,9 @@ public sealed class MapInstanceTests
 		public required DbSet<To> Basic { get; [UsedImplicitly] init; }
 
 		public required DbSet<ToOwned> Owned { get; [UsedImplicitly] set; }
+
+		public required DbSet<ToAssociated> Associated { get; [UsedImplicitly] init; }
+		public required DbSet<ToAssociation> Associations { get; [UsedImplicitly] init; }
 	}
 
 	sealed class To
@@ -165,7 +265,11 @@ public sealed class MapInstanceTests
 
 		[MaxLength(16)]
 		public required string Name { get; init; }
+
+		public required ToEnum Enumeration { get; set; }
 	}
+
+	enum ToEnum : byte { One, Two, Three, Four }
 
 	sealed class ToOwned
 	{
@@ -182,6 +286,27 @@ public sealed class MapInstanceTests
 	[Owned]
 	sealed class ToOwnedValue
 	{
+		[MaxLength(64), UsedImplicitly]
+		public required string Message { get; set; }
+	}
+
+	sealed class ToAssociated
+	{
+		public Guid Id { get; init; }
+
+		public required DateTimeOffset Created { get; init; }
+
+		[MaxLength(16)]
+		public required string Name { get; init; }
+
+		[ForeignKey("AssociationId")]
+		public required ToAssociation Association { get; init; }
+	}
+
+	sealed class ToAssociation
+	{
+		public uint Id { get; init; }
+
 		[MaxLength(64), UsedImplicitly]
 		public required string Message { get; set; }
 	}

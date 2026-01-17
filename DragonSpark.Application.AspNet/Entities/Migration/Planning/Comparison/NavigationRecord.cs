@@ -1,3 +1,5 @@
-﻿namespace DragonSpark.Application.AspNet.Entities.Migration.Planning.Comparison;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
 
-public readonly record struct NavigationRecord(string Name, string TargetType, bool IsCollection, bool IsOnDependent);
+namespace DragonSpark.Application.AspNet.Entities.Migration.Planning.Comparison;
+
+public readonly record struct NavigationRecord(string Name, IEntityType Type, bool IsCollection, bool IsOnDependent);

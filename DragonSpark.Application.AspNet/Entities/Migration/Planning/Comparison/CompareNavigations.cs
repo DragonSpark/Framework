@@ -1,22 +1,53 @@
 ﻿using DragonSpark.Model.Selection;
+using Microsoft.EntityFrameworkCore.Metadata;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Planning.Comparison;
 
-sealed class CompareNavigations : ISelect<ComparisonInput, NavigationComparison>
+// TODO
+
+public readonly record struct CompareNavigationsInput(NavigationDefinition From, NavigationDefinition To);
+
+sealed class CompareNavigations : ISelect<CompareNavigationsInput, NavigationComparison>
 {
-	public static CompareNavigations Default { get; } = new();
+	readonly IEqualityComparer<NavigationRecord> _comparer;
+	readonly IEqualityComparer<IEntityType>      _types;
 
-	CompareNavigations() {}
+	public CompareNavigations(IEntityTypes types) : this(new LocationAwareEntityTypeEqualityComparer(types)) {}
 
-	public NavigationComparison Get(ComparisonInput parameter)
+	public CompareNavigations(IEqualityComparer<IEntityType> types)
+		: this(new NavigationRecordEqualityComparer(types), types) {}
+
+	public CompareNavigations(IEqualityComparer<NavigationRecord> comparer, IEqualityComparer<IEntityType> types)
+	{
+		_comparer = comparer;
+		_types    = types;
+	}
+
+	public NavigationComparison Get(CompareNavigationsInput parameter)
 	{
 		var (from, to) = parameter;
-		var added   = to.Navigations.Set.Except(from.Navigations.Set).ToArray();
-		var removed = from.Navigations.Set.Except(to.Navigations.Set).ToArray();
-		var changed = from.Navigations.Set.Intersect(to.Navigations.Set)
-		                  .Where(n => from.Navigations.Map[n.Name].TargetType != to.Navigations.Map[n.Name].TargetType)
+		var added   = to.Set.Except(from.Set, _comparer).ToArray();
+		var removed = from.Set.Except(to.Set, _comparer).ToArray();
+		var changed = from.Set.Intersect(to.Set, _comparer)
+		                  .Where(x => !_types.Equals(from.Map[x.Name].Type, to.Map[x.Name].Type))
 		                  .ToArray();
 		return new(added, removed, changed);
 	}
+}
+
+sealed class NavigationRecordEqualityComparer : IEqualityComparer<NavigationRecord>
+{
+	readonly IEqualityComparer<IEntityType> _type;
+
+	public NavigationRecordEqualityComparer(IEqualityComparer<IEntityType> type) => _type = type;
+
+	public bool Equals(NavigationRecord x, NavigationRecord y)
+		=> x.Name == y.Name && _type.Equals(x.Type, y.Type) && x.IsCollection == y.IsCollection &&
+		   x.IsOnDependent == y.IsOnDependent;
+
+	public int GetHashCode(NavigationRecord obj)
+		=> HashCode.Combine(obj.Name, _type.GetHashCode(obj.Type), obj.IsCollection, obj.IsOnDependent);
 }

@@ -1,11 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Planning.Comparison;
 
 public readonly record struct NavigationDefinition(
+	IEntityType Owner,
 	HashSet<NavigationRecord> Set,
 	IReadOnlyDictionary<string, NavigationRecord> Map)
 {
-	public NavigationDefinition(HashSet<NavigationRecord> set) : this(set, set.ToDictionary(x => x.Name)) {}
+	public NavigationDefinition(IEntityType owner, HashSet<NavigationRecord> set)
+		: this(owner, set, set.ToDictionary(x => x.Name)) {}
 }

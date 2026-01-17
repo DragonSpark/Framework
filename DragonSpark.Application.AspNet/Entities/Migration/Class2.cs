@@ -5,25 +5,27 @@ using System.Linq;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration;
 
-class Class2;
-
-// TODO
-
 sealed class MapEntries : IMap
 {
 	public static MapEntries Default { get; } = new();
 
-	MapEntries() : this(MapOwned.Default) {}
+	MapEntries() : this(CopyValues.Default, MapOwned.Default) {}
 
+	readonly ICommand<MapInput>                _copy;
 	readonly ICommand<MapNavigationEntryInput> _owned;
 
-	public MapEntries(ICommand<MapNavigationEntryInput> owned) => _owned = owned;
+	public MapEntries(ICommand<MapInput> copy, ICommand<MapNavigationEntryInput> owned)
+	{
+		_copy  = copy;
+		_owned = owned;
+	}
 
 	public void Execute(MapInput parameter)
 	{
 		var (from, to) = parameter;
 		to.Context.Attach(to.Entity);
-		to.CurrentValues.SetValues(from.Entity);
+
+		_copy.Execute(parameter);
 
 		foreach (var navigation in from.Metadata.GetNavigations().Where(x => x.TargetEntityType.IsOwned()))
 		{
@@ -33,34 +35,27 @@ sealed class MapEntries : IMap
 	}
 }
 
+// TODO
+
+sealed class CopyValues : ICommand<MapInput>
+{
+	public static CopyValues Default { get; } = new();
+
+	CopyValues() {}
+
+	public void Execute(MapInput parameter)
+	{
+		var (from, to) = parameter;
+
+		var values = from.CurrentValues.Properties.ToDictionary(x => x.Name, x => from.CurrentValues[x]);
+		to.CurrentValues.SetValues(values);
+	}
+}
+
 public readonly record struct MapNavigationEntryInput(NavigationEntry From, NavigationEntry To);
 
 sealed class MapOwned : ICommand<MapNavigationEntryInput>
 {
-	/*
-	static void Collection(NavigationEntry source, EntityEntry destination, INavigation navigation)
-	{
-		// Collection: clear + add mapped
-		var to = destination.Collection(navigation.Name);
-		if (to.CurrentValue is IList t)
-		{
-			t.Clear();
-			if (source.CurrentValue is IEnumerable from)
-			{
-				foreach (var fromChild in from.Cast<object>())
-				{
-					/*A.New(to.Metadata.GetCollectionAccessor().CollectionType)
-					var mappedChild = GetMappedChild(fromChild);
-					if (mappedChild != null)
-					{
-						t.Add(mappedChild);
-					}#1#
-				}
-			}
-		}
-	}
-	*/
-
 	public static MapOwned Default { get; } = new();
 
 	MapOwned() {}
