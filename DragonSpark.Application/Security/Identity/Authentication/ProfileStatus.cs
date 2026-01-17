@@ -1,6 +1,6 @@
 ﻿namespace DragonSpark.Application.Security.Identity.Authentication;
 
-public enum ProfileStatus
+public enum ProfileStatus : byte
 {
 	Invalid,
 	Anonymous,
