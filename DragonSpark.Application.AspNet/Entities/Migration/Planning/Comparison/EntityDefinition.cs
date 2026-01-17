@@ -1,11 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata;
-using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Planning.Comparison;
 
-public readonly record struct EntityDefinition(PropertyDefinition Properties, NavigationDefinition Navigations)
+public readonly record struct EntityDefinition(
+	KeyDefinition Keys,
+	PropertyDefinition Properties,
+	NavigationDefinition Navigations)
 {
-	public EntityDefinition(IEntityType owner, HashSet<PropertyRecord> properties,
-	                        HashSet<NavigationRecord> navigation)
-		: this(new PropertyDefinition(owner, properties), new(owner, navigation)) {}
+	// ReSharper disable once TooManyDependencies
+	public EntityDefinition(IEntityType owner, ImmutableHashSet<KeyRecord> keys, ImmutableHashSet<PropertyRecord> properties,
+	                        ImmutableHashSet<NavigationRecord> navigation)
+		: this(new(owner, keys), new(owner, properties), new(owner, navigation)) {}
 }

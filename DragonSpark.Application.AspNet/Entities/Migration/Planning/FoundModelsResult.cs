@@ -6,4 +6,4 @@ namespace DragonSpark.Application.AspNet.Entities.Migration.Planning;
 
 public readonly record struct FoundModelsResult(
 	IReadOnlyCollection<IEntityType> Exact,
-	IReadOnlyCollection<ComparisonResult> Modified);
+	IReadOnlyCollection<EntityComparisonResult> Modified);

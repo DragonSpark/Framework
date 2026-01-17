@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Planning.Comparison;
 
-public interface IEntityComparison : ISelect<EntityDefinitionInput, ComparisonResult>;
+public interface IEntityComparison : ISelect<EntityDefinitionInput, EntityComparisonResult>;

@@ -17,7 +17,7 @@ public class ModelStatus : ISelect<ModelStatusInput, ModelStatusResult>
 
 		var locate    = _types.Get(destination);
 		var exact     = new List<IEntityType>();
-		var differing = new List<ComparisonResult>();
+		var differing = new List<EntityComparisonResult>();
 		var missing   = new List<IEntityType>();
 		var entities  = new EntityComparison(locate);
 
@@ -27,7 +27,7 @@ public class ModelStatus : ISelect<ModelStatusInput, ModelStatusResult>
 			if (to is not null)
 			{
 				var comparison = entities.Get(new(from, to));
-				if (comparison.Changes > 0)
+				if (comparison.Modifications.Changes > 0)
 				{
 					differing.Add(comparison);
 				}
@@ -42,7 +42,7 @@ public class ModelStatus : ISelect<ModelStatusInput, ModelStatusResult>
 			}
 		}
 
-		differing.Sort((x, y) => x.Changes.CompareTo(y.Changes));
+		differing.Sort((x, y) => x.Modifications.Changes.CompareTo(y.Modifications.Changes));
 		return new(new(exact.AsReadOnly(), differing.AsReadOnly()), missing.AsReadOnly());
 	}
 }
