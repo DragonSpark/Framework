@@ -2,4 +2,5 @@
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Planning.Comparison;
 
-public abstract record EntityComparisonResult(IEntityType From);
+public sealed record ExactEntityComparisonResult(IEntityType From, IEntityType To)
+	: MatchedEntityComparisonResult(From, To);

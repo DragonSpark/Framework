@@ -6,11 +6,13 @@ using System.Linq;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Planning;
 
-public class MigrationOrder : IArray<IModel, IEntityType>
+public sealed class MigrationOrder : IArray<IModel, IEntityType>
 {
-	readonly ITopologicalSort _sort;
+	public static MigrationOrder Default { get; } = new();
 
-	protected MigrationOrder() : this(TopologicalSort.Default) {}
+	MigrationOrder() : this(TopologicalSort.Default) {}
+	
+	readonly ITopologicalSort _sort;
 
 	public MigrationOrder(ITopologicalSort sort) => _sort = sort;
 

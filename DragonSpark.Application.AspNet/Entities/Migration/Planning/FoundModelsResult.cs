@@ -1,9 +1,9 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Migration.Planning.Comparison;
-using Microsoft.EntityFrameworkCore.Metadata;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Planning;
 
 public readonly record struct FoundModelsResult(
-	IReadOnlyCollection<IEntityType> Exact,
-	IReadOnlyCollection<EntityComparisonResult> Modified);
+	ImmutableArray<ExactEntityComparisonResult> Exact,
+	IReadOnlyCollection<ModifiedEntityComparisonResult> Modified);

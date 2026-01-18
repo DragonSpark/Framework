@@ -6,30 +6,29 @@ using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
-using DragonSpark.Runtime.Invocation.Expressions;
 using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.Logging;
 using NetFabric.Hyperlinq;
 using System;
 using System.Buffers;
 using System.Diagnostics;
 using System.Linq;
-using System.Linq.Expressions;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration;
 
-sealed class DefaultBatchSize : Instance<ushort>
+public sealed class DefaultBatchSize : Instance<ushort>
 {
 	public static DefaultBatchSize Default { get; } = new();
 
 	DefaultBatchSize() : base(5_000) {}
 }
 
-public readonly record struct BatchesInput(ILogger Logger, ushort BatchSize)
+public readonly record struct EntityMigratorInput(ILogger Logger, ushort BatchSize)
 {
-	public BatchesInput(ILogger logger) : this(logger, DefaultBatchSize.Default) {}
+	public EntityMigratorInput(ILogger logger) : this(logger, DefaultBatchSize.Default) {}
 }
 
 public readonly record struct MapInput(EntityEntry From, EntityEntry To)
@@ -41,31 +40,31 @@ public interface IMap : ICommand<MapInput>;
 
 // TODO
 
-public readonly record struct MappingInput<T>(DbContext Source, DbContext Destination, T From);
+public readonly record struct MappingInput(DbContext Source, DbContext Destination, object From, Type To);
 
-public interface IMapping<TFrom, out TTo> : ISelect<MappingInput<TFrom>, TTo>;
+public interface IMapped : ISelect<MappingInput, object>;
 
-public sealed class Mapping<TFrom, TTo> : IMapping<TFrom, TTo> where TFrom : class where TTo : class
+public sealed class Mapped : IMapped
 {
-	public static Mapping<TFrom, TTo> Default { get; } = new();
+	public static Mapped Default { get; } = new();
 
-	Mapping() : this(Map.Default) {}
+	Mapped() : this(Map.Default) {}
 
-	readonly Func<TTo> _new;
-	readonly IMap      _map;
+	readonly Func<Type, object> _new;
+	readonly IMap               _map;
 
-	public Mapping(IMap map) : this(A.New<TTo>, map) {}
+	public Mapped(IMap map) : this(A.New, map) {}
 
-	public Mapping(Func<TTo> @new, IMap map)
+	public Mapped(Func<Type, object> @new, IMap map)
 	{
 		_new = @new;
 		_map = map;
 	}
 
-	public TTo Get(MappingInput<TFrom> parameter)
+	public object Get(MappingInput parameter)
 	{
-		var (source, destination, from) = parameter;
-		var result = _new();
+		var (source, destination, from, to) = parameter;
+		var result = _new(to);
 		_map.Execute(new(source.Entry(from), destination.Entry(result)));
 		return result;
 	}
@@ -74,24 +73,63 @@ public sealed class Mapping<TFrom, TTo> : IMapping<TFrom, TTo> where TFrom : cla
 public record Batching(DbContext Source, DbContext Destination);
 
 public sealed record Batching<T>(DbContext Source, DbContext Destination, IQueryable<T> Subject)
-	: Batching(Source, Destination);
+	: Batching(Source, Destination) where T : class
+{
+	public Batching(DbContext Source, DbContext Destination) : this(Source, Destination, Source.Set<T>()) {}
+}
 
 public class Migration<T> : Migration
 {
-	protected Migration(params IBatches[] batches) : this(DefaultLog<T>.Default.Get(), batches) {}
+	protected Migration(DbContext source, DbContext destination, IEntityMigrators processors)
+		: this(processors.Get(new(source, destination))) {}
 
-	protected Migration(ILogger logger, params IBatches[] batches) : base(logger, batches) {}
+	protected Migration(params IEntityMigrator[] migrators) : this(DefaultLog<T>.Default.Get(), migrators) {}
+
+	protected Migration(ILogger logger, params IEntityMigrator[] migrators) : base(logger, migrators) {}
 }
 
-public class Migration : ICommand<ushort>, ICommand
+public static class Extensions
 {
-	readonly ILogger         _logger;
-	readonly Array<IBatches> _batches;
+	public static IMigration WithConstraintManagement(this IMigration @this, DbContext destination)
+		=> new ConstraintAwareMigration(@this, destination.Database);
+}
 
-	protected Migration(ILogger logger, params IBatches[] batches)
+public sealed class ConstraintAwareMigration : IMigration
+{
+	readonly IMigration     _previous;
+	readonly DatabaseFacade _facade;
+
+	public ConstraintAwareMigration(IMigration previous, DatabaseFacade facade)
 	{
-		_logger  = logger;
-		_batches = batches;
+		_previous = previous;
+		_facade   = facade;
+	}
+
+	public void Execute(ushort parameter)
+	{
+		_facade.ExecuteSqlRaw("EXEC sp_msforeachtable 'ALTER TABLE ? NOCHECK CONSTRAINT ALL';");
+		try
+		{
+			_previous.Execute(parameter);
+		}
+		finally
+		{
+			_facade.ExecuteSqlRaw("EXEC sp_msforeachtable 'ALTER TABLE ? WITH CHECK CHECK CONSTRAINT ALL';");	
+		}
+	}
+}
+
+public interface IMigration : ICommand<ushort>;
+
+public class Migration : IMigration, ICommand
+{
+	readonly ILogger                _logger;
+	readonly Array<IEntityMigrator> _migrators;
+
+	protected Migration(ILogger logger, params IEntityMigrator[] migrators)
+	{
+		_logger    = logger;
+		_migrators = migrators;
 	}
 
 	public void Execute(None parameter)
@@ -101,33 +139,33 @@ public class Migration : ICommand<ushort>, ICommand
 
 	public void Execute(ushort parameter)
 	{
-		var input = new BatchesInput(_logger, parameter);
-		foreach (var batch in _batches)
+		var input = new EntityMigratorInput(_logger, parameter);
+		foreach (var batch in _migrators)
 		{
 			batch.Execute(input);
 		}
 	}
 }
 
-public interface IBatches : ICommand<BatchesInput>, IResult<Batching>;
+public sealed record EntityTypeMapping(Type From, Type To);
 
-public class Batches<TFrom, TTo> : Instance<Batching>, IBatches where TFrom : class where TTo : class
+public interface IEntityMigrator : ICommand<EntityMigratorInput>, IResult<EntityTypeMapping>;
+
+public class EntityMigratorBase<TFrom, TTo> : Instance<EntityTypeMapping>, IEntityMigrator
+	where TFrom : class where TTo : class
 {
 	readonly Batching<TFrom> _batching;
 	readonly IBatch<TFrom>   _batch;
 
-	protected Batches(DbContext Source, DbContext Destination, IQueryable<TFrom> Subject)
-		: this(new(Source, Destination, Subject)) {}
+	protected EntityMigratorBase(Batching<TFrom> batching, IMap map) : this(batching, new Batch<TFrom, TTo>(map)) {}
 
-	protected Batches(Batching<TFrom> batching) : this(batching, Batch<TFrom, TTo>.Default) {}
-
-	protected Batches(Batching<TFrom> batching, IBatch<TFrom> batch) : base(batching)
+	protected EntityMigratorBase(Batching<TFrom> batching, IBatch<TFrom> batch) : base(new(typeof(TFrom), typeof(TTo)))
 	{
 		_batching = batching;
 		_batch    = batch;
 	}
 
-	public void Execute(BatchesInput parameter)
+	public void Execute(EntityMigratorInput parameter)
 	{
 		var (logger, size)                 = parameter;
 		var (source, destination, subject) = _batching;
@@ -136,6 +174,9 @@ public class Batches<TFrom, TTo> : Instance<Batching>, IBatches where TFrom : cl
 		{
 			_batch.Execute(new(logger, source, destination, subject, new(offset, size), total));
 		}
+
+		source.ChangeTracker.Clear();
+		destination.ChangeTracker.Clear();
 	}
 }
 
@@ -149,26 +190,31 @@ public sealed record BatchInput<T>(
 
 public interface IBatch<T> : ICommand<BatchInput<T>>;
 
-public sealed class Batch<T, TTo> : IBatch<T> where T : class where TTo : class
+public sealed class Batch<TFrom, TTo> : IBatch<TFrom> where TFrom : class where TTo : class
 {
-	public static Batch<T, TTo> Default { get; } = new();
+	readonly IMapped        _map;
+	readonly Type           _to;
+	readonly ArrayPool<TTo> _pool;
 
-	Batch() : this(Mapping<T, TTo>.Default) {}
+	public Batch(IMap map) : this(new Mapped(map), A.Type<TTo>(), ArrayPool<TTo>.Shared) {}
 
-	readonly IMapping<T, TTo> _map;
+	public Batch(IMapped map, Type to, ArrayPool<TTo> pool)
+	{
+		_map  = map;
+		_to   = to;
+		_pool = pool;
+	}
 
-	public Batch(IMapping<T, TTo> map) => _map = map;
-
-	public void Execute(BatchInput<T> parameter)
+	public void Execute(BatchInput<TFrom> parameter)
 	{
 		var (logger, source, destination, from, (skip, top), total) = parameter;
 		var watch  = Stopwatch.StartNew();
 		var offset = skip.Value();
-		using var batch = from.AsValueEnumerable()
-		                      .Skip(offset)
+		using var batch = from.Skip(offset)
 		                      .Take(top.Value())
-		                      .Select(x => _map.Get(new(source, destination, x)))
-		                      .ToArray(ArrayPool<TTo>.Shared);
+		                      .Select(x => (TTo)_map.Get(new(source, destination, x, _to)))
+		                      .AsValueEnumerable()
+		                      .ToArray(_pool);
 
 		var configuration = new BulkConfig { BatchSize = batch.Length, CalculateStats = true };
 		destination.BulkInsertOrUpdate(batch, configuration);
@@ -176,58 +222,10 @@ public sealed class Batch<T, TTo> : IBatch<T> where T : class where TTo : class
 		var info  = configuration.StatsInfo.Verify();
 		var count = info.StatsNumberInserted + info.StatsNumberUpdated;
 		logger.LogInformation("{From} -> {To}: Batch of {Count} processed in {Elapsed:mm\\:ss\\.fff} ({Rate:F1} entities/sec)",
-		                      A.Type<T>(), A.Type<TTo>(), count, watch.Elapsed,
+		                      A.Type<TFrom>(), _to, count, watch.Elapsed,
 		                      count / watch.Elapsed.TotalSeconds);
 
 		logger.LogDebug("Progress: {Processed}/{Total} ({Percent:F1}%)",
 		                offset + count, total, (offset + count) / (double)total * 100);
 	}
-}
-
-public static class Extensions
-{
-	public static IBatches Flatten<TFrom, TKey, TTo>(this Batches<TFrom, TTo> @this, Expression<Func<TFrom, TKey>> key)
-		where TTo : class where TFrom : class
-		=> new FlattenAwareBatches<TFrom, TKey, TTo>(@this, key);
-}
-
-sealed class FlattenAwareBatches<TFrom, TKey, TTo> : IBatches where TTo : class where TFrom : class
-{
-	readonly IBatches                      _previous;
-	readonly Expression<Func<TFrom, TKey>> _key;
-	readonly string                        _name;
-
-	public FlattenAwareBatches(IBatches previous, Expression<Func<TFrom, TKey>> key)
-		: this(previous, key, key.GetMemberInfo().Name) {}
-
-	public FlattenAwareBatches(IBatches previous, Expression<Func<TFrom, TKey>> key, string name)
-	{
-		_previous = previous;
-		_key      = key;
-		_name     = name;
-	}
-
-	public void Execute(BatchesInput parameter)
-	{
-		var (logger, _)           = parameter;
-		var (source, destination) = _previous.Get();
-
-		// Query source PKs (assume Id property—adjust if key different)
-		var existing = destination.Set<TTo>().Select(x => EF.Property<TKey>(x, _name));
-		var exists   = source.Set<TFrom>().Select(_key).ToHashSet().IsSubsetOf(existing);
-		var to       = destination.Set<TTo>();
-		if (exists)
-		{
-			logger.LogInformation("Flatten {Set}: All source keys already present in destination (idempotent, no missing data)",
-			                      to.GetType());
-		}
-		else
-		{
-			var cleared = to.ExecuteDelete();
-			logger.LogInformation("Flatten {Set}: Cleared of {Count} entries", to.GetType(), cleared);
-			_previous.Execute(parameter);
-		}
-	}
-
-	public Batching Get() => _previous.Get();
 }

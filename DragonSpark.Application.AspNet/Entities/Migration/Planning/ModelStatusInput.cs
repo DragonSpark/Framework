@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata;
-using System.Collections.Generic;
+﻿using DragonSpark.Model.Sequences;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Planning;
 
-public readonly record struct ModelStatusInput(IReadOnlyCollection<IEntityType> Types, IModel Destination);
+public readonly record struct ModelStatusInput(Array<IEntityType> Types, IModel Destination);
