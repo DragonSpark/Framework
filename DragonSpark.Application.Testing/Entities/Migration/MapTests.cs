@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Migration;
+using DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 using DragonSpark.Runtime;
 using DragonSpark.Testing.Objects.Entities.SqlLite;
 using FluentAssertions;

@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Commands;
+﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators;
+using DragonSpark.Model.Commands;
 using System.Linq;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration;
