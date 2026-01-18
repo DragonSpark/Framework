@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Sequences;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Sequences;
 using Microsoft.EntityFrameworkCore.Metadata;
 using NetFabric.Hyperlinq;
 using System.Buffers;
@@ -22,7 +23,7 @@ public sealed class MigrationOrder : IArray<IModel, IEntityType>
 		                              .Where(t => !t.IsOwned() && t.FindPrimaryKey() != null)
 		                              .AsValueEnumerable()
 		                              .ToArray(ArrayPool<IEntityType>.Shared);
-		var result = _sort.Get(entities);
+		var result = _sort.Get(entities).Open().Take(17).Result(); // TODO
 		return result;
 	}
 }

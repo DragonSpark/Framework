@@ -15,10 +15,27 @@ sealed class KnownKeys<T> : ISelect<DbContext, ImmutableHashSet<object>> where T
 
 	public ImmutableHashSet<object> Get(DbContext parameter)
 	{
-		var entityType = parameter.Model.FindEntityType(A.Type<T>()).Verify();
+		var entityType = parameter.Model.FindEntityType(typeof(T)).Verify();
 		var key        = entityType.FindPrimaryKey().Verify();
-		var names      = string.Join(',', key.Properties.Select(x => x.Name));
-		var result     = parameter.Set<T>().Select(names).Cast<object>().ToImmutableHashSet();
-		return result;
+		var props      = key.Properties;
+
+		switch (props.Count)
+		{
+			case 1:
+			{
+				var name = props[0].Name;
+				return parameter.Set<T>().Select(e => EF.Property<object>(e, name)).AsEnumerable().ToImmutableHashSet();
+			}
+			default:
+				return parameter.Set<T>()
+				                .Select(e => new
+				                {
+					                A = EF.Property<object>(e, props[0].Name),
+					                B = EF.Property<object>(e, props[1].Name),
+				                })
+				                .AsEnumerable()
+				                .Select(x => (object)new[] { x.A, x.B })
+				                .ToImmutableHashSet();
+		}
 	}
 }
