@@ -23,7 +23,8 @@ sealed class IdentityAwareEntityMigrator : IEntityMigrator
 
 	public void Execute(EntityMigratorInput parameter)
 	{
-		_database.ExecuteSqlRaw(_template.FormatWith("ON"));
+		var formatWith = _template.FormatWith("ON");
+		_database.ExecuteSqlRaw(formatWith);
 
 		try
 		{
@@ -36,4 +37,8 @@ sealed class IdentityAwareEntityMigrator : IEntityMigrator
 	}
 
 	public EntityTypeMapping Get() => _previous.Get();
+
+	public void Execute(EntityPreMigrationInput parameter) {}
+
+	public void Execute(EntityPostMigrationInput parameter) {}
 }

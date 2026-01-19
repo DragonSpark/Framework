@@ -2,31 +2,31 @@
 using DragonSpark.Application.Diagnostics.Initialization;
 using DragonSpark.Model;
 using DragonSpark.Model.Commands;
-using DragonSpark.Model.Sequences;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using System.Linq;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration;
 
 public class Migration<T> : Migration
 {
-	protected Migration(DbContext source, DbContext destination, IEntityMigrators processors)
-		: this(processors.Get(new(source, destination))) {}
+	protected Migration(MigrationInput input, IEntityMigrators processors, IMigrationSteps steps)
+		: this(steps, processors.Get(input)) {}
 
-	protected Migration(params IEntityMigrator[] migrators) : this(DefaultLog<T>.Default.Get(), migrators) {}
+	protected Migration(IMigrationSteps steps, params IEntityMigrator[] migrators)
+		: this(DefaultLog<T>.Default.Get(), steps.Get(migrators).ToArray()) {}
 
-	protected Migration(ILogger logger, params IEntityMigrator[] migrators) : base(logger, migrators) {}
+	protected Migration(ILogger logger, params IMigrationStep[] steps) : base(logger, steps) {}
 }
 
 public class Migration : IMigration, ICommand
 {
-	readonly ILogger                _logger;
-	readonly Array<IEntityMigrator> _migrators;
+	readonly ILogger          _logger;
+	readonly IMigrationStep[] _steps;
 
-	protected Migration(ILogger logger, params IEntityMigrator[] migrators)
+	protected Migration(ILogger logger, params IMigrationStep[] steps)
 	{
-		_logger    = logger;
-		_migrators = migrators;
+		_logger = logger;
+		_steps  = steps;
 	}
 
 	public void Execute(None parameter)
@@ -37,9 +37,9 @@ public class Migration : IMigration, ICommand
 	public void Execute(ushort parameter)
 	{
 		var input = new EntityMigratorInput(_logger, parameter);
-		foreach (var batch in _migrators)
+		foreach (var step in _steps)
 		{
-			batch.Execute(input);
+			step.Execute(input);
 		}
 	}
 }

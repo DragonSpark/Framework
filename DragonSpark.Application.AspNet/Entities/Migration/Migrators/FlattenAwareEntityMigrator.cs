@@ -15,9 +15,9 @@ sealed class FlattenAwareEntityMigrator<TFrom, TTo> : IEntityMigrator where TFro
 		_destination = destination;
 	}
 
-	public void Execute(EntityMigratorInput parameter)
+	public void Execute(EntityPreMigrationInput parameter)
 	{
-		var (logger, _) = parameter;
+		var logger = parameter.Logger;
 		var to     = _destination.Set<TTo>();
 		var exists = KnownKeys<TFrom>.Default.Get(_source).IsSubsetOf(KnownKeys<TTo>.Default.Get(_destination));
 		if (exists)
@@ -31,7 +31,14 @@ sealed class FlattenAwareEntityMigrator<TFrom, TTo> : IEntityMigrator where TFro
 			logger.LogInformation("Flatten {Set}: Cleared of {Count} entries", to.GetType(), cleared);
 			_previous.Execute(parameter);
 		}
+
+	}
+
+	public void Execute(EntityMigratorInput parameter)
+	{
 	}
 
 	public EntityTypeMapping Get() => _previous.Get();
+
+	public void Execute(EntityPostMigrationInput parameter) {}
 }

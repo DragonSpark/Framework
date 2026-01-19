@@ -35,7 +35,7 @@ sealed class CopyValues : ICommand<MapInput>
 			var type = to.Metadata.FindProperty(name)?.ClrType;
 			if (type is { IsEnum: true })
 			{
-				return Convert.ChangeType(value, Enum.GetUnderlyingType(type!));
+				return Convert.ChangeType(value, Enum.GetUnderlyingType(type));
 			}
 		}
 

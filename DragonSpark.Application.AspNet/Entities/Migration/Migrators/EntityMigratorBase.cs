@@ -10,7 +10,8 @@ public class EntityMigratorBase<TFrom, TTo> : Instance<EntityTypeMapping>, IEnti
 	readonly Batching<TFrom> _batching;
 	readonly IBatch<TFrom>   _batch;
 
-	protected EntityMigratorBase(Batching<TFrom> batching, IMap map) : this(batching, new Batch<TFrom, TTo>(map)) {}
+	protected EntityMigratorBase(Batching<TFrom> batching, IMap map)
+		: this(batching, Batches<TFrom, TTo>.Default.Get(new(batching.Source, batching.Destination, map))) {}
 
 	protected EntityMigratorBase(Batching<TFrom> batching, IBatch<TFrom> batch) : base(new(typeof(TFrom), typeof(TTo)))
 	{
@@ -23,12 +24,23 @@ public class EntityMigratorBase<TFrom, TTo> : Instance<EntityTypeMapping>, IEnti
 		var (logger, size)                 = parameter;
 		var (source, destination, subject) = _batching;
 		var total = subject.Count().Grade();
-		for (var offset = 0; offset < total; offset += size)
+		if (total > 0)
 		{
-			_batch.Execute(new(logger, source, destination, subject, new(offset, size), total));
-		}
+			for (var offset = 0; offset < total; offset += size)
+			{
+				_batch.Execute(new(logger, source, destination, subject, new(offset, size), total));
+			}
 
-		source.ChangeTracker.Clear();
-		destination.ChangeTracker.Clear();
+			source.ChangeTracker.Clear();
+			destination.ChangeTracker.Clear();	
+		}
+		else
+		{
+			logger.LogInformation("{From} -> {To}: No rows found in source", A.Type<TFrom>(), A.Type<TTo>());
+		}
 	}
+
+	public void Execute(EntityPreMigrationInput parameter) {}
+
+	public void Execute(EntityPostMigrationInput parameter) {}
 }

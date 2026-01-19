@@ -4,6 +4,6 @@ namespace DragonSpark.Application.AspNet.Entities.Migration;
 
 public static class Extensions
 {
-	public static IMigration WithConstraintManagement(this IMigration @this, DbContext destination)
-		=> new ConstraintAwareMigration(@this, destination.Database);
+	public static IMigrationSteps WithConstraintManagement(this IMigrationSteps @this, DbContext destination)
+		=> new ConstraintAwareMigrationSteps(@this, destination.Database);
 }

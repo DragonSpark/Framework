@@ -1,0 +1,19 @@
+﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators;
+using DragonSpark.Model.Sequences;
+
+namespace DragonSpark.Application.AspNet.Entities.Migration;
+
+public sealed class MigrationStep : IMigrationStep
+{
+	readonly Array<IEntityMigrator> _migrators;
+
+	public MigrationStep(Array<IEntityMigrator> migrators) => _migrators = migrators;
+
+	public void Execute(EntityMigratorInput parameter)
+	{
+		foreach (var migrator in _migrators/*.Open().TakeLast(1)*/) // TODO
+		{
+			migrator.Execute(parameter);
+		}
+	}
+}

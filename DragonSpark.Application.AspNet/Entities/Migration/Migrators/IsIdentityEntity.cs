@@ -1,22 +1,19 @@
 ﻿using DragonSpark.Model.Selection.Conditions;
+using Microsoft.EntityFrameworkCore.Metadata;
+using System;
 using System.Linq;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
-
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 sealed class IsIdentityEntity : ICondition<IEntityType>
 {
 	public static IsIdentityEntity Default { get; } = new();
 
-	IsIdentityEntity() {}
+	IsIdentityEntity() : this(IsIdentityProperty.Default.Get) {}
 
-	public bool Get(IEntityType type)
-	{
-		var key = type.FindPrimaryKey();
-		return key is not null &&
-		       key.Properties.Any(x => x.GetValueGenerationStrategy() ==
-		                               SqlServerValueGenerationStrategy.IdentityColumn);
-	}
+	readonly Func<IProperty, bool> _identity;
+
+	public IsIdentityEntity(Func<IProperty, bool> identity) => _identity = identity;
+
+	public bool Get(IEntityType type) => type.FindPrimaryKey()?.Properties.Any(_identity) == true;
 }

@@ -23,7 +23,7 @@ public sealed class MigrationOrder : IArray<IModel, IEntityType>
 		                              .Where(t => !t.IsOwned() && t.FindPrimaryKey() != null)
 		                              .AsValueEnumerable()
 		                              .ToArray(ArrayPool<IEntityType>.Shared);
-		var result = _sort.Get(entities).Open().Take(17).Result(); // TODO
+		var result = _sort.Get(entities).Open().Take(37).Result(); // TODO
 		return result;
 	}
 }

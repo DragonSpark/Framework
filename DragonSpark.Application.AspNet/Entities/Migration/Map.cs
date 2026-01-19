@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 using DragonSpark.Model.Commands;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration;
@@ -22,8 +23,7 @@ sealed class Map : IMap
 	public void Execute(MapInput parameter)
 	{
 		var (from, to) = parameter;
-		to.Context.Attach(to.Entity);
-
+		
 		_copy.Execute(parameter);
 
 		foreach (var navigation in from.Metadata.GetNavigations().Where(x => x.TargetEntityType.IsOwned()))
@@ -31,5 +31,7 @@ sealed class Map : IMap
 			_owned.Execute(new(from.Context.Entry(from.Entity).Navigation(navigation.Name),
 			                   to.Context.Entry(to.Entity).Navigation(navigation.Name)));
 		}
+		to.Context.Attach(to.Entity);
+		to.State = EntityState.Modified;
 	}
 }
