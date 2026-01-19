@@ -13,7 +13,7 @@ public sealed class Registrations : ICommand<IServiceCollection>
 
 	public void Execute(IServiceCollection parameter)
 	{
-		parameter.Register<BearerSettings>().Register<MessageBearerSettings>()
+		parameter.Register<BearerSettings>()
 				 //
 				 .Start<ISign>()
 				 .Forward<Sign>()
@@ -25,17 +25,7 @@ public sealed class Registrations : ICommand<IServiceCollection>
 				 .Decorate<ReferenceValueAwareBearer>()
 				 .Include(x => x.Dependencies.Recursive())
 				 .Scoped()
-				 //
-				 .Then.Start<IMessageBearer>()
-				 .Forward<MessageBearer>()
-				 .Include(x => x.Dependencies.Recursive())
-				 .Scoped()
-				 //
-				 .Then.Start<IToken>()
-				 .Forward<Token>()
-				 .Include(x => x.Dependencies.Recursive())
-				 .Singleton()
-				 //
+                 //
 				 .Then.Start<ICurrentBearer>()
 				 .Forward<CurrentBearer>()
 				 .Scoped()

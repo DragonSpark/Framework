@@ -12,7 +12,24 @@ sealed class Registrations : ICommand<IServiceCollection>
 
     public void Execute(IServiceCollection parameter)
     {
-        parameter.Start<TokenValidation>()
+        parameter.Register<MessageBearerSettings>()
+                 //
+                 .Start<IMessageBearer>()
+                 .Forward<MessageBearer>()
+                 .Include(x => x.Dependencies.Recursive())
+                 .Scoped()
+                 //
+                 .Then.Start<IToken>()
+                 .Forward<Token>()
+                 .Include(x => x.Dependencies.Recursive())
+                 .Singleton()
+                 //
+                 .Then.Start<ISecureToken>()
+                 .Forward<SecureToken>()
+                 .Include(x => x.Dependencies.Recursive())
+                 .Singleton()
+                 //
+                 .Then.Start<TokenValidation>()
                  .And<BearerConfiguration>()
                  .Singleton();
     }

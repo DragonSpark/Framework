@@ -70,7 +70,7 @@ partial class Extensions
 
 	public static string UserName(this ClaimsPrincipal @this) => Security.Identity.UserName.Default.Get(@this);
 
-    public static string Name(this ClaimsPrincipal @this) => @this.Identity.Verify().Name.Verify();
+	public static string Name(this ClaimsPrincipal @this) => @this.Identity.Verify().Name.Verify();
 
 	public static string? Get(this IValueProvider @this, string key)
 	{
@@ -131,7 +131,7 @@ partial class Extensions
 	public static Stop<PageQueryInput<UserInput>> PagingUserInput(this HttpContext @this, Guid parameter, PageRequest page)
 		=> @this.PagingInput(new UserInput(@this.User.Number().Value(), parameter), page);
 	public static Stop<PageQueryInput<UserInput<T>>> PagingUserInput<T>(this HttpContext @this, T parameter, 
-	                                                                    PageRequest page)
+																		PageRequest page)
 		=> @this.PagingInput(new UserInput<T>(@this.User.Number().Value(), parameter), page);
 
 	public static Stop<PageQueryInput<T>> PagingInput<T>(this HttpContext @this, T parameter, PageRequest page)

@@ -19,7 +19,9 @@ public sealed class IdentityStorage<T> where T : IdentityUser
     }
 
     public IdentityStorage<T> UsingPasskeys()
-        => new(_subject.Append(Security.Identity.Passkeys.Registrations<T>.Default), _configure);
+        => new(_subject.Append(Security.Identity.Passkeys.Registrations<T>.Default)
+                       .Append(Security.Identity.Passkeys.Configure.Default),
+               _configure);
 
     public IdentityStorage<T, TContext> StoredIn<TContext>() where TContext : DbContext
         => new(_subject, _configure);

@@ -1,8 +1,8 @@
-﻿using DragonSpark.Application.AspNet.Compose;
+using System;
+using DragonSpark.Application.AspNet.Compose;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
-using System;
 
 namespace DragonSpark.Application.Hosting.Server;
 
