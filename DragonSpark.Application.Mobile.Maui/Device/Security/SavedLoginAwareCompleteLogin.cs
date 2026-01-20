@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
 using DragonSpark.Application.Communication.Http.Security;
 using DragonSpark.Compose;
+using DragonSpark.Contracts.Security;
 using DragonSpark.Model.Operations;
 
 namespace DragonSpark.Application.Mobile.Maui.Device.Security;

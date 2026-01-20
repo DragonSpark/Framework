@@ -1,5 +1,6 @@
 using DragonSpark.Application.Communication.Http.Security;
 using DragonSpark.Application.Mobile.Maui.Storage;
+using DragonSpark.Contracts.Security;
 
 namespace DragonSpark.Application.Mobile.Maui.Security.Identity;
 

@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.Communication.Http.Security;
+using DragonSpark.Contracts.Security;
 using DragonSpark.Model.Results;
 
 namespace DragonSpark.Application.AspNet.Communication.Http;

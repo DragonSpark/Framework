@@ -1,5 +1,5 @@
-using DragonSpark.Application.Communication.Http.Security;
 using DragonSpark.Application.Model.Values;
+using DragonSpark.Contracts.Security;
 
 namespace DragonSpark.Application.Mobile.Maui.Device.Security;
 

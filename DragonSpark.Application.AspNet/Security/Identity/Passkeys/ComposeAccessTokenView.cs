@@ -1,7 +1,6 @@
 using System.Security.Claims;
 using System.Text.Json;
 using System.Threading.Tasks;
-using DragonSpark.Application.Communication.Http.Security;
 using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Contracts.Security;
