@@ -22,6 +22,6 @@ sealed class SavedLoginAwareCompleteLogin : ICompleteLogin
     {
         var (subject, stop) = parameter;
         await _previous.Off(parameter);
-        await _update.Off(new(subject?.identifier, stop));
+        await _update.Off(new(subject?.Identifier, stop));
     }
 }

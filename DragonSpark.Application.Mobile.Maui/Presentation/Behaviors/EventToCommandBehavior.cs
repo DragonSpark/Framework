@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using DragonSpark.Compose;
 using Microsoft.Maui.Controls;
 
@@ -18,14 +17,9 @@ public sealed class EventToCommandBehavior : CommunityToolkit.Maui.Behaviors.Eve
 
     protected override void OnTriggerHandled(object? sender = null, object? eventArgs = null)
     {
-        var b = EventName != nameof(Page.NavigatedTo) || !Popped.Default.Down();
-        if (b) // Could probably simplify this
+        if (EventName != nameof(Page.NavigatedTo) || !Popped.Default.Down()) // Could probably simplify this
         {
             base.OnTriggerHandled(sender, eventArgs);
-        }
-        else
-        {
-            Debugger.Break();
         }
     }
 
