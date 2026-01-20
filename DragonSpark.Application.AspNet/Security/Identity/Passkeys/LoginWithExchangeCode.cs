@@ -1,8 +1,8 @@
 using System.Text.Json;
 using System.Threading.Tasks;
 using DragonSpark.Application.AspNet.Security.Identity.Bearer;
-using DragonSpark.Application.Communication.Http.Security;
 using DragonSpark.Compose;
+using DragonSpark.Contracts.Security;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Selection.Stop;
 using Microsoft.AspNetCore.Http;

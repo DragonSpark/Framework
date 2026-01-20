@@ -1,5 +1,6 @@
 using System;
 using System.Text.Json.Serialization;
+using DragonSpark.Contracts.Security;
 using DragonSpark.Runtime;
 
 namespace DragonSpark.Application.Communication.Http.Security;
