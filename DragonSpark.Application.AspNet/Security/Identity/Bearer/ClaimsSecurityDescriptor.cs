@@ -24,12 +24,15 @@ sealed class ClaimsSecurityDescriptor : ISelect<ClaimsSecurityDescriptorInput, S
     public SecurityTokenDescriptor Get(ClaimsSecurityDescriptorInput parameter)
     {
         var (claims, expiration) = parameter;
+        var now = _time.Get();
         return new()
         {
             Claims             = claims,
             Issuer             = _settings.Issuer,
             Audience           = _settings.Audience,
-            Expires            = _time.Get().Add(expiration ?? _settings.Window).DateTime,
+            NotBefore          = now.UtcDateTime,
+            IssuedAt           = now.UtcDateTime,
+            Expires            = now.Add(expiration ?? _settings.Window).UtcDateTime,
             SigningCredentials = _credentials
         };
     }
