@@ -18,9 +18,12 @@ public sealed class Registrations<T> : ICommand<IServiceCollection> where T : cl
                  .Forward<ComposePasskeyCreationOptions<T>>()
                  .Singleton()
                  //
+                 .Then.Start<LoginWithExchangeCode>()
+                 .Singleton()
+                 //
                  .Then.Start<PasskeyResponseInterceptionMiddleware>()
                  .Include(x => x.Dependencies.Recursive())
                  .Singleton()
-                 ;
+            ;
     }
 }

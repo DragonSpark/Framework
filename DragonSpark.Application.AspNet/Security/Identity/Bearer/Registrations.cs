@@ -29,7 +29,12 @@ sealed class Registrations : ICommand<IServiceCollection>
                  .Include(x => x.Dependencies.Recursive())
                  .Singleton()
                  //
-                 .Then.Start<TokenValidation>()
+                 .Then.Start<IDecryptToken>()
+                 .Forward<DecryptToken>()
+                 .Include(x => x.Dependencies.Recursive())
+                 .Singleton()
+                 //
+                 .Then.Start<ApplicationTokenValidation>()
                  .And<BearerConfiguration>()
                  .Singleton();
     }

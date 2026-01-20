@@ -7,12 +7,17 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Bearer;
 
-public sealed class TokenValidation : Instance<TokenValidationParameters>
+public sealed class ApplicationTokenValidation : Instance<TokenValidationParameters>
 {
-    public TokenValidation(BearerSettings settings) : this(settings, EncodedTextAsData.Default.Get(settings.Key)) {}
+    public ApplicationTokenValidation(BearerSettings settings)
+        : this(settings, EncodedTextAsData.Default.Get(settings.Key)) {}
 
     [Candidate(false)]
-    public TokenValidation(BearerSettings settings, byte[] key)
+    public ApplicationTokenValidation(BearerSettings settings, byte[] key)
+        : this(settings, new SymmetricSecurityKey(key)) {}
+
+    [Candidate(false)]
+    public ApplicationTokenValidation(BearerSettings settings, SecurityKey key)
         : base(new()
         {
             ValidateIssuer           = true,
@@ -22,6 +27,6 @@ public sealed class TokenValidation : Instance<TokenValidationParameters>
             ValidIssuer              = settings.Issuer,
             ValidAudience            = settings.Audience,
             AuthenticationType       = IdentityConstants.ApplicationScheme,
-            IssuerSigningKey         = new SymmetricSecurityKey(key)
+            IssuerSigningKey         = key
         }) {}
 }

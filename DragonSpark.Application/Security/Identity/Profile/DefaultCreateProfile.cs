@@ -18,8 +18,7 @@ sealed class DefaultCreateProfile : ICreateProfile
 
     // ReSharper disable once TooManyDependencies
     public DefaultCreateProfile(IRequiredClaim identifier, IRequiredClaim handle, IRequiredClaim address,
-                                IRequiredClaim first, IRequiredClaim last,
-                                IRequiredClaim full)
+                                IRequiredClaim first, IRequiredClaim last, IRequiredClaim full)
     {
         _identifier = identifier;
         _handle     = handle;
