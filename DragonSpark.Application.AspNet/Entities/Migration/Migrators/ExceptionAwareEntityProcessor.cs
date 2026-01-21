@@ -3,13 +3,13 @@ using System;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
-sealed class ExceptionAwareBatch<TFrom, TTo> : IBatch<TFrom>
+sealed class ExceptionAwareEntityProcessor<TFrom, TTo> : IEntityProcessor<TFrom>
 {
-	readonly IBatch<TFrom> _previous;
+	readonly IEntityProcessor<TFrom> _previous;
 
-	public ExceptionAwareBatch(IBatch<TFrom> previous) => _previous = previous;
+	public ExceptionAwareEntityProcessor(IEntityProcessor<TFrom> previous) => _previous = previous;
 
-	public void Execute(BatchInput<TFrom> parameter)
+	public void Execute(ProcessChangesInput<TFrom> parameter)
 	{
 		try
 		{

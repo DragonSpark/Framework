@@ -8,12 +8,3 @@ public sealed class EntityMigratorRegistration : Instance<KeyValuePair<Type, IEn
 {
 	public EntityMigratorRegistration(IEntityMigrator instance) : base(new(instance.Get().From, instance)) {}
 }
-
-// TODO
-
-public static class Extensions
-{
-	public static EntityMigratorRegistration Registered(this IEntityMigrator @this) => new(@this);
-
-	
-}

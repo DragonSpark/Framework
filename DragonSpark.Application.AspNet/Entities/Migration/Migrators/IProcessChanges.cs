@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
-public interface IProcessChanges<T> : ISelect<BatchInput<T>, uint>;
+public interface IProcessChanges<T> : ISelect<ProcessChangesInput<T>, uint>;

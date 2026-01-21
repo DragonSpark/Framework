@@ -8,19 +8,20 @@ namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 public class EntityMigratorBase<TFrom, TTo> : Instance<EntityTypeMapping>, IEntityMigrator
 	where TFrom : class where TTo : class
 {
-	readonly Batching<TFrom> _batching;
-	readonly IBatch<TFrom>   _batch;
+	readonly Batching<TFrom>         _batching;
+	readonly IEntityProcessor<TFrom> _processor;
 
 	protected EntityMigratorBase(DbContext source, DbContext destination)
 		: this(new(source, destination), Map.Default) {}
 
 	protected EntityMigratorBase(Batching<TFrom> batching, IMap map)
-		: this(batching, Batches<TFrom, TTo>.Default.Get(new(batching.Source, batching.Destination, map))) {}
+		: this(batching, Processors<TFrom, TTo>.Default.Get(new(batching.Source, batching.Destination, map))) {}
 
-	protected EntityMigratorBase(Batching<TFrom> batching, IBatch<TFrom> batch) : base(new(typeof(TFrom), typeof(TTo)))
+	protected EntityMigratorBase(Batching<TFrom> batching, IEntityProcessor<TFrom> processor)
+		: base(new(typeof(TFrom), typeof(TTo)))
 	{
-		_batching = batching;
-		_batch    = batch;
+		_batching  = batching;
+		_processor = processor;
 	}
 
 	public void Execute(EntityMigratorInput parameter)
@@ -28,20 +29,7 @@ public class EntityMigratorBase<TFrom, TTo> : Instance<EntityTypeMapping>, IEnti
 		var (logger, size)                 = parameter;
 		var (source, destination, subject) = _batching;
 		var total = subject.Count().Grade();
-		if (total > 0)
-		{
-			for (var offset = 0; offset < total; offset += size)
-			{
-				_batch.Execute(new(logger, source, destination, subject, new(offset, size), total));
-			}
-
-			source.ChangeTracker.Clear();
-			destination.ChangeTracker.Clear();
-		}
-		else
-		{
-			logger.LogInformation("{From} -> {To}: No rows found in source", A.Type<TFrom>(), A.Type<TTo>());
-		}
+		_processor.Execute(new(logger, size, source, destination, subject, total));
 	}
 
 	public void Execute(EntityPreMigrationInput parameter) {}

@@ -3,7 +3,7 @@ using DragonSpark.Model.Sequences;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration;
 
-public sealed class MigrationStep : IMigrationStep
+public sealed class MigrationStep : IMigrationBody
 {
 	readonly Array<IEntityMigrator> _migrators;
 

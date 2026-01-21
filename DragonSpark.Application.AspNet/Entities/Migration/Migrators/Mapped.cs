@@ -3,7 +3,7 @@ using System;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
-public sealed class Mapped : IMapped
+public sealed class Mapped : IMapped // TODO: New
 {
 	public static Mapped Default { get; } = new();
 

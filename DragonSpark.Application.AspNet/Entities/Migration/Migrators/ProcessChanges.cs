@@ -2,20 +2,20 @@
 
 sealed class ProcessChanges<TFrom, TTo> : IProcessChanges<TFrom> where TFrom : class where TTo : class
 {
-	readonly IComposeBatch<TFrom, TTo> _batch;
-	readonly ISaveBatch<TTo>           _save;
+	readonly IEntities<TFrom, TTo> _entities;
+	readonly ISave<TTo>            _save;
 
-	public ProcessChanges(IComposeBatch<TFrom, TTo> batch, ISaveBatch<TTo> save)
+	public ProcessChanges(IEntities<TFrom, TTo> entities, ISave<TTo> save)
 	{
-		_batch = batch;
-		_save  = save;
+		_entities = entities;
+		_save     = save;
 	}
 
-	public uint Get(BatchInput<TFrom> parameter)
+	public uint Get(ProcessChangesInput<TFrom> parameter)
 	{
-		var (_, _, destination, _, _, _) = parameter;
-		using var batch  = _batch.Get(parameter);
-		var       result = _save.Get(new(destination, batch));
+		var (logger, size, _, destination, _, total) = parameter;
+		var entities = _entities.Get(parameter);
+		var result   = _save.Get(new(logger, size, destination, entities, total));
 		return result;
 	}
 }

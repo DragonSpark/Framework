@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
-public readonly record struct DetermineBatchInput(DbContext Source, DbContext Destination, IMap Map);
+public readonly record struct ProcessorsInput(DbContext Source, DbContext Destination, IMap Map);

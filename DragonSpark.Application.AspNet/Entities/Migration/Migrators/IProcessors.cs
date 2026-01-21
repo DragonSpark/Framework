@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
-public interface ISaveBatch<T> : ISelect<SaveBatchInput<T>, uint> where T : class;
+public interface IProcessors<T> : ISelect<ProcessorsInput, IEntityProcessor<T>>;
