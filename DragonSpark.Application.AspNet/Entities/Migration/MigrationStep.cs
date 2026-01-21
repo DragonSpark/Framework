@@ -11,7 +11,7 @@ public sealed class MigrationStep : IMigrationStep
 
 	public void Execute(EntityMigratorInput parameter)
 	{
-		foreach (var migrator in _migrators/*.Open().TakeLast(1)*/) // TODO
+		foreach (var migrator in _migrators)
 		{
 			migrator.Execute(parameter);
 		}

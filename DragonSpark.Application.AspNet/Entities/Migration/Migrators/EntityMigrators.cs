@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Migration.Planning;
+using DragonSpark.Model.Results;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Runtime;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -10,6 +11,9 @@ public class EntityMigrators : IEntityMigrators
 	readonly IArray<IModel, IEntityType>     _order;
 	readonly IComposeEntityComparisonResults _results;
 	readonly IEntityMigratorSelector         _selector;
+
+	protected EntityMigrators(IModelTypes types, IResult<IEntityMigratorSelector> selector)
+		: this(types, selector.Get()) {}
 
 	protected EntityMigrators(IModelTypes types, IEntityMigratorSelector selector)
 		: this(MigrationOrder.Default, new ComposeEntityComparisonResults(types), selector) {}

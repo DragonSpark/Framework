@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Results;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
@@ -9,6 +10,9 @@ public class EntityMigratorBase<TFrom, TTo> : Instance<EntityTypeMapping>, IEnti
 {
 	readonly Batching<TFrom> _batching;
 	readonly IBatch<TFrom>   _batch;
+
+	protected EntityMigratorBase(DbContext source, DbContext destination)
+		: this(new(source, destination), Map.Default) {}
 
 	protected EntityMigratorBase(Batching<TFrom> batching, IMap map)
 		: this(batching, Batches<TFrom, TTo>.Default.Get(new(batching.Source, batching.Destination, map))) {}
@@ -32,7 +36,7 @@ public class EntityMigratorBase<TFrom, TTo> : Instance<EntityTypeMapping>, IEnti
 			}
 
 			source.ChangeTracker.Clear();
-			destination.ChangeTracker.Clear();	
+			destination.ChangeTracker.Clear();
 		}
 		else
 		{
