@@ -1,7 +1,5 @@
 ﻿using DragonSpark.Compose;
-using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
@@ -11,7 +9,7 @@ sealed class New<TFrom, TTo> : IEntities<TFrom, TTo> where TFrom : class
 	readonly IMapped _map;
 	readonly Type    _to;
 
-	public New(IMap map) : this(new Mapped(map), A.Type<TTo>()) {}
+	public New(IMap map) : this(new New(map), A.Type<TTo>()) {}
 
 	public New(IMapped map, Type to)
 	{
@@ -26,36 +24,29 @@ sealed class New<TFrom, TTo> : IEntities<TFrom, TTo> where TFrom : class
 		return result;
 	}
 }
-sealed class Update<TFrom, TTo> : IEntities<TFrom, TTo>
-	where TFrom : class
-	where TTo   : class
+
+public sealed class New : IMapped
 {
-	readonly IMap _map;
+	public static New Default { get; } = new();
 
-	public Update(IMap map) => _map = map;
+	New() : this(Map.Default) {}
 
-	public IQueryable<TTo> Get(ProcessChangesInput<TFrom> parameter)
+	readonly Func<Type, object> _new;
+	readonly IMap               _map;
+
+	public New(IMap map) : this(A.New, map) {}
+
+	public New(Func<Type, object> @new, IMap map)
 	{
-		var (_, _, source, destination, from, _) = parameter;
+		_new = @new;
+		_map = map;
+	}
 
-		var entityType = source.Model.FindEntityType(typeof(TFrom)).Verify();
-		var key        = entityType.FindPrimaryKey().Verify();
-		var name       = key.Properties.Single().Name;
-		var projected = from.Select(x => new { Entity = x, Key = EF.Property<object>(x, name) });
-
-		return Enumerate().AsQueryable();
-
-		IEnumerable<TTo> Enumerate()
-		{
-			foreach (var row in projected)
-			{
-				var existing = destination.Set<TTo>().Single(y => EF.Property<object>(y, name) == row.Key);
-
-				_map.Execute(new(source.Entry(row.Entity), destination.Entry(existing)));
-
-				yield return existing;
-			}
-		}
+	public object Get(MappingInput parameter)
+	{
+		var (source, destination, from, to) = parameter;
+		var result = _new(to);
+		_map.Execute(new(source.Entry(from), destination.Entry(result)));
+		return result;
 	}
 }
-
