@@ -1,39 +1,69 @@
 ﻿using DragonSpark.Compose;
 using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
+using NetFabric.Hyperlinq;
+using System;
+using System.Buffers;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
-sealed class Update<TFrom, TTo> : IEntities<TFrom, TTo>
-	where TFrom : class
-	where TTo   : class
+sealed class Update<TFrom, TTo> : IEntities<TFrom, TTo> where TFrom : class where TTo : class
 {
-	readonly IMap _map;
+	readonly IMap      _map;
+	readonly Func<TTo> _activate;
+	readonly Type      _from;
 
-	public Update(IMap map) => _map = map;
+	public Update(IMap map) : this(map, A.New<TTo>, typeof(TFrom)) {}
+
+	public Update(IMap map, Func<TTo> activate, Type from)
+	{
+		_map      = map;
+		_activate = activate;
+		_from     = from;
+	}
 
 	public IQueryable<TTo> Get(ProcessChangesInput<TFrom> parameter)
 	{
 		var (_, _, source, destination, from, _) = parameter;
 
-		var entityType = source.Model.FindEntityType(typeof(TFrom)).Verify();
-		var key        = entityType.FindPrimaryKey().Verify();
-		var name       = key.Properties.Single().Name;
-		var projected  = from.Select(x => new { Entity = x, Key = EF.Property<object>(x, name) });
+		using var names = source.Model.FindEntityType(_from)
+		                        .Verify()
+		                        .FindPrimaryKey()
+		                        .Verify()
+		                        .Properties.AsValueEnumerable()
+		                        .Select(p => p.Name)
+		                        .ToArray(ArrayPool<string>.Shared);
+
+		// ReSharper disable AccessToDisposedClosure
+		var projected = from.Select(x => new
+		{
+			Source = x,
+			Keys   = names.Select(y => EF.Property<object>(x, y))
+		});
 
 		return Enumerate().AsQueryable();
 
 		IEnumerable<TTo> Enumerate()
 		{
+			var memory = names.Memory;
 			foreach (var row in projected)
 			{
-				var existing = destination.Set<TTo>().Single(y => EF.Property<object>(y, name) == row.Key);
+				using var keys   = row.Keys.AsValueEnumerable().ToArray(ArrayPool<object>.Shared);
+				var       item   = _activate();
+				var       to     = destination.Entry(item);
+				var       span   = memory.Span;
+				var       values = keys.Memory.Span;
 
-				_map.Execute(new(source.Entry(row.Entity), destination.Entry(existing)));
+				for (var i = 0; i < names.Length; i++)
+				{
+					to.Property(span[i]).CurrentValue = values[i];
+				}
 
-				yield return existing;
+				_map.Execute(new(source.Entry(row.Source), to));
+
+				yield return item;
 			}
 		}
 	}

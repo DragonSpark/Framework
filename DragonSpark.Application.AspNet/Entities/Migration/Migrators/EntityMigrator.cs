@@ -8,5 +8,5 @@ sealed class EntityMigrator<TFrom, TTo> : EntityMigratorBase<TFrom, TTo> where T
 
 	public EntityMigrator(DbContext source, DbContext destination, IMap map) : this(new(source, destination), map) {}
 
-	public EntityMigrator(Batching<TFrom> batching, IMap map) : base(batching, map) {}
+	public EntityMigrator(Contexts<TFrom> contexts, IMap map) : base(contexts, map) {}
 }

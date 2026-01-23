@@ -14,27 +14,28 @@ sealed class KnownKeys<T> : ISelect<DbContext, ImmutableHashSet<object>> where T
 
 	public ImmutableHashSet<object> Get(DbContext parameter)
 	{
-		var entityType = parameter.Model.FindEntityType(typeof(T)).Verify();
-		var key        = entityType.FindPrimaryKey().Verify();
-		var props      = key.Properties;
+		var type       = parameter.Model.FindEntityType(typeof(T)).Verify();
+		var key        = type.FindPrimaryKey().Verify();
+		var properties = key.Properties;
 
-		switch (props.Count)
+		var source = parameter.Set<T>().AsNoTracking();
+		switch (properties.Count)
 		{
 			case 1:
 			{
-				var name = props[0].Name;
-				return parameter.Set<T>().Select(e => EF.Property<object>(e, name)).AsEnumerable().ToImmutableHashSet();
+				var name = properties[0].Name;
+				return source.Select(e => EF.Property<object>(e, name)).AsEnumerable().ToImmutableHashSet();
 			}
 			default:
-				return parameter.Set<T>()
-				                .Select(e => new
-				                {
-					                A = EF.Property<object>(e, props[0].Name),
-					                B = EF.Property<object>(e, props[1].Name),
-				                })
-				                .AsEnumerable()
-				                .Select(x => (object)new[] { x.A, x.B })
-				                .ToImmutableHashSet();
+				return source
+				       .Select(e => new
+				       {
+					       A = EF.Property<object>(e, properties[0].Name),
+					       B = EF.Property<object>(e, properties[1].Name),
+				       })
+				       .AsEnumerable()
+				       .Select(x => (object)new[] { x.A, x.B })
+				       .ToImmutableHashSet();
 		}
 	}
 }

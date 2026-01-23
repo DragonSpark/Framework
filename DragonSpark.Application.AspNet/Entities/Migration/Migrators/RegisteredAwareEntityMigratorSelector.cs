@@ -16,7 +16,9 @@ public class RegisteredAwareEntityMigratorSelector : IEntityMigratorSelector
 
 	protected RegisteredAwareEntityMigratorSelector(IEntityMigratorSelector previous,
 	                                                params KeyValuePair<Type, IEntityMigrator>[] registrations)
-		: this(registrations.ToDictionary().ToStore(), previous) {}
+		: this(registrations.ToLookup(x => x.Key)
+		                    .ToDictionary(x => x.Key, x => ComposeEntityMigrators.Default.Get(x.Select(y => y.Value)))
+		                    .ToStore(), previous) {}
 
 	protected RegisteredAwareEntityMigratorSelector(IConditional<Type, IEntityMigrator> registered,
 	                                                IEntityMigratorSelector previous)

@@ -34,10 +34,10 @@ public class EntityMigrators : IEntityMigrators
 		using var result  = ArrayBuilder.New<IEntityMigrator>(results.Length);
 		foreach (var item in results)
 		{
-			var batch = _selector.Get(new(source, destination, item));
-			if (batch is not null)
+			var migrator = _selector.Get(new(source, destination, item));
+			if (migrator is not null)
 			{
-				result.UncheckedAdd(batch);
+				result.UncheckedAdd(migrator);
 			}
 		}
 

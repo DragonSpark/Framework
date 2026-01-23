@@ -9,7 +9,7 @@ public sealed record PropertyChanges(
 	uint Changes)
 {
 	public PropertyChanges(ImmutableArray<PropertyRecord> Added,
-	                          ImmutableArray<PropertyRecord> Removed,
-	                          ImmutableArray<PropertyRecord> Modified)
+	                       ImmutableArray<PropertyRecord> Removed,
+	                       ImmutableArray<PropertyRecord> Modified)
 		: this(Added, Removed, Modified, (uint)(Added.Length + Removed.Length + Modified.Length)) {}
 }

@@ -9,7 +9,7 @@ public abstract class ExtendedEntityMigratorBase<TFrom, TTo> : IExtendedEntityMi
 	protected ExtendedEntityMigratorBase(DbContext source, DbContext destination, IMap secondary)
 		: this(new(source, destination), Map.Default, secondary) {}
 
-	protected ExtendedEntityMigratorBase(Batching pair, IMap primary, IMap secondary)
+	protected ExtendedEntityMigratorBase(Contexts pair, IMap primary, IMap secondary)
 		: this(new EntityMigrator<TFrom, TTo>(pair.Source, pair.Destination, primary), 
 		       new EntityMigrator<TFrom, TTo>(pair.Source, pair.Destination, secondary)) {}
 
