@@ -7,7 +7,7 @@ public abstract class ExtendedEntityMigratorBase<TFrom, TTo> : IExtendedEntityMi
 	readonly IExtendedEntityMigrator _migrator;
 
 	protected ExtendedEntityMigratorBase(DbContext source, DbContext destination, IMap secondary)
-		: this(new(source, destination), Map.Default, secondary) {}
+		: this(new Contexts<TFrom>(source, destination), Map.Default, secondary) {}
 
 	protected ExtendedEntityMigratorBase(Contexts pair, IMap primary, IMap secondary)
 		: this(new EntityMigrator<TFrom, TTo>(pair.Source, pair.Destination, primary), 

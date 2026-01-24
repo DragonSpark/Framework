@@ -1,10 +1,9 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Selection.Conditions;
+﻿using DragonSpark.Model.Selection.Conditions;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
-public sealed class IdentityAwareEntityMigratorSelector : IEntityMigratorSelector
+sealed class IdentityAwareEntityMigratorSelector : IEntityMigratorSelector
 {
 	readonly IEntityMigratorSelector _previous;
 	readonly ICondition<IEntityType> _identity;
@@ -24,8 +23,8 @@ public sealed class IdentityAwareEntityMigratorSelector : IEntityMigratorSelecto
 		if (previous is not null)
 		{
 			var (_, to) = previous.Get();
-			var entityType = parameter.Destination.Model.FindEntityType(to).Verify();
-			if (_identity.Get(entityType))
+			var entityType = parameter.Destination.Model.FindEntityType(to);
+			if (entityType is not null && _identity.Get(entityType))
 			{
 				return new IdentityAwareEntityMigrator(previous, parameter.Destination, entityType);
 			}

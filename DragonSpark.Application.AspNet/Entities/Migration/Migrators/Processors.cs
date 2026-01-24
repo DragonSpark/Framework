@@ -1,5 +1,4 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Selection.Conditions;
+﻿using DragonSpark.Model.Selection.Conditions;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
@@ -16,8 +15,7 @@ sealed class Processors<TFrom, TTo> : IProcessors<TFrom> where TFrom : class whe
 
 	public IEntityProcessor<TFrom> Get(ProcessorsInput parameter)
 	{
-		var (source, _, map) = parameter;
-		var type     = source.Model.FindEntityType(A.Type<TFrom>()).Verify();
+		var (_, _, type, map) = parameter;
 		var identity = _identity.Get(type);
 		IEntityProcessor<TFrom> processor = identity
 			                                    ? new IdentityAwareEntityProcessor<TFrom, TTo>(map, type)

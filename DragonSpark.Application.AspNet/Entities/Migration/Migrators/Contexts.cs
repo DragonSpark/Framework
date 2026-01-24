@@ -1,13 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using System.Linq;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
-public record Contexts(DbContext Source, DbContext Destination);
+public record Contexts(DbContext Source, DbContext Destination, IEntityType From);
 
-public sealed record Contexts<T>(DbContext Source, DbContext Destination, IQueryable<T> Subject)
-	: Contexts(Source, Destination) where T : class
+public record Contexts<T>(DbContext Source, DbContext Destination, IEntityType From, IQueryable<T> Subject)
+	: Contexts(Source, Destination, From) where T : class
 {
+	public Contexts(DbContext Source, DbContext Destination, DbSet<T> subject)
+		: this(Source, Destination, subject.EntityType, subject.AsNoTracking()) {}
+
 	public Contexts(DbContext Source, DbContext Destination)
-		: this(Source, Destination, Source.Set<T>().AsNoTracking()) {}
+		: this(Source, Destination, Source.Set<T>()) {}
+
+	public Contexts(DbContext Source, DbContext Destination, string name)
+		: this(Source, Destination, Source.Set<T>(name)) {}
 }
