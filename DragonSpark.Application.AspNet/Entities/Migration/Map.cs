@@ -1,8 +1,6 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators;
-using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Linq;
 
@@ -40,8 +38,6 @@ public sealed class Map : IMap
 	}
 }
 
-public readonly record struct MapInput<TFrom, TTo>(Entry<TFrom> From, Entry<TTo> To);
-
 public sealed class Map<TFrom, TTo> : IMap
 {
 	readonly Action<MapInput<TFrom, TTo>> _map;
@@ -63,10 +59,4 @@ public sealed class Map<TFrom, TTo> : IMap
 		var (from, to) = parameter;
 		_map(new(new(from), new(to)));
 	}
-}
-
-// TODO
-public readonly record struct Entry<T>(EntityEntry Subject, T Entity)
-{
-	public Entry(EntityEntry Subject) : this(Subject, Subject.Entity.To<T>()) {}
 }
