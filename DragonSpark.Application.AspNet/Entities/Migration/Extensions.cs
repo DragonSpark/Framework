@@ -1,5 +1,7 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration;
@@ -8,6 +10,7 @@ public static class Extensions
 {
 	public static IMigrationSteps WithUpdateAwareness(this IMigrationSteps @this)
 		=> new UpdateAwareMigrationSteps(@this);
+
 	public static IMigrationSteps WithConstraintManagement(this IMigrationSteps @this, DbContext destination)
 		=> new ConstraintAwareMigrationSteps(@this, destination.Database);
 
@@ -16,8 +19,13 @@ public static class Extensions
 
 	public static IEntityMigratorSelector Ignoring(this IEntityMigratorSelector @this, params Type[] matches)
 		=> new IgnoreAwareEntityMigratorSelector(@this, matches);
+
 	public static IEntityMigratorSelector WithIdentityAwareness(this IEntityMigratorSelector @this)
 		=> new IdentityAwareEntityMigratorSelector(@this);
+
 	public static IEntityMigratorSelector WithExceptionAwareness(this IEntityMigratorSelector @this)
 		=> new ExceptionAwareEntityMigratorSelector(@this);
+
+	public static DbContext Context(this IInfrastructure<IServiceProvider> @this)
+		=> @this.Instance.GetRequiredService<DbContext>();
 }
