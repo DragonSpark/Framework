@@ -561,7 +561,7 @@ sealed class ValidateHeader : IParser<AuthenticateResult?>
 public readonly record struct ValidateHashInput(
     DeviceRecord Record,
     ReadOnlyMemory<char> SigningInput,
-    byte[] RawSignature);
+    ReadOnlyMemory<byte> RawSignature);
 
 sealed class ValidateHash : ISelect<ValidateHashInput, AuthenticateResult?>
 {
@@ -704,9 +704,9 @@ sealed class DetermineTicket : IStopAware<DetermineTicketInput, AuthenticateResu
         if (parsed is not null)
         {
             var (hdrJson, plJson, signingInput, sigRaw) = parsed.Value;
-
+            using var _ = sigRaw;
             return ValidateHeader.Default.Get(hdrJson)
-                   ?? ValidateHash.Default.Get(new(record, signingInput, sigRaw))
+                   ?? ValidateHash.Default.Get(new(record, signingInput, sigRaw.AsMemory()))
                    ?? await _payload.Off(new(new(subject.Request, plJson), stop))
                    ?? SuccessfulTicket.Default.Get(new(record.DeviceId, scheme));
         }
@@ -768,18 +768,30 @@ sealed class SuccessfulTicket : ISelect<SuccessfulTicketInput, AuthenticateResul
 {
     public static SuccessfulTicket Default { get; } = new();
 
-    SuccessfulTicket() : this(new(ClaimTypes.AuthenticationMethod, "DevicePoP")) {}
+    SuccessfulTicket() : this(new(ClaimTypes.AuthenticationMethod, "DevicePoP"), DeviceClaimName.Default) {}
 
-    readonly Claim _method;
+    readonly Claim  _method;
+    readonly string _name;
 
-    public SuccessfulTicket(Claim method) => _method = method;
+    public SuccessfulTicket(Claim method, string name)
+    {
+        _method = method;
+        _name   = name;
+    }
 
     public AuthenticateResult Get(SuccessfulTicketInput parameter)
     {
         var (device, scheme) = parameter;
-        var identity = new ClaimsIdentity(new[] { new("device_id", device), _method }, scheme);
-        return AuthenticateResult.Success(new AuthenticationTicket(new(identity), scheme));
+        var identity = new ClaimsIdentity([new(_name, device), _method], scheme);
+        return AuthenticateResult.Success(new(new(identity), scheme));
     }
+}
+
+sealed class DeviceClaimName : Text.Text
+{
+    public static DeviceClaimName Default { get; } = new();
+
+    DeviceClaimName() : base("device_id") {}
 }
 
 sealed class OptionsAwareApplyNonce : Model.Operations.Stop.IStopAware<IssueNonceInput>
@@ -863,15 +875,18 @@ sealed class JwsParser : IParser<JwsResult?>
 {
     public static JwsParser Default { get; } = new();
 
-    JwsParser() : this(Base64UrlDecode.Default, ComposeJwsParserInput.Default) {}
+    JwsParser() : this(Base64UrlDecode.Default, ComposeJwsParserInput.Default, ComposeSignature.Default) {}
 
-    readonly IFormatter<ReadOnlyMemory<char>> _decode;
-    readonly IParser<JwsParserInput?>         _input;
+    readonly IFormatter<ReadOnlyMemory<char>>   _decode;
+    readonly IParser<JwsParserInput?>           _input;
+    readonly ILease<ReadOnlyMemory<char>, byte> _signature;
 
-    public JwsParser(IFormatter<ReadOnlyMemory<char>> decode, IParser<JwsParserInput?> input)
+    public JwsParser(IFormatter<ReadOnlyMemory<char>> decode, IParser<JwsParserInput?> input,
+                     ILease<ReadOnlyMemory<char>, byte> signature)
     {
-        _decode = decode;
-        _input  = input;
+        _decode    = decode;
+        _input     = input;
+        _signature = signature;
     }
 
     public JwsResult? Get(string parameter)
@@ -887,8 +902,8 @@ sealed class JwsParser : IParser<JwsResult?>
                 var rest         = memory[next..];
                 var hdrJson      = _decode.Get(memory[..first]);
                 var plJson       = _decode.Get(rest[..second]);
-                var sigBytes     = Base64Url.DecodeFromChars(rest[(second + 1)..].Span);
-                return new(hdrJson, plJson, signingInput, sigBytes);
+                var signature    = _signature.Get(rest[(second + 1)..]);
+                return new(hdrJson, plJson, signingInput, signature);
             }
             catch (Exception e) when (e is DecoderFallbackException or FormatException or ArgumentException)
             {
@@ -897,6 +912,30 @@ sealed class JwsParser : IParser<JwsResult?>
         }
 
         return null;
+    }
+}
+
+sealed class ComposeSignature : ILease<ReadOnlyMemory<char>, byte>
+{
+    public static ComposeSignature Default { get; } = new();
+
+    ComposeSignature() : this(NewLeasing<byte>.Default) {}
+
+    readonly INewLeasing<byte> _leasing;
+
+    public ComposeSignature(INewLeasing<byte> leasing) => _leasing = leasing;
+
+    public Leasing<byte> Get(ReadOnlyMemory<char> parameter)
+    {
+        var length = Base64Url.GetMaxDecodedLength(parameter.Length);
+        var result = _leasing.Get(length);
+        if (Base64Url.TryDecodeFromChars(parameter.Span, result.Store, out var written))
+        {
+            return result.Size(written);
+        }
+
+        result.Dispose();
+        throw new FormatException("Invalid base64url signature");
     }
 }
 
@@ -938,7 +977,7 @@ public readonly record struct JwsResult(
     string HdrJson,
     string PlJson,
     ReadOnlyMemory<char> SigningInput,
-    byte[] RawSignature);
+    Leasing<byte> RawSignature);
 
 public readonly record struct CreateEcdsaInput(string X, string Y);
 
@@ -960,7 +999,7 @@ sealed class CreateEcdsa : ISelect<CreateEcdsaInput, ECDsa>
     }
 }
 
-sealed class JoseToDer : ISelect<byte[], Lease<byte>>
+sealed class JoseToDer : ISelect<ReadOnlyMemory<byte>, Lease<byte>>
 {
     public static JoseToDer Default { get; } = new();
 
@@ -975,14 +1014,14 @@ sealed class JoseToDer : ISelect<byte[], Lease<byte>>
         _new = @new;
     }
 
-    public Lease<byte> Get(byte[] parameter)
+    public Lease<byte> Get(ReadOnlyMemory<byte> parameter)
     {
         switch (parameter.Length)
         {
             case 64:
             {
-                using var derR   = _der.Get(parameter.AsMemory(0, 32));
-                using var derS   = _der.Get(parameter.AsMemory(32, 32));
+                using var derR   = _der.Get(parameter[..32]);
+                using var derS   = _der.Get(parameter.Slice(32, 32));
                 var       result = _new.Get(2 + derR.Length + derS.Length);
                 result.Store[0] = 0x30;
                 result.Store[1] = (byte)(derR.Length + derS.Length);
@@ -1004,10 +1043,7 @@ sealed class IntegerToDer : ISelect<ReadOnlyMemory<byte>, Lease<byte>>
 
     readonly INewLeasing<byte> _new;
 
-    public IntegerToDer(INewLeasing<byte> @new)
-    {
-        _new = @new;
-    }
+    public IntegerToDer(INewLeasing<byte> @new) => _new = @new;
 
     public Lease<byte> Get(ReadOnlyMemory<byte> parameter)
     {
