@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 using DragonSpark.Application.Diagnostics.Initialization;
 using DragonSpark.Model;
-using DragonSpark.Model.Commands;
 using Microsoft.Extensions.Logging;
 using System.Linq;
 
@@ -18,7 +17,7 @@ public class Migration<T> : Migration
 	protected Migration(ILogger logger, params IMigrationStep[] steps) : base(logger, steps) {}
 }
 
-public class Migration : IMigration, ICommand
+public class Migration : IMigration
 {
 	readonly ILogger          _logger;
 	readonly IMigrationStep[] _steps;

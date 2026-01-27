@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.AspNet.Entities.Migration;
 
-public interface IMigration : ICommand<ushort>;
+public interface IMigration : ICommand<ushort>, ICommand;

@@ -3,7 +3,10 @@ using System;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
-public abstract class ExtendedEntityMigratorBase<TFrom, TTo> : IExtendedEntityMigrator where TFrom : class where TTo : class
+public abstract class ExtendedEntityMigratorBase
+	
+	
+	<TFrom, TTo> : IExtendedEntityMigrator where TFrom : class where TTo : class
 {
 	readonly IExtendedEntityMigrator _migrator;
 
@@ -12,6 +15,9 @@ public abstract class ExtendedEntityMigratorBase<TFrom, TTo> : IExtendedEntityMi
 
 	protected ExtendedEntityMigratorBase(DbContext source, DbContext destination, IMap secondary)
 		: this(new Contexts<TFrom>(source, destination), Map.Default, secondary) {}
+
+	protected ExtendedEntityMigratorBase(Contexts<TFrom> contexts, IMap secondary)
+		: this(contexts, Map.Default, secondary) {}
 
 	protected ExtendedEntityMigratorBase(Contexts<TFrom> contexts, IMap primary, IMap secondary)
 		: this(new EntityMigrator<TFrom, TTo>(contexts, primary), 
