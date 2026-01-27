@@ -533,7 +533,7 @@ public readonly record struct HandleAuthenticationInput(HttpContext Context, str
 
 public readonly record struct DetermineTicketInput(HttpContext Subject, DeviceRecord Device, string Scheme);
 
-sealed class ValidateHeader : IParser<AuthenticateResult?>
+sealed class ValidateHeader : ISelect<ReadOnlyMemory<byte>, AuthenticateResult?>
 {
     public static ValidateHeader Default { get; } = new();
 
@@ -546,7 +546,7 @@ sealed class ValidateHeader : IParser<AuthenticateResult?>
         _comparison = comparison;
     }
 
-    public AuthenticateResult? Get(string parameter)
+    public AuthenticateResult? Get(ReadOnlyMemory<byte> parameter)
     {
         using var document = JsonDocument.Parse(parameter);
         var       header   = document.RootElement;
@@ -603,7 +603,7 @@ sealed class ComposeDigest : ISelect<ReadOnlyMemory<char>, ReadOnlyMemory<byte>>
     }
 }
 
-public readonly record struct ValidatePayloadInput(HttpRequest Request, string Payload);
+public readonly record struct ValidatePayloadInput(HttpRequest Request, ReadOnlyMemory<byte> Payload);
 
 sealed class ValidatePayload : IStopAware<ValidatePayloadInput, AuthenticateResult?>
 {
@@ -703,11 +703,11 @@ sealed class DetermineTicket : IStopAware<DetermineTicketInput, AuthenticateResu
         var parsed = JwsParser.Default.Get(dpop);
         if (parsed is not null)
         {
-            var (hdrJson, plJson, signingInput, sigRaw) = parsed.Value;
-            using var _ = sigRaw;
-            return ValidateHeader.Default.Get(hdrJson)
+            using var result = parsed.Value;
+            var (hdrJson, plJson, signingInput, sigRaw) = result;
+            return ValidateHeader.Default.Get(hdrJson.AsMemory())
                    ?? ValidateHash.Default.Get(new(record, signingInput, sigRaw.AsMemory()))
-                   ?? await _payload.Off(new(new(subject.Request, plJson), stop))
+                   ?? await _payload.Off(new(new(subject.Request, plJson.AsMemory()), stop))
                    ?? SuccessfulTicket.Default.Get(new(record.DeviceId, scheme));
         }
 
@@ -836,52 +836,48 @@ sealed class DpopNonceHeaderName : Text.Text
     DpopNonceHeaderName() : base("DPoP-Nonce") {}
 }
 
-sealed class Base64UrlDecode : IFormatter<ReadOnlyMemory<char>>
+sealed class Base64UrlDecode : ILease<ReadOnlyMemory<char>, byte>
 {
     public static Base64UrlDecode Default { get; } = new();
 
-    Base64UrlDecode() : this(NewLeasing<byte>.Default, new UTF8Encoding(false, true)) {}
+    readonly INewLeasing<byte> _leasing;
 
-    readonly INewLeasing<byte> _new;
-    readonly Encoding          _encoding;
+    Base64UrlDecode() : this(NewLeasing<byte>.Default) {}
 
-    public Base64UrlDecode(INewLeasing<byte> @new, Encoding encoding)
-    {
-        _new      = @new;
-        _encoding = encoding;
-    }
+    public Base64UrlDecode(INewLeasing<byte> leasing)
+        => _leasing = leasing;
 
-    public string Get(ReadOnlyMemory<char> parameter)
+    public Leasing<byte> Get(ReadOnlyMemory<char> parameter)
     {
         if (parameter.Length != 0)
         {
-            using var lease       = _new.Get((parameter.Length + 3) / 4 * 3);
-            var       span        = lease.AsSpan();
-            var       destination = span[..lease.Length.Degrade()];
-            if (Base64Url.TryDecodeFromChars(parameter.Span, destination, out var written))
+            var max   = Base64Url.GetMaxDecodedLength(parameter.Length);
+            var lease = _leasing.Get(max);
+
+            if (Base64Url.TryDecodeFromChars(parameter.Span, lease.Store, out var written))
             {
-                CryptographicOperations.ZeroMemory(span[..written]);
-                return _encoding.GetString(destination[..written]);
+                return lease.Size(written);
             }
 
+            lease.Dispose();
             throw new FormatException("Invalid base64url input.");
+
         }
 
-        return string.Empty;
+        return Leasing<byte>.Default;
     }
 }
-
 sealed class JwsParser : IParser<JwsResult?>
 {
     public static JwsParser Default { get; } = new();
 
     JwsParser() : this(Base64UrlDecode.Default, ComposeJwsParserInput.Default, ComposeSignature.Default) {}
 
-    readonly IFormatter<ReadOnlyMemory<char>>   _decode;
-    readonly IParser<JwsParserInput?>           _input;
-    readonly ILease<ReadOnlyMemory<char>, byte> _signature;
+    readonly ILease<ReadOnlyMemory<char>, byte> _decode;
+    readonly IParser<JwsParserInput?>             _input;
+    readonly ILease<ReadOnlyMemory<char>, byte>   _signature;
 
-    public JwsParser(IFormatter<ReadOnlyMemory<char>> decode, IParser<JwsParserInput?> input,
+    public JwsParser(ILease<ReadOnlyMemory<char>, byte> decode, IParser<JwsParserInput?> input,
                      ILease<ReadOnlyMemory<char>, byte> signature)
     {
         _decode    = decode;
@@ -974,10 +970,18 @@ sealed class ComposeJwsParserInput : IParser<JwsParserInput?>
 }
 
 public readonly record struct JwsResult(
-    string HdrJson,
-    string PlJson,
+    Leasing<byte> HdrJson,
+    Leasing<byte> PlJson,
     ReadOnlyMemory<char> SigningInput,
-    Leasing<byte> RawSignature);
+    Leasing<byte> RawSignature) : IDisposable
+{
+    public void Dispose()
+    {
+        HdrJson.Dispose();
+        PlJson.Dispose();
+        RawSignature.Dispose();
+    }
+}
 
 public readonly record struct CreateEcdsaInput(string X, string Y);
 
