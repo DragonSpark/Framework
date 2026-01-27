@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using DragonSpark.Diagnostics.Logging;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Sequences;
@@ -270,8 +271,10 @@ public static partial class ExtensionMethods
 
 	extension([NotNullWhen(false)]string? @this)
 	{
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public bool IsNullOrEmpty() => string.IsNullOrEmpty(@this);
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public bool IsNullOrWhiteSpace() => string.IsNullOrWhiteSpace(@this);
 	}
     extension(DateOnly @this)

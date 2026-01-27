@@ -1,9 +1,9 @@
-﻿using System;
+using System;
 using DragonSpark.Model.Results;
 
-namespace DragonSpark.Application.AspNet.Security.Identity.Passkeys;
+namespace DragonSpark.Application.AspNet.Security.Identity;
 
-sealed class DefaultExpiration : Instance<TimeSpan>
+public sealed class DefaultExpiration : Instance<TimeSpan>
 {
     public static DefaultExpiration Default { get; } = new();
 

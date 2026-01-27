@@ -1,13 +1,13 @@
-using DragonSpark.Model;
-using DragonSpark.Model.Selection;
-using DragonSpark.Runtime;
-using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using DragonSpark.Model;
+using DragonSpark.Model.Selection;
+using DragonSpark.Runtime;
+using JetBrains.Annotations;
 
 namespace DragonSpark.Compose;
 
@@ -79,6 +79,8 @@ public static partial class ExtensionMethods
     public static KeyValuePair<T1, T2> Map<T1, T2>(this T1 @this, T2 other) => new(@this, other);
 
     public static string? NullIfEmpty(this string? target) => string.IsNullOrEmpty(target) ? null : target;
+
+    public static string EmptyIfNull(this string? target) => target.IsNullOrEmpty() ? string.Empty : target;
 
     public static T Self<T>(this T @this) => @this;
 

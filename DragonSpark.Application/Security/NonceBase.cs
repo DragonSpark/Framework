@@ -1,6 +1,6 @@
-﻿using DragonSpark.Model.Sequences.Memory;
-using DragonSpark.Text;
 using System;
+using DragonSpark.Model.Sequences.Memory;
+using DragonSpark.Text;
 
 namespace DragonSpark.Application.Security;
 
@@ -9,9 +9,9 @@ public class NonceBase : IFormatter<uint>
 	readonly ILease<uint, byte>               _salt;
 	readonly Func<ReadOnlySpan<byte>, string> _text;
 
-	public NonceBase(Func<ReadOnlySpan<byte>, string> text) : this(Salt.Default, text) {}
+	protected NonceBase(Func<ReadOnlySpan<byte>, string> text) : this(Salt.Default, text) {}
 
-	public NonceBase(ILease<uint, byte> salt, Func<ReadOnlySpan<byte>, string> text)
+	protected NonceBase(ILease<uint, byte> salt, Func<ReadOnlySpan<byte>, string> text)
 	{
 		_salt = salt;
 		_text = text;
@@ -23,3 +23,4 @@ public class NonceBase : IFormatter<uint>
 		return _text(salt.AsSpan());
 	}
 }
+
