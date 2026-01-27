@@ -584,13 +584,13 @@ public readonly record struct ValidatePayloadInput(HttpRequest Request, string P
 
 sealed class ValidatePayload : IStopAware<ValidatePayloadInput, AuthenticateResult?>
 {
-    readonly IOptionsMonitor<DevicePoPOptions> _options;
-    readonly IMarkUsed                         _mark;
+    readonly ValidatePayloadBody _body;
+    readonly StringComparison    _comparison;
 
-    public ValidatePayload(IOptionsMonitor<DevicePoPOptions> options, IMarkUsed mark)
+    public ValidatePayload(ValidatePayloadBody body, StringComparison comparison = StringComparison.OrdinalIgnoreCase)
     {
-        _options = options;
-        _mark    = mark;
+        _body       = body;
+        _comparison = comparison;
     }
 
     public async ValueTask<AuthenticateResult?> Get(Stop<ValidatePayloadInput> parameter)
@@ -598,50 +598,65 @@ sealed class ValidatePayload : IStopAware<ValidatePayloadInput, AuthenticateResu
         var ((request, payload), stop) = parameter;
         using var document = JsonDocument.Parse(payload);
         var       root     = document.RootElement;
-        if (root.TryGetProperty("htm", out var htm) && root.TryGetProperty("htu", out var htu) &&
-            root.TryGetProperty("iat", out var iatEl))
-        {
-            if (long.TryParse(iatEl.ToString(), out var iat))
-            {
-                var method = htm.GetString();
-                if (string.Equals(method, request.Method, StringComparison.OrdinalIgnoreCase))
-                {
-                    var url         = htu.GetString();
-                    var expectedHtu = $"{request.Scheme}://{request.Host}{request.Path}";
-                    if (string.Equals(url, expectedHtu, StringComparison.Ordinal))
-                    {
-                        var now = _options.CurrentValue.TimeProvider.Verify().GetUtcNow().ToUnixTimeSeconds();
-                        if (Math.Abs(now - iat) > _options.CurrentValue.MaxSkew.TotalSeconds)
-                        {
-                            return AuthenticateResult.Fail("DPoP iat too old");
-                        }
+        return root.TryGetProperty("htm", out var htm) && root.TryGetProperty("htu", out var htu) &&
+               root.TryGetProperty("iat", out var iatEl)
+                   ? long.TryParse(iatEl.ToString(), out var iat)
+                         ? string.Equals(htm.GetString(), request.Method, _comparison)
+                               ? await _body.Off(new(new(request, root, htu.GetString(), iat), stop))
+                               : AuthenticateResult.Fail("htm mismatch")
+                         : AuthenticateResult.Fail("Invalid iat")
+                   : AuthenticateResult.Fail("Invalid DPoP payload");
+    }
+}
 
-                        if (_options.CurrentValue.RequireNonce)
-                        {
-                            if (!root.TryGetProperty("nonce", out var nonceEl))
-                            {
-                                return AuthenticateResult.Fail("Nonce required");
-                            }
+public readonly record struct ValidatePayloadBodyInput(
+    HttpRequest Request,
+    JsonElement Root,
+    string? Address,
+    long iat);
 
-                            if (!await _mark.Off(new(new(nonceEl.GetString().EmptyIfNull(), DPoPNonceType.DPoP), stop)))
-                            {
-                                return AuthenticateResult.Fail("Nonce invalid/reused");
-                            }
-                        }
+sealed class Expired : ICondition<long>
+{
+    readonly IOptionsMonitor<DevicePoPOptions> _options;
 
-                        return null;
-                    }
+    public Expired(IOptionsMonitor<DevicePoPOptions> options) => _options = options;
 
-                    return AuthenticateResult.Fail("htu mismatch");
-                }
+    public bool Get(long parameter)
+    {
+        var options = _options.CurrentValue;
+        var now     = options.TimeProvider.Verify().GetUtcNow().ToUnixTimeSeconds();
+        return Math.Abs(now - parameter) > options.MaxSkew.TotalSeconds;
+    }
+}
 
-                return AuthenticateResult.Fail("htm mismatch");
-            }
+sealed class ValidatePayloadBody : IStopAware<ValidatePayloadBodyInput, AuthenticateResult?>
+{
+    readonly Expired                           _expired;
+    readonly IMarkUsed                         _mark;
+    readonly IOptionsMonitor<DevicePoPOptions> _options;
 
-            return AuthenticateResult.Fail("Invalid iat");
-        }
+    public ValidatePayloadBody(Expired expired, IMarkUsed mark, IOptionsMonitor<DevicePoPOptions> options)
+    {
+        _expired = expired;
+        _mark    = mark;
+        _options = options;
+    }
 
-        return AuthenticateResult.Fail("Invalid DPoP payload");
+    public async ValueTask<AuthenticateResult?> Get(Stop<ValidatePayloadBodyInput> parameter)
+    {
+        var ((request, root, address, iat), stop) = parameter;
+        return string.Equals(address, $"{request.Scheme}://{request.Host}{request.Path}", StringComparison.Ordinal)
+                   ? _expired.Get(iat)
+                         ? AuthenticateResult.Fail("DPoP iat too old")
+                         : _options.CurrentValue.RequireNonce
+                             ? root.TryGetProperty("nonce", out var nonceEl)
+                                   ? await _mark.Off(new(new(nonceEl.GetString().EmptyIfNull(), DPoPNonceType.DPoP),
+                                                         stop))
+                                         ? null
+                                         : AuthenticateResult.Fail("Nonce invalid/reused")
+                                   : AuthenticateResult.Fail("Nonce required")
+                             : null
+                   : AuthenticateResult.Fail("htu mismatch");
     }
 }
 
