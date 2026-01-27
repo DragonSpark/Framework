@@ -956,7 +956,7 @@ sealed class ComposeJwsParserInput : IParser<JwsParserInput?>
             var first = span.IndexOf('.');
             if (first > 0)
             {
-                var rest   = span.Slice(first + 1);
+                var rest   = span[(first + 1)..];
                 var second = rest.IndexOf('.');
                 if (second > 0)
                 {
