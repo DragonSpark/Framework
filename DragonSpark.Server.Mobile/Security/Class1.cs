@@ -558,7 +558,10 @@ sealed class ValidateHeader : IParser<AuthenticateResult?>
     }
 }
 
-public readonly record struct ValidateHashInput(DeviceRecord Record, string SigningInput, byte[] RawSignature);
+public readonly record struct ValidateHashInput(
+    DeviceRecord Record,
+    ReadOnlyMemory<char> SigningInput,
+    byte[] RawSignature);
 
 sealed class ValidateHash : ISelect<ValidateHashInput, AuthenticateResult?>
 {
@@ -574,9 +577,29 @@ sealed class ValidateHash : ISelect<ValidateHashInput, AuthenticateResult?>
     {
         var (record, signingInput, bytes) = parameter;
         using var ecdsa  = CreateEcdsa.Default.Get(new(record.X, record.Y));
-        var       digest = SHA256.HashData(Encoding.ASCII.GetBytes(signingInput));
+        var       digest = ComposeDigest.Default.Get(signingInput);
         using var derSig = JoseToDer.Default.Get(bytes);
-        return ecdsa.VerifyHash(digest, derSig.Memory.Span) ? null : _result;
+        return ecdsa.VerifyHash(digest.Span, derSig.Memory.Span) ? null : _result;
+    }
+}
+
+sealed class ComposeDigest : ISelect<ReadOnlyMemory<char>, ReadOnlyMemory<byte>>
+{
+    public static ComposeDigest Default { get; } = new();
+
+    ComposeDigest() {}
+
+    public ReadOnlyMemory<byte> Get(ReadOnlyMemory<char> parameter)
+    {
+        var        source      = parameter.Span;
+        Span<byte> destination = stackalloc byte[source.Length];
+
+        for (var i = 0; i < destination.Length; i++)
+        {
+            destination[i] = (byte)(source[i] & 0x7F);
+        }
+
+        return SHA256.HashData(destination);
     }
 }
 
@@ -733,14 +756,10 @@ sealed class DevicePoPHandler : AuthenticationHandler<DevicePoPOptions>
     public DevicePoPHandler(IOptionsMonitor<DevicePoPOptions> options, ILoggerFactory logger, UrlEncoder encoder,
                             HandleAuthentication handle)
         : base(options, logger, encoder)
-    {
-        _handle = handle;
-    }
+        => _handle = handle;
 
     protected override Task<AuthenticateResult> HandleAuthenticateAsync()
-    {
-        return _handle.Allocate(new(new(Context, Scheme.Name), Context.RequestAborted));
-    }
+        => _handle.Allocate(new(new(Context, Scheme.Name), Context.RequestAborted));
 }
 
 public readonly record struct SuccessfulTicketInput(string Device, string Scheme);
@@ -861,14 +880,14 @@ sealed class JwsParser : IParser<JwsResult?>
         if (input is not null)
         {
             var (first, next, second, all) = input.Value;
-            var signingInput = parameter[..all]; // "<hdr>.<pl>"
             try
             {
-                var memory   = parameter.AsMemory();
-                var rest     = memory[next..];
-                var hdrJson  = _decode.Get(memory[..first]);
-                var plJson   = _decode.Get(rest[..second]);
-                var sigBytes = Base64Url.DecodeFromChars(rest[(second + 1)..].Span);
+                var memory       = parameter.AsMemory();
+                var signingInput = memory[..all]; // "<hdr>.<pl>"
+                var rest         = memory[next..];
+                var hdrJson      = _decode.Get(memory[..first]);
+                var plJson       = _decode.Get(rest[..second]);
+                var sigBytes     = Base64Url.DecodeFromChars(rest[(second + 1)..].Span);
                 return new(hdrJson, plJson, signingInput, sigBytes);
             }
             catch (Exception e) when (e is DecoderFallbackException or FormatException or ArgumentException)
@@ -915,7 +934,11 @@ sealed class ComposeJwsParserInput : IParser<JwsParserInput?>
     }
 }
 
-public readonly record struct JwsResult(string HdrJson, string PlJson, string SigningInput, byte[] RawSignature);
+public readonly record struct JwsResult(
+    string HdrJson,
+    string PlJson,
+    ReadOnlyMemory<char> SigningInput,
+    byte[] RawSignature);
 
 public readonly record struct CreateEcdsaInput(string X, string Y);
 
@@ -931,7 +954,7 @@ sealed class CreateEcdsa : ISelect<CreateEcdsaInput, ECDsa>
         var parameters = new ECParameters
         {
             Curve = ECCurve.NamedCurves.nistP256,
-            Q     = new ECPoint { X = WebEncoders.Base64UrlDecode(xUrl), Y = WebEncoders.Base64UrlDecode(yUrl) }
+            Q     = new() { X = WebEncoders.Base64UrlDecode(xUrl), Y = WebEncoders.Base64UrlDecode(yUrl) }
         };
         return ECDsa.Create(parameters);
     }
