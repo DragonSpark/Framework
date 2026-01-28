@@ -8,7 +8,7 @@ sealed class SuccessfulTicket : ISelect<SuccessfulTicketInput, AuthenticateResul
 {
     public static SuccessfulTicket Default { get; } = new();
 
-    SuccessfulTicket() : this(new(ClaimTypes.AuthenticationMethod, "DevicePoP"), DeviceClaimName.Default) {}
+    SuccessfulTicket() : this(new(ClaimTypes.AuthenticationMethod, SchemeName.Default), DeviceClaimName.Default) {}
 
     readonly Claim  _method;
     readonly string _name;

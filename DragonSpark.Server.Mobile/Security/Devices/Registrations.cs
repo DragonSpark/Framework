@@ -7,9 +7,16 @@ namespace DragonSpark.Server.Mobile.Security.Devices;
 
 sealed class Registrations : ICommand<IServiceCollection>
 {
+    readonly string                   _name;
     readonly Action<DevicePoPOptions> _configure;
 
-    public Registrations(Action<DevicePoPOptions> configure) => _configure = configure;
+    public Registrations(Action<DevicePoPOptions> configure) : this(SchemeName.Default, configure) {}
+
+    public Registrations(string name, Action<DevicePoPOptions> configure)
+    {
+        _name      = name;
+        _configure = configure;
+    }
 
     public void Execute(IServiceCollection parameter)
     {
@@ -38,6 +45,6 @@ sealed class Registrations : ICommand<IServiceCollection>
                  .Singleton()
                  //
                  .Then.AddAuthentication()
-                 .AddScheme<DevicePoPOptions, DevicePoPHandler>("DevicePoP", _configure);
+                 .AddScheme<DevicePoPOptions, DevicePoPHandler>(_name, _configure);
     }
 }
