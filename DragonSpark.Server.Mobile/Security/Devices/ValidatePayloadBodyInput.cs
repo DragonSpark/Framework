@@ -1,0 +1,10 @@
+using System.Text.Json;
+using Microsoft.AspNetCore.Http;
+
+namespace DragonSpark.Server.Mobile.Security.Devices;
+
+public readonly record struct ValidatePayloadBodyInput(
+    HttpRequest Request,
+    JsonElement Root,
+    string? Address,
+    long iat);

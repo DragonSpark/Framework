@@ -47,6 +47,9 @@ partial class Extensions
 	public static BuildHostContext WithHostedConfiguration(this BuildHostContext @this)
 		=> @this.Configure(Configuration.Registrations.Default);
 
+    public static BuildHostContext WithIssuedTokens(this BuildHostContext @this)
+        => @this.Configure(Security.Tokens.Registrations.Default);
+
 	/**/
 
 	public static string ValueOrDefault(this Accessed @this) => @this.ValueOrDefault(string.Empty);
