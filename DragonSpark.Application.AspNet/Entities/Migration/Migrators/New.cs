@@ -27,7 +27,7 @@ sealed class New<TFrom, TTo> : IEntities<TFrom, TTo> where TFrom : class
 
 		var query = from.AsAsyncEnumerable();
 
-		return new AsyncEnumerableQuery<TTo>(EnumerateAsync());
+		return new Entities<TTo>(EnumerateAsync());
 
 		async IAsyncEnumerable<TTo> EnumerateAsync()
 		{

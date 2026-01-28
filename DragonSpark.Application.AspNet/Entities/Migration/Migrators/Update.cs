@@ -5,11 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using NetFabric.Hyperlinq;
 using System;
 using System.Buffers;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
@@ -50,7 +47,7 @@ sealed class Update<TFrom, TTo> : IEntities<TFrom, TTo>
 			Keys   = names.Select(y => EF.Property<object>(x, y))
 		});
 
-		return new AsyncEnumerableQuery<TTo>(EnumerateAsync());
+		return new Entities<TTo>(EnumerateAsync());
 
 		async IAsyncEnumerable<TTo> EnumerateAsync()
 		{
@@ -75,44 +72,6 @@ sealed class Update<TFrom, TTo> : IEntities<TFrom, TTo>
 			}
 		}
 	}
-}
-// TODO
-sealed class AsyncEnumerableQuery<T> : IQueryable<T>, IAsyncEnumerable<T>
-{
-	readonly IAsyncEnumerable<T> _source;
-
-	public AsyncEnumerableQuery(IAsyncEnumerable<T> source)
-	{
-		_source    = source;
-		Provider   = new AsyncQueryProvider<T>(this);
-		Expression = Expression.Constant(this);
-	}
-
-	public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken token = default)
-		=> _source.GetAsyncEnumerator(token);
-
-	public IEnumerator<T> GetEnumerator() => throw new NotSupportedException("Use async enumeration.");
-
-	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
-
-	public Type ElementType => typeof(T);
-	public Expression Expression { get; }
-	public IQueryProvider Provider { get; }
-}
-sealed class AsyncQueryProvider<T> : IQueryProvider
-{
-	readonly IQueryable<T> _queryable;
-
-	public AsyncQueryProvider(IQueryable<T> queryable) => _queryable = queryable;
-
-	public IQueryable CreateQuery(Expression expression) => _queryable;
-
-	public IQueryable<TElement> CreateQuery<TElement>(Expression expression)
-		=> (IQueryable<TElement>)_queryable;
-
-	public object Execute(Expression expression) => throw new NotSupportedException("Use async execution.");
-
-	public TResult Execute<TResult>(Expression expression) => throw new NotSupportedException("Use async execution.");
 }
 
 sealed class Update<T> : ISave<T> where T : class
