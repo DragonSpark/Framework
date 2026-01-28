@@ -17,6 +17,9 @@ public class EntityMigratorBase<TFrom, TTo> : Instance<EntityTypeMapping>, IEnti
 	protected EntityMigratorBase(DbContext source, DbContext destination)
 		: this(new(source, destination), Map.Default) {}
 
+	protected EntityMigratorBase(DbContext source, DbContext destination, 
+	                             Func<Stop<MapInput<TFrom, TTo>>, ValueTask> map)
+		: this(new(source, destination), new Map<TFrom, TTo>(map)) {}
 	protected EntityMigratorBase(DbContext source, DbContext destination, Action<MapInput<TFrom, TTo>> map)
 		: this(new(source, destination), new Map<TFrom, TTo>(map)) {}
 

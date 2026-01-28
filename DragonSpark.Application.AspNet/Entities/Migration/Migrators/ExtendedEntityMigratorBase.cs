@@ -9,6 +9,9 @@ public abstract class ExtendedEntityMigratorBase<TFrom, TTo> : IExtendedEntityMi
 {
 	readonly IExtendedEntityMigrator _migrator;
 
+	protected ExtendedEntityMigratorBase(DbContext source, DbContext destination, 
+	                                     Func<Stop<MapInput<TFrom, TTo>>, ValueTask> map)
+		: this(source, destination, new Map<TFrom,TTo>(map)) {}
 	protected ExtendedEntityMigratorBase(DbContext source, DbContext destination, Action<MapInput<TFrom, TTo>> map)
 		: this(source, destination, new Map<TFrom,TTo>(map)) {}
 

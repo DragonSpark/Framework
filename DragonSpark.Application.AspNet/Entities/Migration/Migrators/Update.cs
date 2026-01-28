@@ -5,13 +5,18 @@ using Microsoft.EntityFrameworkCore;
 using NetFabric.Hyperlinq;
 using System;
 using System.Buffers;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
-sealed class Update<TFrom, TTo> : IEntities<TFrom, TTo> where TFrom : class where TTo : class
+sealed class Update<TFrom, TTo> : IEntities<TFrom, TTo>
+	where TFrom : class
+	where TTo   : class
 {
 	readonly IMap      _map;
 	readonly Func<TTo> _activate;
@@ -26,17 +31,17 @@ sealed class Update<TFrom, TTo> : IEntities<TFrom, TTo> where TFrom : class wher
 		_from     = from;
 	}
 
-	public IQueryable<TTo> Get(ProcessChangesInput<TFrom> parameter)
+	public IQueryable<TTo> Get(Stop<ProcessChangesInput<TFrom>> parameter)
 	{
-		var (_, _, source, destination, from, _) = parameter;
+		var ((_, _, source, destination, from, _), stop) = parameter;
 
 		using var names = source.Model.FindEntityType(_from)
-		                        .Verify()
-		                        .FindPrimaryKey()
-		                        .Verify()
-		                        .Properties.AsValueEnumerable()
-		                        .Select(p => p.Name)
-		                        .ToArray(ArrayPool<string>.Shared);
+								.Verify()
+								.FindPrimaryKey()
+								.Verify()
+								.Properties.AsValueEnumerable()
+								.Select(p => p.Name)
+								.ToArray(ArrayPool<string>.Shared);
 
 		// ReSharper disable AccessToDisposedClosure
 		var projected = from.Select(x => new
@@ -45,12 +50,13 @@ sealed class Update<TFrom, TTo> : IEntities<TFrom, TTo> where TFrom : class wher
 			Keys   = names.Select(y => EF.Property<object>(x, y))
 		});
 
-		return Enumerate().AsQueryable();
+		return new AsyncEnumerableQuery<TTo>(EnumerateAsync());
 
-		IEnumerable<TTo> Enumerate()
+		async IAsyncEnumerable<TTo> EnumerateAsync()
 		{
 			var memory = names.Memory;
-			foreach (var row in projected)
+
+			await foreach (var row in projected.AsAsyncEnumerable().WithCancellation(stop))
 			{
 				using var keys   = row.Keys.AsValueEnumerable().ToArray(ArrayPool<object>.Shared);
 				var       item   = _activate();
@@ -63,12 +69,50 @@ sealed class Update<TFrom, TTo> : IEntities<TFrom, TTo> where TFrom : class wher
 					to.Property(span[i]).CurrentValue = values[i];
 				}
 
-				_map.Execute(new(source.Entry(row.Source), to));
+				await _map.Off(new(new(source.Entry(row.Source), to), stop));
 
 				yield return item;
 			}
 		}
 	}
+}
+// TODO
+sealed class AsyncEnumerableQuery<T> : IQueryable<T>, IAsyncEnumerable<T>
+{
+	readonly IAsyncEnumerable<T> _source;
+
+	public AsyncEnumerableQuery(IAsyncEnumerable<T> source)
+	{
+		_source    = source;
+		Provider   = new AsyncQueryProvider<T>(this);
+		Expression = Expression.Constant(this);
+	}
+
+	public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken token = default)
+		=> _source.GetAsyncEnumerator(token);
+
+	public IEnumerator<T> GetEnumerator() => throw new NotSupportedException("Use async enumeration.");
+
+	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+	public Type ElementType => typeof(T);
+	public Expression Expression { get; }
+	public IQueryProvider Provider { get; }
+}
+sealed class AsyncQueryProvider<T> : IQueryProvider
+{
+	readonly IQueryable<T> _queryable;
+
+	public AsyncQueryProvider(IQueryable<T> queryable) => _queryable = queryable;
+
+	public IQueryable CreateQuery(Expression expression) => _queryable;
+
+	public IQueryable<TElement> CreateQuery<TElement>(Expression expression)
+		=> (IQueryable<TElement>)_queryable;
+
+	public object Execute(Expression expression) => throw new NotSupportedException("Use async execution.");
+
+	public TResult Execute<TResult>(Expression expression) => throw new NotSupportedException("Use async execution.");
 }
 
 sealed class Update<T> : ISave<T> where T : class
@@ -82,8 +126,8 @@ sealed class Update<T> : ISave<T> where T : class
 		var ((logger, size, destination, entities, total), stop) = parameter;
 		var configuration = new BulkConfig { BatchSize = size, CalculateStats = true, NotifyAfter = size };
 		await destination.BulkUpdateAsync(entities, configuration, new Progress<T>(logger, total).Execute,
-		                                  cancellationToken: stop)
-		                 .Off();
+										  cancellationToken: stop)
+						 .Off();
 		var result = configuration.StatsInfo.Verify().StatsNumberUpdated.Grade();
 		return result;
 	}

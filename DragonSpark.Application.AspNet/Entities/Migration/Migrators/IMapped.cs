@@ -1,5 +1,5 @@
-﻿using DragonSpark.Model.Selection;
+﻿using DragonSpark.Model.Operations.Selection.Stop;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
-public interface IMapped : ISelect<MappingInput, object>;
+public interface IMapped : IStopAware<MappingInput, object>;

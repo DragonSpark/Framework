@@ -1,8 +1,11 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators;
+using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
+using DragonSpark.Model.Operations;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration;
 
@@ -21,9 +24,9 @@ public sealed class Map : IMap
 		_owned = owned;
 	}
 
-	public void Execute(MapInput parameter)
+	public ValueTask Get(Stop<MapInput> parameter)
 	{
-		var (from, to) = parameter;
+		var ((from, to), _) = parameter;
 
 		_copy.Execute(parameter);
 
@@ -35,28 +38,41 @@ public sealed class Map : IMap
 
 		to.Context.Attach(to.Entity);
 		to.State = EntityState.Modified;
+		return ValueTask.CompletedTask;
 	}
 }
 
 public sealed class Map<TFrom, TTo> : IMap
 {
-	readonly Action<MapInput<TFrom, TTo>> _map;
-	readonly IMap                         _previous;
+	readonly Func<Stop<MapInput<TFrom, TTo>>, ValueTask> _map;
+	readonly IMap                                        _previous;
 
-	public Map(Action<TFrom, TTo> map) : this(x => map(x.From.Entity, x.To.Entity)) {}
+	public Map(Action<TFrom, TTo> map)
+		: this(x =>
+		       {
+			       map(x.Subject.From.Entity, x.Subject.To.Entity);
+			       return ValueTask.CompletedTask;
+		       }) {}
 
-	public Map(Action<MapInput<TFrom, TTo>> map) : this(map, Map.Default) {}
+	public Map(Action<MapInput<TFrom, TTo>> input)
+		: this(x =>
+		       {
+			       input(x.Subject);
+			       return ValueTask.CompletedTask;
+		       }) {}
 
-	public Map(Action<MapInput<TFrom, TTo>> map, IMap previous)
+	public Map(Func<Stop<MapInput<TFrom, TTo>>, ValueTask> map) : this(map, Map.Default) {}
+
+	public Map(Func<Stop<MapInput<TFrom, TTo>>, ValueTask> map, IMap previous)
 	{
 		_map      = map;
 		_previous = previous;
 	}
 
-	public void Execute(MapInput parameter)
+	public async ValueTask Get(Stop<MapInput> parameter)
 	{
-		_previous.Execute(parameter);
-		var (from, to) = parameter;
-		_map(new(new(from), new(to)));
+		await _previous.Off(parameter);
+		var ((from, to), stop) = parameter;
+		await _map(new(new(new(from), new(to)), stop)).Off();
 	}
 }

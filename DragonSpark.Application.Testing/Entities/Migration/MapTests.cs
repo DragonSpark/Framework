@@ -1,5 +1,6 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Migration;
 using DragonSpark.Application.AspNet.Entities.Migration.Migrators;
+using DragonSpark.Compose;
 using DragonSpark.Runtime;
 using DragonSpark.Testing.Objects.Entities.SqlLite;
 using FluentAssertions;
@@ -8,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Threading;
 using System.Threading.Tasks;
 using Xunit;
 
@@ -37,7 +39,7 @@ public sealed class MapTests
 
 			foreach (var from in source.Basic)
 			{
-				subject.Execute(MapInput.New<To>(source.Entry(from), destination));
+				await subject.Off(new(MapInput.New<To>(source.Entry(from), destination), CancellationToken.None));
 			}
 
 			var changes = await destination.SaveChangesAsync();
@@ -81,7 +83,7 @@ public sealed class MapTests
 
 			foreach (var from in source.Owned)
 			{
-				subject.Execute(MapInput.New<ToOwned>(source.Entry(from), destination));
+				await subject.Off(new(MapInput.New<ToOwned>(source.Entry(from), destination), CancellationToken.None));
 			}
 
 			var changes = await destination.SaveChangesAsync();
@@ -136,12 +138,14 @@ public sealed class MapTests
 
 			foreach (var from in source.Associations)
 			{
-				subject.Execute(MapInput.New<ToAssociation>(source.Entry(from), destination));
+				await subject.Off(new(MapInput.New<ToAssociation>(source.Entry(from), destination),
+				                      CancellationToken.None));
 			}
 
 			foreach (var from in source.Associated)
 			{
-				subject.Execute(MapInput.New<ToAssociated>(source.Entry(from), destination));
+				await subject.Off(new(MapInput.New<ToAssociated>(source.Entry(from), destination),
+				                      CancellationToken.None));
 			}
 
 			var changes = await destination.SaveChangesAsync();

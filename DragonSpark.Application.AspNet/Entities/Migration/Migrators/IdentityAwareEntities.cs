@@ -1,4 +1,6 @@
-﻿using DragonSpark.Model.Selection;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
+using DragonSpark.Model.Selection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System;
@@ -22,11 +24,12 @@ sealed class IdentityAwareEntities<TFrom, TTo> : IEntities<TFrom, TTo> where TFr
 		_predicate = predicate;
 	}
 
-	public IQueryable<TTo> Get(ProcessChangesInput<TFrom> parameter)
+	public IQueryable<TTo> Get(Stop<ProcessChangesInput<TFrom>> parameter)
 	{
-		var predicate = _predicate.Get(parameter.Destination);
-		var input     = parameter with { From = parameter.From.Where(predicate) };
-		var result    = _previous.Get(input);
+		var (subject, stop) = parameter;
+		var predicate = _predicate.Get(subject.Destination);
+		var input     = subject with { From = subject.From.Where(predicate) };
+		var result    = _previous.Get(input.Stop(stop));
 		return result;
 	}
 }

@@ -1,6 +1,10 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
@@ -17,14 +21,23 @@ sealed class New<TFrom, TTo> : IEntities<TFrom, TTo> where TFrom : class
 		_to  = to;
 	}
 
-	public IQueryable<TTo> Get(ProcessChangesInput<TFrom> parameter)
+	public IQueryable<TTo> Get(Stop<ProcessChangesInput<TFrom>> parameter)
 	{
-		var (_, _, source, destination, from, _) = parameter;
-		var result = from.Select(x => (TTo)_map.Get(new(source, destination, x, _to)));
-		return result;
+		var ((_, _, source, destination, from, _), stop) = parameter;
+
+		var query = from.AsAsyncEnumerable();
+
+		return new AsyncEnumerableQuery<TTo>(EnumerateAsync());
+
+		async IAsyncEnumerable<TTo> EnumerateAsync()
+		{
+			await foreach (var x in query.WithCancellation(stop))
+			{
+				yield return (TTo)await _map.Off(new(new(source, destination, x, _to), stop));
+			}
+		}
 	}
 }
-
 public sealed class New : IMapped
 {
 	public static New Default { get; } = new();
@@ -42,11 +55,11 @@ public sealed class New : IMapped
 		_map = map;
 	}
 
-	public object Get(MappingInput parameter)
+	public async ValueTask<object> Get(Stop<MappingInput> parameter)
 	{
-		var (source, destination, from, to) = parameter;
+		var ((source, destination, from, to), stop) = parameter;
 		var result = _new(to);
-		_map.Execute(new(source.Entry(from), destination.Entry(result)));
+		await _map.Off(new(new(source.Entry(from), destination.Entry(result)), stop));
 		return result;
 	}
 }
