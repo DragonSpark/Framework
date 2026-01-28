@@ -1,6 +1,9 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators;
+using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration;
 
@@ -15,16 +18,17 @@ public sealed class ConstraintAwareMigrationStep : IMigrationStep
 		_facade   = facade;
 	}
 
-	public void Execute(EntityMigratorInput parameter)
+	public async ValueTask Get(Stop<EntityMigratorInput> parameter)
 	{
-		_facade.ExecuteSqlRaw("EXEC sp_msforeachtable 'ALTER TABLE ? NOCHECK CONSTRAINT ALL';");
+		await _facade.ExecuteSqlRawAsync("EXEC sp_msforeachtable 'ALTER TABLE ? NOCHECK CONSTRAINT ALL';").Off();
 		try
 		{
-			_previous.Execute(parameter);
+			await _previous.Off(parameter);
 		}
 		finally
 		{
-			_facade.ExecuteSqlRaw("EXEC sp_msforeachtable 'ALTER TABLE ? WITH CHECK CHECK CONSTRAINT ALL';");	
+			await _facade.ExecuteSqlRawAsync("EXEC sp_msforeachtable 'ALTER TABLE ? WITH CHECK CHECK CONSTRAINT ALL';")
+			             .Off();
 		}
 	}
 }

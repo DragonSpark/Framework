@@ -1,8 +1,8 @@
-﻿using DragonSpark.Model.Commands;
+﻿using DragonSpark.Model.Operations.Stop;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
-sealed class UpdateEntityProcessor<TFrom, TTo> : Command<ProcessChangesInput<TFrom>>, IEntityProcessor<TFrom>
+sealed class UpdateEntityProcessor<TFrom, TTo> : StopAware<ProcessChangesInput<TFrom>>, IEntityProcessor<TFrom>
 	where TTo : class where TFrom : class
 {
 	public UpdateEntityProcessor(IMap map)

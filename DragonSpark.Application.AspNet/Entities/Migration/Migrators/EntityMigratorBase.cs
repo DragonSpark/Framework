@@ -1,8 +1,10 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
@@ -32,15 +34,15 @@ public class EntityMigratorBase<TFrom, TTo> : Instance<EntityTypeMapping>, IEnti
 		_processor = processor;
 	}
 
-	public void Execute(EntityMigratorInput parameter)
+	public ValueTask Get(Stop<EntityPreMigrationInput> parameter) => ValueTask.CompletedTask;
+
+	public ValueTask Get(Stop<EntityPostMigrationInput> parameter) => ValueTask.CompletedTask;
+
+	public ValueTask Get(Stop<EntityMigratorInput> parameter)
 	{
-		var (logger, size)                    = parameter;
+		var ((logger, size), stop)            = parameter;
 		var (source, destination, _, subject) = _contexts;
 		var total = subject.Count().Grade();
-		_processor.Execute(new(logger, size, source, destination, subject, total));
+		return _processor.Get(new(new(logger, size, source, destination, subject, total), stop));
 	}
-
-	public void Execute(EntityPreMigrationInput parameter) {}
-
-	public void Execute(EntityPostMigrationInput parameter) {}
 }

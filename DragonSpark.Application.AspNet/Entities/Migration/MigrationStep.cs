@@ -1,5 +1,8 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators;
+using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Sequences;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration;
 
@@ -9,11 +12,11 @@ public sealed class MigrationStep : IMigrationBody
 
 	public MigrationStep(Array<IEntityMigrator> migrators) => _migrators = migrators;
 
-	public void Execute(EntityMigratorInput parameter)
+	public async ValueTask Get(Stop<EntityMigratorInput> parameter)
 	{
-		foreach (var migrator in _migrators)
+		foreach (var migrator in _migrators.Open())
 		{
-			migrator.Execute(parameter);
+			await migrator.Off(parameter);
 		}
 	}
 }

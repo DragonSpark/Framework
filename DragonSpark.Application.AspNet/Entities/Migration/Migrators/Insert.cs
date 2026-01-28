@@ -1,4 +1,7 @@
-﻿using EFCore.BulkExtensions;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
+using EFCore.BulkExtensions;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
@@ -8,9 +11,9 @@ sealed class Insert<T> : ISave<T> where T : class
 
 	Insert() {}
 
-	public uint Get(SaveInput<T> parameter)
+	public async ValueTask<uint> Get(Stop<SaveInput<T>> parameter)
 	{
-		var (logger, size, destination, entities, total) = parameter;
+		var ((logger, size, destination, entities, total), stop) = parameter;
 		var configuration = new BulkConfig
 		{
 			BatchSize           = size,
@@ -19,7 +22,8 @@ sealed class Insert<T> : ISave<T> where T : class
 			NotifyAfter         = size,
 		};
 
-		destination.BulkInsert(entities, configuration, new Progress<T>(logger, total).Execute);
+		await destination.BulkInsertAsync(entities, configuration, new Progress<T>(logger, total).Execute, 
+		                                  cancellationToken: stop).Off();
 		return total;
 	}
 }

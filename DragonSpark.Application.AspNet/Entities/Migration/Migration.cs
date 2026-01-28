@@ -1,8 +1,12 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 using DragonSpark.Application.Diagnostics.Initialization;
-using DragonSpark.Model;
+using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
+using DragonSpark.Model.Sequences;
 using Microsoft.Extensions.Logging;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration;
 
@@ -19,8 +23,8 @@ public class Migration<T> : Migration
 
 public class Migration : IMigration
 {
-	readonly ILogger          _logger;
-	readonly IMigrationStep[] _steps;
+	readonly ILogger               _logger;
+	readonly Array<IMigrationStep> _steps;
 
 	protected Migration(ILogger logger, params IMigrationStep[] steps)
 	{
@@ -28,17 +32,14 @@ public class Migration : IMigration
 		_steps  = steps;
 	}
 
-	public void Execute(None parameter)
+	public async ValueTask Get(Stop<ushort> parameter)
 	{
-		Execute(DefaultBatchSize.Default);
-	}
-
-	public void Execute(ushort parameter)
-	{
-		var input = new EntityMigratorInput(_logger, parameter);
-		foreach (var step in _steps)
+		var input = new EntityMigratorInput(_logger, parameter).Stop(parameter);
+		foreach (var step in _steps.Open())
 		{
-			step.Execute(input);
+			await step.Off(input);
 		}
 	}
+
+	public ValueTask Get(CancellationToken parameter) => Get(new(DefaultBatchSize.Default, parameter));
 }

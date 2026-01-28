@@ -1,6 +1,8 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
@@ -13,13 +15,13 @@ class EntityProcessorBase<TFrom, TTo> : IEntityProcessor<TFrom> where TFrom : cl
 
 	protected EntityProcessorBase(IProcessChanges<TFrom> changes) => _changes = changes;
 
-	public void Execute(ProcessChangesInput<TFrom> parameter)
+	public async ValueTask Get(Stop<ProcessChangesInput<TFrom>> parameter)
 	{
-		var (logger, _, source, destination, _, total) = parameter;
+		var ((logger, _, source, destination, _, total), _) = parameter;
 		if (total > 0)
 		{
 			var watch = Stopwatch.StartNew();
-			var count = _changes.Get(parameter);
+			var count = await _changes.Off(parameter);
 
 			logger.LogInformation("{From} -> {To}: Batch of {Count} processed in {Elapsed:mm\\:ss\\.fff} ({Rate:F1} entities/sec)",
 			                      A.Type<TFrom>(), A.Type<TTo>(), count, watch.Elapsed,

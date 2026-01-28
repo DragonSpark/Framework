@@ -1,7 +1,9 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
@@ -21,24 +23,24 @@ sealed class IdentityAwareEntityMigrator : IEntityMigrator
 		_template = template;
 	}
 
-	public void Execute(EntityMigratorInput parameter)
+	public EntityTypeMapping Get() => _previous.Get();
+
+	public ValueTask Get(Stop<EntityPreMigrationInput> parameter) => ValueTask.CompletedTask;
+
+	public ValueTask Get(Stop<EntityPostMigrationInput> parameter) => ValueTask.CompletedTask;
+
+	public async ValueTask Get(Stop<EntityMigratorInput> parameter)
 	{
 		var formatWith = _template.FormatWith("ON");
-		_database.ExecuteSqlRaw(formatWith);
+		await _database.ExecuteSqlRawAsync(formatWith, parameter).Off();
 
 		try
 		{
-			_previous.Execute(parameter);
+			await _previous.On(parameter);
 		}
 		finally
 		{
-			_database.ExecuteSqlRaw(_template.FormatWith("OFF"));
+			await _database.ExecuteSqlRawAsync(_template.FormatWith("OFF"), parameter).Off();
 		}
 	}
-
-	public EntityTypeMapping Get() => _previous.Get();
-
-	public void Execute(EntityPreMigrationInput parameter) {}
-
-	public void Execute(EntityPostMigrationInput parameter) {}
 }

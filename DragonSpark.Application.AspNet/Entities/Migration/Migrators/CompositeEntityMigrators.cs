@@ -1,8 +1,10 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Sequences;
 using NetFabric.Hyperlinq;
 using System;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
@@ -17,27 +19,27 @@ sealed class CompositeEntityMigrators : Instance<EntityTypeMapping>, IEntityMigr
 	public CompositeEntityMigrators(EntityTypeMapping mapping, params IEntityMigrator[] migrators) : base(mapping)
 		=> _migrators = migrators;
 
-	public void Execute(EntityPreMigrationInput parameter)
+	public async ValueTask Get(Stop<EntityPreMigrationInput> parameter)
 	{
-		foreach (var migrator in _migrators)
+		foreach (var migrator in _migrators.Open())
 		{
-			migrator.Execute(parameter);
+			await migrator.Off(parameter);
 		}
 	}
 
-	public void Execute(EntityPostMigrationInput parameter)
+	public async ValueTask Get(Stop<EntityPostMigrationInput> parameter)
 	{
-		foreach (var migrator in _migrators)
+		foreach (var migrator in _migrators.Open())
 		{
-			migrator.Execute(parameter);
+			await migrator.Off(parameter);
 		}
 	}
 
-	public void Execute(EntityMigratorInput parameter)
+	public async ValueTask Get(Stop<EntityMigratorInput> parameter)
 	{
-		foreach (var migrator in _migrators)
+		foreach (var migrator in _migrators.Open())
 		{
-			migrator.Execute(parameter);
+			await migrator.Off(parameter);
 		}
 	}
 }

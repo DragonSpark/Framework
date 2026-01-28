@@ -1,9 +1,9 @@
-﻿using DragonSpark.Model.Commands;
+﻿using DragonSpark.Model.Operations.Stop;
 using DragonSpark.Model.Results;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
-public interface IEntityMigrator : ICommand<EntityPreMigrationInput>,
-                                   ICommand<EntityPostMigrationInput>,
-                                   ICommand<EntityMigratorInput>,
+public interface IEntityMigrator : IStopAware<EntityPreMigrationInput>,
+                                   IStopAware<EntityPostMigrationInput>,
+                                   IStopAware<EntityMigratorInput>,
                                    IResult<EntityTypeMapping>;

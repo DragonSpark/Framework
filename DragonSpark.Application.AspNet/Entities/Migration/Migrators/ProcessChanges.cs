@@ -1,4 +1,7 @@
-﻿namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
+﻿using DragonSpark.Model.Operations;
+using System.Threading.Tasks;
+
+namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
 sealed class ProcessChanges<TFrom, TTo> : IProcessChanges<TFrom> where TFrom : class where TTo : class
 {
@@ -11,11 +14,11 @@ sealed class ProcessChanges<TFrom, TTo> : IProcessChanges<TFrom> where TFrom : c
 		_save     = save;
 	}
 
-	public uint Get(ProcessChangesInput<TFrom> parameter)
+	public ValueTask<uint> Get(Stop<ProcessChangesInput<TFrom>> parameter)
 	{
-		var (logger, size, _, destination, _, total) = parameter;
+		var ((logger, size, _, destination, _, total), stop) = parameter;
 		var entities = _entities.Get(parameter);
-		var result   = _save.Get(new(logger, size, destination, entities, total));
+		var result   = _save.Get(new(new(logger, size, destination, entities, total), stop));
 		return result;
 	}
 }

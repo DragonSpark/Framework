@@ -1,5 +1,7 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
@@ -15,11 +17,16 @@ sealed class FlattenAwareEntityMigrator<TFrom, TTo> : IEntityMigrator where TFro
 		_destination = destination;
 	}
 
-	public void Execute(EntityPreMigrationInput parameter)
+	public EntityTypeMapping Get() => _previous.Get();
+
+	public void Execute(EntityPostMigrationInput parameter) {}
+
+	public async ValueTask Get(Stop<EntityPreMigrationInput> parameter)
 	{
-		var logger = parameter.Logger;
-		var to     = _destination.Set<TTo>();
-		var exists = KnownKeys<TFrom>.Default.Get(_source).IsSubsetOf(KnownKeys<TTo>.Default.Get(_destination));
+		var (subject, stop) = parameter;
+		var logger       = subject.Logger;
+		var to           = _destination.Set<TTo>();
+		var exists       = KnownKeys<TFrom>.Default.Get(_source).IsSubsetOf(KnownKeys<TTo>.Default.Get(_destination));
 		if (exists)
 		{
 			logger.LogInformation("Flatten {Set}: All source keys already present in destination (idempotent, no missing data)",
@@ -27,18 +34,13 @@ sealed class FlattenAwareEntityMigrator<TFrom, TTo> : IEntityMigrator where TFro
 		}
 		else
 		{
-			var cleared = to.ExecuteDelete();
+			var cleared = await to.ExecuteDeleteAsync(stop).Off();
 			logger.LogInformation("Flatten {Set}: Cleared of {Count} entries", to.GetType(), cleared);
-			_previous.Execute(parameter);
+			await _previous.Off(parameter);
 		}
-
 	}
 
-	public void Execute(EntityMigratorInput parameter)
-	{
-	}
+	public ValueTask Get(Stop<EntityPostMigrationInput> parameter) => ValueTask.CompletedTask;
 
-	public EntityTypeMapping Get() => _previous.Get();
-
-	public void Execute(EntityPostMigrationInput parameter) {}
+	public ValueTask Get(Stop<EntityMigratorInput> parameter) => ValueTask.CompletedTask;
 }

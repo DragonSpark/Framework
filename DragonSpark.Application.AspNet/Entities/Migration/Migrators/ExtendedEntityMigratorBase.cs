@@ -1,12 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DragonSpark.Model.Operations;
+using Microsoft.EntityFrameworkCore;
 using System;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
-public abstract class ExtendedEntityMigratorBase
-	
-	
-	<TFrom, TTo> : IExtendedEntityMigrator where TFrom : class where TTo : class
+public abstract class ExtendedEntityMigratorBase<TFrom, TTo> : IExtendedEntityMigrator where TFrom : class where TTo : class
 {
 	readonly IExtendedEntityMigrator _migrator;
 
@@ -28,25 +27,13 @@ public abstract class ExtendedEntityMigratorBase
 
 	protected ExtendedEntityMigratorBase(IExtendedEntityMigrator migrator) => _migrator = migrator;
 
-	public void Execute(EntityPreMigrationInput parameter)
-	{
-		_migrator.Execute(parameter);
-	}
-
-	public void Execute(EntityPostMigrationInput parameter)
-	{
-		_migrator.Execute(parameter);
-	}
-
-	public void Execute(EntityMigratorInput parameter)
-	{
-		_migrator.Execute(parameter);
-	}
-
 	public EntityTypeMapping Get() => _migrator.Get();
 
-	public void Execute(UpdateEntityMigratorInput parameter)
-	{
-		_migrator.Execute(parameter);
-	}
+	public ValueTask Get(Stop<EntityPreMigrationInput> parameter) => _migrator.Get(parameter);
+
+	public ValueTask Get(Stop<EntityPostMigrationInput> parameter) => _migrator.Get(parameter);
+
+	public ValueTask Get(Stop<EntityMigratorInput> parameter) => _migrator.Get(parameter);
+
+	public ValueTask Get(Stop<UpdateEntityMigratorInput> parameter) => _migrator.Get(parameter);
 }

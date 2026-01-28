@@ -1,5 +1,5 @@
-﻿using DragonSpark.Model.Selection;
+﻿using DragonSpark.Model.Operations.Selection.Stop;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
-public interface ISave<T> : ISelect<SaveInput<T>, uint> where T : class;
+public interface ISave<T> : IStopAware<SaveInput<T>, uint> where T : class;

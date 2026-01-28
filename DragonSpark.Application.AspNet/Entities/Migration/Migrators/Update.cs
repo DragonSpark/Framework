@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
 using NetFabric.Hyperlinq;
@@ -6,6 +7,7 @@ using System;
 using System.Buffers;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
@@ -75,11 +77,13 @@ sealed class Update<T> : ISave<T> where T : class
 
 	Update() {}
 
-	public uint Get(SaveInput<T> parameter)
+	public async ValueTask<uint> Get(Stop<SaveInput<T>> parameter)
 	{
-		var (logger, size, destination, entities, total) = parameter;
+		var ((logger, size, destination, entities, total), stop) = parameter;
 		var configuration = new BulkConfig { BatchSize = size, CalculateStats = true, NotifyAfter = size };
-		destination.BulkUpdate(entities, configuration, new Progress<T>(logger, total).Execute);
+		await destination.BulkUpdateAsync(entities, configuration, new Progress<T>(logger, total).Execute,
+		                                  cancellationToken: stop)
+		                 .Off();
 		var result = configuration.StatsInfo.Verify().StatsNumberUpdated.Grade();
 		return result;
 	}

@@ -1,4 +1,8 @@
-﻿namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
+using System.Threading.Tasks;
+
+namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
 sealed class UpdateAwareEntityMigrator : IExtendedEntityMigrator
 {
@@ -10,26 +14,17 @@ sealed class UpdateAwareEntityMigrator : IExtendedEntityMigrator
 		_update   = update;
 	}
 
-	public void Execute(EntityPreMigrationInput parameter)
-	{
-		_previous.Execute(parameter);
-	}
-
-	public void Execute(EntityPostMigrationInput parameter)
-	{
-		_previous.Execute(parameter);
-	}
-
-	public void Execute(EntityMigratorInput parameter)
-	{
-		_previous.Execute(parameter);
-	}
-
 	public EntityTypeMapping Get() => _previous.Get();
 
-	public void Execute(UpdateEntityMigratorInput parameter)
+	public ValueTask Get(Stop<EntityPreMigrationInput> parameter) => _previous.Get(parameter);
+
+	public ValueTask Get(Stop<EntityPostMigrationInput> parameter) => _previous.Get(parameter);
+
+	public ValueTask Get(Stop<EntityMigratorInput> parameter) => _previous.Get(parameter);
+
+	public ValueTask Get(Stop<UpdateEntityMigratorInput> parameter)
 	{
-		var (logger, batchSize) = parameter;
-		_update.Execute(new EntityMigratorInput(logger, batchSize));
+		var ((logger, batchSize), stop) = parameter;
+		return _update.Get(new EntityMigratorInput(logger, batchSize).Stop(stop));
 	}
 }

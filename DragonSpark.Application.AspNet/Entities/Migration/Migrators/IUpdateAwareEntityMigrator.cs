@@ -1,5 +1,5 @@
-﻿using DragonSpark.Model.Commands;
+﻿using DragonSpark.Model.Operations.Stop;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
-public interface IUpdateAwareEntityMigrator : ICommand<UpdateEntityMigratorInput>;
+public interface IUpdateAwareEntityMigrator : IStopAware<UpdateEntityMigratorInput>;

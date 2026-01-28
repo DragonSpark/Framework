@@ -1,6 +1,9 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators;
+using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Sequences;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration;
 
@@ -18,14 +21,14 @@ public sealed class UpdateAwareMigrationStep : IMigrationBody
 		_migrators = migrators;
 	}
 
-	public void Execute(EntityMigratorInput parameter)
+	public async ValueTask Get(Stop<EntityMigratorInput> parameter)
 	{
-		_previous.Execute(parameter);
-		var (logger, batchSize) = parameter;
-		var input = new UpdateEntityMigratorInput(logger, batchSize);
-		foreach (var migrator in _migrators)
+		var ((logger, batchSize), stop) = parameter;
+		await _previous.Off(parameter);
+		var input = new UpdateEntityMigratorInput(logger, batchSize).Stop(stop);
+		foreach (var migrator in _migrators.Open())
 		{
-			migrator.Execute(input);
+			await migrator.Off(input);
 		}
 	}
 }
