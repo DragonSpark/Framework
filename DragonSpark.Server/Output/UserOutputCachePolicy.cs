@@ -44,7 +44,7 @@ public class UserOutputCachePolicy : Text.Text, IOutputsPolicy
 			using var reader = new StreamReader(http.Request.Body, leaveOpen: true);
 			var       body   = await reader.ReadToEndAsync(cancellationToken).Off();
 			http.Request.Body.Position = 0;
-			context.CacheVaryByRules.VaryByValues.Add("body", Hash.Default.Get(body));
+			context.CacheVaryByRules.VaryByValues.Add("body", HexHash.Default.Get(body));
 		}
 		else
 		{

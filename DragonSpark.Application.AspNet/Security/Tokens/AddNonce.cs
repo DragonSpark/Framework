@@ -1,45 +1,14 @@
 using System.Threading.Tasks;
 using DragonSpark.Application.AspNet.Entities.Editing;
 using DragonSpark.Application.AspNet.Security.Identity;
-using DragonSpark.Application.Security.Data;
+using DragonSpark.Application.Security.Tokens;
 using DragonSpark.Compose;
-using DragonSpark.Composition;
-using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Selection.Stop;
 using DragonSpark.Runtime;
 using DragonSpark.Text;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Application.AspNet.Security.Tokens;
-
-// TODO
-
-sealed class Registrations : ICommand<IServiceCollection>
-{
-    public static Registrations Default { get; } = new();
-
-    Registrations() {}
-
-    public void Execute(IServiceCollection parameter)
-    {
-        parameter.Start<NonceCleanupService>()
-                 .Include(x => x.Dependencies)
-                 .Singleton()
-                 //
-                 .Then.Start<IMarkUsed>()
-                 .Forward<MarkUsed>()
-                 .Include(x => x.Dependencies.Recursive())
-                 .Singleton()
-                 //
-                 .Then.Start<IIssueNonce>()
-                 .Forward<IssueNonce>()
-                 .Include(x => x.Dependencies)
-                 .Singleton()
-                 //
-                 .Then.AddHostedService<NonceCleanupService>();
-    }
-}
 
 sealed class AddNonce : IStopAware<IssueNonceInput, string>
 {
@@ -47,7 +16,7 @@ sealed class AddNonce : IStopAware<IssueNonceInput, string>
     readonly IText   _nonce;
     readonly ITime   _time;
 
-    public AddNonce(Editors editors) : this(editors, DefaultFormattedNonces.Default, Time.Default) {}
+    public AddNonce(Editors editors) : this(editors, DefaultFormattedTokens.Default, Time.Default) {}
 
     public AddNonce(Editors editors, IText nonce, ITime time)
     {

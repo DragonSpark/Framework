@@ -8,7 +8,7 @@ public sealed class GravatarImagePath : IAlteration<string>
 {
 	public static GravatarImagePath Default { get; } = new();
 
-	GravatarImagePath() : this(ContentHash.Default.Get) {}
+	GravatarImagePath() : this(ContentHexHash.Default.Get) {}
 
 	readonly Func<string, string> _hash;
 	readonly string               _template;

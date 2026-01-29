@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using DragonSpark.Application.Security.Data;
+using DragonSpark.Application.Security.Tokens;
 using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
@@ -147,7 +147,7 @@ sealed class ValidVerification : IValidVerification
     readonly IProcessIntegrityToken _token;
     readonly IFormatter<string>     _formatter;
 
-    public ValidVerification(IProcessIntegrityToken token) : this(token, NonceFormatter.Default) {}
+    public ValidVerification(IProcessIntegrityToken token) : this(token, TokenFormatter.Default) {}
 
     public ValidVerification(IProcessIntegrityToken token, IFormatter<string> formatter)
     {

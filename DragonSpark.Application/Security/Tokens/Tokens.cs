@@ -2,13 +2,13 @@ using System;
 using System.Security.Cryptography;
 using DragonSpark.Model.Selection;
 
-namespace DragonSpark.Application.Security.Data;
+namespace DragonSpark.Application.Security.Tokens;
 
-sealed class Nonces : ISelect<byte, string>
+sealed class Tokens : ISelect<byte, string>
 {
-    public static Nonces Default { get; } = new();
+    public static Tokens Default { get; } = new();
 
-    Nonces() {}
+    Tokens() {}
 
     public string Get(byte parameter)
     {
