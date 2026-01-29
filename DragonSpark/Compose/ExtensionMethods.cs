@@ -284,4 +284,5 @@ public static partial class ExtensionMethods
         public DateTime ToDateTime() => @this.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
     }
 
+    public static ReadOnlyMemory<T> AsReadOnly<T>(this Memory<T> @this) => @this;
 }

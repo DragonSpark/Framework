@@ -1,3 +1,3 @@
-﻿namespace DragonSpark.Application.Communication.Http;
+namespace DragonSpark.Application.Communication.Http;
 
-public record Options(string Address, bool Configure = true);
+public record Options(string? Address, bool Configure = true);
