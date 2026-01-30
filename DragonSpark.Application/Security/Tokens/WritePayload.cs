@@ -1,4 +1,5 @@
 using System;
+using System.Text.Json;
 using DragonSpark.Model.Sequences.Memory;
 
 namespace DragonSpark.Application.Security.Tokens;
@@ -20,8 +21,10 @@ sealed class WritePayload : ILease<WritePayloadInput, char>
 
     public Leasing<char> Get(WritePayloadInput parameter)
     {
-        var (message, token, writer, buffer) = parameter;
+        var (message, token, buffer) = parameter;
 
+        using var writer = new Utf8JsonWriter(buffer);
+        writer.WriteStartObject();
         writer.WriteString("htm", message.Method.Method);
         writer.WriteString("htu", message.RequestUri!.GetLeftPart(UriPartial.Path));
         writer.WriteNumber("iat", DateTimeOffset.UtcNow.ToUnixTimeSeconds());
@@ -30,7 +33,7 @@ sealed class WritePayload : ILease<WritePayloadInput, char>
         {
             writer.WriteString("nonce", token);
         }
-
+        writer.WriteEndObject();
         using var start  = _encode.Get(buffer.WrittenMemory);
         var       result = _formatter.Get(start.AsMemory());
         return result;

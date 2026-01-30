@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using DragonSpark.Application.Security.Tokens;
@@ -31,8 +31,11 @@ sealed class DeviceSigner : IDeviceSigner
     {
         var (digest, _) = parameter;
 
-        var store     = _store.Get();
-        var key       = (IPrivateKey)store.GetKey(_alias, null).Verify();
+        var store = _store.Get();
+
+        var entry = (KeyStore.PrivateKeyEntry)store.GetEntry(_alias, null).Verify();
+        var key   = entry.PrivateKey;
+
         var signature = Signature.GetInstance(_type).Verify();
         signature.InitSign(key);
 

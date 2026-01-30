@@ -1,5 +1,6 @@
-﻿using DragonSpark.Compose;
+using DragonSpark.Compose;
 using DragonSpark.Model.Results;
+using DragonSpark.Model.Selection;
 using Java.Security;
 using Java.Security.Interfaces;
 using Java.Security.Spec;
@@ -10,21 +11,26 @@ sealed class DeterminePoint : IResult<ECPoint>
 {
     public static DeterminePoint Default { get; } = new();
 
-    DeterminePoint() : this(GetKeyStore.Default, GeneratorAwareLoadKeyPair.Default) {}
+    DeterminePoint() : this(GetKeyStore.Default, GeneratorAwareLoadKeyPair.Default, SpkiPointDecoder.Default) {}
 
-    readonly IResult<KeyStore> _store;
-    readonly ILoadKeyPair      _load;
+    readonly IResult<KeyStore>        _store;
+    readonly ILoadKeyPair             _load;
+    readonly ISelect<byte[], ECPoint> _decoder;
 
-    public DeterminePoint(IResult<KeyStore> store, ILoadKeyPair load)
+    public DeterminePoint(IResult<KeyStore> store, ILoadKeyPair load, ISelect<byte[], ECPoint> decoder)
     {
-        _store = store;
-        _load  = load;
+        _store   = store;
+        _load    = load;
+        _decoder = decoder;
     }
 
     public ECPoint Get()
     {
-        var store = _store.Get();
-        var pair  = _load.Get(store);
-        return pair.Public.Verify().To<IECPublicKey>().GetW().Verify();
+        var store  = _store.Get();
+        var pair   = _load.Get(store);
+        var pub    = pair.Public.Verify();
+        var point  = pub is IECPublicKey ec ? ec.GetW() : _decoder.Get(pub.GetEncoded().Verify());
+        var result = point.Verify();
+        return result;
     }
 }

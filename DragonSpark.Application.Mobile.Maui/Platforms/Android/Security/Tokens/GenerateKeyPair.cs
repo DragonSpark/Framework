@@ -1,4 +1,4 @@
-﻿using Android.Security.Keystore;
+using Android.Security.Keystore;
 using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 using Java.Security;
@@ -29,7 +29,7 @@ sealed class GenerateKeyPair : IResult<KeyPair>
         var parameter = new KeyGenParameterSpec.Builder(_alias, KeyStorePurpose.Sign)
                         .SetAlgorithmParameterSpec(_parameter)
                         .Verify()
-                        .SetDigests(KeyProperties.DigestNone)
+                        .SetDigests(KeyProperties.DigestSha256, KeyProperties.DigestNone)
                         .SetUserAuthenticationRequired(false)
                         .SetKeySize(256)
                         .Build();

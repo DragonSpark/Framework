@@ -45,6 +45,14 @@ sealed class Registrations : ICommand<IServiceCollection>
                  .Singleton()
                  //
                  .Then.AddAuthentication()
-                 .AddScheme<DevicePoPOptions, DevicePoPHandler>(_name, _configure);
+                 .AddScheme<DevicePoPOptions, DevicePoPHandler>(_name, _configure)
+                 //
+                 .Services.AddAuthorization(x => x.AddPolicy("DevicePoP",
+                                                             y =>
+                                                             {
+                                                                 y.AddAuthenticationSchemes("DevicePoP");
+                                                                 y.RequireAuthenticatedUser();
+                                                             }));
+        ;
     }
 }

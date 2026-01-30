@@ -1,5 +1,4 @@
 using System.Buffers;
-using System.Text.Json;
 using System.Threading.Tasks;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
@@ -28,15 +27,13 @@ sealed class SigningInput : IStopAware<CreateProofInput, string>
     {
         var ((message, token), stop) = parameter;
         var (kty, crv, x, y, _)      = await _keys.Off(stop);
-        var             buffer = new ArrayBufferWriter<byte>(256);
-        await using var writer = new Utf8JsonWriter(buffer);
-        using var       header = _header.Get(new(new(kty, crv, x, y), writer, buffer));
+        var       buffer = new ArrayBufferWriter<byte>(256);
+        using var header = _header.Get(new(new(kty, crv, x, y), buffer));
         buffer.Clear();
-        using var payload = _payload.Get(new(message, token, writer, buffer));
-
-        var       total = header.Length + 1 + payload.Length;
-        using var lease = NewLeasing<char>.Default.Get(total);
-        var       to    = lease.AsSpan();
+        using var payload = _payload.Get(new(message, token, buffer));
+        var       total   = header.Length + 1 + payload.Length;
+        using var lease   = NewLeasing<char>.Default.Get(total);
+        var       to      = lease.AsSpan();
         header.AsSpan().CopyTo(to);
         var length = (int)header.Length;
         to[length] = '.';
