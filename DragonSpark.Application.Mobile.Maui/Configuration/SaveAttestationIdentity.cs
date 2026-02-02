@@ -3,7 +3,7 @@ using DragonSpark.Application.Model.Values;
 
 namespace DragonSpark.Application.Mobile.Maui.Configuration;
 
-sealed class SaveAttestationIdentity : SaveState<ExistingAttestationResult>
+sealed class SaveAttestationIdentity : SaveState<AttestationIdentityView>
 {
     public static SaveAttestationIdentity Default { get; } = new();
 

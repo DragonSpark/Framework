@@ -1,19 +1,30 @@
-﻿using System;
+using System;
 using System.Buffers.Text;
+using DragonSpark.Compose;
+using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Sequences.Memory;
 using JetBrains.Annotations;
 
 namespace DragonSpark.Application.Security.Tokens;
 
-public sealed class Base64UrlEncoder : ILease<ReadOnlyMemory<byte>, char>
+// TODO
+
+public sealed class Base64UrlEncoder : Alteration<string>
 {
     public static Base64UrlEncoder Default { get; } = new();
 
-    Base64UrlEncoder() : this(NewLeasing<char>.Default) {}
+    Base64UrlEncoder() : base(Text.Base64Encode.Default.Then().Select(TokenFormatter.Default)) {}
+}
+
+public sealed class Base64UrlMemoryEncoder : ILease<ReadOnlyMemory<byte>, char>
+{
+    public static Base64UrlMemoryEncoder Default { get; } = new();
+
+    Base64UrlMemoryEncoder() : this(NewLeasing<char>.Default) {}
 
     readonly INewLeasing<char> _leasing;
 
-    public Base64UrlEncoder(INewLeasing<char> leasing) => _leasing = leasing;
+    public Base64UrlMemoryEncoder(INewLeasing<char> leasing) => _leasing = leasing;
 
     [MustDisposeResource]
     public Leasing<char> Get(ReadOnlyMemory<byte> parameter)

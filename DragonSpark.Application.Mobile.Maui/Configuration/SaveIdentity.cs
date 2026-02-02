@@ -10,15 +10,15 @@ namespace DragonSpark.Application.Mobile.Maui.Configuration;
 
 sealed class SaveIdentity : IOperation
 {
-    readonly Func<RemoteConfigurationSettings>     _settings;
-    readonly IClientKeyHash                        _hash;
-    readonly IStopAware<ExistingAttestationResult> _set;
+    readonly Func<RemoteConfigurationSettings>   _settings;
+    readonly IClientKeyHash                      _hash;
+    readonly IStopAware<AttestationIdentityView> _set;
 
     public SaveIdentity(Func<RemoteConfigurationSettings> settings, IClientKeyHash hash)
         : this(settings, hash, SaveAttestationIdentity.Default) {}
 
     public SaveIdentity(Func<RemoteConfigurationSettings> settings, IClientKeyHash hash,
-                        IStopAware<ExistingAttestationResult> set)
+                        IStopAware<AttestationIdentityView> set)
     {
         _settings = settings;
         _hash     = hash;

@@ -39,7 +39,7 @@ sealed class ValidatePayloadBody : IStopAware<ValidatePayloadBodyInput, Authenti
     }
 
     async ValueTask<AuthenticateResult?> Mark(JsonElement nonce, CancellationToken stop)
-        => await _mark.Off(new(new(nonce.GetString().EmptyIfNull(), NoncePurpose.Other), stop))
+        => await _mark.Off(new(nonce.GetString().EmptyIfNull(), stop))
                ? null
                : AuthenticateResult.Fail("Nonce invalid/reused");
 }

@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using DragonSpark.Application.AspNet.Security.Tokens;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Selection.Stop;
@@ -10,16 +9,16 @@ namespace DragonSpark.Server.Mobile.Security.Devices;
 
 sealed class DetermineTicket : IStopAware<DetermineTicketInput, AuthenticateResult>
 {
-    readonly OptionsAwareApplyNonce _apply;
+    readonly OptionsAwareEmitNonce _emit;
     readonly ValidatePayload        _payload;
     readonly IParser<JwsResult?>    _parser;
 
-    public DetermineTicket(OptionsAwareApplyNonce apply, ValidatePayload payload)
-        : this(apply, payload, JwsParser.Default) {}
+    public DetermineTicket(OptionsAwareEmitNonce emit, ValidatePayload payload)
+        : this(emit, payload, JwsParser.Default) {}
 
-    public DetermineTicket(OptionsAwareApplyNonce apply, ValidatePayload payload, IParser<JwsResult?> parser)
+    public DetermineTicket(OptionsAwareEmitNonce emit, ValidatePayload payload, IParser<JwsResult?> parser)
     {
-        _apply   = apply;
+        _emit   = emit;
         _payload = payload;
         _parser  = parser;
     }
@@ -27,7 +26,7 @@ sealed class DetermineTicket : IStopAware<DetermineTicketInput, AuthenticateResu
     public async ValueTask<AuthenticateResult> Get(Stop<DetermineTicketInput> parameter)
     {
         var ((subject, record, scheme), stop) = parameter;
-        await _apply.Off(new(new(subject, NoncePurpose.Other), stop));
+        await _emit.Off(new(subject, stop));
 
         var header = subject.Request.Headers["DPoP"].ToString();
         var parsed = _parser.Get(header);

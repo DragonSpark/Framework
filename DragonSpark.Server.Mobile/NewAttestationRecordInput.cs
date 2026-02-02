@@ -1,3 +1,6 @@
 namespace DragonSpark.Server.Mobile;
 
-public readonly record struct NewAttestationRecordInput(string KeyHash, string Challenge, string Attestation);
+public readonly record struct NewAttestationRecordInput(
+    string Attestation,
+    string KeyHash,
+    string Challenge);

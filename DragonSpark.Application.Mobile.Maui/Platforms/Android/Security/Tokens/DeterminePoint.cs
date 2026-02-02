@@ -29,8 +29,7 @@ sealed class DeterminePoint : IResult<ECPoint>
         var store  = _store.Get();
         var pair   = _load.Get(store);
         var pub    = pair.Public.Verify();
-        var point  = pub is IECPublicKey ec ? ec.GetW() : _decoder.Get(pub.GetEncoded().Verify());
-        var result = point.Verify();
+        var result = pub is IECPublicKey ec ? ec.GetW().Verify() : _decoder.Get(pub.GetEncoded().Verify());
         return result;
     }
 }

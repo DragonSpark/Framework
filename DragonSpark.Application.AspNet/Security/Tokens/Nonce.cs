@@ -4,18 +4,17 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Application.AspNet.Security.Tokens;
 
-[Index(nameof(ExpiresAtUtc)), Index(nameof(Purpose), nameof(ExpiresAtUtc))]
-public sealed class Nonce
+[Index(nameof(ExpiresAtUtc)), Index("Discriminator", nameof(ExpiresAtUtc))]
+public abstract class Nonce
 {
     [Key, MaxLength(64)]
-    public required string Key { get; init; }
+    public required string Key { get; set; }
 
-    public DateTime IssuedAtUtc { get; init; }
-    public DateTime ExpiresAtUtc { get; init; }
+    public DateTime IssuedAtUtc { get; set; }
+    public DateTime ExpiresAtUtc { get; set; }
 
     [MaxLength(256)]
-    public string? Scope { get; init; }
+    public string? Scope { get; set; }
 
-    public NoncePurpose Purpose { get; init; }
-    public DateTime? UsedAtUtc { get; init; }
+    public DateTime? UsedAtUtc { get; set; }
 }

@@ -47,12 +47,11 @@ sealed class Registrations : ICommand<IServiceCollection>
                  .Then.AddAuthentication()
                  .AddScheme<DevicePoPOptions, DevicePoPHandler>(_name, _configure)
                  //
-                 .Services.AddAuthorization(x => x.AddPolicy("DevicePoP",
+                 .Services.AddAuthorization(x => x.AddPolicy(_name,
                                                              y =>
                                                              {
-                                                                 y.AddAuthenticationSchemes("DevicePoP");
+                                                                 y.AddAuthenticationSchemes(_name);
                                                                  y.RequireAuthenticatedUser();
                                                              }));
-        ;
     }
 }

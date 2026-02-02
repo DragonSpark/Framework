@@ -21,8 +21,5 @@ sealed class GeneratorAwareLoadKeyPair : ILoadKeyPair
     }
 
     public KeyPair Get(KeyStore parameter)
-    {
-        parameter.DeleteEntry(_alias); // TODO
-        return parameter.ContainsAlias(_alias) ? _previous.Get(parameter) : _generate.Get();
-    }
+        => parameter.ContainsAlias(_alias) ? _previous.Get(parameter) : _generate.Get();
 }

@@ -27,6 +27,8 @@ sealed class ApplyRemoteConfiguration<T> : ICommand<MauiAppBuilder> where T : cl
                  .Forward<AttestationIdentity>()
                  .Singleton()
                  //
+                 .Then.Start<IExistingAttestation>().Forward<ExistingAttestation>().Singleton()
+                 //
                  .Then.Start<IClearAttestationIdentity>()
                  .Forward<ClearAttestationIdentity>()
                  .Singleton()

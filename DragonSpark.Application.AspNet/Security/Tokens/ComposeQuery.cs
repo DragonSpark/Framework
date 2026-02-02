@@ -15,7 +15,7 @@ sealed class ComposeQuery : IComposeQuery
 
     public ComposeQueryResult Get(ComposeQueryInput parameter)
     {
-        var (source, identity, _) = parameter;
+        var (source, identity) = parameter;
         var now = _time.Get().UtcDateTime;
         return new(source.Where(n => n.Key == identity && n.UsedAtUtc == null && n.ExpiresAtUtc >= now), now);
     }

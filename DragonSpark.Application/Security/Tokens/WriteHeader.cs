@@ -8,7 +8,7 @@ sealed class WriteHeader : ILease<WriteHeaderInput, char>
 {
     public static WriteHeader Default { get; } = new();
 
-    WriteHeader() : this(MemoryTokenFormatter.Default, Base64UrlEncoder.Default) {}
+    WriteHeader() : this(MemoryTokenFormatter.Default, Base64UrlMemoryEncoder.Default) {}
 
     readonly ILease<ReadOnlyMemory<char>, char> _formatter;
     readonly ILease<ReadOnlyMemory<byte>, char> _encode;

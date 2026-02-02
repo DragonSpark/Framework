@@ -8,22 +8,22 @@ namespace DragonSpark.Application.AspNet.Security.Tokens;
 
 sealed class MarkUsed : IMarkUsed
 {
-    readonly INewContext           _context;
-    readonly TypeAwareComposeQuery _query;
+    readonly INewContext   _context;
+    readonly IComposeQuery _query;
 
-    public MarkUsed(INewContext context, TypeAwareComposeQuery query)
+    public MarkUsed(INewContext context, ComposeQuery query)
     {
         _context = context;
         _query   = query;
     }
 
-    public async ValueTask<bool> Get(Stop<MarkUsedInput> parameter)
+    public async ValueTask<bool> Get(Stop<string> parameter)
     {
-        var ((identity, type), stop) = parameter;
+        var (identity, stop) = parameter;
         if (!identity.IsNullOrWhiteSpace())
         {
             await using var context = _context.Get();
-            var (query, now) = _query.Get(new(context.Set<Nonce>(), identity, type));
+            var (query, now) = _query.Get(new(context.Set<Nonce>(), identity));
             var rows = await query.ExecuteUpdateAsync(s => s.SetProperty(n => n.UsedAtUtc, _ => now), stop).Off();
             return rows == 1;
         }
