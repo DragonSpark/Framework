@@ -1,3 +1,6 @@
-﻿namespace DragonSpark.Server.Security.Challenges;
+namespace DragonSpark.Server.Security.Challenges;
 
-public sealed record ChallengeSettings(string Key);
+public sealed record ChallengeSettings
+{
+    public required string Key { get; init; }
+}
