@@ -12,7 +12,11 @@ sealed class CloneMessage : IAltering<HttpRequestMessage>
 {
     public static CloneMessage Default { get; } = new();
 
-    CloneMessage() {}
+    CloneMessage() : this(ProofName.Default) {}
+
+    readonly string _name;
+
+    public CloneMessage(string name) => _name = name;
 
     public async ValueTask<HttpRequestMessage> Get(Stop<HttpRequestMessage> parameter)
     {
@@ -22,7 +26,7 @@ sealed class CloneMessage : IAltering<HttpRequestMessage>
 
         foreach (var h in message.Headers)
         {
-            if (!string.Equals(h.Key, "DPoP", StringComparison.OrdinalIgnoreCase))
+            if (!string.Equals(h.Key, _name, StringComparison.OrdinalIgnoreCase))
             {
                 result.Headers.TryAddWithoutValidation(h.Key, h.Value);
             }

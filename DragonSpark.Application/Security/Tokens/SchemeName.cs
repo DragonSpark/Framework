@@ -1,4 +1,4 @@
-namespace DragonSpark.Server.Mobile.Security.Devices;
+namespace DragonSpark.Application.Security.Tokens;
 
 public sealed class SchemeName : Text.Text
 {

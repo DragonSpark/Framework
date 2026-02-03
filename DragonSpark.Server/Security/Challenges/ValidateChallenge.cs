@@ -40,25 +40,3 @@ sealed class ValidateChallenge : IValidateChallenge
         }
     }
 }
-
-/*sealed class ExpirationAwareValidateChallenge : IValidateChallenge
-{
-    readonly IValidateChallenge _previous;
-    readonly ITime              _time;
-
-    public ExpirationAwareValidateChallenge(IValidateChallenge previous) : this(previous, Time.Default) {}
-
-    public ExpirationAwareValidateChallenge(IValidateChallenge previous, ITime time)
-    {
-        _previous  = previous;
-        _time = time;
-    }
-
-    public ChallengeTokenPayload? Get(string parameter)
-    {
-        var previous = _previous.Get(parameter);
-        var result = previous?.ExpiresAt >= _time.Get().ToUnixTimeSeconds() ? previous : null;
-        return result;
-    }
-}*/
-// TODO

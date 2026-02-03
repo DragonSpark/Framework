@@ -1,0 +1,31 @@
+using System.Threading;
+using System.Threading.Tasks;
+using DragonSpark.Compose;
+
+namespace DragonSpark.Application.Mobile.Attestation;
+
+sealed class ExistingAttestation : IExistingAttestation
+{
+    readonly IAttestationIdentity _identity;
+    readonly IChallenge           _challenge;
+
+    public ExistingAttestation(IAttestationIdentity identity, IChallenge challenge)
+    {
+        _identity  = identity;
+        _challenge = challenge;
+    }
+
+    public async ValueTask<ExistingAttestationResult?> Get(CancellationToken parameter)
+    {
+        var identity = await _identity.Off(parameter);
+
+        if (identity is not null)
+        {
+            var (subject, hash) = identity;
+            var challenge = await _challenge.Off(parameter);
+            return new(subject, hash, challenge);
+        }
+
+        return null;
+    }
+}

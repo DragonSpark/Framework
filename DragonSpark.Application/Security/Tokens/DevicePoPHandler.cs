@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,61 +8,33 @@ namespace DragonSpark.Application.Security.Tokens;
 sealed class DevicePoPHandler : DelegatingHandler
 {
     readonly IDeviceKeyProvider _keys;
-    readonly CreateProof        _proof;
-    readonly ITokens            _tokens;
+    readonly ApplyProof         _proof;
+    readonly ProcessResponse    _response;
 
-    public DevicePoPHandler(IDeviceKeyProvider keys, CreateProof proof, ITokens tokens)
+    public DevicePoPHandler(IDeviceKeyProvider keys, ApplyProof proof, ProcessResponse response)
     {
-        _keys   = keys;
-        _proof  = proof;
-        _tokens = tokens;
+        _keys     = keys;
+        _proof    = proof;
+        _response = response;
     }
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken ct)
     {
         // Authorization: DevicePoP <deviceId=jkt>
         var deviceId = (await _keys.Off(ct)).Jkt;
-        request.Headers.Authorization = new("DevicePoP", deviceId);
+        request.Headers.Authorization = new(SchemeName.Default, deviceId);
 
-        // DPoP proof (with last known nonce if any)
-        var origin = new Uri(request.RequestUri!.GetLeftPart(UriPartial.Authority));
-        var nonce  = _tokens.Get(origin);
-        var proof  = await _proof.Off(new(new(request, nonce), ct));
-
-        request.Headers.Remove("DPoP");
-        request.Headers.TryAddWithoutValidation("DPoP", proof);
+        await _proof.Off(new(request, ct));
 
         // Send & handle 401 nonce challenge (retry once)
-        var resp = await base.SendAsync(request, ct).Off();
-        if ((int)resp.StatusCode == 401 && resp.Headers.TryGetValues("DPoP-Nonce", out var vals))
+        var result = await base.SendAsync(request, ct).Off();
+        var next   = await _response.Off(new(result, ct));
+        if (next is not null)
         {
-            var newNonce = vals.FirstOrDefault();
-            if (!string.IsNullOrEmpty(newNonce))
-            {
-                _tokens.Execute((origin, newNonce));
-
-                resp.Dispose();
-
-                var clone  = await CloneMessage.Default.Off(new(request, ct));
-                var proof2 = await _proof.Off(new(new(clone, newNonce), ct));
-
-                clone.Headers.Remove("DPoP");
-                clone.Headers.TryAddWithoutValidation("DPoP", proof2);
-
-                return await base.SendAsync(clone, ct).Off();
-            }
+            result.Dispose();
+            await base.SendAsync(next, ct).Off();
         }
 
-        // Cache next nonce if server supplies it on success
-        if (resp.Headers.TryGetValues("DPoP-Nonce", out var next))
-        {
-            var n = next.FirstOrDefault();
-            if (!n.IsNullOrEmpty())
-            {
-                _tokens.Execute((origin, n));
-            }
-        }
-
-        return resp;
+        return result;
     }
 }

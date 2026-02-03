@@ -1,20 +1,9 @@
 using System;
 using System.Buffers.Text;
-using DragonSpark.Compose;
-using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Sequences.Memory;
 using JetBrains.Annotations;
 
 namespace DragonSpark.Application.Security.Tokens;
-
-// TODO
-
-public sealed class Base64UrlEncoder : Alteration<string>
-{
-    public static Base64UrlEncoder Default { get; } = new();
-
-    Base64UrlEncoder() : base(Text.Base64Encode.Default.Then().Select(TokenFormatter.Default)) {}
-}
 
 public sealed class Base64UrlMemoryEncoder : ILease<ReadOnlyMemory<byte>, char>
 {
