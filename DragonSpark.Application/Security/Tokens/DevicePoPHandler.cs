@@ -32,7 +32,7 @@ sealed class DevicePoPHandler : DelegatingHandler
         if (next is not null)
         {
             result.Dispose();
-            await base.SendAsync(next, ct).Off();
+            return await base.SendAsync(next, ct).Off();
         }
 
         return result;
