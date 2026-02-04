@@ -12,7 +12,8 @@ sealed class Registrations : ICommand<IServiceCollection>
 
     public void Execute(IServiceCollection parameter)
     {
-        parameter.Start<CreateProof>()
+        parameter.Start<ApplyProof>()
+                 .And<ProcessResponse>()
                  .Include(x => x.Dependencies.Recursive())
                  .Singleton()
                  //

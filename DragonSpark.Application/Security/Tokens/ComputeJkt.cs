@@ -1,11 +1,10 @@
-﻿using DragonSpark.Application.Security.Tokens;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Text;
 
-namespace DragonSpark.Application.Mobile.Maui.Platforms.Android.Security.Tokens;
+namespace DragonSpark.Application.Security.Tokens;
 
-sealed class ComputeJkt : IFormatter<Points>
+public sealed class ComputeJkt : IFormatter<Points>
 {
     public static ComputeJkt Default { get; } = new();
 

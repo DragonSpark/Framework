@@ -22,4 +22,13 @@
     <ProjectReference Include="..\DragonSpark.Contracts\DragonSpark.Contracts.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Compile Update="Security\Tokens\ComputeJkt.cs">
+      <ExcludeFromCurrentConfiguration>false</ExcludeFromCurrentConfiguration>
+    </Compile>
+    <Compile Update="Security\Tokens\Points.cs">
+      <ExcludeFromCurrentConfiguration>false</ExcludeFromCurrentConfiguration>
+    </Compile>
+  </ItemGroup>
+
 </Project>

@@ -1,8 +1,8 @@
 using System.Security;
+using DragonSpark.Application.AspNet.Navigation;
 using DragonSpark.Contracts.Security;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Alterations;
-using DragonSpark.Text;
 
 namespace DragonSpark.Server.Security.Challenges;
 
@@ -12,7 +12,7 @@ sealed class ValidateChallenge : IValidateChallenge
     readonly IAlteration<string>                                  _hash;
     readonly ISelect<string, string>                              _decode;
 
-    public ValidateChallenge(IChallengeHasher hasher) : this(ComposePayload.Default, hasher, Base64Decode.Default) {}
+    public ValidateChallenge(IChallengeHasher hasher) : this(ComposePayload.Default, hasher, Base64UrlDecode.Default) {}
 
     public ValidateChallenge(ISelect<ComposePayloadInput, ChallengeTokenPayload?> payload,
                              IAlteration<string> hash, ISelect<string, string> decode)

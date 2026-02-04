@@ -34,6 +34,7 @@ sealed class WritePayload : ILease<WritePayloadInput, char>
             writer.WriteString("nonce", token);
         }
         writer.WriteEndObject();
+        writer.Flush();
         using var start  = _encode.Get(buffer.WrittenMemory);
         var       result = _formatter.Get(start.AsMemory());
         return result;

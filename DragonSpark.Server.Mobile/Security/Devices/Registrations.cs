@@ -25,6 +25,8 @@ sealed class Registrations : ICommand<IServiceCollection>
                  //
                  .Start<IDeviceRegistry>()
                  .Forward<DeviceRegistry>()
+                 .Decorate<ProofAwareDeviceRegistry>()
+                 .Include(x => x.Dependencies.Recursive())
                  .Singleton()
                  //
                  .Then.Start<IUpsertDevice>()

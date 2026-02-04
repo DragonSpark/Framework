@@ -31,14 +31,14 @@ sealed class WriteHeader : ILease<WriteHeaderInput, char>
         writer.WriteString("alg", "ES256");
 
         writer.WritePropertyName("jwk");
-        writer.WriteStartObject(); // <-- open JWK object
+        writer.WriteStartObject();
         writer.WriteString("kty", kty);
         writer.WriteString("crv", crv);
         writer.WriteString("x", x);
         writer.WriteString("y", y);
-        writer.WriteEndObject(); // <-- close JWK object
-        writer.WriteEndObject(); // <-- close header object
-
+        writer.WriteEndObject();
+        writer.WriteEndObject();
+        writer.Flush();
         using var start  = _encode.Get(buffer.WrittenMemory);
         var       result = _formatter.Get(start.AsMemory());
         return result;

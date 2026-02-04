@@ -22,7 +22,7 @@ public sealed class DeviceKey
     [MaxLength(128)]
     public string Y { get; init; } = default!;
 
-    public bool IsBlocked { get; init; }
+    public bool IsBlocked { get; set; }
 
     public required DateTime CreatedAtUtc { get; init; }
 

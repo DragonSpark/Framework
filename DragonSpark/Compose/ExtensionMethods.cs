@@ -285,4 +285,5 @@ public static partial class ExtensionMethods
     }
 
     public static ReadOnlyMemory<T> AsReadOnly<T>(this Memory<T> @this) => @this;
+    public static ReadOnlySpan<T> AsReadOnly<T>(this Span<T> @this) => @this;
 }

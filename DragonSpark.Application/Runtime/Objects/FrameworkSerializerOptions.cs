@@ -1,9 +1,9 @@
-﻿using System.Text.Json;
+using System.Text.Json;
 using DragonSpark.Model.Results;
 
-namespace DragonSpark.Application.AspNet.Security.Identity.Passkeys;
+namespace DragonSpark.Application.Runtime.Objects;
 
-sealed class FrameworkSerializerOptions : Instance<JsonSerializerOptions>
+public sealed class FrameworkSerializerOptions : Instance<JsonSerializerOptions>
 {
     public static FrameworkSerializerOptions Default { get; } = new();
 
