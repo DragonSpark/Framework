@@ -2,6 +2,8 @@ using System;
 using DragonSpark.Application.Security.Tokens;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
+using DragonSpark.Server.Mobile.Security.Devices.Authentication;
+using DragonSpark.Server.Mobile.Security.Devices.Registry;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Server.Mobile.Security.Devices;
