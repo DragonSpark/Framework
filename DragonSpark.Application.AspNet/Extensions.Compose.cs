@@ -160,9 +160,12 @@ public static partial class Extensions
         where TEntity : class
         => includes.Aggregate(source, (current, include) => current.Include(include));
 
-    /**/
-    /*public static Compose.OperationResultComposer<_, T> Then<_, T>(this DragonSpark.Compose.Model.Operations.OperationResultComposer<_,T> @this)
-        => new(@this.Out());*/
+	public static IQueryable<T> Includes<T>(this IQueryable<T> source, params string[] includes) where T : class
+		=> includes.Aggregate(source, (current, include) => current.Include(include));
+
+	/**/
+	/*public static Compose.OperationResultComposer<_, T> Then<_, T>(this DragonSpark.Compose.Model.Operations.OperationResultComposer<_,T> @this)
+		=> new(@this.Out());*/
 
     public static InstanceComposer<TIn, T> Then<TIn, T>(this IInstance<TIn, T> @this) => new(@this);
 
