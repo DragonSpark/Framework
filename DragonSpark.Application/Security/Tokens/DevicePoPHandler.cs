@@ -27,14 +27,16 @@ sealed class DevicePoPHandler : DelegatingHandler
         await _proof.Off(new(request, ct));
 
         // Send & handle 401 nonce challenge (retry once)
-        var result = await base.SendAsync(request, ct).Off();
-        var next   = await _response.Off(new(result, ct));
+        var first = await base.SendAsync(request, ct).Off();
+        var next   = await _response.Off(new(first, ct));
         if (next is not null)
         {
-            result.Dispose();
-            return await base.SendAsync(next, ct).Off();
+            first.Dispose();
+            var result = await base.SendAsync(next, ct).Off();
+            await _response.Off(new(result, ct));
+            return result;
         }
 
-        return result;
+        return first;
     }
 }

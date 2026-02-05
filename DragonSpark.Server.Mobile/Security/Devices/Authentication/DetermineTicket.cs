@@ -13,12 +13,12 @@ sealed class DetermineTicket : IStopAware<DetermineTicketInput, AuthenticateResu
 {
     readonly OptionsAwareEmitNonce            _emit;
     readonly ValidatePayload                  _payload;
-    readonly ISelect<HttpRequest, JwsResult?> _parser;
+    readonly ISelect<HttpRequest, ParsedJws?> _parser;
 
     public DetermineTicket(OptionsAwareEmitNonce emit, ValidatePayload payload)
         : this(emit, payload, JwsHeaderParser.Default) {}
 
-    public DetermineTicket(OptionsAwareEmitNonce emit, ValidatePayload payload, ISelect<HttpRequest, JwsResult?> parser)
+    public DetermineTicket(OptionsAwareEmitNonce emit, ValidatePayload payload, ISelect<HttpRequest, ParsedJws?> parser)
     {
         _emit    = emit;
         _payload = payload;

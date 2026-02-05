@@ -1,0 +1,31 @@
+using System.Security.Claims;
+using System.Threading.Tasks;
+using DragonSpark.Application.AspNet.Security;
+using DragonSpark.Compose;
+using DragonSpark.Server.Mobile.Security.Devices.Claims;
+using Microsoft.AspNetCore.Authorization;
+
+namespace DragonSpark.Server.Mobile.Security.Devices.Validation;
+
+sealed class AttestedDeviceHandler : AuthorizationHandler<AttestedDeviceRequirement>
+{
+    readonly IIsAttested  _attested;
+    readonly ICurrentStop _stop;
+
+    public AttestedDeviceHandler(IIsAttested attested, ICurrentStop stop)
+    {
+        _attested     = attested;
+        _stop         = stop;
+    }
+
+    protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context,
+                                                         AttestedDeviceRequirement requirement)
+    {
+        var device = context.User.Verify().FindFirstValue(DeviceClaimName.Default);
+        var valid    = device is not null && await _attested.Off(new(device, _stop.Get()));
+        if (valid)
+        {
+            context.Succeed(requirement);
+        }
+    }
+}

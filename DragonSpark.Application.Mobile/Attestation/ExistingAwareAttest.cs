@@ -8,8 +8,8 @@ namespace DragonSpark.Application.Mobile.Attestation;
 
 public class ExistingAwareAttest<T> : IStopAware<T>
 {
-    readonly IExistingAttestation             _identity;
-    readonly IStopAware<T>                    _previous;
+    readonly IExistingAttestation               _identity;
+    readonly IStopAware<T>                      _previous;
     readonly Func<ExistingAttestationResult, T> _select;
 
     protected ExistingAwareAttest(IExistingAttestation identity, IStopAware<T> previous,

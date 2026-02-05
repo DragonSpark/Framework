@@ -6,7 +6,7 @@ using DragonSpark.Text;
 
 namespace DragonSpark.Server.Mobile.Security.Devices.Authentication;
 
-sealed class JwsParser : IParser<JwsResult?>
+sealed class JwsParser : IParser<ParsedJws?>
 {
     public static JwsParser Default { get; } = new();
 
@@ -24,7 +24,7 @@ sealed class JwsParser : IParser<JwsResult?>
         _signature = signature;
     }
 
-    public JwsResult? Get(string parameter)
+    public ParsedJws? Get(string parameter)
     {
         var input = _input.Get(parameter);
         if (input is not null)

@@ -2,6 +2,7 @@ using System;
 using System.Buffers.Text;
 using DragonSpark.Compose;
 using DragonSpark.Model.Sequences.Memory;
+using JetBrains.Annotations;
 
 namespace DragonSpark.Server.Mobile.Security.Devices.Cryptography;
 
@@ -9,13 +10,13 @@ sealed class Base64UrlDecode : ILease<ReadOnlyMemory<char>, byte>
 {
     public static Base64UrlDecode Default { get; } = new();
 
-    readonly INewLeasing<byte> _leasing;
-
     Base64UrlDecode() : this(NewLeasing<byte>.Default) {}
 
-    public Base64UrlDecode(INewLeasing<byte> leasing)
-        => _leasing = leasing;
+    readonly INewLeasing<byte> _leasing;
 
+    public Base64UrlDecode(INewLeasing<byte> leasing) => _leasing = leasing;
+
+    [MustDisposeResource]
     public Leasing<byte> Get(ReadOnlyMemory<char> parameter)
     {
         if (parameter.Length != 0)

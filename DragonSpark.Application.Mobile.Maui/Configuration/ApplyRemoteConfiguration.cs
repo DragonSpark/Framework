@@ -23,8 +23,8 @@ sealed class ApplyRemoteConfiguration<T> : ICommand<MauiAppBuilder> where T : cl
                  .Include(x => x.Dependencies.Recursive())
                  .Singleton()
                  //
-                 .Then.Start<IAttestationIdentity>()
-                 .Forward<AttestationIdentity>()
+                 .Then.Start<IValidationIdentity>()
+                 .Forward<ValidationIdentity>()
                  .Singleton()
                  //
                  .Then.Start<IExistingAttestation>().Forward<ExistingAttestation>().Singleton()

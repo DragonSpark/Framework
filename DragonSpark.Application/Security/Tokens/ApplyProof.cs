@@ -24,8 +24,8 @@ sealed class ApplyProof : IStopAware<HttpRequestMessage>
     public async ValueTask Get(Stop<HttpRequestMessage> parameter)
     {
         var (subject, stop) = parameter;
-        var origin = Origins.Default.Get(subject);
-        var nonce  = _tokens.Get(origin);
+
+        var nonce  = _tokens.Get(subject.RequestUri.Verify());
         var proof  = await _proof.Off(new(new(subject, nonce), stop));
 
         subject.Headers.Remove(_name);

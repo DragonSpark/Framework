@@ -3,7 +3,7 @@ using DragonSpark.Model.Sequences.Memory;
 
 namespace DragonSpark.Server.Mobile.Security.Devices.Authentication;
 
-public readonly record struct JwsResult(
+public readonly record struct ParsedJws(
     Leasing<byte> Header,
     Leasing<byte> Payload,
     ReadOnlyMemory<char> SigningInput,

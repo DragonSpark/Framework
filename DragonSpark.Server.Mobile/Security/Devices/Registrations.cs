@@ -27,6 +27,7 @@ sealed class Registrations : ICommand<IServiceCollection>
                  //
                  .Start<IDeviceRegistry>()
                  .Forward<DeviceRegistry>()
+                 .Decorate<MemoryAwareDeviceRegistry>()
                  .Decorate<ProofAwareDeviceRegistry>()
                  .Include(x => x.Dependencies.Recursive())
                  .Singleton()
@@ -38,6 +39,8 @@ sealed class Registrations : ICommand<IServiceCollection>
                  //
                  .Then.Start<IBlockDevice>()
                  .Forward<BlockDevice>()
+                 .Decorate<MemoryAwareBlockDevice>()
+                 .Include(x => x.Dependencies)
                  .Singleton()
                  //
                  .Then.Start<IDeviceUsed>()

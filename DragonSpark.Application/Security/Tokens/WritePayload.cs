@@ -8,7 +8,7 @@ sealed class WritePayload : ILease<WritePayloadInput, char>
 {
     public static WritePayload Default { get; } = new();
 
-    WritePayload() : this(MemoryTokenFormatter.Default, Base64UrlMemoryEncoder.Default) {}
+    WritePayload() : this(MemoryTokenFormatter.Default, Base64UrlCharacterEncoder.Default) {}
 
     readonly ILease<ReadOnlyMemory<char>, char> _formatter;
     readonly ILease<ReadOnlyMemory<byte>, char> _encode;

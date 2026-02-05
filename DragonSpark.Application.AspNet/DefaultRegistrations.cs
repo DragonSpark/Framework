@@ -35,6 +35,11 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Then.Start<ICurrentContext>()
 		         .Forward<CurrentContext>()
 		         .Scoped()
+                 //
+                 //
+                 .Then.Start<ICurrentStop>()
+                 .Forward<CurrentStop>()
+                 .Scoped()
 		         //
 		         .Then.Start<ICurrentPrincipal>()
 		         .Forward<CurrentPrincipal>()

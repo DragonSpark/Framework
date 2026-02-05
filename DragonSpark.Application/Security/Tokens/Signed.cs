@@ -8,7 +8,7 @@ sealed class Signed : ISelect<ReadOnlyMemory<byte>, Leasing<char>>
 {
     public static Signed Default { get; } = new();
 
-    Signed() : this(DerToJose.Default, Base64UrlMemoryEncoder.Default) {}
+    Signed() : this(DerToJose.Default, Base64UrlCharacterEncoder.Default) {}
 
     readonly ILease<ReadOnlyMemory<byte>, byte> _jose;
     readonly ILease<ReadOnlyMemory<byte>, char> _encode;

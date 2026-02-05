@@ -7,14 +7,14 @@ using DragonSpark.Model.Operations.Stop;
 
 namespace DragonSpark.Application.Security.Tokens;
 
-sealed class NewRequest : IAltering<HttpRequestMessage>
+sealed class CloneRequest : IAltering<HttpRequestMessage>
 {
     readonly IAltering<HttpRequestMessage>  _message;
     readonly IStopAware<HttpRequestMessage> _apply;
 
-    public NewRequest(ApplyProof apply) : this(CloneMessage.Default, apply) {}
+    public CloneRequest(ApplyProof apply) : this(CloneMessage.Default, apply) {}
 
-    public NewRequest(IAltering<HttpRequestMessage> message, IStopAware<HttpRequestMessage> apply)
+    public CloneRequest(IAltering<HttpRequestMessage> message, IStopAware<HttpRequestMessage> apply)
     {
         _message = message;
         _apply   = apply;

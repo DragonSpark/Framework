@@ -6,10 +6,10 @@ namespace DragonSpark.Application.Mobile.Attestation;
 
 sealed class ExistingAttestation : IExistingAttestation
 {
-    readonly IAttestationIdentity _identity;
+    readonly IValidationIdentity _identity;
     readonly IChallenge           _challenge;
 
-    public ExistingAttestation(IAttestationIdentity identity, IChallenge challenge)
+    public ExistingAttestation(IValidationIdentity identity, IChallenge challenge)
     {
         _identity  = identity;
         _challenge = challenge;
