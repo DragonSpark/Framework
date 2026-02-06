@@ -9,9 +9,9 @@ public class NonceAware<TIn, TOut> : IStopAware<TIn, TOut>
 {
     readonly ValidateCurrentNonce  _validate;
     readonly IStopAware<TIn, TOut> _previous;
-    readonly MarkCurrentNonceUsed  _mark;
+    readonly IMarkUsed             _mark;
 
-    protected NonceAware(ValidateCurrentNonce validate, IStopAware<TIn, TOut> previous, MarkCurrentNonceUsed mark)
+    protected NonceAware(ValidateCurrentNonce validate, IStopAware<TIn, TOut> previous, IMarkUsed mark)
     {
         _validate = validate;
         _previous = previous;
@@ -20,9 +20,10 @@ public class NonceAware<TIn, TOut> : IStopAware<TIn, TOut>
 
     public async ValueTask<TOut> Get(Stop<TIn> parameter)
     {
-        await _validate.Off(parameter);
+        var (_, stop) = parameter;
+        var token  = await _validate.Off(parameter);
         var result = await _previous.Off(parameter);
-        await _mark.Off(parameter);
+        await _mark.Off(new(token, stop));
         return result;
     }
 }

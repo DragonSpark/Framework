@@ -2,11 +2,10 @@ using System.Security.Claims;
 using System.Threading;
 using System.Threading.Tasks;
 using DragonSpark.Compose;
-using DragonSpark.Model.Operations.Stop;
 
 namespace DragonSpark.Application.AspNet.Security.Tokens;
 
-public sealed class ValidateCurrentNonce : IStopAware
+public sealed class ValidateCurrentNonce : DragonSpark.Model.Operations.Results.Stop.IStopAware<string>
 {
     readonly ICurrentContext _context;
     readonly ValidateNonce   _valid;
@@ -22,11 +21,12 @@ public sealed class ValidateCurrentNonce : IStopAware
         _name    = name;
     }
 
-    public ValueTask Get(CancellationToken parameter)
+    public async ValueTask<string> Get(CancellationToken parameter)
     {
         var context = _context.Get();
-        var nonce   = context.User.FindFirstValue(_name).Verify();
+        var result   = context.User.FindFirstValue(_name).Verify();
         var stop    = parameter.Linked(context.RequestAborted);
-        return _valid.Get(new(nonce, stop));
+        await _valid.Off(new(result, stop));
+        return result;
     }
 }
