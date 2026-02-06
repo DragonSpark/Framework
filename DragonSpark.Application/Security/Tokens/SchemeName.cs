@@ -4,5 +4,5 @@ public sealed class SchemeName : Text.Text
 {
     public static SchemeName Default { get; } = new();
 
-    SchemeName() : base("DevicePoP") {}
+    SchemeName() : base("ProvenDevice") {}
 }

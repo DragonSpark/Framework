@@ -10,5 +10,5 @@ public class HostedAddressBase : ISelect<string, Uri>
 
     protected HostedAddressBase(Uri root) => _root = root;
 
-    public Uri Get(string parameter) => _root.AppendQueryParam("token", parameter).ToUri();
+    public Uri Get(string parameter) => _root.SetFragment($"token={parameter}").ToUri();
 }

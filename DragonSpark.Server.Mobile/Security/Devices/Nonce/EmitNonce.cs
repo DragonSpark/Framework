@@ -7,10 +7,11 @@ using Microsoft.AspNetCore.Http;
 
 namespace DragonSpark.Server.Mobile.Security.Devices.Nonce;
 
-sealed class EmitNonce<T> : Model.Operations.Stop.IStopAware<HttpContext> where T : Application.AspNet.Security.Tokens.Nonce
+sealed class EmitNonce<T> : Model.Operations.Stop.IStopAware<HttpContext>
+    where T : Application.AspNet.Security.Tokens.Nonce
 {
     readonly CreateNonce<T> _previous;
-    readonly string      _header;
+    readonly string         _header;
 
     public EmitNonce(CreateNonce<T> previous) : this(previous, DpopNonceHeaderName.Default) {}
 

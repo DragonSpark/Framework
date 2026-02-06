@@ -11,7 +11,9 @@ sealed class MarkUsed : IMarkUsed
     readonly INewContext   _context;
     readonly IComposeQuery _query;
 
-    public MarkUsed(INewContext context, ComposeQuery query)
+    public MarkUsed(INewContext context) : this(context, ComposeQuery.Default) {}
+
+    public MarkUsed(INewContext context, IComposeQuery query)
     {
         _context = context;
         _query   = query;
