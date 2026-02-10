@@ -19,6 +19,16 @@
 	<ProjectReference Include="..\DragonSpark\DragonSpark.csproj" />
 	<ProjectReference Include="..\DragonSpark.Composition\DragonSpark.Composition.csproj" />
 	<ProjectReference Include="..\DragonSpark.Diagnostics\DragonSpark.Diagnostics.csproj" />
+    <ProjectReference Include="..\DragonSpark.Contracts\DragonSpark.Contracts.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Security\Tokens\ComputeJkt.cs">
+      <ExcludeFromCurrentConfiguration>false</ExcludeFromCurrentConfiguration>
+    </Compile>
+    <Compile Update="Security\Tokens\Points.cs">
+      <ExcludeFromCurrentConfiguration>false</ExcludeFromCurrentConfiguration>
+    </Compile>
   </ItemGroup>
 
 </Project>

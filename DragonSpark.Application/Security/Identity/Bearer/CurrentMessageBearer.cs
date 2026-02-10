@@ -1,15 +1,15 @@
+using System.Net.Http;
+using System.Threading.Tasks;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Selection.Stop;
-using System.Net.Http;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Security.Identity.Bearer;
 
 sealed class CurrentMessageBearer : IStopAware<HttpRequestMessage, string?>
 {
 	readonly ICurrentPrincipal _principal;
-	readonly IBearer           _bearer;
+	readonly IBearer    _bearer;
 
 	public CurrentMessageBearer(IBearer bearer) : this(CurrentPrincipal.Default, bearer) {}
 

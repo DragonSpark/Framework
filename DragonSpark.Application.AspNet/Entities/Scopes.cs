@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Application.AspNet.Entities;
 
-public class Scopes<T> : IScopes where T : DbContext
+public sealed class Scopes<T> : IScopes where T : DbContext
 {
 	readonly INewContext<T> _new;
 

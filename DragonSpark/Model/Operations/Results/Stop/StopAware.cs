@@ -1,8 +1,8 @@
-using DragonSpark.Model.Operations.Selection;
-using DragonSpark.Model.Selection;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using DragonSpark.Model.Operations.Selection;
+using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Model.Operations.Results.Stop;
 

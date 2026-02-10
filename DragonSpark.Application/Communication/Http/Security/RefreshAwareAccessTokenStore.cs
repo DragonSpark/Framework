@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using DragonSpark.Application.Diagnostics.Time;
 using DragonSpark.Compose;
+using DragonSpark.Contracts.Security;
 using DragonSpark.Runtime;
 
 namespace DragonSpark.Application.Communication.Http.Security;

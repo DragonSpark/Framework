@@ -1,4 +1,4 @@
-﻿using System.Net.Http;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using DragonSpark.Compose;
@@ -10,11 +10,10 @@ public sealed class AmbientFormValueHandler : DelegatingHandler
 {
     readonly IStopAware<HttpRequestMessage> _previous;
 
-    public AmbientFormValueHandler(IAmbientProperties properties, HttpMessageHandler? innerHandler = null)
-        : this(new ApplyAmbientFormValues(new ParseForm(properties)), innerHandler) {}
+    public AmbientFormValueHandler(IAmbientProperties properties)
+        : this(new ApplyAmbientFormValues(new ParseForm(properties))) {}
 
-    public AmbientFormValueHandler(IStopAware<HttpRequestMessage> previous, HttpMessageHandler? innerHandler = null)
-        : base(innerHandler ?? new HttpClientHandler())
+    public AmbientFormValueHandler(IStopAware<HttpRequestMessage> previous)
         => _previous = previous;
 
     protected override async Task<HttpResponseMessage> SendAsync(

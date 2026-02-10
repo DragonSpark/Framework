@@ -1,0 +1,38 @@
+using DragonSpark.Compose;
+
+namespace DragonSpark.Application.Mobile.Maui.Presentation.Controls;
+
+using Microsoft.Maui.Controls;
+
+public sealed class TemplatedContentView : ContentView
+{
+    public static readonly BindableProperty ItemProperty =
+        BindableProperty.Create(nameof(Item), typeof(object), typeof(TemplatedContentView),
+                                propertyChanged: (b, _, _) => ((TemplatedContentView)b).UpdateContent());
+
+    public static readonly BindableProperty ItemTemplateSelectorProperty =
+        BindableProperty.Create(nameof(ItemTemplateSelector), typeof(DataTemplateSelector),
+                                typeof(TemplatedContentView),
+                                propertyChanged: (b, _, _) => ((TemplatedContentView)b).UpdateContent());
+
+    public object? Item
+    {
+        get => GetValue(ItemProperty);
+        set => SetValue(ItemProperty, value);
+    }
+
+    public DataTemplateSelector ItemTemplateSelector
+    {
+        get => (DataTemplateSelector)GetValue(ItemTemplateSelectorProperty);
+        set => SetValue(ItemTemplateSelectorProperty, value);
+    }
+    
+    void UpdateContent()
+    {
+        var content = Item is not null
+                          ? ItemTemplateSelector.Account()?.SelectTemplate(Item, this)?.CreateContent() as View
+                          : null;
+        content?.BindingContext = Item;
+        Content                 = content;
+    }
+}

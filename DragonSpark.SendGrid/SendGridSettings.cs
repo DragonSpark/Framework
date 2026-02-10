@@ -1,6 +1,6 @@
-﻿namespace DragonSpark.SendGrid;
+namespace DragonSpark.SendGrid;
 
-public sealed class SendGridSettings
+public sealed record SendGridSettings
 {
 	public string FromAddress { get; set; } = null!;
 

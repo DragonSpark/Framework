@@ -1,11 +1,11 @@
+using System.Threading;
+using System.Threading.Tasks;
 using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Results;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Transactions;
 
@@ -24,6 +24,5 @@ sealed class RequiredDatabaseTransaction(DbContext context, DatabaseFacade facad
 
 	public ValueTask DisposeAsync() => facade.CurrentTransaction?.DisposeAsync() ?? ValueTask.CompletedTask;
 
-	[MustDisposeResource(false)]
 	DbContext IResult<DbContext>.Get() => context;
 }

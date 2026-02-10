@@ -1,6 +1,6 @@
 using System;
 using DragonSpark.Model.Commands;
-using DragonSpark.Server.Requests.Warmup;
+using DragonSpark.Model.Selection.Alterations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 
@@ -8,20 +8,23 @@ namespace DragonSpark.Application.Hosting.Server;
 
 sealed class DefaultApplicationConfiguration : ICommand<IApplicationBuilder>
 {
-	public static DefaultApplicationConfiguration Default { get; } = new();
+    public static DefaultApplicationConfiguration Default { get; } = new();
 
-	DefaultApplicationConfiguration() : this(EndpointConfiguration.Default.Execute) {}
+    DefaultApplicationConfiguration()
+        : this(CoreApplicationConfiguration.Default, EndpointConfiguration.Default.Execute) {}
 
-	readonly Action<IEndpointRouteBuilder> _endpoints;
+    readonly IAlteration<IApplicationBuilder> _previous;
+    readonly Action<IEndpointRouteBuilder>    _endpoints;
 
-	public DefaultApplicationConfiguration(Action<IEndpointRouteBuilder> endpoints) => _endpoints = endpoints;
+    public DefaultApplicationConfiguration(IAlteration<IApplicationBuilder> previous,
+                                           Action<IEndpointRouteBuilder> endpoints)
+    {
+        _previous  = previous;
+        _endpoints = endpoints;
+    }
 
-	public void Execute(IApplicationBuilder parameter)
-	{
-		parameter.UseWarmupAwareHttpsRedirection()
-		         .UseAuthentication()
-		         .UseRouting()
-		         .UseAuthorization()
-		         .UseEndpoints(_endpoints);
-	}
+    public void Execute(IApplicationBuilder parameter)
+    {
+        _previous.Get(parameter).UseEndpoints(_endpoints);
+    }
 }

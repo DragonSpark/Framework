@@ -1,10 +1,10 @@
-﻿namespace DragonSpark.Application.AspNet.Entities.Initialization;
+namespace DragonSpark.Application.AspNet.Entities.Initialization;
 
 public class SchemaModification : ISchemaModification
 {
 	readonly IModifySchema[] _initializers;
 
-	public SchemaModification(params IModifySchema[] initializers) => _initializers = initializers;
+	protected SchemaModification(params IModifySchema[] initializers) => _initializers = initializers;
 
 	public void Execute(ModelCreating parameter)
 	{

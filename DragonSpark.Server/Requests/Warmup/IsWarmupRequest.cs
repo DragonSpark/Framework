@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.AspNet.Communication;
+using DragonSpark.Application.AspNet.Communication;
 using DragonSpark.Model.Selection.Conditions;
 using Microsoft.AspNetCore.Http;
 
@@ -9,18 +9,21 @@ namespace DragonSpark.Server.Requests.Warmup;
 /// </summary>
 sealed class IsWarmupRequest : ICondition<HttpContext>
 {
-	public static IsWarmupRequest Default { get; } = new();
+    public static IsWarmupRequest Default { get; } = new();
 
-	IsWarmupRequest() : this(IsKnownWarmupAgent.Default, IsWarmupAddress.Default) {}
+    IsWarmupRequest() : this(IsKnownWarmupAgent.Default, IsWarmupAddress.Default) {}
 
-	readonly ICondition<IHeaderDictionary> _agent;
-	readonly ICondition<HttpContext>       _address;
+    readonly ICondition<IHeaderDictionary> _agent;
+    readonly ICondition<HttpContext>       _address;
 
-	public IsWarmupRequest(ICondition<IHeaderDictionary> agent, ICondition<HttpContext> address)
-	{
-		_agent   = agent;
-		_address = address;
-	}
+    public IsWarmupRequest(ICondition<IHeaderDictionary> agent, ICondition<HttpContext> address)
+    {
+        _agent   = agent;
+        _address = address;
+    }
 
-	public bool Get(HttpContext parameter) => _agent.Get(parameter.Request.Headers) && _address.Get(parameter);
+    public bool Get(HttpContext parameter)
+    {
+        return _agent.Get(parameter.Request.Headers) && _address.Get(parameter);
+    }
 }

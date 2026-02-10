@@ -1,4 +1,3 @@
-using System;
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Alterations;
 
@@ -8,5 +7,5 @@ public sealed class Base64Encode : Alteration<string>
 {
     public static Base64Encode Default { get; } = new();
 
-    Base64Encode() : base(EncodedTextAsData.Default.Then().Subject.Select(Convert.ToBase64String)) {}
+    Base64Encode() : base(EncodedTextAsData.Default.Then().Subject.Select(Base64EncodeData.Default)) {}
 }

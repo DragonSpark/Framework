@@ -3,9 +3,9 @@ using DragonSpark.Application.Model.Values;
 
 namespace DragonSpark.Application.Mobile.Maui.Configuration;
 
-sealed class SaveAttestationIdentity : SaveState<ExistingAttestationResult>
+sealed class SaveAttestationIdentity : SaveState<ValidationIdentityView>
 {
     public static SaveAttestationIdentity Default { get; } = new();
 
-    SaveAttestationIdentity() : base(AttestationIdentityProcessStore.Default, AttestationIdentityStorageValue.Default) {}
+    SaveAttestationIdentity() : base(ValidationIdentityProcessStore.Default, ValidationIdentityStorageValue.Default) {}
 }

@@ -8,5 +8,5 @@ public sealed class Launch : AsynchronousCommand<Uri>
 {
     public static Launch Default { get; } = new();
 
-    Launch() : base(Launcher.OpenAsync!) {}
+    Launch() : base(Launcher.OpenAsync) {}
 }

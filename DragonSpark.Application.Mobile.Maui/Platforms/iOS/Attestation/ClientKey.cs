@@ -3,7 +3,7 @@ using DragonSpark.Model.Operations.Results.Stop;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.iOS.Attestation;
 
-sealed class ClientKey : ProcessStoring<string>, IClientKey
+sealed class ClientKey : Storing<string>, IClientKey
 {
     public static ClientKey Default { get; } = new();
 

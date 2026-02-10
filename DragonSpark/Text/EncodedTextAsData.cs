@@ -1,9 +1,9 @@
-using DragonSpark.Model.Selection;
 using System.Text;
+using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Text;
 
-public sealed class EncodedTextAsData : Select<string, byte[]>
+public sealed class EncodedTextAsData : Select<string, byte[]>, IParser<byte[]>
 {
 	public static EncodedTextAsData Default { get; } = new();
 

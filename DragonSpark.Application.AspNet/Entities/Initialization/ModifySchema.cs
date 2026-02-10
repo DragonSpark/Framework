@@ -1,8 +1,8 @@
-﻿using DragonSpark.Compose;
+using System;
+using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection.Conditions;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace DragonSpark.Application.AspNet.Entities.Initialization;
 
@@ -11,7 +11,11 @@ public class ModifySchema : IModifySchema
 	readonly ICondition<Type>       _allowed;
 	readonly ICommand<ModelBuilder> _instance;
 
-	protected ModifySchema(ICondition<Type> allowed, ICommand<ModelBuilder> instance)
+    protected ModifySchema(Action<ModelBuilder> command) : this(new Command<ModelBuilder>(command)) {}
+
+    protected ModifySchema(ICommand<ModelBuilder> instance) : this(Is.Always<Type>().Out(), instance) {}
+
+    protected ModifySchema(ICondition<Type> allowed, ICommand<ModelBuilder> instance)
 	{
 		_allowed  = allowed;
 		_instance = instance;

@@ -11,4 +11,7 @@ public static class Extensions
         => Http.Registrations.Default.Parameter(@this);
     public static IServiceCollection WithVerification(this IServiceCollection @this)
         => Attestation.Registrations.Default.Parameter(@this);
+
+    public static IServiceCollection WithDeviceAuthorization(this IServiceCollection @this)
+        => Security.Tokens.Registrations.Default.Parameter(@this);
 }

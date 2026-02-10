@@ -1,13 +1,8 @@
-﻿using DragonSpark.Model.Results;
-using DragonSpark.Text;
 using Microsoft.IdentityModel.Tokens;
 
 namespace DragonSpark.Application.Security.Identity.Bearer;
 
-sealed class BearerSigningCredentials : Instance<SigningCredentials>
+public sealed class BearerSigningCredentials : BearerSigningCredentialsBase
 {
-	public BearerSigningCredentials(BearerSettings settings)
-		: this(new SymmetricSecurityKey(EncodedTextAsData.Default.Get(settings.Key))) {}
-
-	BearerSigningCredentials(SecurityKey key) : base(new(key, SecurityAlgorithms.HmacSha256Signature)) {}
+    public BearerSigningCredentials(BearerSettings settings) : base(settings, SecurityAlgorithms.HmacSha256Signature) {}
 }

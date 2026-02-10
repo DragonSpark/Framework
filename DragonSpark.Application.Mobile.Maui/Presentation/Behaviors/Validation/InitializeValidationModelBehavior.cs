@@ -15,9 +15,9 @@ public sealed class InitializeValidationModelBehavior : DataFormValidationBehavi
         set { SetValue(InitialIsValidProperty, value); }
     }
 
-    protected override void OnAttachedTo(SfDataForm bindable)
+    protected override void OnAttached(SfDataForm bindable)
     {
-        base.OnAttachedTo(bindable);
+        base.OnAttached(bindable);
         bindable.ValidateProperty += BindableOnValidateProperty;
     }
 
@@ -30,9 +30,9 @@ public sealed class InitializeValidationModelBehavior : DataFormValidationBehavi
         }
     }
 
-    protected override void OnDetachingFrom(SfDataForm bindable)
+    protected override void OnDetached(SfDataForm bindable)
     {
         bindable.ValidateProperty -= BindableOnValidateProperty;
-        base.OnDetachingFrom(bindable);
+        base.OnDetached(bindable);
     }
 }

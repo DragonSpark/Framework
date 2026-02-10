@@ -29,7 +29,7 @@ sealed class Attest : IAttest
     {
         var key         = await _key.Off(parameter);
         var challenge   = await _challenge.Off(parameter);
-        var attestation = await _token.Off(new(challenge, parameter));
+        var attestation = await _token.Off(new(challenge.Challenge, parameter));
         return new NewAttestationResult(key, challenge, attestation);
     }
 }

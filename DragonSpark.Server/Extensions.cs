@@ -1,4 +1,6 @@
-﻿using DragonSpark.Application.AspNet;
+using System;
+using System.Security.Claims;
+using DragonSpark.Application.AspNet;
 using DragonSpark.Application.AspNet.Compose;
 using DragonSpark.Compose;
 using DragonSpark.Composition.Compose;
@@ -8,13 +10,14 @@ using DragonSpark.Server.Security.Content;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Security.Claims;
 
 namespace DragonSpark.Server;
 
 public static class Extensions
 {
+	public static BuildHostContext WithChallenges(this BuildHostContext @this) =>
+		@this.Configure(Security.Challenges.Registrations.Default);
+
 	public static ApplicationProfileContext WithContentSecurity(this ApplicationProfileContext @this)
 		=> @this.Append(x => x.AddContentSecurity()).Append(x => x.UseContentSecurity());
 

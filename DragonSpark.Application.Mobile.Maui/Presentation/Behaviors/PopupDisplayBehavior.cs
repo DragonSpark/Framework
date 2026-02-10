@@ -16,7 +16,7 @@ public sealed class PopupDisplayBehavior : BehaviorBase<SfPopup>
         set { SetValue(MarginProperty, value); }
     }
 
-    protected override void OnAttachedTo(SfPopup bindable)
+    protected override void OnAttached(SfPopup bindable)
     {
         var display = DeviceDisplay.MainDisplayInfo;
         var density = display.Density;

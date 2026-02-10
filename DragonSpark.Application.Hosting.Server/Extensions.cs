@@ -1,15 +1,18 @@
-﻿using DragonSpark.Application.AspNet;
+using System;
+using DragonSpark.Application.AspNet;
 using DragonSpark.Application.AspNet.Compose;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
-using System;
 
 namespace DragonSpark.Application.Hosting.Server;
 
 public static class Extensions
 {
+    public static ApplicationProfileContext WithApiApplication(this BuildHostContext @this)
+        => @this.Apply(CoreServerApplicationProfile.Default);
+
 	public static ApplicationProfileContext WithServerApplication(this BuildHostContext @this)
 		=> @this.Apply(ServerApplicationProfile.Default);
 

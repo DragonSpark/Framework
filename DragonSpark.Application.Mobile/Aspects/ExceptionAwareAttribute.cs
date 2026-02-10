@@ -45,6 +45,12 @@ public sealed class ExceptionAwareAttribute : OverrideMethodAspect
 
                 aware.Execute(new (model.Local, model.External));
             }
+            else if (_exceptionHandler?.Condition.Get(e) == true)
+            {
+                var parameter = meta.Target.Parameters.LastOrDefault(p => p.Type.Equals(typeof(CancellationToken)));
+                var token     = parameter is not null ? parameter.Value : CancellationToken.None;
+                await _exceptionHandler.Off(new(e, token));
+            }
         }
         catch (ApiException e) when (e.StatusCode == HttpStatusCode.BadRequest)
         {
@@ -60,7 +66,7 @@ public sealed class ExceptionAwareAttribute : OverrideMethodAspect
                 aware.Execute(new (model.Local, model.External));
             }
         }
-        catch (Exception e) when (_exceptionHandler?.Condition.Get(e) ?? false)
+        catch (Exception e) when (_exceptionHandler?.Condition.Get(e) == true)
         {
             var parameter = meta.Target.Parameters.LastOrDefault(p => p.Type.Equals(typeof(CancellationToken)));
             var token     = parameter is not null ? parameter.Value : CancellationToken.None;

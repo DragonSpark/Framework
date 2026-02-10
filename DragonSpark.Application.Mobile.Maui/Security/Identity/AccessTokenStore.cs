@@ -1,8 +1,9 @@
 using DragonSpark.Application.Communication.Http.Security;
+using DragonSpark.Contracts.Security;
 
 namespace DragonSpark.Application.Mobile.Maui.Security.Identity;
 
-sealed class AccessTokenStore : DragonSpark.Model.Operations.Results.Stop.ProcessStoring<AccessTokenView?>, IAccessTokenStore
+sealed class AccessTokenStore : DragonSpark.Model.Operations.Results.Stop.Storing<AccessTokenView?>, IAccessTokenStore
 {
     public AccessTokenStore(RefreshAwareAccessTokenStore refresh) : base(AccessTokenProcessValue.Default, refresh) {}
 }

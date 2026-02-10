@@ -7,10 +7,10 @@ namespace DragonSpark.Application.Mobile.Maui.Presentation.Behaviors.Validation;
 
 public sealed class DataFormValidationErrorMonitorBehavior : DataFormValidationBehaviorBase
 {
-    protected override void OnAttachedTo(SfDataForm bindable)
+    protected override void OnAttached(SfDataForm bindable)
     {
         bindable.ValidateProperty += BindableOnValidateProperty;
-        base.OnAttachedTo(bindable);
+        base.OnAttached(bindable);
     }
 
     protected override void OnSubjectChanged(ValidationModel parameter)
@@ -37,9 +37,9 @@ public sealed class DataFormValidationErrorMonitorBehavior : DataFormValidationB
         }
     }
 
-    protected override void OnDetachingFrom(SfDataForm bindable)
+    protected override void OnDetached(SfDataForm bindable)
     {
         bindable.ValidateProperty -= BindableOnValidateProperty;
-        base.OnDetachingFrom(bindable);
+        base.OnDetached(bindable);
     }
 }

@@ -82,7 +82,7 @@ public class AsynchronousCommand<T> : IAsyncRelayCommand<T>
 
     public bool IsRunning => _previous.IsRunning;
 
-    public bool CanExecute(T? parameter) => _previous.CanExecute(parameter);
+    public bool CanExecute(T? parameter) => _previous.CanExecute(parameter!);
 
-    public void Execute(T? parameter) => _previous.Execute(parameter);
+    public void Execute(T? parameter) => _previous.Execute(parameter!);
 }

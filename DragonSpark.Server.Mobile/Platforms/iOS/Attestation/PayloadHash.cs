@@ -32,8 +32,7 @@ sealed class PayloadHash : IArray<PayloadHashInput, byte>
         var       nonce   = leasing.Store;
         Buffer.BlockCopy(data, 0, nonce, 0, data.Length.Degrade());
         Buffer.BlockCopy(hash, 0, nonce, data.Length.Degrade(), hash.Length);
-        var span   = leasing.AsSpan();
-        var result = SHA256.HashData(span);
+        var result = SHA256.HashData(leasing.AsSpan());
         return result;
     }
 }

@@ -1,36 +1,33 @@
+using DragonSpark.Compose;
 using Microsoft.Maui.Controls;
 
 namespace DragonSpark.Application.Mobile.Maui.Presentation.Behaviors;
 
 public sealed class EventToCommandBehavior : CommunityToolkit.Maui.Behaviors.EventToCommandBehavior
 {
+    AttachmentMonitor? _monitor;
+
     protected override void OnAttachedTo(VisualElement bindable)
     {
-        BindingContext = bindable.BindingContext;
-        base.OnAttachedTo(bindable);
-    }
-}
-
-public sealed class TextValidationBehavior : CommunityToolkit.Maui.Behaviors.TextValidationBehavior
-{
-    protected override void OnAttachedTo(BindableObject bindable)
-    {
-        BindingContext                 =  bindable.BindingContext;
-        bindable.BindingContextChanged += Bindable_BindingContextChanged;
+        _monitor?.Dispose();
+        _monitor = new AttachmentMonitor(this, bindable);
+        _monitor.Execute();
         base.OnAttachedTo(bindable);
     }
 
-    void Bindable_BindingContextChanged(object? sender, System.EventArgs e)
+    protected override void OnTriggerHandled(object? sender = null, object? eventArgs = null)
     {
-        if (sender is BindableObject b)
+        if (EventName != nameof(Page.NavigatedTo) || !Popped.Default.Down()) // Could probably simplify this
         {
-            BindingContext = b.BindingContext;   
+            base.OnTriggerHandled(sender, eventArgs);
         }
     }
 
-    protected override void OnDetachingFrom(BindableObject bindable)
+    protected override void OnDetachingFrom(VisualElement bindable)
     {
-        bindable.BindingContextChanged -= Bindable_BindingContextChanged;
+        _monitor?.Dispose();
+        _monitor = null;
         base.OnDetachingFrom(bindable);
     }
+
 }

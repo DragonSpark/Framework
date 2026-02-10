@@ -17,7 +17,7 @@ public readonly struct AuthenticationSession<T>(SignInManager<T> subject, UserMa
 	public SignInManager<T> Subject { get; } = subject;
 	public UserManager<T> Users { get; } = users;
 
-	public void Deconstruct(out SignInManager<T> subject, [MustDisposeResource(false)] out UserManager<T> users)
+	public void Deconstruct(out SignInManager<T> subject, out UserManager<T> users)
 	{
 		subject = Subject;
 		users   = Users;

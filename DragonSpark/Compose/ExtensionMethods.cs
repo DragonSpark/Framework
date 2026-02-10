@@ -1,4 +1,6 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Runtime.CompilerServices;
 using DragonSpark.Diagnostics.Logging;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Sequences;
@@ -267,10 +269,12 @@ public static partial class ExtensionMethods
 			=> string.Format(provider, @this, args);
 	}
 
-	extension(string? @this)
+	extension([NotNullWhen(false)]string? @this)
 	{
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public bool IsNullOrEmpty() => string.IsNullOrEmpty(@this);
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public bool IsNullOrWhiteSpace() => string.IsNullOrWhiteSpace(@this);
 	}
     extension(DateOnly @this)
@@ -280,4 +284,6 @@ public static partial class ExtensionMethods
         public DateTime ToDateTime() => @this.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
     }
 
+    public static ReadOnlyMemory<T> AsReadOnly<T>(this Memory<T> @this) => @this;
+    public static ReadOnlySpan<T> AsReadOnly<T>(this Span<T> @this) => @this;
 }

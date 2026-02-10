@@ -1,6 +1,6 @@
-﻿using DragonSpark.Model.Commands;
-using Microsoft.EntityFrameworkCore;
 using System;
+using DragonSpark.Model.Commands;
+using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Application.AspNet.Entities.Configure;
 

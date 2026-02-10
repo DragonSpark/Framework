@@ -1,10 +1,10 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Text;
 using System.Security.Claims;
+using DragonSpark.Compose;
+using DragonSpark.Text;
 
 namespace DragonSpark.Application.Security.Identity.Bearer;
 
 sealed class Bearer : Formatter<ClaimsIdentity>, IBearer
 {
-	public Bearer(ISign sign, BearerIdentity bearer) : base(bearer.Then().Select(sign)) {}
+	public Bearer(BearerIdentity bearer, ISign sign) : base(bearer.Then().Select(sign)) {}
 }

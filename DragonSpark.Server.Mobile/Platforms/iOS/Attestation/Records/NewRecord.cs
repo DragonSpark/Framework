@@ -7,22 +7,23 @@ using DragonSpark.Model.Operations.Selection.Stop;
 using DragonSpark.Model.Results;
 using DragonSpark.Runtime;
 using DragonSpark.Runtime.Activation;
+using DragonSpark.Server.Mobile.Security.Devices.Authentication;
 
 namespace DragonSpark.Server.Mobile.Platforms.iOS.Attestation.Records;
 
 sealed class NewRecord<T> : IStopAware<Attestation, T> where T : class, IAttestationRecord
 {
-    public static NewRecord<T> Default { get; } = new();
+    readonly CurrentDevice _current;
+    readonly IResult<T>    _new;
+    readonly ITime         _time;
 
-    NewRecord() : this(New<T>.Default, Time.Default) {}
+    public NewRecord(CurrentDevice current) : this(current, New<T>.Default, Time.Default) {}
 
-    readonly IResult<T> _new;
-    readonly ITime      _time;
-
-    public NewRecord(IResult<T> @new, ITime time)
+    public NewRecord(CurrentDevice current, IResult<T> @new, ITime time)
     {
-        _new  = @new;
-        _time = time;
+        _current = current;
+        _new     = @new;
+        _time    = time;
     }
 
     public ValueTask<T> Get(Stop<Attestation> parameter)
@@ -37,6 +38,7 @@ sealed class NewRecord<T> : IStopAware<Attestation, T> where T : class, IAttesta
         result.PublicKey     = key.Value;
         result.PublicKeyHash = key.Hash;
         result.Receipt       = instance.Statement.Receipt;
+        result.Thumbprint    = _current.Get();
         return result.ToOperation();
     }
 }

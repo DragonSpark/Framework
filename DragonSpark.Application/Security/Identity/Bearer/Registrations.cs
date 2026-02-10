@@ -14,25 +14,25 @@ public sealed class Registrations : ICommand<IServiceCollection>
 	public void Execute(IServiceCollection parameter)
 	{
 		parameter.Register<BearerSettings>()
-		         //
-		         .Start<ISign>()
-		         .Forward<Sign>()
-		         .Include(x => x.Dependencies.Recursive())
-		         .Singleton()
-		         //
-		         .Then.Start<IBearer>()
-		         .Forward<Bearer>()
-		         .Decorate<ReferenceValueAwareBearer>()
-		         .Include(x => x.Dependencies.Recursive())
-		         .Scoped()
-		         //
-		         .Then.Start<ICurrentBearer>()
-		         .Forward<CurrentBearer>()
-		         .Scoped()
+				 //
+				 .Start<ISign>()
+				 .Forward<Sign>()
+				 .Include(x => x.Dependencies.Recursive())
+				 .Singleton()
+				 //
+				 .Then.Start<IBearer>()
+				 .Forward<Bearer>()
+				 .Decorate<ReferenceValueAwareBearer>()
+				 .Include(x => x.Dependencies.Recursive())
+				 .Scoped()
+                 //
+				 .Then.Start<ICurrentBearer>()
+				 .Forward<CurrentBearer>()
+				 .Scoped()
 				 //
 				 .Then.Start<CurrentMessageBearer>().Scoped()
-                 //
-                 .Then.TryDecorate<IAccessTokenProvider, BearerAwareAccessTokenProvider>()
-                 ;
+				 //
+				 .Then.TryDecorate<IAccessTokenProvider, BearerAwareAccessTokenProvider>()
+				 ;
 	}
 }

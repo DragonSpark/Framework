@@ -1,34 +1,47 @@
 using System;
 using CommunityToolkit.Maui.Behaviors;
+using DragonSpark.Compose;
 using Microsoft.Maui.Controls;
 
 namespace DragonSpark.Application.Mobile.Maui.Presentation.Behaviors;
 
+public class BehaviorBase : BehaviorBase<VisualElement>;
+
 public class BehaviorBase<T> : BaseBehavior<T> where T : VisualElement
 {
-    protected override void OnAttachedTo(T bindable)
+    AttachmentMonitor? _monitor;
+
+    protected sealed override void OnAttachedTo(T bindable)
     {
-        bindable.BindingContextChanged += Bindable_BindingContextChanged;
-        BindingContext                 =  bindable.BindingContext;
+        _monitor = new AttachmentMonitor(this, bindable, 
+                                         new AttachmentMonitorEvents(OnBindingContextChanged, OnDetachingFrom));
+        _monitor.Execute();
+
         base.OnAttachedTo(bindable);
+        OnAttached(bindable);
     }
 
-    void Bindable_BindingContextChanged(object? sender, EventArgs e)
-    {
-        if (sender is BindableObject b)
-        {
-            OnBindingContextChanged(b);
-        }
-    }
+    protected virtual void OnAttached(T bindable) {}
 
-    protected virtual void OnBindingContextChanged(BindableObject b)
-    {
-        BindingContext = b.BindingContext;
-    }
+    protected virtual void OnDetached(T bindable) {}
 
-    protected override void OnDetachingFrom(T bindable)
+    protected virtual void OnBindingContextChanged(BindableObject b) {}
+
+    protected sealed override void OnDetachingFrom(T bindable)
     {
-        bindable.BindingContextChanged -= Bindable_BindingContextChanged;
+        _monitor?.Dispose();
+        _monitor = null;
+        OnDetached(bindable);
         base.OnDetachingFrom(bindable);
+        bindable.Loaded += OnLoaded;
+    }
+
+    void OnLoaded(object? sender, EventArgs e)
+    {
+        if (sender is T view)
+        {
+            view.Loaded -= OnLoaded;
+            OnAttachedTo(view);    
+        }
     }
 }
