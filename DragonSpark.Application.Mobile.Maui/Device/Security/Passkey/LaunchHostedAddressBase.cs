@@ -17,6 +17,6 @@ class LaunchHostedAddressBase : IStopAware<string>
     public async ValueTask Get(Stop<string> parameter)
     {
         var address = _address.Get(parameter);
-        await Browser.OpenAsync(address).Off();
+        await Launcher.OpenAsync(address).Off();
     }
 }
