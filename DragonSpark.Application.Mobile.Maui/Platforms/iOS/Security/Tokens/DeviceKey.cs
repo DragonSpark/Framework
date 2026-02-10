@@ -10,6 +10,10 @@ namespace DragonSpark.Application.Mobile.Maui.Platforms.iOS.Security.Tokens;
 
 sealed class DeviceKey : IResult<PublicJWK>
 {
+    public static DeviceKey Default { get; } = new();
+
+    DeviceKey() : this(SecurityKey.Default) {}
+
     readonly SecKey                             _key;
     readonly ILease<ReadOnlyMemory<byte>, char> _encode;
     readonly IFormatter<Points>                 _jkt;
