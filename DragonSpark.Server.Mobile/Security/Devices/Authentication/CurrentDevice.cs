@@ -10,6 +10,8 @@ sealed class CurrentDevice : IText
     readonly ICurrentContext _context;
     readonly IHeader         _header;
 
+    public CurrentDevice(ICurrentContext context) : this(context, DeviceHeader.Default) {}
+
     public CurrentDevice(ICurrentContext context, IHeader header)
     {
         _context = context;
