@@ -17,7 +17,7 @@ sealed class ComposeAttestationInput : ISelect<NewAttestationRecordInput, Attest
 
     public AttestationInput Get(NewAttestationRecordInput parameter)
     {
-        var (keyHash, challenge, attestation) = parameter;
+        var (attestation, keyHash, challenge) = parameter;
         return new(attestation, challenge, _bundle, keyHash, _environment);
     }
 }

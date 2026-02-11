@@ -51,7 +51,7 @@ public sealed class Registrations<T> : ICommand<IServiceCollection> where T : cl
             ;
     }
 }
-
+// TODO
 public sealed record AndroidPackageSettings
 {
     public required string EncodedKey { get; set; }
@@ -157,7 +157,7 @@ sealed class ValidVerification : IValidVerification
 
     public async ValueTask<bool> Get(Stop<NewAttestationRecordInput> parameter)
     {
-        var ((_, challenge, input), stop)            = parameter;
+        var ((input, _, challenge), stop)            = parameter;
         var (request, (application, _), (device, _)) = await _token.Off(new(input, stop));
         var result = application && device && _formatter.Get(request.Nonce) == challenge;
         return result;
