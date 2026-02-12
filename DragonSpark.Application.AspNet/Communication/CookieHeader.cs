@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Application.AspNet.Communication;
+namespace DragonSpark.Application.AspNet.Communication;
 
 public sealed class CookieHeader : Header
 {
