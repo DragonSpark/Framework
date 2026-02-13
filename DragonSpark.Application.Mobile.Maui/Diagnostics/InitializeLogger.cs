@@ -1,5 +1,4 @@
 using System;
-using DragonSpark.Compose;
 using DragonSpark.Diagnostics;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
@@ -20,9 +19,10 @@ sealed class InitializeLogger : ICommand<IServiceProvider>
 
     public void Execute(IServiceProvider parameter)
     {
-        var monitored = _store.Get().Verify().To<MonitoredLogger>();
-        _store.Execute(null);
-        var logger = parameter.GetRequiredService<ILogger>();
-        monitored.Execute(logger);
+        if (_store.TryPop(out var stored) && stored is MonitoredLogger monitored)
+        {
+            var logger = parameter.GetRequiredService<ILogger>();
+            monitored.Execute(logger);
+        }
     }
 }
