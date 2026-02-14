@@ -1,11 +1,8 @@
-using System;
-using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
 using DragonSpark.Compose.Model.Operations;
 using DragonSpark.Compose.Model.Operations.Allocated;
 using DragonSpark.Compose.Model.Results;
 using DragonSpark.Compose.Model.Selection;
+using DragonSpark.Diagnostics.Logging;
 using DragonSpark.Model;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Results;
@@ -15,6 +12,10 @@ using DragonSpark.Model.Operations.Selection.Stop;
 using DragonSpark.Model.Operations.Stop;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
+using System;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Compose;
 
@@ -171,6 +172,13 @@ public static partial class ExtensionMethods
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ConfiguredValueTaskAwaitable<T> On<T>(this ISelect<Stop<None>, ValueTask<T>> @this)
         => @this.Get(new(None.Default)).ConfigureAwait(true);*/
+
+    public static SelectedLogOperationExceptionComposer<T, TOther> Use<T, TOther>(this OperationComposer<Stop<T>> @this,
+                                                                                  ILogException<TOther> log)
+	    => new(@this.Out(), log);
+    public static PolicyAwareLogOperationExceptionComposer<T> UsePolicy<T>(this OperationComposer<Stop<T>> @this, 
+                                                                           ILogException<T> log)
+	    => new(@this.Get().Out(), log);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static ConfiguredValueTaskAwaitable<T> On<T>(this ISelect<CancellationToken, ValueTask<T>> @this)
