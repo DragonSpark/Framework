@@ -3,10 +3,10 @@ using DragonSpark.Application.Model.Values;
 
 namespace DragonSpark.Application.Mobile.Maui.Configuration;
 
-public sealed class ClearAttestationIdentity : ClearState<ValidationIdentityView>, IClearAttestationIdentity
+public sealed class ClearValidationIdentity : ClearState<ValidationIdentityView>, IClearValidationIdentity
 {
-    public static ClearAttestationIdentity Default { get; } = new();
+    public static ClearValidationIdentity Default { get; } = new();
 
-    ClearAttestationIdentity()
+    ClearValidationIdentity()
         : base(ValidationIdentityProcessStore.Default, ValidationIdentityStorageValue.Default) {}
 }
