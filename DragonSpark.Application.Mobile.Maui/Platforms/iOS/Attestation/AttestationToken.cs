@@ -7,6 +7,7 @@ using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Results.Stop;
 using Foundation;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.iOS.Attestation;
 
@@ -32,7 +33,7 @@ sealed class AttestationToken : IAttestationToken
             throw new NotSupportedException("App Attest not supported on this device.");
         }
 
-        var bytes       = Convert.FromBase64String(parameter);
+        var bytes       = WebEncoders.Base64UrlDecode(parameter);
         var hash        = SHA256.HashData(bytes);
         var data        = NSData.FromArray(hash);
         var key         = await _key.Off(parameter);
