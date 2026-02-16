@@ -28,6 +28,9 @@ sealed class Registrations : ICommand<IServiceCollection>
                  .Singleton()
                  //
                  .Then.AddSingleton<IMauiInitializeService>(UnhandledExceptions.Default)
-                 .AddSingleton<IMauiInitializeService>(AdjustDiagnostics.Default);
+                 .AddSingleton<IMauiInitializeService>(AdjustDiagnostics.Default)
+                 //
+                 .Start<IReport>().Forward<Report>().Singleton()
+                 ;
     }
 }

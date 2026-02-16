@@ -1,9 +1,8 @@
 using DragonSpark.Application.Mobile.Runtime.Initialization;
-using Microsoft.Extensions.Configuration;
 
 namespace DragonSpark.Application.Mobile.Maui.Diagnostics;
 
 public sealed class InitializeApplication : InitializationAware
 {
-    public InitializeApplication(IConfiguration configuration) : base(configuration, PerformInitialization.Default) {}
+    public InitializeApplication(IReport send) : base(PerformInitialization.Default, send) {}
 }
