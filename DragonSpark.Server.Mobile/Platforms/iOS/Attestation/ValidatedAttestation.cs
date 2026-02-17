@@ -10,7 +10,7 @@ public sealed class ValidatedAttestation : ISelect<AttestationInput, Attestation
 
     ValidatedAttestation() : this(AttestationParser.Default, ValidAttestation.Default) {}
 
-    readonly IParser<Attestation?>             _parser;
+    readonly IParser<Attestation?>                _parser;
     readonly ICondition<AttestationInstanceInput> _valid;
 
     public ValidatedAttestation(IParser<Attestation?> parser, ICondition<AttestationInstanceInput> valid)

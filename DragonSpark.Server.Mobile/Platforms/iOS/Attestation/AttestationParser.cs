@@ -11,11 +11,11 @@ namespace DragonSpark.Server.Mobile.Platforms.iOS.Attestation;
 
 public sealed class AttestationParser : IParser<Attestation?>
 {
-    readonly ArrayPool<byte[]> _pool;
     public static AttestationParser Default { get; } = new();
 
     AttestationParser() : this(RootCertificate.Default) {}
 
+    readonly ArrayPool<byte[]>                         _pool;
     readonly X509Certificate2                          _root;
     readonly ISelect<Array<byte>, AuthenticationData?> _data;
 

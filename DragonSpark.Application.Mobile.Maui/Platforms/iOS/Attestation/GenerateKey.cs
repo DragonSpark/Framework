@@ -23,9 +23,8 @@ sealed class GenerateKey : IResulting<string>
         _text    = text;
     }
 
-    public async ValueTask<string> Get()
-    {
-        var off = _service.Supported ? await _service.GenerateKeyAsync().Off() : _text.Get(Guid.NewGuid().ToString());
-        return off;
-    }
+    public ValueTask<string> Get()
+        => _service.Supported
+               ? _service.GenerateKeyAsync().ToOperation()
+               : _text.Get(Guid.NewGuid().ToString()).ToOperation();
 }

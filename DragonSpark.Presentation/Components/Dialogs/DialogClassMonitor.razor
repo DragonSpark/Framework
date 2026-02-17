@@ -1,4 +1,4 @@
-﻿@using DragonSpark.Compose
+@using DragonSpark.Compose
 @using DragonSpark.Presentation.Environment.Browser.Document
 @using System.Threading
 
@@ -44,7 +44,7 @@
     Task Apply() => (Current != null && Count == 1 ? _element?.AddClass(Current).AsTask() : null) ?? Task.CompletedTask;
 
     // ReSharper disable once TooManyArguments
-    void ModelOnOpen(string arg1, Type arg2, Dictionary<string, object> arg3, DialogOptions arg4)
+    void ModelOnOpen(string? arg1, Type arg2, Dictionary<string, object?> arg3, DialogOptions arg4)
     {
         switch (Count++)
         {

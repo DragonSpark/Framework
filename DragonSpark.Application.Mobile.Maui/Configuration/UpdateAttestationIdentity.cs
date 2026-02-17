@@ -7,5 +7,5 @@ sealed class UpdateAttestationIdentity : UpdateState<ValidationIdentityView>
 {
     public static UpdateAttestationIdentity Default { get; } = new();
 
-    UpdateAttestationIdentity() : base(SaveAttestationIdentity.Default, ClearAttestationIdentity.Default) {}
+    UpdateAttestationIdentity() : base(SaveAttestationIdentity.Default, ClearValidationIdentity.Default) {}
 }

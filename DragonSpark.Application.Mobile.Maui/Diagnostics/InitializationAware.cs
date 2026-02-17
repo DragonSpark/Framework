@@ -1,23 +1,24 @@
 using System;
 using System.Threading.Tasks;
 using DragonSpark.Compose;
-using DragonSpark.Composition;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
 using Microsoft.Extensions.Configuration;
-using Sentry;
 
 namespace DragonSpark.Application.Mobile.Maui.Diagnostics;
 
 public class InitializationAware<TIn, TOut> : ISelect<TIn, TOut>
 {
-    readonly ISelect<TIn, TOut>        _previous;
-    readonly Func<TIn, IConfiguration> _configuration;
+    readonly ISelect<TIn, TOut> _previous;
+    readonly IReport<TIn>       _report;
 
     protected InitializationAware(ISelect<TIn, TOut> previous, Func<TIn, IConfiguration> configuration)
+        : this(previous, new Report<TIn>(configuration)) {}
+
+    protected InitializationAware(ISelect<TIn, TOut> previous, IReport<TIn> report)
     {
-        _previous      = previous;
-        _configuration = configuration;
+        _previous = previous;
+        _report   = report;
     }
 
     public TOut Get(TIn parameter)
@@ -28,16 +29,7 @@ public class InitializationAware<TIn, TOut> : ISelect<TIn, TOut>
         }
         catch (Exception e)
         {
-            var address = _configuration(parameter).Section<InitializationLoggingSettings>() is
-                              { Enabled: true, Address: not null and not "" } s
-                              ? s.Address
-                              : null;
-            if (address is not null)
-            {
-                using var _ = SentrySdk.Init(address);
-                SentrySdk.CaptureException(e);
-            }
-
+            _report.Execute(new(parameter, e));
             throw;
         }
     }
@@ -45,13 +37,13 @@ public class InitializationAware<TIn, TOut> : ISelect<TIn, TOut>
 
 public class InitializationAware : IOperation
 {
-    readonly IConfiguration _configuration;
-    readonly IOperation     _previous;
+    readonly IOperation _previous;
+    readonly IReport    _send;
 
-    protected InitializationAware(IConfiguration configuration, IOperation previous)
+    protected InitializationAware(IOperation previous, IReport send)
     {
-        _configuration = configuration;
-        _previous      = previous;
+        _previous = previous;
+        _send     = send;
     }
 
     public async ValueTask Get()
@@ -62,16 +54,7 @@ public class InitializationAware : IOperation
         }
         catch (Exception e)
         {
-            var address = _configuration.Section<InitializationLoggingSettings>() is
-                              { Enabled: true, Address: not null and not "" } s
-                              ? s.Address
-                              : null;
-            if (address is not null)
-            {
-                using var _ = SentrySdk.Init(address);
-                SentrySdk.CaptureException(e);
-            }
-
+            _send.Execute(e);
             throw;
         }
     }

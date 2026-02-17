@@ -1,7 +1,7 @@
 using System;
 using System.Security.Cryptography;
+using DragonSpark.Application.Security.Tokens;
 using DragonSpark.Compose;
-using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Model.Sequences.Memory;
 using DragonSpark.Text;
@@ -12,12 +12,12 @@ sealed class PayloadHash : IArray<PayloadHashInput, byte>
 {
     public static PayloadHash Default { get; } = new();
 
-    PayloadHash() : this(HashedText.Default, NewLeasing<byte>.Default) {}
+    PayloadHash() : this(HashedBase64UrlData.Default, NewLeasing<byte>.Default) {}
 
-    readonly INewLeasing<byte>       _new;
-    readonly ISelect<string, byte[]> _hash;
+    readonly IParser<byte[]>   _hash;
+    readonly INewLeasing<byte> _new;
 
-    public PayloadHash(ISelect<string, byte[]> hash, INewLeasing<byte> @new)
+    public PayloadHash(IParser<byte[]> hash, INewLeasing<byte> @new)
     {
         _new  = @new;
         _hash = hash;
