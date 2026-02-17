@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using DeviceCheck;
 using DragonSpark.Application.Mobile.Attestation;
+using DragonSpark.Application.Security.Tokens;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Results.Stop;
@@ -14,8 +15,8 @@ sealed class AttestationToken : IAttestationToken
 {
     public static AttestationToken Default { get; } = new();
 
-    public AttestationToken() 
-        : this(DCAppAttestService.SharedService, HashedText.Default, ClientKey.Default) {}
+    public AttestationToken()
+        : this(DCAppAttestService.SharedService, HashedBase64UrlData.Default, ClientKey.Default) {}
 
     readonly DCAppAttestService _service;
     readonly IParser<byte[]>    _hash;
@@ -23,9 +24,9 @@ sealed class AttestationToken : IAttestationToken
 
     public AttestationToken(DCAppAttestService service, IParser<byte[]> hash, IStopAware<string> key)
     {
-        _service   = service;
-        _hash = hash;
-        _key       = key;
+        _service = service;
+        _hash    = hash;
+        _key     = key;
     }
 
     public async ValueTask<string> Get(Stop<string> parameter)
@@ -35,7 +36,7 @@ sealed class AttestationToken : IAttestationToken
             throw new NotSupportedException("App Attest not supported on this device.");
         }
 
-        var hash       = _hash.Get(parameter);
+        var hash        = _hash.Get(parameter);
         var data        = NSData.FromArray(hash);
         var key         = await _key.Off(parameter);
         var attestation = await _service.AttestKeyAsync(key, data).Off();
