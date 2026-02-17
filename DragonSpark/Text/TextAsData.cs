@@ -1,9 +1,8 @@
 using System;
-using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Text;
 
-public sealed class TextAsData : Select<string, byte[]>, IParser<byte[]>
+public sealed class TextAsData : Parser<byte[]>
 {
 	public static TextAsData Default { get; } = new();
 
