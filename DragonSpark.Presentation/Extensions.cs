@@ -1,4 +1,9 @@
-﻿using DragonSpark.Application;
+using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
+using DragonSpark.Application;
 using DragonSpark.Application.AspNet.Compose;
 using DragonSpark.Application.Components.Validation.Expressions;
 using DragonSpark.Application.Compose;
@@ -24,11 +29,6 @@ using DragonSpark.Presentation.Text;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Radzen;
-using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
 using Action = System.Action;
 using ComponentBase = Microsoft.AspNetCore.Components.ComponentBase;
 using ValidationContext = DragonSpark.Presentation.Components.Forms.Validation.ValidationContext;
@@ -142,9 +142,9 @@ public static class Extensions
 		@this.NotifyValidationStateChanged();
 	}
 
-	public static T GetValue<T>(this FieldIdentifier @this)
+	public static T? GetValue<T>(this FieldIdentifier @this)
 		=> @this.FieldName.Contains('.')
-			   ? (T)PropertyAccess.GetValue(@this.Model, @this.FieldName)
+			   ? (T?)PropertyAccess.GetValue(@this.Model, @this.FieldName)
 			   : SelectValue<T>.Default.Get(@this);
 
 	/**/
