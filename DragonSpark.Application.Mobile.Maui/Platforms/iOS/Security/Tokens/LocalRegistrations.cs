@@ -22,6 +22,10 @@ sealed class LocalRegistrations : ICommand<IServiceCollection>
                  .Forward<DeviceSigner>()
                  .Singleton()
                  //
+                 .Then.Start<IClearDeviceKey>()
+                 .Forward<ClearDeviceKey>()
+                 .Singleton()
+                 //
                  .Then.TryDecorate<IClearClientKey, DeviceAwareClearClientKey>();
     }
 }
