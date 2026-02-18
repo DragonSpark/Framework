@@ -2,26 +2,30 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using DragonSpark.Compose;
+using Microsoft.Extensions.Logging;
 
 namespace DragonSpark.Application.Security.Tokens;
 
 sealed class DevicePoPHandler : DelegatingHandler
 {
-    readonly IDeviceKeyProvider _keys;
-    readonly ApplyProof         _proof;
-    readonly ProcessResponse    _response;
+    readonly IDeviceKeyProvider        _keys;
+    readonly ApplyProof                _proof;
+    readonly ProcessResponse           _response;
+    readonly ILogger<DevicePoPHandler> _logger;
 
-    public DevicePoPHandler(IDeviceKeyProvider keys, ApplyProof proof, ProcessResponse response)
+    public DevicePoPHandler(IDeviceKeyProvider keys, ApplyProof proof, ProcessResponse response, ILogger<DevicePoPHandler> logger)
     {
-        _keys     = keys;
-        _proof    = proof;
-        _response = response;
+        _keys        = keys;
+        _proof       = proof;
+        _response    = response;
+        _logger = logger;
     }
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken ct)
     {
         // Authorization: DevicePoP <deviceId=jkt>
         var deviceId = (await _keys.Off(ct)).Jkt;
+        _logger.LogInformation("DeviceID is: {DeviceId}", deviceId);
         request.Headers.Authorization = new(SchemeName.Default, deviceId);
 
         await _proof.Off(new(request, ct));
