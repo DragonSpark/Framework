@@ -5,16 +5,16 @@ using DragonSpark.Text;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.Android.Security.Tokens;
 
-sealed class DeviceKey : IResult<PublicJWK>
+sealed class CreateDeviceKey : IResult<PublicJWK>
 {
-    public static DeviceKey Default { get; } = new();
+    public static CreateDeviceKey Default { get; } = new();
 
-    DeviceKey() : this(DeterminePoint.Default.Then().Select(DeterminePoints.Default).Get(), ComputeJkt.Default) {}
+    CreateDeviceKey() : this(DeterminePoint.Default.Then().Select(DeterminePoints.Default).Get(), ComputeJkt.Default) {}
 
     readonly IResult<Points>    _points;
     readonly IFormatter<Points> _jkt;
 
-    public DeviceKey(IResult<Points> points, IFormatter<Points> jkt)
+    public CreateDeviceKey(IResult<Points> points, IFormatter<Points> jkt)
     {
         _points = points;
         _jkt    = jkt;
