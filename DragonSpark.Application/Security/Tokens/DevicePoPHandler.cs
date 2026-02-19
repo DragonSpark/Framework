@@ -25,7 +25,7 @@ sealed class DevicePoPHandler : DelegatingHandler
     {
         // Authorization: DevicePoP <deviceId=jkt>
         var deviceId = (await _keys.Off(ct)).Jkt;
-        _logger.LogInformation("DeviceID is: {DeviceId}", deviceId);
+        _logger.LogInformation("DeviceID is: {DeviceId}", deviceId); // TODO
         request.Headers.Authorization = new(SchemeName.Default, deviceId);
 
         await _proof.Off(new(request, ct));
