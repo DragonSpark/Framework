@@ -10,6 +10,8 @@ sealed class SecurityRecord : DragonSpark.Model.Results.Instance<SecRecord>
     SecurityRecord() : this(SecurityRecordName.Default) {}
 
     public SecurityRecord(string name)
-        : base(new SecRecord(SecKind.Key)
-                   { KeyClass = SecKeyClass.Private, ApplicationTag = NSData.FromString(name) }) {}
+        : base(new(SecKind.Key)
+        {
+            KeyClass = SecKeyClass.Private, ApplicationTag = NSData.FromString(name)
+        }) {}
 }
