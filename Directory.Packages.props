@@ -37,7 +37,7 @@
     <PackageVersion Include="BlazorPro.BlazorSize" Version="9.0.0" />
     <PackageVersion Include="BouncyCastle.Cryptography" Version="2.6.2" />
     <PackageVersion Include="Coinbase" Version="6.0.1" />
-    <PackageVersion Include="CommunityToolkit.Maui" Version="13.0.0" />
+    <PackageVersion Include="CommunityToolkit.Maui" Version="14.0.0" />
     <PackageVersion Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageVersion Include="coverlet.collector" Version="8.0.0" />
     <PackageVersion Include="DeviceDetector.NET" Version="6.4.7" />
@@ -87,7 +87,7 @@
     <PackageVersion Include="Microsoft.Extensions.Http.Polly" Version="10.0.3" />
     <PackageVersion Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.14.0" />
     <PackageVersion Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.14.0" />
-    <PackageVersion Include="Microsoft.Maui.Controls" Version="10.0.20" />
+    <PackageVersion Include="Microsoft.Maui.Controls" Version="10.0.41" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.0.1" />
     <PackageVersion Include="MockQueryable.Moq" Version="10.0.2" />
     <PackageVersion Include="NetFabric.Hyperlinq" Version="3.0.0-beta48" />

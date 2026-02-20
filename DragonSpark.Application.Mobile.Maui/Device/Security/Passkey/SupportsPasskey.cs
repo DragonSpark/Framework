@@ -33,12 +33,12 @@ public sealed class SupportsPasskey : ISupportsPasskey
         var source  = new TaskCompletionSource<bool>();
         var handler = _support.Get(new(content, source));
 
-        await _push.Off(new(page, false));
+        await _push.On(new(page, false));
 
         content.Navigated += handler;
         content.Source    =  "default.html";
 
-        var result = await source.Task.Off();
+        var result = await source.Task.On();
 
         content.Navigated -= handler;
 
