@@ -1,4 +1,5 @@
-﻿using DragonSpark.Application.Security.Tokens;
+using DragonSpark.Application.Mobile.Attestation;
+using DragonSpark.Application.Security.Tokens;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,8 +17,15 @@ sealed class LocalRegistrations : ICommand<IServiceCollection>
         parameter.Start<IDeviceKeyProvider>()
                  .Forward<DeviceKeyProvider>()
                  .Singleton()
+                 //
                  .Then.Start<IDeviceSigner>()
                  .Forward<DeviceSigner>()
-                 .Singleton();
+                 .Singleton()
+                 //
+                 .Then.Start<IClearDeviceKey>()
+                 .Forward<ClearDeviceKey>()
+                 .Singleton()
+                 //
+                 .Then.TryDecorate<IClearClientKey, DeviceAwareClearClientKey>();
     }
 }

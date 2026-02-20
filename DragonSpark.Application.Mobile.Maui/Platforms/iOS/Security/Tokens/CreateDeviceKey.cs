@@ -8,20 +8,20 @@ using Security;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.iOS.Security.Tokens;
 
-sealed class DeviceKey : IResult<PublicJWK>
+sealed class CreateDeviceKey : IResult<PublicJWK>
 {
-    public static DeviceKey Default { get; } = new();
+    public static CreateDeviceKey Default { get; } = new();
 
-    DeviceKey() : this(SecurityKey.Default) {}
+    CreateDeviceKey() : this(SecurityKey.Default) {}
 
     readonly SecKey                             _key;
     readonly ILease<ReadOnlyMemory<byte>, char> _encode;
     readonly IFormatter<Points>                 _jkt;
 
-    public DeviceKey(SecurityKey key)
+    public CreateDeviceKey(SecurityKey key)
         : this(key.Get().GetPublicKey().Verify(), Base64UrlCharacterEncoder.Default, ComputeJkt.Default) {}
 
-    public DeviceKey(SecKey key, ILease<ReadOnlyMemory<byte>, char> encode, IFormatter<Points> jkt)
+    public CreateDeviceKey(SecKey key, ILease<ReadOnlyMemory<byte>, char> encode, IFormatter<Points> jkt)
     {
         _key    = key;
         _encode = encode;
