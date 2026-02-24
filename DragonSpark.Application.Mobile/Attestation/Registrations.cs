@@ -18,6 +18,9 @@ sealed class Registrations : ICommand<IServiceCollection>
                  //
                  .Then.Start<IAttest>()
                  .Forward<Attest>()
+                 .Singleton()
+                 //
+                 .Then.Start<ClearValidationState>()
                  .Singleton();
     }
 }
