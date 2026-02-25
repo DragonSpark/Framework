@@ -2,8 +2,8 @@
 
 namespace DragonSpark.Application.AspNet.Entities.Editing;
 
-public class EditFirstOrDefault<TIn, T> : Edit<TIn, T?>
+public class EditingFirstOrDefault<TIn, T> : Editing<TIn, T?>
 {
-	protected EditFirstOrDefault(IScopes scope, IQuery<TIn, T> query)
+	protected EditingFirstOrDefault(IScopes scope, IQuery<TIn, T> query)
 		: base(scope.Then().Use(query).Edit.FirstOrDefault()) {}
 }

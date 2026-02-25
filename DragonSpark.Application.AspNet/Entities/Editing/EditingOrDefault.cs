@@ -2,7 +2,7 @@
 
 namespace DragonSpark.Application.AspNet.Entities.Editing;
 
-public class EditingOrDefault<TIn, T> : Edit<TIn, T?>
+public class EditingOrDefault<TIn, T> : Editing<TIn, T?>
 {
 	protected EditingOrDefault(IScopes scope, IQuery<TIn, T> query)
 		: base(scope.Then().Use(query).Edit.SingleOrDefault()) {}
