@@ -1,44 +1,40 @@
 using System;
-using System.Buffers;
+using System.Buffers.Binary;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Security.Cryptography;
+using DragonSpark.Application.Security.Tokens;
 using DragonSpark.Model.Selection;
+using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences;
-using DragonSpark.Runtime.Objects;
 using DragonSpark.Server.Mobile.Platforms.iOS.Attestation.Records;
 using Org.BouncyCastle.Asn1;
 using Org.BouncyCastle.Crypto.Parameters;
 using Org.BouncyCastle.Security;
 using PeterO.Cbor;
-using Array = System.Array;
 
 namespace DragonSpark.Server.Mobile.Platforms.iOS.Assertion;
 
-public readonly record struct AssertionRequest(string Key, Array<byte> Challenge, Array<byte> Payload);
+public readonly record struct AssertionRequest(string Challenge, Array<byte> Payload);
 
-public readonly record struct AssertionCounterInput(AssertionRequest Request, IAttestationRecord Attestation);
+public readonly record struct AssertionCounterInput(AssertionRequest Request, IAttestationRecord Attestation)
+{
+    public AssertionCounterInput(string Challenge, string Payload, IAttestationRecord Attestation)
+        : this(new(Challenge, Convert.FromBase64String(Payload)), Attestation) {}
+}
 
-public readonly record struct VerifyPublicKeyInput(string Id, Array<byte> Challenge, Array<byte> Hash, Array<byte> Key);
+public readonly record struct VerifyPublicKeyInput(Array<byte> Hash, Array<byte> Key);
 
-sealed class VerifyPublicKey : IArray<VerifyPublicKeyInput, byte>
+sealed class VerifyPublicKey : ICondition<VerifyPublicKeyInput>
 {
     public static VerifyPublicKey Default { get; } = new();
 
     VerifyPublicKey() {}
 
-    public Array<byte> Get(VerifyPublicKeyInput parameter)
+    public bool Get(VerifyPublicKeyInput parameter)
     {
-        var (id, challenge, hash, key) = parameter;
+        var (hash, key) = parameter;
         using var sha = SHA256.Create();
-        if (sha.ComputeHash(key).SequenceEqual(hash))
-        {
-            var compute = sha.ComputeHash(challenge);
-            var keyId   = Convert.FromBase64String(id);
-            return sha.ComputeHash(compute.Concat(keyId).ToArray());
-        }
-
-        return Array<byte>.Empty;
+        return sha.ComputeHash(key).SequenceEqual(hash);
     }
 }
 
@@ -46,73 +42,35 @@ public sealed class AssertionCounter : ISelect<AssertionCounterInput, uint?>
 {
     public static AssertionCounter Default { get; } = new();
 
-    AssertionCounter() : this(VerifyPublicKey.Default, GetAssertionPayload.Default, DetermineCounter.Default) {}
+    AssertionCounter() : this(VerifyPublicKey.Default, GetAssertionPayload.Default, DetermineCount.Default) {}
 
-    readonly IArray<VerifyPublicKeyInput, byte>    _expected;
-    readonly IArray<AssertionPayloadInput, byte>   _payload;
-    readonly ISelect<DetermineCounterInput, uint?> _counter;
+    readonly ICondition<VerifyPublicKeyInput>    _expected;
+    readonly IArray<AssertionPayloadInput, byte> _payload;
+    readonly ISelect<Array<byte>, uint?>         _count;
 
-    public AssertionCounter(IArray<VerifyPublicKeyInput, byte> expected, IArray<AssertionPayloadInput, byte> payload,
-                            ISelect<DetermineCounterInput, uint?> counter)
+    public AssertionCounter(ICondition<VerifyPublicKeyInput> expected, IArray<AssertionPayloadInput, byte> payload,
+                            ISelect<Array<byte>, uint?> count)
     {
         _expected = expected;
         _payload  = payload;
-        _counter  = counter;
+        _count    = count;
     }
 
     public uint? Get(AssertionCounterInput parameter)
     {
-        var ((key, challenge, payload), record) = parameter;
-        var expected = _expected.Get(new(key, challenge, record.PublicKeyHash, record.PublicKey));
-        if (expected.Length > 0)
+        var ((challenge, payload), record) = parameter;
+        var hash     = HashedBase64UrlData.Default.Get(challenge); // TODO
+        var expected = _expected.Get(new(record.PublicKeyHash, record.PublicKey));
+        if (expected)
         {
-            var bytes  = _payload.Get(new(payload, record.PublicKey, SHA256.HashData(challenge)));
-            var result = _counter.Get(new(bytes, record.Receipt, expected));
-            if (result > record.Count)
+            var bytes = _payload.Get(new(payload, record.PublicKey, hash));
+            if (bytes.Length > 0)
             {
-                return result;
-            }
-        }
-
-        return null;
-    }
-}
-
-public readonly record struct DetermineCounterInput(Array<byte> Input, Array<byte> Receipt, Array<byte> Expected);
-
-sealed class DetermineCounter : ISelect<DetermineCounterInput, uint?>
-{
-    public static DetermineCounter Default { get; } = new();
-
-    DetermineCounter() : this(Materialize<AuthenticatorData>.Default) {}
-
-    readonly IMaterialize<AuthenticatorData> _instance;
-    readonly byte                            _length;
-
-    public DetermineCounter(IMaterialize<AuthenticatorData> instance, byte length = 37)
-    {
-        _instance = instance;
-        _length   = length;
-    }
-
-    public uint? Get(DetermineCounterInput parameter)
-    {
-        var (input, receipt, expected) = parameter;
-        if (input.Length >= _length)
-        {
-            var       instance = _instance.Get(input);
-            using var lease    = input.AsValueEnumerable().Skip(_length).ToArray(ArrayPool<byte>.Shared);
-            if (lease.SequenceEqual(receipt.Open()) && instance.Nonce.SequenceEqual(expected))
-            {
-                var result = instance.Counter;
-                if (BitConverter.IsLittleEndian)
+                var result = _count.Get(bytes);
+                if (result > record.Count)
                 {
-                    var bytes = BitConverter.GetBytes(result);
-                    Array.Reverse(bytes);
-                    return BitConverter.ToUInt32(bytes, 0);
+                    return result;
                 }
-
-                return result;
             }
         }
 
@@ -120,7 +78,22 @@ sealed class DetermineCounter : ISelect<DetermineCounterInput, uint?>
     }
 }
 
-// ISSUE: Assertions is sort of a nebulous obscurity at the moment: https://github.com/dotnet/maui/discussions/31169
+sealed class DetermineCount : ISelect<Array<byte>, uint?>
+{
+    public static DetermineCount Default { get; } = new();
+
+    DetermineCount() : this(37) {}
+
+    readonly byte _length;
+
+    public DetermineCount(byte length) => _length = length;
+
+    public uint? Get(Array<byte> parameter)
+        => parameter.Length == _length
+               ? BinaryPrimitives.ReadUInt32BigEndian(parameter.Open().AsSpan(33, 4))
+               : null;
+}
+
 public readonly record struct AssertionPayloadInput(
     Array<byte> Source,        // The raw assertion bytes (from GenerateAssertionAsync)
     Array<byte> PublicKey,     // The raw public key bytes (from attestation credential)
@@ -139,16 +112,7 @@ sealed class GetAssertionPayload : IArray<AssertionPayloadInput, byte>
 
         if (source.Length != 0)
         {
-            CBORObject cbor;
-            try
-            {
-                cbor = CBORObject.DecodeFromBytes(source);
-            }
-            catch
-            {
-                return Array<byte>.Empty;
-            }
-
+            var cbor = CBORObject.DecodeFromBytes(source);
             if (cbor.Type == CBORType.Map && cbor.Count == 2)
             {
                 var sigObj  = cbor["signature"];
@@ -169,37 +133,25 @@ sealed class GetAssertionPayload : IArray<AssertionPayloadInput, byte>
                             nonce = sha.ComputeHash(combined);
                         }
 
-                        // Load public key (secp256r1 / P-256)
-                        // Assumes uncompressed or compressed point bytes
                         var curve     = Org.BouncyCastle.Asn1.Sec.SecNamedCurves.GetByName("secp256r1");
                         var domain    = new ECDomainParameters(curve.Curve, curve.G, curve.N, curve.H);
                         var q         = curve.Curve.DecodePoint(publicKeyBytes);
                         var publicKey = new ECPublicKeyParameters(q, domain);
-
-                        // Parse DER signature to r/s
-                        Asn1Sequence sigSeq;
-                        try
+                        var sigSeq    = (Asn1Sequence)Asn1Object.FromByteArray(signature);
+                        switch (sigSeq.Count)
                         {
-                            sigSeq = (Asn1Sequence)Asn1Object.FromByteArray(signature);
-                        }
-                        catch
-                        {
-                            return Array<byte>.Empty;
-                        }
+                            case 2:
+                            {
+                                var signer = SignerUtilities.GetSigner("SHA256withECDSA");
+                                signer.Init(false, publicKey);
+                                signer.BlockUpdate(nonce, 0, nonce.Length);
+                                if (signer.VerifySignature(signature))
+                                {
+                                    return authenticatorData;
+                                }
 
-                        if (sigSeq.Count == 2)
-                        {
-                            // ... after loading publicKey and computing nonce
-
-// Verify using NONEwithECDSA (takes pre-hashed digest + full DER sig)
-                            // Verify using full DER signature (no manual r/s needed)
-                            var signer = SignerUtilities.GetSigner("SHA256withECDSA");
-                            signer.Init(false, publicKey);
-                            signer.BlockUpdate(nonce, 0, nonce.Length);
-
-                            var verified = signer.VerifySignature(signature);  // signature is the full DER bytes
-
-                            return verified ? authenticatorData : Array<byte>.Empty;
+                                break;
+                            }
                         }
                     }
                 }
@@ -210,11 +162,11 @@ sealed class GetAssertionPayload : IArray<AssertionPayloadInput, byte>
     }
 }
 
-[StructLayout(LayoutKind.Sequential, Pack = 1)]
+/*[StructLayout(LayoutKind.Sequential, Pack = 1)]
 public struct AuthenticatorData
 {
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 32)]
     public byte[] Nonce;                               // 32-byte SHA256 hash
     public                               byte Flags;   // 1-byte flags
     [MarshalAs(UnmanagedType.U4)] public uint Counter; // 4-byte counter (big-endian)
-}
+}*/
