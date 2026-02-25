@@ -11,7 +11,7 @@ namespace DragonSpark.Application.Mobile.Maui.Diagnostics;
 sealed class Report<T> : IReport<T>
 {
     readonly Func<T, IConfiguration> _configuration;
-
+    
     public Report(Func<T, IConfiguration> configuration) => _configuration = configuration;
 
     public void Execute(SendExceptionInput<T> parameter)
@@ -23,7 +23,12 @@ sealed class Report<T> : IReport<T>
                           : null;
         if (address is not null)
         {
-            using var _ = SentrySdk.Init(address);
+            using var _ = SentrySdk.Init(x =>
+                                         {
+                                             x.Dsn        = address;
+                                             x.EnableLogs = true;
+                                         });
+            SentrySdk.CaptureMessage($"An exception has occurred: {exception}"); // TODO: Undo
             SentrySdk.CaptureException(exception);
         }
     }
