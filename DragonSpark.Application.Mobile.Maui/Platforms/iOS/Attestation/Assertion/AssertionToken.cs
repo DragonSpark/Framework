@@ -11,8 +11,6 @@ using Foundation;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.iOS.Attestation.Assertion;
 
-class Class1;
-
 sealed class AssertionToken : IAssertionToken
 {
     public static AssertionToken Default { get; } = new();

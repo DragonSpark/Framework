@@ -1,5 +1,7 @@
 using System;
+using DragonSpark.Application.AspNet.Security.Tokens;
 using DragonSpark.Application.Security.Tokens;
+using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using DragonSpark.Server.Mobile.Security.Devices.Authentication;
@@ -52,7 +54,10 @@ sealed class Registrations : ICommand<IServiceCollection>
                  .Include(x => x.Dependencies.Recursive())
                  .Singleton()
                  //
-                 .Then.AddAuthentication()
+                 .Then.TryDecorate<IMarkUsed, DeviceAwareMarkUsed>()
+                 .Return(parameter)
+                 //
+                 .AddAuthentication()
                  .AddScheme<DevicePoPOptions, DevicePoPHandler>(_name, _configure)
                  //
                  .Services.AddAuthorization(x => x.AddPolicy(_name,

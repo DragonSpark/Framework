@@ -2,4 +2,4 @@ using DragonSpark.Model.Operations.Selection.Stop;
 
 namespace DragonSpark.Server.Mobile.Security.Devices.Registry;
 
-public interface IDeviceUsed : IDepending<DeviceUsedInput>;
+public interface IDeviceUsed : IDepending<string>;
