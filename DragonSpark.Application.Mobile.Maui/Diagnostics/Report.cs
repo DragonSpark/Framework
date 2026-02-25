@@ -28,7 +28,8 @@ sealed class Report<T> : IReport<T>
                                              x.Dsn        = address;
                                              x.EnableLogs = true;
                                          });
-            SentrySdk.CaptureMessage($"An exception has occurred: {exception}"); // TODO: Undo
+            SentrySdk.Logger.LogInfo("An exception has occurred: {Exception}", exception); // TODO
+            SentrySdk.Logger.LogWarning("An exception has occurred: {Exception}", exception);
             SentrySdk.CaptureException(exception);
         }
     }
