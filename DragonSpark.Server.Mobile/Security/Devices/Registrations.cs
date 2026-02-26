@@ -45,8 +45,8 @@ sealed class Registrations : ICommand<IServiceCollection>
                  .Include(x => x.Dependencies)
                  .Singleton()
                  //
-                 .Then.Start<IDeviceUsed>()
-                 .Forward<DeviceUsed>()
+                 .Then.Start<IDeviceSeen>()
+                 .Forward<DeviceSeen>()
                  .Singleton()
                  //
                  .Then.Start<IAuthenticateDevice>()

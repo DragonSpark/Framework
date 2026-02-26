@@ -11,7 +11,7 @@ namespace DragonSpark.Application.Mobile.Maui.Diagnostics;
 sealed class Report<T> : IReport<T>
 {
     readonly Func<T, IConfiguration> _configuration;
-    
+
     public Report(Func<T, IConfiguration> configuration) => _configuration = configuration;
 
     public void Execute(SendExceptionInput<T> parameter)
@@ -28,9 +28,9 @@ sealed class Report<T> : IReport<T>
                                              x.Dsn        = address;
                                              x.EnableLogs = true;
                                          });
-            SentrySdk.Logger.LogInfo("An exception has occurred: {Exception}", exception); // TODO
-            SentrySdk.Logger.LogWarning("An exception has occurred: {Exception}", exception);
+            SentrySdk.Logger.LogWarning("An exception has occurred: {0}", exception.ToString()); // TODO
             SentrySdk.CaptureException(exception);
+            SentrySdk.Flush(TimeSpan.FromSeconds(4));
         }
     }
 }

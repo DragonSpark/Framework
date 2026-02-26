@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 using DragonSpark.Application.AspNet.Entities;
@@ -10,14 +9,14 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Server.Mobile.Security.Devices.Registry;
 
-sealed class DeviceUsed : IDeviceUsed
+sealed class DeviceSeen : IDeviceSeen
 {
     readonly INewContext _context;
     readonly ITime       _time;
 
-    public DeviceUsed(INewContext context) : this(context, Time.Default) {}
+    public DeviceSeen(INewContext context) : this(context, Time.Default) {}
 
-    public DeviceUsed(INewContext context, ITime time)
+    public DeviceSeen(INewContext context, ITime time)
     {
         _context = context;
         _time    = time;
@@ -27,14 +26,13 @@ sealed class DeviceUsed : IDeviceUsed
     {
         var (deviceId, stop) = parameter;
 
-        var             time = _time.Get();
+        var             time = _time.Get().UtcDateTime;
         await using var db   = _context.Get();
         var updated = await db.Set<DeviceKey>()
                               .Where(x => x.Identity == deviceId)
-                              .ExecuteUpdateAsync(s => s.SetProperty(k => k.LastSeenAtUtc, _ => (DateTimeOffset?)time),
+                              .ExecuteUpdateAsync(s => s.SetProperty(k => k.LastSeenAtUtc, _ => time),
                                                   stop)
                               .Off();
-
         return updated == 1;
     }
 }
