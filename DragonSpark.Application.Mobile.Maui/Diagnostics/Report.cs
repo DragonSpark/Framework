@@ -27,7 +27,10 @@ sealed class Report<T> : IReport<T>
                                          {
                                              x.Dsn        = address;
                                              x.EnableLogs = true;
+                                             x.Debug      = true;
                                          });
+            SentrySdk.Logger.LogInfo("A simple log message");
+            SentrySdk.Logger.LogError("A {0} log message", "formatted");
             SentrySdk.Logger.LogWarning("An exception has occurred: {0}", exception.ToString()); // TODO
             SentrySdk.CaptureException(exception);
             SentrySdk.Flush(TimeSpan.FromSeconds(4));
