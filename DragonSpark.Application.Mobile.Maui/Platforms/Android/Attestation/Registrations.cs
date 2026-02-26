@@ -20,6 +20,10 @@ sealed class Registrations : ICommand<IServiceCollection>
                  .Include(x => x.Dependencies)
                  .Singleton()
                  //
+                 .Then.Start<IAssertionToken>()
+                 .Forward<AssertionToken>()
+                 .Singleton()
+                 //
                  .Then.Start<IClientKey>()
                  .Forward<ClientKey>()
                  .Singleton()

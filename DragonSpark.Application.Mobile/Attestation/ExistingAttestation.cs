@@ -7,12 +7,14 @@ namespace DragonSpark.Application.Mobile.Attestation;
 sealed class ExistingAttestation : IExistingAttestation
 {
     readonly IValidationIdentity _identity;
-    readonly IChallenge           _challenge;
+    readonly IChallenge          _challenge;
+    readonly IAssertionToken     _assertion;
 
-    public ExistingAttestation(IValidationIdentity identity, IChallenge challenge)
+    public ExistingAttestation(IValidationIdentity identity, IChallenge challenge, IAssertionToken assertion)
     {
         _identity  = identity;
         _challenge = challenge;
+        _assertion = assertion;
     }
 
     public async ValueTask<ExistingAttestationResult?> Get(CancellationToken parameter)
@@ -23,7 +25,8 @@ sealed class ExistingAttestation : IExistingAttestation
         {
             var (subject, hash) = identity;
             var challenge = await _challenge.Off(parameter);
-            return new(subject, hash, challenge);
+            var assertion = await _assertion.Off(new(challenge.Challenge, parameter));
+            return new(subject, assertion, hash, challenge);
         }
 
         return null;

@@ -23,8 +23,17 @@ sealed class Report<T> : IReport<T>
                           : null;
         if (address is not null)
         {
-            using var _ = SentrySdk.Init(address);
+            using var _ = SentrySdk.Init(x =>
+                                         {
+                                             x.Dsn        = address;
+                                             x.EnableLogs = true;
+                                             x.Debug      = true;
+                                         });
+            SentrySdk.Logger.LogInfo("A simple log message");
+            SentrySdk.Logger.LogError("A {0} log message", "formatted");
+            SentrySdk.Logger.LogWarning("An exception has occurred: {0}", exception.ToString()); // TODO
             SentrySdk.CaptureException(exception);
+            SentrySdk.Flush(TimeSpan.FromSeconds(4));
         }
     }
 }

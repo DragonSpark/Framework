@@ -16,7 +16,7 @@ sealed class Registrations : ICommand<IServiceCollection>
                  //
                  .Start<ISupportsPasskey>()
                  .Forward<SupportsPasskey>()
-                 //.Decorate<SimulatorAwareSupportsPasskey>()
+                 .Decorate<SimulatorAwareSupportsPasskey>()
                  .Singleton()
                  //
                  .Then.Start<ILaunchHostedRegistration>()

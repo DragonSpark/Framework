@@ -26,9 +26,6 @@ sealed class CleanUpNonces : IStopAware<uint>
     {
         await using var db  = _context.Get();
         var             now = _time.Get().UtcDateTime;
-        return (uint)await db.Set<Nonce>()
-                             .Where(n => n.UsedAtUtc != null && n.ExpiresAtUtc < now)
-                             .ExecuteDeleteAsync(parameter)
-                             .Off();
+        return (uint)await db.Set<Nonce>().Where(x => x.ExpiresAtUtc < now).ExecuteDeleteAsync(parameter).Off();
     }
 }
