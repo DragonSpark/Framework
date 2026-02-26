@@ -25,7 +25,6 @@ sealed class DevicePoPHandler : DelegatingHandler
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken ct)
     {
         var deviceId = (await _keys.Off(ct)).Jkt;
-        _logger.LogInformation("Device ID Is: {DeviceId}", deviceId); // TODO
         request.Headers.Authorization = new(SchemeName.Default, deviceId);
 
         await _proof.Off(new(request, ct));
