@@ -30,15 +30,15 @@ sealed class AssertionToken : IAssertionToken
 
     public async ValueTask<string> Get(Stop<string> parameter)
     {
-        if (!_service.Supported)
+        if (_service.Supported)
         {
-            throw new NotSupportedException("App Attest not supported on this device.");
+            var hash      = _hash.Get(parameter);
+            var data      = NSData.FromArray(hash);
+            var key       = await _key.Off(parameter);
+            var assertion = await _service.GenerateAssertionAsync(key, data).Off();
+            return Convert.ToBase64String(assertion.ToArray());
         }
 
-        var hash      = _hash.Get(parameter);
-        var data      = NSData.FromArray(hash);
-        var key       = await _key.Off(parameter);
-        var assertion = await _service.GenerateAssertionAsync(key, data).Off();
-        return Convert.ToBase64String(assertion.ToArray());
+        return string.Empty;
     }
 }

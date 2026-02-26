@@ -35,6 +35,8 @@ sealed class CreateSecurityKey : ISelect<SecRecord, SecKey>
         };
 
         var status = SecKeyChain.Add(record);
+        _ = ExistingSecurityKey.Default.Get(parameter) ??
+            throw new InvalidOperationException("Key was not found"); // TODO
         return status switch
         {
             SecStatusCode.Success or SecStatusCode.DuplicateItem => key,

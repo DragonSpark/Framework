@@ -15,7 +15,7 @@ sealed class DeviceKeyProvider : IDeviceKeyProvider
 
     readonly IResulting<PublicJWK> _previous;
 
-    public DeviceKeyProvider(IResult<PublicJWK> key) : this(key.Then().Singleton().Operation().Out()) {}
+    public DeviceKeyProvider(IResult<PublicJWK> key) : this(key.Then().Operation().Out()) {} // TODO
 
     public DeviceKeyProvider(IResulting<PublicJWK> previous) => _previous = previous;
 
