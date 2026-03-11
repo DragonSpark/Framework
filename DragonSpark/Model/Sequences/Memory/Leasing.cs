@@ -49,7 +49,7 @@ public readonly struct Leasing<T> : IDisposable
 
     public uint ActualLength => (uint)_reference.Length;
 
-    public T[] Store => _owner.Rented;
+    public T[] Store => _owner.Rented; // TODO: Audit use of this property AND Lease.Rented to ensure no data is leaked. 
 
     public T[] ToArray()
     {
