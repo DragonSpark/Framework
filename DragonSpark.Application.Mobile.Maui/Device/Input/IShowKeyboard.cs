@@ -1,5 +1,5 @@
 using DragonSpark.Model.Operations.Stop;
-using Microsoft.Maui.Controls;
+using VisualElement = Microsoft.Maui.Controls.VisualElement;
 
 namespace DragonSpark.Application.Mobile.Maui.Device.Input;
 
