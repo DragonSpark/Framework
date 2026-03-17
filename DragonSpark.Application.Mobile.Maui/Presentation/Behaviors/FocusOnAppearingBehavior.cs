@@ -17,12 +17,11 @@ public sealed class FocusOnAppearingBehavior : BehaviorBase<Page>
         set => SetValue(TargetElementProperty, value);
     }
 
-    
     protected override void OnAttached(Page bindable)
     {
         base.OnAttached(bindable);
 
-        bindable.Appearing += OnPageAppearing;    
+        bindable.Appearing += OnPageAppearing;
     }
 
     protected override void OnDetached(Page bindable)
@@ -38,7 +37,7 @@ public sealed class FocusOnAppearingBehavior : BehaviorBase<Page>
             // Small delay to ensure layout is complete (MAUI quirk)
             MainThread.InvokeOnMainThreadAsync(async () =>
                                                {
-                                                   await Task.Delay(100).On();  // 100ms is usually enough
+                                                   await Task.Delay(100).On(); // 100ms is usually enough
                                                    TargetElement.Focus();
                                                });
         }
