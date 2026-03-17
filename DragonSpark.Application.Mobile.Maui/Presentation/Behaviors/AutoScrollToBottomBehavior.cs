@@ -7,17 +7,21 @@ using System.Threading.Tasks;
 using DragonSpark.Compose;
 using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Controls;
+using Switch = DragonSpark.Model.Results.Switch;
 
 namespace DragonSpark.Application.Mobile.Maui.Presentation.Behaviors;
 
 public sealed class AutoScrollToBottomBehavior : BehaviorBase<CollectionView>
 {
+    readonly Switch _loaded = new();
+
     protected override void OnAttached(CollectionView bindable)
     {
         base.OnAttached(bindable);
+        _loaded.Down();
         bindable.Loaded += (_, _) =>
                            {
-                               if (IsEnabled)
+                               if (_loaded.Up() && IsEnabled)
                                {
                                    UpdateEnabled();
                                }
@@ -31,24 +35,27 @@ public sealed class AutoScrollToBottomBehavior : BehaviorBase<CollectionView>
 
     void UpdateEnabled()
     {
-        var view = View.Verify();
-        if (IsEnabled)
+        if (_loaded)
         {
-            view.PropertyChanged += Cv_PropertyChanged;
-
-            if (view.ItemsSource is INotifyCollectionChanged notify)
+            var view = View.Verify();
+            if (IsEnabled)
             {
-                notify.CollectionChanged += OnCollectionChanged;
-            }
-        }
-        else
-        {
-            view.PropertyChanged -= Cv_PropertyChanged;
+                view.PropertyChanged += Cv_PropertyChanged;
 
-            if (view.ItemsSource is INotifyCollectionChanged notify)
-            {
-                notify.CollectionChanged -= OnCollectionChanged;
+                if (view.ItemsSource is INotifyCollectionChanged notify)
+                {
+                    notify.CollectionChanged += OnCollectionChanged;
+                }
             }
+            else
+            {
+                view.PropertyChanged -= Cv_PropertyChanged;
+
+                if (view.ItemsSource is INotifyCollectionChanged notify)
+                {
+                    notify.CollectionChanged -= OnCollectionChanged;
+                }
+            }   
         }
     }
 
@@ -70,10 +77,7 @@ public sealed class AutoScrollToBottomBehavior : BehaviorBase<CollectionView>
 
     async Task ScrollToEnd(CollectionView cv)
     {
-        // Use the bindable delay value (TimeSpan)
-        var delay = cv.Behaviors.OfType<AutoScrollToBottomBehavior>().FirstOrDefault()?.ScrollDelay ??
-                    TimeSpan.FromMilliseconds(150);
-        await Task.Delay(delay).Off();
+        await Task.Delay(ScrollDelay).Off();
 
         await MainThread.InvokeOnMainThreadAsync(() =>
                                                  {
