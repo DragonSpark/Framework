@@ -1,30 +1,30 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Serialization;
-using DragonSpark.Contracts.General;
+using DragonSpark.Contracts.General.Chat;
 
 namespace DragonSpark.Grok.Chat;
 
 [method: JsonConstructor]
 public sealed record ChatModelInput(
-    IReadOnlyCollection<ChatMessage> Messages,
     string Name,
+    IReadOnlyCollection<ChatMessage> Messages,
     ushort MaximumTokens,
     double Temperature)
 {
     public ChatModelInput(IReadOnlyCollection<ChatMessage> messages, string context)
-        : this(messages, context, DefaultModelName.Default) {}
+        : this(DefaultModelName.Default, messages, context) {}
 
-    public ChatModelInput(IReadOnlyCollection<ChatMessage> messages, string context, string name)
-        : this(messages, context, name, MaximumTokenCount.Default) {}
+    public ChatModelInput(string name, IReadOnlyCollection<ChatMessage> messages, string context)
+        : this(name, messages, context, MaximumTokenCount.Default) {}
 
     // ReSharper disable once TooManyDependencies
-    public ChatModelInput(IReadOnlyCollection<ChatMessage> messages, string context, string name,
+    public ChatModelInput(string name, IReadOnlyCollection<ChatMessage> messages, string context,
                           ushort maximumTokens)
-        : this(messages, context, name, maximumTokens, DefaultTemperature.Default) {}
+        : this(name, messages, context, maximumTokens, DefaultTemperature.Default) {}
 
     // ReSharper disable once TooManyDependencies
-    public ChatModelInput(IReadOnlyCollection<ChatMessage> messages, string context,
-                          string name, ushort maximumTokens, double temperature)
-        : this(messages.Prepend(new ChatMessage("system", context)).ToArray(), name, maximumTokens, temperature) {}
+    public ChatModelInput(string name, IReadOnlyCollection<ChatMessage> messages,
+                          string context, ushort maximumTokens, double temperature)
+        : this(name, messages.Prepend(new SystemMessage(context)).ToArray(), maximumTokens, temperature) {}
 }

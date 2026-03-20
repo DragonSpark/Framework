@@ -21,11 +21,16 @@ sealed class Registrations : ICommand<IServiceCollection>
                  //
                  .Then.Start<IChat>()
                  .Forward<Chat>()
+                 .Include(x => x.Dependencies)
                  .Singleton()
                  //
-                 .Then.Start<IChatResult>()
-                 .Forward<ChatResult>()
-                 .Decorate<ExceptionAwareChatResult>()
+                 .Then.Start<IExecuteTools>()
+                 .Forward<ExecuteTools>()
+                 .Singleton()
+                 //
+                 .Then.Start<IChatResponse>()
+                 .Forward<ChatResponse>()
+                 .Decorate<ExceptionAwareChatResponse>()
                  .Include(x => x.Dependencies)
                  .Singleton()
                  //
