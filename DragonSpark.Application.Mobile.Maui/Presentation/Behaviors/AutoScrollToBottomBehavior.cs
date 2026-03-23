@@ -11,6 +11,7 @@ using Switch = DragonSpark.Model.Results.Switch;
 
 namespace DragonSpark.Application.Mobile.Maui.Presentation.Behaviors;
 
+// ReSharper disable SuspiciousTypeConversion.Global
 public sealed class AutoScrollToBottomBehavior : BehaviorBase<CollectionView>
 {
     readonly Switch _loaded = new();
