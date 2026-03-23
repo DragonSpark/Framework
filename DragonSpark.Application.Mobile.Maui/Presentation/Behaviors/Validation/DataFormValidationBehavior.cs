@@ -32,7 +32,7 @@ public sealed class DataFormValidationBehavior : DataFormValidationBehaviorBase
         bindable.ValidationMode   =  DefaultValidationMode;
         bindable.CommitMode       =  DefaultCommitMode;
         bindable.ValidateProperty += BindableOnValidateProperty;
-        base.OnAttachedTo(bindable);
+        base.OnAttached(bindable);
     }
 
     void BindableOnValidateProperty(object? sender, DataFormValidatePropertyEventArgs e)
