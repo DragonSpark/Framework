@@ -24,6 +24,7 @@ sealed class LocalRegistrations : ICommand<IServiceCollection>
                  //
                  .Then.Start<IClearDeviceKey>()
                  .Forward<ClearDeviceKey>()
+                 .Decorate<StateAwareClearDeviceKey>()
                  .Singleton()
                  //
                  .Then.TryDecorate<IClearClientKey, DeviceAwareClearClientKey>();
