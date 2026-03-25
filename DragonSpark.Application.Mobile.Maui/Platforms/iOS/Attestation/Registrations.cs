@@ -16,6 +16,7 @@ sealed class Registrations : ICommand<IServiceCollection>
     {
         parameter.Start<IAttestationToken>()
                  .Forward<AttestationToken>()
+                 .Decorate<StateAwareAttestationToken>()
                  .Singleton()
                  //
                  .Then.Start<IAssertionToken>()
