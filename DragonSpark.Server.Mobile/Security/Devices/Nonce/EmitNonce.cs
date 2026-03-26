@@ -1,8 +1,8 @@
 using System.Threading.Tasks;
 using DragonSpark.Application.AspNet.Security.Tokens;
+using DragonSpark.Application.Security.Tokens;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
-using DragonSpark.Server.Mobile.Security.Devices.Claims;
 using Microsoft.AspNetCore.Http;
 
 namespace DragonSpark.Server.Mobile.Security.Devices.Nonce;
@@ -13,7 +13,7 @@ sealed class EmitNonce<T> : Model.Operations.Stop.IStopAware<HttpContext>
     readonly CreateNonce<T> _previous;
     readonly string         _header;
 
-    public EmitNonce(CreateNonce<T> previous) : this(previous, DpopNonceHeaderName.Default) {}
+    public EmitNonce(CreateNonce<T> previous) : this(previous, TokenName.Default) {}
 
     public EmitNonce(CreateNonce<T> previous, string header)
     {

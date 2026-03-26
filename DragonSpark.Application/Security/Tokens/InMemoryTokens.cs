@@ -19,4 +19,9 @@ public sealed class InMemoryTokens : ITokens
         var (origin, token)                            = parameter;
         _map[origin.GetLeftPart(UriPartial.Authority)] = token;
     }
+
+    public void Execute(None parameter)
+    {
+        _map.Clear();
+    }
 }

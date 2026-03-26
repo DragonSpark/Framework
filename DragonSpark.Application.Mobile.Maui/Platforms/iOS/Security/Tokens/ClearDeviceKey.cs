@@ -1,5 +1,4 @@
 using System.Threading.Tasks;
-using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Operations;
 using Security;
@@ -16,10 +15,10 @@ sealed class ClearDeviceKey : IClearDeviceKey
 
     public ClearDeviceKey(SecRecord record) => _record = record;
 
-    public ValueTask<bool> Get(Stop<None> parameter)
+    public async ValueTask<bool> Get(Stop<None> parameter)
     {
         var status = SecKeyChain.Remove(_record);
         var result = status == SecStatusCode.Success;
-        return result.ToOperation();
+        return result;
     }
 }

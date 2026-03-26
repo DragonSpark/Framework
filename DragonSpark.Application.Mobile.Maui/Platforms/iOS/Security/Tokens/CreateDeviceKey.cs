@@ -14,14 +14,13 @@ sealed class CreateDeviceKey : IResult<PublicJWK>
 
     CreateDeviceKey() : this(SecurityKey.Default) {}
 
-    readonly SecKey                             _key;
+    readonly IResult<SecKey>                    _key;
     readonly ILease<ReadOnlyMemory<byte>, char> _encode;
     readonly IFormatter<Points>                 _jkt;
 
-    public CreateDeviceKey(SecurityKey key)
-        : this(key.Get().GetPublicKey().Verify(), Base64UrlCharacterEncoder.Default, ComputeJkt.Default) {}
+    public CreateDeviceKey(SecurityKey key) : this(key, Base64UrlCharacterEncoder.Default, ComputeJkt.Default) {}
 
-    public CreateDeviceKey(SecKey key, ILease<ReadOnlyMemory<byte>, char> encode, IFormatter<Points> jkt)
+    public CreateDeviceKey(IResult<SecKey> key, ILease<ReadOnlyMemory<byte>, char> encode, IFormatter<Points> jkt)
     {
         _key    = key;
         _encode = encode;
@@ -30,7 +29,7 @@ sealed class CreateDeviceKey : IResult<PublicJWK>
 
     public PublicJWK Get()
     {
-        var data = _key.GetExternalRepresentation(out var error) ??
+        var data = _key.Get().GetPublicKey().Verify().GetExternalRepresentation(out var error) ??
                    throw new InvalidOperationException($"Unable to export public key: {error}");
 
         var bytes = data.ToArray();
