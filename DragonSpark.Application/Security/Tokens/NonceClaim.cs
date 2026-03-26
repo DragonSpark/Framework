@@ -1,4 +1,4 @@
-namespace DragonSpark.Application.AspNet.Security.Tokens;
+namespace DragonSpark.Application.Security.Tokens;
 
 public sealed class NonceClaim : Text.Text
 {
