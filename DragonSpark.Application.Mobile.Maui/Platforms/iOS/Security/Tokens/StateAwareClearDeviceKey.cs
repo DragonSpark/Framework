@@ -1,34 +1,27 @@
 using System.Threading.Tasks;
-using DragonSpark.Application.Mobile.Maui.Security.Identity;
-using DragonSpark.Application.Security.Tokens;
 using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Operations;
-using DragonSpark.Model.Operations.Selection.Stop;
-using DragonSpark.Model.Results;
+using DragonSpark.Model.Operations.Stop;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.iOS.Security.Tokens;
 
 sealed class StateAwareClearDeviceKey : IClearDeviceKey
 {
     readonly IClearDeviceKey      _previous;
-    readonly IMutable<PublicJWK?> _process;
-    readonly IDepending           _token;
+    readonly IStopAware           _clear;
 
-    public StateAwareClearDeviceKey(IClearDeviceKey previous)
-        : this(previous, DeviceKeyProcessStore.Default, ClearTokenState.Default) {}
+    public StateAwareClearDeviceKey(IClearDeviceKey previous) : this(previous, ClearStorageState.Default) {}
 
-    public StateAwareClearDeviceKey(IClearDeviceKey previous, IMutable<PublicJWK?> process, IDepending token)
+    public StateAwareClearDeviceKey(IClearDeviceKey previous, IStopAware clear)
     {
-        _previous   = previous;
-        _process    = process;
-        _token = token;
+        _previous = previous;
+        _clear    = clear;
     }
 
     public async ValueTask<bool> Get(Stop<None> parameter)
     {
-        _process.Execute(null);
-        await _token.Off(parameter);
+        await _clear.Off(parameter);
         return await _previous.Off(parameter);
     }
 }
