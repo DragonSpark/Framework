@@ -5,7 +5,7 @@ using DragonSpark.Model.Operations;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.iOS.Notifications;
 
-public class Notifications : INotifications
+sealed class Notifications : INotifications
 {
     public event EventHandler? NotificationReceived;
 
