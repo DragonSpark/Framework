@@ -12,6 +12,7 @@
 	  <PackageReference Include="CommunityToolkit.Mvvm" />
 	  <PackageReference Include="CommunityToolkit.Maui" />
 	  <PackageReference Include="Microsoft.Maui.Controls" />
+	  <PackageReference Include="Plugin.Firebase.CloudMessaging" />
 	  <PackageReference Include="Plugin.Maui.Biometric" />
 	  <PackageReference Include="Sentry.Maui" />
 	  <PackageReference Include="Syncfusion.Licensing" />

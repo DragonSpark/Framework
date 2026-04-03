@@ -5,13 +5,17 @@ namespace DragonSpark.Application.Mobile.Maui.Platforms.Android;
 
 public static class Extensions
 {
-    public static IServiceCollection RegisterFrameworkServices(this IServiceCollection @this)
-        => Registrations.Default.Parameter(@this);
-    public static IServiceCollection WithHttp(this IServiceCollection @this)
-        => Http.Registrations.Default.Parameter(@this);
-    public static IServiceCollection WithVerification(this IServiceCollection @this)
-        => Attestation.Registrations.Default.Parameter(@this);
+    extension(IServiceCollection @this)
+    {
+        public IServiceCollection RegisterFrameworkServices() => Registrations.Default.Parameter(@this);
 
-    public static IServiceCollection WithDeviceAuthorization(this IServiceCollection @this)
-        => Security.Tokens.Registrations.Default.Parameter(@this);
+        public IServiceCollection WithPushNotifications()
+            => Notifications.Remote.Registrations.Default.Parameter(@this);
+
+        public IServiceCollection WithHttp() => Http.Registrations.Default.Parameter(@this);
+
+        public IServiceCollection WithVerification() => Attestation.Registrations.Default.Parameter(@this);
+
+        public IServiceCollection WithDeviceAuthorization() => Security.Tokens.Registrations.Default.Parameter(@this);
+    }
 }

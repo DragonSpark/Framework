@@ -15,4 +15,7 @@ public static class Extensions
     public static BuildHostContext WithDeviceAuthorization(this BuildHostContext @this,
                                                            Action<DevicePoPOptions> configure)
         => @this.Configure(new Registrations(configure));
+
+    public static BuildHostContext WithDeviceNotifications(this BuildHostContext @this)
+        => @this.Configure(Notifications.Registration.Default);
 }
