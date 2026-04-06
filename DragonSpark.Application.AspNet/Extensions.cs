@@ -122,7 +122,7 @@ partial class Extensions
 	/**/
 	public static UserInput Input(this ClaimsPrincipal @this, Guid subject) => new(@this.Number().Value(), subject);
 
-	public static UserInput<T> Input<T>(this ClaimsPrincipal @this, T subject) => new(@this.Number().Value(), subject);
+	public static UserInput<T> Input<T>(this ClaimsPrincipal @this, T subject) => new(@this.Number() ?? 0, subject);
 
 	public static UserInput Input(this HttpContext @this, Guid subject) => @this.User.Input(subject);
 

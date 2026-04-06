@@ -14,7 +14,7 @@ sealed class ClearStorageState : IStopAware
 {
     public static ClearStorageState Default { get; } = new();
 
-    ClearStorageState() : this(DeviceKeyProcessStore.Default, ClearTokenState.Default, ClearSavedLogin.Default) {}
+    ClearStorageState() : this(DeviceKeyProcessStore.Default, ClearTokenState.Default, ClearSavedLogin.Default) {} // TODO: Clear device token
 
     readonly IMutable<PublicJWK?> _process;
     readonly IDepending           _token;
