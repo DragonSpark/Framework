@@ -1,7 +1,8 @@
 using Android.Content;
-using CommunityToolkit.Mvvm.Messaging;
 using DragonSpark.Application.Mobile.Maui.Device.Notifications.Remote;
+using DragonSpark.Application.Mobile.Maui.Messaging;
 using DragonSpark.Compose;
+using DragonSpark.Model.Commands;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.Android.Notifications.Remote;
 
@@ -9,15 +10,15 @@ sealed class ProcessNotifications : IProcessNotifications
 {
     public static ProcessNotifications Default { get; } = new();
 
-    ProcessNotifications() : this(ActionKey.Default, WeakReferenceMessenger.Default) {}
+    ProcessNotifications() : this(ActionKey.Default, Send<ActionReceivedMessage>.Default) {}
 
-    readonly string     _key;
-    readonly IMessenger _messenger;
+    readonly string                          _key;
+    readonly ICommand<ActionReceivedMessage> _send;
 
-    public ProcessNotifications(string key, IMessenger messenger)
+    public ProcessNotifications(string key, ICommand<ActionReceivedMessage> send)
     {
-        _key       = key;
-        _messenger = messenger;
+        _key  = key;
+        _send = send;
     }
 
     public void Execute(Intent parameter)
@@ -27,7 +28,7 @@ sealed class ProcessNotifications : IProcessNotifications
             var action = parameter.GetStringExtra(_key);
             if (!action.IsNullOrEmpty())
             {
-                _messenger.Send(new ActionReceivedMessage(action));
+                _send.Execute(new(action));
             }
         }
     }

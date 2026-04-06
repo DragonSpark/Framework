@@ -1,6 +1,7 @@
 using System.Threading;
-using CommunityToolkit.Mvvm.Messaging;
 using DragonSpark.Application.Mobile.Maui.Device.Notifications.Remote;
+using DragonSpark.Application.Mobile.Maui.Messaging;
+using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations.Stop;
 using Firebase.Messaging;
 
@@ -8,21 +9,26 @@ namespace DragonSpark.Application.Mobile.Maui.Platforms.Android.Notifications.Re
 
 public class PushNotificationFirebaseMessagingServiceBase : FirebaseMessagingService
 {
-    readonly IStopAware<string> _token;
-    readonly IMessenger         _messenger;
+    readonly IStopAware<string>                _token;
+    readonly ICommand<NewTokenReceivedMessage> _new;
+    readonly ICommand<ActionReceivedMessage>   _send;
 
-    public PushNotificationFirebaseMessagingServiceBase() : this(SaveDeviceToken.Default, WeakReferenceMessenger.Default) {}
+    public PushNotificationFirebaseMessagingServiceBase()
+        : this(SaveDeviceToken.Default, Send<NewTokenReceivedMessage>.Default, Send<ActionReceivedMessage>.Default) {}
 
-    public PushNotificationFirebaseMessagingServiceBase(IStopAware<string> token, IMessenger messenger)
+    public PushNotificationFirebaseMessagingServiceBase(IStopAware<string> token,
+                                                        ICommand<NewTokenReceivedMessage> @new,
+                                                        ICommand<ActionReceivedMessage> send)
     {
-        _token     = token;
-        _messenger = messenger;
+        _token = token;
+        _new   = @new;
+        _send  = send;
     }
 
     public override void OnNewToken(string token)
     {
         _token.Get(new(token, CancellationToken.None)).AsTask().GetAwaiter().GetResult();
-        _messenger.Send(new NewTokenReceivedMessage(token));
+        _new.Execute(new(token));
     }
 
     public override void OnMessageReceived(RemoteMessage message)
@@ -31,7 +37,7 @@ public class PushNotificationFirebaseMessagingServiceBase : FirebaseMessagingSer
 
         if (message.Data.TryGetValue(ActionKey.Default, out var action))
         {
-            _messenger.Send(new ActionReceivedMessage(action));
+            _send.Execute(new(action));
         }
     }
 }
