@@ -7,7 +7,7 @@
 
 @inherits Templates.ManyActiveContentTemplateComponentBase<PageResult<T>>
 @*ISSUE: ReSharper Warnings*@
-<ResultingContentView Content="@_subject!" LoadingTemplate="@LoadingTemplate" NotFoundTemplate="@NotFoundTemplate"
+<ResultingContentView Content="@(_subject!)" LoadingTemplate="@LoadingTemplate" NotFoundTemplate="@NotFoundTemplate"
                       ExceptionTemplate="@ExceptionTemplate" Rendering="@Rendering">
     @if (context.Page.Length > 0)
     {

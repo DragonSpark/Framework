@@ -9,7 +9,7 @@
     {
         @ChildContent
     }
-    <DragonSpark.Presentation.Components.Forms.Counter Count="@Value.Length.Grade().Contract()" Maximum="@Maximum" CssClass="@CounterCssClass!" />
+    <DragonSpark.Presentation.Components.Forms.Counter Count="@Value.Length.Grade().Contract()" Maximum="@Maximum" CssClass="@(CounterCssClass!)" />
 </RenderCompensationComponent>
 
 @code {
