@@ -1,13 +1,13 @@
-﻿using BlazorPro.BlazorSize;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using BlazorPro.BlazorSize;
 using DragonSpark.Compose;
 using DragonSpark.Presentation.Components;
 using DragonSpark.Presentation.Components.Content.Templates;
 using DragonSpark.SyncfusionRendering.Entities;
 using Microsoft.AspNetCore.Components;
 using Radzen;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using FilterType = Syncfusion.Blazor.Grids.FilterType;
 
 namespace DragonSpark.SyncfusionRendering.Components;
@@ -64,7 +64,7 @@ public class DataGridBase<T> : DataComponent
 	public ICollection<string>? DesktopToolbar { get; set; }
 
 	[Parameter]
-	public ICollection<string>? MobileToolbar { get; set; } = DefaultToolbar.Default;
+	public ICollection<string> MobileToolbar { get; set; } = DefaultToolbar.Default;
 
 	[Parameter]
 	public EventCallback<Updated<T>> Updated { get; set; }

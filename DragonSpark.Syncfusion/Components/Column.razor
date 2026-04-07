@@ -1,23 +1,23 @@
-﻿@typeparam T
+@typeparam T
 @using Syncfusion.Blazor.Grids
-
+@*ISSUE: ReSharper Warnings*@
 <GridColumn AutoFit="@AutoFit"
 	AllowFiltering="@AllowFiltering"
 	AllowSorting="@AllowSorting"
 	Format="@Format"
-	HeaderText="@HeaderText"
-    HeaderTemplate="@_header"
+	HeaderText="@HeaderText!"
+    HeaderTemplate="@_header!"
 	Field="@Field"
 	Width="@Width"
 	FilterTemplate="@FilterTemplate"
-    Template="@_template"
+    Template="@_template!"
     ClipMode="@ClipMode"
 	Type="@Type"
 	HeaderTextAlign="@HeaderTextAlign"
 	TextAlign="@TextAlign"
-    FilterSettings="@FilterSettings"
-    EditTemplate="@_edit"
-    ValidationRules="@ValidationRules"
+    FilterSettings="@FilterSettings!"
+    EditTemplate="@_edit!"
+    ValidationRules="@ValidationRules!"
     IsPrimaryKey="@IsPrimaryKey"
     AllowEditing="@AllowEditing"
 />

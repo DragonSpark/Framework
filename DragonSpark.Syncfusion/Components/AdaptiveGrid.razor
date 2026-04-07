@@ -1,4 +1,4 @@
-﻿@using BlazorPro.BlazorSize
+@using BlazorPro.BlazorSize
 @using DragonSpark.Compose
 @using DragonSpark.Presentation.Components.Content.Templates
 @using DragonSpark.Presentation.Environment.Browser
@@ -10,7 +10,7 @@
 @implements Model.Operations.Results.IResulting<string>
 
 @inject ProtectedSessionStorage Session
-
+@*ISSUE: ReSharper Warnings*@
 @if(_state is null)
 {
     @LoadingTemplate
@@ -26,10 +26,10 @@ else
 			AllowPaging="@AllowPaging"
 			AllowSorting="@AllowSorting"
 			ClipMode="@ClipMode.EllipsisWithTooltip"
-		    Toolbar="@(Matches ? DesktopToolbar : MobileToolbar)"
+		    Toolbar="@((Matches ? DesktopToolbar : MobileToolbar)!)"
 			EnableAdaptiveUI="@(!Matches)"
 			RowRenderingMode="@(Matches ? RowDirection.Horizontal : RowDirection.Vertical)"
-			DataSource="@DataSource"
+			DataSource="@DataSource!"
             class="@Class"
             @attributes="@AdditionalAttributes">
 		<GridPageSettings PageSize="@PageSize" />

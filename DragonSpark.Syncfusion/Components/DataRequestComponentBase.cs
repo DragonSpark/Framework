@@ -1,4 +1,6 @@
-﻿using BlazorPro.BlazorSize;
+using System;
+using System.Collections.Generic;
+using BlazorPro.BlazorSize;
 using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
 using DragonSpark.Application.Runtime.Operations;
 using DragonSpark.Model.Selection.Conditions;
@@ -7,8 +9,6 @@ using DragonSpark.SyncfusionRendering.Entities;
 using DragonSpark.SyncfusionRendering.Queries;
 using Microsoft.AspNetCore.Components;
 using Syncfusion.Blazor.Grids;
-using System;
-using System.Collections.Generic;
 
 namespace DragonSpark.SyncfusionRendering.Components;
 
@@ -16,7 +16,7 @@ public class DataRequestTemplateComponentBase
 	: DragonSpark.Presentation.Components.Content.Templates.ManyActiveContentTemplateComponentBase<IDataRequest>
 {
 	[Parameter]
-	public IReporter<IDataRequest>? Reporter { get; set; } = Queries.Reporter.Default;
+	public IReporter<IDataRequest> Reporter { get; set; } = Queries.Reporter.Default;
 }
 
 public class DataGridTemplateComponentBase<T> : DataRequestTemplateComponentBase
@@ -76,7 +76,7 @@ public class DataGridTemplateComponentBase<T> : DataRequestTemplateComponentBase
 	public ICollection<string>? DesktopToolbar { get; set; }
 
 	[Parameter]
-	public ICollection<string>? MobileToolbar { get; set; } = DefaultToolbar.Default;
+	public ICollection<string> MobileToolbar { get; set; } = DefaultToolbar.Default;
 
 	[Parameter]
 	public ushort PageSize { get; set; } = 10;
