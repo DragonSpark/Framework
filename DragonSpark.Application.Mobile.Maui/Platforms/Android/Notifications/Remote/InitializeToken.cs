@@ -1,9 +1,11 @@
 using Android.Gms.Tasks;
+using DragonSpark.Application.Mobile.Maui.Presentation;
 using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection.Conditions;
 using Firebase.Messaging;
+using Microsoft.Extensions.Logging;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.Android.Notifications.Remote;
 
@@ -26,7 +28,10 @@ sealed class InitializeToken : ICommand
 
     public void Execute(None parameter)
     {
-        if (_supported.Get())
+        var logger = CurrentService<ILogger<InitializeToken>>.Default.Get();
+        var supported      = _supported.Get();
+        logger.LogInformation("SUPPORTED! - {Supported}", supported);
+        if (supported)
         {
             _messaging.GetToken().AddOnSuccessListener(_success);
         }
