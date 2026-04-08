@@ -1,9 +1,14 @@
+using System;
 using System.Threading;
+using System.Threading.Tasks;
 using DragonSpark.Application.Mobile.Maui.Device.Notifications.Remote;
 using DragonSpark.Application.Mobile.Maui.Messaging;
+using DragonSpark.Application.Mobile.Maui.Presentation;
+using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations.Stop;
 using Firebase.Messaging;
+using Microsoft.Extensions.Logging;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.Android.Notifications.Remote;
 
@@ -27,8 +32,21 @@ public class PushNotificationFirebaseMessagingServiceBase : FirebaseMessagingSer
 
     public override void OnNewToken(string token)
     {
-        _token.Get(new(token, CancellationToken.None)).AsTask().GetAwaiter().GetResult();
-        _new.Execute(new(token));
+        _ = ProcessNewToken(token);
+    }
+    
+    async Task ProcessNewToken(string token)
+    {
+        try
+        {
+            await _token.Off(new(token, CancellationToken.None));
+            _new.Execute(new(token));
+        }
+        catch (Exception ex)
+        {
+            var logger = CurrentService<ILogger<PushNotificationFirebaseMessagingServiceBase>>.Default.Get();
+            logger.LogError(ex, "Failed to process new FCM token");
+        }
     }
 
     public override void OnMessageReceived(RemoteMessage message)
