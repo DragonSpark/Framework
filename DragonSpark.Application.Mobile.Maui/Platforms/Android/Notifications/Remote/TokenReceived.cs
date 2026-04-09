@@ -22,9 +22,7 @@ sealed class TokenReceived : Object, IOnSuccessListener
 
     public void OnSuccess(Object? result)
     {
-        var logger    = CurrentService<ILogger<TokenReceived>>.Default.Get(); // TODO
         var token = result?.ToString();
-        logger.LogInformation("TokenReceived! {Token}", token);
         _ = token is not null ? ProcessNewToken(token) : Task.CompletedTask;
     }
     
@@ -32,9 +30,7 @@ sealed class TokenReceived : Object, IOnSuccessListener
     {
         try
         {
-            var logger    = CurrentService<ILogger<TokenReceived>>.Default.Get(); // TODO
             await _token.Off(new(token, CancellationToken.None));
-            logger.LogInformation("TokenReceived! COMPLETED!", token);
         }
         catch (Exception ex)
         {
