@@ -1,4 +1,4 @@
-﻿@using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination
+@using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination
 @using DragonSpark.Compose
 @using DragonSpark.Contracts.Queries
 @using DragonSpark.Model.Operations.Results
@@ -6,8 +6,8 @@
 @typeparam T
 
 @inherits Templates.ManyActiveContentTemplateComponentBase<PageResult<T>>
-
-<ResultingContentView Content="@_subject" LoadingTemplate="@LoadingTemplate" NotFoundTemplate="@NotFoundTemplate"
+@*ISSUE: ReSharper Warnings*@
+<ResultingContentView Content="@(_subject!)" LoadingTemplate="@LoadingTemplate" NotFoundTemplate="@NotFoundTemplate"
                       ExceptionTemplate="@ExceptionTemplate" Rendering="@Rendering">
     @if (context.Page.Length > 0)
     {

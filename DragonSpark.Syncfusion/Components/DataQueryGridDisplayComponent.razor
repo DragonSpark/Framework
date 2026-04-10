@@ -1,15 +1,15 @@
-﻿@typeparam T
+@typeparam T
 @using DragonSpark.Compose
 @using DragonSpark.Presentation.Components
 @using DragonSpark.SyncfusionRendering.Queries
 @using Radzen
 @inherits DataGridTemplateComponentBase<T>
-
+@*ISSUE: ReSharper Warnings*@
 @if (BodyHeaderTemplate is not null)
 {
     @BodyHeaderTemplate
 }
-<DragonSpark.SyncfusionRendering.Components.MemoryAwareRequestContainer Id="@_identity" Input="Input" Context="input">
+<DragonSpark.SyncfusionRendering.Components.MemoryAwareRequestContainer Id="@(_identity!)" Input="Input" Context="input">
     <DataQueryGrid T="T" Content="@Input"
                    Identifier="@_identity"
                    FilterType="@FilterType"

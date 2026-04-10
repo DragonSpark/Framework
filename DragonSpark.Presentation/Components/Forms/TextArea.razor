@@ -1,7 +1,7 @@
-﻿@using DragonSpark.Compose
+@using DragonSpark.Compose
 
 @inherits FormsComponentBase
-
+@*ISSUE: ReSharper Warnings*@
 <RenderCompensationComponent>
     <DragonSpark.Presentation.Components.Forms.FluentTextArea Name="@Name" Rows="@(Rows ?? 5)" Cols="@(Cols ?? 60)" Value="@Value" ValueChanged="@_update" Immediate="true" ImmediateDelay="750"
                                                               Label="@Label" Maxlength="@Maximum" Disabled="@Receiver.Active"/>
@@ -9,7 +9,7 @@
     {
         @ChildContent
     }
-    <DragonSpark.Presentation.Components.Forms.Counter Count="@Value.Length.Grade().Contract()" Maximum="@Maximum" CssClass="@CounterCssClass" />
+    <DragonSpark.Presentation.Components.Forms.Counter Count="@Value.Length.Grade().Contract()" Maximum="@Maximum" CssClass="@(CounterCssClass!)" />
 </RenderCompensationComponent>
 
 @code {

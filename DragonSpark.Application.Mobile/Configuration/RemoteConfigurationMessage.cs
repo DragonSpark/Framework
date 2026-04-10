@@ -10,16 +10,22 @@ namespace DragonSpark.Application.Mobile.Configuration;
 
 public sealed class RemoteConfigurationMessage : RemoteConfigurationMessageBase, IRemoteConfigurationMessage
 {
-    readonly Uri _address;
+    readonly IHttpClientFactory _clients;
+    readonly Uri                _address;
 
-    public RemoteConfigurationMessage(IExceptionLogger logger, RemoteConfigurationSettings settings)
-        : this(logger, new Uri(settings.Address)) {}
+    public RemoteConfigurationMessage(IHttpClientFactory clients, IExceptionLogger logger,
+                                      RemoteConfigurationSettings settings)
+        : this(clients, logger, new Uri(settings.Address)) {}
 
-    public RemoteConfigurationMessage(IExceptionLogger logger, Uri address) : base(logger) => _address = address;
+    public RemoteConfigurationMessage(IHttpClientFactory clients, IExceptionLogger logger, Uri address) : base(logger)
+    {
+        _clients = clients;
+        _address = address;
+    }
 
     public async ValueTask<HttpResponseMessage> Get(CancellationToken parameter)
     {
-        using var client = new HttpClient();
+        using var client = _clients.CreateClient();
         var       result = await client.GetAsync(_address, parameter).Off();
         return result;
     }

@@ -1,4 +1,4 @@
-﻿@using BlazorPro.BlazorSize
+@using BlazorPro.BlazorSize
 @using DragonSpark.Compose
 @using DragonSpark.Model.Commands
 @using DragonSpark.Presentation
@@ -52,11 +52,11 @@
 </CascadingValue>
 
 @code {
-    readonly Model.Results.Switch               _update  = new(true), _ready = new(), _display = new();
-    readonly HashSet<string>                    _columns = new();
-    RenderFragment<EmptyRecordTemplateContext>? _fragment;
-    AdaptiveGrid<T>?                            _subject;
-    EventCallback                               _empty;
+    readonly Model.Results.Switch              _update   = new(true), _ready = new(), _display = new();
+    readonly HashSet<string>                   _columns  = new();
+    RenderFragment<EmptyRecordTemplateContext> _fragment = null!;
+    AdaptiveGrid<T>?                           _subject;
+    EventCallback                              _empty;
 
     protected override void OnInitialized()
     {
@@ -112,7 +112,7 @@
     public ICollection<string>? DesktopToolbar { get; set; }
 
     [Parameter]
-    public ICollection<string>? MobileToolbar { get; set; } = DefaultToolbar.Default;
+    public ICollection<string> MobileToolbar { get; set; } = DefaultToolbar.Default;
 
     [Parameter]
     public EventCallback<Updated<T>> Updated { get; set; }

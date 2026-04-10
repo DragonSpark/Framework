@@ -1,4 +1,4 @@
-﻿@using DragonSpark.Application.AspNet.Entities.Queries.Runtime
+@using DragonSpark.Application.AspNet.Entities.Queries.Runtime
 @using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination
 @using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Shape
 @using DragonSpark.Application.Runtime.Operations
@@ -6,7 +6,7 @@
 @typeparam T
 
 @inherits Templates.ManyActiveContentTemplateComponentBase<IRadzenPaging<T>>
-
+@*ISSUE: ReSharper Warnings*@
 <div>
 	<QueryContentContainer
 		Content="@Content"
@@ -16,7 +16,7 @@
 		NotFoundTemplate="@NotFoundTemplate"
 		ExceptionTemplate="@ExceptionTemplate"
 	>
-		<RefreshContainer Topic="@Content">
+		<RefreshContainer Topic="@(Content!)">
 			<RadzenPagingContainer
 				Content="@context"
 				ChildContent="@ChildContent"

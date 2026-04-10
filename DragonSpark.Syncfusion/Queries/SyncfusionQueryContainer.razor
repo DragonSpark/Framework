@@ -1,4 +1,4 @@
-﻿@using DragonSpark.Application.AspNet.Entities.Queries.Runtime
+@using DragonSpark.Application.AspNet.Entities.Queries.Runtime
 @using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination
 @using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Shape
 @using DragonSpark.Application.Runtime.Operations
@@ -44,7 +44,7 @@
 	public ICondition<bool?> Results { get; set; } = HasResults.Default;
 
 	[Parameter]
-	public IReporter<IDataRequest>? Reporter { get; set; } = Queries.Reporter.Default;
+	public IReporter<IDataRequest> Reporter { get; set; } = Queries.Reporter.Default;
 
 	[Parameter]
 	public Type? ReportedType { get; set; }

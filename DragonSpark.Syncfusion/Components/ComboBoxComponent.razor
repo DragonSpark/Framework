@@ -1,4 +1,4 @@
-﻿@using DragonSpark.Application.AspNet.Entities.Queries.Runtime
+@using DragonSpark.Application.AspNet.Entities.Queries.Runtime
 @using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Shape
 @using DragonSpark.Application.Runtime.Operations
 @using DragonSpark.Presentation.Components.Content.Templates
@@ -55,7 +55,7 @@
 	public ICompose<TItem> Compose { get; set; } = SyncfusionCompose<TItem>.Default;
 
 	[Parameter]
-	public IReporter<IDataRequest>? Reporter { get; set; } = Queries.Reporter.Default;
+	public IReporter<IDataRequest> Reporter { get; set; } = Queries.Reporter.Default;
 
 	[Parameter]
 	public Type? ReportedType { get; set; }

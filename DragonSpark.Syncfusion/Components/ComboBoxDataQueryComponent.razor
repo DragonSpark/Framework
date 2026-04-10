@@ -1,4 +1,4 @@
-﻿@using DragonSpark.Compose
+@using DragonSpark.Compose
 @using DragonSpark.Model.Operations
 @using DragonSpark.Presentation
 @using DragonSpark.Presentation.Components.Content.Sequences
@@ -12,9 +12,9 @@
 
 @typeparam TItem
 @typeparam TValue
-
+@*ISSUE: ReSharper Warnings*@
 <SfComboBox TItem="TItem" TValue="TValue" @ref="_subject" Value="@Value" Placeholder="@Placeholder" AllowFiltering="@AllowFiltering"
-            CssClass="@CssClass" ShowClearButton="true" FilterType="FilterType.Contains" EnableVirtualization="@Virtualization.HasValue" Query="@_display">
+            CssClass="@CssClass" ShowClearButton="true" FilterType="FilterType.Contains" EnableVirtualization="@Virtualization.HasValue" Query="@(_display!)">
     <ComboBoxTemplates TItem="TItem" HeaderTemplate="@HeaderTemplate" ItemTemplate="@ItemTemplate" />
     <SfDataManager Adaptor="Adaptors.CustomAdaptor">
         <DataRequestCallbackAdaptor Requested="@OnRequest" />
