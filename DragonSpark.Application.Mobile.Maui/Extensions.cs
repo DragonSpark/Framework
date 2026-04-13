@@ -1,9 +1,11 @@
 using DragonSpark.Application.Mobile.Configuration;
 using DragonSpark.Application.Mobile.Maui.Run;
-using DragonSpark.Application.Security.Identity.Profile;
+using DragonSpark.Application.Mobile.Maui.Runtime;
 using DragonSpark.Compose;
 using DragonSpark.Composition.Compose;
+using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
+using Registrations = DragonSpark.Application.Security.Identity.Profile.Registrations;
 
 namespace DragonSpark.Application.Mobile.Maui;
 
@@ -28,4 +30,6 @@ public static class Extensions
 
     public static BuildHostContext WithIdentityProfileFrameworkConfiguration(this BuildHostContext @this)
         => @this.Configure(Registrations.Default, Security.Identity.Registrations.Default);
+
+    public static ICommand<T> AsMainThreadAware<T>(this ICommand<T> @this) => new MainThreadAwareCommand<T>(@this);
 }

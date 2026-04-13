@@ -4,9 +4,11 @@ using Microsoft.Maui.ApplicationModel;
 
 namespace DragonSpark.Application.Mobile.Maui.Runtime;
 
-public abstract class MainThreadAwareCommand<T> : ICommand<T>
+public class MainThreadAwareCommand<T> : ICommand<T>
 {
     readonly Action<T> _previous;
+
+    public MainThreadAwareCommand(ICommand<T> previous) : this(previous.Execute) {}
 
     protected MainThreadAwareCommand(Action<T> previous) => _previous = previous;
 
