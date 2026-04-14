@@ -29,18 +29,24 @@ class Commands<T> : ICommands<T>
 
     public void Execute(None parameter)
     {
-        var list = _previous.Get();
-        if (list is not null)
+        if (_previous.TryPop(out var list) && list is not null)
         {
             using var lease = list.AsValueEnumerable().ToArray(ArrayPool<T>.Shared);
             foreach (var item in lease)
             {
-                _execute(item);
+                try
+                {
+                    _execute(item);
+                }
+                catch (Exception)
+                {
+                    _previous.Execute(list);
+                    throw;
+                }
                 list.Remove(item);
             }
-
-            _previous.Execute(null);
         }
+
     }
 
     public List<T>? Get() => _previous.Get();

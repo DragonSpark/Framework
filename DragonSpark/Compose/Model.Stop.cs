@@ -1,3 +1,7 @@
+using System;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
 using DragonSpark.Compose.Model.Operations;
 using DragonSpark.Compose.Model.Operations.Allocated;
 using DragonSpark.Compose.Model.Results;
@@ -12,10 +16,6 @@ using DragonSpark.Model.Operations.Selection.Stop;
 using DragonSpark.Model.Operations.Stop;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
-using System;
-using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Compose;
 
@@ -23,6 +23,8 @@ namespace DragonSpark.Compose;
 // ReSharper disable SuspiciousTypeConversion.Global
 public static partial class ExtensionMethods
 {
+    public static Stop<T> Stop<T>(this T @this) => @this.Stop(CancellationToken.None);
+
     public static Stop<T> Stop<T>(this T @this, CancellationToken stop) => new(@this, stop);
 
     /* Results: */

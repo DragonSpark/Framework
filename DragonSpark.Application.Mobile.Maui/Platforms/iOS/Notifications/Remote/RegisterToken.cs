@@ -1,32 +1,39 @@
 using System.Threading;
 using System.Threading.Tasks;
 using DragonSpark.Application.Mobile.Maui.Device.Notifications.Remote;
-using DragonSpark.Application.Mobile.Maui.Messaging;
+using DragonSpark.Application.Security;
 using DragonSpark.Compose;
-using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
-using DragonSpark.Model.Operations.Stop;
+using DragonSpark.Model.Sequences;
+using DragonSpark.Text;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.iOS.Notifications.Remote;
 
-public sealed class RegisterToken : IOperation<string>
+public sealed class RegisterToken : IOperation<Array<byte>>
 {
     public static RegisterToken Default { get; } = new();
 
-    RegisterToken() : this(SaveDeviceToken.Default, Send<NewTokenReceivedMessage>.Default) {}
+    RegisterToken() : this(DeviceToken.Default, HexContent.Default, RegisterNewToken.Default) {}
 
-    readonly IStopAware<string>                _token;
-    readonly ICommand<NewTokenReceivedMessage> _new;
+    readonly DragonSpark.Model.Operations.Results.Stop.IStopAware<string?> _current;
+    readonly IFormatter<Array<byte>>                                       _formatter;
+    readonly IOperation<string>                                            _register;
 
-    public RegisterToken(IStopAware<string> token, ICommand<NewTokenReceivedMessage> @new)
+    public RegisterToken(DragonSpark.Model.Operations.Results.Stop.IStopAware<string?> current,
+                         IFormatter<Array<byte>> formatter, IOperation<string> register)
     {
-        _token = token;
-        _new   = @new;
+        _current   = current;
+        _formatter = formatter;
+        _register  = register;
     }
 
-    public async ValueTask Get(string parameter)
+    public async ValueTask Get(Array<byte> parameter)
     {
-        await _token.Off(new(parameter, CancellationToken.None));
-        _new.Execute(new(parameter));
+        var current = await _current.Off(CancellationToken.None);
+        var input   = _formatter.Get(parameter);
+        if (current != input)
+        {
+            await _register.Off(input);
+        }
     }
 }

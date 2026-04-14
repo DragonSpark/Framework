@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using DragonSpark.Compose.Extents;
 using DragonSpark.Compose.Extents.Commands;
 using DragonSpark.Compose.Extents.Conditions;
@@ -17,9 +20,6 @@ using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Runtime.Activation;
 using JetBrains.Annotations;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Action = System.Action;
 using CommandComposer = DragonSpark.Compose.Extents.Commands.CommandComposer;
 using ValueTask = System.Threading.Tasks.ValueTask;
@@ -100,6 +100,8 @@ public static partial class ExtensionMethods
 	public static GuardModelContext<T> Guard<T>(this ModelContext _) where T : Exception
 		=> GuardModelContext<T>.Default;
 
+    public static IMutable<T?> Protected<T>(this IMutable<T?> @this) => new ProtectedVariable<T>(@this);
+    
 	[MustDisposeResource]
 	public static Switching Scoped(this ISwitch @this)
 	{
