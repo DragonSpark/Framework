@@ -25,17 +25,22 @@ class Operations<T> : IOperations<T>
 
     public async ValueTask Get(None parameter)
     {
-        var list = _previous.Get();
-        if (list is not null)
+        if (_previous.TryPop(out var list) && list is not null)
         {
             using var lease = list.AsValueEnumerable().ToArray(ArrayPool<T>.Shared);
             foreach (var item in lease)
             {
-                await _execute(item).Off();
+                try
+                {
+                    await _execute(item).Off();
+                }
+                catch (Exception)
+                {
+                    _previous.Execute(list);
+                    throw;
+                }
                 list.Remove(item);
             }
-
-            _previous.Execute(null);
         }
     }
 

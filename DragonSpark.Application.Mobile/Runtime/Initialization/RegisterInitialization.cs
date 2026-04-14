@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
@@ -24,11 +23,27 @@ public sealed class RegisterInitialization : ICommand<Action>, ICommand<IOperati
 
     public void Execute(Action parameter)
     {
-        _commands.Get().Verify().Add(parameter);
+        var actions = _commands.Get();
+        if (actions is not null)
+        {
+            actions.Add(parameter);
+        }
+        else
+        {
+            parameter();
+        }
     }
 
     public void Execute(IOperation parameter)
     {
-        _operations.Get().Verify().Add(parameter);
+        var operations = _operations.Get();
+        if (operations is not null)
+        {
+            operations.Add(parameter);
+        }
+        else
+        {
+            _ = parameter.Get();
+        }
     }
 }

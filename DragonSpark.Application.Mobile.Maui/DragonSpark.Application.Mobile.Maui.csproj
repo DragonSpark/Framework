@@ -57,7 +57,7 @@
 	  <Compile Update="Platforms\iOS\Notifications\Remote\ProcessNotifications.cs">
 	    <ExcludeFromCurrentConfiguration>false</ExcludeFromCurrentConfiguration>
 	  </Compile>
-	  <Compile Update="Platforms\iOS\Notifications\Remote\RegisterToken.cs">
+	  <Compile Update="Platforms\iOS\Notifications\Remote\RegisterNewToken.cs">
 	    <ExcludeFromCurrentConfiguration>false</ExcludeFromCurrentConfiguration>
 	  </Compile>
 	  <Compile Update="Platforms\iOS\Notifications\Remote\Registrations.cs">

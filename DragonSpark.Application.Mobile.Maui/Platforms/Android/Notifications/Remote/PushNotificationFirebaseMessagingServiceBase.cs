@@ -1,52 +1,34 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using DragonSpark.Application.Mobile.Maui.Device.Notifications.Remote;
 using DragonSpark.Application.Mobile.Maui.Messaging;
-using DragonSpark.Application.Mobile.Maui.Presentation;
+using DragonSpark.Application.Mobile.Runtime.Initialization;
 using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
-using DragonSpark.Model.Operations.Stop;
+using DragonSpark.Model.Operations;
 using Firebase.Messaging;
-using Microsoft.Extensions.Logging;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.Android.Notifications.Remote;
 
 public class PushNotificationFirebaseMessagingServiceBase : FirebaseMessagingService
 {
-    readonly IStopAware<string>                _token;
-    readonly ICommand<NewTokenReceivedMessage> _new;
-    readonly ICommand<ActionReceivedMessage>   _send;
+    readonly ICommand<IOperation>            _register;
+    readonly IOperation<string>              _token;
+    readonly ICommand<ActionReceivedMessage> _send;
 
     public PushNotificationFirebaseMessagingServiceBase()
-        : this(SaveDeviceToken.Default, Send<NewTokenReceivedMessage>.Default, Send<ActionReceivedMessage>.Default) {}
+        : this(RegisterInitialization.Default, NewToken.Default, Send<ActionReceivedMessage>.Default) {}
 
-    public PushNotificationFirebaseMessagingServiceBase(IStopAware<string> token,
-                                                        ICommand<NewTokenReceivedMessage> @new,
+    public PushNotificationFirebaseMessagingServiceBase(ICommand<IOperation> register,
+                                                        IOperation<string> token,
                                                         ICommand<ActionReceivedMessage> send)
     {
-        _token = token;
-        _new   = @new;
-        _send  = send;
+        _register = register;
+        _token    = token;
+        _send     = send;
     }
 
     public override void OnNewToken(string token)
     {
-        _ = ProcessNewToken(token);
-    }
-    
-    async Task ProcessNewToken(string token)
-    {
-        try
-        {
-            await _token.Off(new(token, CancellationToken.None));
-            _new.Execute(new(token));
-        }
-        catch (Exception ex)
-        {
-            var logger = CurrentService<ILogger<PushNotificationFirebaseMessagingServiceBase>>.Default.Get();
-            logger.LogError(ex, "Failed to process new FCM token");
-        }
+        _register.Execute(_token.Then().Bind(token).Out());
     }
 
     public override void OnMessageReceived(RemoteMessage message)
