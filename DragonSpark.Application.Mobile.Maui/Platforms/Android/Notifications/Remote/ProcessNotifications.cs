@@ -10,12 +10,12 @@ sealed class ProcessNotifications : IProcessNotifications
 {
     public static ProcessNotifications Default { get; } = new();
 
-    ProcessNotifications() : this(ActionKey.Default, Send<ActionReceivedMessage>.Default) {}
+    ProcessNotifications() : this(ActionKey.Default, Send<AlertReceivedMessage>.Default) {}
 
-    readonly string                          _key;
-    readonly ICommand<ActionReceivedMessage> _send;
+    readonly string                         _key;
+    readonly ICommand<AlertReceivedMessage> _send;
 
-    public ProcessNotifications(string key, ICommand<ActionReceivedMessage> send)
+    public ProcessNotifications(string key, ICommand<AlertReceivedMessage> send)
     {
         _key  = key;
         _send = send;
@@ -28,7 +28,13 @@ sealed class ProcessNotifications : IProcessNotifications
             var action = parameter.GetStringExtra(_key);
             if (!action.IsNullOrEmpty())
             {
-                _send.Execute(new(action));
+                var title = parameter.GetStringExtra("title") ?? parameter.GetStringExtra("notification.title")
+                            ?? "Money Clouds Notification";
+                var body = parameter.GetStringExtra("body")
+                           ?? parameter.GetStringExtra("notification.body")
+                           ?? parameter.GetStringExtra("message")
+                           ?? string.Empty;
+                _send.Execute(new(title, body, action));
             }
         }
     }

@@ -10,16 +10,16 @@ namespace DragonSpark.Application.Mobile.Maui.Platforms.Android.Notifications.Re
 
 public class PushNotificationFirebaseMessagingServiceBase : FirebaseMessagingService
 {
-    readonly ICommand<IOperation>            _register;
-    readonly IOperation<string>              _token;
-    readonly ICommand<ActionReceivedMessage> _send;
+    readonly ICommand<IOperation>           _register;
+    readonly IOperation<string>             _token;
+    readonly ICommand<AlertReceivedMessage> _send;
 
     public PushNotificationFirebaseMessagingServiceBase()
-        : this(RegisterInitialization.Default, NewToken.Default, Send<ActionReceivedMessage>.Default) {}
+        : this(RegisterInitialization.Default, NewToken.Default, Send<AlertReceivedMessage>.Default) {}
 
     public PushNotificationFirebaseMessagingServiceBase(ICommand<IOperation> register,
                                                         IOperation<string> token,
-                                                        ICommand<ActionReceivedMessage> send)
+                                                        ICommand<AlertReceivedMessage> send)
     {
         _register = register;
         _token    = token;
@@ -37,7 +37,9 @@ public class PushNotificationFirebaseMessagingServiceBase : FirebaseMessagingSer
 
         if (message.Data.TryGetValue(ActionKey.Default, out var action))
         {
-            _send.Execute(new(action));
+            var notification = message.GetNotification().Verify();
+            _send.Execute(new(notification.Title ?? "Money Clouds Notification", notification.Body ?? string.Empty,
+                              action));
         }
     }
 }

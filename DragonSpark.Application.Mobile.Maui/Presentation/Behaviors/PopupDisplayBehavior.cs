@@ -25,6 +25,6 @@ public sealed class PopupDisplayBehavior : BehaviorBase<SfPopup>
         var popupX  = (width - bindable.WidthRequest) / 2;
         var popupY  = height - bindable.HeightRequest - Margin.Bottom;
         bindable.Show(popupX, popupY);
-        base.OnAttachedTo(bindable);
+        base.OnAttached(bindable);
     }
 }
