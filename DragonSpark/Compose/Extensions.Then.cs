@@ -212,6 +212,8 @@ public static partial class ExtensionMethods
 		=> @this.Get().To(x => x as IOperation ?? new Operation(x.Get));
 	public static IOperation<T> Out<T>(this Composer<T, ValueTask> @this)
 		=> @this.Get().To(x => x as IOperation<T> ?? new Operation<T>(x.Get));
+    public static IStopAware Out(this Composer<CancellationToken, ValueTask> @this)
+        => @this.Get().To(x => x as IStopAware ?? new StopAware(x.Get));
 
 	public static DragonSpark.Model.Operations.Selection.Conditions.IDepending<T> Out<T>(this Composer<T, ValueTask<bool>> @this)
 		=> @this.Get().To(x => x as DragonSpark.Model.Operations.Selection.Conditions.IDepending<T> ?? new DragonSpark.Model.Operations.Selection.Conditions.Depending<T>(x.Get));

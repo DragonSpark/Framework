@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using DragonSpark.Application.Mobile.Runtime.Initialization;
 using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
-using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Stop;
 using Microsoft.Extensions.Configuration.Json;
 
 namespace DragonSpark.Application.Mobile.Configuration;
@@ -13,12 +13,12 @@ namespace DragonSpark.Application.Mobile.Configuration;
 sealed class RemoteConfigurationProvider : JsonStreamConfigurationProvider
 {
     readonly Func<IRemoteConfigurationMessage> _message;
-    readonly ICommand<IOperation>              _register;
+    readonly ICommand<IStopAware>              _register;
 
     public RemoteConfigurationProvider(Func<IRemoteConfigurationMessage> message)
         : this(message, RegisterInitialization.Default) {}
 
-    public RemoteConfigurationProvider(Func<IRemoteConfigurationMessage> message, ICommand<IOperation> register)
+    public RemoteConfigurationProvider(Func<IRemoteConfigurationMessage> message, ICommand<IStopAware> register)
         : base(new JsonStreamConfigurationSource())
     {
         _message  = message;

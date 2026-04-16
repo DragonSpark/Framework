@@ -3,12 +3,11 @@ using System.Threading;
 using System.Threading.Tasks;
 using DragonSpark.Application.Mobile.Attestation;
 using DragonSpark.Compose;
-using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Stop;
 
 namespace DragonSpark.Application.Mobile.Maui.Configuration;
 
-sealed class SaveIdentity : IOperation
+sealed class SaveIdentity : IStopAware
 {
     readonly Func<RemoteConfigurationSettings>   _settings;
     readonly IClientKeyHash                      _hash;
@@ -25,10 +24,10 @@ sealed class SaveIdentity : IOperation
         _set      = set;
     }
 
-    public async ValueTask Get()
+    public async ValueTask Get(CancellationToken parameter)
     {
-        var hash     = await _hash.Off(CancellationToken.None);
+        var hash     = await _hash.Off(parameter);
         var identity = _settings().Identity;
-        await _set.Off(new(new(identity, hash), CancellationToken.None));
+        await _set.Off(new(new(identity, hash), parameter));
     }
 }

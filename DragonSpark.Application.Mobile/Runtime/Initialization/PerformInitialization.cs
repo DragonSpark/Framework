@@ -1,28 +1,32 @@
-using System;
+using System.Threading;
 using System.Threading.Tasks;
 using DragonSpark.Compose;
-using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Stop;
+using DragonSpark.Model.Results;
 
 namespace DragonSpark.Application.Mobile.Runtime.Initialization;
 
-public sealed class PerformInitialization : IOperation
+public sealed class PerformInitialization : IStopAware
 {
     public static PerformInitialization Default { get; } = new();
 
-    PerformInitialization() : this(Commands.Default, Operations.Default) {}
+    PerformInitialization() : this(Initializing.Default, Initialization.Default, Initialized.Default) {}
 
-    readonly ICommands<Action>       _commands;
-    readonly IOperations<IOperation> _operations;
+    readonly IMutable<bool> _starting;
+    readonly IStopAware     _previous;
+    readonly IMutable<bool> _started;
 
-    public PerformInitialization(ICommands<Action> commands, IOperations<IOperation> operations)
+    public PerformInitialization(IMutable<bool> starting, IStopAware previous, IMutable<bool> started)
     {
-        _commands   = commands;
-        _operations = operations;
+        _starting = starting;
+        _previous = previous;
+        _started  = started;
     }
 
-    public async ValueTask Get()
+    public async ValueTask Get(CancellationToken parameter)
     {
-        await _operations.Off();
-        _commands.Execute();
+        _starting.Up();
+        await _previous.Off(parameter);
+        _started.Up();
     }
 }

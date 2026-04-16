@@ -14,45 +14,29 @@ sealed class Commands : Commands<Action>
     Commands() : base(x => x()) {}
 }
 
-class Commands<T> : ICommands<T>
+class Commands<T> : Instance<List<T>>, ICommands<T>
 {
-    readonly IMutable<List<T>?> _previous;
-    readonly Action<T>          _execute;
+    readonly List<T>   _queue;
+    readonly Action<T> _execute;
 
-    protected Commands(Action<T> execute) : this(new Variable<List<T>>([]), execute) {}
+    protected Commands(Action<T> execute) : this([], execute) {}
 
-    protected Commands(IMutable<List<T>?> previous, Action<T> execute)
+    protected Commands(List<T> queue, Action<T> execute) : base(queue)
     {
-        _previous = previous;
+        _queue = queue;
         _execute  = execute;
     }
 
     public void Execute(None parameter)
     {
-        if (_previous.TryPop(out var list) && list is not null)
+        while (_queue.Count > 0)
         {
-            using var lease = list.AsValueEnumerable().ToArray(ArrayPool<T>.Shared);
+            using var lease = _queue.AsValueEnumerable().ToArray(ArrayPool<T>.Shared);
             foreach (var item in lease)
             {
-                try
-                {
-                    _execute(item);
-                }
-                catch (Exception)
-                {
-                    _previous.Execute(list);
-                    throw;
-                }
-                list.Remove(item);
+                _execute(item);
+                _queue.Remove(item);
             }
         }
-
-    }
-
-    public List<T>? Get() => _previous.Get();
-
-    public void Execute(List<T>? parameter)
-    {
-        _previous.Execute(parameter);
     }
 }

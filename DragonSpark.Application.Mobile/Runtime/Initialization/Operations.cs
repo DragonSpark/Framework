@@ -1,60 +1,46 @@
 using System;
 using System.Buffers;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using DragonSpark.Compose;
-using DragonSpark.Model;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Stop;
 using DragonSpark.Model.Results;
 using NetFabric.Hyperlinq;
 
 namespace DragonSpark.Application.Mobile.Runtime.Initialization;
 
-class Operations<T> : IOperations<T>
+class Operations<T> : Instance<List<T>>, IOperations<T>
 {
-    readonly IMutable<List<T>?> _previous;
-    readonly Func<T, Task>      _execute;
+    readonly List<T>             _queue;
+    readonly Func<Stop<T>, Task> _execute;
 
-    protected Operations(Func<T, Task> execute) : this(new Variable<List<T>>([]), execute) {}
+    protected Operations(Func<Stop<T>, Task> execute) : this([], execute) {}
 
-    protected Operations(IMutable<List<T>?> previous, Func<T, Task> execute)
+    protected Operations(List<T> queue, Func<Stop<T>, Task> execute) : base(queue)
     {
-        _previous = previous;
-        _execute  = execute;
+        _queue   = queue;
+        _execute = execute;
     }
 
-    public async ValueTask Get(None parameter)
+    public async ValueTask Get(CancellationToken parameter)
     {
-        if (_previous.TryPop(out var list) && list is not null)
+        while (_queue.Count > 0)
         {
-            using var lease = list.AsValueEnumerable().ToArray(ArrayPool<T>.Shared);
+            using var lease = _queue.AsValueEnumerable().ToArray(ArrayPool<T>.Shared);
             foreach (var item in lease)
             {
-                try
-                {
-                    await _execute(item).Off();
-                }
-                catch (Exception)
-                {
-                    _previous.Execute(list);
-                    throw;
-                }
-                list.Remove(item);
+                await _execute(item.Stop(parameter)).Off();
+                _queue.Remove(item);
             }
         }
     }
-
-    public List<T>? Get() => _previous.Get();
-
-    public void Execute(List<T>? parameter)
-    {
-        _previous.Execute(parameter);
-    }
 }
 
-sealed class Operations : Operations<IOperation>
+sealed class Operations : Operations<IStopAware>
 {
     public static Operations Default { get; } = new();
 
-    Operations() : base(x => x.Allocate()) {}
+    Operations() : base(x => x.Subject.Allocate(x.Token)) {}
 }

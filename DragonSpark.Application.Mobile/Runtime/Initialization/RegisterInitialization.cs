@@ -1,49 +1,31 @@
 using System;
-using System.Collections.Generic;
 using DragonSpark.Model.Commands;
-using DragonSpark.Model.Operations;
-using DragonSpark.Model.Results;
+using DragonSpark.Model.Operations.Stop;
 
 namespace DragonSpark.Application.Mobile.Runtime.Initialization;
 
-public sealed class RegisterInitialization : ICommand<Action>, ICommand<IOperation>
+public sealed class RegisterInitialization : ICommand<Action>, ICommand<IStopAware>
 {
     public static RegisterInitialization Default { get; } = new();
 
-    RegisterInitialization() : this(Commands.Default, Operations.Default) {}
+    RegisterInitialization() : this(RegisterOperation.Default, RegisterCommand.Default) {}
 
-    readonly IResult<List<Action>?>     _commands;
-    readonly IResult<List<IOperation>?> _operations;
+    readonly ICommand<IStopAware> _operation;
+    readonly ICommand<Action>     _command;
 
-    public RegisterInitialization(IResult<List<Action>?> commands, IResult<List<IOperation>?> operations)
+    public RegisterInitialization(ICommand<IStopAware> operation, ICommand<Action> command)
     {
-        _commands   = commands;
-        _operations = operations;
+        _operation = operation;
+        _command   = command;
     }
 
     public void Execute(Action parameter)
     {
-        var actions = _commands.Get();
-        if (actions is not null)
-        {
-            actions.Add(parameter);
-        }
-        else
-        {
-            parameter();
-        }
+        _command.Execute(parameter);
     }
 
-    public void Execute(IOperation parameter)
+    public void Execute(IStopAware parameter)
     {
-        var operations = _operations.Get();
-        if (operations is not null)
-        {
-            operations.Add(parameter);
-        }
-        else
-        {
-            _ = parameter.Get();
-        }
+        _operation.Execute(parameter);
     }
 }

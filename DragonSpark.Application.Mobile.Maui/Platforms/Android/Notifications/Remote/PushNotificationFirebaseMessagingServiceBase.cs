@@ -3,22 +3,21 @@ using DragonSpark.Application.Mobile.Maui.Messaging;
 using DragonSpark.Application.Mobile.Runtime.Initialization;
 using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
-using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Stop;
 using Firebase.Messaging;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.Android.Notifications.Remote;
 
 public class PushNotificationFirebaseMessagingServiceBase : FirebaseMessagingService
 {
-    readonly ICommand<IOperation>           _register;
-    readonly IOperation<string>             _token;
+    readonly ICommand<IStopAware>           _register;
+    readonly IStopAware<string>             _token;
     readonly ICommand<AlertReceivedMessage> _send;
 
     public PushNotificationFirebaseMessagingServiceBase()
         : this(RegisterInitialization.Default, NewToken.Default, Send<AlertReceivedMessage>.Default) {}
 
-    public PushNotificationFirebaseMessagingServiceBase(ICommand<IOperation> register,
-                                                        IOperation<string> token,
+    public PushNotificationFirebaseMessagingServiceBase(ICommand<IStopAware> register, IStopAware<string> token,
                                                         ICommand<AlertReceivedMessage> send)
     {
         _register = register;
@@ -35,11 +34,8 @@ public class PushNotificationFirebaseMessagingServiceBase : FirebaseMessagingSer
     {
         base.OnMessageReceived(message);
 
-        if (message.Data.TryGetValue(ActionKey.Default, out var action))
-        {
-            var notification = message.GetNotification().Verify();
-            _send.Execute(new(notification.Title ?? "Money Clouds Notification", notification.Body ?? string.Empty,
-                              action));
-        }
+        var notification = message.GetNotification().Verify();
+        _send.Execute(new(notification.Title ?? "Money Clouds Notification", notification.Body ?? string.Empty,
+                          message.Data.TryGetValue(ActionKey.Default, out var action) ? action : string.Empty));
     }
 }

@@ -10,7 +10,7 @@ public abstract class RunApplication(
     : Mobile.Maui.Run.RunApplication(builder, application)
 {
     protected RunApplication(Func<IHostBuilder, IHostBuilder> select, Action<MauiAppBuilder> configure)
-        : this(select, configure, x => x.Build()) {}
+        : this(select, configure, BuildApplication.Default.Get) {}
 
     protected RunApplication(Func<IHostBuilder, IHostBuilder> select, Action<MauiAppBuilder> configure,
                              Func<MauiAppBuilder, MauiApp> host)
