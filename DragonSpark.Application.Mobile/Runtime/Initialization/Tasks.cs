@@ -1,21 +1,13 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using DragonSpark.Compose;
-using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Stop;
 using DragonSpark.Model.Results;
 
 namespace DragonSpark.Application.Mobile.Runtime.Initialization;
 
-/*
-sealed class Tasks : Operations<TaskMonitor>
-{
-    public static Tasks Default { get; } = new();
-
-    Tasks() : base(x => x.Allocate()) {}
-}
-*/
-
-public sealed class TaskMonitor : IOperation
+public sealed class TaskMonitor : IStopAware
 {
     readonly IMutable<Task?> _current;
     readonly Func<Task>      _next;
@@ -28,7 +20,7 @@ public sealed class TaskMonitor : IOperation
         _next    = next;
     }
 
-    public ValueTask Get()
+    public ValueTask Get(CancellationToken parameter)
     {
         var task = _current.TryPop(out var t) && t is not null ? t : _next();
         return task.ToOperation();

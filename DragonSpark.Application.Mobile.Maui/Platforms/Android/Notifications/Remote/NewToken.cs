@@ -11,7 +11,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.Android.Notifications.Remote;
 
-sealed class NewToken : IOperation<string>
+sealed class NewToken : IStopAware<string>
 {
     public static NewToken Default { get; } = new();
 
@@ -29,11 +29,11 @@ sealed class NewToken : IOperation<string>
         _logger = logger;
     }
 
-    public async ValueTask Get(string parameter)
+    public async ValueTask Get(Stop<string> parameter)
     {
         try
         {
-            await _token.Off(parameter.Stop());
+            await _token.Off(parameter);
             _new.Execute(new(parameter));
         }
         catch (Exception ex)

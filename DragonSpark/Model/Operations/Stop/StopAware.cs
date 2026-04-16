@@ -7,9 +7,9 @@ namespace DragonSpark.Model.Operations.Stop;
 
 public class StopAware : Select<CancellationToken, ValueTask>, IStopAware
 {
-    protected StopAware(ISelect<CancellationToken, ValueTask> select) : base(select) {}
+    public StopAware(ISelect<CancellationToken, ValueTask> select) : base(select) {}
 
-    protected StopAware(Func<CancellationToken, ValueTask> select) : base(select) {}
+    public StopAware(Func<CancellationToken, ValueTask> select) : base(select) {}
 }
 
 public class StopAware<T> : Operation<Stop<T>>, IStopAware<T>

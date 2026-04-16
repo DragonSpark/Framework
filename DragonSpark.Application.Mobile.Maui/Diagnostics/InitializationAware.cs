@@ -1,7 +1,8 @@
 using System;
+using System.Threading;
 using System.Threading.Tasks;
 using DragonSpark.Compose;
-using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Stop;
 using DragonSpark.Model.Selection;
 using Microsoft.Extensions.Configuration;
 
@@ -35,22 +36,22 @@ public class InitializationAware<TIn, TOut> : ISelect<TIn, TOut>
     }
 }
 
-public class InitializationAware : IOperation
+public class InitializationAware : IStopAware
 {
-    readonly IOperation _previous;
+    readonly IStopAware _previous;
     readonly IReport    _send;
 
-    protected InitializationAware(IOperation previous, IReport send)
+    protected InitializationAware(IStopAware previous, IReport send)
     {
         _previous = previous;
         _send     = send;
     }
 
-    public async ValueTask Get()
+    public async ValueTask Get(CancellationToken parameter)
     {
         try
         {
-            await _previous.On();
+            await _previous.On(parameter);
         }
         catch (Exception e)
         {

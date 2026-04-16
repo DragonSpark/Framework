@@ -8,7 +8,7 @@ using DragonSpark.Model.Operations.Stop;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.iOS.Notifications.Remote;
 
-sealed class RegisterNewToken : IOperation<string>
+sealed class RegisterNewToken : IStopAware<string>
 {
     public static RegisterNewToken Default { get; } = new();
 
@@ -23,9 +23,9 @@ sealed class RegisterNewToken : IOperation<string>
         _new   = @new;
     }
 
-    public async ValueTask Get(string parameter)
+    public async ValueTask Get(Stop<string> parameter)
     {
-        await _token.Off(parameter.Stop());
+        await _token.Off(parameter);
         _new.Execute(new(parameter));
     }
 }
