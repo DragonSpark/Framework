@@ -1,6 +1,5 @@
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
-using Microsoft.Azure.NotificationHubs;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Server.Mobile.Notifications;
@@ -16,8 +15,8 @@ sealed class Registration : ICommand<IServiceCollection>
         parameter.Register<NotificationHubSettings>()
                  .Register<CleanUpSettings>()
                  //
-                 .Start<NotificationHubClient>()
-                 .Use<NotificationHubInstance>()
+                 .Start<NotificationHubClients>()
+                 .Use<ComposeNotificationHubClients>()
                  .Singleton()
                  //
                  .Then.Start<IDeviceRegistration>()

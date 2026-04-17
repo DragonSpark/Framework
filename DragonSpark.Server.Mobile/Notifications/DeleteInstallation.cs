@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Stop;
@@ -9,6 +9,8 @@ namespace DragonSpark.Server.Mobile.Notifications;
 sealed class DeleteInstallation : IStopAware<string>
 {
     readonly NotificationHubClient _client;
+
+    public DeleteInstallation(NotificationHubClients clients) : this(clients.Server) {}
 
     public DeleteInstallation(NotificationHubClient client) => _client = client;
 

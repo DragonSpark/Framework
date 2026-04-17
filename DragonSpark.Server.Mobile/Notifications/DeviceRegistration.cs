@@ -14,8 +14,8 @@ sealed class DeviceRegistration : IDeviceRegistration
     readonly TimeSpan              _expiry;
     readonly ITime                 _time;
 
-    public DeviceRegistration(NotificationHubClient client, NotificationHubSettings settings)
-        : this(client, settings.TimeToLive, Time.Default) {}
+    public DeviceRegistration(NotificationHubClients clients, NotificationHubSettings settings)
+        : this(clients.Client, settings.TimeToLive, Time.Default) {}
 
     public DeviceRegistration(NotificationHubClient client, TimeSpan expiry, ITime time)
     {
