@@ -14,9 +14,9 @@ sealed class PurgeExpiredRegistrations : IStopAware
     readonly ILogger<PurgeExpiredRegistrations> _logger;
     readonly byte                               _size;
 
-    public PurgeExpiredRegistrations(NotificationHubClient client, ILogger<PurgeExpiredRegistrations> logger,
+    public PurgeExpiredRegistrations(NotificationHubClients clients, ILogger<PurgeExpiredRegistrations> logger,
                                      CleanUpSettings settings)
-        : this(client, logger, settings.BatchSize) {}
+        : this(clients.Server, logger, settings.BatchSize) {}
 
     public PurgeExpiredRegistrations(NotificationHubClient client, ILogger<PurgeExpiredRegistrations> logger, byte size)
     {
