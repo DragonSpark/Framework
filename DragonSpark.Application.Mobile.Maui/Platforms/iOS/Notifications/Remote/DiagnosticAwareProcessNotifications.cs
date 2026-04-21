@@ -8,13 +8,10 @@ namespace DragonSpark.Application.Mobile.Maui.Platforms.iOS.Notifications.Remote
 sealed class DiagnosticAwareProcessNotifications : IProcessNotifications
 {
     readonly ILogger<DiagnosticAwareProcessNotifications> _logger;
-    readonly ICommand<NSDictionary>                             _previous;
+    readonly ICommand<NSDictionary>                       _previous;
 
-    public DiagnosticAwareProcessNotifications(ILogger<DiagnosticAwareProcessNotifications> logger)
-        : this(logger, ProcessNotifications.Default) {}
-
-    public DiagnosticAwareProcessNotifications(ILogger<DiagnosticAwareProcessNotifications> logger,
-                                               ICommand<NSDictionary> previous)
+    public DiagnosticAwareProcessNotifications(IProcessNotifications previous,
+                                               ILogger<DiagnosticAwareProcessNotifications> logger)
     {
         _logger   = logger;
         _previous = previous;

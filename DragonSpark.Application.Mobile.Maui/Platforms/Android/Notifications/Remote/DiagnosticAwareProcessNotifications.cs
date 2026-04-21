@@ -11,7 +11,7 @@ sealed class DiagnosticAwareProcessNotifications : IProcessNotifications
     readonly ICommand<Intent>                             _previous;
 
     public DiagnosticAwareProcessNotifications(ILogger<DiagnosticAwareProcessNotifications> logger)
-        : this(logger, ProcessNotifications.Default) {}
+        : this(logger, ReceiveNotification.Default) {}
 
     public DiagnosticAwareProcessNotifications(ILogger<DiagnosticAwareProcessNotifications> logger,
                                                ICommand<Intent> previous)

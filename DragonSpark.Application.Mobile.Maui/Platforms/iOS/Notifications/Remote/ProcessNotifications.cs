@@ -1,34 +1,30 @@
-using DragonSpark.Application.Mobile.Maui.Device.Notifications.Remote;
-using DragonSpark.Application.Mobile.Maui.Messaging;
+using DragonSpark.Application.Mobile.Maui.Device.Notifications.Remote.Messages;
 using DragonSpark.Compose;
-using DragonSpark.Model.Commands;
 using Foundation;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.iOS.Notifications.Remote;
 
 sealed class ProcessNotifications : IProcessNotifications
 {
-    public static ProcessNotifications Default { get; } = new();
+    readonly IProcessNotification _process;
+    readonly NSString             _action;
 
-    ProcessNotifications() : this(Send<AlertReceivedMessage>.Default, new(ActionKey.Default)) {}
-
-    readonly ICommand<AlertReceivedMessage> _send;
-    readonly NSString                       _action;
-
-    public ProcessNotifications(ICommand<AlertReceivedMessage> send, NSString action)
+    public ProcessNotifications(IProcessNotification process) : this(process, new(ActionKey.Default)) {}
+    
+    public ProcessNotifications(IProcessNotification process, NSString action)
     {
-        _send   = send;
-        _action = action;
+        _process = process;
+        _action  = action;
     }
 
     public void Execute(NSDictionary parameter)
     {
-        var (title, body) = ExtractAlert(parameter);
-        _send.Execute(new(title ?? "Money Clouds Notification", body.EmptyIfNull(), 
-                          parameter.ObjectForKey(_action) is NSString action ? action.Description : string.Empty ));
+        var (title, body) = Extract(parameter);
+        _process.Execute(new(title ?? "Money Clouds Notification", body.EmptyIfNull(),
+                             parameter.ObjectForKey(_action) is NSString action ? action.Description : null));
     }
 
-    (string? Title, string? Body) ExtractAlert(NSDictionary userInfo)
+    static (string? Title, string? Body) Extract(NSDictionary userInfo)
         => userInfo.ObjectForKey(new NSString("aps")) is not NSDictionary aps
                ? (null, null)
                : aps.ObjectForKey(new NSString("alert")) switch

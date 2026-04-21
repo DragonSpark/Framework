@@ -1,28 +1,31 @@
-using DragonSpark.Application.Mobile.Maui.Device.Notifications.Remote;
-using DragonSpark.Application.Mobile.Maui.Messaging;
+using System;
+using DragonSpark.Application.Mobile.Maui.Device.Notifications.Remote.Messages;
+using DragonSpark.Application.Mobile.Maui.Presentation;
 using DragonSpark.Application.Mobile.Runtime.Initialization;
 using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations.Stop;
 using Firebase.Messaging;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.Android.Notifications.Remote;
 
 public class PushNotificationFirebaseMessagingServiceBase : FirebaseMessagingService
 {
-    readonly ICommand<IStopAware>           _register;
-    readonly IStopAware<string>             _token;
-    readonly ICommand<AlertReceivedMessage> _send;
+    readonly ICommand<IStopAware>       _register;
+    readonly IStopAware<string>         _token;
+    readonly Func<IProcessNotification> _process;
 
     public PushNotificationFirebaseMessagingServiceBase()
-        : this(RegisterInitialization.Default, NewToken.Default, Send<AlertReceivedMessage>.Default) {}
+        : this(RegisterInitialization.Default, NewToken.Default,
+               CurrentServices.Default.GetRequiredService<IProcessNotification>) {}
 
     public PushNotificationFirebaseMessagingServiceBase(ICommand<IStopAware> register, IStopAware<string> token,
-                                                        ICommand<AlertReceivedMessage> send)
+                                                        Func<IProcessNotification> process)
     {
         _register = register;
         _token    = token;
-        _send     = send;
+        _process  = process;
     }
 
     public override void OnNewToken(string token)
@@ -35,7 +38,8 @@ public class PushNotificationFirebaseMessagingServiceBase : FirebaseMessagingSer
         base.OnMessageReceived(message);
 
         var notification = message.GetNotification().Verify();
-        _send.Execute(new(notification.Title ?? "Money Clouds Notification", notification.Body ?? string.Empty,
-                          message.Data.TryGetValue(ActionKey.Default, out var action) ? action : string.Empty));
+        var process      = _process();
+        process.Execute(new(notification.Title ?? "Money Clouds Notification", notification.Body ?? string.Empty,
+                            message.Data.TryGetValue(ActionKey.Default, out var action) ? action : string.Empty));
     }
 }
