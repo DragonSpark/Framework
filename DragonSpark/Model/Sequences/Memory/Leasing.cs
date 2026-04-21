@@ -1,16 +1,20 @@
-using System;
-using System.Runtime.CompilerServices;
+using DragonSpark.Compose;
 using JetBrains.Annotations;
 using NetFabric.Hyperlinq;
+using System;
+using System.Runtime.CompilerServices;
 
 namespace DragonSpark.Model.Sequences.Memory;
 
-[method: MustDisposeResource]
-public readonly struct Leasing<T>(Lease<T> owner, Memory<T> reference, uint length) : IDisposable
+public readonly struct Leasing<T> : IDisposable
 {
     public static implicit operator Memory<T>(Leasing<T> instance) => instance.AsMemory();
 
     public static Leasing<T> Default { get; } = new(Lease.Empty<T>(), Memory<T>.Empty, 0);
+
+    readonly Lease<T>  _owner;
+    readonly Memory<T> _reference;
+
 
     [MustDisposeResource]
     public Leasing(Lease<T> owner) : this(owner, (uint)owner.Memory.Length) { }
@@ -18,23 +22,32 @@ public readonly struct Leasing<T>(Lease<T> owner, Memory<T> reference, uint leng
     [MustDisposeResource]
     public Leasing(Lease<T> owner, uint length) : this(owner, owner.Memory, length) { }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining), MustDisposeResource]
-    public Leasing<T> Size(int size) => new(owner, reference, (uint)size);
+    [method: MustDisposeResource]
+    public Leasing(Lease<T> owner, Memory<T> reference, uint length)
+    {
+        _owner        = owner;
+        _reference    = reference;
+        Length        = length;
+        _owner.Length = length.Degrade();
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining), MustDisposeResource]
-    public Leasing<T> Size(uint size) => new(owner, reference, size);
+    public Leasing<T> Size(int size) => new(_owner, _reference, (uint)size);
 
-    public Memory<T> Remaining => reference[(int)Length..];
+    [MethodImpl(MethodImplOptions.AggressiveInlining), MustDisposeResource]
+    public Leasing<T> Size(uint size) => new(_owner, _reference, size);
+
+    public Memory<T> Remaining => _reference[(int)Length..];
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Memory<T> AsMemory() => reference[..(int)Length];
+    public Memory<T> AsMemory() => _reference[..(int)Length];
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Span<T> AsSpan() => reference.Span[..(int)Length];
+    public Span<T> AsSpan() => _reference.Span[..(int)Length];
 
-    public uint Length { get; } = length;
+    public uint Length { get; }
 
-    public uint ActualLength => (uint)reference.Length;
+    public uint ActualLength => (uint)_reference.Length;
 
     public T[] Store => _owner.Rented; // TODO: Audit use of this property AND Lease.Rented to ensure no data is leaked. 
 
@@ -47,15 +60,16 @@ public readonly struct Leasing<T>(Lease<T> owner, Memory<T> reference, uint leng
 
     public void Dispose()
     {
-	    owner.Dispose();
+        var owner1 = _owner;
+        owner1.Dispose();
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public Lease<T>.Enumerator GetEnumerator() => owner.GetEnumerator();
+    public Lease<T>.Enumerator GetEnumerator() => _owner.GetEnumerator();
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public ArrayExtensions.ArraySegmentValueEnumerable<T> AsValueEnumerable() => owner.AsValueEnumerable();
+    public ArrayExtensions.ArraySegmentValueEnumerable<T> AsValueEnumerable() => _owner.AsValueEnumerable();
 
     [MethodImpl(MethodImplOptions.AggressiveInlining), MustDisposeResource(false)]
-    public Lease<T> AsEnumerable() => owner;
+    public Lease<T> AsEnumerable() => _owner;
 }
