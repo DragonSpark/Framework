@@ -7,11 +7,11 @@ namespace DragonSpark.Application.Mobile.Maui.Platforms.iOS.Notifications.Remote
 sealed class ProcessNotifications : IProcessNotifications
 {
     readonly IProcessNotification _process;
-    readonly NSString             _action;
+    readonly string               _action;
 
-    public ProcessNotifications(IProcessNotification process) : this(process, new(ActionKey.Default)) {}
-    
-    public ProcessNotifications(IProcessNotification process, NSString action)
+    public ProcessNotifications(IProcessNotification process) : this(process, ActionKey.Default) {}
+
+    public ProcessNotifications(IProcessNotification process, string action)
     {
         _process = process;
         _action  = action;
@@ -19,23 +19,17 @@ sealed class ProcessNotifications : IProcessNotifications
 
     public void Execute(NSDictionary parameter)
     {
-        var (title, body) = Extract(parameter);
-        _process.Execute(new(title ?? "Money Clouds Notification", body.EmptyIfNull(),
-                             parameter.ObjectForKey(_action) is NSString action ? action.Description : null));
+        var (title, body, action) = Extract(parameter);
+        _process.Execute(new(title ?? "Money Clouds Notification", body.EmptyIfNull(), action));
     }
 
-    static (string? Title, string? Body) Extract(NSDictionary userInfo)
-        => userInfo.ObjectForKey(new NSString("aps")) is not NSDictionary aps
-               ? (null, null)
-               : aps.ObjectForKey(new NSString("alert")) switch
+    (string? Title, string? Body, string? Action) Extract(NSDictionary userInfo)
+        => userInfo.ObjectForKey(new NSString("aps")) is NSDictionary aps
+               ? aps.ObjectForKey(new NSString("alert")) switch
                {
-                   NSDictionary alertDict => (
-                                                 alertDict.ObjectForKey(new NSString("title")) as NSString,
-                                                 Body: alertDict.ObjectForKey(new NSString("body")) as NSString
-                                             ),
-
-                   NSString simpleAlert => (null, simpleAlert),
-
-                   _ => (null, null)
-               };
+                   NSDictionary x => (x.ObjectForKey(new NSString("title")) as NSString,
+                                      x.ObjectForKey(new NSString("body")) as NSString, x[_action] as NSString),
+                   NSString simpleAlert => (null, simpleAlert, null),
+                   _ => (null, null, null)
+               } : (null, null, null);
 }

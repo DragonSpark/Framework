@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Input;
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Conditions;
@@ -12,8 +10,7 @@ sealed class ActionParser : IActionParser
     readonly IParser<ActionParameter>                  _parser;
     readonly IConditional<string, IActionRegistration> _registrations;
     
-    public ActionParser(IEnumerable<IActionRegistration> registrations)
-        : this(ActionParameterParser.Default, registrations.ToDictionary(x => x.Get()).ToTable()) {}
+    public ActionParser(ActionRegistrations registrations) : this(ActionParameterParser.Default, registrations) {}
 
     public ActionParser(IParser<ActionParameter> parser, IConditional<string, IActionRegistration> registrations)
     {

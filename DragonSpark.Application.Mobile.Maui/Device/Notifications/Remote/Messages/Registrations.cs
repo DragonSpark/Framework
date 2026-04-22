@@ -18,7 +18,7 @@ sealed class Registrations : ICommand<IServiceCollection>
                  .Singleton()
                  //
                  .Then.Start<IActionParser>()
-                 .Forward<ActionParser>()
+                 .Forward<ActionParser>().Include(x => x.Dependencies.Recursive())
                  .Singleton()
             ;
     }
