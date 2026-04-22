@@ -10,7 +10,7 @@ public class AsynchronousCommand<T> : IAsyncRelayCommand<T>
     readonly IAsyncRelayCommand<T> _previous;
     readonly TypeConverter?        _converter;
 
-    protected AsynchronousCommand(Func<T?, Task> execute, TypeConverter? converter = null)
+    public AsynchronousCommand(Func<T?, Task> execute, TypeConverter? converter = null)
         : this(new AsyncRelayCommand<T>(execute), converter) {}
 
     protected AsynchronousCommand(Func<T?, Task> execute, Predicate<T?> canExecute, TypeConverter? converter = null)
@@ -82,7 +82,7 @@ public class AsynchronousCommand<T> : IAsyncRelayCommand<T>
 
     public bool IsRunning => _previous.IsRunning;
 
-    public bool CanExecute(T? parameter) => _previous.CanExecute(parameter!);
+    public bool CanExecute(T? parameter) => _previous.CanExecute(parameter);
 
-    public void Execute(T? parameter) => _previous.Execute(parameter!);
+    public void Execute(T? parameter) => _previous.Execute(parameter);
 }

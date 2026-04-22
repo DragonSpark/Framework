@@ -1,41 +1,32 @@
 using Android.Content;
-using DragonSpark.Application.Mobile.Maui.Device.Notifications.Remote;
-using DragonSpark.Application.Mobile.Maui.Messaging;
-using DragonSpark.Compose;
-using DragonSpark.Model.Commands;
+using DragonSpark.Application.Mobile.Maui.Device.Notifications.Remote.Messages;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.Android.Notifications.Remote;
 
 sealed class ProcessNotifications : IProcessNotifications
 {
-    public static ProcessNotifications Default { get; } = new();
+    readonly string               _key;
+    readonly IProcessNotification _process;
 
-    ProcessNotifications() : this(ActionKey.Default, Send<AlertReceivedMessage>.Default) {}
+    public ProcessNotifications(IProcessNotification process) : this("notification", process) {}
 
-    readonly string                         _key;
-    readonly ICommand<AlertReceivedMessage> _send;
-
-    public ProcessNotifications(string key, ICommand<AlertReceivedMessage> send)
+    public ProcessNotifications(string key, IProcessNotification process)
     {
-        _key  = key;
-        _send = send;
+        _key     = key;
+        _process = process;
     }
 
     public void Execute(Intent parameter)
     {
         if (parameter.HasExtra(_key))
         {
-            var action = parameter.GetStringExtra(_key);
-            if (!action.IsNullOrEmpty())
-            {
-                var title = parameter.GetStringExtra("title") ?? parameter.GetStringExtra("notification.title")
-                            ?? "Money Clouds Notification";
-                var body = parameter.GetStringExtra("body")
-                           ?? parameter.GetStringExtra("notification.body")
-                           ?? parameter.GetStringExtra("message")
-                           ?? string.Empty;
-                _send.Execute(new(title, body, action));
-            }
+            var title = parameter.GetStringExtra("title") ?? parameter.GetStringExtra("notification.title")
+                        ?? "Money Clouds Notification";
+            var body = parameter.GetStringExtra("body")
+                       ?? parameter.GetStringExtra("notification.body")
+                       ?? parameter.GetStringExtra("message")
+                       ?? string.Empty;
+            _process.Execute(new(title, body, parameter.GetStringExtra(ActionKey.Default)));
         }
     }
 }

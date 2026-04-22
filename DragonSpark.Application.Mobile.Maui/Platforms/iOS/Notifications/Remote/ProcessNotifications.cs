@@ -1,45 +1,35 @@
-using DragonSpark.Application.Mobile.Maui.Device.Notifications.Remote;
-using DragonSpark.Application.Mobile.Maui.Messaging;
+using DragonSpark.Application.Mobile.Maui.Device.Notifications.Remote.Messages;
 using DragonSpark.Compose;
-using DragonSpark.Model.Commands;
 using Foundation;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.iOS.Notifications.Remote;
 
 sealed class ProcessNotifications : IProcessNotifications
 {
-    public static ProcessNotifications Default { get; } = new();
+    readonly IProcessNotification _process;
+    readonly string               _action;
 
-    ProcessNotifications() : this(Send<AlertReceivedMessage>.Default, new(ActionKey.Default)) {}
+    public ProcessNotifications(IProcessNotification process) : this(process, ActionKey.Default) {}
 
-    readonly ICommand<AlertReceivedMessage> _send;
-    readonly NSString                       _action;
-
-    public ProcessNotifications(ICommand<AlertReceivedMessage> send, NSString action)
+    public ProcessNotifications(IProcessNotification process, string action)
     {
-        _send   = send;
-        _action = action;
+        _process = process;
+        _action  = action;
     }
 
     public void Execute(NSDictionary parameter)
     {
-        var (title, body) = ExtractAlert(parameter);
-        _send.Execute(new(title ?? "Money Clouds Notification", body.EmptyIfNull(), 
-                          parameter.ObjectForKey(_action) is NSString action ? action.Description : string.Empty ));
+        var (title, body, action) = Extract(parameter);
+        _process.Execute(new(title ?? "Money Clouds Notification", body.EmptyIfNull(), action));
     }
 
-    (string? Title, string? Body) ExtractAlert(NSDictionary userInfo)
-        => userInfo.ObjectForKey(new NSString("aps")) is not NSDictionary aps
-               ? (null, null)
-               : aps.ObjectForKey(new NSString("alert")) switch
+    (string? Title, string? Body, string? Action) Extract(NSDictionary userInfo)
+        => userInfo.ObjectForKey(new NSString("aps")) is NSDictionary aps
+               ? aps.ObjectForKey(new NSString("alert")) switch
                {
-                   NSDictionary alertDict => (
-                                                 alertDict.ObjectForKey(new NSString("title")) as NSString,
-                                                 Body: alertDict.ObjectForKey(new NSString("body")) as NSString
-                                             ),
-
-                   NSString simpleAlert => (null, simpleAlert),
-
-                   _ => (null, null)
-               };
+                   NSDictionary x => (x.ObjectForKey(new NSString("title")) as NSString,
+                                      x.ObjectForKey(new NSString("body")) as NSString, x[_action] as NSString),
+                   NSString simpleAlert => (null, simpleAlert, null),
+                   _ => (null, null, null)
+               } : (null, null, null);
 }

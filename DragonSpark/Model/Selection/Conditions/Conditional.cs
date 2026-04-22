@@ -1,5 +1,5 @@
-﻿using DragonSpark.Compose;
 using System;
+using DragonSpark.Compose;
 
 namespace DragonSpark.Model.Selection.Conditions;
 

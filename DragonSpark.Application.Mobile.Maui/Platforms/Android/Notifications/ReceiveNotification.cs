@@ -11,28 +11,29 @@ public sealed class ReceiveNotification : ICommand<Intent>
 {
     public static ReceiveNotification Default { get; } = new();
 
-    ReceiveNotification() : this(CurrentServices.Default, TitleKey.Default, MessageKey.Default) {}
+    ReceiveNotification()
+        : this(CurrentServices.Default.GetService<INotifications>, TitleKey.Default, MessageKey.Default) {}
 
-    readonly IServiceProvider _services;
-    readonly string           _title, _message;
+    readonly Func<INotifications?> _notifications;
+    readonly string               _title, _message;
 
-    public ReceiveNotification(IServiceProvider services, string title, string message)
+    public ReceiveNotification(Func<INotifications?> notifications, string title, string message)
     {
-        _services = services;
-        _title    = title;
-        _message  = message;
+        _notifications = notifications;
+        _title         = title;
+        _message       = message;
     }
 
     public void Execute(Intent parameter)
     {
-        var service = _services.GetService<INotifications>();
+        var service = _notifications();
         if (service is not null)
         {
             var title   = parameter.GetStringExtra(_title);
             var message = parameter.GetStringExtra(_message);
             if (title is not null && message is not null)
             {
-                service.ReceiveNotification(title, message);   
+                service.ReceiveNotification(title, message);
             }
         }
     }

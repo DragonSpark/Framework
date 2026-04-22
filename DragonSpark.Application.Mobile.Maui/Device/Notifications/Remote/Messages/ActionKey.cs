@@ -1,4 +1,4 @@
-namespace DragonSpark.Application.Mobile.Maui.Device.Notifications.Remote;
+namespace DragonSpark.Application.Mobile.Maui.Device.Notifications.Remote.Messages;
 
 public sealed class ActionKey : Text.Text
 {
