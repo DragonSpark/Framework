@@ -5,7 +5,7 @@ using DragonSpark.Model.Operations.Selection.Conditions;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.iOS.Security.Tokens;
 
-sealed class DeviceAwareClearClientKey : DependingOnAll<Stop<None>>, IClearClientKey
+sealed class DeviceAwareClearClientKey : DependingOnAllInclusive<Stop<None>>, IClearClientKey
 {
     public DeviceAwareClearClientKey(IClearClientKey previous, IClearDeviceKey device) : base(previous, device) {}
 }

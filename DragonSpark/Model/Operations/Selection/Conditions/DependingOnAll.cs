@@ -1,13 +1,11 @@
-﻿using DragonSpark.Compose;
+using System.Threading.Tasks;
+using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
-using JetBrains.Annotations;
 using NetFabric.Hyperlinq;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations.Selection.Conditions;
 
-[UsedImplicitly]
 public class DependingOnAll<T> : IDepending<T>
 {
 	readonly Array<Await<T, bool>> _selections;
@@ -19,8 +17,7 @@ public class DependingOnAll<T> : IDepending<T>
 
 	public async ValueTask<bool> Get(T parameter)
 	{
-		var length = _selections.Length;
-		for (var i = 0; i < length; i++)
+		for (var i = 0; i < _selections.Length; i++)
 		{
 			if (!await _selections[i](parameter))
 			{
