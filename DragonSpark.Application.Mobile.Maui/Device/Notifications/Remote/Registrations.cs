@@ -1,4 +1,3 @@
-using DragonSpark.Application.Communication.Http.Security;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
@@ -19,7 +18,6 @@ sealed class Registrations : ICommand<IServiceCollection>
                  .Singleton()
                  .Then.Start<DeviceRegistration>()
                  .Singleton()
-                 .Then.AddSingleton<IMauiInitializeService>(InitializeDeviceRegistration.Default)
-                 .TryDecorate<ICompleteLogin, LoginAwareDeviceRegistration>();
+                 .Then.AddSingleton<IMauiInitializeService>(InitializeDeviceRegistration.Default);
     }
 }
