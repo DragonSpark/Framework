@@ -1,10 +1,10 @@
 @using DragonSpark.Compose
 
 @inherits FormsComponentBase
-@*ISSUE: ReSharper Warnings*@
+
 <RenderCompensationComponent>
     <DragonSpark.Presentation.Components.Forms.FluentTextArea Name="@Name" Rows="@(Rows ?? 5)" Cols="@(Cols ?? 60)" Value="@Value" ValueChanged="@_update" Immediate="true" ImmediateDelay="750"
-                                                              Label="@Label" Maxlength="@Maximum" Disabled="@Receiver.Active"/>
+                                                              Label="@Label" Maxlength="@Maximum" Disabled="@Receiver.Active" />
     @if (ChildContent is not null)
     {
         @ChildContent

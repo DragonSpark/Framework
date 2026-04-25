@@ -4,42 +4,49 @@
 @using DragonSpark.SyncfusionRendering.Queries
 @using Radzen
 @inherits DataGridTemplateComponentBase<T>
-@*ISSUE: ReSharper Warnings*@
-@if (BodyHeaderTemplate is not null)
-{
-    @BodyHeaderTemplate
-}
-<DragonSpark.SyncfusionRendering.Components.MemoryAwareRequestContainer Id="@(_identity!)" Input="Input" Context="input">
-    <DataQueryGrid T="T" Content="@Input"
-                   Identifier="@_identity"
-                   FilterType="@FilterType"
-                   ReportedType="@ReportedType"
-                   Columns="@Columns"
-                   AllowSelection="@AllowSelection"
-                   AllowPaging="@AllowPaging"
-                   AllowFiltering="@AllowFiltering"
-                   AllowSorting="@AllowSorting"
-                   AllowExport="@AllowExport"
-                   LoadingTemplate="@LoadingTemplate"
-                   DesktopToolbar="@DesktopToolbar"
-                   MobileToolbar="@MobileToolbar"
-                   CssClass="@CssClass"
-                   Breakpoint="@Breakpoint"
-                   PageSize="@PageSize"
-                   Editing="@Editing"
-                   Created="@Created"
-                   Updated="@Updated"
-                   @attributes="@AdditionalAttributes">
-        @if (BodyContentTemplate is not null)
-        {
-            @BodyContentTemplate
-        }
-    </DataQueryGrid>
-</DragonSpark.SyncfusionRendering.Components.MemoryAwareRequestContainer>
 
-@if (BodyFooterTemplate is not null)
+@if (_identity is not null)
 {
-    @BodyFooterTemplate
+    if (BodyHeaderTemplate is not null)
+    {
+        @BodyHeaderTemplate
+    }
+    <DragonSpark.SyncfusionRendering.Components.MemoryAwareRequestContainer Id="@_identity" Input="Input" Context="input">
+        <DataQueryGrid T="T" Content="@Input"
+                       Identifier="@_identity"
+                       FilterType="@FilterType"
+                       ReportedType="@ReportedType"
+                       Columns="@Columns"
+                       AllowSelection="@AllowSelection"
+                       AllowPaging="@AllowPaging"
+                       AllowFiltering="@AllowFiltering"
+                       AllowSorting="@AllowSorting"
+                       AllowExport="@AllowExport"
+                       LoadingTemplate="@LoadingTemplate"
+                       DesktopToolbar="@DesktopToolbar"
+                       MobileToolbar="@MobileToolbar"
+                       CssClass="@CssClass"
+                       Breakpoint="@Breakpoint"
+                       PageSize="@PageSize"
+                       Editing="@Editing"
+                       Created="@Created"
+                       Updated="@Updated"
+                       @attributes="@AdditionalAttributes">
+            @if (BodyContentTemplate is not null)
+            {
+                @BodyContentTemplate
+            }
+        </DataQueryGrid>
+    </DragonSpark.SyncfusionRendering.Components.MemoryAwareRequestContainer>
+
+    if (BodyFooterTemplate is not null)
+    {
+        @BodyFooterTemplate
+    }
+}
+else
+{
+    @LoadingTemplate
 }
 
 @code {

@@ -12,9 +12,9 @@
 
 @typeparam TItem
 @typeparam TValue
-@*ISSUE: ReSharper Warnings*@
+
 <SfComboBox TItem="TItem" TValue="TValue" @ref="_subject" Value="@Value" Placeholder="@Placeholder" AllowFiltering="@AllowFiltering"
-            CssClass="@CssClass" ShowClearButton="true" FilterType="FilterType.Contains" EnableVirtualization="@Virtualization.HasValue" Query="@(_display!)">
+            CssClass="@CssClass" ShowClearButton="true" FilterType="FilterType.Contains" EnableVirtualization="@Virtualization.HasValue" Query="@_display">
     <ComboBoxTemplates TItem="TItem" HeaderTemplate="@HeaderTemplate" ItemTemplate="@ItemTemplate" />
     <SfDataManager Adaptor="Adaptors.CustomAdaptor">
         <DataRequestCallbackAdaptor Requested="@OnRequest" />
@@ -26,7 +26,7 @@
 </SfComboBox>
 
 @code {
-    Query?                    _display = new Query().Take(DefaultPageSize.Default);
+    Query                     _display = new Query().Take(DefaultPageSize.Default);
     SfComboBox<TValue, TItem> _subject = null!;
 
     [Parameter]
@@ -52,8 +52,8 @@
         {
             if (field != value)
             {
-                field = value;
-                _display = field.HasValue ? new Query().Take(field.Value) : null;
+                field    = value;
+                _display = new Query().Take(field ?? DefaultPageSize.Default);
             }
         }
     } = DefaultPageSize.Default;
