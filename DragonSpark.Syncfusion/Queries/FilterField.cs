@@ -12,7 +12,7 @@ sealed class FilterField<T> : IQuery<T>
 	public ValueTask<Parameter<T>> Get(Parameter<T> parameter)
 	{
 		var where = parameter.Request.Where;
-		if (where.Count > 0)
+		if (where?.Count > 0)
 		{
 			var source = where[0];
 			where.Add(new Syncfusion.Blazor.Data.WhereFilter

@@ -6,7 +6,7 @@
 @typeparam T
 
 @inherits Templates.ManyActiveContentTemplateComponentBase<PageResult<T>>
-@*ISSUE: ReSharper Warnings*@
+
 <ResultingContentView Content="@(_subject!)" LoadingTemplate="@LoadingTemplate" NotFoundTemplate="@NotFoundTemplate"
                       ExceptionTemplate="@ExceptionTemplate" Rendering="@Rendering">
     @if (context.Page.Length > 0)
@@ -20,7 +20,7 @@
 </ResultingContentView>
 
 @code {
-    IResulting<PageResult<T>>? _subject;
+    IResulting<PageResult<T>?>? _subject;
 
     [Parameter]
     public required IPages<T> Input
@@ -98,6 +98,6 @@
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
-        _subject ??= Input.Then().Bind(new PageInput(IncludeTotalCount, OrderBy, Filter, Partition).Stop(Stop)).Out();
+        _subject ??= Input.Then().Bind(new PageInput(IncludeTotalCount, OrderBy, Filter, Partition).Stop(Stop)).Out()!;
     }
 }

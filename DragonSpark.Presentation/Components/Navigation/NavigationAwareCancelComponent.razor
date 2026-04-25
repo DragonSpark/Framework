@@ -12,7 +12,7 @@
     CancellationTokenSource          _combined = null!;
 
     [Parameter]
-    public required RenderFragment ChildContent { get; set; }
+    public required RenderFragment? ChildContent { get; set; }
 
     protected override void OnInitialized()
     {

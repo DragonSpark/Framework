@@ -10,28 +10,28 @@
 @implements Model.Operations.Results.IResulting<string>
 
 @inject ProtectedSessionStorage Session
-@*ISSUE: ReSharper Warnings*@
+
 @if(_state is null)
 {
-    @LoadingTemplate
+	@LoadingTemplate
 }
 else
 {
 	<SfGrid TValue="T"
-		    @ref="@_subject"
-            ID="@Id"
-            AllowSelection="@AllowSelection"
+			@ref="@_subject"
+			ID="@Id"
+			AllowSelection="@AllowSelection"
 			AllowFiltering="@AllowFiltering"
 			AllowExcelExport="@AllowExport"
 			AllowPaging="@AllowPaging"
 			AllowSorting="@AllowSorting"
 			ClipMode="@ClipMode.EllipsisWithTooltip"
-		    Toolbar="@((Matches ? DesktopToolbar : MobileToolbar)!)"
+			Toolbar="@((Matches ? DesktopToolbar : MobileToolbar)!)"
 			EnableAdaptiveUI="@(!Matches)"
 			RowRenderingMode="@(Matches ? RowDirection.Horizontal : RowDirection.Vertical)"
 			DataSource="@(DataSource!)"
-            class="@Class"
-            @attributes="@AdditionalAttributes">
+			class="@Class"
+			@attributes="@AdditionalAttributes">
 		<GridPageSettings PageSize="@PageSize" />
 		<GridFilterSettings Type="@FilterType" />
 		<GridColumns ChildContent="@Columns" />
@@ -41,95 +41,95 @@ else
 		}
 	</SfGrid>
 	<DragonSpark.Presentation.Components.Client.ClientValueComponent T="string" Enabled="@Enabled"
-	    Source="@this"
+		Source="@this"
 		Store="@_store"
 		Initialized="@OnClientInitialized"
-	    />
+		/>
 }
 
 <MediaQuery Media="@Breakpoint" @bind-Matches="@Matches" />
 
 @code {
-    SfGrid<T>?              _subject;
-    IClientVariable<string> _store = null!;
-    bool?                   _state;
+	SfGrid<T>?              _subject;
+	IClientVariable<string> _store = null!;
+	bool?                   _state;
 
-    protected override void OnInitialized()
-    {
-        _store = new GridStateVariable(Id, Session);
-        base.OnInitialized();
-    }
+	protected override void OnInitialized()
+	{
+		_store = new GridStateVariable(Id, Session);
+		base.OnInitialized();
+	}
 
-    [Parameter]
-    public string Id { get; set; } = string.Empty;
+	[Parameter]
+	public string Id { get; set; } = string.Empty;
 
-    [Parameter]
-    public FilterType FilterType { get; set; } = FilterType.Excel;
+	[Parameter]
+	public FilterType FilterType { get; set; } = FilterType.Excel;
 
-    [Parameter]
-    public bool AllowSelection { get; set; }
+	[Parameter]
+	public bool AllowSelection { get; set; }
 
-    [Parameter]
-    public RenderFragment Columns { get; set; } = null!;
+	[Parameter]
+	public RenderFragment Columns { get; set; } = null!;
 
-    [Parameter]
-    public RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
+	[Parameter]
+	public RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
 
-    [Parameter]
-    public RenderFragment EmptyElementsTemplate { get; set; } = DefaultEmptySequenceTemplate.Default;
+	[Parameter]
+	public RenderFragment EmptyElementsTemplate { get; set; } = DefaultEmptySequenceTemplate.Default;
 
-    [Parameter]
-    public RenderFragment? ChildContent { get; set; }
+	[Parameter]
+	public RenderFragment? ChildContent { get; set; }
 
-    [Parameter]
-    public IEnumerable<T>? DataSource { get; set; }
+	[Parameter]
+	public IEnumerable<T>? DataSource { get; set; }
 
-    [Parameter]
-    public bool AllowExport { get; set; }
+	[Parameter]
+	public bool AllowExport { get; set; }
 
-    [Parameter]
-    public bool AllowPaging { get; set; } = true;
+	[Parameter]
+	public bool AllowPaging { get; set; } = true;
 
-    [Parameter]
-    public bool AllowFiltering { get; set; } = true;
+	[Parameter]
+	public bool AllowFiltering { get; set; } = true;
 
-    [Parameter]
-    public bool AllowSorting { get; set; } = true;
+	[Parameter]
+	public bool AllowSorting { get; set; } = true;
 
-    [Parameter]
-    public ushort PageSize { get; set; } = 10;
+	[Parameter]
+	public ushort PageSize { get; set; } = 10;
 
-    [Parameter]
-    public string Breakpoint { get; set; } = Breakpoints.SmallUp;
+	[Parameter]
+	public string Breakpoint { get; set; } = Breakpoints.SmallUp;
 
-    [Parameter]
-    public string MinimalClass { get; set; } = "dragonspark-minimal";
+	[Parameter]
+	public string MinimalClass { get; set; } = "dragonspark-minimal";
 
-    [Parameter]
-    public string CssClass { get; set; } = string.Empty;
+	[Parameter]
+	public string CssClass { get; set; } = string.Empty;
 
-    [Parameter]
-    public ICollection<string>? DesktopToolbar { get; set; }
+	[Parameter]
+	public ICollection<string>? DesktopToolbar { get; set; }
 
-    [Parameter]
-    public ICollection<string>? MobileToolbar { get; set; } = DefaultToolbar.Default;
+	[Parameter]
+	public ICollection<string>? MobileToolbar { get; set; } = DefaultToolbar.Default;
 
-    [Parameter]
-    public bool Enabled { get; set; } = true;
+	[Parameter]
+	public bool Enabled { get; set; } = true;
 
-    [Parameter(CaptureUnmatchedValues = true)]
-    public Dictionary<string, object> AdditionalAttributes { get; set; } = null!;
+	[Parameter(CaptureUnmatchedValues = true)]
+	public required Dictionary<string, object?> AdditionalAttributes { get; set; }
 
-    public bool IsEmpty() => !_subject?.CurrentViewData.Any() ?? true;
+	public bool IsEmpty() => !_subject?.CurrentViewData?.Any() ?? true;
 
-    public Task Refresh() => _subject?.Refresh() ?? Task.CompletedTask;
+	public Task Refresh() => _subject?.Refresh() ?? Task.CompletedTask;
 
-    public Task Export() => _subject?.ExportToExcelAsync(ExportProperties.Default) ?? Task.CompletedTask;
+	public Task Export() => _subject?.ExportToExcelAsync(ExportProperties.Default) ?? Task.CompletedTask;
 
-    bool Matches
+	bool Matches
 	{
 		get => _state.GetValueOrDefault();
-        set => _state = value;
+		set => _state = value;
 	}
 
 	string Class
@@ -143,5 +143,5 @@ else
 
 	Task OnClientInitialized(string parameter) => _subject?.SetPersistDataAsync(parameter) ?? Task.CompletedTask;
 
-    public ValueTask<string> Get() => _subject is not null ? _subject.GetPersistDataAsync().ToOperation() : ValueTask.FromResult(string.Empty);
+	public ValueTask<string> Get() => _subject is not null ? _subject.GetPersistDataAsync().ToOperation() : ValueTask.FromResult(string.Empty);
 }
