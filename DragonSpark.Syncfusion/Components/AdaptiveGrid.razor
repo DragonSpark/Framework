@@ -120,7 +120,7 @@ else
     [Parameter(CaptureUnmatchedValues = true)]
     public Dictionary<string, object> AdditionalAttributes { get; set; } = null!;
 
-    public bool IsEmpty() => !_subject?.CurrentViewData.Any() ?? true;
+    public bool IsEmpty() => !_subject?.CurrentViewData?.Any() ?? true;
 
     public Task Refresh() => _subject?.Refresh() ?? Task.CompletedTask;
 

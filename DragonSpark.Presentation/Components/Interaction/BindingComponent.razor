@@ -8,8 +8,8 @@
 
 @code {
     readonly Switch  _requested = new(), _rendered = new();
-    string?          _content;
-    Binding<string?> _binding = null!;
+    string           _content   = string.Empty;
+    Binding<string> _binding   = null!;
 
     [Parameter]
     public ISelect<T, string> Formatter { get; set; } = null!;
@@ -27,16 +27,16 @@
     public IEqualityComparer<string?> Comparer { get; set; } = StringComparer.CurrentCulture;
 
     [Parameter]
-    public RenderFragment<Binding<string?>> ChildContent { get; set; } = null!;
+    public RenderFragment<Binding<string>> ChildContent { get; set; } = null!;
 
     protected override void OnInitialized()
     {
-        _content = Value is not null ? Formatter.Get(Value) : null;
-        _binding = new Binding<string?>(_content, RequestUpdate, Comparer);
+        _content = Value is not null ? Formatter.Get(Value) : string.Empty;
+        _binding = new Binding<string>(_content, RequestUpdate, Comparer);
         base.OnInitialized();
     }
 
-    void RequestUpdate(string? parameter)
+    void RequestUpdate(string parameter)
     {
         _content = parameter;
         _requested.Up();

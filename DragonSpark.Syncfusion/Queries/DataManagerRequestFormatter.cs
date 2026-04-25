@@ -17,7 +17,8 @@ public sealed class DataManagerRequestFormatter : IFormatter<DataManagerRequest>
 	readonly Func<Syncfusion.Blazor.Data.WhereFilter, string> _where;
 	readonly IEnumerable<string>                              _empty;
 
-	public DataManagerRequestFormatter(Func<Syncfusion.Blazor.Data.WhereFilter, string> where, IEnumerable<string> empty)
+	public DataManagerRequestFormatter(Func<Syncfusion.Blazor.Data.WhereFilter, string> where,
+	                                   IEnumerable<string> empty)
 	{
 		_where = where;
 		_empty = empty;
@@ -30,9 +31,8 @@ public sealed class DataManagerRequestFormatter : IFormatter<DataManagerRequest>
 		var where  = string.Join(',', parameter.Where.Account()?.Select(_where) ?? _empty);
 		var search =
 			string.Join(',',
-			            parameter.Search.Account()
-			                     ?
-			                     .Select(x => $"{string.Join(',', x.Fields)} {x.Key} {x.Operator} {x.IgnoreCase}")
+			            parameter.Search
+			                     ?.Select(x => $"{string.Join(',', x.Fields.Verify())} {x.Key} {x.Operator} {x.IgnoreCase}")
 			            ?? _empty);
 
 		var result = $"{select}_{where}_{search}_{sorted}_{parameter.Take}_{parameter.Skip}";
