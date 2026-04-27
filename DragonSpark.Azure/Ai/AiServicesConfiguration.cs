@@ -2,7 +2,7 @@
 
 public sealed class AiServicesConfiguration
 {
-	public string Address { get; set; } = null!;
-	public string Key { get; set; } = null!;
-	public string ImageModel { get; set; } = "dall-e-3";
+	public required string Address { get; set; }
+	public required string Key { get; set; }
+	public string ImageModel { get; set; } = DefaultImageModel.Default;
 }
