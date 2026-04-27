@@ -6,7 +6,7 @@ using System;
 using System.Collections.Immutable;
 using System.Linq.Expressions;
 
-namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
+namespace DragonSpark.Application.AspNet.Entities.Migration.Identity;
 
 sealed class IdentityPredicate<TFrom, TTo> : Select<DbContext, Expression<Func<TFrom, bool>>>
 	where TFrom : class where TTo : class

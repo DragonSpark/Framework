@@ -1,4 +1,5 @@
-﻿using DragonSpark.Compose;
+﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators;
+using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System;
@@ -7,7 +8,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
+namespace DragonSpark.Application.AspNet.Entities.Migration.Identity;
 
 sealed class IdentityPredicateBody<T> : ISelect<ImmutableHashSet<object>, Expression<Func<T, bool>>>
 {

@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Model.Sequences;
 using System;
 
-namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
+namespace DragonSpark.Application.AspNet.Entities.Migration.Identity;
 
 sealed class IdentityTypes : Instances<Type>
 {

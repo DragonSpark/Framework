@@ -1,4 +1,5 @@
-﻿using DragonSpark.Compose;
+﻿using DragonSpark.Application.AspNet.Entities.Migration.Identity;
+using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;

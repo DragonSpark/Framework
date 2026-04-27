@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 
-namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
+namespace DragonSpark.Application.AspNet.Entities.Migration.Identity;
 
 sealed class IsIdentityProperty : ICondition<IProperty>
 {

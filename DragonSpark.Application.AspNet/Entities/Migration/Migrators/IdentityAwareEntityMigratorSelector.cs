@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Selection.Conditions;
+﻿using DragonSpark.Application.AspNet.Entities.Migration.Identity;
+using DragonSpark.Model.Selection.Conditions;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Linq;
 
-namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
+namespace DragonSpark.Application.AspNet.Entities.Migration.Identity;
 
 sealed class IsIdentityEntity : ICondition<IEntityType>
 {

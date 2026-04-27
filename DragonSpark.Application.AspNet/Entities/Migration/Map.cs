@@ -1,4 +1,5 @@
-﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators;
+﻿using DragonSpark.Application.AspNet.Entities.Migration.Identity;
+using DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
