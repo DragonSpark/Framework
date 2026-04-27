@@ -56,10 +56,7 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Include(x => x.Dependencies)
 		         .Scoped()
 		         //
-		         .Then.Start<Radzen.DialogService>()
-		         .And<NotificationService>()
-		         .And<TooltipService>()
-		         .And<ScrollToFirstValidationMessage>()
+		         .Then.Start<ScrollToFirstValidationMessage>()
 		         .And<ResourceExistsValidation>()
 		         .Scoped()
 		         //
@@ -144,6 +141,6 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Scoped()
 		         //
 		         .Then.AddFluentUIComponents()
-			;
+		         .AddRadzenComponents();
 	}
 }
