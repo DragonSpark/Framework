@@ -45,6 +45,19 @@ public sealed class MapTests
 			var changes = await destination.SaveChangesAsync();
 			changes.Should().Be(3);
 		}
+		
+		{
+			await using var source      = sources.Get();
+			await using var destination = destinations.Get();
+
+			foreach (var from in source.Basic)
+			{
+				await subject.Off(new(MapInput.New<To>(source.Entry(from), destination), CancellationToken.None));
+			}
+
+			var changes = await destination.SaveChangesAsync();
+			changes.Should().Be(3);
+		}
 
 		{
 			await using var source      = sources.Get();

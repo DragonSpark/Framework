@@ -19,7 +19,6 @@ sealed class FlattenAwareEntityMigrator<TFrom, TTo> : IEntityMigrator where TFro
 
 	public EntityTypeMapping Get() => _previous.Get();
 
-	public void Execute(EntityPostMigrationInput parameter) {}
 
 	public async ValueTask Get(Stop<EntityPreMigrationInput> parameter)
 	{

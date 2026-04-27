@@ -40,6 +40,8 @@ sealed class Update<TFrom, TTo> : IEntities<TFrom, TTo>
 								.Select(p => p.Name)
 								.ToArray(ArrayPool<string>.Shared);
 
+		
+		
 		// ReSharper disable AccessToDisposedClosure
 		var projected = from.Select(x => new
 		{

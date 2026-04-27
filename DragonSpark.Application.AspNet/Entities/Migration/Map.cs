@@ -2,7 +2,9 @@
 using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Selection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -13,21 +15,26 @@ public sealed class Map : IMap
 {
 	public static Map Default { get; } = new();
 
-	Map() : this(CopyValues.Default, MapOwned.Default) {}
+	Map() : this(CopyValues.Default, MapOwned.Default, EntityEntryState.Default) {}
 
 	readonly ICommand<MapInput>                _copy;
 	readonly ICommand<MapNavigationEntryInput> _owned;
+	readonly ISelect<EntityEntry, EntityState> _state;
 
-	public Map(ICommand<MapInput> copy, ICommand<MapNavigationEntryInput> owned)
+	public Map(ICommand<MapInput> copy, ICommand<MapNavigationEntryInput> owned,
+	           ISelect<EntityEntry, EntityState> state)
 	{
 		_copy  = copy;
 		_owned = owned;
+		_state = state;
 	}
 
 	public ValueTask Get(Stop<MapInput> parameter)
 	{
 		var ((from, to), _) = parameter;
-
+		
+		to.Context.Attach(to.Entity);
+		
 		_copy.Execute(parameter);
 
 		foreach (var navigation in from.Metadata.GetNavigations().Where(x => x.TargetEntityType.IsOwned()))
@@ -35,9 +42,9 @@ public sealed class Map : IMap
 			_owned.Execute(new(from.Context.Entry(from.Entity).Navigation(navigation.Name),
 			                   to.Context.Entry(to.Entity).Navigation(navigation.Name)));
 		}
-
-		to.Context.Attach(to.Entity);
-		to.State = EntityState.Modified;
+		
+		to.State = _state.Get(to);
+		
 		return ValueTask.CompletedTask;
 	}
 }
