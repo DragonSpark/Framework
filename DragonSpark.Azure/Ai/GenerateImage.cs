@@ -1,12 +1,12 @@
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
-using DragonSpark.Model.Operations.Selection;
+using DragonSpark.Model.Operations.Selection.Stop;
 using OpenAI.Images;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Ai;
 
-public sealed class GenerateImage : ISelecting<Stop<GenerateImageInput>, GeneratedImage>
+public sealed class GenerateImage : IStopAware<GenerateImageInput, GeneratedImage>
 {
 	readonly ImageClient _client;
 
