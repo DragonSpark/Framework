@@ -14,7 +14,7 @@ sealed class TwitterIdentity : ITwitterIdentity
 	readonly HashSet<string> _fields;
 	readonly HashSet<string> _expansions;
 
-	public TwitterIdentity(TwitterClient client) : this(client.UsersV2, new() { UserResponseFields.User.Id }, new()) {}
+	public TwitterIdentity(TwitterClient client) : this(client.UsersV2, [UserResponseFields.User.Id], new()) {}
 
 	public TwitterIdentity(IUsersV2Client client, HashSet<string> fields, HashSet<string> expansions)
 	{

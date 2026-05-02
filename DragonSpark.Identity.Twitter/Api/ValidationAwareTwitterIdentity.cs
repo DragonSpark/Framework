@@ -19,5 +19,5 @@ sealed class ValidationAwareTwitterIdentity : ITwitterIdentity
 	}
 
 	public ValueTask<string?> Get(Stop<string> parameter)
-		=> _validate.Get(parameter) ? _previous.Get(parameter) : default(string).ToOperation();
+		=> _validate.Get(parameter.Subject) ? _previous.Get(parameter) : default(string).ToOperation();
 }
