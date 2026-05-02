@@ -26,6 +26,9 @@ partial class QueryContentContainer<T> : IPageContainer<T>
 	[Parameter]
 	public IPagination<T>? Pagination { get; set; }
 
+	[Parameter]
+	public required bool EnableClientCover { get; set; } = true;
+
 	public override async Task SetParametersAsync(ParameterView parameters)
 	{
 		var changed = parameters.DidParameterChange(nameof(Content), Content) ||
