@@ -115,6 +115,11 @@ partial class Extensions
 
 	public static string Smart<T>(this IResult<string> @this, T parameter) where T : notnull
 		=> SmartFormat.Smart.Format(@this.Get(), parameter);
+	public static string FormatWith<T>(this string @this, T? first) => string.Format(@this, first);
+
+	public static string FormatWith<T1, T2>(this string @this, T1? first, T2? second) => string.Format(@this, first, second);
+
+	public static string FormatWith(this string @this, params object?[] args) => string.Format(@this, args);
 
 	/**/
 
@@ -186,4 +191,5 @@ partial class Extensions
 	public static DragonSpark.Compose.Model.Operations.OperationResultSelector<TIn, TOut> Using<TIn, TOut>(
 		this StoreContext<TIn, TOut> @this, MemoryStoreProfile<TIn> profile)
 		=> @this.In(profile.Memory).For(profile.For).Using(profile.Key);
+	
 }
