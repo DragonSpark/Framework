@@ -28,7 +28,10 @@ public class RegisteredAwareEntityMigratorSelector : IEntityMigratorSelector
 	}
 
 	public IEntityMigrator? Get(EntityMigratorSelectorInput parameter)
-		=> _registered.TryGet(parameter.Result.From.ClrType, out var registered)
-			   ? registered
-			   : _previous.Get(parameter);
+	{
+		var tryGet = _registered.TryGet(parameter.Result.From.ClrType, out var registered);
+		return tryGet
+			       ? registered
+			       : _previous.Get(parameter);
+	}
 }

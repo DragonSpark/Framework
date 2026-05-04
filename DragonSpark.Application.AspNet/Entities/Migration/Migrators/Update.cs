@@ -13,7 +13,7 @@ namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
 sealed class Update<TFrom, TTo> : IEntities<TFrom, TTo>
 	where TFrom : class
-	where TTo   : class
+	where TTo : class
 {
 	readonly IMap      _map;
 	readonly Func<TTo> _activate;
@@ -33,21 +33,20 @@ sealed class Update<TFrom, TTo> : IEntities<TFrom, TTo>
 		var ((_, _, source, destination, from, _), stop) = parameter;
 
 		using var names = source.Model.FindEntityType(_from)
-								.Verify()
-								.FindPrimaryKey()
-								.Verify()
-								.Properties.AsValueEnumerable()
-								.Select(p => p.Name)
-								.ToArray(ArrayPool<string>.Shared);
+		                        .Verify()
+		                        .FindPrimaryKey()
+		                        .Verify()
+		                        .Properties.AsValueEnumerable()
+		                        .Select(p => p.Name)
+		                        .ToArray(ArrayPool<string>.Shared);
 
-		
-		
 		// ReSharper disable AccessToDisposedClosure
 		var projected = from.Select(x => new
-		{
-			Source = x,
-			Keys   = names.Select(y => EF.Property<object>(x, y))
-		});
+		                    {
+			                    Source = x,
+			                    Keys   = names.Select(y => EF.Property<object>(x, y))
+		                    })
+		                    .AsAsyncEnumerable();
 
 		return new Entities<TTo>(EnumerateAsync());
 
@@ -55,7 +54,7 @@ sealed class Update<TFrom, TTo> : IEntities<TFrom, TTo>
 		{
 			var memory = names.Memory;
 
-			await foreach (var row in projected.AsAsyncEnumerable().WithCancellation(stop))
+			await foreach (var row in projected.WithCancellation(stop))
 			{
 				using var keys   = row.Keys.AsValueEnumerable().ToArray(ArrayPool<object>.Shared);
 				var       item   = _activate();
@@ -80,15 +79,28 @@ sealed class Update<T> : ISave<T> where T : class
 {
 	public static Update<T> Default { get; } = new();
 
-	Update() {}
+	Update() : this(DefaultChunkFactor.Default) {}
+
+	readonly byte _factor;
+
+	public Update(byte factor) => _factor = factor;
 
 	public async ValueTask<uint> Get(Stop<SaveInput<T>> parameter)
 	{
 		var ((logger, size, destination, entities, total), stop) = parameter;
-		var configuration = new BulkConfig { BatchSize = size, CalculateStats = true, NotifyAfter = size };
-		await destination.BulkUpdateAsync(entities, configuration, new Progress<T>(logger, total).Execute,
-										  cancellationToken: stop)
-						 .Off();
+		var configuration = new BulkConfig
+		{
+			BatchSize    = size, CalculateStats = true, NotifyAfter = size, EnableShadowProperties = true,
+			IncludeGraph = true,
+		};
+		await foreach (var chunk in entities.AsAsyncEnumerable().Chunk(size * _factor).WithCancellation(stop))
+		{
+			using var page = chunk.AsValueEnumerable().ToArray(ArrayPool<T>.Shared);
+			await destination.BulkUpdateAsync(page, configuration, new Progress<T>(logger, total).Execute,
+			                                  cancellationToken: stop)
+			                 .Off();
+		}
+
 		var result = configuration.StatsInfo.Verify().StatsNumberUpdated.Grade();
 		return result;
 	}

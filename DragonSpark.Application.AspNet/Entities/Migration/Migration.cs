@@ -24,12 +24,17 @@ public class Migration<T> : Migration
 public class Migration : IMigration
 {
 	readonly ILogger               _logger;
+	readonly ushort                _batchSize;
 	readonly Array<IMigrationStep> _steps;
 
 	protected Migration(ILogger logger, params IMigrationStep[] steps)
+		: this(logger, DefaultBatchSize.Default, steps) {}
+
+	protected Migration(ILogger logger, ushort batchSize, params IMigrationStep[] steps)
 	{
-		_logger = logger;
-		_steps  = steps;
+		_logger    = logger;
+		_batchSize = batchSize;
+		_steps     = steps;
 	}
 
 	public async ValueTask Get(Stop<ushort> parameter)
@@ -41,5 +46,5 @@ public class Migration : IMigration
 		}
 	}
 
-	public ValueTask Get(CancellationToken parameter) => Get(new(DefaultBatchSize.Default, parameter));
+	public ValueTask Get(CancellationToken parameter) => Get(new(_batchSize, parameter));
 }

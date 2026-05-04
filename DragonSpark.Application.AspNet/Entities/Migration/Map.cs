@@ -6,7 +6,9 @@ using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using NetFabric.Hyperlinq;
 using System;
+using System.Buffers;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -33,19 +35,37 @@ public sealed class Map : IMap
 	public ValueTask Get(Stop<MapInput> parameter)
 	{
 		var ((from, to), _) = parameter;
-		
-		to.Context.Attach(to.Entity);
-		
+		/*
+		var stop = to.Entity.GetType().Name == "MarketplaceProfile";
+		if (stop)
+		{
+			Debugger.Break();
+			// TODO V2 : DATA
+		}*/
 		_copy.Execute(parameter);
+		to.Context.Attach(to.Entity);
 
+		using var navigations = to.Context.Entry(to.Entity)
+		                          .Navigations.AsValueEnumerable()
+		                          .ToArray(ArrayPool<NavigationEntry>.Shared);
 		foreach (var navigation in from.Metadata.GetNavigations().Where(x => x.TargetEntityType.IsOwned()))
 		{
-			_owned.Execute(new(from.Context.Entry(from.Entity).Navigation(navigation.Name),
-			                   to.Context.Entry(to.Entity).Navigation(navigation.Name)));
+			try
+			{
+				var entry = navigations.FirstOrDefault(x => x.Metadata.Name == navigation.Name);
+
+				if (entry is not null)
+				{
+					_owned.Execute(new(from.Context.Entry(from.Entity).Navigation(navigation.Name), entry));
+				}
+			}
+			catch (Exception e)
+			{
+				throw;
+			}
 		}
 		
 		to.State = _state.Get(to);
-		
 		return ValueTask.CompletedTask;
 	}
 }

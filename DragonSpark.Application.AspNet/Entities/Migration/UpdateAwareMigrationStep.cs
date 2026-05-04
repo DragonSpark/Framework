@@ -2,7 +2,6 @@
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Sequences;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration;
@@ -11,9 +10,6 @@ public sealed class UpdateAwareMigrationStep : IMigrationBody
 {
 	readonly IMigrationStep                    _previous;
 	readonly Array<IUpdateAwareEntityMigrator> _migrators;
-
-	public UpdateAwareMigrationStep(IMigrationStep previous, Array<IEntityMigrator> migrators)
-		: this(previous, migrators.Open().OfType<IUpdateAwareEntityMigrator>().ToArray()) {}
 
 	public UpdateAwareMigrationStep(IMigrationStep previous, Array<IUpdateAwareEntityMigrator> migrators)
 	{

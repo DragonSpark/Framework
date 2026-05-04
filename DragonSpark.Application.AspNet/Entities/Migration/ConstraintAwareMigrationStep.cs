@@ -27,8 +27,9 @@ public sealed class ConstraintAwareMigrationStep : IMigrationStep
 		}
 		finally
 		{
-			await _facade.ExecuteSqlRawAsync("EXEC sp_msforeachtable 'ALTER TABLE ? WITH CHECK CHECK CONSTRAINT ALL';")
-			             .Off();
+			// TODO: V2 UNDO
+			/*await _facade.ExecuteSqlRawAsync("EXEC sp_msforeachtable 'ALTER TABLE ? WITH CHECK CHECK CONSTRAINT ALL';")
+			             .Off();*/
 		}
 	}
 }

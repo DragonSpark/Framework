@@ -18,6 +18,7 @@ sealed class Processors<TFrom, TTo> : IProcessors<TFrom> where TFrom : class whe
 	{
 		var (_, _, type, map) = parameter;
 		var identity = _identity.Get(type);
+		var stop     = typeof(TFrom).Name == "ProductDefinition";
 		IEntityProcessor<TFrom> processor = identity
 			                                    ? new IdentityAwareEntityProcessor<TFrom, TTo>(map, type)
 			                                    : new UpsertEntities<TFrom, TTo>(map);

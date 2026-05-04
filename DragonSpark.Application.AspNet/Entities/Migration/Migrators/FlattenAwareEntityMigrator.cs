@@ -1,6 +1,6 @@
-﻿using DragonSpark.Application.AspNet.Entities.Migration.Identity;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Results;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
@@ -9,25 +9,28 @@ namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 sealed class FlattenAwareEntityMigrator<TFrom, TTo> : IEntityMigrator where TFrom : class where TTo : class
 {
 	readonly IEntityMigrator _previous;
-	readonly DbContext       _source, _destination;
+	readonly DbContext       _destination;
+	readonly Result<bool>    _same;
 
 	public FlattenAwareEntityMigrator(IEntityMigrator previous, DbContext source, DbContext destination)
+		: this(previous, destination, new SameKeys<TFrom, TTo>(source, destination)) {}
+
+	public FlattenAwareEntityMigrator(IEntityMigrator previous, DbContext destination, Result<bool> same)
 	{
 		_previous    = previous;
-		_source      = source;
 		_destination = destination;
+		_same        = same;
 	}
 
 	public EntityTypeMapping Get() => _previous.Get();
 
-
 	public async ValueTask Get(Stop<EntityPreMigrationInput> parameter)
 	{
 		var (subject, stop) = parameter;
-		var logger       = subject.Logger;
-		var to           = _destination.Set<TTo>();
-		var exists       = KnownKeys<TFrom>.Default.Get(_source).IsSubsetOf(KnownKeys<TTo>.Default.Get(_destination));
-		if (exists)
+		var logger = subject.Logger;
+		var to     = _destination.Set<TTo>();
+		var same   = _same.Get();
+		if (same)
 		{
 			logger.LogInformation("Flatten {Set}: All source keys already present in destination (idempotent, no missing data)",
 			                      to.GetType());
@@ -36,11 +39,11 @@ sealed class FlattenAwareEntityMigrator<TFrom, TTo> : IEntityMigrator where TFro
 		{
 			var cleared = await to.ExecuteDeleteAsync(stop).Off();
 			logger.LogInformation("Flatten {Set}: Cleared of {Count} entries", to.GetType(), cleared);
-			await _previous.Off(parameter);
 		}
 	}
 
 	public ValueTask Get(Stop<EntityPostMigrationInput> parameter) => ValueTask.CompletedTask;
 
-	public ValueTask Get(Stop<EntityMigratorInput> parameter) => ValueTask.CompletedTask;
+	public ValueTask Get(Stop<EntityMigratorInput> parameter)
+		=> _same.Get() ? ValueTask.CompletedTask : _previous.Get(parameter);
 }

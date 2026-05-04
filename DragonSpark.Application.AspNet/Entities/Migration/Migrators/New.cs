@@ -59,7 +59,14 @@ public sealed class New : IMapped
 	{
 		var ((source, destination, from, to), stop) = parameter;
 		var result = _new(to);
-		await _map.Off(new(new(source.Entry(from), destination.Entry(result)), stop));
+		try
+		{
+			await _map.Off(new(new(source.Entry(from), destination.Entry(result)), stop));
+		}
+		catch (Exception e)
+		{
+			throw;
+		}
 		return result;
 	}
 }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
@@ -13,7 +14,7 @@ sealed class Entities<T> : IQueryable<T>, IAsyncEnumerable<T>
 
 	public Entities(IAsyncEnumerable<T> source)
 	{
-		_source    = source;
+		_source    = source ?? throw new ArgumentNullException(nameof(source));
 		Provider   = new QueryProvider<T>(this);
 		Expression = Expression.Constant(this);
 	}
@@ -21,7 +22,7 @@ sealed class Entities<T> : IQueryable<T>, IAsyncEnumerable<T>
 	public IAsyncEnumerator<T> GetAsyncEnumerator(CancellationToken token = default)
 		=> _source.GetAsyncEnumerator(token);
 
-	public IEnumerator<T> GetEnumerator() => throw new NotSupportedException("Use async enumeration.");
+	public IEnumerator<T> GetEnumerator() => _source.ToBlockingEnumerable().GetEnumerator();
 
 	IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 

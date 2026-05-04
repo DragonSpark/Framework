@@ -23,5 +23,6 @@ sealed class IsIdentityProperty : ICondition<IProperty>
 
 	public bool Get(IProperty parameter)
 		=> parameter.GetValueGenerationStrategy() == SqlServerValueGenerationStrategy.IdentityColumn ||
-		   (_types.Open().Contains(parameter.ClrType) && _names.Open().Contains(parameter.Name));
+		   (!parameter.IsForeignKey() && parameter.IsPrimaryKey() && _types.Open().Contains(parameter.ClrType) &&
+		    _names.Open().Contains(parameter.Name));
 }

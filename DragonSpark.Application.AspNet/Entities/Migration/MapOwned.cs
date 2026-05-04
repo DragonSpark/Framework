@@ -1,4 +1,5 @@
-﻿using DragonSpark.Compose;
+﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators;
+using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using System.Linq;
 
@@ -8,7 +9,11 @@ sealed class MapOwned : ICommand<MapNavigationEntryInput>
 {
 	public static MapOwned Default { get; } = new();
 
-	MapOwned() {}
+	MapOwned() : this(CopyValues.Default) {}
+
+	readonly ICommand<MapInput> _copy;
+
+	public MapOwned(ICommand<MapInput> copy) => _copy = copy;
 
 	public void Execute(MapNavigationEntryInput parameter)
 	{
@@ -20,7 +25,8 @@ sealed class MapOwned : ICommand<MapNavigationEntryInput>
 
 			var source      = from.EntityEntry.Context.Entry(from.CurrentValue);
 			var destination = to.EntityEntry.Context.Entry(to.CurrentValue);
-			destination.CurrentValues.SetValues(source.Entity);
+
+			_copy.Execute(new(source, destination));
 
 			foreach (var nestedNav in source.Metadata.GetNavigations().Where(n => n.TargetEntityType.IsOwned()))
 			{
