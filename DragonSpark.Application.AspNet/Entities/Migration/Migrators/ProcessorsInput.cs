@@ -1,6 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
-public readonly record struct ProcessorsInput(DbContext Source, DbContext Destination, IEntityType From, IMap Map);
+public readonly record struct ProcessorsInput(IEntityType From, IMap Map);

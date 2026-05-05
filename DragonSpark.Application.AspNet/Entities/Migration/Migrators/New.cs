@@ -10,15 +10,15 @@ namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
 sealed class New<TFrom, TTo> : IEntities<TFrom, TTo> where TFrom : class
 {
-	readonly IMapped _map;
-	readonly Type    _to;
+	readonly IInstance _instance;
+	readonly Type      _to;
 
 	public New(IMap map) : this(new New(map), A.Type<TTo>()) {}
 
-	public New(IMapped map, Type to)
+	public New(IInstance instance, Type to)
 	{
-		_map = map;
-		_to  = to;
+		_instance = instance;
+		_to       = to;
 	}
 
 	public IQueryable<TTo> Get(Stop<ProcessChangesInput<TFrom>> parameter)
@@ -33,12 +33,13 @@ sealed class New<TFrom, TTo> : IEntities<TFrom, TTo> where TFrom : class
 		{
 			await foreach (var x in query.WithCancellation(stop))
 			{
-				yield return (TTo)await _map.Off(new(new(source, destination, x, _to), stop));
+				yield return (TTo)await _instance.Off(new(new(source, destination, x, _to), stop));
 			}
 		}
 	}
 }
-public sealed class New : IMapped
+
+public sealed class New : IInstance
 {
 	public static New Default { get; } = new();
 
@@ -67,6 +68,7 @@ public sealed class New : IMapped
 		{
 			throw;
 		}
+
 		return result;
 	}
 }

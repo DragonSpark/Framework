@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
-public interface IMapped : IStopAware<MappingInput, object>;
+public interface IInstance : IStopAware<MappingInput, object>;

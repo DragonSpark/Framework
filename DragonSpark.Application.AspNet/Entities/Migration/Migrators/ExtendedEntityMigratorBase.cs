@@ -11,9 +11,9 @@ public abstract class ExtendedEntityMigratorBase<TFrom, TTo> : IExtendedEntityMi
 
 	protected ExtendedEntityMigratorBase(DbContext source, DbContext destination, 
 	                                     Func<Stop<MapInput<TFrom, TTo>>, ValueTask> map)
-		: this(source, destination, new Map<TFrom,TTo>(map)) {}
+		: this(source, destination, new Map<TFrom,TTo>(map, EmptyMap.Default)) {}
 	protected ExtendedEntityMigratorBase(DbContext source, DbContext destination, Action<MapInput<TFrom, TTo>> map)
-		: this(source, destination, new Map<TFrom,TTo>(map)) {}
+		: this(source, destination, new Map<TFrom,TTo>(map, EmptyMap.Default)) {}
 
 	protected ExtendedEntityMigratorBase(DbContext source, DbContext destination, IMap secondary)
 		: this(new Contexts<TFrom>(source, destination), Map.Default, secondary) {}
@@ -23,7 +23,7 @@ public abstract class ExtendedEntityMigratorBase<TFrom, TTo> : IExtendedEntityMi
 
 	protected ExtendedEntityMigratorBase(Contexts<TFrom> contexts, IMap primary, IMap secondary)
 		: this(new EntityMigrator<TFrom, TTo>(contexts, primary), 
-		       new EntityMigrator<TFrom, TTo>(contexts, secondary)) {}
+		       new EntityMigrator<TFrom, TTo>(contexts, new UpdateEntityProcessor<TFrom,TTo>(secondary))) {}
 
 	protected ExtendedEntityMigratorBase(IEntityMigrator previous, IEntityMigrator update)
 		: this(new UpdateAwareEntityMigrator(previous, update)) {}

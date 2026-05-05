@@ -35,7 +35,6 @@ sealed class CopyValues : ICommand<MapInput>
 		}
 		catch (Exception e)
 		{
-			Console.WriteLine(e);
 			throw;
 		}
 	}

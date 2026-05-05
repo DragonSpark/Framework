@@ -3,6 +3,7 @@ using DragonSpark.Model.Operations;
 using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
 using NetFabric.Hyperlinq;
+using System;
 using System.Buffers;
 using System.Linq;
 using System.Threading.Tasks;
@@ -32,12 +33,22 @@ sealed class Upsert<T> : ISave<T> where T : class
 		{
 			using var page = chunk.AsValueEnumerable().ToArray(ArrayPool<T>.Shared);
 
-			var entries = destination.ChangeTracker.Entries();
-			foreach (var changed in entries.Where(x => !x.Metadata.IsOwned()).GroupBy(x => x.Entity.GetType()))
+			foreach (var changed in destination.ChangeTracker.Entries()
+			                                   .Where(x => !x.Metadata.IsOwned())
+			                                   .GroupBy(x => x.Entity.GetType()))
 			{
-				await destination.BulkInsertOrUpdateAsync(changed.Select(x => x.Entity), configuration, progress,
-				                                          cancellationToken: stop)
-				                 .Off();				
+				var enumerable = changed.Select(x => x.Entity).ToArray(); // TODO V2
+				try
+				{
+					configuration.PropertiesToExclude?.Clear();
+					await destination
+					      .BulkInsertOrUpdateAsync(enumerable, configuration, progress, cancellationToken: stop)
+					      .Off();
+				}
+				catch (Exception e)
+				{
+					throw;
+				}
 			}
 
 			destination.ChangeTracker.Clear();

@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using NetFabric.Hyperlinq;
 using System;
 using System.Buffers;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -35,13 +36,12 @@ public sealed class Map : IMap
 	public ValueTask Get(Stop<MapInput> parameter)
 	{
 		var ((from, to), _) = parameter;
-		/*
-		var stop = to.Entity.GetType().Name == "MarketplaceProfile";
+		var stop = to.Entity.GetType().Name == "License";
 		if (stop)
 		{
 			Debugger.Break();
 			// TODO V2 : DATA
-		}*/
+		}
 		_copy.Execute(parameter);
 		to.Context.Attach(to.Entity);
 
@@ -56,7 +56,7 @@ public sealed class Map : IMap
 
 				if (entry is not null)
 				{
-					_owned.Execute(new(from.Context.Entry(from.Entity).Navigation(navigation.Name), entry));
+					_owned.Execute(new(from.Navigation(navigation.Name), entry));
 				}
 			}
 			catch (Exception e)
@@ -64,7 +64,7 @@ public sealed class Map : IMap
 				throw;
 			}
 		}
-		
+
 		to.State = _state.Get(to);
 		return ValueTask.CompletedTask;
 	}
@@ -75,19 +75,24 @@ public sealed class Map<TFrom, TTo> : IMap
 	readonly Func<Stop<MapInput<TFrom, TTo>>, ValueTask> _map;
 	readonly IMap                                        _previous;
 
-	public Map(Action<TFrom, TTo> map)
+	public Map(Action<TFrom, TTo> mapping) : this(mapping, Map.Default) {}
+
+	public Map(Action<TFrom, TTo> mapping, IMap map)
 		: this(x =>
 		       {
-			       map(x.Subject.From.Entity, x.Subject.To.Entity);
+			       mapping(x.Subject.From.Entity, x.Subject.To.Entity);
 			       return ValueTask.CompletedTask;
-		       }) {}
+		       }, 
+		       map) {}
 
-	public Map(Action<MapInput<TFrom, TTo>> input)
+	public Map(Action<MapInput<TFrom, TTo>> input) : this(input, Map.Default) {}
+
+	public Map(Action<MapInput<TFrom, TTo>> input, IMap map)
 		: this(x =>
 		       {
 			       input(x.Subject);
 			       return ValueTask.CompletedTask;
-		       }) {}
+		       }, map) {}
 
 	public Map(Func<Stop<MapInput<TFrom, TTo>>, ValueTask> map) : this(map, Map.Default) {}
 
