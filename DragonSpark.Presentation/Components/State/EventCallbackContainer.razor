@@ -1,0 +1,23 @@
+@using DragonSpark.Compose
+@inherits InteractiveComponentBase
+@ChildContent(_subject)
+@code {
+    EventCallback _subject;
+
+    [Parameter, EditorRequired]
+    public required RenderFragment<EventCallback> ChildContent { get; set; }
+
+    [Parameter, EditorRequired]
+    public EventCallback Subject { get; set; }
+
+    [Parameter]
+    public required object Owner { get; set; }
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        var changed = parameters.DidParameterChange(nameof(Subject), Subject) || parameters.DidParameterChange(nameof(Owner), Owner);
+        await base.SetParametersAsync(parameters).Off();
+        _subject = changed ? Start.A.Callback(Subject).UpdateActivity(Receiver).Handle(Exceptions, Owner.GetType()) : _subject;
+    }
+
+}
