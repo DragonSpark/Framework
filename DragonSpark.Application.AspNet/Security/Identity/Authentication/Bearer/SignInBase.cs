@@ -18,7 +18,7 @@ public class SignInBase<T> : ISignIn<T> where T : class
 
     public async ValueTask<bool> Get(Stop<SignInInput<T>> parameter)
     {
-        var ((user, _, scheme), stop) = parameter;
+        var ((user, _, persistent, scheme), stop) = parameter;
         using var signin  = _signin.Get();
         var       subject = signin.Subject;
         subject.AuthenticationScheme = scheme;
@@ -26,7 +26,7 @@ public class SignInBase<T> : ISignIn<T> where T : class
         var result = await _validate.Off(new(new(signin, parameter), stop));
         if (result)
         {
-            await subject.SignInAsync(user, false).Off();
+            await subject.SignInAsync(user, persistent).Off();
         }
 
         return result;

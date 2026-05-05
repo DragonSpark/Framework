@@ -12,6 +12,9 @@ public class PasskeyCreationOptions<T> : IResulting<IResult> where T : IdentityU
     readonly ICurrentContext                   _context;
     readonly IComposePasskeyCreationOptions<T> _options;
 
+    protected PasskeyCreationOptions(IAuthentications<T> authentications, ICurrentContext context)
+        : this(authentications, context, ComposePasskeyCreationOptions<T>.Default) {}
+
     protected PasskeyCreationOptions(IAuthentications<T> authentications, ICurrentContext context,
                                      IComposePasskeyCreationOptions<T> options)
     {
