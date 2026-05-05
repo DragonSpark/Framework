@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Text;
-using Humanizer;
 
 namespace DragonSpark.Application.Navigation.Security;
 
