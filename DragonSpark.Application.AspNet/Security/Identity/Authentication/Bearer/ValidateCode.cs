@@ -22,7 +22,7 @@ sealed class ValidateCode<T> : IDepending<ValidateSignInInput<T>> where T : clas
 
     public ValueTask<bool> Get(Stop<ValidateSignInInput<T>> parameter)
     {
-        var (((_, users), (user, input)), _) = parameter;
+        var (((_, users), (user, input, _)), _) = parameter;
         return users.VerifyUserTokenAsync(user, _provider, _purpose, input).ToOperation();
     }
 }
