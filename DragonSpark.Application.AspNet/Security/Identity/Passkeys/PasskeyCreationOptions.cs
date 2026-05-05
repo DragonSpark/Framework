@@ -12,6 +12,9 @@ public class PasskeyCreationOptions<T> : IResulting<IResult> where T : IdentityU
     readonly ICurrentContext                   _context;
     readonly IComposePasskeyCreationOptions<T> _options;
 
+    protected PasskeyCreationOptions(IAuthentications<T> authentications, ICurrentContext context)
+        : this(authentications, context, ComposePasskeyCreationOptions<T>.Default) {}
+
     protected PasskeyCreationOptions(IAuthentications<T> authentications, ICurrentContext context,
                                      IComposePasskeyCreationOptions<T> options)
     {
@@ -29,6 +32,6 @@ public class PasskeyCreationOptions<T> : IResulting<IResult> where T : IdentityU
         var       user    = await users.GetUserAsync(context.User).Off();
         return user is not null
                    ? Results.Content(await _options.Off(new(signin, user)), "application/json")
-                   : Results.Unauthorized();
+                   : Results.NotFound($"Unable to load user with ID '{users.GetUserId(context.User)}'.");
     }
 }

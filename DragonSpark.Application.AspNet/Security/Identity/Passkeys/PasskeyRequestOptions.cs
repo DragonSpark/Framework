@@ -1,12 +1,11 @@
 using System.Threading.Tasks;
 using DragonSpark.Application.AspNet.Security.Identity.Authentication;
 using DragonSpark.Compose;
-using DragonSpark.Model.Operations.Selection;
 using Microsoft.AspNetCore.Http;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Passkeys;
 
-public class PasskeyRequestOptions<T> : ISelecting<string?, IResult> where T : class
+public class PasskeyRequestOptions<T> : IPasskeyRequestOptions where T : class
 {
     readonly IAuthentications<T> _authentications;
 
