@@ -1,10 +1,10 @@
-﻿using DragonSpark.Application.AspNet.Entities;
+using System;
+using DragonSpark.Application.AspNet.Entities;
 using DragonSpark.Application.AspNet.Entities.Transactions;
 using DragonSpark.Application.AspNet.Security.Identity;
 using DragonSpark.Composition;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System;
 using IdentityUser = DragonSpark.Application.AspNet.Security.Identity.IdentityUser;
 
 namespace DragonSpark.Application.AspNet.Compose.Entities;
@@ -27,8 +27,7 @@ public sealed class IdentityStorageType<T, TContext> where TContext : DbContext 
 		               .Append(AddIdentityComponents<T>.Default)
 		               .Append(Registrations<TContext>.Default)
 		               .Append(Registrations.Default)
-		               .Configure(x => x.ComposeUsing(AspNet.Entities.Queries.Runtime.Pagination.Compose
-		                                                    .Default)),
+		               .Configure(x => x.ComposeUsing(AspNet.Entities.Queries.Runtime.Pagination.Compose.Default)),
 		       _configure);
 
 	public IdentityStorageUsing<T, TContext> Is
