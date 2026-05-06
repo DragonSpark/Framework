@@ -1,4 +1,4 @@
-﻿using JetBrains.Annotations;
+using JetBrains.Annotations;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Claims.Policy;
 
@@ -6,9 +6,4 @@ namespace DragonSpark.Application.AspNet.Security.Identity.Claims.Policy;
 public class ClaimsPolicy : AddPolicyConfiguration
 {
 	protected ClaimsPolicy(string name, params string[] claims) : base(name, new RequireClaims(claims)) {}
-}
-
-public class UserNamesPolicy : AddPolicyConfiguration
-{
-	protected UserNamesPolicy(string name, params string[] names) : base(name, new RequireUserNames(names)) {}
 }
