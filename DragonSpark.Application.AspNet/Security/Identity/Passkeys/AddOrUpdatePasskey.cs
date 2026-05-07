@@ -30,7 +30,7 @@ public class AddOrUpdatePasskey<T> : ISelecting<JsonElement, IResult> where T : 
                 var attest = await subject.PerformPasskeyAttestationAsync(credential).Off();
                 if (attest.Succeeded)
                 {
-                    var user    = await users.GetUserAsync(_context.Get().User).Off();
+                    var user = await users.GetUserAsync(_context.Get().User).Off();
                     await users.AddOrUpdatePasskeyAsync(user.Verify(), attest.Passkey).Off();
                     return Results.Ok();
                 }

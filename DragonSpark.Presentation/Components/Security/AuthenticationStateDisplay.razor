@@ -1,4 +1,4 @@
-﻿@using DragonSpark.Compose
+@using DragonSpark.Compose
 @using DragonSpark.Application
 @using DragonSpark.Application.AspNet.Security.Identity
 @using DragonSpark.Application.AspNet.Security.Identity.Authentication
@@ -27,7 +27,8 @@
     protected override async Task OnInitializedAsync()
     {
         var current = await Operation.On();
-        if (!await Validation.Get(current.User).On())
+        var on     = await Validation.Get(current.User).On();
+        if (!on)
         {
             Set.Execute(AuthenticationState<T>.Default);
             SignOut.Execute();

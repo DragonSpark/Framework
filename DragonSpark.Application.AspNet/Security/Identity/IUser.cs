@@ -1,5 +1,5 @@
-﻿using DragonSpark.Model.Selection;
 using System.Security.Claims;
+using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Application.AspNet.Security.Identity;
 
