@@ -1,8 +1,14 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Stop;
 using DragonSpark.Model.Sequences.Memory;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.ValueGeneration;
+using System;
+using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -56,5 +62,70 @@ sealed class LoadMembers : IStopAware<LoadMembersInput>
 				}
 			}
 		}
+	}
+}
+
+public sealed class DisableConcurrency : ICommand<ModelBuilder>
+{
+	public static DisableConcurrency Default { get; } = new();
+
+	DisableConcurrency() {}
+	
+	public void Execute(ModelBuilder parameter)
+	{
+		foreach (var entity in parameter.Model.GetEntityTypes())
+		{
+			foreach (var property in entity.GetProperties())
+			{
+				if (property.IsConcurrencyToken)
+				{
+					property.IsConcurrencyToken = false;
+					property.ValueGenerated     = ValueGenerated.Never;
+				}
+			}
+		}
+	}
+}
+
+public sealed class DisableIdentities : ICommand<ModelBuilder>
+{
+	public static DisableIdentities Default { get; } = new();
+
+	DisableIdentities() {}
+	
+	public void Execute(ModelBuilder parameter)
+	{
+		foreach (var entityType in parameter.Model.GetEntityTypes())
+		{
+			var pk = entityType.FindPrimaryKey();
+			if (pk is not null)
+			{
+				foreach (var property in pk.Properties.Where(p => p.ClrType == typeof(int) &&
+				                                                  p.ValueGenerated == ValueGenerated.OnAdd))
+				{
+					property.ValueGenerated = ValueGenerated.Never;
+				}
+				
+				foreach (var property in pk.Properties.Where(p => p.ClrType == typeof(Guid)))
+				{
+					property.SetValueGeneratorFactory((_, _) => SmartGuidGenerator.Default);
+					property.ValueGenerated = ValueGenerated.Never;
+				}
+			}
+		}
+	}
+}
+sealed class SmartGuidGenerator : ValueGenerator<Guid>
+{
+	public static SmartGuidGenerator Default { get; } = new();
+
+	SmartGuidGenerator() {}
+	
+	public override bool GeneratesTemporaryValues => false;
+
+	public override Guid Next(EntityEntry entry)
+	{
+		var value = entry.Property("Id").CurrentValue;
+		return value is Guid identity && identity != Guid.Empty ? identity : Guid.NewGuid();
 	}
 }
