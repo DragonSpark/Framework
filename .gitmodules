@@ -1,0 +1,4 @@
+[submodule "EFCore.BulkExtensions.MIT"]
+	path = EFCore.BulkExtensions.MIT
+	url = https://github.com/Mike-E-angelo/EFCore.BulkExtensions.MIT.git
+	branch = main

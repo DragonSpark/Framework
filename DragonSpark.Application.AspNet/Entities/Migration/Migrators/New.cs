@@ -59,15 +59,9 @@ public sealed class New : IInstance
 	public async ValueTask<object> Get(Stop<MappingInput> parameter)
 	{
 		var ((source, destination, from, to), stop) = parameter;
+		
 		var result = _new(to);
-		try
-		{
-			await _map.Off(new(new(source.Entry(from), destination.Entry(result)), stop));
-		}
-		catch (Exception e)
-		{
-			throw;
-		}
+		await _map.Off(new(new(source.Entry(from), destination.Entry(result)), stop));
 
 		return result;
 	}

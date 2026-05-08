@@ -20,7 +20,10 @@ sealed class ConstraintAwareMigrationSteps : IMigrationSteps
 	{
 		foreach (var step in _previous.Get(parameter))
 		{
-			yield return step is IMigrationBody ? new ConstraintAwareMigrationStep(step, _facade) : step;
+			yield return step is IMigrationBody
+				             ? new ConstraintAwareMigrationStep(new ConcurrencyAwareMigrationStep(step, _facade),
+				                                                _facade)
+				             : step;
 		}
 	}
 }

@@ -20,7 +20,7 @@ sealed class Members : ILease<Expression, MemberInfo>
 		while (parameter is MemberExpression m)
 		{
 			builder.Add(m.Member);
-			parameter = m.Expression!;
+			parameter = m.Expression is UnaryExpression u ? u.Operand : m.Expression!;
 		}
 
 		builder.AsSpan().Reverse();

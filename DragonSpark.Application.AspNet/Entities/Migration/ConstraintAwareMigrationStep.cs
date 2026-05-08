@@ -3,6 +3,7 @@ using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Threading.Tasks;
 
@@ -30,12 +31,13 @@ public sealed class ConstraintAwareMigrationStep : IMigrationStep
 		{
 			try
 			{
-				/*await _facade.ExecuteSqlRawAsync("EXEC sp_msforeachtable 'ALTER TABLE ? WITH CHECK CHECK CONSTRAINT ALL';")
-				             .Off();*/
+				await _facade
+				      .ExecuteSqlRawAsync("EXEC sp_msforeachtable 'ALTER TABLE ? WITH CHECK CHECK CONSTRAINT ALL';")
+				      .Off();
 			}
 			catch (Exception e)
 			{
-				// parameter.Subject.Logger.LogError(e, "An exception occurred while re-applying constraints");
+				parameter.Subject.Logger.LogError(e, "An exception occurred while re-applying constraints");
 				throw;
 			}
 		}

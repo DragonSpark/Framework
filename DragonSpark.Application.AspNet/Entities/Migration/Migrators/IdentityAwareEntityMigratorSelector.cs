@@ -27,7 +27,6 @@ sealed class IdentityAwareEntityMigratorSelector : IEntityMigratorSelector
 			var entityType = parameter.Destination.Model.FindEntityType(to);
 			if (entityType is not null && _identity.Get(entityType))
 			{
-				var stop = entityType.Name == "Starbeam.Entities.Identity.Settings.UserSettings";
 				return new IdentityAwareEntityMigrator(previous, parameter.Destination, entityType);
 			}
 		}

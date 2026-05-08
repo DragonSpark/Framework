@@ -10,10 +10,5 @@ public sealed class EmptyMap : IMap
 
 	EmptyMap() {}
 	
-	public ValueTask Get(Stop<MapInput> parameter)
-	{
-		var ((_, to), _) = parameter;
-		to.Context.Attach(to.Entity);
-		return ValueTask.CompletedTask;
-	}
+	public ValueTask Get(Stop<MapInput> parameter) => ValueTask.CompletedTask;
 }

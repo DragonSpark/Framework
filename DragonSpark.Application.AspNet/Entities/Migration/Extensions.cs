@@ -36,6 +36,9 @@ public static class Extensions
 
 	public static EntityEntry<T> Of<T>(this EntityEntry @this) where T : class => @this.To<EntityEntry<T>>();
 
+	public static Task Load(this EntityEntry @this, CancellationToken stop)
+		=> @this.State == EntityState.Detached ? @this.ReloadAsync(stop) : Task.CompletedTask;
+	
 	public static Task Include<TEntity, TProperty>(this EntityEntry<TEntity> entry,
 	                                               Expression<Func<TEntity, TProperty>> path,
 	                                               CancellationToken token = default)

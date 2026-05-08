@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
-using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
 using NetFabric.Hyperlinq;
 using System;
@@ -32,42 +31,35 @@ sealed class Update<TFrom, TTo> : IEntities<TFrom, TTo>
 	{
 		var ((_, _, source, destination, from, _), stop) = parameter;
 
-		using var names = source.Model.FindEntityType(_from)
-		                        .Verify()
-		                        .FindPrimaryKey()
-		                        .Verify()
-		                        .Properties.AsValueEnumerable()
-		                        .Select(p => p.Name)
-		                        .ToArray(ArrayPool<string>.Shared);
-
-		// ReSharper disable AccessToDisposedClosure
-		var projected = from.Select(x => new
-		                    {
-			                    Source = x,
-			                    Keys   = names.Select(y => EF.Property<object>(x, y))
-		                    })
-		                    .AsAsyncEnumerable();
-
 		return new Entities<TTo>(EnumerateAsync());
 
 		async IAsyncEnumerable<TTo> EnumerateAsync()
 		{
-			var memory = names.Memory;
+			var names = source.Model.FindEntityType(_from)
+			                  .Verify()
+			                  .FindPrimaryKey()
+			                  .Verify()
+			                  .Properties.AsValueEnumerable()
+			                  .Select(p => p.Name)
+			                  .ToArray(ArrayPool<string>.Shared);
 
-			await foreach (var row in projected.WithCancellation(stop))
+			await foreach (var row in from.AsAsyncEnumerable().WithCancellation(stop))
 			{
-				using var keys   = row.Keys.AsValueEnumerable().ToArray(ArrayPool<object>.Shared);
-				var       item   = _activate();
-				var       to     = destination.Entry(item);
-				var       span   = memory.Span;
-				var       values = keys.Memory.Span;
+				var entry = source.Entry(row).CurrentValues;
+				using var keys = names.Select(y => entry[y].Verify())
+				                      .AsValueEnumerable()
+				                      .ToArray(ArrayPool<object>.Shared);
+				var item   = _activate();
+				var to     = destination.Entry(item);
+				var span   = names.Memory.Span;
+				var values = keys.Memory.Span;
 
 				for (var i = 0; i < names.Length; i++)
 				{
 					to.Property(span[i]).CurrentValue = values[i];
 				}
 
-				await _map.Off(new(new(source.Entry(row.Source), to), stop));
+				await _map.Off(new(new(source.Entry(row), to), stop));
 
 				yield return item;
 			}
@@ -75,7 +67,7 @@ sealed class Update<TFrom, TTo> : IEntities<TFrom, TTo>
 	}
 }
 
-sealed class Update<T> : ISave<T> where T : class
+/*sealed class Update<T> : ISave<T> where T : class
 {
 	public static Update<T> Default { get; } = new();
 
@@ -95,8 +87,7 @@ sealed class Update<T> : ISave<T> where T : class
 		};
 		await foreach (var chunk in entities.AsAsyncEnumerable().Chunk(size * _factor).WithCancellation(stop))
 		{
-			using var page = chunk.AsValueEnumerable().ToArray(ArrayPool<T>.Shared);
-			await destination.BulkUpdateAsync(page, configuration, new Progress<T>(logger, total).Execute,
+			await destination.BulkUpdateAsync(chunk.ToList(), configuration, new Progress<T>(logger, total).Execute,
 			                                  cancellationToken: stop)
 			                 .Off();
 		}
@@ -104,4 +95,4 @@ sealed class Update<T> : ISave<T> where T : class
 		var result = configuration.StatsInfo.Verify().StatsNumberUpdated.Grade();
 		return result;
 	}
-}
+}*/

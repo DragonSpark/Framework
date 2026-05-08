@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
-using DragonSpark.Model.Results;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
@@ -10,12 +9,12 @@ sealed class FlattenAwareEntityMigrator<TFrom, TTo> : IEntityMigrator where TFro
 {
 	readonly IEntityMigrator _previous;
 	readonly DbContext       _destination;
-	readonly Result<bool>    _same;
+	readonly bool            _same;
 
 	public FlattenAwareEntityMigrator(IEntityMigrator previous, DbContext source, DbContext destination)
-		: this(previous, destination, new SameKeys<TFrom, TTo>(source, destination)) {}
+		: this(previous, destination, SameKeys<TFrom, TTo>.Default.Get(new(source, destination))) {}
 
-	public FlattenAwareEntityMigrator(IEntityMigrator previous, DbContext destination, Result<bool> same)
+	public FlattenAwareEntityMigrator(IEntityMigrator previous, DbContext destination, bool same)
 	{
 		_previous    = previous;
 		_destination = destination;
@@ -29,8 +28,7 @@ sealed class FlattenAwareEntityMigrator<TFrom, TTo> : IEntityMigrator where TFro
 		var (subject, stop) = parameter;
 		var logger = subject.Logger;
 		var to     = _destination.Set<TTo>();
-		var same   = _same.Get();
-		if (same)
+		if (_same)
 		{
 			logger.LogInformation("Flatten {Set}: All source keys already present in destination (idempotent, no missing data)",
 			                      to.GetType());
@@ -45,5 +43,5 @@ sealed class FlattenAwareEntityMigrator<TFrom, TTo> : IEntityMigrator where TFro
 	public ValueTask Get(Stop<EntityPostMigrationInput> parameter) => ValueTask.CompletedTask;
 
 	public ValueTask Get(Stop<EntityMigratorInput> parameter)
-		=> _same.Get() ? ValueTask.CompletedTask : _previous.Get(parameter);
+		=> _same ? ValueTask.CompletedTask : _previous.Get(parameter);
 }

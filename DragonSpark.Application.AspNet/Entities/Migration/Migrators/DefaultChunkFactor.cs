@@ -6,5 +6,5 @@ sealed class DefaultChunkFactor : Instance<byte>
 {
 	public static DefaultChunkFactor Default { get; } = new();
 
-	DefaultChunkFactor() : base(5) {}
+	DefaultChunkFactor() : base(1) {} // TODO: Remove
 }

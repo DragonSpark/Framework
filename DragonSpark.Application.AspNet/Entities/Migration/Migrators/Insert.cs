@@ -3,7 +3,6 @@ using DragonSpark.Model.Operations;
 using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
 using NetFabric.Hyperlinq;
-using System;
 using System.Buffers;
 using System.Linq;
 using System.Threading.Tasks;
@@ -27,7 +26,7 @@ sealed class Insert<T> : ISave<T> where T : class
 		{
 			BatchSize           = size,
 			SqlBulkCopyOptions  = SqlBulkCopyOptions.KeepIdentity,
-			PreserveInsertOrder = true, UseTempDB = false,
+			PreserveInsertOrder = true, UseTempDB              = false,
 			NotifyAfter         = size, EnableShadowProperties = true
 		};
 
@@ -40,17 +39,10 @@ sealed class Insert<T> : ISave<T> where T : class
 			                                   .Where(x => !x.Metadata.IsOwned())
 			                                   .GroupBy(x => x.Entity.GetType()))
 			{
-				var enumerable = changed.Select(x => x.Entity).ToArray(); // TODO V2
-				try
-				{
-					configuration.PropertiesToExclude?.Clear();
-					await destination.BulkInsertAsync(enumerable, configuration, progress, cancellationToken: stop)
-					                 .Off();
-				}
-				catch (Exception e)
-				{
-					throw;
-				}
+				configuration.PropertiesToExclude?.Clear();
+				await destination.BulkInsertAsync(changed.Select(x => x.Entity).ToList(), configuration, progress,
+				                                  cancellationToken: stop)
+				                 .Off();
 			}
 
 			destination.ChangeTracker.Clear();

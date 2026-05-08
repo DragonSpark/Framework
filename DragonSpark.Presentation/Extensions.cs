@@ -1,10 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
 using DragonSpark.Application;
-using DragonSpark.Application.AspNet.Compose;
 using DragonSpark.Application.Components.Validation.Expressions;
 using DragonSpark.Application.Compose;
 using DragonSpark.Application.Model.Interaction;
@@ -29,6 +23,11 @@ using DragonSpark.Presentation.Text;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Radzen;
+using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
 using Action = System.Action;
 using ComponentBase = Microsoft.AspNetCore.Components.ComponentBase;
 using ValidationContext = DragonSpark.Presentation.Components.Forms.Validation.ValidationContext;
@@ -155,11 +154,6 @@ public static class Extensions
 
 	public static MarkupString AsMarkdown(this string? @this)
 		=> !@this.IsNullOrEmpty() ? MarkdownString.Default.Get(@this.Verify()) : new(@this.OrNone());
-
-	/**/
-
-	public static ApplicationProfileContext WithAntiforgery(this ApplicationProfileContext @this)
-		=> @this.Append(Security.Registrations.Default);
 
 	/**/
 

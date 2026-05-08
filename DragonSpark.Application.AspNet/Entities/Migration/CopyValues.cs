@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
-using System;
 using System.Collections.Generic;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration;
@@ -29,13 +28,6 @@ sealed class CopyValues : ICommand<MapInput>
 			values[name] = value is not null ? _value.Get(new(name, value, to)) : null;
 		}
 
-		try
-		{
-			to.CurrentValues.SetValues(values);
-		}
-		catch (Exception e)
-		{
-			throw;
-		}
+		to.CurrentValues.SetValues(values);
 	}
 }

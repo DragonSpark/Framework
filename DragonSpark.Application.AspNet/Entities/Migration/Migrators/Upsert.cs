@@ -1,10 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
-using EFCore.BulkExtensions;
 using Microsoft.EntityFrameworkCore;
-using NetFabric.Hyperlinq;
-using System;
-using System.Buffers;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -18,44 +14,61 @@ sealed class Upsert<T> : ISave<T> where T : class
 
 	readonly byte _factor;
 
-	public Upsert(byte factor) => _factor = factor;
+	public Upsert(byte factor) => _factor   = factor;
 
 	public async ValueTask<uint> Get(Stop<SaveInput<T>> parameter)
 	{
-		var ((logger, size, destination, entities, total), stop) = parameter;
-		var configuration = new BulkConfig
+		var ((_, size, destination, entities, _), stop) = parameter;
+		
+		/*var configuration = new BulkConfig
 		{
-			BatchSize              = size, CalculateStats = true, PreserveInsertOrder = true, NotifyAfter = size,
-			EnableShadowProperties = true
+			BatchSize         = size, CalculateStats          = true, PreserveInsertOrder = true, NotifyAfter = size,
+			SetOutputIdentity = false, EnableShadowProperties = true
 		};
-		var progress = new Progress<T>(logger, total).Execute;
-		await foreach (var chunk in entities.AsAsyncEnumerable().Chunk(size * _factor).WithCancellation(stop))
+		var progress = new Progress<T>(logger, total).Execute;*/
+		/*// Temporarily remove concurrency token from the model (for this DbContext only)
+		var rowVersionProp = destination.Model.FindEntityType(typeof(YourEntity))
+		                            ?.FindProperty(nameof(YourEntity.RowVersion));
+
+		if (rowVersionProp != null)
 		{
-			using var page = chunk.AsValueEnumerable().ToArray(ArrayPool<T>.Shared);
+			rowVersionProp.SetIsConcurrencyToken(false);
+		}*/
+		var result = 0u;
+		await foreach (var _ in entities.AsAsyncEnumerable().Chunk(size * _factor).WithCancellation(stop))
+		{
+			//await using var transaction = await destination.Database.BeginTransactionAsync(stop).Off();
+			result += (uint)await destination.SaveChangesAsync().Off();
+			/*using var       page        = chunk.AsValueEnumerable().ToArray(ArrayPool<T>.Shared);
 
 			foreach (var changed in destination.ChangeTracker.Entries()
 			                                   .Where(x => !x.Metadata.IsOwned())
-			                                   .GroupBy(x => x.Entity.GetType()))
+			                                   .GroupBy(x => x.Metadata))
 			{
-				var enumerable = changed.Select(x => x.Entity).ToArray(); // TODO V2
 				try
 				{
-					configuration.PropertiesToExclude?.Clear();
-					await destination
-					      .BulkInsertOrUpdateAsync(enumerable, configuration, progress, cancellationToken: stop)
-					      .Off();
+					var type = changed.Key.ClrType;
+					var target = type == typeof(T);
+					configuration.SetOutputIdentity = _identity.Get(changed.Key) && !target;
+					var select = changed.Select(x => x.Entity).ToList(); // TODO V2
+					await destination.BulkInsertOrUpdateAsync(select, configuration, progress, type,
+					                                          cancellationToken: stop).Off();
+					/*await destination.BulkInsertOrUpdateAsync(select, configuration, progress, cancellationToken: stop)
+					                 .Off();#1#
 				}
 				catch (Exception e)
 				{
 					throw;
 				}
-			}
+			}*/
+
+//			await transaction.CommitAsync().Off();
 
 			destination.ChangeTracker.Clear();
 		}
 
-		var statistics = configuration.StatsInfo.Verify();
-		var result     = (uint)(statistics.StatsNumberInserted + statistics.StatsNumberUpdated);
+		/*var statistics = configuration.StatsInfo.Verify();
+		var result     = (uint)(statistics.StatsNumberInserted + statistics.StatsNumberUpdated);*/
 		return result;
 	}
 }

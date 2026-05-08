@@ -27,7 +27,9 @@ sealed class LoadMembers : IStopAware<LoadMembersInput>
 		var current = entry.Entity;
 		var context = entry.Context;
 
-		var span = members.AsMemory();
+		var span  = members.AsMemory();
+		
+		await entry.Load(stop).Off();
 
 		for (var i = 0; i < members.Length; i++)
 		{

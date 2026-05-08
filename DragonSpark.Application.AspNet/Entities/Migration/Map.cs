@@ -9,7 +9,6 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using NetFabric.Hyperlinq;
 using System;
 using System.Buffers;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -36,12 +35,6 @@ public sealed class Map : IMap
 	public ValueTask Get(Stop<MapInput> parameter)
 	{
 		var ((from, to), _) = parameter;
-		var stop = to.Entity.GetType().Name == "License";
-		if (stop)
-		{
-			Debugger.Break();
-			// TODO V2 : DATA
-		}
 		_copy.Execute(parameter);
 		to.Context.Attach(to.Entity);
 
@@ -50,18 +43,11 @@ public sealed class Map : IMap
 		                          .ToArray(ArrayPool<NavigationEntry>.Shared);
 		foreach (var navigation in from.Metadata.GetNavigations().Where(x => x.TargetEntityType.IsOwned()))
 		{
-			try
-			{
-				var entry = navigations.FirstOrDefault(x => x.Metadata.Name == navigation.Name);
+			var entry = navigations.FirstOrDefault(x => x.Metadata.Name == navigation.Name);
 
-				if (entry is not null)
-				{
-					_owned.Execute(new(from.Navigation(navigation.Name), entry));
-				}
-			}
-			catch (Exception e)
+			if (entry is not null)
 			{
-				throw;
+				_owned.Execute(new(from.Navigation(navigation.Name), entry));
 			}
 		}
 
