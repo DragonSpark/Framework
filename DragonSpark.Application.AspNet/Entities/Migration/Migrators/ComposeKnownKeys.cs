@@ -35,7 +35,7 @@ sealed class ComposeKnownKeys<T> : ISelect<DbContext, ImmutableHashSet<object>> 
 					       A = EF.Property<object>(e, name), B = EF.Property<object>(e, properties[1].Name)
 				       })
 				       .AsEnumerable()
-				       .Select(static object (x) => new[] { x.A, x.B })
+				       .Select(static x => (object)ValueTuple.Create(x.A, x.B))
 				       .ToImmutableHashSet();
 		}
 	}

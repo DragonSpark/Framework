@@ -15,5 +15,5 @@ sealed class IsIdentityEntity : ICondition<IEntityType>
 
 	public IsIdentityEntity(Func<IProperty, bool> identity) => _identity = identity;
 
-	public bool Get(IEntityType type) => type.FindPrimaryKey()?.Properties.Any(_identity) == true;
+	public bool Get(IEntityType type) => type.FindPrimaryKey()?.Properties?.Any(_identity) == true;
 }

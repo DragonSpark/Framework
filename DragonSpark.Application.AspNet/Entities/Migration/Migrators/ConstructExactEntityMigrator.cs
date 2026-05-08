@@ -4,6 +4,7 @@ using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Reflection.Types;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using System.Collections.Generic;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
@@ -37,6 +38,7 @@ sealed class ConstructExactEntityMigrator : ISelect<ConstructEntityMigratorInput
 	public IEntityMigrator Get(ConstructEntityMigratorInput parameter)
 	{
 		var (source, destination, from, to) = parameter;
+		var stop = from.ClrType == typeof(Dictionary<string, object>);
 		return _condition.Get(to)
 			       ? _named.Get(from.ClrType, to.ClrType)(source, destination, to.Name)
 			       : _generic.Get(from.ClrType, to.ClrType)(source, destination);

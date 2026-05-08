@@ -14,8 +14,8 @@ sealed class Target<T> : ITarget<T> where T : notnull
 
     public Target(JsonSerializerOptions options) : this(options, A.Type<T>()) {}
 
-    public Target(JsonSerializerOptions options, Type targetType)
-        : this(new Map(targetType).Get(options), targetType, AmbientTarget.Default) {}
+	public Target(JsonSerializerOptions options, Type targetType)
+		: this(new DefaultMap(targetType).Get(options), targetType, AmbientTarget.Default) {}
 
     public Target(JsonSerializerOptions options, Type targetType, IMutable<object?> target)
     {

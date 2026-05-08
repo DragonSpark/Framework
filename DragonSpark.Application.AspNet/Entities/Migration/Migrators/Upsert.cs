@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -23,7 +24,15 @@ sealed class Upsert<T> : ISave<T> where T : class
 		var result = 0u;
 		await foreach (var _ in entities.AsAsyncEnumerable().Chunk(size * _factor).WithCancellation(stop))
 		{
-			result += (uint)await destination.SaveChangesAsync().Off();
+			try
+			{
+				result += (uint)await destination.SaveChangesAsync().Off();
+			}
+			catch (Exception e)
+			{
+				Console.WriteLine(e);
+				throw;
+			}
 			destination.ChangeTracker.Clear();
 		}
 

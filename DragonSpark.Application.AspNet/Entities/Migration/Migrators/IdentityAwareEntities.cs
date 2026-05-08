@@ -29,7 +29,7 @@ sealed class IdentityAwareEntities<TFrom, TTo> : IEntities<TFrom, TTo> where TFr
 	{
 		var (subject, stop) = parameter;
 		var predicate = _predicate.Get(subject.Destination);
-		var input     = subject with { From = subject.From.Where(predicate) };
+		var input     = subject with { From = subject.From.AsEnumerable().Where(predicate.Compile()).AsQueryable() };
 		var result    = _previous.Get(input.Stop(stop));
 		return result;
 	}

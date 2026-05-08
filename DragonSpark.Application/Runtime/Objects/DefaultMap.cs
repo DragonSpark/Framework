@@ -7,9 +7,9 @@ using System.Text.Json;
 namespace DragonSpark.Application.Runtime.Objects;
 
 // ATTRIBUTION: https://github.com/dotnet/runtime/issues/29538#issuecomment-1330494636
-sealed class Map : ReferenceValueStore<JsonSerializerOptions, JsonSerializerOptions>, IAlteration<JsonSerializerOptions>
+sealed class DefaultMap : ReferenceValueStore<JsonSerializerOptions, JsonSerializerOptions>, IAlteration<JsonSerializerOptions>
 {
-	public Map(Type target)
+	public DefaultMap(Type target)
 		: base(x =>
 		       {
 			       JsonSerializer.Serialize(value: 0, x);

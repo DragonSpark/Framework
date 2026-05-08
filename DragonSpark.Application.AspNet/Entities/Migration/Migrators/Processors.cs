@@ -1,6 +1,8 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Migration.Identity;
+using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Conditions;
 using Microsoft.EntityFrameworkCore.Metadata;
+using System.Linq;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
@@ -8,7 +10,14 @@ sealed class Processors<TFrom, TTo> : IProcessors<TFrom> where TFrom : class whe
 {
 	public static Processors<TFrom, TTo> Default { get; } = new();
 
-	Processors() : this(IsIdentityEntity.Default) {}
+	Processors() : this(IsIdentityEntity.Default.Then()
+	                                    .Or(x =>
+	                                        {
+		                                        var properties = x.FindPrimaryKey()?.Properties;
+		                                        return properties?.Count > 1 &&
+		                                               properties?.All(y => y.ClrType == typeof(string)) == true;
+	                                        })
+	                                    .Out()) {}
 
 	readonly ICondition<IEntityType> _identity;
 

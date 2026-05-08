@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,13 +24,11 @@ sealed class New<TFrom, TTo> : IEntities<TFrom, TTo> where TFrom : class
 	{
 		var ((_, _, source, destination, from, _), stop) = parameter;
 
-		var query = from.AsAsyncEnumerable();
-
 		return new Entities<TTo>(EnumerateAsync());
 
 		async IAsyncEnumerable<TTo> EnumerateAsync()
 		{
-			await foreach (var x in query.WithCancellation(stop))
+			foreach (var x in from)
 			{
 				yield return (TTo)await _instance.Off(new(new(source, destination, x, _to), stop));
 			}
@@ -43,7 +40,7 @@ public sealed class New : IInstance
 {
 	public static New Default { get; } = new();
 
-	New() : this(Map.Default) {}
+	New() : this(DefaultMap.Default) {}
 
 	readonly Func<Type, object> _new;
 	readonly IMap               _map;
@@ -59,7 +56,7 @@ public sealed class New : IInstance
 	public async ValueTask<object> Get(Stop<MappingInput> parameter)
 	{
 		var ((source, destination, from, to), stop) = parameter;
-		
+
 		var result = _new(to);
 		await _map.Off(new(new(source.Entry(from), destination.Entry(result)), stop));
 
