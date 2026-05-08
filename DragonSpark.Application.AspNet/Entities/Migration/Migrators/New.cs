@@ -40,7 +40,7 @@ public sealed class New : IInstance
 {
 	public static New Default { get; } = new();
 
-	New() : this(DefaultMap.Default) {}
+	New() : this(Map.Default) {}
 
 	readonly Func<Type, object> _new;
 	readonly IMap               _map;

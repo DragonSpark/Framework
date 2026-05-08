@@ -16,10 +16,10 @@ public abstract class ExtendedEntityMigratorBase<TFrom, TTo> : IExtendedEntityMi
 		: this(source, destination, new Map<TFrom,TTo>(map, EmptyMap.Default)) {}
 
 	protected ExtendedEntityMigratorBase(DbContext source, DbContext destination, IMap secondary)
-		: this(new Contexts<TFrom>(source, destination), DefaultMap.Default, secondary) {}
+		: this(new Contexts<TFrom>(source, destination), Map.Default, secondary) {}
 
 	protected ExtendedEntityMigratorBase(Contexts<TFrom> contexts, IMap secondary)
-		: this(contexts, DefaultMap.Default, secondary) {}
+		: this(contexts, Map.Default, secondary) {}
 
 	protected ExtendedEntityMigratorBase(Contexts<TFrom> contexts, IMap primary, IMap secondary)
 		: this(new EntityMigrator<TFrom, TTo>(contexts, primary), 

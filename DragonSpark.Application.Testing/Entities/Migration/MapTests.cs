@@ -23,7 +23,7 @@ public sealed class MapTests
 		await using var sources      = await new SqlLiteNewContext<FromContext>().Initialize();
 		await using var destinations = await new SqlLiteNewContext<ToContext>().Initialize();
 
-		var subject = DefaultMap.Default;
+		var subject = Map.Default;
 
 		{
 			await using var seed = sources.Get();
@@ -80,7 +80,7 @@ public sealed class MapTests
 		await using var sources      = await new SqlLiteNewContext<FromContext>().Initialize();
 		await using var destinations = await new SqlLiteNewContext<ToContext>().Initialize();
 
-		var subject = DefaultMap.Default;
+		var subject = Map.Default;
 
 		{
 			await using var seed = sources.Get();
@@ -124,7 +124,7 @@ public sealed class MapTests
 		await using var sources      = await new SqlLiteNewContext<FromContext>().Initialize();
 		await using var destinations = await new SqlLiteNewContext<ToContext>().Initialize();
 
-		var subject = DefaultMap.Default;
+		var subject = Map.Default;
 
 		{
 			await using var seed = sources.Get();

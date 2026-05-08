@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration;
 
-sealed class Map : IMap
+public sealed class Map : IMap
 {
 	public static Map Default { get; } = new();
 
@@ -62,7 +62,7 @@ public sealed class Map<TFrom, TTo> : IMap
 	readonly Func<Stop<MapInput<TFrom, TTo>>, ValueTask> _map;
 	readonly IMap                                        _previous;
 
-	public Map(Action<TFrom, TTo> mapping) : this(mapping, DefaultMap.Default) {}
+	public Map(Action<TFrom, TTo> mapping) : this(mapping, Map.Default) {}
 
 	public Map(Action<TFrom, TTo> mapping, IMap map)
 		: this(x =>
@@ -72,7 +72,7 @@ public sealed class Map<TFrom, TTo> : IMap
 		       }, 
 		       map) {}
 
-	public Map(Action<MapInput<TFrom, TTo>> input) : this(input, DefaultMap.Default) {}
+	public Map(Action<MapInput<TFrom, TTo>> input) : this(input, Map.Default) {}
 
 	public Map(Action<MapInput<TFrom, TTo>> input, IMap map)
 		: this(x =>
@@ -81,7 +81,7 @@ public sealed class Map<TFrom, TTo> : IMap
 			       return ValueTask.CompletedTask;
 		       }, map) {}
 
-	public Map(Func<Stop<MapInput<TFrom, TTo>>, ValueTask> map) : this(map, DefaultMap.Default) {}
+	public Map(Func<Stop<MapInput<TFrom, TTo>>, ValueTask> map) : this(map, Map.Default) {}
 
 	public Map(Func<Stop<MapInput<TFrom, TTo>>, ValueTask> map, IMap previous)
 	{
