@@ -1,31 +1,16 @@
-﻿using DragonSpark.Model.Results;
+﻿using DragonSpark.Model.Selection.Stores;
 using Microsoft.EntityFrameworkCore.Metadata;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration;
 
-sealed class EntityTypes : Instance<IModel>, IEntityTypes
+sealed class EntityTypes : ReferenceValueStore<IEntityType, IEntityType?>, IEntityTypes
 {
-	readonly IModel                                   _model;
-	readonly IReadOnlyDictionary<string, IEntityType> _named;
-	readonly IReadOnlyDictionary<Type, Type>          _forwarded;
+	readonly IModel _model;
 
 	public EntityTypes(IModel model, IReadOnlyDictionary<Type, Type> forwarded)
-		: this(model, model.GetEntityTypes().ToDictionary(t => t.Name), forwarded) {}
+		: base(new ComposeEntityTypes(model, forwarded)) => _model = model;
 
-	public EntityTypes(IModel model, IReadOnlyDictionary<string, IEntityType> named,
-	                   IReadOnlyDictionary<Type, Type> forwarded) : base(model)
-	{
-		_forwarded = forwarded;
-		_named     = named;
-		_model     = model;
-	}
-
-	public IEntityType? Get(IEntityType parameter) => _named.TryGetValue(parameter.Name, out var to)
-		                                                  ? to
-		                                                  : _forwarded.TryGetValue(parameter.ClrType, out var forwarded)
-			                                                  ? _model.FindEntityType(forwarded)
-			                                                  : null;
+	public IModel Get() => _model;
 }

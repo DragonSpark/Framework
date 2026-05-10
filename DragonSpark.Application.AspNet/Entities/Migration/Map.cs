@@ -1,10 +1,7 @@
-﻿using DragonSpark.Application.AspNet.Entities.Migration.Identity;
-using DragonSpark.Application.AspNet.Entities.Migration.Migrators;
+﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
-using DragonSpark.Model.Selection;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using NetFabric.Hyperlinq;
 using System;
@@ -18,25 +15,21 @@ public sealed class Map : IMap
 {
 	public static Map Default { get; } = new();
 
-	Map() : this(CopyValues.Default, MapOwned.Default, EntityEntryState.Default) {}
+	Map() : this(CopyValues.Default, MapOwned.Default) {}
 
 	readonly ICommand<MapInput>                _copy;
 	readonly ICommand<MapNavigationEntryInput> _owned;
-	readonly ISelect<EntityEntry, EntityState> _state;
-
-	public Map(ICommand<MapInput> copy, ICommand<MapNavigationEntryInput> owned,
-	           ISelect<EntityEntry, EntityState> state)
+	
+	public Map(ICommand<MapInput> copy, ICommand<MapNavigationEntryInput> owned)
 	{
 		_copy  = copy;
 		_owned = owned;
-		_state = state;
 	}
 
 	public ValueTask Get(Stop<MapInput> parameter)
 	{
 		var ((from, to), _) = parameter;
 		_copy.Execute(parameter);
-		to.Context.Attach(to.Entity);
 
 		using var navigations = to.Context.Entry(to.Entity)
 		                          .Navigations.AsValueEnumerable()
@@ -51,7 +44,6 @@ public sealed class Map : IMap
 			}
 		}
 
-		to.State = _state.Get(to);
 		return ValueTask.CompletedTask;
 	}
 }

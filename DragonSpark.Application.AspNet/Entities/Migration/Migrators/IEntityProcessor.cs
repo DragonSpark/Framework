@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
-public interface IEntityProcessor<T> : IStopAware<ProcessChangesInput<T>>;
+public interface IEntityProcessor<T> : IStopAware<SourceInput<T>>;

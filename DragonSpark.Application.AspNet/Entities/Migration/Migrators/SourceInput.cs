@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
-public sealed record ProcessChangesInput<T>(
+public sealed record SourceInput<T>(
 	ILogger Logger,
 	ushort PageSize,
 	DbContext Source,

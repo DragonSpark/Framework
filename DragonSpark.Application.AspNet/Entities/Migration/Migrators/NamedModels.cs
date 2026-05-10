@@ -11,11 +11,12 @@ namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
 sealed class NamedModels : ICondition<IEntityType>
 {
-	readonly ISelect<IModel, ImmutableHashSet<IEntityType>> _select;
 	public static NamedModels Default { get; } = new();
 
 	NamedModels() : this(typeof(Dictionary<,>)) {}
 
+	readonly ISelect<IModel, ImmutableHashSet<IEntityType>> _select;
+	
 	public NamedModels(Type contact)
 		: this(Start.A.Selection<IModel>()
 		            .By.Calling(x => x.GetEntityTypes()

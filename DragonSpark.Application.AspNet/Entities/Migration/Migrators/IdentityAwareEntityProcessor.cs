@@ -6,5 +6,5 @@ sealed class IdentityAwareEntityProcessor<TFrom, TTo> : EntityProcessorBase<TFro
 	where TFrom : class where TTo : class
 {
 	public IdentityAwareEntityProcessor(IMap map, IEntityType type)
-		: base(new IdentityAwareEntities<TFrom, TTo>(map, type), Insert<TTo>.Default) {}
+		: base(new IdentityAwareSource<TFrom, TTo>(type), new New<TFrom, TTo>(map), Insert<TTo>.Default) {}
 }

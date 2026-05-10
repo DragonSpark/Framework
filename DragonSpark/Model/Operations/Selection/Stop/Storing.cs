@@ -32,10 +32,19 @@ public class Storing<TIn, TOut> : IStopAware<TIn, TOut>
 
 public class ReferenceStoring<TIn, TOut> : Storing<TIn, TOut> where TIn : class where TOut : class?
 {
-	protected ReferenceStoring(ISelect<Stop<TIn>, ValueTask<TOut>> previous) : this(previous.Get) {}
+	public ReferenceStoring(ISelect<Stop<TIn>, ValueTask<TOut>> previous) : this(previous.Get) {}
 
 	protected ReferenceStoring(Func<Stop<TIn>, ValueTask<TOut>> source)
 		: this(new ReferenceValueTable<TIn, TOut>(), source) {}
 
-	protected ReferenceStoring(ITable<TIn, TOut> store, Func<Stop<TIn>, ValueTask<TOut>> source) : base(store, source) {}
+	protected ReferenceStoring(ITable<TIn, TOut> store, Func<Stop<TIn>, ValueTask<TOut>> source) :
+		base(store, source) {}
+}
+
+// TODO V2
+
+public static class Extensions
+{
+	public static IStopAware<TIn, TOut> AsReferenceStoring<TIn, TOut>(this IStopAware<TIn, TOut> @this)
+		where TIn : class where TOut : class => new ReferenceStoring<TIn, TOut>(@this);
 }

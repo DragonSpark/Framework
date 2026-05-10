@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Migration.Planning.Comparison;
 using DragonSpark.Model.Sequences.Memory;
-using System.Collections.Generic;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Planning;
 
@@ -36,7 +35,7 @@ sealed class ComposeEntityComparisonResults : IComposeEntityComparisonResults
 		{
 			var from = types[i];
 			var to   = locate.Get(from);
-			if (to is not null && from.ClrType != typeof(Dictionary<string, object>))
+			if (to is not null)
 			{
 				var comparison = entities.Get(new(from, to));
 				return comparison.Modifications.Changes > 0

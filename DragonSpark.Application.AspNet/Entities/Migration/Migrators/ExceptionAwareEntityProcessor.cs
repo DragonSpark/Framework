@@ -11,7 +11,7 @@ sealed class ExceptionAwareEntityProcessor<TFrom, TTo> : IEntityProcessor<TFrom>
 
 	public ExceptionAwareEntityProcessor(IEntityProcessor<TFrom> previous) => _previous = previous;
 
-	public async ValueTask Get(Stop<ProcessChangesInput<TFrom>> parameter)
+	public async ValueTask Get(Stop<SourceInput<TFrom>> parameter)
 	{
 		try
 		{

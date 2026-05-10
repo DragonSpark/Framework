@@ -18,6 +18,9 @@ public static class Extensions
 
 	public static IMigrationSteps WithConstraintManagement(this IMigrationSteps @this, DbContext destination)
 		=> new ConstraintAwareMigrationSteps(@this, destination.Database);
+	
+	public static IMigrationSteps WithName(this IMigrationSteps @this, DbContext destination, string name)
+		=> new MarkedAwareMigrationSteps(@this, destination, name);
 
 	public static IEntityMigratorSelector Exact(this IEntityMigratorSelector @this, params Type[] matches)
 		=> new ExactAwareEntityMigratorSelector(@this, matches);

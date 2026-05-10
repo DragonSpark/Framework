@@ -19,7 +19,7 @@ sealed class ComposeKnownKeys<T> : ISelect<DbContext, ImmutableHashSet<object>> 
 
 	public ImmutableHashSet<object> Get(DbContext parameter)
 	{
-		var type       = parameter.Model.FindEntityType(_type).Verify();
+		var type       = parameter.Model.FindEntityType(_type);
 		var key        = type.FindPrimaryKey().Verify();
 		var properties = key.Properties;
 		var source     = parameter.Set<T>().AsNoTracking();
@@ -27,14 +27,13 @@ sealed class ComposeKnownKeys<T> : ISelect<DbContext, ImmutableHashSet<object>> 
 		switch (properties.Count)
 		{
 			case 1:
-				return source.Select(e => EF.Property<object>(e, name)).AsEnumerable().ToImmutableHashSet();
+				return source.Select(e => EF.Property<object>(e, name)).ToImmutableHashSet();
 			default:
 				return source
 				       .Select(e => new
 				       {
 					       A = EF.Property<object>(e, name), B = EF.Property<object>(e, properties[1].Name)
 				       })
-				       .AsEnumerable()
 				       .Select(static x => (object)ValueTuple.Create(x.A, x.B))
 				       .ToImmutableHashSet();
 		}
