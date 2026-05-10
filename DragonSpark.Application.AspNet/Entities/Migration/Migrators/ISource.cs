@@ -22,7 +22,7 @@ public sealed class Source<T> : ISource<T>
 
 // TODO V2
 
-public interface IDestination<TFrom, TTo> : ISelect<Stop<DestinationInput<TFrom>>, IAsyncEnumerable<TTo>>;
+public interface IDestination<TFrom, out TTo> : ISelect<Stop<DestinationInput<TFrom>>, IAsyncEnumerable<TTo>>;
 
 public class DestinationBase<TFrom, TTo> : IDestination<TFrom, TTo> where TFrom : class where TTo : class
 {

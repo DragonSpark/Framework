@@ -33,22 +33,25 @@ sealed class ConcurrencyAwareMigrationStep : IMigrationStep
 
 		try
 		{
-			foreach (var x in targets)
+			foreach (var (schema, table, column) in targets)
 			{
-				var drop = $"ALTER TABLE [{x.Schema}].[{x.Table}] DROP COLUMN [{x.Column}]";
-				var add  = $"ALTER TABLE [{x.Schema}].[{x.Table}] ADD [{x.Column}] VARBINARY(8) NULL";
+				var drop = $"ALTER TABLE [{schema}].[{table}] DROP COLUMN [{column}]";
+				var add  = $"ALTER TABLE [{schema}].[{table}] ADD [{column}] VARBINARY(8) NULL";
+				var update =
+					$"UPDATE [{schema}].[{table}] SET [{column}] = 0x0000000000000000 WHERE [{column}] IS NULL";
 				await _database.ExecuteSqlRawAsync(drop).Off();
 				await _database.ExecuteSqlRawAsync(add).Off();
+				await _database.ExecuteSqlRawAsync(update).Off();
 			}
 
 			await _previous.On(parameter);
 		}
 		finally
 		{
-			foreach (var target in targets)
+			foreach (var (schema, table, column) in targets)
 			{
-				var drop = $"ALTER TABLE [{target.Schema}].[{target.Table}] DROP COLUMN [{target.Column}]";
-				var add  = $"ALTER TABLE [{target.Schema}].[{target.Table}] ADD [{target.Column}] ROWVERSION";
+				var drop  = $"ALTER TABLE [{schema}].[{table}] DROP COLUMN [{column}]";
+				var add   = $"ALTER TABLE [{schema}].[{table}] ADD [{column}] ROWVERSION";
 				await _database.ExecuteSqlRawAsync(drop).Off();
 				await _database.ExecuteSqlRawAsync(add).Off();
 			}

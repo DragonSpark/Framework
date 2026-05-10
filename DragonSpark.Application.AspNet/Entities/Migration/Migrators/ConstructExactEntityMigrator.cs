@@ -32,7 +32,7 @@ sealed class ConstructExactEntityMigrator : ISelect<ConstructEntityMigratorInput
 	{
 		var (source, destination, from, to) = parameter;
 		return _condition.Get(to)
-			       ? new NamedEntityMigrator(new(source, destination, from.Name))
+			       ? new NamedEntityMigrator(new(source, destination, from.Name), to)
 			       : _generic.Get(from.ClrType, to.ClrType)(source, destination);
 	}
 }
