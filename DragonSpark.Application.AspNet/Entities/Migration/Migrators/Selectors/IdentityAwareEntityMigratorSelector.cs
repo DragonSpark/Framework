@@ -27,7 +27,10 @@ sealed class IdentityAwareEntityMigratorSelector : IEntityMigratorSelector
 			var entityType = parameter.Destination.Model.FindEntityType(to);
 			if (entityType is not null && _identity.Get(entityType))
 			{
-				return new IdentityAwareEntityMigrator(previous, parameter.Destination, entityType);
+				var migrator = new IdentityAwareEntityMigrator(previous, parameter.Destination, entityType);
+				return previous is IUpdateAwareEntityMigrator
+					       ? new UpdateAwareEntityMigrator(migrator, previous)
+					       : migrator;
 			}
 		}
 

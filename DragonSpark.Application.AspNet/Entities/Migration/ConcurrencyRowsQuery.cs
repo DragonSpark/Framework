@@ -7,7 +7,7 @@ sealed class ConcurrencyRowsQuery : Text.Text
 	ConcurrencyRowsQuery() : base(@"SELECT 
 		s.name AS [Schema], 
 		t.name AS [Table], 
-		c.name AS [Column]
+		c.name AS [Name]
 	FROM sys.columns c
 	JOIN sys.tables t ON c.object_id = t.object_id
 	JOIN sys.schemas s ON t.schema_id = s.schema_id
