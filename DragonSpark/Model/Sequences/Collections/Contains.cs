@@ -1,5 +1,4 @@
-﻿using DragonSpark.Model.Selection;
-using DragonSpark.Model.Selection.Conditions;
+﻿using DragonSpark.Model.Selection.Conditions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,29 +24,4 @@ public class Contains<T> : ICondition<T>
 public class Contains : Contains<string>
 {
 	protected Contains(params string[] source) : base(StringComparer.InvariantCultureIgnoreCase, source) {}
-}
-
-// TODO V2:
-
-
-public readonly record struct CastInput(object[] Input, Type To);
-
-public sealed class Cast : ISelect<CastInput, System.Array>
-{
-	public static Cast Default { get; } = new();
-
-	Cast() {}
-	
-	public System.Array Get(CastInput parameter)
-	{
-		var (input, to) = parameter;
-		var result       = System.Array.CreateInstance(to, input.Length);
-
-		for (var i = 0; i < input.Length; i++)
-		{
-			result.SetValue(input[i], i);
-		}
-
-		return result;
-	}
 }

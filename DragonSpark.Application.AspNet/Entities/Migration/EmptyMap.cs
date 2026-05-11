@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators;
+﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators.Destination;
 using DragonSpark.Model.Operations;
 using System.Threading.Tasks;
 

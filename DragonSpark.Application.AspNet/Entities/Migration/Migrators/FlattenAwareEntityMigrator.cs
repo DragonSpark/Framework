@@ -1,4 +1,5 @@
-﻿using DragonSpark.Compose;
+﻿using DragonSpark.Application.AspNet.Entities.Migration.Steps;
+using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Selection.Stop;
 using Microsoft.EntityFrameworkCore;
@@ -8,18 +9,19 @@ namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
 sealed class FlattenAwareEntityMigrator<T> : IEntityMigrator where T : class
 {
-	readonly IEntityMigrator              _previous;
-	readonly DbContext                    _destination;
-	readonly IStopAware<DbContext, bool?> _run;
+	readonly IEntityMigrator             _previous;
+	readonly DbContext                   _destination;
+	readonly IStopAware<DbContext, bool> _first;
 
 	public FlattenAwareEntityMigrator(IEntityMigrator previous, DbContext destination)
-		: this(previous, destination, MigrationHasRun.Default) {}
+		: this(previous, destination, FirstRun.Default) {}
 
-	public FlattenAwareEntityMigrator(IEntityMigrator previous, DbContext destination, IStopAware<DbContext, bool?> run)
+	public FlattenAwareEntityMigrator(IEntityMigrator previous, DbContext destination,
+	                                  IStopAware<DbContext, bool> first)
 	{
 		_previous    = previous;
 		_destination = destination;
-		_run         = run;
+		_first       = first;
 	}
 
 	public EntityTypeMapping Get() => _previous.Get();
@@ -29,8 +31,7 @@ sealed class FlattenAwareEntityMigrator<T> : IEntityMigrator where T : class
 		var (subject, stop) = parameter;
 		var logger = subject.Logger;
 		var to     = _destination.Set<T>();
-		var run    = await _run.Off(new(_destination, stop));
-		if (run is not null && !run.Value)
+		if (await _first.Off(new(_destination, stop)))
 		{
 			var cleared = await to.ExecuteDeleteAsync(stop).Off();
 			logger.LogInformation("Flatten {Set}: Cleared of {Count} entries", to.GetType(), cleared);

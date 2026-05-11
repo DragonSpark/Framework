@@ -16,12 +16,12 @@ sealed class NamedModels : ICondition<IEntityType>
 	NamedModels() : this(typeof(Dictionary<,>)) {}
 
 	readonly ISelect<IModel, ImmutableHashSet<IEntityType>> _select;
-	
-	public NamedModels(Type contact)
+
+	public NamedModels(Type type)
 		: this(Start.A.Selection<IModel>()
 		            .By.Calling(x => x.GetEntityTypes()
 		                              .Where(y => y.ClrType.IsGenericType &&
-		                                          y.ClrType.GetGenericTypeDefinition() == contact)
+		                                          y.ClrType.GetGenericTypeDefinition() == type)
 		                              .ToImmutableHashSet())
 		            .Stores()
 		            .New()) {}
