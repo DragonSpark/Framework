@@ -19,6 +19,6 @@ public sealed class FirstRun : IStopAware<DbContext, bool>
 	public async ValueTask<bool> Get(Stop<DbContext> parameter)
 	{
 		var run = await _run.Off(parameter);
-		return run is not null && run.Value;
+		return run is not null && !run.Value;
 	}
 }
