@@ -25,7 +25,7 @@ sealed class IdentityAwareSource<TFrom, TTo> : ISource<TFrom> where TFrom : clas
 		var (subject, stop) = parameter;
 		var set    = subject.Destination.Set<TTo>();
 		var max    = set.Max(set.EntityType.FindPrimaryKey().Verify().Properties.Single().Name).Account() ?? 0;
-		var input  = subject with { From = subject.From.Where(_where, max) }; // TODO: Make this an expression (faster)
+		var input  = subject with { From = subject.From.Where(_where, max) };
 		var result = _previous.Get(input.Stop(stop));
 		return result;
 	}
