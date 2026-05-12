@@ -23,7 +23,9 @@ public class SignInBase<T> : ISignIn<T> where T : class
         var       subject = signin.Subject;
         subject.AuthenticationScheme = scheme;
 
-        var result = await _validate.Off(new(new(signin, parameter), stop));
+        var id     = await signin.Users.GetUserIdAsync(user).Off();
+        var local  = await signin.Users.FindByIdAsync(id).Off();
+        var result = await _validate.Off(new(new(signin, parameter.Subject with { User = local.Verify() }), stop));
         if (result)
         {
             await subject.SignInAsync(user, persistent).Off();

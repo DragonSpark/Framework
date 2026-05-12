@@ -10,7 +10,7 @@
 @inject IValidationServices Validation
 @inject AuthenticationStore Set
 @inject SignOutCurrentPath SignOut
-@inject CurrentProfileStatus Store
+@inject IAssignProfileStatus Assign
 
 @if (_scene is not null)
 {
@@ -58,16 +58,15 @@
         {
             // ReSharper disable once AsyncApostle.AsyncWait
             var state = Operation.IsCompletedSuccessfully ? Operation.Result : await Operation.On();
-            if (state != _state)
+            if (state != _state && state is AuthenticationState<T> next)
             {
-                var next = state.To<AuthenticationState<T>>();
                 if (_state is null
                     || _state.User.IsAuthenticated() != state.User.IsAuthenticated()
                     || _state.Profile?.SecurityStamp != next.Profile?.SecurityStamp)
                 {
                     _state = next;
                     _status = GetProfileStatus.Default.Get(_state);
-                    Store.Execute(_status);
+                    Assign.Execute(_status);
                     _scene = ChildContent(_state);
                 }
             }

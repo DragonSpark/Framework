@@ -1,0 +1,16 @@
+@using DragonSpark.Application.AspNet.Security.Identity.Authentication
+@inject IProfileStatus Model
+
+<CascadingValue TValue="ProfileStatus" Value="@_model" ChildContent="@ChildContent(_model)" />
+    
+@code {
+    ProfileStatus _model;
+    protected override void OnParametersSet()
+    {
+        _model = Model.Get();
+        base.OnParametersSet();
+    }
+
+    [Parameter]
+    public required RenderFragment<ProfileStatus> ChildContent { get; set; }
+}
