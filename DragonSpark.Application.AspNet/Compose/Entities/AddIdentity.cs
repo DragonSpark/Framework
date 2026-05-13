@@ -9,39 +9,37 @@ namespace DragonSpark.Application.AspNet.Compose.Entities;
 
 sealed class AddIdentity<T, TContext> : ICommand<IServiceCollection> where TContext : DbContext where T : class
 {
-	readonly AddFactories<TContext>  _services;
-	readonly Action<IdentityOptions> _identity;
+    readonly AddFactories<TContext>  _services;
+    readonly Action<IdentityOptions> _identity;
+    readonly Action<IdentityBuilder> _builder;
 
-	/*public AddIdentity(IStorageConfiguration storage, ServiceLifetime lifetime = ServiceLifetime.Scoped)
-		: this(storage, DefaultContextFactory<TContext>.Default.Get, lifetime) {}
+    // ReSharper disable once TooManyDependencies
+    public AddIdentity(IStorageConfiguration storage, Action<IdentityOptions> configure,
+                       Action<IdentityBuilder> builder, ServiceLifetime lifetime = ServiceLifetime.Scoped)
+        : this(new AddFactories<TContext>(storage, lifetime), configure, builder) {}
 
-	public AddIdentity(IStorageConfiguration storage, Func<IServiceProvider, TContext> factory,
-	                   ServiceLifetime lifetime = ServiceLifetime.Scoped)
-		: this(new AddFactories<TContext>(storage, factory, lifetime), _ => {}) {}*/
+    public AddIdentity(AddFactories<TContext> services, Action<IdentityOptions> identity,
+                       Action<IdentityBuilder> builder)
+    {
+        _services     = services;
+        _identity     = identity;
+        _builder = builder;
+    }
 
-	public AddIdentity(IStorageConfiguration storage, Action<IdentityOptions> configure,
-	                   ServiceLifetime lifetime = ServiceLifetime.Scoped)
-		: this(new AddFactories<TContext>(storage, lifetime), configure) {}
-
-	public AddIdentity(AddFactories<TContext> services, Action<IdentityOptions> identity)
-	{
-		_services = services;
-		_identity = identity;
-	}
-
-	public void Execute(IServiceCollection parameter)
-	{
-		_services.Get(parameter)
-		         .AddAuthentication(options =>
-		                            {
-			                            options.DefaultScheme       = IdentityConstants.ApplicationScheme;
-			                            options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
-		                            })
-		         .AddIdentityCookies();
-		//
-		parameter.AddIdentityCore<T>(_identity)
-		         .AddEntityFrameworkStores<TContext>()
-		         .AddSignInManager()
-		         .AddDefaultTokenProviders();
-	}
+    public void Execute(IServiceCollection parameter)
+    {
+        _services.Get(parameter)
+                 .AddAuthentication(options =>
+                                    {
+                                        options.DefaultScheme       = IdentityConstants.ApplicationScheme;
+                                        options.DefaultSignInScheme = IdentityConstants.ExternalScheme;
+                                    })
+                 .AddIdentityCookies();
+        //
+        var builder = parameter.AddIdentityCore<T>(_identity)
+                               .AddEntityFrameworkStores<TContext>()
+                               .AddSignInManager()
+                               .AddDefaultTokenProviders();
+        _builder(builder);
+    }
 }

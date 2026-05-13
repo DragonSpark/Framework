@@ -60,6 +60,7 @@ sealed class AddIdentityComponents<T> : ICommand<IServiceCollection> where T : I
                  //
                  .Then.Start<IUserClaimsPrincipalFactory<T>>()
                  .Forward<UserClaimsPrincipals<T>>()
-                 .Scoped();
+                 .Scoped()
+                 ;
     }
 }

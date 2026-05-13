@@ -1,6 +1,6 @@
-﻿using DragonSpark.Model.Commands;
-using DragonSpark.Model.Selection.Conditions;
+using DragonSpark.Model.Commands;
+using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Model.Properties;
 
-public interface IProperty<THost, TValue> : IConditional<THost, TValue>, IAssign<THost, TValue>;
+public interface IProperty<THost, TValue> : ISelect<THost, TValue>, IAssign<THost, TValue>;

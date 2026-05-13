@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.Bearer;
+namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.Passwordless;
 
 public readonly record struct SignInInput<T>(T User, string Subject, bool Persistent, string Scheme)
 {

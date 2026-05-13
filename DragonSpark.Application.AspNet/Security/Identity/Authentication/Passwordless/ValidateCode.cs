@@ -5,7 +5,7 @@ using DragonSpark.Model.Operations.Selection.Stop;
 using DragonSpark.Runtime;
 using Microsoft.AspNetCore.Identity;
 
-namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.Bearer;
+namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.Passwordless;
 
 sealed class ValidateCode<T> : IDepending<ValidateSignInInput<T>> where T : class
 {

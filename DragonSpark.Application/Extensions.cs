@@ -2,7 +2,6 @@ using System;
 using System.Buffers;
 using System.Collections.Generic;
 using System.Security.Claims;
-using System.Text;
 using System.Threading;
 using DragonSpark.Application.Components.Validation.Expressions;
 using DragonSpark.Application.Compose.Runtime;
@@ -20,6 +19,7 @@ using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences.Memory;
+using DragonSpark.Text;
 using Humanizer;
 using Microsoft.Extensions.Hosting;
 using NetFabric.Hyperlinq;
@@ -160,5 +160,5 @@ partial class Extensions
 
     /**/
     public static T Get<T>(this ISerializer<T> @this, byte[] parameter) where T : notnull
-        => @this.Parser.Get(Encoding.UTF8.GetString(parameter));
+        => @this.Parser.Get(BinaryAsText.Default.Get(parameter));
 }

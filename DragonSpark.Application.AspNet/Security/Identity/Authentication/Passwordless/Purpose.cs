@@ -1,4 +1,4 @@
-namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.Bearer;
+namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.Passwordless;
 
 public sealed class Purpose : Text.Text
 {
