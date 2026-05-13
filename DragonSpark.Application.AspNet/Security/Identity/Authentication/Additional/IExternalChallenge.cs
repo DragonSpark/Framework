@@ -3,4 +3,4 @@ using Microsoft.AspNetCore.Http;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.Additional;
 
-public interface IPerformExternalLogin : ISelect<PerformExternalLoginInput, IResult>;
+public interface IExternalChallenge : ISelect<PerformExternalLoginInput, IResult>;
