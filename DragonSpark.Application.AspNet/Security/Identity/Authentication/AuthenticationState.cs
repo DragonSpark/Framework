@@ -7,9 +7,9 @@ namespace DragonSpark.Application.AspNet.Security.Identity.Authentication;
 
 public sealed class AuthenticationState<T> : AuthenticationState where T : IdentityUser
 {
-	public static implicit operator int(AuthenticationState<T> instance) => instance.Profile.Verify().Id;
+	public static implicit operator int(AuthenticationState<T> instance) => instance.Profile?.Id ?? 0;
 
-	public static implicit operator uint(AuthenticationState<T> instance) => instance.Profile.Verify().Id.Grade();
+	public static implicit operator uint(AuthenticationState<T> instance) => instance.Profile?.Id.Grade() ?? 0;
 
 	public static implicit operator T(AuthenticationState<T> instance) => instance.Profile.Verify();
 
