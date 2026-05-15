@@ -11,8 +11,7 @@ namespace DragonSpark.Application.AspNet.Security.Identity.MultiFactor;
 sealed class KeyApplicationLocation : ISelect<KeyApplicationLocationInput, Uri>
 {
 	readonly UrlEncoder _encoder;
-	readonly string     _uri;
-	readonly string     _name;
+	readonly string     _uri, _name;
 
 	public KeyApplicationLocation(IHostEnvironment environment)
 		: this(UrlEncoder.Default, PrimaryAssemblyDetails.Default,

@@ -27,7 +27,7 @@ public sealed class MapTests
 
 		{
 			await using var seed = sources.Get();
-			seed.Basic.AddRange(new() { Name = "One", Created   = Time.Default, Enumeration = FromEnum.Four},
+			seed.Basic.AddRange(new() { Name = "One", Created   = Time.Default, Enumeration = FromEnum.Four },
 			                    new() { Name = "Two", Created   = Time.Default, Enumeration = FromEnum.Two },
 			                    new() { Name = "Three", Created = Time.Default, Enumeration = FromEnum.One });
 			await seed.SaveChangesAsync();
@@ -45,14 +45,17 @@ public sealed class MapTests
 			var changes = await destination.SaveChangesAsync();
 			changes.Should().Be(3);
 		}
-		
+
 		{
 			await using var source      = sources.Get();
 			await using var destination = destinations.Get();
 
 			foreach (var from in source.Basic)
 			{
-				await subject.Off(new(MapInput.New<To>(source.Entry(from), destination), CancellationToken.None));
+				var entity = new To
+					{ Id = from.Id, Name = string.Empty, Created = Time.Default, Enumeration = ToEnum.One };
+				var to = destination.Attach(entity);
+				await subject.Off(new(new MapInput(source.Entry(from), to), CancellationToken.None));
 			}
 
 			var changes = await destination.SaveChangesAsync();
@@ -219,7 +222,13 @@ public sealed class MapTests
 		public required FromEnum Enumeration { get; init; }
 	}
 
-	enum FromEnum : byte { One, Two, [UsedImplicitly] Three, Four }
+	enum FromEnum : byte
+	{
+		One,
+		Two,
+		[UsedImplicitly] Three,
+		Four
+	}
 
 	sealed class FromOwned
 	{
@@ -287,7 +296,13 @@ public sealed class MapTests
 		public required ToEnum Enumeration { get; set; }
 	}
 
-	enum ToEnum : byte { [UsedImplicitly]One, [UsedImplicitly]Two, [UsedImplicitly]Three, [UsedImplicitly] Four }
+	enum ToEnum : byte
+	{
+		[UsedImplicitly] One,
+		[UsedImplicitly] Two,
+		[UsedImplicitly] Three,
+		[UsedImplicitly] Four
+	}
 
 	sealed class ToOwned
 	{

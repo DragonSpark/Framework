@@ -12,5 +12,7 @@ public class TextSize : ITextSize
 	protected TextSize(TextOptions options) => _options = options;
 
 	public TextSizeResult Get(string parameter)
-		=> new(_options.Font, TextMeasurer.MeasureSize(parameter, _options).Size());
+	{
+		return new TextSizeResult(_options.Font, TextMeasurer.Measure(parameter, _options).Bounds.Size());
+	}
 }
