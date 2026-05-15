@@ -3,7 +3,7 @@ using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Selection.Stop;
 
-namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.Bearer;
+namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.Passwordless;
 
 public class SignInBase<T> : ISignIn<T> where T : class
 {
@@ -23,10 +23,12 @@ public class SignInBase<T> : ISignIn<T> where T : class
         var       subject = signin.Subject;
         subject.AuthenticationScheme = scheme;
 
-        var result = await _validate.Off(new(new(signin, parameter), stop));
+        var id     = await signin.Users.GetUserIdAsync(user).Off();
+        var local  = (await signin.Users.FindByIdAsync(id).Off()).Verify();
+        var result = await _validate.Off(new(new(signin, parameter.Subject with { User = local }), stop));
         if (result)
         {
-            await subject.SignInAsync(user, persistent).Off();
+            await subject.SignInAsync(local, persistent).Off();
         }
 
         return result;

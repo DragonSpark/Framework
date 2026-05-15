@@ -1,26 +1,11 @@
-using DragonSpark.Model.Results;
-using DragonSpark.Model.Selection.Alterations;
-using LightInject;
-using LightInject.Microsoft.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using DragonSpark.Composition.Compose;
+using DragonSpark.Model.Selection.Stores;
 
 namespace DragonSpark.Composition.Construction;
 
-sealed class WithComposition : IAlteration<IHostBuilder>
+sealed class WithComposition : ReferenceValueStore<BuildHostContext, BuildHostContext>
 {
-    readonly IResult<ServiceContainer> _services;
     public static WithComposition Default { get; } = new();
 
-    WithComposition() : this(NewDefaultContainer.Default) {}
-
-    public WithComposition(IResult<ServiceContainer> services) => _services = services;
-
-    public IHostBuilder Get(IHostBuilder parameter)
-    {
-        var services = _services.Get();
-        var @default = new LightInjectServiceProviderFactory(services);
-        var factory  = new Factory(@default);
-        var result   = parameter.UseServiceProviderFactory(factory);
-        return result;
-    }
+    WithComposition() : base(x => x.Select(ComposeWithComposition.Default)) {}
 }

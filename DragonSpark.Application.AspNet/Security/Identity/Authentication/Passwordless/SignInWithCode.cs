@@ -1,4 +1,4 @@
-namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.Bearer;
+namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.Passwordless;
 
 public class SignInWithCode<T> : SignInBase<T>, ISignInWithCode<T> where T : class
 {

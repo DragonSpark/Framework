@@ -108,10 +108,7 @@ public static class Extensions
 
 /**/
     public static BuildHostContext WithComposition(this BuildHostContext @this)
-        => @this.Select(Construction.WithComposition.Default);
-
-    /*public static BuildHostContext WithSharedSettings(this BuildHostContext @this)
-        => @this.Select(SharedSettings.Default);*/
+        => Construction.WithComposition.Default.Get(@this);
 
     public static BuildHostContext WithDefaultComposition(this BuildHostContext @this)
         => @this.Configure(Registrations.Default).ComposeUsing<ConfigureDefaultActivation>();

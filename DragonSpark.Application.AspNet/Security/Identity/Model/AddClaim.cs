@@ -1,33 +1,37 @@
+using System;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using DragonSpark.Application.AspNet.Security.Identity.Authentication;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Selection.Stop;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Model;
 
 public class AddClaim<T> : IStopAware<T, IdentityResult> where T : IdentityUser
 {
-	readonly IUsers<T>      _users;
-	readonly Func<T, Claim> _claim;
+    readonly IAuthentications<T> _sessions;
+    readonly Func<T, Claim>      _claim;
 
-	protected AddClaim(IUsers<T> users, string type) : this(users, new Claim(type, string.Empty).Accept) {}
+    public AddClaim(IAuthentications<T> sessions, string type) : this(sessions, new Claim(type, string.Empty).Accept) {}
 
-	protected AddClaim(IUsers<T> users, Func<T, Claim> claim)
-	{
-		_users = users;
-		_claim = claim;
-	}
+    protected AddClaim(IAuthentications<T> sessions, Func<T, Claim> claim)
+    {
+        _sessions = sessions;
+        _claim    = claim;
+    }
 
-	public async ValueTask<IdentityResult> Get(Stop<T> parameter)
-	{
-		var (subject, _) = parameter;
-		using var users  = _users.Get();
-		var       claim  = _claim(parameter);
-		var       user   = await users.Subject.FindByIdAsync(subject.Id.ToString()).Off();
-		var       result = await users.Subject.AddClaimAsync(user.Verify(), claim).Off();
-		return result;
-	}
+    public async ValueTask<IdentityResult> Get(Stop<T> parameter)
+    {
+        var (subject, _) = parameter;
+        using var session = _sessions.Get();
+        var       claim   = _claim(parameter);
+        var       users   = session.Subject.UserManager;
+        var       user    = await users.FindByIdAsync(subject.Id.ToString()).Off();
+        var       verify  = user.Verify();
+        var       result  = await users.AddClaimAsync(verify, claim).Off();
+        await session.Subject.RefreshSignInAsync(verify).Off();
+        return result;
+    }
 }

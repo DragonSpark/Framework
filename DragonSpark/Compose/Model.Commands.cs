@@ -25,6 +25,9 @@ public static partial class ExtensionMethods
 	public static void Execute<T>(this ICommand<Array<T>> @this, params T[] parameters)
 		=> @this.Execute(parameters);
 
+	public static void Execute<T1, T2>(this IAssign<T1, T2> @this, T1 first, T2 second)
+		=> @this.Execute((first, second));
+	
 	public static void Execute<T1, T2>(this ICommand<(T1, T2)> @this, T1 first, T2 second)
 		=> @this.Execute((first, second));
 
@@ -69,15 +72,15 @@ public static partial class ExtensionMethods
 		return @this;
 	}
 
-    public static T Configured<T>(this T @this, params ReadOnlySpan<ICommand<T>> commands)
-    {
-        foreach (var command in commands)
-        {
-            command.Execute(@this);
-        }
+	public static T Configured<T>(this T @this, params ReadOnlySpan<ICommand<T>> commands)
+	{
+		foreach (var command in commands)
+		{
+			command.Execute(@this);
+		}
 
-        return @this;
-    }
+		return @this;
+	}
 
 	public static IAssign<TIn, TOut> ToAssignment<TIn, TOut>(this ISelect<TIn, IMembership<TOut>> @this)
 		=> @this.Select(x => x.Add).Then().ToAssignment();

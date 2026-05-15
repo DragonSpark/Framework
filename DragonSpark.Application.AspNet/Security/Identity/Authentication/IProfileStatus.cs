@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Authentication;
 
-public sealed class CurrentProfileStatus : Variable<ProfileStatus>;
+public interface IProfileStatus : IResult<ProfileStatus>;

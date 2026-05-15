@@ -2,9 +2,10 @@ using System.Threading.Tasks;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Selection.Stop;
+using DragonSpark.Runtime;
 using Microsoft.AspNetCore.Identity;
 
-namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.Bearer;
+namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.Passwordless;
 
 sealed class ValidateCode<T> : IDepending<ValidateSignInInput<T>> where T : class
 {
@@ -20,9 +21,17 @@ sealed class ValidateCode<T> : IDepending<ValidateSignInInput<T>> where T : clas
         _purpose  = purpose;
     }
 
-    public ValueTask<bool> Get(Stop<ValidateSignInInput<T>> parameter)
+    public async ValueTask<bool> Get(Stop<ValidateSignInInput<T>> parameter)
     {
         var (((_, users), (user, input, _, _)), _) = parameter;
-        return users.VerifyUserTokenAsync(user, _provider, _purpose, input).ToOperation();
+        var result = await users.VerifyUserTokenAsync(user, _provider, _purpose, input).Off();
+        if (result && user is IdentityUser { EmailConfirmed: false } u)
+        {
+            u.EmailConfirmed = true;
+            u.Modified       = Time.Default;
+            await users.UpdateAsync(user).Off();
+        }
+
+        return result;
     }
 }

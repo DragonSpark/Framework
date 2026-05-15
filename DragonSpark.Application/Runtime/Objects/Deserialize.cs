@@ -1,5 +1,5 @@
-using DragonSpark.Text;
 using System.Text.Json;
+using DragonSpark.Text;
 
 namespace DragonSpark.Application.Runtime.Objects;
 
@@ -11,9 +11,5 @@ public class Deserialize<T> : IParser<T?>
 
     protected Deserialize(JsonSerializerOptions options) => _options = options;
 
-    public T? Get(string parameter)
-    {
-	    var deserialize = JsonSerializer.Deserialize<T>(parameter, _options);
-	    return deserialize;
-    }
+    public T? Get(string parameter) => JsonSerializer.Deserialize<T>(parameter, _options);
 }

@@ -1,6 +1,6 @@
 using DragonSpark.Compose;
 
-namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.Bearer;
+namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.Passwordless;
 
 public class SignIn<T> : SignInBase<T> where T : class
 {

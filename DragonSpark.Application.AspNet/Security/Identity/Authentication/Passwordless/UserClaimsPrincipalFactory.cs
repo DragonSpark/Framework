@@ -1,18 +1,18 @@
-﻿using System.Security.Claims;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using DragonSpark.Compose;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 
-namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.Bearer;
+namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.Passwordless;
 
 public class UserClaimsPrincipalFactory<T> : Microsoft.AspNetCore.Identity.UserClaimsPrincipalFactory<T>
     where T : class
 {
     readonly IComposeClaims<T> _claims;
 
-    public UserClaimsPrincipalFactory(UserManager<T> userManager, IOptions<IdentityOptions> optionsAccessor,
-                                      IComposeClaims<T> claims)
+    protected UserClaimsPrincipalFactory(UserManager<T> userManager, IOptions<IdentityOptions> optionsAccessor,
+                                         IComposeClaims<T> claims)
         : base(userManager, optionsAccessor)
         => _claims = claims;
 

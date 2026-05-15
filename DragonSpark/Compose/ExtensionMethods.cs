@@ -269,14 +269,17 @@ public static partial class ExtensionMethods
 			=> string.Format(provider, @this, args);
 	}
 
-	extension([NotNullWhen(false)]string? @this)
-	{
+    extension([NotNullWhen(false)]string? @this)
+    {
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public bool IsNullOrEmpty() => string.IsNullOrEmpty(@this);
+        public bool IsAssigned() => !string.IsNullOrEmpty(@this);
+		
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsNullOrEmpty() => string.IsNullOrEmpty(@this);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public bool IsNullOrWhiteSpace() => string.IsNullOrWhiteSpace(@this);
-	}
+        public bool IsNullOrWhiteSpace() => string.IsNullOrWhiteSpace(@this);
+    }
     extension(DateOnly @this)
     {
         public DateTime ToDateTimeLocal() => @this.ToDateTime(TimeOnly.MinValue);
