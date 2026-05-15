@@ -1,4 +1,4 @@
-﻿@typeparam T
+@typeparam T
 
 @using BlazorPro.BlazorSize
 @using DragonSpark.Application.AspNet.Entities.Queries.Runtime
@@ -38,13 +38,13 @@
             FooterTemplate="@FooterTemplate"
             AdditionalAttributes="@AdditionalAttributes"
     >
-        <BodyContentTemplate>
-            <GridEditSettings AllowAdding="true" AllowDeleting="true" AllowEditing="true" />
-            @if(BodyContentTemplate is not null)
-            {
-                @BodyContentTemplate
-            }
-        </BodyContentTemplate>
+            <BodyContentTemplate>
+                <GridEditSettings AllowAdding="true" AllowDeleting="true" AllowEditing="true"/>
+                @if (BodyContentTemplate is not null)
+                {
+                    @BodyContentTemplate
+                }
+            </BodyContentTemplate>
     </DragonSpark.SyncfusionRendering.Components.DataQueryContainer>
 </DragonSpark.Presentation.Components.State.ActivityReceiverContainer>
 

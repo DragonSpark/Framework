@@ -17,12 +17,12 @@ public class ExternalLogin<T> : IExternalLogin where T : class
         _logger   = logger;
     }
 
-    public async ValueTask<SignInResult> Get(Stop<ExternalLoginInfo> parameter)
+    public async ValueTask<SignInResult> Get(Stop<ExternalLoginInput> parameter)
     {
-        var (subject, _) = parameter;
+        var ((subject, persist), _) = parameter;
         using var session = _sessions.Get();
         var result = await session.Subject.ExternalLoginSignInAsync(subject.LoginProvider, subject.ProviderKey,
-                                                                    isPersistent: false, bypassTwoFactor: true)
+                                                                    isPersistent: persist, bypassTwoFactor: true)
                                   .Off();
 
         if (result.Succeeded)

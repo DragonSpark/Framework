@@ -1,3 +1,3 @@
-﻿namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.Additional;
+namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.Additional;
 
-public readonly record struct PerformExternalLoginInput(string Provider, string? ReturnAddress);
+public readonly record struct PerformExternalLoginInput(string Provider, string? ReturnAddress, bool Persist);

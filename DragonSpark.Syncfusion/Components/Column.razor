@@ -16,10 +16,11 @@
 	HeaderTextAlign="@HeaderTextAlign"
 	TextAlign="@TextAlign"
     FilterSettings="@FilterSettings"
+    AllowEditing="@AllowEditing"
     EditTemplate="@_edit"
+    EditType="@EditType"
     ValidationRules="@ValidationRules"
     IsPrimaryKey="@IsPrimaryKey"
-    AllowEditing="@AllowEditing"
 />
 
 @code {
@@ -41,8 +42,8 @@
     [CascadingParameter]
     ISpecialColumnContainer Columns { get; set; } = null!;
 
-	[Parameter]
-	public RenderFragment<T>? Template { get; set; }
+    [Parameter]
+    public RenderFragment<T>? Template { get; set; }
 
     [Parameter]
     public RenderFragment<T>? EditTemplate { get; set; }
@@ -55,6 +56,9 @@
 
     [Parameter]
     public bool AllowEditing { get; set; } = true;
+
+    [Parameter]
+    public EditType EditType { get; set; } = EditType.DefaultEdit;
 
 	[Parameter]
 	public bool AutoFit { get; set; }
