@@ -1,4 +1,4 @@
-﻿@typeparam T
+@typeparam T
 
 @using BlazorPro.BlazorSize
 @using DragonSpark.Application.AspNet.Entities.Queries.Runtime
@@ -38,13 +38,13 @@
             FooterTemplate="@FooterTemplate"
             AdditionalAttributes="@AdditionalAttributes"
     >
-        <BodyContentTemplate>
-            <GridEditSettings AllowAdding="true" AllowDeleting="true" AllowEditing="true" />
-            @if(BodyContentTemplate is not null)
-            {
-                @BodyContentTemplate
-            }
-        </BodyContentTemplate>
+            <BodyContentTemplate>
+                <GridEditSettings AllowAdding="true" AllowDeleting="true" AllowEditing="true"/>
+                @if (BodyContentTemplate is not null)
+                {
+                    @BodyContentTemplate
+                }
+            </BodyContentTemplate>
     </DragonSpark.SyncfusionRendering.Components.DataQueryContainer>
 </DragonSpark.Presentation.Components.State.ActivityReceiverContainer>
 
@@ -126,6 +126,12 @@
     public EventCallback<Allow<T>> Editing { get; set; }
 
     [Parameter]
+    public EventCallback<Allow<T>> Deleting { get; set; }
+
+    [Parameter]
+    public EventCallback<T> Delete { get; set; }
+
+    [Parameter]
     public EventCallback<T> Created { get; set; }
 
     [Parameter]
@@ -159,12 +165,18 @@
         switch (action)
         {
             case "Delete":
-                switch (await _prompt.Confirm(subject))
+                var allow = new Allow<T>(subject);
+                await Deleting.On(allow);
+                if (allow)
                 {
-                    case DialogResult.Ok:
-                        await Update.On(new(parameter, Stop));
-                        await Updated.Off(parameter);
-                        break;
+                    switch (await _prompt.Confirm(subject))
+                    {
+                        case DialogResult.Ok:
+                            await Delete.On(subject);
+                            await Update.On(new(parameter, Stop));
+                            await Updated.Off(parameter);
+                            break;
+                    }
                 }
                 break;
             default:

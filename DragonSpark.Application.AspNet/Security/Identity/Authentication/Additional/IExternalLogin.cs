@@ -3,4 +3,4 @@ using Microsoft.AspNetCore.Identity;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.Additional;
 
-public interface IExternalLogin : IStopAware<ExternalLoginInfo, SignInResult>;
+public interface IExternalLogin : IStopAware<ExternalLoginInput, SignInResult>;

@@ -20,10 +20,11 @@ public class ExternalChallenge<T> : IExternalChallenge where T : class
 
     public IResult Get(PerformExternalLoginInput parameter)
     {
-        var (provider, returnAddress) = parameter;
+        var (provider, returnAddress, persist) = parameter;
         IEnumerable<KeyValuePair<string, StringValues>> query =
         [
             new("ReturnUrl", returnAddress),
+            new("Persist", persist.ToString()),
             new("Action", _action)
         ];
         var       context    = _context.Get();
