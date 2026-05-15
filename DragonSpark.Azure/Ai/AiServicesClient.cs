@@ -9,5 +9,6 @@ public sealed class AiServicesClient : Instance<AzureOpenAIClient>
 	public AiServicesClient(AiServicesConfiguration configuration) : this(configuration, new(configuration.Key)) {}
 
 	public AiServicesClient(AiServicesConfiguration configuration, AzureKeyCredential credential)
-		: base(new(new(configuration.Address), credential)) {}
+		: base(new(new(configuration.Address), credential,
+		           new(AzureOpenAIClientOptions.ServiceVersion.V2025_04_01_Preview))) {}
 }

@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using DragonSpark.Compose.Extents;
 using DragonSpark.Compose.Extents.Commands;
 using DragonSpark.Compose.Extents.Conditions;
@@ -15,11 +12,15 @@ using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Allocated;
 using DragonSpark.Model.Operations.Results;
 using DragonSpark.Model.Operations.Results.Stop;
+using DragonSpark.Model.Operations.Selection.Stop;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Runtime.Activation;
 using JetBrains.Annotations;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Action = System.Action;
 using CommandComposer = DragonSpark.Compose.Extents.Commands.CommandComposer;
 using ValueTask = System.Threading.Tasks.ValueTask;
@@ -152,4 +153,7 @@ public static partial class ExtensionMethods
 	}
 
 	public static IStopAware<T> AsToken<T>(this IResulting<T> @this) => new StopAwareAdapter<T>(@this);
+	
+	public static IStopAware<TIn, TOut> AsReferenceStoring<TIn, TOut>(this IStopAware<TIn, TOut> @this)
+		where TIn : class where TOut : class => new ReferenceStoring<TIn, TOut>(@this);
 }

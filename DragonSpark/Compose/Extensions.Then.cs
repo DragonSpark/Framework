@@ -1,9 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
 using DragonSpark.Compose.Model.Commands;
 using DragonSpark.Compose.Model.Operations;
 using DragonSpark.Compose.Model.Operations.Allocated;
@@ -25,6 +19,13 @@ using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Selection.Stores;
 using DragonSpark.Model.Sequences;
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
+using Condition = DragonSpark.Compose.Model.Selection.Condition;
 using IDepending = DragonSpark.Model.Operations.Selection.Conditions.IDepending;
 
 namespace DragonSpark.Compose;

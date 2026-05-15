@@ -6,7 +6,7 @@ using System;
 namespace DragonSpark.Application.AspNet.Entities.Initialization;
 
 [UsedImplicitly]
-public abstract class DataMigration : Migration
+public abstract class DataMigration : Microsoft.EntityFrameworkCore.Migrations.Migration
 {
 	readonly IResult<IDataMigrationRegistry?> _registry;
 	readonly ISeed                            _initializer;

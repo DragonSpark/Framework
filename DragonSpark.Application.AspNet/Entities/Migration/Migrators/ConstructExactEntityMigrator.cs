@@ -1,0 +1,38 @@
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Selection;
+using DragonSpark.Model.Selection.Conditions;
+using DragonSpark.Reflection.Types;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+
+namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
+
+sealed class ConstructExactEntityMigrator : ISelect<ConstructEntityMigratorInput, IEntityMigrator>
+{
+	public static ConstructExactEntityMigrator Default { get; } = new();
+
+	ConstructExactEntityMigrator()
+		: this(Start.A.Generic(typeof(EntityMigrator<,>))
+		            .Of.Type<IEntityMigrator>()
+		            .WithParameterOf<DbContext>()
+		            .AndOf<DbContext>(),
+		       NamedModels.Default) {}
+
+	readonly IGeneric<DbContext, DbContext, IEntityMigrator> _generic;
+	readonly ICondition<IEntityType>                         _condition;
+
+	public ConstructExactEntityMigrator(IGeneric<DbContext, DbContext, IEntityMigrator> generic,
+	                                    ICondition<IEntityType> condition)
+	{
+		_generic   = generic;
+		_condition = condition;
+	}
+
+	public IEntityMigrator Get(ConstructEntityMigratorInput parameter)
+	{
+		var (source, destination, from, to) = parameter;
+		return _condition.Get(to)
+			       ? new NamedEntityMigrator(new(source, destination, from.Name), to)
+			       : _generic.Get(from.ClrType, to.ClrType)(source, destination);
+	}
+}

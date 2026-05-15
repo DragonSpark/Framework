@@ -1,6 +1,6 @@
 ﻿namespace DragonSpark.Drawing;
 
-public sealed class LoadPngData  :LoadImageData
+public sealed class LoadPngData : LoadImageData
 {
 	public static LoadPngData Default { get; } = new();
 

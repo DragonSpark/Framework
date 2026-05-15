@@ -3,6 +3,7 @@ using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Selection.Conditions;
+using DragonSpark.Runtime.Activation;
 using System;
 using System.Reflection;
 
@@ -10,6 +11,9 @@ namespace DragonSpark.Compose;
 
 public static class A
 {
+	public static T New<T>() => Runtime.Activation.New<T>.Default.Get();
+	public static object New(Type of) => NewInstance.Default.Get(of);
+
 	public static T Default<T>() => DragonSpark.Model.Results.Default<T>.Instance.Get();
 
 	public static T Of<T>() => Start.An.Instance<T>();

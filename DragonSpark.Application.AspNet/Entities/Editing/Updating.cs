@@ -6,7 +6,10 @@ namespace DragonSpark.Application.AspNet.Entities.Editing;
 
 public class Updating<TIn, TOut> : Modifying<TIn, TOut> where TOut : class
 {
-	protected Updating(IScopes scopes, IQuery<TIn, TOut> query) : this(scopes.Then().Use(query).Edit.Single()) {}
+	protected Updating(IScopes scopes, IQuery<TIn, TOut> query) : this(scopes, query, UpdateLocal<TOut>.Default) {}
+
+	protected Updating(IScopes scopes, IQuery<TIn, TOut> query, IModify<TOut> modify)
+		: this(scopes.Then().Use(query).Edit.Single(), modify) {}
 
 	/*protected Updating(IScopes scopes, ISelecting<TIn, TOut> selecting)
 		: this(scopes, selecting.AsStop()) {}*/

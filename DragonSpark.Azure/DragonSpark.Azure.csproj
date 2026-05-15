@@ -1,6 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
 	<TargetFramework>$(DefaultTargetFramework)</TargetFramework>
+	  <WarningsNotAsErrors>OPENAI001</WarningsNotAsErrors>
+	  <NoWarn>OPENAI001</NoWarn>
   </PropertyGroup>
 
 	<ItemGroup>

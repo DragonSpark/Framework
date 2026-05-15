@@ -2,10 +2,7 @@ using DragonSpark.Application.AspNet.Entities.Queries.Compiled;
 using DragonSpark.Application.AspNet.Entities.Queries.Compiled.Evaluation;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
-using DragonSpark.Model.Operations.Selection.Stop;
-using DragonSpark.Model.Selection;
 using JetBrains.Annotations;
-using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Editing;
@@ -74,11 +71,4 @@ public readonly struct Edit<T>(IEditor editor, T subject) : IEditor
 		context = editor;
 		subject = Subject;
 	}
-}
-
-public class Edit<TIn, T> : StopAware<TIn, Edit<T>>, IEdit<TIn, T>
-{
-	protected Edit(ISelect<Stop<TIn>, ValueTask<Edit<T>>> select) : base(select) {}
-
-	protected Edit(Func<Stop<TIn>, ValueTask<Edit<T>>> select) : base(select) {}
 }

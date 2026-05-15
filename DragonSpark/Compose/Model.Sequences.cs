@@ -2,6 +2,7 @@
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
 using NetFabric.Hyperlinq;
+using System;
 using System.Collections.Generic;
 
 namespace DragonSpark.Compose;
@@ -27,8 +28,10 @@ public static partial class ExtensionMethods
 
 	/**/
 
-	public static T? ValueOrDefault<T>(this Option<T> @this) where T : struct
-		=> @this.IsSome ? @this.Value : null;
+	public static T? ValueOrDefault<T>(this Option<T> @this) where T : struct => @this.IsSome ? @this.Value : null;
 
 	public static T? OrDefault<T>(this Option<T> @this) => @this.IsSome ? @this.Value : default;
+
+	public static T Verified<T>(this Option<T> @this)
+		=> @this.IsSome ? @this.Value : throw new InvalidOperationException();
 }

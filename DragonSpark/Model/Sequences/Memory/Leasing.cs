@@ -1,20 +1,20 @@
-using System;
-using System.Runtime.CompilerServices;
 using DragonSpark.Compose;
 using JetBrains.Annotations;
 using NetFabric.Hyperlinq;
+using System;
+using System.Runtime.CompilerServices;
 
 namespace DragonSpark.Model.Sequences.Memory;
 
-
 public readonly struct Leasing<T> : IDisposable
 {
-    readonly Lease<T>  _owner;
-    readonly Memory<T> _reference;
-
     public static implicit operator Memory<T>(Leasing<T> instance) => instance.AsMemory();
 
     public static Leasing<T> Default { get; } = new(Lease.Empty<T>(), Memory<T>.Empty, 0);
+
+    readonly Lease<T>  _owner;
+    readonly Memory<T> _reference;
+
 
     [MustDisposeResource]
     public Leasing(Lease<T> owner) : this(owner, (uint)owner.Memory.Length) { }

@@ -15,6 +15,7 @@
 	Compose="@Compose"
 	Results="@Results"
 	LoadingTemplate="@EmptyContentTemplate.Default"
+	EnableClientCover="@EnableClientCover"
 	EmptyElementsTemplate="@EmptyElementsTemplate"
 	HeaderTemplate="@HeaderTemplate"
 	FooterTemplate="@FooterTemplate"
@@ -33,6 +34,8 @@
 </QueryContentContainer>
 
 @code {
+	[Parameter]
+	public required bool EnableClientCover { get; set; } = true;
 
 	[Parameter]
 	public IQueries<T>? Content { get; set; }
