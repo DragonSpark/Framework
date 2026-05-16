@@ -25,9 +25,9 @@ sealed class IdentityAwareEntityMigrator : IEntityMigrator
 
 	public EntityTypeMapping Get() => _previous.Get();
 
-	public ValueTask Get(Stop<EntityPreMigrationInput> parameter) => ValueTask.CompletedTask;
+	public ValueTask Get(Stop<EntityPreMigrationInput> parameter) => _previous.Get(parameter);
 
-	public ValueTask Get(Stop<EntityPostMigrationInput> parameter) => ValueTask.CompletedTask;
+	public ValueTask Get(Stop<EntityPostMigrationInput> parameter) => _previous.Get(parameter);
 
 	public async ValueTask Get(Stop<EntityMigratorInput> parameter)
 	{

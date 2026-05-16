@@ -39,7 +39,7 @@ sealed class ComposeEntityMap<TFrom, TTo> : IStopAware<IReadOnlyCollection<TFrom
 		var keys     = subject.Select(_source).ToArray();
 		var where    = ComposeWhere<TTo>.Default.Get(new(_destination.EntityType, keys));
 		var existing = await _destination.Where(where).ToArrayAsync(stop).Off();
-		var result   = existing.ToDictionary(_existing, StructuralEqualityComparer<TFrom, TTo>.Default).ToTable();
+		var result   = existing.ToDictionary(_existing, StructuralEqualityComparer.Default).ToTable();
 		return result;
 	}
 }

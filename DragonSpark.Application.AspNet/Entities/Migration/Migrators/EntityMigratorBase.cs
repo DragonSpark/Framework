@@ -18,9 +18,10 @@ public class EntityMigratorBase<TFrom, TTo> : Instance<EntityTypeMapping>, IEnti
 	protected EntityMigratorBase(DbContext source, DbContext destination)
 		: this(new(source, destination), Map.Default) {}
 
-	protected EntityMigratorBase(DbContext source, DbContext destination, 
+	protected EntityMigratorBase(DbContext source, DbContext destination,
 	                             Func<Stop<MapInput<TFrom, TTo>>, ValueTask> map)
 		: this(new(source, destination), new Map<TFrom, TTo>(map)) {}
+
 	protected EntityMigratorBase(DbContext source, DbContext destination, Action<MapInput<TFrom, TTo>> map)
 		: this(new(source, destination), new Map<TFrom, TTo>(map)) {}
 
@@ -28,7 +29,8 @@ public class EntityMigratorBase<TFrom, TTo> : Instance<EntityTypeMapping>, IEnti
 		: this(new(source, destination), new Map<TFrom, TTo>(map)) {}
 
 	protected EntityMigratorBase(Contexts<TFrom> contexts, IMap map)
-		: this(contexts, Processors<TFrom, TTo>.Default.Get(new(contexts.From, map))) {}
+		: this(contexts,
+		       Processors<TFrom, TTo>.Default.Get(new(contexts, map))) {}
 
 	protected EntityMigratorBase(Contexts<TFrom> contexts, IEntityProcessor<TFrom> processor)
 		: base(new(typeof(TFrom), typeof(TTo)))
@@ -52,7 +54,8 @@ public class EntityMigratorBase<TFrom, TTo> : Instance<EntityTypeMapping>, IEnti
 		}
 		catch (Exception e)
 		{
-			logger.LogError(e, "A problem was encountered while processing the entities {From} -> {To}", typeof(TFrom), typeof(TTo));
+			logger.LogError(e, "A problem was encountered while processing the entities {From} -> {To}", typeof(TFrom),
+			                typeof(TTo));
 			throw;
 		}
 	}

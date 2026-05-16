@@ -6,4 +6,3 @@ sealed class Update<TFrom, TTo> : DestinationBase<TFrom, TTo> where TFrom : clas
 {
 	public Update(IMap map) : base(LocateAwareInstance<TFrom, TTo>.Default, map) {}
 }
-

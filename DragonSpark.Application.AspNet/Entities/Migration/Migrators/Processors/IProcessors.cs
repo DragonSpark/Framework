@@ -3,4 +3,4 @@ using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators.Processors;
 
-public interface IProcessors<T> : ISelect<ProcessorsInput, IEntityProcessor<T>>;
+public interface IProcessors<T> : ISelect<ProcessorsInput<T>, IEntityProcessor<T>> where T : class;
