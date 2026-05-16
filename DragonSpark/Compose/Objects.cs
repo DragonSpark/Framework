@@ -1,13 +1,13 @@
+using DragonSpark.Model;
+using DragonSpark.Model.Selection;
+using DragonSpark.Runtime;
+using JetBrains.Annotations;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using DragonSpark.Model;
-using DragonSpark.Model.Selection;
-using DragonSpark.Runtime;
-using JetBrains.Annotations;
 
 namespace DragonSpark.Compose;
 
@@ -218,6 +218,7 @@ public static partial class ExtensionMethods
     public static long Clip(this in decimal @this) => (long)@this;
 
     public static uint Next(this in uint @this) => @this + 1;
+    public static ulong Next(this in ulong @this) => @this + 1;
 
     public static byte Plus(this in byte @this, in byte other) => (byte)(@this + other);
 

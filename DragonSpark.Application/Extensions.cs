@@ -1,8 +1,3 @@
-using System;
-using System.Buffers;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Threading;
 using DragonSpark.Application.Components.Validation.Expressions;
 using DragonSpark.Application.Compose.Runtime;
 using DragonSpark.Application.Compose.Store.Operations.Memory;
@@ -23,6 +18,11 @@ using DragonSpark.Text;
 using Humanizer;
 using Microsoft.Extensions.Hosting;
 using NetFabric.Hyperlinq;
+using System;
+using System.Buffers;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading;
 
 namespace DragonSpark.Application;
 
@@ -129,6 +129,7 @@ partial class Extensions
     public static string Ordinalize(this in ushort @this) => ((int)@this).Ordinalize();
 
     public static string Ordinalize(this in uint @this) => ((int)@this).Ordinalize();
+    public static string Ordinalize(this in ulong @this) => ((int)@this).Ordinalize();
 
 /**/
     public static Compose.OperationComposer<T> Then<T>(this OperationComposer<T> @this) => new(@this.Get());
