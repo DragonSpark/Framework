@@ -6,7 +6,7 @@ namespace DragonSpark.Application.AspNet.Security.Identity;
 
 [MustDisposeResource]
 public class IdentityDbContext<T>
-	: Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityDbContext<T, IdentityRole<int>, int>
+	: Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityDbContext<T, IdentityRole<uint>, uint>
 	where T : IdentityUser
 {
 	public IdentityDbContext() {}
