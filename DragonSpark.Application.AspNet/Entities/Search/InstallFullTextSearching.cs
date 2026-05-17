@@ -13,9 +13,11 @@ public sealed class InstallFullTextSearching : IInitializer
 {
 	public static InstallFullTextSearching Default { get; } = new();
 
-	InstallFullTextSearching()
-		: this("SELECT CAST(SERVERPROPERTY('IsFullTextInstalled') AS BIT)",
-		       "IF NOT EXISTS (SELECT 1 FROM sys.fulltext_catalogs WHERE name = 'DefaultFullTextCatalog') CREATE FULLTEXT CATALOG DefaultFullTextCatalog AS DEFAULT;",
+	InstallFullTextSearching() : this(DefaultCatalogName.Default) {}
+	
+	public InstallFullTextSearching(string name)
+		: this("SELECT CAST(SERVERPROPERTY('IsFullTextInstalled') AS BIT) AS [Value]",
+		       $"IF NOT EXISTS (SELECT 1 FROM sys.fulltext_catalogs WHERE name = '{name}') CREATE FULLTEXT CATALOG {name};",
 		       EnableFullTextCommands.Default) {}
 
 	readonly string                                       _exists;
@@ -33,7 +35,7 @@ public sealed class InstallFullTextSearching : IInitializer
 	public async ValueTask Get(Stop<DbContext> parameter)
 	{
 		var (subject, stop) = parameter;
-		var supported = await subject.Database.SqlQueryRaw<bool?>(_exists, stop).FirstOrDefaultAsync().Off() ?? false;
+		var supported = await subject.Database.SqlQueryRaw<bool?>(_exists).FirstOrDefaultAsync(stop).Off() ?? false;
 		if (supported)
 		{
 			await subject.Database.ExecuteSqlRawAsync(_install, stop).Off();
