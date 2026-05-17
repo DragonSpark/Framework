@@ -12,7 +12,7 @@ sealed class ChangeType : ISelect<ChangeTypeInput, object?>
 
 	public object? Get(ChangeTypeInput parameter)
 	{
-		var (value, sourceType, targetType, name) = parameter;
+		var (value, sourceType, targetType) = parameter;
 		try
 		{
 			return Convert.ChangeType(value, targetType);
@@ -30,10 +30,8 @@ sealed class ChangeType : ISelect<ChangeTypeInput, object?>
 			{
 				return sourceConverter.ConvertTo(value, targetType);
 			}
-
-			// Loud fail — better to explode early in migration than corrupt data
-			throw new
-				InvalidOperationException($"Cannot convert value '{value}' ({sourceType}) to target type {targetType} for property '{name}'.");
 		}
+
+		return null;
 	}
 }

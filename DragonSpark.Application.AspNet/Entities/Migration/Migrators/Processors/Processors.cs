@@ -1,7 +1,4 @@
-﻿using DragonSpark.Application.AspNet.Entities.Migration.Identity;
-using DragonSpark.Application.AspNet.Entities.Migration.Migrators.Selectors;
-using DragonSpark.Model.Selection.Conditions;
-using Microsoft.EntityFrameworkCore.Metadata;
+﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators.Selectors;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators.Processors;
 
@@ -9,19 +6,12 @@ sealed class Processors<TFrom, TTo> : IProcessors<TFrom> where TFrom : class whe
 {
 	public static Processors<TFrom, TTo> Default { get; } = new();
 
-	Processors() : this(IsIdentityEntity.Default) {}
+	Processors() : this(IdentityAwareProcessors<TFrom, TTo>.Default) {}
 
-	readonly ICondition<IEntityType> _identity;
+	readonly IProcessors<TFrom> _previous;
 
-	public Processors(ICondition<IEntityType> identity) => _identity = identity;
+	public Processors(IProcessors<TFrom> previous) => _previous = previous;
 
-	public IEntityProcessor<TFrom> Get(ProcessorsInput parameter)
-	{
-		var (type, map) = parameter;
-		var identity = _identity.Get(type);
-		IEntityProcessor<TFrom> processor = identity
-			                                    ? new IdentityAwareEntityProcessor<TFrom, TTo>(map, type)
-			                                    : new UpsertEntities<TFrom, TTo>(map);
-		return new ExceptionAwareEntityProcessor<TFrom, TTo>(processor);
-	}
+	public IEntityProcessor<TFrom> Get(ProcessorsInput<TFrom> parameter)
+		=> new ExceptionAwareEntityProcessor<TFrom, TTo>(_previous.Get(parameter));
 }

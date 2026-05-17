@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Model.Selection;
+using System;
 
 namespace DragonSpark.Model.Sequences.Collections;
 
@@ -15,7 +16,7 @@ public sealed class Cast : ISelect<CastInput, System.Array>
 
 		for (var i = 0; i < input.Length; i++)
 		{
-			result.SetValue(input[i], i);
+			result.SetValue(Convert.ChangeType(input[i], to), i);
 		}
 
 		return result;

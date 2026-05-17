@@ -23,7 +23,7 @@ sealed class DetermineValue : ISelect<DetermineValueInput, object?>
 			var sourceType = value.GetType();
 			if (sourceType != targetType)
 			{
-				return _change.Get(new(value, sourceType, targetType, name));
+				return _change.Get(new(value, sourceType, targetType));
 			}
 		}
 

@@ -15,7 +15,7 @@ sealed class EnumerationAwareChangeType : ISelect<ChangeTypeInput, object?>
 
 	public object? Get(ChangeTypeInput parameter)
 	{
-		var (value, sourceType, targetType, _) = parameter;
+		var (value, sourceType, targetType) = parameter;
 		if (sourceType.IsEnum || targetType.IsEnum)
 		{
 			if (targetType.IsEnum)
