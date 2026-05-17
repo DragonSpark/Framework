@@ -1,25 +1,21 @@
-﻿using Microsoft.ApplicationInsights.Channel;
-using Microsoft.ApplicationInsights.DataContracts;
-using Microsoft.ApplicationInsights.Extensibility;
+﻿using OpenTelemetry;
+using System.Diagnostics;
 
 namespace DragonSpark.Azure.Messaging.Messages;
 
-// Source - https://stackoverflow.com/a/76180024
-// Posted by Peter Bons
-// Retrieved 2026-02-14, License - CC BY-SA 4.0
-public sealed class ServiceBusTelemetryReducer : ITelemetryProcessor
+public sealed class ServiceBusTelemetryReducer : BaseProcessor<Activity>
 {
-	private readonly ITelemetryProcessor _next;
+	public static ServiceBusTelemetryReducer Default { get; } = new();
 
-	public ServiceBusTelemetryReducer(ITelemetryProcessor next) => _next = next;
+	ServiceBusTelemetryReducer() {}
 
-	public void Process(ITelemetry item)
+	public override void OnEnd(Activity activity)
 	{
-		var process = item is not DependencyTelemetry { Type: "Azure Service Bus", Name: "ServiceBusReceiver.Receive" };
-
-		if (process)
+		var enable = activity.Source.Name == "Azure.Messaging.ServiceBus" ||
+		             activity.GetTagItem("az.namespace") is "Microsoft.ServiceBus";
+		if (enable && activity.OperationName == "ServiceBusReceiver.Receive")
 		{
-			_next.Process(item);
+			activity.ActivityTraceFlags &= ~ActivityTraceFlags.Recorded;
 		}
 	}
 }
