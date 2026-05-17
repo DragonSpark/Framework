@@ -271,15 +271,19 @@ public static partial class ExtensionMethods
 
 	extension([NotNullWhen(false)]string? @this)
 	{
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		public bool IsAssigned() => !string.IsNullOrEmpty(@this);
-		
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+	    [MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public bool IsNullOrEmpty() => string.IsNullOrEmpty(@this);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsNullOrWhiteSpace() => string.IsNullOrWhiteSpace(@this);
     }
+	
+	extension([NotNullWhen(true)]string? @this)
+	{
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public bool IsAssigned() => !string.IsNullOrEmpty(@this);
+		
+	}
     extension(DateOnly @this)
     {
         public DateTime ToDateTimeLocal() => @this.ToDateTime(TimeOnly.MinValue);
