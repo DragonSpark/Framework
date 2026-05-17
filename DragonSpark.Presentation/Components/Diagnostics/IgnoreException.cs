@@ -5,7 +5,7 @@ using System;
 
 namespace DragonSpark.Presentation.Components.Diagnostics;
 
-sealed class IgnoreException : ICondition<Exception>
+public sealed class IgnoreException : ICondition<Exception>
 {
 	public static IgnoreException Default { get; } = new();
 
@@ -13,7 +13,7 @@ sealed class IgnoreException : ICondition<Exception>
 
 	public bool Get(Exception parameter) => parameter switch
 	{
-		SqlException x => x.Message.Contains("Operation cancelled by user."),
+		SqlException x => x.Number == 0 || x.Message.Contains("Operation cancelled by user."),
 		OperationCanceledException => true,
 		JSDisconnectedException => true,
 		_ => false
