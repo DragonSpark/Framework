@@ -1,33 +1,31 @@
-﻿using DragonSpark.Compose;
+using DragonSpark.Application.AspNet;
+using DragonSpark.Compose;
 using Microsoft.AspNetCore.Components;
 
 namespace DragonSpark.Presentation.Components.Navigation;
 
 public class NavigateTo : ComponentBase
 {
-	[Inject]
-	protected NavigationManager Navigation { get; set; } = null!;
+    [Inject]
+    protected NavigationManager Navigation { get; set; } = null!;
 
-	[Parameter]
-	public string Path { get; set; } = null!;
+    [Parameter]
+    public string Path { get; set; } = null!;
 
-	[Parameter]
-	public bool Forced { get; set; }
-	
-	[Parameter]
-	public bool Replace { get; set; }
+    [Parameter]
+    public bool Forced { get; set; }
 
-	protected override void OnInitialized()
-	{
-		Navigate();
-	}
+    [Parameter]
+    public bool Replace { get; set; }
 
-	protected void Navigate()
-	{
-		var path = Path.Verify("Path not provided for navigation.");
-		if (path.TrimStart('/') != Navigation.ToBaseRelativePath(Navigation.Uri))
-		{
-			Navigation.NavigateTo(path, Forced, Replace);
-		}
-	}
+    protected override void OnInitialized()
+    {
+        Navigate();
+    }
+
+    protected void Navigate()
+    {
+        var path = Path.Verify("Path not provided for navigation.");
+        Navigation.NavigateTo(path, !Navigation.IsOn(path) && Forced, Replace);
+    }
 }

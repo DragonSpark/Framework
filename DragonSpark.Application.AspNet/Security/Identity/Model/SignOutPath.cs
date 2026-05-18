@@ -4,5 +4,5 @@ public sealed class SignOutPath : Text.Text
 {
 	public static SignOutPath Default { get; } = new();
 
-	SignOutPath() : base("/Identity/Account/LogOut") {}
+	SignOutPath() : base("/Account/LogOut") {} // TODO
 }

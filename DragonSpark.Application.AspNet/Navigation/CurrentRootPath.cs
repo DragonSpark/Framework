@@ -1,13 +1,25 @@
-﻿using DragonSpark.Model.Results;
+using DragonSpark.Compose;
+using DragonSpark.Model.Selection.Conditions;
 using Microsoft.AspNetCore.Components;
 
 namespace DragonSpark.Application.AspNet.Navigation;
 
-public sealed class CurrentRootPath : IResult<string>
+public sealed class CurrentRootPath : Text.Text
 {
-	readonly NavigationManager _manager;
+    public CurrentRootPath(NavigationManager manager) : base(RootPath.Default.Then().Bind(manager)) {}
+}
 
-	public CurrentRootPath(NavigationManager manager) => _manager = manager;
+public readonly record struct IsOnInput(NavigationManager Subject, string Path);
+sealed class IsOn : ICondition<IsOnInput>
+{
+    public static IsOn Default { get; } = new();
 
-	public string Get() => $"/{_manager.ToBaseRelativePath(_manager.Uri)}";
+    IsOn() {}
+    
+    public bool Get(IsOnInput parameter)
+    {
+        var (subject, path) = parameter;
+        var result = subject.Path().StartsWith(path.TrimStart('/'));
+        return result;
+    }
 }

@@ -3,13 +3,12 @@
 @using DragonSpark.Application.AspNet.Security.Identity
 @using DragonSpark.Application.AspNet.Security.Identity.Authentication
 @using DragonSpark.Application.AspNet.Security.Identity.Model
-@using DragonSpark.Model.Results
 
 @typeparam T where T : IdentityUser
 
 @inject IValidationServices Validation
 @inject AuthenticationStore Set
-@inject SignOutCurrentPath SignOut
+@inject IRedirectToSignOut SignOut
 @inject IAssignProfileStatus Assign
 
 @if (_scene is not null)
@@ -19,16 +18,15 @@
 
 @code
 {
-    readonly Switch _update = new();
-    AuthenticationState<T>? _state;
-    ProfileStatus _status;
-    RenderFragment? _scene;
+    AuthenticationState<T>? _current;
+    ProfileStatus           _status;
+    RenderFragment?         _scene;
 
     protected override async Task OnInitializedAsync()
     {
-        var current = await Operation.On();
-        var on     = await Validation.Get(current.User).On();
-        if (!on)
+        var current = await State.On();
+        var valid = await Validation.Get(current.User).On();
+        if (!valid)
         {
             Set.Execute(AuthenticationState<T>.Default);
             SignOut.Execute();
@@ -36,39 +34,27 @@
     }
 
     [Parameter]
-    public RenderFragment<AuthenticationState<T>> ChildContent { get; set; } = null!;
+    public required RenderFragment<AuthenticationState<T>> ChildContent { get; set; }
 
     [CascadingParameter]
-    Task<AuthenticationState> Operation
-    {
-        get => _operation;
-        set
-        {
-            if (_operation != value)
-            {
-                _operation = value;
-                _update.Up();
-            }
-        }
-    }   Task<AuthenticationState> _operation = null!;
+    public required Task<AuthenticationState> State { get; set; }
 
-    protected override async Task OnParametersSetAsync()
+    public override async Task SetParametersAsync(ParameterView parameters)
     {
-        if (_operation.Account() is not null && _update.Down())
+        var changed  = parameters.DidParameterChange(nameof(State), State);
+        await base.SetParametersAsync(parameters).On();
+        if (changed)
         {
-            // ReSharper disable once AsyncApostle.AsyncWait
-            var state = Operation.IsCompletedSuccessfully ? Operation.Result : await Operation.On();
-            if (state != _state && state is AuthenticationState<T> next)
+            var state = await State.On();
+            if (state != _current && state is AuthenticationState<T> next
+                                  && (_current is null
+                                      || _current.User.IsAuthenticated() != state.User.IsAuthenticated()
+                                      || _current.Profile?.SecurityStamp != next.Profile?.SecurityStamp))
             {
-                if (_state is null
-                    || _state.User.IsAuthenticated() != state.User.IsAuthenticated()
-                    || _state.Profile?.SecurityStamp != next.Profile?.SecurityStamp)
-                {
-                    _state = next;
-                    _status = GetProfileStatus.Default.Get(_state);
-                    Assign.Execute(_status);
-                    _scene = ChildContent(_state);
-                }
+                _current = next;
+                _scene   = ChildContent(_current);
+                _status  = GetProfileStatus.Default.Get(_current);
+                Assign.Execute(_status);
             }
         }
     }

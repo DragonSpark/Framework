@@ -14,47 +14,51 @@ namespace DragonSpark.Application.AspNet;
 
 sealed class DefaultRegistrations : ICommand<IServiceCollection>
 {
-	public static DefaultRegistrations Default { get; } = new();
+    public static DefaultRegistrations Default { get; } = new();
 
-	DefaultRegistrations() {}
+    DefaultRegistrations() {}
 
-	public void Execute(IServiceCollection parameter)
-	{
-		parameter.Start<IScopedToken>()
-		         .Forward<ScopedToken>()
-		         .Decorate<AmbientAwareToken>()
-		         .Scoped()
-		         //
-		         .Then.Start<CurrentRootPath>()
-		         .And<RedirectLoginPath>()
-		         .And<RefreshCurrentPath>()
-		         .And<SignOutCurrentPath>()
-		         .And<CurrentPath>()
-		         .Scoped()
-		         //
-		         .Then.Start<ICurrentContext>()
-		         .Forward<CurrentContext>()
-		         .Scoped()
+    public void Execute(IServiceCollection parameter)
+    {
+        parameter.Start<IScopedToken>()
+                 .Forward<ScopedToken>()
+                 .Decorate<AmbientAwareToken>()
+                 .Scoped()
+                 //
+                 .Then.Start<CurrentRootPath>()
+                 .And<RedirectLoginPath>()
+                 .And<RefreshCurrentPath>()
+                 .And<CurrentPath>()
+                 .Scoped()
+                 //
+                 .Then.Start<IRedirectToSignOut>()
+                 .Forward<RedirectToSignOut>()
+                 .Include(x => x.Dependencies)
+                 .Scoped()
+                 //
+                 .Then.Start<ICurrentContext>()
+                 .Forward<CurrentContext>()
+                 .Scoped()
                  //
                  //
                  .Then.Start<ICurrentStop>()
                  .Forward<CurrentStop>()
                  .Scoped()
-		         //
-		         .Then.Start<ICurrentPrincipal>()
-		         .Forward<CurrentPrincipal>()
-		         .Scoped()
-		         //
-		         .Then.Start<INavigateToSignOut>()
-		         .Forward<NavigateToSignOut>()
-		         .Scoped()
-		         //
-		         .Then.Start<Base64UrlEncrypt>()
-		         .And<Base64UrlDecrypt>()
-		         .Singleton()
-		         //
-		         .Then.Start<ICurrentUserNumber>()
-		         .Forward<CurrentUserNumber>()
-		         .Scoped();
-	}
+                 //
+                 .Then.Start<ICurrentPrincipal>()
+                 .Forward<CurrentPrincipal>()
+                 .Scoped()
+                 //
+                 .Then.Start<INavigateToSignOut>()
+                 .Forward<NavigateToSignOut>()
+                 .Scoped()
+                 //
+                 .Then.Start<Base64UrlEncrypt>()
+                 .And<Base64UrlDecrypt>()
+                 .Singleton()
+                 //
+                 .Then.Start<ICurrentUserNumber>()
+                 .Forward<CurrentUserNumber>()
+                 .Scoped();
+    }
 }
