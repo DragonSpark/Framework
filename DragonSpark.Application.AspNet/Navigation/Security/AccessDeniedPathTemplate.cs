@@ -1,8 +1,8 @@
-﻿namespace DragonSpark.Application.AspNet.Navigation.Security;
+using DragonSpark.Application.AspNet.Security.Identity.Model;
+
+namespace DragonSpark.Application.AspNet.Navigation.Security;
 
 public sealed class AccessDeniedPathTemplate : Text.Text
 {
-	public static AccessDeniedPathTemplate Default { get; } = new();
-
-	AccessDeniedPathTemplate() : base("Identity/Account/AccessDenied?ReturnUrl={0}") {}
+    public AccessDeniedPathTemplate(IdentityAreaPaths paths) : base($"{paths.AccessDeniedPath}?ReturnUrl={{0}}") {}
 }

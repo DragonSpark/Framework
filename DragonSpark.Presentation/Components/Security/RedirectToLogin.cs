@@ -1,9 +1,10 @@
-﻿using DragonSpark.Application.AspNet.Navigation;
+using System.Threading.Tasks;
+using DragonSpark.Application.AspNet.Navigation;
 using DragonSpark.Application.AspNet.Navigation.Security;
 using DragonSpark.Application.Navigation;
+using DragonSpark.Compose;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Security;
 
@@ -13,7 +14,7 @@ namespace DragonSpark.Presentation.Components.Security;
 public sealed class RedirectToLogin : ComponentBase
 {
 	[Parameter]
-	public string FormatPath { get; set; } = LoginPathTemplate.Default;
+	public required string FormatPath { get; set; }
 
 	[Parameter]
 	public bool Force { get; set; } = true;
@@ -23,6 +24,9 @@ public sealed class RedirectToLogin : ComponentBase
 
 	[Inject]
 	CurrentRootPath CurrentPath { get; set; } = null!;
+	
+	[Inject]
+	LoginPathTemplate LoginPathTemplate { get; set; } = null!;
 
 	[Inject]
 	NavigationManager Navigation { get; set; } = null!;
@@ -31,7 +35,7 @@ public sealed class RedirectToLogin : ComponentBase
 	{
 		if (firstRender)
 		{
-			var path = new TemplatedPath(FormatPath).Get(CurrentPath.Get());
+			var path = new TemplatedPath(FormatPath.Account() ?? LoginPathTemplate.Get()).Get(CurrentPath.Get());
 			Logger.LogDebug("Unauthorized resource '{Uri}' detected.  Redirecting to: {Redirect}", Navigation.Uri, path);
 			Navigation.NavigateTo(path, Force, true);
 		}

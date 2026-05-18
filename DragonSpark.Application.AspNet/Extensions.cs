@@ -32,125 +32,134 @@ namespace DragonSpark.Application.AspNet;
 
 partial class Extensions
 {
-	public static BuildHostContext WithFrameworkConfigurations(this BuildHostContext @this)
-		=> Configure.Default.Get(@this);
+    public static BuildHostContext WithFrameworkConfigurations(this BuildHostContext @this)
+        => Configure.Default.Get(@this);
 
-	public static ApplicationProfileContext Apply(this BuildHostContext @this, IApplicationProfile profile)
-		=> new(@this, profile);
+    public static ApplicationProfileContext Apply(this BuildHostContext @this, IApplicationProfile profile)
+        => new(@this, profile);
 
-	public static ApplicationProfileContext WithIdentityClaimsRelay(this ApplicationProfileContext @this)
-		=> @this.Append(Security.Identity.Authentication.Persist.WithIdentityClaimsRelay.Default);
+    public static ApplicationProfileContext WithIdentityClaimsRelay(this ApplicationProfileContext @this)
+        => @this.Append(Security.Identity.Authentication.Persist.WithIdentityClaimsRelay.Default);
 
-	public static IServiceCollection AddHttpIdentity(this IServiceCollection @this)
-		=> Communication.Http.Registrations.Default.Parameter(@this);
+    public static IServiceCollection AddHttpIdentity(this IServiceCollection @this)
+        => Communication.Http.Registrations.Default.Parameter(@this);
 
-	public static BuildHostContext WithHostedConfiguration(this BuildHostContext @this)
-		=> @this.Configure(Configuration.Registrations.Default);
+    public static BuildHostContext WithHostedConfiguration(this BuildHostContext @this)
+        => @this.Configure(Configuration.Registrations.Default);
 
     public static BuildHostContext WithIssuedTokens(this BuildHostContext @this)
         => @this.Configure(Security.Tokens.Registrations.Default);
 
-	/**/
+    /**/
 
-	public static string ValueOrDefault(this Accessed @this) => @this.ValueOrDefault(string.Empty);
+    public static string ValueOrDefault(this Accessed @this) => @this.ValueOrDefault(string.Empty);
 
-	public static string ValueOrDefault(this Accessed @this, string @default)
-		=> @this.Exists ? @this.Value.Verify() : @default;
+    public static string ValueOrDefault(this Accessed @this, string @default)
+        => @this.Exists ? @this.Value.Verify() : @default;
 
-	public static string Value(this Accessed @this)
-		=> @this.Exists ? @this.Value.Verify() : throw new InvalidOperationException($"{@this.Claim} not found.");
+    public static string Value(this Accessed @this)
+        => @this.Exists ? @this.Value.Verify() : throw new InvalidOperationException($"{@this.Claim} not found.");
 
-	public static Claim? Claim(this Accessed @this) => @this.Exists ? new(@this.Claim, @this.Value.Verify()) : null;
+    public static Claim? Claim(this Accessed @this) => @this.Exists ? new(@this.Claim, @this.Value.Verify()) : null;
 
-	public static uint? Number(this ClaimsPrincipal @this) => UserNumber.Default.Get(@this);
+    public static uint? Number(this ClaimsPrincipal @this) => UserNumber.Default.Get(@this);
 
-	public static ProviderIdentity AuthenticatedIdentity(this ClaimsPrincipal @this)
-		=> Security.Identity.AuthenticatedIdentity.Default.Get(@this);
+    public static ProviderIdentity AuthenticatedIdentity(this ClaimsPrincipal @this)
+        => Security.Identity.AuthenticatedIdentity.Default.Get(@this);
 
-	public static ProviderIdentity Identity(this ClaimsPrincipal @this) => Identities.Default.Get(@this);
+    public static ProviderIdentity Identity(this ClaimsPrincipal @this) => Identities.Default.Get(@this);
 
-	public static string DisplayName(this ClaimsPrincipal @this) => UserDisplayName.Default.Get(@this);
+    public static string DisplayName(this ClaimsPrincipal @this) => UserDisplayName.Default.Get(@this);
 
-	public static string UserName(this ClaimsPrincipal @this) => Security.Identity.UserName.Default.Get(@this);
+    public static string UserName(this ClaimsPrincipal @this) => Security.Identity.UserName.Default.Get(@this);
 
-	public static string Name(this ClaimsPrincipal @this) => @this.Identity.Verify().Name.Verify();
+    public static string Name(this ClaimsPrincipal @this) => @this.Identity.Verify().Name.Verify();
 
-	public static string? Get(this IValueProvider @this, string key)
-	{
-		var value  = @this.GetValue(key);
-		var result = value != ValueProviderResult.None ? value.FirstValue : null;
-		return result;
-	}
+    public static string? Get(this IValueProvider @this, string key)
+    {
+        var value  = @this.GetValue(key);
+        var result = value != ValueProviderResult.None ? value.FirstValue : null;
+        return result;
+    }
 
-	public static T User<T>(this AuthenticationState @this) where T : IdentityUser
-		=> @this.To<AuthenticationState<T>>().Profile.Verify();
+    public static T User<T>(this AuthenticationState @this) where T : IdentityUser
+        => @this.To<AuthenticationState<T>>().Profile.Verify();
 
-	public static ProviderIdentity AsIdentity(this ExternalLoginInfo @this)
-		=> ExternalLoginIdentity.Default.Get(@this);
+    public static ProviderIdentity AsIdentity(this ExternalLoginInfo @this)
+        => ExternalLoginIdentity.Default.Get(@this);
 
-	public static T Get<T>(this ISelect<ClaimsPrincipal, T> @this, AuthenticationState parameter)
-		=> @this.Get(parameter.User);
+    public static T Get<T>(this ISelect<ClaimsPrincipal, T> @this, AuthenticationState parameter)
+        => @this.Get(parameter.User);
 
-	/**/
+    /**/
 
-	public static (Type Owner, string Name) Key(this FieldIdentifier @this)
-		=> (@this.Model.GetType(), @this.FieldName);
+    public static (Type Owner, string Name) Key(this FieldIdentifier @this)
+        => (@this.Model.GetType(), @this.FieldName);
 
-	/**/
+    /**/
 
-	public static string? Read(this IReadClaim @this, ClaimsPrincipal parameter)
-		=> @this.Get(parameter).To<Accessed, string?>(x => x.Exists ? x.Value : null);
+    public static string? Read(this IReadClaim @this, ClaimsPrincipal parameter)
+        => @this.Get(parameter).To<Accessed, string?>(x => x.Exists ? x.Value : null);
 
-	public static Task Save(this DbContext @this, CancellationToken stop) => @this.SaveChangesAsync(stop);
+    public static Task Save(this DbContext @this, CancellationToken stop) => @this.SaveChangesAsync(stop);
 
-	public static T Attached<T>(this IEditor @this, T parameter) where T : class
-	{
-		@this.Attach(parameter);
-		return parameter;
-	}
+    public static T Attached<T>(this IEditor @this, T parameter) where T : class
+    {
+        @this.Attach(parameter);
+        return parameter;
+    }
 
-	/**/
+    /**/
 
-	public static MarkupString AsMarkup(this string? @this) => AsMarkdown.Default.Get(@this);
+    public static MarkupString AsMarkup(this string? @this) => AsMarkdown.Default.Get(@this);
 
-	/**/
+    /**/
 
-	public static ITransactions Ambient(this ITransactions @this) => new AmbientAwareTransactions(@this);
+    public static ITransactions Ambient(this ITransactions @this) => new AmbientAwareTransactions(@this);
 
-	public static IStopAware<T> ReloadAware<T>(this IStopAware<T> @this) => new ReloadAware<T>(@this);
+    public static IStopAware<T> ReloadAware<T>(this IStopAware<T> @this) => new ReloadAware<T>(@this);
 
-	/**/
-	public static UserInput Input(this ClaimsPrincipal @this, Guid subject) => new(@this.Number().Value(), subject);
+    /**/
+    public static UserInput Input(this ClaimsPrincipal @this, Guid subject) => new(@this.Number().Value(), subject);
 
-	public static UserInput<T> Input<T>(this ClaimsPrincipal @this, T subject) => new(@this.Number() ?? 0, subject);
+    public static UserInput<T> Input<T>(this ClaimsPrincipal @this, T subject) => new(@this.Number() ?? 0, subject);
 
-	public static UserInput Input(this HttpContext @this, Guid subject) => @this.User.Input(subject);
+    public static UserInput Input(this HttpContext @this, Guid subject) => @this.User.Input(subject);
 
-	public static UserInput<T> Input<T>(this HttpContext @this, T subject) => @this.User.Input(subject);
+    public static UserInput<T> Input<T>(this HttpContext @this, T subject) => @this.User.Input(subject);
 
-	public static Stop<PageQueryInput<uint>> PagingUserInput(this HttpContext @this, PageRequest page)
-		=> @this.PagingInput(@this.User.Number().Value(), page);
-	
-	public static Stop<PageQueryInput<UserInput>> PagingUserInput(this HttpContext @this, Guid parameter, PageRequest page)
-		=> @this.PagingInput(new UserInput(@this.User.Number().Value(), parameter), page);
-	public static Stop<PageQueryInput<UserInput<T>>> PagingUserInput<T>(this HttpContext @this, T parameter, 
-																		PageRequest page)
-		=> @this.PagingInput(new UserInput<T>(@this.User.Number().Value(), parameter), page);
+    public static Stop<PageQueryInput<uint>> PagingUserInput(this HttpContext @this, PageRequest page)
+        => @this.PagingInput(@this.User.Number().Value(), page);
 
-	public static Stop<PageQueryInput<T>> PagingInput<T>(this HttpContext @this, T parameter, PageRequest page)
-		=> new(new(parameter, page), @this.RequestAborted);
+    public static Stop<PageQueryInput<UserInput>> PagingUserInput(this HttpContext @this, Guid parameter,
+                                                                  PageRequest page)
+        => @this.PagingInput(new UserInput(@this.User.Number().Value(), parameter), page);
 
-	public static Stop<uint> UserInput(this HttpContext @this)
-		=> new(@this.User.Number().Value(), @this.RequestAborted);
+    public static Stop<PageQueryInput<UserInput<T>>> PagingUserInput<T>(this HttpContext @this, T parameter,
+                                                                        PageRequest page)
+        => @this.PagingInput(new UserInput<T>(@this.User.Number().Value(), parameter), page);
 
-	public static Stop<T> Stop<T>(this HttpContext @this, T parameter) => new(parameter, @this.RequestAborted);
+    public static Stop<PageQueryInput<T>> PagingInput<T>(this HttpContext @this, T parameter, PageRequest page)
+        => new(new(parameter, page), @this.RequestAborted);
 
-	public static Stop<UserInput<T>> UserInput<T>(this HttpContext @this, T subject)
-		=> new(@this.User.Input(subject), @this.RequestAborted);
+    public static Stop<uint> UserInput(this HttpContext @this)
+        => new(@this.User.Number().Value(), @this.RequestAborted);
 
-	public static Stop<UserInput> UserInput(this HttpContext @this, Guid subject)
-		=> new(@this.User.Input(subject), @this.RequestAborted);
-	/**/
+    public static Stop<T> Stop<T>(this HttpContext @this, T parameter) => new(parameter, @this.RequestAborted);
 
-	public static string Nonce(this HttpContext @this) => HttpContextNonce.Default.Get(@this);
+    public static Stop<UserInput<T>> UserInput<T>(this HttpContext @this, T subject)
+        => new(@this.User.Input(subject), @this.RequestAborted);
+
+    public static Stop<UserInput> UserInput(this HttpContext @this, Guid subject)
+        => new(@this.User.Input(subject), @this.RequestAborted);
+    /**/
+
+    public static bool IsOn(this NavigationManager @this, string parameter)
+        => Navigation.IsOn.Default.Get(new(@this, parameter));
+
+    public static string RootPath(this NavigationManager @this) => Navigation.RootPath.Default.Get(@this);
+
+    public static string Path(this NavigationManager @this) => Navigation.Path.Default.Get(@this);
+
+    public static string Nonce(this HttpContext @this) => HttpContextNonce.Default.Get(@this);
 }

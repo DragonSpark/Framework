@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.AspNet.Security.Identity.Model;
+using DragonSpark.Application.AspNet.Security.Identity.Model;
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -8,13 +8,13 @@ namespace DragonSpark.Application.AspNet.Security.Identity.Authentication;
 sealed class ExitAwareState<T> : ISelect<AuthenticationState<T>, AuthenticationState> where T : IdentityUser
 {
 	readonly ISelect<CurrentProfileStateInput, ProfileStatus> _state;
-	readonly SignOutCurrentPath                               _exit;
+	readonly IRedirectToSignOut                               _exit;
 	readonly AuthenticationState                              _default;
 
-	public ExitAwareState(SignOutCurrentPath exit)
+	public ExitAwareState(IRedirectToSignOut exit)
 		: this(GetProfileStatus.Default, exit, AuthenticationState<T>.Default) {}
 
-	public ExitAwareState(ISelect<CurrentProfileStateInput, ProfileStatus> state, SignOutCurrentPath exit,
+	public ExitAwareState(ISelect<CurrentProfileStateInput, ProfileStatus> state, IRedirectToSignOut exit,
 	                      AuthenticationState @default)
 	{
 		_state   = state;

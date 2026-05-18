@@ -1,8 +1,6 @@
-﻿namespace DragonSpark.Application.AspNet.Navigation.Security;
+namespace DragonSpark.Application.AspNet.Navigation.Security;
 
 public sealed class LoginPathTemplate : Text.Text
 {
-	public static LoginPathTemplate Default { get; } = new();
-
-	LoginPathTemplate() : base($"{LoginPathRoot.Default}?ReturnUrl={{0}}") {}
+    public LoginPathTemplate(LoginPathRoot path) : base($"{path}?ReturnUrl={{0}}") {}
 }

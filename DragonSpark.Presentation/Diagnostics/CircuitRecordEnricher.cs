@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Results;
+using DragonSpark.Application.AspNet;
+using DragonSpark.Model.Results;
 using DragonSpark.Presentation.Connections.Circuits;
 using Serilog.Core;
 using Serilog.Events;
@@ -29,7 +30,7 @@ sealed class CircuitRecordEnricher : ILogEventEnricher
 			}
 
 			{
-				var path     = $"/{navigation.ToBaseRelativePath(navigation.Uri)}";
+				var path     = navigation.RootPath();
 				var property = propertyFactory.CreateProperty("CircuitRequestPath", path);
 				logEvent.AddPropertyIfAbsent(property);
 			}
