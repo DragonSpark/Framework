@@ -1,4 +1,4 @@
-﻿using DragonSpark.Compose;
+using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Text;
@@ -10,11 +10,9 @@ public class ExternalLogin : IAlteration<string>
 	readonly IResult<string>                      _return;
 	readonly IFormatter<AuthenticateAddressInput> _path;
 
-	public ExternalLogin(string @return) : this(@return.Start().Get()) {}
+    protected ExternalLogin(string @return, AuthenticateAddress address) : this(@return.Start().Get(), address) {}
 
-	public ExternalLogin(IResult<string> @return) : this(@return, AuthenticateAddress.Default) {}
-
-	public ExternalLogin(IResult<string> @return, IFormatter<AuthenticateAddressInput> path)
+    protected ExternalLogin(IResult<string> @return, IFormatter<AuthenticateAddressInput> path)
 	{
 		_return = @return;
 		_path   = path;

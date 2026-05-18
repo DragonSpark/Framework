@@ -9,8 +9,8 @@ sealed class RedirectToSignOut : IRedirectToSignOut
     readonly string             _path;
     readonly SignOutCurrentPath _previous;
 
-    public RedirectToSignOut(NavigationManager manager, SignOutCurrentPath previous)
-        : this(manager, SignOutPath.Default, previous) {}
+    public RedirectToSignOut(NavigationManager manager, SignOutPath path, SignOutCurrentPath previous)
+        : this(manager, path.Get(), previous) {}
 
     public RedirectToSignOut(NavigationManager manager, string path, SignOutCurrentPath previous)
     {

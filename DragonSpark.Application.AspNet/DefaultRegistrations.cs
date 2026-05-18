@@ -59,6 +59,18 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
                  //
                  .Then.Start<ICurrentUserNumber>()
                  .Forward<CurrentUserNumber>()
-                 .Scoped();
+                 .Scoped()
+                 //
+                 .Then.Register<IdentityAreaPaths>()
+                 .Start<AccessDeniedPathTemplate>()
+                 .And<AuthenticateAddress>()
+                 .And<ExternalLoginPath>()
+                 .And<LoginPath>()
+                 .And<LoginPathRoot>()
+                 .And<LoginPathTemplate>()
+                 .And<SignOutPath>()
+                 .And<SignOutReturnPath>()
+                 .Singleton()
+            ;
     }
 }

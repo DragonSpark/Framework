@@ -2,7 +2,5 @@ namespace DragonSpark.Application.AspNet.Security.Identity.Model;
 
 public sealed class SignOutPath : Text.Text
 {
-	public static SignOutPath Default { get; } = new();
-
-	SignOutPath() : base("/Account/LogOut") {} // TODO
+    public SignOutPath(IdentityAreaPaths paths) : base(paths.LogOutPath) {}
 }

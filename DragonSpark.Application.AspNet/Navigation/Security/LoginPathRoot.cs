@@ -1,8 +1,8 @@
-﻿namespace DragonSpark.Application.AspNet.Navigation.Security;
+using DragonSpark.Application.AspNet.Security.Identity.Model;
+
+namespace DragonSpark.Application.AspNet.Navigation.Security;
 
 public sealed class LoginPathRoot : Text.Text
 {
-	public static LoginPathRoot Default { get; } = new();
-
-	LoginPathRoot() : base("/Identity/Account/Login") {}
+    public LoginPathRoot(IdentityAreaPaths paths) : base(paths.LoginPath) {}
 }
