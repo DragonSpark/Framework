@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using DragonSpark.Application.AspNet.Navigation;
 using DragonSpark.Application.AspNet.Navigation.Security;
 using DragonSpark.Model.Operations.Allocated;
@@ -7,50 +6,53 @@ using Flurl;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Authentication;
 
 public sealed class DeviceInterceptionAwareRemoteFailure : IAllocated<RemoteFailureContext>
 {
-    public DeviceInterceptionAwareRemoteFailure() : this(RemoteFailure.Default, ExtractReturnAddress.Default) {}
+	public static DeviceInterceptionAwareRemoteFailure Default { get; } = new();
 
-    readonly IAllocated<RemoteFailureContext>     _previous;
-    readonly ISelect<string, string?>             _extract;
+	DeviceInterceptionAwareRemoteFailure() : this(RemoteFailure.Default, ExtractReturnAddress.Default) {}
 
-    public DeviceInterceptionAwareRemoteFailure(IAllocated<RemoteFailureContext> previous,
-                                                ISelect<string, string?> extract)
-    {
-        _previous = previous;
-        _extract  = extract;
-    }
+	readonly IAllocated<RemoteFailureContext>     _previous;
+	readonly ISelect<string, string?>             _extract;
 
-    public Task Get(RemoteFailureContext parameter)
-    {
-        var failure = parameter.Failure;
-        if (failure is not null)
-        {
-            var logger = parameter.HttpContext.RequestServices.GetRequiredService<ILogger<RemoteFailure>>();
-            if (failure.Message == "Correlation failed.")
-            {
-                var uri = parameter.Properties?.RedirectUri;
-                if (uri is not null && !uri.Contains("InterceptionAware=1"))
-                {
-                    var service = parameter.HttpContext.RequestServices.GetRequiredService<AuthenticateAddress>();
-                    var @return = service.Get(new(parameter.Scheme.Name, _extract.Get(uri) ?? "/"));
-                    var address = Url.Parse(@return).SetQueryParam("InterceptionAware", "1");
-                    parameter.Response.Redirect(address);
-                    parameter.HandleResponse();
-                    return Task.CompletedTask;
-                }
+	public DeviceInterceptionAwareRemoteFailure(IAllocated<RemoteFailureContext> previous,
+												ISelect<string, string?> extract)
+	{
+		_previous = previous;
+		_extract  = extract;
+	}
 
-                logger.LogWarning(failure, "An iOS native application Safari instance intercepted the login workflow");
-            }
-            else
-            {
-                logger.LogError(failure, "There was a problem handing a remote authentication");
-            }
-        }
+	public Task Get(RemoteFailureContext parameter)
+	{
+		var failure = parameter.Failure;
+		if (failure is not null)
+		{
+			var logger = parameter.HttpContext.RequestServices.GetRequiredService<ILogger<RemoteFailure>>();
+			if (failure.Message == "Correlation failed.")
+			{
+				var uri = parameter.Properties?.RedirectUri;
+				if (uri is not null && !uri.Contains("InterceptionAware=1"))
+				{
+					var service = parameter.HttpContext.RequestServices.GetRequiredService<AuthenticateAddress>();
+					var @return = service.Get(new(parameter.Scheme.Name, _extract.Get(uri) ?? "/"));
+					var address = Url.Parse(@return).SetQueryParam("InterceptionAware", "1");
+					parameter.Response.Redirect(address);
+					parameter.HandleResponse();
+					return Task.CompletedTask;
+				}
 
-        return _previous.Get(parameter);
-    }
+				logger.LogWarning(failure, "An iOS native application Safari instance intercepted the login workflow");
+			}
+			else
+			{
+				logger.LogError(failure, "There was a problem handing a remote authentication");
+			}
+		}
+
+		return _previous.Get(parameter);
+	}
 }
