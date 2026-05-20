@@ -1,17 +1,18 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Commands;
-using DragonSpark.Model.Operations;
-using DragonSpark.Model.Operations.Stop;
-using DragonSpark.Model.Sequences.Memory;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.ValueGeneration;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
+using DragonSpark.Compose;
+using DragonSpark.Model.Commands;
+using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Stop;
+using DragonSpark.Model.Sequences.Memory;
+using DragonSpark.Runtime.Invocation.Expressions;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.ValueGeneration;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration;
 

@@ -1,19 +1,19 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Selection;
 using System.Linq.Expressions;
 using System.Reflection;
+using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Runtime.Invocation.Expressions;
 
-public sealed class ExpressionMemberName : ISelect<LambdaExpression, MemberInfo>
+public sealed class ExpressionMemberName : ISelect<Expression, MemberInfo?>
 {
-	public static ExpressionMemberName Default { get; } = new ();
+    public static ExpressionMemberName Default { get; } = new();
 
-	ExpressionMemberName() {}
+    ExpressionMemberName() {}
 
-	public MemberInfo Get(LambdaExpression parameter)
-		=> (parameter.Body.AsTo<UnaryExpression, Expression>(x => x.Operand).Account()
-		    ??
-		    parameter.Body).To<MemberExpression>()
-		                   .Member;
+    public MemberInfo? Get(Expression parameter)
+    {
+        var expression = parameter is UnaryExpression u ? u.Operand : parameter;
+        var result     = expression is MemberExpression m ? m.Member : null;
+        return result;
+    }
 }
