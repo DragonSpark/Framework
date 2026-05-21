@@ -43,7 +43,7 @@ partial class ReportingContentView<TIn, TOut> where TIn : class
 
 	TOut? Subject { get; set; }
 
-	Worker? Current { get; set; }
+	Work? Current { get; set; }
 
 	protected override void OnParametersSet()
 	{

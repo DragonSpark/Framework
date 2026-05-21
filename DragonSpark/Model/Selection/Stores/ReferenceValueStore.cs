@@ -2,7 +2,7 @@
 
 namespace DragonSpark.Model.Selection.Stores;
 
-public class ReferenceValueStore<TIn, TOut> : Select<TIn, TOut> where TIn : class where TOut : class?
+public class ReferenceValueStore<TIn, TOut> : Select<TIn, TOut> where TIn : class where TOut : class? // TODO: Audit use for alternative Concurrent (or standard) Tables
 {
 	protected ReferenceValueStore(ISelect<TIn, TOut> select) : this(select.Get) {}
 

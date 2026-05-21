@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using System;
 
 namespace DragonSpark.Presentation.Components.Content.Templates;
 
@@ -8,7 +9,7 @@ public class ActiveContentTemplateComponentBase<T> : ContentTemplateComponentBas
 	public virtual RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
 
 	[Parameter]
-	public virtual RenderFragment ExceptionTemplate { get; set; } = DefaultExceptionTemplate.Default;
+	public virtual RenderFragment<Exception> ExceptionTemplate { get; set; } = DefaultExceptionTemplate.Default;
 
 	[Parameter]
 	public required RenderFragment<T?>? ContentTemplate { get; set; }

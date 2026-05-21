@@ -6,32 +6,26 @@ using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Presentation.Components.Content.Rendering;
 using Microsoft.AspNetCore.Components;
-using System;
+using Radzen;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content;
 
-partial class ResultingContentView<T>
+partial class ResultingContentView<T> : ICompleted<T?>
 {
-	readonly Switch _loaded = false, _render = true;
+	readonly Switch _render = true;
 	RenderFragment? _fragment;
-	Func<Task>      _update = null!;
-	Worker<T?>?     _subject;
+	Worker?    _subject;
+	Workers<T?>     _workers = null!;
 
-	[Parameter]
-	public IResulting<T?>? Content
+	protected override void OnInitialized()
 	{
-		get;
-		set
-		{
-			if (field != value)
-			{
-				field = value;
-				_loaded.Down();
-				_subject = null;
-			}
-		}
+		_workers = new Workers<T?>(this);
+		base.OnInitialized();
 	}
+
+	[Parameter, EditorRequired]
+	public required IResulting<T?> Content { get; set; }
 
 	protected override bool ShouldRender() => _render || !_render.Up();
 
@@ -50,60 +44,70 @@ partial class ResultingContentView<T>
 	[Parameter]
 	public bool ForceRender { get; set; }
 
-	protected override void OnInitialized()
+	public override Task SetParametersAsync(ParameterView parameters)
 	{
-		_update = Update;
-		base.OnInitialized();
+		if (parameters.DidParameterChange(nameof(Content), Content))
+		{
+			Reset();
+		}
+
+		return base.SetParametersAsync(parameters);
 	}
 
 	protected override void OnParametersSet()
 	{
 		base.OnParametersSet();
-		Load();
-	}
 
-	void Load()
-	{
 		if (UpdateMonitor?.Get() ?? false)
 		{
 			_render.Down();
-			_loaded.Down();
-			_subject = null;
+			Reset();
 		}
 	}
 
-	Worker<T?> Working() => new WorkingResult<T?>(Content ?? Defaulting<T>.Default, _update).Get();
+	void Reset()
+	{
+		_subject?.Dispose();
+		_subject = null;
+	}
 
 	protected override Task OnParametersSetAsync()
 	{
-		var first = _subject is null;
-		_subject ??= Working();
-		var task = _subject.Value.AsTask();
-		return task.IsCompletedSuccessfully
-			       ? Update()
-			       : first && (ForceRender || Render > RenderState.Default) && !(_fragment is null ? Rendered : Refreshed).HasDelegate
-				       ? task
+		var @new                            = _subject is null;
+		var (instance, complete) = _subject ??= _workers.Get(Content);
+		return instance.IsCompleted
+			       ? complete.Get()
+			       : @new && (ForceRender || Render > RenderState.Default) &&
+			         !(_fragment is null ? Rendered : Refreshed).HasDelegate
+				       ? instance
 				       : base.OnParametersSetAsync();
 	}
 
-	async Task Update()
+	public async Task Get(ValueTask<T?> parameter)
 	{
-		if (_subject is { Status.IsCompletedSuccessfully: true } && _loaded.Up())
+		if (parameter is { IsCompletedSuccessfully: true })
 		{
 			// ReSharper disable once AsyncApostle.AsyncWait
-			var result = _subject.Value().Status.Result;
+			var result = parameter.Result;
 			if (result is not null)
 			{
 				await Rendering.On(result);
 			}
+
 			var refresh = _fragment is not null;
 			_fragment = ContentTemplate?.Invoke(result) ??
 			            (result is not null ? ChildContent(result) : NotFoundTemplate);
 			if (result is not null)
 			{
 				var callback = refresh ? Refreshed : Rendered;
-				await callback.Off(result);
+				await callback.InvokeAsync(result).Off();
 			}
 		}
+		else if (parameter is { IsFaulted: true })
+		{
+			StateHasChanged();
+		}
 	}
+
+	public bool Get(IResulting<T?> parameter) => parameter == Content;
 }

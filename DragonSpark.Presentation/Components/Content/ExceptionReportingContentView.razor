@@ -7,29 +7,38 @@
 
 @inherits Templates.ActiveContentTemplateComponentBase<TValue>
 
-<ResultingContentView T="TValue"
-	Content="@Subject"
-	ChildContent="@ChildContent"
-	LoadingTemplate="@LoadingTemplate"
-	NotFoundTemplate="@NotFoundTemplate"
-	ExceptionTemplate="@ExceptionTemplate"
-	UpdateMonitor="@UpdateMonitor"
-	Rendered="@Rendered"
-	Refreshed="@Refreshed"
+@if (_subject is not null)
+{
+	<ResultingContentView T="TValue"
+	                      Content="@_subject"
+	                      ChildContent="@ChildContent"
+	                      LoadingTemplate="@LoadingTemplate"
+	                      NotFoundTemplate="@NotFoundTemplate"
+	                      ExceptionTemplate="@ExceptionTemplate"
+	                      UpdateMonitor="@UpdateMonitor"
+	                      Rendered="@Rendered"
+	                      Refreshed="@Refreshed"
 	/>
+}
+else
+{
+	@LoadingTemplate
+}
 
 @code
 {
-    [Parameter]
-    public IResulting<TValue?>? Content
+    IResulting<TValue?>? _subject;
+
+    [Parameter, EditorRequired]
+    public required IResulting<TValue?> Content
     {
         get;
         set
         {
             if (field != value)
             {
-                field   = value;
-                Subject = null;
+                field    = value;
+                _subject = null;
             }
         }
     }
@@ -46,15 +55,10 @@
     [Parameter]
     public EventCallback<TValue> Refreshed { get; set; }
 
-	IResulting<TValue?>? Subject { get; set; }
-
+	 
 	protected override void OnParametersSet()
 	{
 		base.OnParametersSet();
-		Subject ??= Content != null ? DetermineSubject(Content) : null;
+		_subject ??= Content.Then().Handle(Exceptions, ReportedType ?? GetType()).Out();
 	}
-
-	IResulting<TValue?> DetermineSubject(IResulting<TValue?> content)
-		=> content.Then().Handle(Exceptions, ReportedType ?? GetType()).Out();
-
 }
