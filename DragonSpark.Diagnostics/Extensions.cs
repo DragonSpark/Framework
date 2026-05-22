@@ -11,15 +11,10 @@ public static class Extensions
 {
 	extension(BuildHostContext @this)
 	{
-		public BuildHostContext WithSerilog(bool configure = false) => @this.WithSerilog(x => x, configure);
-
-		public BuildHostContext WithSerilog(Func<LoggerConfiguration, LoggerConfiguration> configuration,
-		                                    bool configure = false)
-			=> @this.WithSerilog(CreateLoggingProvider.Default.Get, configuration, configure);
-		public BuildHostContext WithSerilog(Func<IServiceProvider, ILoggerProvider> provider,
-		                                    Func<LoggerConfiguration, LoggerConfiguration> configuration,
-		                                    bool configure = false)
-			=> @this.Configure(new ConfigureSerilog(provider, configuration, configure));
+		public BuildHostContext WithSerilog(bool configure = false)
+			=> @this.WithSerilog(CreateLoggingProvider.Default.Get, configure);
+		public BuildHostContext WithSerilog(Func<IServiceProvider, ILoggerProvider> provider, bool configure = false)
+			=> @this.Configure(new ConfigureSerilog(provider, configure));
 	}
 
 	[UsedImplicitly]
