@@ -1,4 +1,5 @@
-﻿using DragonSpark.Application.Diagnostics;
+﻿using DragonSpark.Application.AspNet.Diagnostics;
+using DragonSpark.Application.Diagnostics;
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Conditions;
 using System;
@@ -12,7 +13,7 @@ sealed class CommonUserInterfaceExceptionsAwareExceptions : IExceptions
 	readonly ICondition<Exception> _process;
 
 	public CommonUserInterfaceExceptionsAwareExceptions(IExceptions previous)
-		: this(previous, IgnoreException.Default.Then().Inverse().Out()) {}
+		: this(previous, AggregateAwareIgnoreException.Default.Then().Inverse().Out()) {}
 
 	public CommonUserInterfaceExceptionsAwareExceptions(IExceptions previous, ICondition<Exception> process)
 	{
@@ -23,9 +24,6 @@ sealed class CommonUserInterfaceExceptionsAwareExceptions : IExceptions
 	public ValueTask Get(ExceptionInput parameter)
 	{
 		var (_, exception) = parameter;
-		return _process.Get(exception) ||
-		       (exception.InnerException is not null && _process.Get(exception.InnerException))
-			       ? _previous.Get(parameter)
-			       : ValueTask.CompletedTask;
+		return _process.Get(exception) ? _previous.Get(parameter) : ValueTask.CompletedTask;		
 	}
 }

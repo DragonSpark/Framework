@@ -3,7 +3,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.JSInterop;
 using System;
 
-namespace DragonSpark.Presentation.Components.Diagnostics;
+namespace DragonSpark.Application.AspNet.Diagnostics;
 
 public sealed class IgnoreException : ICondition<Exception>
 {
