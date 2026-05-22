@@ -106,7 +106,7 @@
     public RenderFragment EmptyElementsTemplate { get; set; } = DefaultEmptyResultTemplate.Default;
 
     [Parameter]
-    public RenderFragment ProblemTemplate { get; set; } = DefaultExceptionTemplate.Default;
+    public RenderFragment<Exception> ProblemTemplate { get; set; } = DefaultExceptionTemplate.Default;
 
     [Parameter]
     public ICollection<string>? DesktopToolbar { get; set; }
@@ -166,8 +166,9 @@
 
     async Task OnFailure(FailureEventArgs parameter)
     {
-        _fragment = ProblemTemplate.Accept;
-        await Exceptions.Get(new(ReportedType ?? GetType(), parameter.Error.Verify()));
+        var exception = parameter.Error.Verify();
+        _fragment = _ => ProblemTemplate(exception);
+        await Exceptions.Get(new(ReportedType ?? GetType(), exception));
         await Error.Invoke(parameter.Error).Off();
     }
 

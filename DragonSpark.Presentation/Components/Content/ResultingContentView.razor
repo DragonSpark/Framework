@@ -6,9 +6,9 @@
 
 @inject RenderStateStore Render
 
-@if (_subject is { Status.IsFaulted : true })
+@if (_exception is not null)
 {
-	@ExceptionTemplate
+	@ExceptionTemplate(_exception)
 }
 else if (_fragment is not null)
 {

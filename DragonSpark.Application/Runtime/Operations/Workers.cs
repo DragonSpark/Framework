@@ -1,21 +1,17 @@
-using DragonSpark.Model.Selection;
-using JetBrains.Annotations;
+using DragonSpark.Model.Operations.Results;
+using DragonSpark.Model.Selection.Alterations;
+using DragonSpark.Model.Selection.Stores;
+using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Runtime.Operations;
 
-public sealed class Workers : ISelect<WorkerInput, Worker>
+public sealed class Workers : ReferenceValueStore<Task, Task>, IAlteration<Task>
 {
-    public static Workers Default { get; } = new();
+	public Workers(Action<Task> completed) : base(new ComposeWorkers(completed)) {}
+}
 
-    Workers() { }
-
-    [MustDisposeResource(false)]
-    public Worker Get(WorkerInput parameter)
-    {
-        var (subject, complete) = parameter;
-        var source = new TaskCompletionSource();
-        var worker = new WorkerOperation(subject, source, complete).Get();
-        return new(worker, source.Task);
-    }
+public sealed class Workers<T> : ReferenceValueStore<IResulting<T?>, Worker>
+{
+	public Workers(ICompleted<T?> completed) : base(new ComposeWorkers<T>(completed)) {}
 }

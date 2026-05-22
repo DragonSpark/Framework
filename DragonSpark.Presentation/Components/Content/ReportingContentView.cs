@@ -1,5 +1,7 @@
 ﻿using DragonSpark.Application.Runtime.Operations;
+using DragonSpark.Model.Selection.Alterations;
 using Microsoft.AspNetCore.Components;
+using Radzen;
 using System;
 using System.Threading.Tasks;
 
@@ -7,61 +9,57 @@ namespace DragonSpark.Presentation.Components.Content;
 
 partial class ReportingContentView<TIn, TOut> where TIn : class
 {
-	Action       _call   = null!;
-	Action<Task> _report = null!;
+	bool              _ready;
+	Action<Task>      _start  = null!;
+	RenderFragment?   _view;
+	TOut?             _instance;
+	Task?             _worker;
+	IAlteration<Task> _workers = null!;
+	Exception?        _exception;
 
-	protected override ValueTask Initialize()
+	protected override void OnInitialized()
 	{
-		_call   = Update;
-		_report = Report;
-		return base.Initialize();
+		_workers = new Workers(Update);
+		_start   = Start;
+		base.OnInitialized();
 	}
 
 	[Parameter]
-	public TIn? Content
+	public TIn? Content { get; set; }
+
+	[Parameter, EditorRequired]
+	public required IReporter<TIn, TOut> Reporter { get; set; }
+
+	public override Task SetParametersAsync(ParameterView parameters)
 	{
-		get;
-		set
+		if (parameters.DidParameterChange(nameof(Content), Content))
 		{
-			if (field != value)
-			{
-				field                  = value;
-				Current                = null;
-				Subject                = default;
-				Loaded                 = true;
-				CurrentLoadingTemplate = null;
-			}
+			_worker   = null;
+			_instance = default;
+			_ready    = false;
+			_view     = null;
 		}
+		return base.SetParametersAsync(parameters);
 	}
-
-	[Parameter]
-	public IReporter<TIn, TOut> Reporter { get; set; } = null!;
-
-	bool Loaded { get; set; } = true;
-
-	RenderFragment? CurrentLoadingTemplate { get; set; }
-
-	TOut? Subject { get; set; }
-
-	Worker? Current { get; set; }
 
 	protected override void OnParametersSet()
 	{
-		Subject ??= Content is not null ? Reporter.Get(new(Content, _report)) : default;
+		_instance ??= Content is not null ? Reporter.Get(new(Content, _start)) : default;
 	}
 
-	protected override Task OnParametersSetAsync() => Current?.AsTask() ?? base.OnParametersSetAsync();
+	protected override Task OnParametersSetAsync() => _worker ?? base.OnParametersSetAsync();
 
-	void Report(Task parameter)
+	void Start(Task parameter)
 	{
-		CurrentLoadingTemplate = Current == null ? LoadingTemplate : null;
-		Current                = Workers.Default.Get(new (parameter, _call));
-		Update();
+		_view   = LoadingTemplate;
+		_worker = _workers.Get(parameter);
+		Update(_worker);
 	}
 
-	void Update()
+	void Update(Task parameter)
 	{
-		Loaded = Current is { Status.IsCompletedSuccessfully: true };
+		_exception = parameter.Exception;
+		_ready     = parameter is { IsCompletedSuccessfully: true };
 		StateHasChanged();
 	}
 }

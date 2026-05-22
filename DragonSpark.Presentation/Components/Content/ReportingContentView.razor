@@ -3,20 +3,17 @@
 
 @inherits Templates.ActiveContentTemplateComponentBase<TOut>
 
-@if (Current is { Status.IsFaulted : true })
+@if (_exception is not null)
 {
 	@ExceptionTemplate
 }
 else
 {
-	if (!Loaded && CurrentLoadingTemplate != null)
+	if (!_ready && _view is not null)
 	{
-		@CurrentLoadingTemplate
+		@_view
 	}
-	<ContentView TValue="TOut" ChildContent="@ChildContent" Content="@Subject" NotFoundTemplate="@NotFoundTemplate" />
+	<ContentView TValue="TOut" ChildContent="@ChildContent" Content="@_instance" NotFoundTemplate="@NotFoundTemplate" />
 }
 
-@code
-{
-
-}
+@code {}
