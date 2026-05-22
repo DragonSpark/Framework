@@ -5,16 +5,14 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Runtime.Operations;
 
-sealed class WorkerOperation : IAllocated
+readonly struct Monitor : IAllocated
 {
-	readonly Task                 _subject;
-	readonly TaskCompletionSource _source;
-	readonly Action               _complete;
+	readonly Task         _subject;
+	readonly Action<Task> _complete;
 
-	public WorkerOperation(Task subject, TaskCompletionSource source, Action complete)
+	public Monitor(Task subject, Action<Task> complete)
 	{
 		_subject  = subject;
-		_source   = source;
 		_complete = complete;
 	}
 
@@ -23,25 +21,24 @@ sealed class WorkerOperation : IAllocated
 		try
 		{
 			await _subject.On();
-			_source.SetResult();
 		}
-		catch (Exception e)
+		catch
 		{
-			_source.SetException(e);
+			// ignored: handled in _complete below
 		}
 		finally
 		{
-			_complete();
+			_complete(_subject);
 		}
 	}
 }
 
-readonly struct WorkerMonitor<T> : IAllocated
+readonly struct Monitor<T> : IAllocated
 {
-	readonly Task<T?> _subject;
-	readonly IAllocated    _complete;
+	readonly Task<T?>   _subject;
+	readonly IAllocated _complete;
 
-	public WorkerMonitor(Task<T?> subject, IAllocated complete)
+	public Monitor(Task<T?> subject, IAllocated complete)
 	{
 		_subject  = subject;
 		_complete = complete;

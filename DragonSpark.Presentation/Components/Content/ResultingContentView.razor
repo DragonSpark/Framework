@@ -6,9 +6,9 @@
 
 @inject RenderStateStore Render
 
-@if (_subject is { Monitor.IsFaulted : true })
+@if (_exception is not null)
 {
-	@ExceptionTemplate(_subject.Monitor.Exception)
+	@ExceptionTemplate(_exception)
 }
 else if (_fragment is not null)
 {

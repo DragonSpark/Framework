@@ -1,5 +1,4 @@
-﻿using DragonSpark.Model.Operations;
-using DragonSpark.Model.Operations.Allocated;
+﻿using DragonSpark.Model.Operations.Stop;
 using Radzen;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content.Sequences;
 
-public class ReportedRadzenPaging<T> : ReportedAllocated<Stop<LoadDataArgs>>, IRadzenPaging<T>
+public class ReportedRadzenPaging<T> : Reported<LoadDataArgs>, IRadzenPaging<T>
 {
 	readonly IRadzenPaging<T> _previous;
 

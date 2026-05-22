@@ -7,6 +7,7 @@ using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Presentation.Components.Content.Rendering;
 using Microsoft.AspNetCore.Components;
 using Radzen;
+using System;
 using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content;
@@ -15,8 +16,9 @@ partial class ResultingContentView<T> : ICompleted<T?>
 {
 	readonly Switch _render = true;
 	RenderFragment? _fragment;
-	Worker?    _subject;
+	Worker?         _subject;
 	Workers<T?>     _workers = null!;
+	Exception?      _exception;
 
 	protected override void OnInitialized()
 	{
@@ -74,17 +76,18 @@ partial class ResultingContentView<T> : ICompleted<T?>
 	protected override Task OnParametersSetAsync()
 	{
 		var @new                            = _subject is null;
-		var (instance, complete) = _subject ??= _workers.Get(Content);
-		return instance.IsCompleted
+		var (monitor, complete) = _subject ??= _workers.Get(Content);
+		return monitor.IsCompleted
 			       ? complete.Get()
 			       : @new && (ForceRender || Render > RenderState.Default) &&
 			         !(_fragment is null ? Rendered : Refreshed).HasDelegate
-				       ? instance
+				       ? monitor
 				       : base.OnParametersSetAsync();
 	}
 
 	public async Task Get(ValueTask<T?> parameter)
 	{
+		_exception = null;
 		if (parameter is { IsCompletedSuccessfully: true })
 		{
 			// ReSharper disable once AsyncApostle.AsyncWait
@@ -105,6 +108,7 @@ partial class ResultingContentView<T> : ICompleted<T?>
 		}
 		else if (parameter is { IsFaulted: true })
 		{
+			_exception = parameter.AsTask().Exception;
 			StateHasChanged();
 		}
 	}
