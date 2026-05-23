@@ -11,7 +11,7 @@
 
 @if (_error.Get() is not null)
 {
-    @ExceptionTemplate
+    @ExceptionTemplate(_error.Get().Verify())
 }
 else if (_model is not null)
 {
@@ -60,6 +60,9 @@ else
     public Switch Load { get; set; } = new();
 
     [Parameter]
+    public EventCallback Loaded { get; set; }
+
+    [Parameter]
     public required IStopAware<T> Model { get; set; }
 
     [Parameter]
@@ -75,6 +78,7 @@ else
             _error.Execute(null);
             _model = await LoadModel().On();
             _call.Execute(_model is not null);
+            await Loaded.Off();
         }
         catch (Exception e)
         {
