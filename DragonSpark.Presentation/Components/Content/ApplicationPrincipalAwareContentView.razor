@@ -2,7 +2,7 @@
 
 @inject IsApplicationAgentStore Condition
 
-@if(ForceRender || Condition.Get())
+@if(ForceRender || Condition)
 {
     @ChildContent
 }

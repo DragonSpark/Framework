@@ -96,7 +96,7 @@ public class CallbackComposer<T> : IResult<EventCallback<T>>
 	{
 		var body      = Start.A.Selection(_method).Then().Structure().Out();
 		var operation = new ActivityAwareOperation<T>(body, receiver, options);
-		return new(receiver.Target(_method), operation.Allocate);
+		return new( receiver.Target(_method), operation.Allocate);
 	}
 
 	public CallbackComposer<T> UpdateActivity(IActivityReceiver receiver, CancelAwareActivityOptions options)
