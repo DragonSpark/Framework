@@ -19,7 +19,7 @@
 	public Switch? Signal { get; set; }
 
 	[Parameter]
-	public string Identifier { get; set; } = UniqueIdentifiers.Default.Get();
+	public string Identifier { get; set; } = UniqueIdentifiers.Default;
 
     [Parameter]
     public bool Enabled
@@ -36,7 +36,7 @@
     } = true;
 
     [Parameter]
-	public RenderFragment ChildContent { get; set; } = null!;
+	public required RenderFragment ChildContent { get; set; }
 
 	[Parameter(CaptureUnmatchedValues = true)]
 	public Dictionary<string, object?> AdditionalAttributes { get; set; } = null!;
