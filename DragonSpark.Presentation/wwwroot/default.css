@@ -42,3 +42,5 @@ div.dragonspark-minimal.sf-grid .e-spinner-pane .e-spinner-inner {
 	-moz-filter: blur(15px);
 	filter: blur(15px);
 }
+
+.scroll-offset { scroll-margin-top: 150px; }

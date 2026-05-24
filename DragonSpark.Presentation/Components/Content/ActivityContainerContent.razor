@@ -1,62 +1,46 @@
 ﻿@inherits Templates.ActiveContentTemplateComponentBase<TValue>
 
 @using DragonSpark.Model.Selection
-@using DragonSpark.Model.Results
 @using DragonSpark.Compose
 
 @typeparam TValue
 
 <ResultingContentView T="TValue" Content="@_content" UpdateMonitor="@_content.Condition"
-                      ForceRender="@ForceRender"
-                      ChildContent="@ChildContent"
-                      LoadingTemplate="@LoadingTemplate"
-                      NotFoundTemplate="@NotFoundTemplate"
-                      ExceptionTemplate="@ExceptionTemplate"
-                      ContentTemplate="@ContentTemplate"
-                      Rendered="@Rendered"
-                      Refreshed="@Refreshed"
+					  ForceRender="@ForceRender"
+					  ChildContent="@ChildContent"
+					  LoadingTemplate="@LoadingTemplate"
+					  NotFoundTemplate="@NotFoundTemplate"
+					  ExceptionTemplate="@ExceptionTemplate"
+					  ContentTemplate="@ContentTemplate"
+					  Rendered="@Rendered"
+					  Refreshed="@Refreshed"
 />
 
 @code {
-    readonly Switch        _assign  = new();
-    IActiveContent<TValue> _content = null!;
+	IActiveContent<TValue> _content = null!;
 
-    [Parameter]
-    public ISelect<IActivityReceiver, IActiveContent<TValue>> Input
-    {
-        get => _input;
-        set
-        {
-            if (!Equals(_input, value))
-            {
-                _input = value;
-                _assign.Up();
-            }
-        }
-    }	ISelect<IActivityReceiver, IActiveContent<TValue>> _input = null!;
+	[Parameter]
+	public required ISelect<IActivityReceiver, IActiveContent<TValue>> Input { get; set; }
 
-    [Parameter]
-    public bool ForceRender { get; set; }
+	[Parameter]
+	public bool ForceRender { get; set; }
 
-    [Parameter]
-    public string CssClass { get; set; } = string.Empty;
+	[Parameter]
+	public string CssClass { get; set; } = string.Empty;
 
-    [Parameter]
-    public EventCallback<TValue> Rendered { get; set; }
+	[Parameter]
+	public EventCallback<TValue> Rendered { get; set; }
 
-    [Parameter]
-    public EventCallback<TValue> Refreshed { get; set; }
+	[Parameter]
+	public EventCallback<TValue> Refreshed { get; set; }
 
-    [CascadingParameter]
-    IActivityReceiver Receiver { get; set; } = null!;
+	[CascadingParameter]
+	IActivityReceiver Receiver { get; set; } = null!;
 
-    protected override void OnParametersSet()
-    {
-        if (_assign.Down())
-        {
-            _content = _input.Get(Receiver);
-        }
-        base.OnParametersSet();
-    }
-
+	public override async Task SetParametersAsync(ParameterView parameters)
+	{
+		var changed = parameters.DidParameterChange(nameof(Input), Input);
+		await base.SetParametersAsync(parameters).Off();
+		_content = changed ? Input.Get(Receiver) : _content;
+	}
 }

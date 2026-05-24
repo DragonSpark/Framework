@@ -3,7 +3,7 @@
 
 <DragonSpark.Presentation.Components.Eventing.HandlerView T="ActivityUpdatedMessage" Received="@_update" />
 
-@ChildContent(Monitor?.Active ?? false)
+@ChildContent(_active)
 
 @code {
     readonly Switch _active = new();
@@ -14,6 +14,15 @@
     {
         _update = Start.A.Callback<ActivityUpdatedMessage>(OnUpdate).Hide();
         base.OnInitialized();
+    }
+
+    protected override void OnParametersSet()
+    {
+	    if (Monitor is not null)
+	    {
+		    _active.Assign(Monitor.Active);
+	    }
+	    base.OnParametersSet();
     }
 
     [Parameter]
