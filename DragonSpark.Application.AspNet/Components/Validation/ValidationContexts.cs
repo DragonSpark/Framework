@@ -1,7 +1,7 @@
-﻿using DragonSpark.Application.Components.Validation;
-using DragonSpark.Compose;
 using System;
 using System.ComponentModel.DataAnnotations;
+using DragonSpark.Application.Components.Validation;
+using DragonSpark.Compose;
 
 namespace DragonSpark.Application.AspNet.Components.Validation;
 

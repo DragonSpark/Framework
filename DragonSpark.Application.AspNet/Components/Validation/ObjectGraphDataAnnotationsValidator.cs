@@ -1,11 +1,11 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Conditions;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace DragonSpark.Application.AspNet.Components.Validation;
 
@@ -52,8 +52,8 @@ public sealed class ObjectGraphDataAnnotationsValidator : ComponentBase, IDispos
 				{
 					field.OnValidationRequested += ValidationRequested;
 					field.OnFieldChanged        += FieldChanged;
-					_messages                   =  new Messages(field, new ValidationMessageStore(field));
-					_validator                  =  new ObjectGraphValidator(Condition.Then());
+					_messages                   =  new(field, new(field));
+					_validator                  =  new(Condition.Then());
 				}
 			}
 		}
