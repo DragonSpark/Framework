@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace DragonSpark.Azure.Storage;
 
-sealed class EntryTables : ReferenceValueStore<IDictionary<string, string?>, EntryTable>
+sealed class EntryTables : ReferenceValueStore<IDictionary<string, string?>, ITable<string, string?>>, IEntryTable
 {
 	public static EntryTables Default { get; } = new();
 
