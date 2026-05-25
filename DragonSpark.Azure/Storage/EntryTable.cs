@@ -11,8 +11,7 @@ sealed class EntryTable : ITable<string, string?>
 	readonly ITable<string, string?> _previous;
 	readonly IAlteration<string>     _encode, _decode;
 
-	public EntryTable(ITable<string, string?> previous)
-		: this(previous, EncodedText.Default, DecodedText.Default) {}
+	public EntryTable(ITable<string, string?> previous) : this(previous, EncodedText.Default, DecodedText.Default) {}
 
 	public EntryTable(ITable<string, string?> previous, IAlteration<string> encode, IAlteration<string> decode)
 	{
