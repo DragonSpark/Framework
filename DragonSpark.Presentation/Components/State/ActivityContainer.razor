@@ -135,6 +135,7 @@
 
         _render.Execute(options?.RedrawOnFinish == true);
         StateHasChanged();
+        _model.Execute();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
