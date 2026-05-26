@@ -30,9 +30,16 @@ public class AddClaim<T> : IStopAware<T, IdentityResult> where T : IdentityUser
         var       users   = session.Subject.UserManager;
         var       user    = await users.FindByIdAsync(subject.Id.ToString()).Off();
         var       verify  = user.Verify();
-        var       result  = await users.AddClaimAsync(verify, claim).Off();
-        await session.Subject.RefreshSignInAsync(verify).Off();
-        return result;
+
+        var remove = await users.RemoveClaimsAsync(verify, claim.Yield()).Off();
+        if (remove.Succeeded)
+        {
+            var result = await users.AddClaimAsync(verify, claim).Off();
+            await session.Subject.RefreshSignInAsync(verify).Off();
+            return result;
+        }
+
+        return remove;
     }
 }
 
