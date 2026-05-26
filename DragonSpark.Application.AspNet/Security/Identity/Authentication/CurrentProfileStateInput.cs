@@ -1,4 +1,4 @@
-﻿using System.Security.Claims;
+using System.Security.Claims;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Authentication;
 

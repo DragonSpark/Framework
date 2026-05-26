@@ -7,4 +7,4 @@ public sealed record Profile(
     string FirstName,
     string LastName,
     string DisplayName)
-    : ProfileBase(Identifier, UserName, ContactAddress, FirstName, LastName, DisplayName);
+    : ProfileBase(UserName, ContactAddress, FirstName, LastName, DisplayName);

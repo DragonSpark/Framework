@@ -82,6 +82,7 @@ public sealed class GenerateViewFromSourceGenerator : IIncrementalGenerator
     // ReSharper disable once TooManyArguments
     // ReSharper disable once ExcessiveIndentation
     // ReSharper disable once MethodTooLong
+    // ReSharper disable once CyclomaticComplexity
     static void GenerateDtoForType(SourceProductionContext context,
                                    Compilation compilation,
                                    INamedTypeSymbol sourceType,
@@ -206,6 +207,38 @@ public sealed class GenerateViewFromSourceGenerator : IIncrementalGenerator
         sb.AppendLine("        return result;");
         sb.AppendLine("    }");
 
+        // FromModel()
+        sb.AppendLine();
+        sb.AppendLine($"    public static {dtoName} From({sourceType.ToDisplayString()} model)");
+        sb.AppendLine("    {");
+        sb.AppendLine($"        if (model is null) return null!;");
+        sb.AppendLine();
+        sb.AppendLine($"        var result = new {dtoName}();");
+
+        foreach (var prop in props)
+        {
+            // Skip if target declares this property AND it has [SkipGeneration]
+            if (targetProps.TryGetValue(prop.Name, out var targetProp) &&
+                targetProp.GetAttributes().Any(a => a.AttributeClass?.Name == "SkipGenerationAttribute"))
+            {
+                continue;
+            }
+
+            if (IsPrimitive(prop.Type))
+            {
+                sb.AppendLine($"        result.{prop.Name} = model.{prop.Name};");
+            }
+            else if (prop.Type is INamedTypeSymbol)
+            {
+                sb.AppendLine($"        result.{prop.Name} = model.{prop.Name} is null ? null! : {prop.Type.Name}{suffix}.From(model.{prop.Name});");
+            }
+        }
+
+        sb.AppendLine();
+        sb.AppendLine("        return result;");
+        sb.AppendLine("    }");
+
+        
         sb.AppendLine("}");
 
         var nsName = ns.IsGlobalNamespace ? "Global" : ns.ToDisplayString().Replace('.', '_');
