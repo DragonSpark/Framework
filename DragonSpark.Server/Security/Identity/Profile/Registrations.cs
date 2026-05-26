@@ -1,4 +1,3 @@
-using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,6 +11,6 @@ public sealed class Registrations : ICommand<IServiceCollection>
 
     public void Execute(IServiceCollection parameter)
     {
-        parameter.Start<ICurrentProfile>().Forward<CurrentProfile>().Include(x => x.Dependencies).Singleton();
+        /*parameter.Start<ICurrentProfile>().Forward<CurrentProfile>().Include(x => x.Dependencies).Singleton();*/
     }
 }
