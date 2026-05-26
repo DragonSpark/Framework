@@ -60,7 +60,7 @@ partial class ResultingContentView<T> : ICompleted<T?>
 	{
 		base.OnParametersSet();
 
-		if (UpdateMonitor?.Get() ?? false)
+		if (UpdateMonitor?.Get() == true && _subject is not null)
 		{
 			_render.Down();
 			Reset();
