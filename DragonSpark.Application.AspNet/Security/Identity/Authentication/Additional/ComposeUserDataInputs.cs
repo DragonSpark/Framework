@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using DragonSpark.Compose;
 using Microsoft.Extensions.Logging;
@@ -18,7 +19,7 @@ public sealed class ComposeUserDataInputs<T> : IComposeUserDataInputs<T> where T
         _logger  = logger;
     }
 
-    public async ValueTask<ComposeUserDataInput<T>> Get()
+    public async ValueTask<ComposeUserDataInput<T>> Get(CancellationToken parameter)
     {
         var context = _context.Get();
         var users   = _users.Get();

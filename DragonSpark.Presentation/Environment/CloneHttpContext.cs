@@ -1,11 +1,11 @@
-﻿using DragonSpark.Compose;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Alterations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.Extensions.Primitives;
-using System;
-using System.Collections.Generic;
-using System.IO;
 
 namespace DragonSpark.Presentation.Environment;
 
@@ -46,6 +46,6 @@ sealed class CloneHttpContext : IAlteration<HttpContext>
 		features.Set<IHttpResponseFeature>(new HttpResponseFeature());
 		features.Set<IHttpResponseBodyFeature>(new StreamResponseBodyFeature(Stream.Null));
 
-		return new DefaultHttpContext(features) { User = parameter.User };
+		return new DefaultHttpContext(features) { User = parameter.User, RequestServices = parameter.RequestServices };
 	}
 }

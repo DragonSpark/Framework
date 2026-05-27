@@ -1,13 +1,13 @@
-﻿using DragonSpark.Application.AspNet.Security.Identity.Claims.Compile;
+using System.Buffers;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
+using DragonSpark.Application.AspNet.Security.Identity.Claims.Compile;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations.Results;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using NetFabric.Hyperlinq;
-using System.Buffers;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Authentication;
 

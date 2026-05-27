@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Text.Json;
 using System.Threading.Tasks;
 using DragonSpark.Compose;
@@ -9,11 +9,9 @@ namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.Additi
 
 sealed class FormatUserData<T> : IFormatUserData<T> where T : class
 {
-    public static FormatUserData<T> Default { get; } = new();
-
-    FormatUserData() : this(ComposeUserData<T>.Default) {}
-
     readonly ISelecting<ComposeUserDataInput<T>, IReadOnlyDictionary<string, string>> _compose;
+
+    public FormatUserData(IProperties properties) : this(new ComposeUserData<T>(properties)) {}
 
     public FormatUserData(ISelecting<ComposeUserDataInput<T>, IReadOnlyDictionary<string, string>> compose)
         => _compose = compose;
