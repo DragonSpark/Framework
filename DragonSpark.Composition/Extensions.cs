@@ -1,5 +1,3 @@
-using System;
-using System.Linq;
 using DragonSpark.Compose;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Composition.Compose.Deferred;
@@ -10,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
+using System;
+using System.Linq;
 
 namespace DragonSpark.Composition;
 
@@ -51,7 +51,7 @@ public static class Extensions
         => new DeferredServiceEnhanced<T>(@this).Get;
 
     public static Func<T> Deferred<T>(this IServiceCollection @this) where T : class
-        => new DeferredService<T>(@this).Get;
+	    => new DeferredService<T>(@this).Get;
 
     public static IServiceCollection Replace<T>(this IServiceCollection @this, ServiceLifetime lifetime)
         where T : class
@@ -151,9 +151,9 @@ public static class Extensions
     public static BuildHostContext ComposeUsing(this BuildHostContext @this, Action<IServiceContainer> configure)
         => @this.WithComposition().Configure(new ConfigureContainer(configure));
 
-    public static BuildHostContext Decorate<T>(this BuildHostContext @this, Func<IServiceFactory, T, T> configure)
+    /*public static BuildHostContext Decorate<T>(this BuildHostContext @this, Func<IServiceFactory, T, T> configure)
         => @this.ComposeUsing(new Decorate<T>(configure));
 
     public static BuildHostContext Decorate<TFrom, TTo>(this BuildHostContext @this) where TTo : TFrom
-        => @this.ComposeUsing(Composition.Decorate<TFrom, TTo>.Default);
+        => @this.ComposeUsing(Composition.Decorate<TFrom, TTo>.Default);*/
 }
