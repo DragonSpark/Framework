@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.AspNet.Security.Identity.Authentication.Persist;
+using DragonSpark.Application.AspNet.Security.Identity.Authentication.Persist;
 using DragonSpark.Application.AspNet.Security.Identity.Claims.Compile;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
@@ -8,35 +8,43 @@ namespace DragonSpark.Application.AspNet.Security.Identity.Claims;
 
 public sealed class Registrations<T> : ICommand<IServiceCollection> where T : IdentityUser
 {
-	public static Registrations<T> Default { get; } = new();
+    public static Registrations<T> Default { get; } = new();
 
-	Registrations() {}
+    Registrations() {}
 
-	public void Execute(IServiceCollection parameter)
-	{
-		parameter.Start<IClaims>()
-		         .Forward<Compile.Claims>()
-		         .Include(x => x.Dependencies)
-		         .Singleton()
-				 //
-		         .Then.Start<ICurrentKnownClaims>()
-		         .Forward<CurrentKnownClaims>()
-		         .Scoped()
-		         .Then.Start<IDisplayNameClaim>()
-		         .Forward<DisplayNameClaim>()
-		         .Singleton()
-		         //
-		         .Then.Start<IExtractClaims>()
-		         .Forward<ExtractClaims>()
-		         .Singleton()
-				 //
-		         .Then.Start<IPersistSignIn<T>>()
-		         .Forward<PersistSignIn<T>>()
-		         .Singleton()
-		         //
-		         .Then.Start<IPersistSignInWithMetadata<T>>()
-		         .Forward<PersistSignInWithMetadata<T>>()
-		         .Singleton()
-			;
-	}
+    public void Execute(IServiceCollection parameter)
+    {
+        parameter.Start<IClaims>()
+                 .Forward<Compile.Claims>()
+                 .Include(x => x.Dependencies)
+                 .Singleton()
+                 //
+                 .Then.Start<ICurrentKnownClaims>()
+                 .Forward<CurrentKnownClaims>()
+                 .Scoped()
+                 .Then.Start<IDisplayNameClaim>()
+                 .Forward<DisplayNameClaim>()
+                 .Singleton()
+                 //
+                 .Then.Start<IExtractClaims>()
+                 .Forward<ExtractClaims>()
+                 .Singleton()
+                 //
+                 .Then.Start<IPersistSignIn<T>>()
+                 .Forward<PersistSignIn<T>>()
+                 .Singleton()
+                 //
+                 .Then.Start<IPersistSignInWithMetadata<T>>()
+                 .Forward<PersistSignInWithMetadata<T>>()
+                 .Singleton()
+                 //
+                 .Then.Start<IAddClaim>()
+                 .Forward<AddClaim<T>>()
+                 .Scoped()
+                 //
+                 .Then.Start<IRemoveClaim>()
+                 .Forward<RemoveClaim<T>>()
+                 .Scoped()
+            ;
+    }
 }
