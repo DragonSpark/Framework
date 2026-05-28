@@ -53,6 +53,9 @@ public sealed class ApplicationProfileContext
 
 	public ApplicationProfileContext Append(System.Action<IApplicationBuilder> other)
 		=> Append(Start.A.Command(other).Get());
+	
+	public ApplicationProfileContext Append(IApplicationProfile profile)
+		=> Append(profile as ICommand<IServiceCollection>).Append(profile as ICommand<IApplicationBuilder>);
 
 	public ApplicationProfileContext Append(params ICommand<IApplicationBuilder>[] others)
 		=> Append(new Commands<IApplicationBuilder>(others));

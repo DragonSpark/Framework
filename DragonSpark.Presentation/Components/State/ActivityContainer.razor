@@ -1,4 +1,5 @@
 @using DragonSpark.Compose
+@using DragonSpark.Model
 @using DragonSpark.Model.Commands
 @using DragonSpark.Model.Results
 @using DragonSpark.Presentation.Environment.Browser.Document
@@ -7,6 +8,7 @@
 @inherits Components.ComponentBase
 
 @implements IActivityReceiver
+@implements IRenderAware
 @implements IAsyncDisposable
 
 @inject IFocusedElement Focus
@@ -47,6 +49,7 @@
     {
         _content = ChildContent(this);
         Monitor?.Add.Execute(this);
+        Parent?.Add.Execute(this);
         base.OnInitialized();
     }
 
@@ -60,6 +63,8 @@
     public required RenderFragment<IActivityReceiver> ChildContent { get; set; }
 
     [CascadingParameter] IActivityMonitor? Monitor { get; set; }
+
+    [CascadingParameter] IActivityReceiver? Parent { get; set; }
 
     string? Class()
     {
@@ -168,9 +173,15 @@
 
     public ICommand<IRenderAware> Remove => _model.Remove;
 
+    public void Execute(None parameter)
+    {
+		_model.Execute();
+    }
+
     public ValueTask DisposeAsync()
     {
         Monitor?.Remove.Execute(this);
         return Focus.DisposeAsync();
     }
+
 }

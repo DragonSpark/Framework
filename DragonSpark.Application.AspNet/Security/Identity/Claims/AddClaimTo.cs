@@ -1,0 +1,44 @@
+using DragonSpark.Application.AspNet.Security.Identity.Authentication;
+using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Selection.Stop;
+using Microsoft.AspNetCore.Identity;
+using System;
+using System.Security.Claims;
+using System.Threading.Tasks;
+
+namespace DragonSpark.Application.AspNet.Security.Identity.Claims;
+
+public class AddClaimTo<T> : IStopAware<T, IdentityResult> where T : IdentityUser
+{
+	readonly IAuthentications<T> _sessions;
+	readonly Func<T, Claim>      _claim;
+
+	public AddClaimTo(IAuthentications<T> sessions, string type) : this(sessions, new Claim(type, string.Empty).Accept) {}
+
+	protected AddClaimTo(IAuthentications<T> sessions, Func<T, Claim> claim)
+	{
+		_sessions = sessions;
+		_claim    = claim;
+	}
+
+	public async ValueTask<IdentityResult> Get(Stop<T> parameter)
+	{
+		var (subject, _) = parameter;
+		using var session = _sessions.Get();
+		var       claim   = _claim(parameter);
+		var       users   = session.Subject.UserManager;
+		var       user    = await users.FindByIdAsync(subject.Id.ToString()).Off();
+		var       verify  = user.Verify();
+
+		var remove = await users.RemoveClaimsAsync(verify, claim.Yield()).Off();
+		if (remove.Succeeded)
+		{
+			var result = await users.AddClaimAsync(verify, claim).Off();
+			await session.Subject.RefreshSignInAsync(verify).Off();
+			return result;
+		}
+
+		return remove;
+	}
+}

@@ -1,8 +1,8 @@
-using System.Threading.Tasks;
 using DragonSpark.Application.AspNet.Security.Identity.Authentication;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Claims;
 
