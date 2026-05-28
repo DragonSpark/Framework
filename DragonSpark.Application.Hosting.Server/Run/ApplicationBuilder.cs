@@ -14,8 +14,6 @@ sealed class ApplicationBuilder : IHostedApplicationBuilder
 {
 	readonly WebApplicationBuilder _previous;
 
-	public ApplicationBuilder(string[] arguments) : this(WebApplication.CreateBuilder(arguments)) {}
-
 	public ApplicationBuilder(WebApplicationBuilder previous)
 		: this(previous, new WebApplicationHostBuilder(previous)) {}
 

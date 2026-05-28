@@ -1,8 +1,8 @@
-using System;
-using System.Threading.Tasks;
 using DragonSpark.Model.Operations.Allocated;
 using DragonSpark.Model.Sequences;
 using Microsoft.Extensions.Hosting;
+using System;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Run;
 
