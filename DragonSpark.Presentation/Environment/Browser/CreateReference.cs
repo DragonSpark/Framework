@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Environment.Browser;
 
-public interface ICreateReference<T> : IStopAware<CreateReferenceInput<T>, IJSObjectReference> where T : IArray<object>;
-
 public class CreateReference<T> : ICreateReference<T> where T : IArray<object>
 {
 	readonly string _name;
