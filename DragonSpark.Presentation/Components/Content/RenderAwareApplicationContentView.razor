@@ -6,7 +6,7 @@
 
 @inherits ContentComponentBase<T>
 
-<ApplicationContentViewAlternate TValue="T" Content="@Content" Refreshed="@_load">
+<ApplicationContentView TValue="T" Content="@Content" Refreshed="@_load" Receiver="@Receiver">
     <ContentTemplate>
         <DragonSpark.Presentation.Components.State.EnabledContainer Enabled="@Allow">
             <DragonSpark.Presentation.Components.Rendering.ShouldRenderComponent Enabled="@Allow">
@@ -14,7 +14,7 @@
             </DragonSpark.Presentation.Components.Rendering.ShouldRenderComponent>
         </DragonSpark.Presentation.Components.State.EnabledContainer>
     </ContentTemplate>
-</ApplicationContentViewAlternate>
+</ApplicationContentView>
 
 @code {
     RenderFragment   _fragment = _ => {};
@@ -46,6 +46,9 @@
 
     [Parameter]
     public required IStopAware<T?> Source { get; set; }
+
+    [CascadingParameter]
+    public required IActivityReceiver Receiver { get; set; }
 
     protected override async ValueTask<T?> GetContent()
     {
