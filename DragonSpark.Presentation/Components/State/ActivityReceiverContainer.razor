@@ -12,7 +12,7 @@ else
 
 	protected override void OnInitialized()
 	{
-		_instance = (Instance == EmptyActivityReceiver.Default ? null : Instance) ?? Receiver;
+		_instance = Instance ?? Receiver;
 		base.OnInitialized();
 	}
 

@@ -4,28 +4,20 @@
 
 @inherits Templates.ActiveContentTemplateComponentBase<TValue>
 <DragonSpark.Presentation.Components.Content.ApplicationPrincipalAwareContentView ForceRender="@ForceRender">
-	<ActivityContainer CssClass="@CssClass">
+	<ActivityReceiverContainer Instance="@Receiver" CssClass="@CssClass">
 		<ActivityContainerContent TValue="TValue" Input="@_contents" ForceRender="@ForceRender" ChildContent="@ChildContent" LoadingTemplate="@LoadingTemplate" ContentTemplate="@ContentTemplate"
-								  NotFoundTemplate="@NotFoundTemplate" ExceptionTemplate="@ExceptionTemplate" Rendered="@Rendered" Refreshed="@Refreshed"
-		/>
-	</ActivityContainer>
+		                          NotFoundTemplate="@NotFoundTemplate" ExceptionTemplate="@ExceptionTemplate" Rendered="@Rendered" Refreshed="@Refreshed"/>
+	</ActivityReceiverContainer>
 </DragonSpark.Presentation.Components.Content.ApplicationPrincipalAwareContentView>
 
 @code
 {
+	ISelect<IActivityReceiver, IActiveContent<TValue>> _contents = null!;
+
+	[Parameter] public IActivityReceiver? Receiver { get; set; }
+
 	[Parameter]
-	public required IActiveContent<TValue> Content
-	{
-		get;
-		set
-		{
-			if (field != value)
-			{
-				field     = value;
-				_contents = new ActivityContents<TValue>(field).Then().Stores().New();
-			}
-		}
-	}   ISelect<IActivityReceiver, IActiveContent<TValue>> _contents = null!;
+	public required IActiveContent<TValue> Content { get; set; }   
 
 	[Parameter]
 	public bool ForceRender { get; set; }
@@ -38,4 +30,14 @@
 
 	[Parameter]
 	public EventCallback<TValue> Refreshed { get; set; }
+
+	public override async Task SetParametersAsync(ParameterView parameters)
+	{
+		var changed = parameters.DidParameterChange(nameof(Content), Content) || parameters.DidParameterChange(nameof(Receiver), Receiver);
+		await base.SetParametersAsync(parameters).Off();
+		if (changed)
+		{
+			_contents = new ActivityContents<TValue>(Content).Then().Stores().New();
+		}
+	}
 }
