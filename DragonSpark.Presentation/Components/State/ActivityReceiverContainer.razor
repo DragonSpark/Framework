@@ -2,6 +2,10 @@
 {
 	@ChildContent(_instance)
 }
+else if (Instance is EmptyActivityReceiver)
+{
+	<CascadingValue TValue="IActivityReceiver" Value="@Instance" IsFixed="true" ChildContent="@ChildContent(Instance)" />
+}
 else
 {
 	<ActivityContainer CssClass="@CssClass" ChildContent="@ChildContent" />
@@ -12,7 +16,7 @@ else
 
 	protected override void OnInitialized()
 	{
-		_instance = Instance ?? Receiver;
+		_instance = Instance.NullIfEmpty() ?? Receiver;
 		base.OnInitialized();
 	}
 
