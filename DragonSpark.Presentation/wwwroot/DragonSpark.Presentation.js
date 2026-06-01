@@ -53,7 +53,7 @@ function scrollToFirstValidationMessage() {
 
 	let lastDocumentHeight = 0;
 	let stableFrameCount = 0;
-	const REQUIRED_STABLE_FRAMES = 15;
+	const REQUIRED_STABLE_FRAMES = 5;
 
 	window.addEventListener('scroll', () => {
 		if (cacheVaultLocked || targetScrollY !== null) return;

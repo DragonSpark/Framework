@@ -2,7 +2,7 @@
 
 namespace DragonSpark.Presentation.Components.Content.Rendering;
 
-sealed class StoreAwareContentKey : StandardTable<object, string>, IContentKey // TODO: This is bad, very bad
+sealed class StoreAwareContentKey : StandardTable<object, string>, IContentKey
 {
 	public StoreAwareContentKey(IContentKey select) : base(select.Get) {}
 }
