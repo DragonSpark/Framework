@@ -34,13 +34,12 @@
 	[Parameter]
 	public EventCallback<TValue> Refreshed { get; set; }
 
-	[CascadingParameter]
-	IActivityReceiver Receiver { get; set; } = null!;
+	[CascadingParameter] IActivityReceiver? Receiver { get; set; }
 
 	public override async Task SetParametersAsync(ParameterView parameters)
 	{
 		var changed = parameters.DidParameterChange(nameof(Input), Input);
 		await base.SetParametersAsync(parameters).Off();
-		_content = changed ? Input.Get(Receiver) : _content;
+		_content = changed ? Input.Get(Receiver ?? EmptyActivityReceiver.Default) : _content;
 	}
 }

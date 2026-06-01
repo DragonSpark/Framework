@@ -149,8 +149,7 @@ public static class Extensions
 
 		public bool IsValid() => Components.Forms.Validation.IsValid.Default.Get(@this);
 
-		public bool IsValid(IActivityReceiver receiver)
-			=> @this.IsValid() && !receiver.Active;
+		public bool IsValid(IActivityReceiver receiver) => @this.IsValid() && !receiver.Active;
 
 		public void NotifyModelField(string field)
 		{

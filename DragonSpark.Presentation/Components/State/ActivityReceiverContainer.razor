@@ -1,33 +1,37 @@
-﻿@if (_instance is not null)
+﻿@using DragonSpark.Compose
+@switch (_action)
 {
-	@ChildContent(_instance)
-}
-else if (Instance is EmptyActivityReceiver)
-{
-	<CascadingValue TValue="IActivityReceiver" Value="@Instance" IsFixed="true" ChildContent="@ChildContent(Instance)" />
-}
-else
-{
-	<ActivityContainer CssClass="@CssClass" ChildContent="@ChildContent" />
+	case ActivityReceiverContextAction.New:
+		<ActivityContainer CssClass="@CssClass" ChildContent="@ChildContent" />
+		break;
+	case ActivityReceiverContextAction.Existing:
+		@ChildContent(Receiver.Verify())
+		break;
+	case ActivityReceiverContextAction.Clear:
+		<ActivityContainer CssClass="@CssClass">
+			<CascadingValue TValue="IActivityReceiver" Value="null" ChildContent="@ChildContent(EmptyActivityReceiver.Default)" />
+		</ActivityContainer>
+		break;
 }
 
 @code {
-	IActivityReceiver? _instance;
 
-	protected override void OnInitialized()
+	ActivityReceiverContextAction _action;
+
+	protected override void OnParametersSet()
 	{
-		_instance = Instance.NullIfEmpty() ?? Receiver;
-		base.OnInitialized();
+		_action = Action == ActivityReceiverContextAction.Existing && Receiver is null ? ActivityReceiverContextAction.New : Action;
+		base.OnParametersSet();
 	}
 
 	[Parameter]
-	public IActivityReceiver? Instance { get; set; }
+	public required ActivityReceiverContextAction Action { get; set; } = ActivityReceiverContextAction.Existing;
 
 	[Parameter]
 	public string CssClass { get; set; } = string.Empty;
 
-    [CascadingParameter] IActivityReceiver? Receiver { get; set; }
+	[Parameter]
+	public RenderFragment<IActivityReceiver> ChildContent { get; set; } = null!;
 
-    [Parameter]
-    public RenderFragment<IActivityReceiver> ChildContent { get; set; } = null!;
+	[CascadingParameter] IActivityReceiver? Receiver { get; set; }
 }
