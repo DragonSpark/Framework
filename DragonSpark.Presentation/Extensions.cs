@@ -245,4 +245,7 @@ public static class Extensions
 
 		public string Path(Type parameter) => @this[ModulePath.Default.Get(parameter)];
 	}
+
+	public static IActivityReceiver? NullIfEmpty(this IActivityReceiver? @this)
+		=> @this == EmptyActivityReceiver.Default ? null : @this;
 }
