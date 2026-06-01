@@ -10,9 +10,10 @@ public class ConcurrentTable<TIn, TOut> : ITable<TIn, TOut>, ICommand where TIn 
 	readonly Func<TIn, TOut>                 _select;
 	readonly ConcurrentDictionary<TIn, TOut> _table;
 
-	public ConcurrentTable() : this(new ConcurrentDictionary<TIn, TOut>()) {}
+	public ConcurrentTable() : this([]) {}
 
-	public ConcurrentTable(Func<TIn, TOut> select) : this(new ConcurrentDictionary<TIn, TOut>(), @select) {}
+	public ConcurrentTable(ISelect<TIn, TOut> select) : this(select.Get) {}
+	public ConcurrentTable(Func<TIn, TOut> select) : this([], select) {}
 
 	public ConcurrentTable(ConcurrentDictionary<TIn, TOut> table)
 		: this(table, _ => default!) {}

@@ -18,6 +18,7 @@ using DragonSpark.Presentation.Components.Forms;
 using DragonSpark.Presentation.Components.Forms.Validation;
 using DragonSpark.Presentation.Components.State;
 using DragonSpark.Presentation.Compose;
+using DragonSpark.Presentation.Environment.Browser;
 using DragonSpark.Presentation.Model;
 using DragonSpark.Presentation.Text;
 using Microsoft.AspNetCore.Components;
@@ -36,18 +37,24 @@ namespace DragonSpark.Presentation;
 
 public static class Extensions
 {
-	public static BuildHostContext WithPresentationConfigurations(this BuildHostContext @this)
-		=> Configure.Default.Get(@this);
+	extension(BuildHostContext @this)
+	{
+		public BuildHostContext WithPresentationConfigurations()
+			=> Configure.Default.Get(@this);
 
-	public static BuildHostContext WithCircuitDiagnostics(this BuildHostContext @this)
-		=> @this.Configure(CircuitDiagnosticRegistrations.Default);
+		public BuildHostContext WithCircuitDiagnostics()
+			=> @this.Configure(CircuitDiagnosticRegistrations.Default);
+	}
 
 	/**/
-	public static CallbackComposer<Stop<ValidationContext>> Callback<T>(this ModelContext context, IValidateValue<T> validate)
-		=> context.Callback(validate.Adapt());
+	extension(ModelContext context)
+	{
+		public CallbackComposer<Stop<ValidationContext>> Callback<T>(IValidateValue<T> validate)
+			=> context.Callback(validate.Adapt());
 
-	public static CallbackComposer<Stop<ValidationContext>> Callback<T>(this ModelContext _, IValidatingValue<T> validating)
-		=> validating.Callback();
+		public CallbackComposer<Stop<ValidationContext>> Callback<T>(IValidatingValue<T> validating)
+			=> validating.Callback();
+	}
 
 	public static CallbackComposer<Stop<ValidationContext>> Callback<T>(this IValidationMessage<T> @this)
 		=> new ValidationOperationComposer(new ValidationMessageOperation<T>(@this).AsStop()).DenoteExceptions().Get();
@@ -59,41 +66,46 @@ public static class Extensions
 		=> new AllowUnassignedTextAwareValidatingValue(@this);
 
 	/**/
-	public static CallbackComposer Callback(this ModelContext @this, EventCallback callback)
-		=> @this.Callback(() => callback.Invoke());
+	extension(ModelContext @this)
+	{
+		public CallbackComposer Callback(EventCallback callback)
+			=> @this.Callback(() => callback.Invoke());
 
-	public static CallbackComposer Callback(this ModelContext @this, Func<ValueTask> method)
-		=> @this.Callback(method.Start().Select(x => x.AsTask()));
+		public CallbackComposer Callback(Func<ValueTask> method)
+			=> @this.Callback(method.Start().Select(x => x.AsTask()));
 
-	public static CallbackComposer Callback(this ModelContext _, Func<Task> method) => new(method);
+		public CallbackComposer Callback(Func<Task> method) => new(method);
 
-	public static SubmitCallbackComposer Callback(this ModelContext _, Func<EditContext, Task> submit) => new(submit);
+		public SubmitCallbackComposer Callback(Func<EditContext, Task> submit) => new(submit);
+
+		public SubmitCallbackComposer Callback(Func<EditContext, Task> submit,
+		                                       IStopAware invalid, CancellationToken stop)
+			=> @this.Callback(submit, invalid.Then().Bind(stop).Out());
+
+		public SubmitCallbackComposer Callback(Func<EditContext, Task> submit, IOperation invalid)
+			=> new(submit, invalid);
+
+		public SubmitWithCancelCallbackComposer Callback(Func<SubmittingInput, Task> submit)
+			=> new(submit);
+
+		public CallbackComposer<object> Callback(Func<object, Task> method) => new(method);
+
+		public CallbackComposer<T> Callback<T>(Func<T, Task> method) => new(method);
+
+		public CallbackComposer<T> Callback<T>(Action<T> callback)
+			=> @this.Callback<T>(Start.A.Command(callback).Operation().Allocate());
+
+		public CallbackComposer<T> Callback<T>(Action callback)
+			=> @this.Callback<T>(Start.A.Command(callback).Accept<T>().Operation().Allocate());
+
+		public CallbackComposer Callback(ICommand<None> command)
+			=> @this.Callback(command.Execute);
+
+		public CallbackComposer Callback(Action callback)
+			=> new(callback.Target, Start.A.Command(callback).Operation().Allocate());
+	}
 
 	// ReSharper disable once TooManyArguments
-	public static SubmitCallbackComposer Callback(this ModelContext _, Func<EditContext, Task> submit,
-	                                              IStopAware invalid, CancellationToken stop)
-		=> _.Callback(submit, invalid.Then().Bind(stop).Out());
-	public static SubmitCallbackComposer Callback(this ModelContext _, Func<EditContext, Task> submit, IOperation invalid)
-		=> new(submit, invalid);
-
-	public static SubmitWithCancelCallbackComposer Callback(this ModelContext _, Func<SubmittingInput, Task> submit)
-		=> new(submit);
-
-	public static CallbackComposer<object> Callback(this ModelContext _, Func<object, Task> method) => new(method);
-
-	public static CallbackComposer<T> Callback<T>(this ModelContext _, Func<T, Task> method) => new(method);
-
-	public static CallbackComposer<T> Callback<T>(this ModelContext @this, Action<T> callback)
-		=> @this.Callback<T>(Start.A.Command(callback).Operation().Allocate());
-
-	public static CallbackComposer<T> Callback<T>(this ModelContext @this, Action callback)
-		=> @this.Callback<T>(Start.A.Command(callback).Accept<T>().Operation().Allocate());
-
-	public static CallbackComposer Callback(this ModelContext @this, ICommand<None> command)
-		=> @this.Callback(command.Execute);
-
-	public static CallbackComposer Callback(this ModelContext _, Action callback)
-		=> new(callback.Target, Start.A.Command(callback).Operation().Allocate());
 
 	extension(IActivityReceiver @this)
 	{
@@ -104,9 +116,13 @@ public static class Extensions
 
 	public static EditContextCallbackComposer Callback(this ModelContext _, EditContext context) => new(context);
 
-	public static CallbackComposer Callback(this ResultComposer<ValueTask> @this) => new(@this.Then().Allocate());
-	public static CallbackComposer Callback(this ResultComposer<ValueTask> @this, object receiver)
-		=> new(receiver, @this.Then().Allocate());
+	extension(ResultComposer<ValueTask> @this)
+	{
+		public CallbackComposer Callback() => new(@this.Then().Allocate());
+
+		public CallbackComposer Callback(object receiver)
+			=> new(receiver, @this.Then().Allocate());
+	}
 
 	public static CallbackComposer Callback(this ResultComposer<Task> @this) => new(@this);
 
@@ -122,27 +138,30 @@ public static class Extensions
 
 	/**/
 
-	public static bool CanSubmit(this EditContext @this) => @this.IsModified() && @this.IsValid();
-
-	public static bool CanSubmit(this EditContext @this, IActivityReceiver receiver)
-		=> @this.CanSubmit() && !receiver.Active;
-
-	public static ValueTask<bool> Validating(this EditContext @this) => ValidContext.Default.Get(@this);
-
-	public static bool IsValid(this EditContext @this) => Components.Forms.Validation.IsValid.Default.Get(@this);
-
-	public static bool IsValid(this EditContext @this, IActivityReceiver receiver)
-		=> @this.IsValid() && !receiver.Active;
-
-	public static void NotifyModelField(this EditContext @this, string field)
+	extension(EditContext @this)
 	{
-		@this.NotifyFieldChanged(@this.Field(field));
-	}
+		public bool CanSubmit() => @this.IsModified() && @this.IsValid();
 
-	public static void MarkModified(this EditContext @this)
-	{
-		@this.NotifyModelField(string.Empty);
-		@this.NotifyValidationStateChanged();
+		public bool CanSubmit(IActivityReceiver receiver)
+			=> @this.CanSubmit() && !receiver.Active;
+
+		public ValueTask<bool> Validating() => ValidContext.Default.Get(@this);
+
+		public bool IsValid() => Components.Forms.Validation.IsValid.Default.Get(@this);
+
+		public bool IsValid(IActivityReceiver receiver)
+			=> @this.IsValid() && !receiver.Active;
+
+		public void NotifyModelField(string field)
+		{
+			@this.NotifyFieldChanged(@this.Field(field));
+		}
+
+		public void MarkModified()
+		{
+			@this.NotifyModelField(string.Empty);
+			@this.NotifyValidationStateChanged();
+		}
 	}
 
 	public static T? GetValue<T>(this FieldIdentifier @this)
@@ -185,12 +204,15 @@ public static class Extensions
 	public static Task Invoke<T>(this EventCallback<T> @this, T? parameter)
 		=> @this.HasDelegate ? @this.InvokeAsync(parameter) : Task.CompletedTask;
 
-	public static Task Invoke(this EventCallback @this) => @this.HasDelegate ? @this.InvokeAsync() : Task.CompletedTask;
+	extension(EventCallback @this)
+	{
+		public Task Invoke() => @this.HasDelegate ? @this.InvokeAsync() : Task.CompletedTask;
 
-	public static Task Invoke(this EventCallback @this, object? parameter)
-		=> @this.HasDelegate ? @this.InvokeAsync(parameter) : Task.CompletedTask;
+		public Task Invoke(object? parameter)
+			=> @this.HasDelegate ? @this.InvokeAsync(parameter) : Task.CompletedTask;
 
-	public static ConfiguredTaskAwaitable On(this EventCallback @this) => @this.Invoke().On();
+		public ConfiguredTaskAwaitable On() => @this.Invoke().On();
+	}
 
 	public static ConfiguredTaskAwaitable On(this EventCallback<CancellationToken> @this, CancellationToken parameter)
 	{
@@ -215,4 +237,12 @@ public static class Extensions
 	/**/
 	public static bool IsConnected(this IResult<RenderState> @this)
 		=> @this.Get() is RenderState.Ready or RenderState.Established;
+	
+	/**/
+	extension(ResourceAssetCollection @this)
+	{
+		public string Path<T>() => @this.Path(typeof(T));
+
+		public string Path(Type parameter) => @this[ModulePath.Default.Get(parameter)];
+	}
 }

@@ -7,7 +7,7 @@ using System;
 
 namespace DragonSpark.Runtime;
 
-sealed class IsAssignedConditions<T> : ReferenceValueStore<Type, Func<T, bool>>
+sealed class IsAssignedConditions<T> : ConcurrentStore<Type, Func<T, bool>>
 {
 	readonly static Type Type = AccountForUnassignedType.Default.Get(A.Type<T>());
 

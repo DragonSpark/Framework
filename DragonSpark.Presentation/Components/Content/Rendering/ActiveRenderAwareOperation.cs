@@ -21,16 +21,7 @@ public sealed class ActiveRenderAwareOperation : IOperation
 		_state    = state;
 	}
 
-	public ValueTask Get()
-	{
-		switch (_state.Get())
-		{
-			case RenderState.Ready:
-			case RenderState.Established:
-				return _previous.Get();
-		}
-		return ValueTask.CompletedTask;
-	}
+	public ValueTask Get() => _state.IsConnected() ? _previous.Get() : ValueTask.CompletedTask;
 }
 
 public sealed class ActiveRenderAwareOperation<T> : IOperation<T>
@@ -47,14 +38,5 @@ public sealed class ActiveRenderAwareOperation<T> : IOperation<T>
 		_state    = state;
 	}
 
-	public ValueTask Get(T parameter)
-	{
-		switch (_state.Get())
-		{
-			case RenderState.Ready:
-			case RenderState.Established:
-				return _previous.Get(parameter);
-		}
-		return ValueTask.CompletedTask;
-	}
+	public ValueTask Get(T parameter) => _state.IsConnected() ? _previous.Get(parameter) : ValueTask.CompletedTask;
 }

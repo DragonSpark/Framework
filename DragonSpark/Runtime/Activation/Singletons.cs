@@ -4,7 +4,7 @@ using System;
 
 namespace DragonSpark.Runtime.Activation;
 
-public sealed class Singletons : ReferenceValueStore<Type, object>, ISingletons
+public sealed class Singletons : ConcurrentStore<Type, object>, ISingletons
 {
 	public static Singletons Default { get; } = new();
 

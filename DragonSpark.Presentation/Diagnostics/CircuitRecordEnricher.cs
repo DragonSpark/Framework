@@ -41,10 +41,3 @@ sealed class CircuitRecordEnricher : ILogEventEnricher
 		}
 	}
 }
-
-sealed class DetermineCircuitRecord : Maybe<CircuitRecord>
-{
-	public static DetermineCircuitRecord Default { get; } = new();
-
-	DetermineCircuitRecord() : base(AmbientCircuit.Default, CurrentCircuitRecord.Default) {}
-}

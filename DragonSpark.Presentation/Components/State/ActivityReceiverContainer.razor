@@ -1,18 +1,28 @@
-﻿@using DragonSpark.Compose
-@if (Receiver is not null)
+﻿@if (_instance is not null)
 {
-    @ChildContent(Receiver)
+	@ChildContent(_instance)
 }
 else
 {
-    <ActivityContainer Context="receiver">
-        @ChildContent(receiver.To<IActivityReceiver>())
-    </ActivityContainer>
+	<ActivityContainer CssClass="@CssClass" ChildContent="@ChildContent" />
 }
 
 @code {
-    [CascadingParameter]
-    IActivityReceiver? Receiver { get; set; }
+	IActivityReceiver? _instance;
+
+	protected override void OnInitialized()
+	{
+		_instance = Instance ?? Receiver;
+		base.OnInitialized();
+	}
+
+	[Parameter]
+	public IActivityReceiver? Instance { get; set; }
+
+	[Parameter]
+	public string CssClass { get; set; } = string.Empty;
+
+    [CascadingParameter] IActivityReceiver? Receiver { get; set; }
 
     [Parameter]
     public RenderFragment<IActivityReceiver> ChildContent { get; set; } = null!;

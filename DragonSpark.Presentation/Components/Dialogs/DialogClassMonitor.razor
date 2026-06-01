@@ -1,3 +1,4 @@
+@using DragonSpark.Application.AspNet.Runtime.Operations
 @using DragonSpark.Compose
 @using DragonSpark.Presentation.Environment.Browser.Document
 @using System.Threading
@@ -6,64 +7,66 @@
 
 @inject DialogService Model
 @inject CreateDocumentElementHandle Create
+@inject IScopedToken Token
 
 @code {
 
-    [Parameter]
-    public string ClassName { get; set; } = null!;
+	[Parameter, EditorRequired]
+	public required string ClassName { get; set; }
 
-    [CascadingParameter]
-    public required CancellationToken Stop { get; set; } = CancellationToken.None;
+	[CascadingParameter]
+	public required CancellationToken Stop { get; set; } = CancellationToken.None;
 
-    Func<Task> _apply  = null!;
+	Func<Task> _apply  = null!;
 
-    string? Current { get; set; }
+	string? Current { get; set; }
 
-    byte Count { get; set; }
+	byte Count { get; set; }
 
-    protected override void OnInitialized()
-    {
-        _apply = Apply;
+	protected override void OnInitialized()
+	{
+		_apply = Apply;
 
-        Model.OnOpen += ModelOnOpen;
-        Model.OnClose += ModelOnClose;
-        base.OnInitialized();
-    }
+		Model.OnOpen += ModelOnOpen;
+		Model.OnClose += ModelOnClose;
+		base.OnInitialized();
+	}
 
-    DocumentElement? _element;
+	DocumentElement? _element;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            _element = await Create.Off(Stop);
-            await Apply().Off();
-        }
-    }
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+		{
+			var stop = CancellationTokenSource.CreateLinkedTokenSource(Stop, Token.Get()).Token;
+			_element = await Create.Off(stop);
+			await Apply().Off();
+		}
+	}
 
-    Task Apply() => (Current != null && Count == 1 ? _element?.AddClass(Current).AsTask() : null) ?? Task.CompletedTask;
+	Task Apply() => (Current != null && Count == 1 ? _element?.AddClass(Current).AsTask() : null) ?? Task.CompletedTask;
 
-    // ReSharper disable once TooManyArguments
-    void ModelOnOpen(string? arg1, Type arg2, Dictionary<string, object?> arg3, DialogOptions arg4)
-    {
-        switch (Count++)
-        {
-            case 0:
-                Current = ClassName;
-                InvokeAsync(_apply);
-                break;
-        }
-    }
+	// ReSharper disable once TooManyArguments
+	void ModelOnOpen(string? arg1, Type arg2, Dictionary<string, object?> arg3, DialogOptions arg4)
+	{
+		switch (Count++)
+		{
+			case 0:
+				Current = ClassName;
+				InvokeAsync(_apply);
+				break;
+		}
+	}
 
-    void ModelOnClose(object obj)
-    {
-        switch (--Count)
-        {
-            case 0:
-                InvokeAsync(() => _element?.RemoveClass(ClassName).AsTask() ?? Task.CompletedTask);
-                break;
-        }
-    }
+	void ModelOnClose(object obj)
+	{
+		switch (--Count)
+		{
+			case 0:
+				InvokeAsync(() => _element?.RemoveClass(ClassName).AsTask() ?? Task.CompletedTask);
+				break;
+		}
+	}
 
-    public ValueTask DisposeAsync() => _element?.DisposeAsync() ?? ValueTask.CompletedTask;
+	public ValueTask DisposeAsync() => _element?.DisposeAsync() ?? ValueTask.CompletedTask;
 }

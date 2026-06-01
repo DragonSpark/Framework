@@ -9,7 +9,7 @@ using System.Linq.Expressions;
 
 namespace DragonSpark.Reflection.Types;
 
-class ActivationDelegates<T> : ReferenceValueTable<Type, T> where T : Delegate
+class ActivationDelegates<T> : ConcurrentStore<Type, T> where T : Delegate
 {
 	public ActivationDelegates(params Type[] parameters) : this(new ActivateExpressions(parameters)) {}
 

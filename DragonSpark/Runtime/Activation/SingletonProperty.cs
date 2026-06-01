@@ -9,7 +9,7 @@ using System.Reflection;
 
 namespace DragonSpark.Runtime.Activation;
 
-sealed class SingletonProperty : ReferenceValueStore<Type, PropertyInfo>
+sealed class SingletonProperty : ConcurrentStore<Type, PropertyInfo>
 {
 	public static SingletonProperty Default { get; } = new();
 
