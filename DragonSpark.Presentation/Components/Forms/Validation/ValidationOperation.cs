@@ -17,8 +17,8 @@ sealed class ValidationOperation<T> : IStopAware<ValidationContext>
 		var (((context, field), messages, (invalid, _, _)), stop) = parameter;
 		if (context.IsValid())
 		{
-            var value = field.GetValue<T>(); // TODO
-            if (value is null || !await _validator.Off(new(value, stop)))
+            var value = field.GetValue<T>();
+            if (value is not null && !await _validator.Off(new(value, stop)))
             {
                 messages.Add(in field, invalid);
             }

@@ -10,7 +10,7 @@ public abstract class FieldValidation<T> : ValidationComponent
 
 	protected override bool Validate()
 	{
-		var value = Identifier.GetValue<T>(); // TODO
-		return value is not null && Validator.Get(value);
+		var value = Identifier.GetValue<T>();
+		return value is null || Validator.Get(value);
 	}
 }
