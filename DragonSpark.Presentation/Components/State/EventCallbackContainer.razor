@@ -1,23 +1,29 @@
 @using DragonSpark.Compose
+@using DragonSpark.Presentation.Compose
 @inherits InteractiveComponentBase
 @ChildContent(_subject)
 @code {
-    EventCallback _subject;
+	EventCallback _subject;
 
-    [Parameter, EditorRequired]
-    public required RenderFragment<EventCallback> ChildContent { get; set; }
+	[Parameter, EditorRequired]
+	public required RenderFragment<EventCallback> ChildContent { get; set; }
 
-    [Parameter, EditorRequired]
-    public EventCallback Subject { get; set; }
+	[Parameter, EditorRequired]
+	public EventCallback Subject { get; set; }
 
-    [Parameter]
-    public required object Owner { get; set; }
+	[Parameter, EditorRequired]
+	public required object Owner { get; set; }
 
-    public override async Task SetParametersAsync(ParameterView parameters)
-    {
-        var changed = parameters.DidParameterChange(nameof(Subject), Subject) || parameters.DidParameterChange(nameof(Owner), Owner);
-        await base.SetParametersAsync(parameters).Off();
-        _subject = changed ? Start.A.Callback(Subject).UpdateActivity(Receiver).Handle(Exceptions, Owner.GetType()) : _subject;
-    }
+	[Parameter]
+	public required bool PreserveNotificationOwner { get; set; } = true;
 
+	public override async Task SetParametersAsync(ParameterView parameters)
+	{
+		var changed = parameters.DidParameterChange(nameof(Subject), Subject) || parameters.DidParameterChange(nameof(Owner), Owner);
+		await base.SetParametersAsync(parameters).Off();
+		_subject = changed ? Create() : _subject;
+	}
+
+	OperationCallbackComposer Create()
+		=> Start.A.Callback(Subject, PreserveNotificationOwner ? Owner : null).UpdateActivity(Receiver).Handle(Exceptions, Owner.GetType());
 }
