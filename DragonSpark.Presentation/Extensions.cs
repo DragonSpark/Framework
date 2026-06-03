@@ -230,7 +230,7 @@ public static class Extensions
 	/**/
 	// ReSharper disable once TooManyArguments
 	public static CancelAwareActivityOptions Get(this IStopHandle @this, string message, IOperation? canceled = null,
-	                                             bool RedrawOnFinish = false)
+	                                             bool RedrawOnFinish = true)
 		=> new(message, @this, RedrawOnFinish: RedrawOnFinish, Canceled: canceled);
 	
 	/**/

@@ -35,7 +35,7 @@ public class AddClaimTo<T> : IStopAware<T, IdentityResult> where T : IdentityUse
 		if (remove.Succeeded)
 		{
 			var result = await users.AddClaimAsync(verify, claim).Off();
-			await session.Subject.RefreshSignInAsync(verify).Off();
+			await session.Subject.RefreshSignInAsync(verify).Off(); // TODO: Sales profile
 			return result;
 		}
 
