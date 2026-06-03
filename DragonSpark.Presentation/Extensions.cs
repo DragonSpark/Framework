@@ -68,8 +68,8 @@ public static class Extensions
 	/**/
 	extension(ModelContext @this)
 	{
-		public CallbackComposer Callback(EventCallback callback)
-			=> @this.Callback(() => callback.Invoke());
+		public CallbackComposer Callback(EventCallback callback, object? owner = null)
+			=> new(owner, () => callback.Invoke());
 
 		public CallbackComposer Callback(Func<ValueTask> method)
 			=> @this.Callback(method.Start().Select(x => x.AsTask()));
@@ -85,11 +85,11 @@ public static class Extensions
 		public SubmitCallbackComposer Callback(Func<EditContext, Task> submit, IOperation invalid)
 			=> new(submit, invalid);
 
-		public SubmitWithCancelCallbackComposer Callback(Func<SubmittingInput, Task> submit)
-			=> new(submit);
+		public SubmitWithCancelCallbackComposer Callback(Func<SubmittingInput, Task> submit) => new(submit);
 
 		public CallbackComposer<object> Callback(Func<object, Task> method) => new(method);
 
+		public CallbackComposer<T> Callback<T>(EventCallback<T> method, object? owner = null) => new(owner, x => method.Invoke(x));
 		public CallbackComposer<T> Callback<T>(Func<T, Task> method) => new(method);
 
 		public CallbackComposer<T> Callback<T>(Action<T> callback)
@@ -149,8 +149,7 @@ public static class Extensions
 
 		public bool IsValid() => Components.Forms.Validation.IsValid.Default.Get(@this);
 
-		public bool IsValid(IActivityReceiver receiver)
-			=> @this.IsValid() && !receiver.Active;
+		public bool IsValid(IActivityReceiver receiver) => @this.IsValid() && !receiver.Active;
 
 		public void NotifyModelField(string field)
 		{
@@ -231,7 +230,7 @@ public static class Extensions
 	/**/
 	// ReSharper disable once TooManyArguments
 	public static CancelAwareActivityOptions Get(this IStopHandle @this, string message, IOperation? canceled = null,
-	                                             bool RedrawOnFinish = false)
+	                                             bool RedrawOnFinish = true)
 		=> new(message, @this, RedrawOnFinish: RedrawOnFinish, Canceled: canceled);
 	
 	/**/

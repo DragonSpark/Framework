@@ -123,24 +123,19 @@
         Update(options);
         if (result is not null)
         {
-            await Redraw(options).Off();
+	        _restore.Up();
+	        _displaying.Down();
+
+	        if (Monitor is not null)
+	        {
+		        await Monitor.On();
+	        }
+
+	        _render.Execute(options?.RedrawOnFinish == true);
+	        StateHasChanged();
+	        _model.Execute();
         }
         return result;
-    }
-
-    async ValueTask Redraw(ActivityOptions? options)
-    {
-        _restore.Up();
-        _displaying.Down();
-
-        if (Monitor is not null)
-        {
-            await Monitor.On();
-        }
-
-        _render.Execute(options?.RedrawOnFinish == true);
-        StateHasChanged();
-        _model.Execute();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

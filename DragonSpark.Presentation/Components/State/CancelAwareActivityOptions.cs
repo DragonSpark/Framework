@@ -8,5 +8,5 @@ public sealed record CancelAwareActivityOptions(
 	IStopHandle Handle,
 	bool RedrawOnStart = true,
 	IOperation? Canceled = null,
-	bool RedrawOnFinish = false)
+	bool RedrawOnFinish = true)
 	: ActivityOptions(RedrawOnStart, RedrawOnFinish);

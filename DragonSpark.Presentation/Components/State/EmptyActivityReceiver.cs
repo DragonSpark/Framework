@@ -21,7 +21,7 @@ public sealed class EmptyActivityReceiver : IActivityReceiver
 
 	public ICommand<IRenderAware> Remove { get; }
 
-	public bool Active => true;
+	public bool Active => false;
 
 	public ValueTask Get(ActivityReceiverState parameter) => ValueTask.CompletedTask;
 

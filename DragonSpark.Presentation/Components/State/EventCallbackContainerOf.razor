@@ -1,0 +1,34 @@
+@using DragonSpark.Compose
+@using DragonSpark.Presentation.Compose
+@inherits InteractiveComponentBase
+@typeparam T
+
+@ChildContent(_subject)
+
+@code {
+	EventCallback<T> _subject;
+
+	[Parameter, EditorRequired]
+	public required RenderFragment<EventCallback<T>> ChildContent { get; set; }
+
+	[Parameter, EditorRequired]
+	public EventCallback<T> Subject { get; set; }
+
+	[Parameter, EditorRequired]
+	public required object Owner { get; set; }
+
+	[Parameter]
+	public required bool PreserveNotificationOwner { get; set; } = true;
+
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        var changed = parameters.DidParameterChange(nameof(Subject), Subject) 
+                      || parameters.DidParameterChange(nameof(Owner), Owner);
+        await base.SetParametersAsync(parameters).Off();
+        _subject = changed ? Create() : _subject;
+    }
+
+    OperationCallbackComposer<T> Create()
+	    => Start.A.Callback(Subject, PreserveNotificationOwner ? Owner : null).UpdateActivity(Receiver).Handle(Exceptions, Owner.GetType());
+
+}

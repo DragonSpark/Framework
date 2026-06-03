@@ -6,7 +6,7 @@
 
 @inherits ContentComponentBase<T>
 
-<ApplicationContentView TValue="T" Content="@Content" Refreshed="@_load" Receiver="@Receiver">
+<ApplicationContentView TValue="T" Content="@Content" Refreshed="@_load" Action="@ActivityReceiverContextAction.Existing">
     <ContentTemplate>
         <DragonSpark.Presentation.Components.State.EnabledContainer Enabled="@Allow">
             <DragonSpark.Presentation.Components.Rendering.ShouldRenderComponent Enabled="@Allow">
@@ -46,9 +46,6 @@
 
     [Parameter]
     public required IStopAware<T?> Source { get; set; }
-
-    [CascadingParameter]
-    public required IActivityReceiver Receiver { get; set; }
 
     protected override async ValueTask<T?> GetContent()
     {
