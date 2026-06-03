@@ -1,8 +1,10 @@
+using System;
 using System.Net.Http;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
 using DragonSpark.Compose;
+using DragonSpark.Composition;
 using DragonSpark.Contracts.General.Chat;
 using DragonSpark.Model.Operations;
 
@@ -10,26 +12,29 @@ namespace DragonSpark.Grok.Chat;
 
 public sealed class ChatResponse : IChatResponse
 {
-    readonly IHttpClientFactory    _factory;
-    readonly string                _name;
+    readonly Func<HttpClient>      _client;
     readonly JsonSerializerOptions _options;
+    readonly ToolChoice            _tool;
 
-    public ChatResponse(IHttpClientFactory factory) : this(factory, RegistrationName.Default, ChatOptions.Default) {}
+    public ChatResponse(IHttpClientFactory factory)
+        : this(Start.A.Selection<string, HttpClient>(factory.CreateClient).Then().Bind(RegistrationName.Default.Get),
+               ChatOptions.Default, ToolChoice.Required) {}
 
-    public ChatResponse(IHttpClientFactory factory, string name, JsonSerializerOptions options)
+    [Candidate(false)]
+    public ChatResponse(Func<HttpClient> client, JsonSerializerOptions options, ToolChoice tool)
     {
-        _factory = factory;
-        _name    = name;
+        _client  = client;
         _options = options;
+        _tool    = tool;
     }
 
     public async Task<ChatMessage> Get(Stop<ChatResponseInput> parameter)
     {
         var (((name, messages, maximumTokens, temperature), tools), stop) = parameter;
 
-        using var client  = _factory.CreateClient(_name);
-        var       payload = new ChatCompletionApiRequest(name, messages, maximumTokens, temperature, tools.Open());
-        var       post    = await client.PostAsJsonAsync("chat/completions", payload, _options, stop).Off();
+        using var client = _client();
+        var payload = new ChatCompletionApiRequest(name, messages, maximumTokens, temperature, tools.Open(), _tool);
+        var post = await client.PostAsJsonAsync("chat/completions", payload, _options, stop).Off();
         post.EnsureSuccessStatusCode();
         var response = await post.Content.ReadFromJsonAsync<GrokChatResponse>(_options, stop).Off();
         return response.Verify().Choices[0].Message;

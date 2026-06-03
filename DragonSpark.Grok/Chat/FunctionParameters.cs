@@ -3,10 +3,18 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Reflection;
+using System.Text.Json.Serialization;
 using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 
 namespace DragonSpark.Grok.Chat;
+
+[method: JsonConstructor]
+public sealed record FunctionParameters(string Type, Dictionary<string, ParameterSchema> Properties, string[] Required)
+{
+    public FunctionParameters(Dictionary<string, ParameterSchema> Properties, string[] Required)
+        : this("object", Properties, Required) {}
+}
 
 sealed class FunctionParameters<T> : IResult<FunctionParameters>
 {

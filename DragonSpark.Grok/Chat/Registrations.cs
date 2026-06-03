@@ -34,6 +34,10 @@ sealed class Registrations : ICommand<IServiceCollection>
                  .Include(x => x.Dependencies)
                  .Singleton()
                  //
+                 .Then.Start<IToolRegistration>()
+                 .Forward<SuggestionToolRegistration>()
+                 .Singleton()
+                 //
                  .Then.AddHttpClient(RegistrationName.Default, ClientConfiguration.Default.Execute)
                  .ConfigurePrimaryHttpMessageHandler(() => new SocketsHttpHandler
                  {
@@ -41,5 +45,3 @@ sealed class Registrations : ICommand<IServiceCollection>
                  });
     }
 }
-
-/*public readonly record struct ChatInput(List<ChatMessage> Messages, string UserContext);*/
