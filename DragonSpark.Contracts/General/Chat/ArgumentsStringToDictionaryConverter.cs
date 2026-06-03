@@ -6,12 +6,28 @@ namespace DragonSpark.Contracts.General.Chat;
 public sealed class ArgumentsStringToDictionaryConverter : JsonConverter<Dictionary<string, object?>>
 {
     public override Dictionary<string, object?> Read(
-        ref Utf8JsonReader reader, 
-        Type typeToConvert, 
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
         JsonSerializerOptions options)
     {
-        var json = reader.GetString();
-        return string.IsNullOrWhiteSpace(json) ? [] : ConvertToDictionary(JsonDocument.Parse(json).RootElement);
+        switch (reader)
+        {
+            case { TokenType: JsonTokenType.String }:
+            {
+                var value = reader.GetString();
+                if (!string.IsNullOrWhiteSpace(value))
+                {
+                    using var doc = JsonDocument.Parse(value);
+                    return ConvertToDictionary(doc.RootElement);
+                }
+
+                return [];
+            }
+            default:
+                return reader.TokenType == JsonTokenType.StartObject
+                           ? ConvertToDictionary(JsonElement.ParseValue(ref reader))
+                           : [];
+        }
     }
 
     static Dictionary<string, object?> ConvertToDictionary(JsonElement element)
@@ -27,13 +43,26 @@ public sealed class ArgumentsStringToDictionaryConverter : JsonConverter<Diction
                 JsonValueKind.True => true,
                 JsonValueKind.False => false,
                 JsonValueKind.Object => ConvertToDictionary(prop.Value),
-                JsonValueKind.Array => prop.Value.EnumerateArray().Select(ConvertToDictionary).ToList(),
+                JsonValueKind.Array => prop.Value.EnumerateArray()
+                                           .Select(e => ConvertElement(e))
+                                           .ToList(),
                 _ => null
             };
         }
 
         return result;
     }
+
+    static object? ConvertElement(JsonElement element) => element.ValueKind switch
+    {
+        JsonValueKind.String => element.GetString(),
+        JsonValueKind.Number => element.TryGetDecimal(out var d) ? d : element.GetDouble(),
+        JsonValueKind.True => true,
+        JsonValueKind.False => false,
+        JsonValueKind.Object => ConvertToDictionary(element),
+        JsonValueKind.Array => element.EnumerateArray().Select(ConvertElement).ToList(),
+        _ => null
+    };
 
     public override void Write(Utf8JsonWriter writer, Dictionary<string, object?> value, JsonSerializerOptions options)
     {

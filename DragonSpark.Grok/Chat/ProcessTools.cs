@@ -20,13 +20,11 @@ sealed class ProcessTools : IStopAware<ChatMessage, IReadOnlyList<ChatMessage>>
         var result = new List<ChatMessage>();
         if (message is AssistantMessage assistant && assistant.ToolCalls?.Any() == true)
         {
-            foreach (var toolCall in assistant.ToolCalls)
+            result.Add(message);
+            foreach (var (id, (name, dictionary)) in assistant.ToolCalls.OfType<FunctionToolCall>())
             {
-                if (toolCall is FunctionToolCall ftc)
-                {
-                    var content = await _execute.Off(new(new(ftc.Function.Name, ftc.Function.Arguments), stop));
-                    result.Add(new ToolMessage(ftc.Id, content));
-                }
+                var content = await _execute.Off(new(new(name, dictionary), stop));
+                result.Add(new ToolMessage(id, content, name));
             }
         }
         else if (message is TextMessage text)

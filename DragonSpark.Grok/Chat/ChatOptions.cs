@@ -14,7 +14,6 @@ public sealed class ChatOptions : Instance<JsonSerializerOptions>
         : base(NewOptions.Default.Get(JsonNamingPolicy.SnakeCaseLower)
                          .With(x =>
                                {
-                                   x.Converters.Add(ToolCallConverter.Default);
                                    x.DefaultIgnoreCondition      = JsonIgnoreCondition.WhenWritingNull;
                                    x.PropertyNameCaseInsensitive = true;
                                })) {}
