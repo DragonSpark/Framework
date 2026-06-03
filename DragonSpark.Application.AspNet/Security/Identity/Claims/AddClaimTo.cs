@@ -1,9 +1,7 @@
 using DragonSpark.Application.AspNet.Security.Identity.Authentication;
-using DragonSpark.Application.Security.Identity;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Selection.Stop;
-using DragonSpark.Model.Selection.Conditions;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Security.Claims;
@@ -15,16 +13,16 @@ public class AddClaimTo<T> : IStopAware<T, IdentityResult> where T : IdentityUse
 {
 	readonly IAuthentications<T>         _sessions;
 	readonly Func<T, Claim>              _claim;
-	readonly ICondition<ClaimsPrincipal> _application;
+	readonly IRefreshUser                _refresh;
+	
+	public AddClaimTo(IAuthentications<T> sessions, IRefreshUser refresh, string type)
+		: this(sessions, refresh, new Claim(type, string.Empty).Accept) {}
 
-	public AddClaimTo(IAuthentications<T> sessions, string type)
-		: this(sessions, new Claim(type, string.Empty).Accept, IsApplicationPrincipal.Default) {}
-
-	protected AddClaimTo(IAuthentications<T> sessions, Func<T, Claim> claim, ICondition<ClaimsPrincipal> application)
+	protected AddClaimTo(IAuthentications<T> sessions, IRefreshUser refresh, Func<T, Claim> claim)
 	{
 		_sessions    = sessions;
 		_claim       = claim;
-		_application = application;
+		_refresh     = refresh;
 	}
 
 	public async ValueTask<IdentityResult> Get(Stop<T> parameter)
@@ -40,9 +38,10 @@ public class AddClaimTo<T> : IStopAware<T, IdentityResult> where T : IdentityUse
 		if (remove.Succeeded)
 		{
 			var result = await users.AddClaimAsync(verify, claim).Off();
-			if (_application.Get(session.Subject.Context.User))
+
+			if (result.Succeeded)
 			{
-				await session.Subject.RefreshSignInAsync(verify).Off();
+				await _refresh.Off(session.Subject.Context.User);	
 			}
 
 			return result;
