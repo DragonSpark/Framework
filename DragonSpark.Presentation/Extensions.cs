@@ -1,3 +1,8 @@
+using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
 using DragonSpark.Application;
 using DragonSpark.Application.Components.Validation.Expressions;
 using DragonSpark.Application.Compose;
@@ -24,11 +29,6 @@ using DragonSpark.Presentation.Text;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Radzen;
-using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
 using Action = System.Action;
 using ComponentBase = Microsoft.AspNetCore.Components.ComponentBase;
 using ValidationContext = DragonSpark.Presentation.Components.Forms.Validation.ValidationContext;
@@ -79,11 +79,13 @@ public static class Extensions
 		public SubmitCallbackComposer Callback(Func<EditContext, Task> submit) => new(submit);
 
 		public SubmitCallbackComposer Callback(Func<EditContext, Task> submit,
-		                                       IStopAware invalid, CancellationToken stop)
+											   IStopAware invalid, CancellationToken stop)
 			=> @this.Callback(submit, invalid.Then().Bind(stop).Out());
 
 		public SubmitCallbackComposer Callback(Func<EditContext, Task> submit, IOperation invalid)
 			=> new(submit, invalid);
+		public SubmitCallbackComposer Callback(EventCallback<EditContext> method, object? owner = null)
+			=> new(x => method.Invoke(x), owner);
 
 		public SubmitWithCancelCallbackComposer Callback(Func<SubmittingInput, Task> submit) => new(submit);
 
@@ -230,7 +232,7 @@ public static class Extensions
 	/**/
 	// ReSharper disable once TooManyArguments
 	public static CancelAwareActivityOptions Get(this IStopHandle @this, string message, IOperation? canceled = null,
-	                                             bool RedrawOnFinish = true)
+												 bool RedrawOnFinish = true)
 		=> new(message, @this, RedrawOnFinish: RedrawOnFinish, Canceled: canceled);
 	
 	/**/
