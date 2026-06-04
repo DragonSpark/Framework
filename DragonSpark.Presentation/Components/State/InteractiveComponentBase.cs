@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
 
 namespace DragonSpark.Presentation.Components.State;
 
@@ -13,6 +13,6 @@ public class InteractiveComponentBase : ComponentBase
 
 public class InteractiveComponentBase<T> : InteractiveComponentBase
 {
-	[Parameter]
+	[Parameter, EditorRequired]
 	public required T Input { get; set; }
 }
