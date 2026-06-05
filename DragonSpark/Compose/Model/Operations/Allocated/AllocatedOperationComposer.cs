@@ -12,5 +12,5 @@ public class AllocatedOperationComposer : ResultComposer<Task>
 
 	public AllocatedOperationComposer Append(Func<Task> next) => new(new AllocatedAppended(Get().Get, next));
 
-	public OperationComposer Structure() => new(Select(x => x.ToOperation()).Get());
+	public OperationComposer Structure() => new(Select(static x => x.ToOperation()).Get());
 }

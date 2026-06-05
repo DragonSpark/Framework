@@ -7,61 +7,57 @@
 @inherits ContentComponentBase<T>
 
 <ApplicationContentView TValue="T" Content="@Content" Refreshed="@_load" Action="@ActivityReceiverContextAction.Existing">
-    <ContentTemplate>
-        <DragonSpark.Presentation.Components.State.EnabledContainer Enabled="@Allow">
-            <DragonSpark.Presentation.Components.Rendering.ShouldRenderComponent Enabled="@Allow">
-                <CascadingValue Value="context" ChildContent="@_fragment" IsFixed="true" />
-            </DragonSpark.Presentation.Components.Rendering.ShouldRenderComponent>
-        </DragonSpark.Presentation.Components.State.EnabledContainer>
-    </ContentTemplate>
+	<ContentTemplate>
+		<DragonSpark.Presentation.Components.State.EnabledContainer Enabled="@Allow">
+			<DragonSpark.Presentation.Components.Rendering.ShouldRenderComponent Enabled="@Allow">
+				<CascadingValue Value="context" ChildContent="@_fragment" IsFixed="true" />
+			</DragonSpark.Presentation.Components.Rendering.ShouldRenderComponent>
+		</DragonSpark.Presentation.Components.State.EnabledContainer>
+	</ContentTemplate>
 </ApplicationContentView>
 
 @code {
-    RenderFragment   _fragment = _ => {};
-    EventCallback<T> _load;
+	RenderFragment   _fragment = _ => {};
+	EventCallback<T> _load;
 
-    protected override void OnInitialized()
-    {
-        _load = Start.A.Callback<T>(OnLoad);
-        base.OnInitialized();
-    }
+	protected override void OnInitialized()
+	{
+		_load = Start.A.Callback<T>(OnLoad).Hide();
+		base.OnInitialized();
+	}
 
-    Task OnLoad(T parameter)
-    {
-        Allow.Up();
-        return Loaded.Invoke(parameter);
-    }
+	Task OnLoad(T parameter) => Allow.Up() ? Loaded.Invoke(parameter) : Task.CompletedTask;
 
-    [Parameter]
-    public EventCallback<T> Loaded { get; set; }
+	[Parameter]
+	public EventCallback<T> Loaded { get; set; }
 
-    [Parameter]
-    public required Switch Allow { get; set; }
+	[Parameter]
+	public required Switch Allow { get; set; }
 
-    [Parameter]
-    public required Switch? Load { get; set; }
+	[Parameter]
+	public required Switch? Load { get; set; }
 
-    [Parameter]
-    public required RenderFragment<T?> ChildContent { get; set; }
+	[Parameter]
+	public required RenderFragment<T?> ChildContent { get; set; }
 
-    [Parameter]
-    public required IStopAware<T?> Source { get; set; }
+	[Parameter]
+	public required IStopAware<T?> Source { get; set; }
 
-    protected override async ValueTask<T?> GetContent()
-    {
-        var result = await Source.Off(Stop);
-        _fragment = ChildContent(result);
-        return result;
-    }
+	protected override async ValueTask<T?> GetContent()
+	{
+		var result = await Source.Off(Stop);
+		_fragment = ChildContent(result);
+		return result;
+	}
 
-    protected override void OnParametersSet()
-    {
-        if (Load?.Down() ?? false)
-        {
-            Allow.Down();
-            RequestNewContent();
-        }
-        base.OnParametersSet();
-    }
+	protected override void OnParametersSet()
+	{
+		if (Load?.Down() ?? false)
+		{
+			Allow.Down();
+			RequestNewContent();
+		}
+		base.OnParametersSet();
+	}
 
 }
