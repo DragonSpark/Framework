@@ -5,16 +5,16 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Storage;
 
-sealed class LinkAwareStorageEntry : INewStorageEntry
+sealed class LinkAwareStorageEntry : ILoadStorageEntry
 {
 	public static LinkAwareStorageEntry Default { get; } = new();
 
-	LinkAwareStorageEntry() : this(NewStorageEntry.Default, LinkPathProperty.Default) {}
+	LinkAwareStorageEntry() : this(LoadStorageEntry.Default, LinkPathProperty.Default) {}
 
-	readonly INewStorageEntry      _previous;
+	readonly ILoadStorageEntry      _previous;
 	readonly IEntryProperty _entry;
 
-	public LinkAwareStorageEntry(INewStorageEntry previous, IEntryProperty entry)
+	public LinkAwareStorageEntry(ILoadStorageEntry previous, IEntryProperty entry)
 	{
 		_previous = previous;
 		_entry    = entry;

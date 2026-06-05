@@ -11,7 +11,7 @@ sealed class SaveContent : ISaveContent
 	readonly IWrite                                    _write;
 	readonly IStopAware<BlobBaseClient, IStorageEntry> _entry;
 
-	public SaveContent(IWrite write) : this(write, CreateClientEntry.Default) {}
+	public SaveContent(IWrite write) : this(write, LoadClientEntry.Default) {}
 
 	public SaveContent(IWrite write, IStopAware<BlobBaseClient, IStorageEntry> entry)
 	{

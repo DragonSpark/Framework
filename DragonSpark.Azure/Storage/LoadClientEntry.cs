@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Storage;
 
-sealed class CreateClientEntry : IStopAware<BlobBaseClient, IStorageEntry>
+sealed class LoadClientEntry : IStopAware<BlobBaseClient, IStorageEntry>
 {
-	public static CreateClientEntry Default { get; } = new();
+	public static LoadClientEntry Default { get; } = new();
 
-	CreateClientEntry() : this(NewStorageEntry.Default) {}
+	LoadClientEntry() : this(LoadStorageEntry.Default) {}
 
-	readonly INewStorageEntry _entry;
+	readonly ILoadStorageEntry _entry;
 
-	public CreateClientEntry(INewStorageEntry entry) => _entry = entry;
+	public LoadClientEntry(ILoadStorageEntry entry) => _entry = entry;
 
 	public async ValueTask<IStorageEntry> Get(Stop<BlobBaseClient> parameter)
 	{

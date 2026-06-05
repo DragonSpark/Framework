@@ -11,7 +11,7 @@ sealed class GetClientEntry : IStopAware<BlobClient, IStorageEntry?>
 {
 	public static GetClientEntry Default { get; } = new();
 
-	GetClientEntry() : this(new CreateClientEntry(LinkAwareStorageEntry.Default)) {}
+	GetClientEntry() : this(new LoadClientEntry(LinkAwareStorageEntry.Default)) {}
 
 	readonly IStopAware<BlobBaseClient, IStorageEntry> _previous;
 
