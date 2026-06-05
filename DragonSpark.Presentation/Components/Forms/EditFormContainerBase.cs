@@ -7,7 +7,16 @@ using Microsoft.AspNetCore.Components.Forms;
 
 namespace DragonSpark.Presentation.Components.Forms;
 
-public class EditFormContainerBase<T> : InteractiveComponentBase<T>
+public class EditFormContainerBase<T> : EditFormContainerBase
+{
+	[Parameter]
+	public required T Input { get; set; }
+	
+	[Parameter]
+	public EventCallback<IMutable<T?>> Editing { get; set; }
+}
+
+public class EditFormContainerBase : InteractiveComponentBase
 {
 	[Parameter]
 	public required bool EnableChangeMonitor { get; set; } = true;
@@ -35,9 +44,6 @@ public class EditFormContainerBase<T> : InteractiveComponentBase<T>
 
 	[Parameter]
 	public EventCallback<EditContext> Submitted { get; set; }
-
-	[Parameter]
-	public EventCallback<IMutable<T?>> Editing { get; set; }
 
 	[Parameter]
 	public EventCallback Canceled { get; set; }
