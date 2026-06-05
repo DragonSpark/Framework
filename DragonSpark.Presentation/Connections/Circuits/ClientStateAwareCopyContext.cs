@@ -5,16 +5,16 @@ using Microsoft.AspNetCore.Http;
 
 namespace DragonSpark.Presentation.Connections.Circuits;
 
-sealed class ClientStateAwareDetermineContext : IDetermineContext
+sealed class ClientStateAwareCopyContext : ICopyContext
 {
-	readonly IDetermineContext _previous;
+	readonly ICopyContext _previous;
 	readonly ClientState       _state;
 	readonly IHeader           _header;
 
-	public ClientStateAwareDetermineContext(IDetermineContext previous, ClientState state)
+	public ClientStateAwareCopyContext(ICopyContext previous, ClientState state)
 		: this(previous, state, CookieHeader.Default) {}
 
-	public ClientStateAwareDetermineContext(IDetermineContext previous, ClientState state, IHeader header)
+	public ClientStateAwareCopyContext(ICopyContext previous, ClientState state, IHeader header)
 	{
 		_previous = previous;
 		_state    = state;

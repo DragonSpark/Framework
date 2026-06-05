@@ -94,8 +94,8 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Decorate<ConnectionAwareSetPageExitCheck>()
 		         .Scoped()
 		         //
-		         .Then.Start<IDetermineContext>()
-		         .Forward<DetermineContext>()
+		         .Then.Start<ICopyContext>()
+		         .Forward<CopyContext>()
 		         .Scoped()
 		         //
 		         .Then.Start<IEnter>()
