@@ -11,8 +11,8 @@ sealed class LinkAwareStorageEntry : ILoadStorageEntry
 
 	LinkAwareStorageEntry() : this(LoadStorageEntry.Default, LinkPathProperty.Default) {}
 
-	readonly ILoadStorageEntry      _previous;
-	readonly IEntryProperty _entry;
+	readonly ILoadStorageEntry _previous;
+	readonly IEntryProperty    _entry;
 
 	public LinkAwareStorageEntry(ILoadStorageEntry previous, IEntryProperty entry)
 	{
@@ -23,15 +23,15 @@ sealed class LinkAwareStorageEntry : ILoadStorageEntry
 	public async ValueTask<IStorageEntry> Get(Stop<EntryInput> parameter)
 	{
 		var ((client, properties), stop) = parameter;
-		var path = properties.Metadata.Count > 0 ? _entry.Get(properties.Metadata) : null;
-		if (path is not null)
+
+		var input = new EntryInput(client, properties);
+		while (input.Properties.Metadata.Count > 0 && _entry.Get(input.Properties.Metadata) is {} path)
 		{
-			var linked   = client.GetParentBlobContainerClient().GetBlobClient(path);
-			var response = await linked.GetPropertiesAsync(cancellationToken: stop).Off();
-			var value    = response.Value;
-			return await _previous.Off(new(new(linked, value), stop));
+			var next     = input.Client.GetParentBlobContainerClient().GetBlobClient(path);
+			var response = await next.GetPropertiesAsync(cancellationToken: stop).Off();
+			input = new(next, response.Value);
 		}
 
-		return await _previous.Off(parameter);
+		return await _previous.Off(new(input, stop));
 	}
 }
