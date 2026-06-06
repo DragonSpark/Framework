@@ -1,8 +1,6 @@
-﻿using DragonSpark.Model;
+﻿namespace DragonSpark.Server.Output;
 
-namespace DragonSpark.Server.Output;
-
-public class OutputKey : Text.Text, IOutputKey
+public class OutputKey<T> : OutputKey, IOutputKey<T>
 {
 	readonly string _key;
 
@@ -10,5 +8,14 @@ public class OutputKey : Text.Text, IOutputKey
 
 	protected OutputKey(string name, string key) : base(name) => _key = key;
 
-	public string Get(None parameter) => _key;
+	public string Get(T parameter) => $"{_key}:{parameter}";
+}
+
+public class OutputKey : Text.Text, IOutputKey
+{
+	protected OutputKey(string name) : this(name, name.ToLowerInvariant()) {}
+
+	protected OutputKey(string name, string key) : base(key) => Name = name;
+
+	public string Name { get; }
 }

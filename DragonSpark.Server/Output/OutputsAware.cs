@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Application.Model;
 using DragonSpark.Compose;
-using DragonSpark.Model;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Selection;
 using DragonSpark.Model.Operations.Selection.Stop;
@@ -30,7 +29,7 @@ public class OutputsAware<T> : IStopAware<T> where T : IUserIdentity
 		await _previous.Off(parameter);
 		foreach (var key in _keys.Open())
 		{
-			var tag = key is IUserOutputKey user ? user.Get(parameter.Subject) : key.Get(None.Default);
+			var tag = key is IUserOutputKey user ? user.Get(parameter.Subject) : key.Get();
 			await _output.EvictByTagAsync(tag, parameter).Off();
 		}
 	}
@@ -62,7 +61,7 @@ public class OutputsAware<TIn, T> : IStopAware<TIn, T> where TIn : IUserIdentity
 		{
 			foreach (var key in _keys.Open())
 			{
-				var tag = key is IUserOutputKey user ? user.Get(parameter.Subject) : key.Get(None.Default);
+				var tag = key is IUserOutputKey user ? user.Get(parameter.Subject) : key.Get();
 				await _output.EvictByTagAsync(tag, parameter).Off();
 			}
 		}

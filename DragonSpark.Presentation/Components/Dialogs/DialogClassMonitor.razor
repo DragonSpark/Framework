@@ -7,7 +7,7 @@
 
 @inject DialogService Model
 @inject CreateDocumentElementHandle Create
-@inject IScopedToken Token
+@inject IScopedToken Token 
 
 @code {
 
@@ -38,7 +38,8 @@
 	{
 		if (firstRender)
 		{
-			var stop = CancellationTokenSource.CreateLinkedTokenSource(Stop, Token.Get()).Token;
+			var token = Token.Get();
+			var stop  = Stop == CancellationToken.None ? token : CancellationTokenSource.CreateLinkedTokenSource(Stop, token).Token;
 			_element = await Create.Off(stop);
 			await Apply().Off();
 		}

@@ -30,7 +30,7 @@ sealed class Registrations : ICommand<IServiceCollection>
 		         //
 		         .Then.Decorate<IInitializeConnection, CircuitAwareInitializeConnection>()
 		         .Decorate<IInitializeConnection, ClientStateAwareInitializeConnection>()
-		         .Decorate<IDetermineContext, ClientStateAwareDetermineContext>()
+		         .Decorate<ICopyContext, ClientStateAwareCopyContext>()
 		         .Decorate<IExceptions, CircuitAwareExceptions>()
 			;
 	}

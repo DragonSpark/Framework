@@ -26,10 +26,6 @@ sealed class CurrentCircuitRecord : IMutable<CircuitRecord?>
 
 	public void Execute(CircuitRecord? parameter)
 	{
-		var store = _store.Get();
-		if (store is not null)
-		{
-			store[_key] = parameter;
-		}
+		_store.Get()?[_key] = parameter;
 	}
 }

@@ -11,6 +11,6 @@ public class ClearOutputsRegistration<T> : EventRegistration<T> where T : Messag
 
 public class ClearOutputsRegistration<TIn, T> : EventRegistration<T, TIn> where T : Message<TIn>
 {
-	protected ClearOutputsRegistration(IOutputCacheStore output, IUserOutputKey key)
+	protected ClearOutputsRegistration(IOutputCacheStore output, IOutputKey key)
 		: base(new ClearOutputs<TIn>(output, key)) {}
 }

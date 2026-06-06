@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
 using DragonSpark.Application;
 using DragonSpark.Application.Components.Validation.Expressions;
 using DragonSpark.Application.Compose;
@@ -29,6 +24,11 @@ using DragonSpark.Presentation.Text;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Radzen;
+using System;
+using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Threading;
+using System.Threading.Tasks;
 using Action = System.Action;
 using ComponentBase = Microsoft.AspNetCore.Components.ComponentBase;
 using ValidationContext = DragonSpark.Presentation.Components.Forms.Validation.ValidationContext;
@@ -39,11 +39,9 @@ public static class Extensions
 {
 	extension(BuildHostContext @this)
 	{
-		public BuildHostContext WithPresentationConfigurations()
-			=> Configure.Default.Get(@this);
+		public BuildHostContext WithPresentationConfigurations() => Configure.Default.Get(@this);
 
-		public BuildHostContext WithCircuitDiagnostics()
-			=> @this.Configure(CircuitDiagnosticRegistrations.Default);
+		public BuildHostContext WithCircuitDiagnostics() => @this.Configure(CircuitDiagnosticRegistrations.Default);
 	}
 
 	/**/

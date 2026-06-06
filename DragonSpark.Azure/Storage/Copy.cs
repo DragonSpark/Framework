@@ -12,7 +12,7 @@ sealed class Copy : ICopy
 	readonly BlobContainerClient                       _client;
 	readonly IStopAware<BlobBaseClient, IStorageEntry> _entry;
 
-	public Copy(BlobContainerClient client) : this(client, CreateClientEntry.Default) {}
+	public Copy(BlobContainerClient client) : this(client, LoadClientEntry.Default) {}
 
 	public Copy(BlobContainerClient client, IStopAware<BlobBaseClient, IStorageEntry> entry)
 	{

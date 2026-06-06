@@ -4,15 +4,15 @@ using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Storage;
 
-sealed class NewStorageEntry : INewStorageEntry
+sealed class LoadStorageEntry : ILoadStorageEntry
 {
-	public static NewStorageEntry Default { get; } = new();
+	public static LoadStorageEntry Default { get; } = new();
 
-	NewStorageEntry() : this(EntryName.Default) {}
+	LoadStorageEntry() : this(EntryName.Default) {}
 
 	readonly IFormatter<EntryInput> _name;
 
-	public NewStorageEntry(IFormatter<EntryInput> name) => _name = name;
+	public LoadStorageEntry(IFormatter<EntryInput> name) => _name = name;
 
 	public ValueTask<IStorageEntry> Get(Stop<EntryInput> parameter)
 	{

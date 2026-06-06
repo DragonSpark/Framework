@@ -58,13 +58,13 @@ public sealed class CallbackComposer : IResult<EventCallback>
 		=> new(_receiver.Verify(),
 		       new BlockingEntryOperation(new Allocated(_method).Then().Structure().Out(), duration));
 
-	public CallbackComposer Append(Action next) => Append(Start.A.Command(next).Operation().Allocate());
+	public CallbackComposer Append(Action next) => Append(Start.A.Command(next).Operation().Allocate().Get().Get);
 
 	public CallbackComposer Append(Func<Task> next)
 		=> new(_receiver ?? next.Target, _method.Start().Then().Append(next));
 
 	public CallbackComposer Append(Operate next)
-		=> new(_receiver ?? next.Target, _method.Start().Then().Structure().Append(next).Allocate());
+		=> new(_receiver ?? next.Target, _method.Start().Then().Structure().Append(next).Allocate().Get().Get);
 
 	public CallbackComposer Watching(IRenderState parameter)
 		=> new(new ActiveRenderAwareOperation(_method.Start().Then().Structure().Out(), parameter).Allocate);
