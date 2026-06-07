@@ -11,99 +11,88 @@
 
 @if (_error.Get() is not null)
 {
-    @ExceptionTemplate(_error.Get().Verify())
+	@ExceptionTemplate(_error.Get().Verify())
 }
 else if (_model is not null)
 {
-    @ChildContent(_model)
+	@ChildContent(_model)
 }
 else
 {
-    @DefaultLoadingTemplate.Default
+	@DefaultLoadingTemplate.Default
 }
 
 @code {
-    readonly Switch               _call  = new();
-    readonly IMutable<Exception?> _error = new Variable<Exception>();
-    T?                            _model;
-    EventCallback                 _load;
+	readonly IMutable<Exception?> _error = new Variable<Exception>();
+	T?                            _model;
+	EventCallback                 _load;
 
-    protected override void OnInitialized()
-    {
-        _load = Start.A.Callback(LoadContent).UpdateActivity(Receiver).Handle(Exceptions);
-        base.OnInitialized();
-    }
+	protected override void OnInitialized()
+	{
+		_load = Start.A.Callback(LoadContent).UpdateActivity(Receiver).Handle(Exceptions);
+		base.OnInitialized();
+	}
 
-    public override async Task SetParametersAsync(ParameterView parameters)
-    {
-        var changed = _model is null && parameters.DidParameterChange(nameof(Model), Model);
-        await base.SetParametersAsync(parameters);
-        if (changed || Load)
-        {
-            await _load.Off();
-        }
-    }
+	public override async Task SetParametersAsync(ParameterView parameters)
+	{
+		var changed = _model is null && parameters.DidParameterChange(nameof(Model), Model);
+		await base.SetParametersAsync(parameters);
+		if (changed || Load)
+		{
+			await _load.Off();
+		}
+	}
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        await base.OnAfterRenderAsync(firstRender);
-        if (_call.Down() && _model is not null)
-        {
-            await ModelChanged.Off(_model);
-        }
-    }
+	[Parameter]
+	public required RenderFragment<T> ChildContent { get; set; }
 
-    [Parameter]
-    public required RenderFragment<T> ChildContent { get; set; }
+	[Parameter]
+	public Switch Load { get; set; } = new();
 
-    [Parameter]
-    public Switch Load { get; set; } = new();
+	[Parameter]
+	public EventCallback Loaded { get; set; }
 
-    [Parameter]
-    public EventCallback Loaded { get; set; }
+	[Parameter]
+	public required IStopAware<T> Model { get; set; }
 
-    [Parameter]
-    public required IStopAware<T> Model { get; set; }
+	[Parameter]
+	public virtual RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
 
-    [Parameter]
-    public virtual RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
+	[Parameter]
+	public virtual RenderFragment<Exception> ExceptionTemplate { get; set; } = DefaultExceptionTemplate.Default;
 
-    [Parameter]
-    public virtual RenderFragment<Exception> ExceptionTemplate { get; set; } = DefaultExceptionTemplate.Default;
+	async Task LoadContent()
+	{
+		try
+		{
+			_error.Execute(null);
+			_model = await LoadModel().On();
+			await Loaded.Off();
+		}
+		catch (Exception e)
+		{
+			_error.Execute(e);
+			throw;
+		}
+	}
 
-    async Task LoadContent()
-    {
-        try
-        {
-            _error.Execute(null);
-            _model = await LoadModel().On();
-            _call.Execute(_model is not null);
-            await Loaded.Off();
-        }
-        catch (Exception e)
-        {
-            _error.Execute(e);
-            throw;
-        }
-    }
-
-    async Task<T> LoadModel()
-    {
-        var current = Load.Down() ? await Store.On() : new();
-        if (current.Success)
-        {
-            var content = current.Value.Verify();
-            try
-            {
-                return Serializer.Parser.Get(content);
-            }
-            catch (Exception e)
-            {
-                ProblemLoading.Execute(new(e, content));
-                await ErrorOccurred.Off();
-            }
-        }
-        return await Model.Off(Stop);
-    }
+	async Task<T> LoadModel()
+	{
+		var current = Load.Down() ? await Store.On() : new();
+		if (current.Success)
+		{
+			var content = current.Value.Verify();
+			try
+			{
+				return Serializer.Parser.Get(content);
+			}
+			catch (Exception e)
+			{
+				ProblemLoading.Execute(new(e, content));
+				await ErrorOccurred.Off();
+			}
+		}
+		return await Model.Off(Stop);
+	}
 
 }
