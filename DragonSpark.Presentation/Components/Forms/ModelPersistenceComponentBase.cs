@@ -8,9 +8,6 @@ namespace DragonSpark.Presentation.Components.Forms;
 public abstract class ModelPersistenceComponentBase<T> : ComponentBase where T : class
 {
 	[Parameter]
-	public EventCallback<T> ModelChanged { get; set; }
-
-	[Parameter]
 	public IClientVariable<string> Store { get; set; } = null!;
 
 	[Parameter]

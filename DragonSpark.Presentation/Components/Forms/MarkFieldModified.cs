@@ -24,3 +24,5 @@ public class MarkFieldModified : ComponentBase
 		}
 	}
 }
+
+public readonly record struct Saved<T>(T Subject, string Content);
