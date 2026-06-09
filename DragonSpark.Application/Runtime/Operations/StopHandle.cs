@@ -22,7 +22,7 @@ public sealed class StopHandle : IStopHandle
 
 	public async ValueTask Get()
 	{
-		if (_store.TryPop(out var source) && source is not null)
+		if (_store.TryPop(out var source))
 		{
 			await source.CancelAsync().Off();
 		}
