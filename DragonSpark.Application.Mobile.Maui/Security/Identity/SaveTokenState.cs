@@ -1,3 +1,5 @@
+using DragonSpark.Application.Communication.Http.Security;
+
 namespace DragonSpark.Application.Mobile.Maui.Security.Identity;
 
 sealed class SaveTokenState : DragonSpark.Application.Communication.Http.Security.SaveTokenState

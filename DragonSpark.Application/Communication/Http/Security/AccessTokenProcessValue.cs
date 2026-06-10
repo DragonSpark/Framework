@@ -1,9 +1,9 @@
 using DragonSpark.Contracts.Security;
 using DragonSpark.Model.Results;
 
-namespace DragonSpark.Application.Mobile.Maui.Security.Identity;
+namespace DragonSpark.Application.Communication.Http.Security;
 
-public sealed class AccessTokenProcessValue : Variable<AccessTokenView>
+public sealed class AccessTokenProcessValue : ProtectedVariable<AccessTokenView>
 {
     public static AccessTokenProcessValue Default { get; } = new();
 
