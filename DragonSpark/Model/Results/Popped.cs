@@ -11,7 +11,7 @@ sealed class Popped<T> : IResult<T>
 
 	public Popped(IMutable<T?> previous) => _previous = previous;
 
-	public T Get() => _previous.TryPop(out var result) && result is not null
+	public T Get() => _previous.TryPop(out var result)
 		                  ? result
 		                  : throw new InvalidOperationException($"The instance of {A.Type<T>()} has already been popped!");
 }

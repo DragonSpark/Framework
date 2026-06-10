@@ -11,9 +11,9 @@
 
 @code {
     readonly Variable<ValueTask?> _save  = new();
-    Array<string>            _skip  = Array<string>.Empty;
-    T                        _model = null!;
-    EditContext?             _context;
+    Array<string>                 _skip  = Array<string>.Empty;
+    T                             _model = null!;
+    EditContext?                  _context;
 
     protected override void OnParametersSet()
     {
@@ -74,11 +74,11 @@
     }
 
     protected override Task OnAfterRenderAsync(bool firstRender)
-        => _save.TryPop(out var save) && save is not null ? save.Value.AsTask() : base.OnAfterRenderAsync(firstRender);
+        => _save.TryPop(out var save) ? save.Value.AsTask() : base.OnAfterRenderAsync(firstRender);
 
     public ValueTask DisposeAsync()
     {
         _context?.OnFieldChanged -= FieldChanged;
-        return _save.TryPop(out var save) && save is not null ? save.Value : ValueTask.CompletedTask;
+        return _save.TryPop(out var save) ? save.Value : ValueTask.CompletedTask;
     }
 }
