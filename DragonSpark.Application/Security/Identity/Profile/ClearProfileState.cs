@@ -1,5 +1,5 @@
 using DragonSpark.Application.Model.Values;
-using DragonSpark.Model.Operations.Selection.Stop;
+using DragonSpark.Model.Operations.Selection.Stop.Conditions;
 using DragonSpark.Model.Results;
 
 namespace DragonSpark.Application.Security.Identity.Profile;

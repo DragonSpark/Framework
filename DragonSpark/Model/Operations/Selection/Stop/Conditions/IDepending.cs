@@ -1,4 +1,4 @@
-namespace DragonSpark.Model.Operations.Selection.Stop;
+namespace DragonSpark.Model.Operations.Selection.Stop.Conditions;
 
 public interface IDepending<T> : Selection.Conditions.IDepending<Stop<T>>, IStopAware<T, bool>;
 

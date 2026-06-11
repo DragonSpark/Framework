@@ -1,3 +1,9 @@
+using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Reflection;
+using System.Threading;
+using System.Threading.Tasks;
 using DragonSpark.Compose.Model.Commands;
 using DragonSpark.Compose.Model.Operations;
 using DragonSpark.Compose.Model.Operations.Allocated;
@@ -19,12 +25,6 @@ using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Selection.Stores;
 using DragonSpark.Model.Sequences;
-using System;
-using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
 using Condition = DragonSpark.Compose.Model.Selection.Condition;
 using IDepending = DragonSpark.Model.Operations.Selection.Conditions.IDepending;
 
@@ -213,22 +213,22 @@ public static partial class ExtensionMethods
 		=> @this.Get().To(x => x as IOperation ?? new Operation(x.Get));
 	public static IOperation<T> Out<T>(this Composer<T, ValueTask> @this)
 		=> @this.Get().To(x => x as IOperation<T> ?? new Operation<T>(x.Get));
-    public static IStopAware Out(this Composer<CancellationToken, ValueTask> @this)
-        => @this.Get().To(x => x as IStopAware ?? new StopAware(x.Get));
+	public static IStopAware Out(this Composer<CancellationToken, ValueTask> @this)
+		=> @this.Get().To(x => x as IStopAware ?? new StopAware(x.Get));
 
-	public static DragonSpark.Model.Operations.Selection.Conditions.IDepending<T> Out<T>(this Composer<T, ValueTask<bool>> @this)
-		=> @this.Get().To(x => x as DragonSpark.Model.Operations.Selection.Conditions.IDepending<T> ?? new DragonSpark.Model.Operations.Selection.Conditions.Depending<T>(x.Get));
+	public static IDepending<T> Out<T>(this Composer<T, ValueTask<bool>> @this)
+		=> @this.Get().To(x => x as IDepending<T> ?? new Depending<T>(x.Get));
 
-	public static DragonSpark.Model.Operations.Selection.Stop.IDepending<T> Out<T>(this Composer<Stop<T>, ValueTask<bool>> @this) => @this.Get().Out();
-	public static DragonSpark.Model.Operations.Selection.Stop.IDepending<T> Out<T>(this ISelect<Stop<T>, ValueTask<bool>> @this)
-		=> @this.To(x => x as DragonSpark.Model.Operations.Selection.Stop.IDepending<T> ?? new DragonSpark.Model.Operations.Selection.Stop.Depending<T>(x.Get));
+	public static DragonSpark.Model.Operations.Selection.Stop.Conditions.IDepending<T> Out<T>(this Composer<Stop<T>, ValueTask<bool>> @this) => @this.Get().Out();
+	public static DragonSpark.Model.Operations.Selection.Stop.Conditions.IDepending<T> Out<T>(this ISelect<Stop<T>, ValueTask<bool>> @this)
+		=> @this.To(x => x as DragonSpark.Model.Operations.Selection.Stop.Conditions.IDepending<T> ?? new DragonSpark.Model.Operations.Selection.Stop.Conditions.Depending<T>(x.Get));
 
 	public static DragonSpark.Model.Operations.Results.Stop.IStopAware<T> Out<T>(
 		this Composer<CancellationToken, ValueTask<T>> @this) => @this.Get().Out();
-    public static DragonSpark.Model.Operations.Results.Stop.IStopAware<T> Out<T>(
-        this ISelect<CancellationToken, ValueTask<T>> @this)
-        => @this.To(x => x as DragonSpark.Model.Operations.Results.Stop.IStopAware<T> ??
-                         new DragonSpark.Model.Operations.Results.Stop.StopAware<T>(x.Get));
+	public static DragonSpark.Model.Operations.Results.Stop.IStopAware<T> Out<T>(
+		this ISelect<CancellationToken, ValueTask<T>> @this)
+		=> @this.To(x => x as DragonSpark.Model.Operations.Results.Stop.IStopAware<T> ??
+						 new DragonSpark.Model.Operations.Results.Stop.StopAware<T>(x.Get));
 
 	public static ISelecting<TIn, TOut> Out<TIn, TOut>(this Composer<TIn, ValueTask<TOut>> @this)
 		=> @this.Get().To(x => x as ISelecting<TIn, TOut> ?? new Selecting<TIn, TOut>(x.Get));

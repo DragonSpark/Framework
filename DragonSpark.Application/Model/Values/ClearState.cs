@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Operations;
-using DragonSpark.Model.Operations.Selection.Stop;
+using DragonSpark.Model.Operations.Selection.Stop.Conditions;
 using DragonSpark.Model.Results;
 
 namespace DragonSpark.Application.Model.Values;

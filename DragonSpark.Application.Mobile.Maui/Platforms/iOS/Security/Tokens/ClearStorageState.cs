@@ -5,7 +5,7 @@ using DragonSpark.Application.Mobile.Maui.Device.Security;
 using DragonSpark.Application.Mobile.Maui.Security.Identity;
 using DragonSpark.Application.Security.Tokens;
 using DragonSpark.Compose;
-using DragonSpark.Model.Operations.Selection.Stop;
+using DragonSpark.Model.Operations.Selection.Stop.Conditions;
 using DragonSpark.Model.Operations.Stop;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Sequences;

@@ -1,10 +1,10 @@
-﻿using DragonSpark.Model;
-using DragonSpark.Model.Operations.Selection.Stop;
-using LinqKit;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Linq.Expressions;
+using DragonSpark.Model;
+using DragonSpark.Model.Operations.Selection.Stop.Conditions;
+using LinqKit;
+using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Application.AspNet.Entities.Queries.Compiled.Evaluation;
 
