@@ -1,3 +1,5 @@
+using DragonSpark.Model.Operations.Selection.Stop.Conditions;
+
 namespace DragonSpark.Application.Mobile.Attestation;
 
-public interface IClearClientKey : DragonSpark.Model.Operations.Selection.Stop.IDepending;
+public interface IClearClientKey : IDepending;

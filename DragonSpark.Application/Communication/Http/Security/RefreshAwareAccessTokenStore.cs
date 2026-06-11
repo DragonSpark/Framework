@@ -15,7 +15,10 @@ public class RefreshAwareAccessTokenStore : IAccessTokenStore
     readonly IWindow           _window;
 
     protected RefreshAwareAccessTokenStore(IComposeTokenView compose, IAccessTokenStore previous)
-        : this(compose, previous, Time.Default.GreaterThan(TimeSpan.FromMinutes(30))) {}
+        : this(compose, previous, TimeSpan.FromMinutes(10)) {}
+
+    protected RefreshAwareAccessTokenStore(IComposeTokenView compose, IAccessTokenStore previous, TimeSpan window)
+        : this(compose, previous, Time.Default.GreaterThan(window)) {}
 
     protected RefreshAwareAccessTokenStore(IComposeTokenView compose, IAccessTokenStore previous, IWindow window)
     {

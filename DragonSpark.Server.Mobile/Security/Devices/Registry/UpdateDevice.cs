@@ -4,7 +4,7 @@ using DragonSpark.Application.AspNet.Entities;
 using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
-using DragonSpark.Model.Operations.Selection.Stop;
+using DragonSpark.Model.Operations.Selection.Stop.Conditions;
 using DragonSpark.Server.Mobile.Security.Devices.Claims;
 using Microsoft.EntityFrameworkCore;
 
