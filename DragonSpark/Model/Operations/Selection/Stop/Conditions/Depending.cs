@@ -4,7 +4,7 @@ using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Model.Operations.Selection.Stop;
 
-public class Depending<T> : Conditions.Depending<Stop<T>>, IDepending<T>
+public class Depending<T> : Selection.Conditions.Depending<Stop<T>>, IDepending<T>
 {
     public Depending(ISelect<Stop<T>, ValueTask<bool>> select) : base(select) {}
 
