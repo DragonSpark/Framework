@@ -2,7 +2,7 @@
 using DragonSpark.Model.Operations;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Components.Validation.Expressions;
+namespace DragonSpark.Application.Components.Validation;
 
 sealed class ValidatingValueAdapter<T> : IValidatingValue<T>
 {

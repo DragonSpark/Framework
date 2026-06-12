@@ -1,15 +1,15 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
-using DragonSpark.Model.Operations.Selection.Conditions;
 using DragonSpark.Model.Selection;
 using JetBrains.Annotations;
 using System;
 using System.Threading.Tasks;
 
-namespace DragonSpark.Application.Components.Validation.Expressions;
+namespace DragonSpark.Application.Components.Validation;
 
 [UsedImplicitly]
-public class ValidatingValue<T> : Depending<Stop<T>>, IValidatingValue<T>
+public class ValidatingValue<T> : DragonSpark.Model.Operations.Selection.Stop.Conditions.Depending<T>,
+                                  IValidatingValue<T>
 {
 	protected ValidatingValue(ISelect<Stop<T>, ValueTask<bool>> @select) : base(@select) {}
 
@@ -30,7 +30,7 @@ public class ValidatingValue<TFrom, TTo> : IValidatingValue<TFrom>
 	public async ValueTask<bool> Get(Stop<TFrom> parameter)
 	{
 		var select = _select(parameter);
-		var result  = await _existing.Off(new(select, parameter));
+		var result = await _existing.Off(new(select, parameter));
 		return result;
 	}
 }

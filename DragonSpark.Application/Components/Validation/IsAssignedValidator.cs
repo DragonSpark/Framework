@@ -1,6 +1,4 @@
-﻿using DragonSpark.Application.Components.Validation.Expressions;
-
-namespace DragonSpark.Application.Components.Validation;
+﻿namespace DragonSpark.Application.Components.Validation;
 
 public sealed class IsAssignedValidator<T> : IValidateValue<T?>
 {
