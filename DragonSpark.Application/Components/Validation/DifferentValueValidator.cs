@@ -1,5 +1,4 @@
-﻿using DragonSpark.Application.Components.Validation.Expressions;
-using System;
+﻿using System;
 
 namespace DragonSpark.Application.Components.Validation;
 
@@ -15,5 +14,5 @@ public sealed class DifferentValueValidator : IValidateValue<string>
 		_comparison = comparison;
 	}
 
-	public bool Get(string parameter) => !_other.Equals(parameter, _comparison);
+	public bool Get(string? parameter) => !_other.Equals(parameter, _comparison);
 }

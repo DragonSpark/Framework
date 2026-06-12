@@ -1,4 +1,4 @@
-using DragonSpark.Application.Components.Validation.Expressions;
+using DragonSpark.Application.Components.Validation;
 using Microsoft.AspNetCore.Components;
 
 namespace DragonSpark.Presentation.Components.Forms.Validation;
@@ -7,10 +7,6 @@ public abstract class FieldValidation<T> : ValidationComponent
 {
 	[Parameter]
 	public required IValidateValue<T> Validator { get; set; }
-
-	protected override bool Validate()
-	{
-		var value = Identifier.GetValue<T>();
-		return value is null || Validator.Get(value);
-	}
+	
+	protected override bool Validate() => Validator.Get(Identifier.GetValue<T>());
 }
