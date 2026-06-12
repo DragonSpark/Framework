@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using DragonSpark.Compose.Extents;
 using DragonSpark.Compose.Extents.Commands;
 using DragonSpark.Compose.Extents.Conditions;
@@ -21,6 +18,10 @@ using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Runtime.Activation;
 using JetBrains.Annotations;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 using Action = System.Action;
 using CommandComposer = DragonSpark.Compose.Extents.Commands.CommandComposer;
 using ValueTask = System.Threading.Tasks.ValueTask;
@@ -152,7 +153,7 @@ public static partial class ExtensionMethods
         return result;
     }
 
-    public static bool TryPop<T>(this IMutable<T?> @this, out T? element)
+    public static bool TryPop<T>(this IMutable<T?> @this, [NotNullWhen(true)]out T? element)
     {
         element = @this.Get();
         @this.Execute(default);

@@ -30,20 +30,21 @@ sealed class ClearOutputs<T> : IStopAware<T>
 public class ClearOutputs<TIn, T> : IStopAware<T>
 {
 	readonly IOutputCacheStore _output;
-	readonly IOutputKey<TIn>   _key;
-	readonly Func<T, TIn>      _select;
+	readonly Func<T, string>   _tag;
 
 	protected ClearOutputs(IOutputCacheStore output, IOutputKey<TIn> key, Func<T, TIn> select)
+		: this(output, select.Start().Select(key)) {}
+
+	protected ClearOutputs(IOutputCacheStore output, Func<T, string> tag)
 	{
 		_output = output;
-		_key    = key;
-		_select = select;
+		_tag    = tag;
 	}
 
 	public async ValueTask Get(Stop<T> parameter)
 	{
 		var (subject, stop) = parameter;
-		var tag = _key.Get(_select(subject));
+		var tag = _tag(subject);
 		await _output.EvictByTagAsync(tag, stop).Off();
 	}
 }
