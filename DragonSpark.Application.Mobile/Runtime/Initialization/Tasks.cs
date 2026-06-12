@@ -22,7 +22,7 @@ public sealed class TaskMonitor : IStopAware
 
     public ValueTask Get(CancellationToken parameter)
     {
-        var task = _current.TryPop(out var t) && t is not null ? t : _next();
+        var task = _current.TryPop(out var t) ? t : _next();
         return task.ToOperation();
     }
 }
