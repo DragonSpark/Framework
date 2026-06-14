@@ -1,11 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Conditions;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace DragonSpark.Application.AspNet.Components.Validation;
 
@@ -92,7 +92,6 @@ public sealed class ObjectGraphDataAnnotationsValidator : ComponentBase, IDispos
 
 	public void Dispose()
 	{
-		// GC.SuppressFinalize(this);
 		EditContext = null;
 	}
 }

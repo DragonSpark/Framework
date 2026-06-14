@@ -108,7 +108,7 @@ public abstract class ValidationComponent : ComponentBase, IDisposable
 
 	public void Dispose()
 	{
-		GC.SuppressFinalize(this);
+		_messages.Clear();
 		EditContext = null;
 	}
 }

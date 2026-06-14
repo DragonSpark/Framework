@@ -1,6 +1,6 @@
-using System;
 using DragonSpark.Runtime.Activation;
 using JetBrains.Annotations;
+using System;
 
 namespace DragonSpark.Runtime;
 
@@ -13,7 +13,6 @@ public class Disposable : IDisposable, IActivateUsing<Action>
 
     public void Dispose()
     {
-        GC.SuppressFinalize(this);
         _callback();
     }
 }
@@ -25,7 +24,6 @@ public class Disposable<T>(T disposable) : IDisposable where T : IDisposable
 
     public void Dispose()
     {
-        GC.SuppressFinalize(this);
         _disposable.Dispose();
     }
 }

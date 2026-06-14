@@ -7,8 +7,8 @@
 	public EventCallback Validated { get; set; }
 
 	[CascadingParameter]
-    [field: AllowNull, MaybeNull]
-    IValidated Validation
+	[field: AllowNull, MaybeNull]
+	IValidated Validation
 	{
 		get => field.Verify();
 		set
@@ -28,14 +28,13 @@
 		}
 	}
 
-    void ValidationOnValidated(object? sender, ValidationCallbackEventArgs e)
+	void ValidationOnValidated(object? sender, ValidationCallbackEventArgs e)
 	{
 		e.Callbacks.Add(Validated);
 	}
 
 	public void Dispose()
 	{
-		GC.SuppressFinalize(this);
 		Validation = null!;
 	}
 
