@@ -11,13 +11,12 @@ namespace DragonSpark.Presentation.Components.Forms.Validation;
 
 public class Validating : ComponentBase, IDisposable
 {
-	readonly Switch _requested = new();
+	readonly Switch           _requested = new();
 	readonly IOperationsStore _store;
-
-	Task? _current;
-	ValidationMessageStore _messages = null!;
-	IOperations _list = null!;
-	EditContext? _context;
+	Task?                     _current;
+	ValidationMessageStore    _messages = null!;
+	IOperations               _list     = null!;
+	EditContext?              _context;
 
 	public Validating() : this(OperationsStore.Default) { }
 
@@ -150,6 +149,5 @@ public class Validating : ComponentBase, IDisposable
 	public virtual void Dispose()
 	{
 		Context = null;
-		GC.SuppressFinalize(this);
 	}
 }
