@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using Azure.Core.Serialization;
 using Azure.Messaging.EventHubs.Processor;
 using Azure.Messaging.ServiceBus;
@@ -10,8 +6,15 @@ using DragonSpark.Azure.Storage;
 using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Composition.Compose;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
 using Microsoft.Extensions.DependencyInjection;
+using NetFabric.Hyperlinq;
+using System;
+using System.Buffers;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Azure;
 
@@ -24,6 +27,29 @@ public static class Extensions
 	public static IPath Path(this IContainer @this) => new Path(@this.Get());
 
 	public static IEntry Entry(this IContainer @this) => new Entry(@this.Get());
+	
+	public static ISnapshots Snapshots(this IContainer @this) => new Snapshots(new Snapshot(@this.Get()));
+
+	public static ValueTask<ISnapshotEntry> Get(this ISnapshots @this, CancellationToken stop,
+	                                                  params ReadOnlySpan<string?> names)
+	{
+		using var promote = names.AsValueEnumerable()
+		                         .Where(x => x is not null)
+		                         .Select(x => x.Verify())
+		                         .ToArray(ArrayPool<string>.Shared);
+		return Get(@this, new(promote, stop));
+	}
+
+	static async ValueTask<ISnapshotEntry> Get(this ISnapshots @this, Stop<Lease<string>> parameter)
+	{
+		var (subject, stop) = parameter;
+		using (subject)
+		{
+			return await @this.Off(new(subject.Memory, stop));
+		}
+	}
+
+	public static ISnapshot Snapshot(this IContainer @this) => new Snapshot(@this.Get());
 
 	public static IWrite Write(this IContainer @this) => new PolicyAwareWrite(new Write(@this.Get()));
 

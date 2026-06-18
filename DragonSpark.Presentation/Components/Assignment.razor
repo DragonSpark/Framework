@@ -2,19 +2,21 @@
 @typeparam T
 
 @code {
-    [Parameter]
-    public required T Value { get; set; }
 
-    [Parameter]
-    public EventCallback<T> Updated { get; set; }
+	[Parameter]
+	public required T Value { get; set; }
 
-    public override async Task SetParametersAsync(ParameterView parameters)
-    {
-        var changed = parameters.DidParameterChange(nameof(Value), Value);
-        await base.SetParametersAsync(parameters).On();
-        if (changed)
-        {
-            await Updated.Off(Value);
-        }
-    }
+	[Parameter]
+	public EventCallback<T> Updated { get; set; }
+
+	public override async Task SetParametersAsync(ParameterView parameters)
+	{
+		var changed = parameters.DidParameterChange(nameof(Value), Value);
+		await base.SetParametersAsync(parameters).On();
+		if (changed)
+		{
+			await Updated.Off(Value);
+		}
+	}
+
 }

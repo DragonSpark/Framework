@@ -132,8 +132,13 @@ public struct ArrayBuilder<T>(ArrayPool<T> pool) : IDisposable
 
 	public void UncheckedAdd(ReadOnlyMemory<T> others)
 	{
+		UncheckedAdd(others.Span);
+	}
+
+	public void UncheckedAdd(ReadOnlySpan<T> others)
+	{
 		var total = Count + others.Length;
-		others.Span.CopyTo(buffer![Count..]);
+		others.CopyTo(buffer![Count..]);
 		Count = total;
 	}
 
