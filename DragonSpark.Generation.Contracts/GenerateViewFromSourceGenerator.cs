@@ -12,51 +12,53 @@ public sealed class GenerateViewFromSourceGenerator : IIncrementalGenerator
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         context.RegisterPostInitializationOutput(static ctx =>
-        {
-            ctx.AddSource("GenerateFromAttribute.g.cs",
-            """
-            using System;
+                                                 {
+                                                     ctx.AddSource("GenerateFromAttribute.g.cs",
+                                                                   """
+                                                                   using System;
 
-            namespace DragonSpark.Generation.Contracts;
+                                                                   namespace DragonSpark.Generation.Contracts;
 
-            [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
-            public sealed class GenerateFromAttribute<T> : Attribute;
-            """);
+                                                                   [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
+                                                                   public sealed class GenerateFromAttribute<T> : Attribute;
+                                                                   """);
 
-            ctx.AddSource("SkipGenerationAttribute.g.cs",
-            """
-            using System;
+                                                     ctx.AddSource("SkipGenerationAttribute.g.cs",
+                                                                   """
+                                                                   using System;
 
-            namespace DragonSpark.Generation.Contracts;
+                                                                   namespace DragonSpark.Generation.Contracts;
 
-            [AttributeUsage(AttributeTargets.Property)]
-            public sealed class SkipGenerationAttribute : Attribute;
-            """);
-        });
+                                                                   [AttributeUsage(AttributeTargets.Property)]
+                                                                   public sealed class SkipGenerationAttribute : Attribute;
+                                                                   """);
+                                                 });
 
         var typeDeclarations = context.SyntaxProvider.CreateSyntaxProvider(
-            (node, _) => node is ClassDeclarationSyntax or RecordDeclarationSyntax,
-            (ctx, _) => ctx)
-            .Where(ctx => ctx.Node is TypeDeclarationSyntax);
+                                                                           (node, _)
+                                                                               => node is ClassDeclarationSyntax
+                                                                                      or RecordDeclarationSyntax,
+                                                                           (ctx, _) => ctx)
+                                      .Where(ctx => ctx.Node is TypeDeclarationSyntax);
 
         var typeSymbols = typeDeclarations
-            .Select((ctx, _) => ctx.SemanticModel.GetDeclaredSymbol(ctx.Node) as INamedTypeSymbol)
-            .Where(s => s is not null);
+                          .Select((ctx, _) => ctx.SemanticModel.GetDeclaredSymbol(ctx.Node) as INamedTypeSymbol)
+                          .Where(s => s is not null);
 
         var candidates = typeSymbols
             .Where(s => s!.GetAttributes()
-                .Any(a => a.AttributeClass?.Name == "GenerateFromAttribute"));
+                          .Any(a => a.AttributeClass?.Name == "GenerateFromAttribute"));
 
         var compilationProvider = context.CompilationProvider;
 
         var combined = candidates.Combine(compilationProvider);
 
         context.RegisterSourceOutput(combined, (spc, pair) =>
-        {
-            var (targetType, compilation) = pair;
-            var processed = new HashSet<string>();
-            Generate(spc, compilation, targetType!, processed);
-        });
+                                               {
+                                                   var (targetType, compilation) = pair;
+                                                   var processed = new HashSet<string>();
+                                                   Generate(spc, compilation, targetType!, processed);
+                                               });
     }
 
     // ReSharper disable once TooManyArguments
@@ -66,13 +68,13 @@ public sealed class GenerateViewFromSourceGenerator : IIncrementalGenerator
                          HashSet<string> processed)
     {
         var attr = targetType.GetAttributes()
-            .First(a => a.AttributeClass?.Name == "GenerateFromAttribute");
+                             .First(a => a.AttributeClass?.Name == "GenerateFromAttribute");
 
         var sourceType = (INamedTypeSymbol)attr.AttributeClass!.TypeArguments[0];
 
         string suffix = targetType.Name.StartsWith(sourceType.Name)
-            ? targetType.Name.Substring(sourceType.Name.Length)
-            : string.Empty;
+                            ? targetType.Name.Substring(sourceType.Name.Length)
+                            : string.Empty;
 
         GenerateDtoForType(context, compilation, sourceType, targetType.Name,
                            targetType.ContainingNamespace, suffix, targetType, processed);
@@ -96,13 +98,13 @@ public sealed class GenerateViewFromSourceGenerator : IIncrementalGenerator
             return;
 
         var validateComplexTypeAttr = compilation.GetTypeByMetadataName(
-            "DragonSpark.Application.AspNet.Components.Validation.ValidateComplexTypeAttribute");
+                                                                        "DragonSpark.Application.AspNet.Components.Validation.ValidateComplexTypeAttribute");
 
         var hasValidateComplexType = validateComplexTypeAttr is not null;
 
         var targetProps = targetType.GetMembers()
-            .OfType<IPropertySymbol>()
-            .ToDictionary(p => p.Name, p => p);
+                                    .OfType<IPropertySymbol>()
+                                    .ToDictionary(p => p.Name, p => p);
 
         var sb = new StringBuilder();
 
@@ -120,9 +122,9 @@ public sealed class GenerateViewFromSourceGenerator : IIncrementalGenerator
         sb.AppendLine("{");
 
         var props = sourceType.GetMembers()
-            .OfType<IPropertySymbol>()
-            .Where(p => p.SetMethod is not null)
-            .ToArray();
+                              .OfType<IPropertySymbol>()
+                              .Where(p => p.SetMethod is not null)
+                              .ToArray();
 
         foreach (var prop in props)
         {
@@ -135,8 +137,8 @@ public sealed class GenerateViewFromSourceGenerator : IIncrementalGenerator
 
             // DataAnnotations
             var annotations = prop.GetAttributes()
-                .Where(a => a.AttributeClass?.ContainingNamespace.ToDisplayString() ==
-                            "System.ComponentModel.DataAnnotations");
+                                  .Where(a => a.AttributeClass?.ContainingNamespace.ToDisplayString() ==
+                                              "System.ComponentModel.DataAnnotations");
 
             foreach (var attr in annotations)
             {
@@ -152,8 +154,10 @@ public sealed class GenerateViewFromSourceGenerator : IIncrementalGenerator
                 else
                 {
                     var args = string.Join(", ",
-                        attr.ConstructorArguments.Select(a =>
-                            a.Value is string s ? $"\"{s}\"" : a.Value?.ToString()));
+                                           attr.ConstructorArguments.Select(a =>
+                                                                                a.Value is string s
+                                                                                    ? $"\"{s}\""
+                                                                                    : a.Value?.ToString()));
 
                     sb.AppendLine($"    [System.ComponentModel.DataAnnotations.{name}({args})]");
                 }
@@ -238,17 +242,19 @@ public sealed class GenerateViewFromSourceGenerator : IIncrementalGenerator
         sb.AppendLine("        return result;");
         sb.AppendLine("    }");
 
-        
         sb.AppendLine("}");
 
         var nsName = ns.IsGlobalNamespace ? "Global" : ns.ToDisplayString().Replace('.', '_');
-        var hint = $"{nsName}_{dtoName}.g.cs";
+        var hint   = $"{nsName}_{dtoName}.g.cs";
         context.AddSource(hint, sb.ToString());
     }
 
     static bool IsPrimitive(ITypeSymbol type)
     {
+        // 2. Check for modern types without a SpecialType mapping via fully qualified metadata name
         return type is INamedTypeSymbol { EnumUnderlyingType: not null } ||
+               type.ToDisplayString() is "System.DateOnly" or "System.TimeOnly" or "System.Guid"
+               ||
                type.SpecialType switch
                {
                    SpecialType.System_String => true,
