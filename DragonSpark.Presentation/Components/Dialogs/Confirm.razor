@@ -41,7 +41,7 @@
         => Start.A.Callback<MouseEventArgs>(OnAccept)
                 .Handle(Exceptions, ReportedType ?? GetType())
                 .UpdateActivity(parameter)
-                .Block();
+                .DurationBlock();
 
     async Task OnAccept(MouseEventArgs parameter)
     {

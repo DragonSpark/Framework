@@ -22,10 +22,15 @@ public sealed class OperationCallbackComposer : IResult<EventCallback>
 		_operation = operation;
 	}
 
-	public OperationCallbackComposer Block() => Block(TimeSpan.FromSeconds(1));
+	public OperationCallbackComposer Block() => Block(false);
 
-	public OperationCallbackComposer Block(TimeSpan duration)
-		=> new(_receiver, new BlockingEntryOperation(_operation, duration));
+	public OperationCallbackComposer Block(Switch monitor)
+		=> new(_receiver, new BlockOperation(_operation, monitor));
+
+	public OperationCallbackComposer DurationBlock() => DurationBlock(TimeSpan.FromSeconds(1));
+
+	public OperationCallbackComposer DurationBlock(TimeSpan duration)
+		=> new(_receiver, new DurationBlockOperation(_operation, duration));
 
 	public OperationCallbackComposer Monitoring(Switch subject)
 		=> new(_receiver, new MonitoredOperation(_operation, subject));
@@ -59,10 +64,15 @@ public sealed class OperationCallbackComposer<T> : IResult<EventCallback<T>>
 		_operation = operation;
 	}
 
-	public OperationCallbackComposer<T> Block() => Block(TimeSpan.FromSeconds(1.5));
+	public OperationCallbackComposer<T> Block() => Block(false);
 
-	public OperationCallbackComposer<T> Block(TimeSpan duration)
-		=> new(_receiver, new BlockingEntryOperation<T>(_operation, duration));
+	public OperationCallbackComposer<T> Block(Switch monitor)
+		=> new(_receiver, new BlockOperation<T>(_operation, monitor));
+
+	public OperationCallbackComposer<T> DurationBlock() => DurationBlock(TimeSpan.FromSeconds(1.5));
+
+	public OperationCallbackComposer<T> DurationBlock(TimeSpan duration)
+		=> new(_receiver, new DurationBlockOperation<T>(_operation, duration));
 
 	public OperationCallbackComposer<T> UpdateActivity(IActivityReceiver receiver)
 		=> UpdateActivity(receiver, ActivityOptions.Default);
