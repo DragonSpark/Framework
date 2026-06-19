@@ -1,0 +1,24 @@
+﻿@using DragonSpark.Compose
+@using DragonSpark.Model.Selection.Conditions
+
+@if (Condition.Get())
+{
+	@ChildContent
+}
+else
+{
+	@AlternateContent
+}
+
+@code {
+
+	[Parameter, EditorRequired]
+	public required ICondition Condition { get; set; }
+
+	[Parameter]
+	public required RenderFragment ChildContent { get; set; }
+
+	[Parameter]
+	public RenderFragment AlternateContent { get; set; } = _ => {};
+
+}
