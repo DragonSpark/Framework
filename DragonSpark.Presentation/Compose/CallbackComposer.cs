@@ -54,9 +54,14 @@ public sealed class CallbackComposer : IResult<EventCallback>
 		return new(receiver.Target(_method), operation.Allocate);
 	}
 
-	public OperationCallbackComposer BlockFor(TimeSpan duration)
+	public OperationCallbackComposer Block() => Block(false);
+
+	public OperationCallbackComposer Block(Switch monitor)
 		=> new(_receiver.Verify(),
-		       new BlockingEntryOperation(new Allocated(_method).Then().Structure().Out(), duration));
+		       new BlockOperation(new Allocated(_method).Then().Structure().Out(), monitor));
+	public OperationCallbackComposer DurationBlock(TimeSpan duration)
+		=> new(_receiver.Verify(),
+		       new DurationBlockOperation(new Allocated(_method).Then().Structure().Out(), duration));
 
 	public CallbackComposer Append(Action next) => Append(Start.A.Command(next).Operation().Allocate().Get().Get);
 
