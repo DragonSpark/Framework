@@ -1,4 +1,5 @@
 using DragonSpark.Application.Diagnostics;
+using DragonSpark.Application.Runtime;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,6 +30,8 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         //
 		         .Then.Start<IExecuteOperation>()
 		         .Forward<ExecuteOperation>()
-		         .Scoped();
+		         .Scoped()
+		         .Then.Start<IsDeployedEnvironment>()
+		         .Singleton();
 	}
 }
