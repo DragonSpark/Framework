@@ -11,6 +11,8 @@ sealed class DefaultServiceConfiguration : ICommand<IServiceCollection>
 
 	public void Execute(IServiceCollection parameter)
 	{
-		parameter.AddRazorComponents().AddInteractiveServerComponents();
+		parameter.AddRazorComponents()
+		         .AddInteractiveServerComponents()
+		         .AddHubOptions(x => x.MaximumReceiveMessageSize = 64 * 1024);
 	}
 }

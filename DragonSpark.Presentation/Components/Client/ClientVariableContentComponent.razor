@@ -1,4 +1,5 @@
-﻿@using DragonSpark.Compose
+﻿@using AsyncUtilities
+@using DragonSpark.Compose
 @using DragonSpark.Model.Results
 @using DragonSpark.Presentation.Components.Content.Templates
 @using DragonSpark.Presentation.Environment.Browser
@@ -56,7 +57,15 @@ else
 		{
 			try
 			{
-				await Load();
+				_input = await Input.On();
+				if (Ready.HasDelegate)
+				{
+					await Ready.Off(_input.Value);
+				}
+				else
+				{
+					StateHasChanged();
+				}
 			}
 			catch (Exception e) when (e is not OperationCanceledException)
 			{
@@ -64,38 +73,4 @@ else
 			}
 		}
 	}
-
-	async Task Load()
-	{
-		var       wait   = AccessProtectedStorageWaitTime.Default.Get();
-		using var source = CancellationTokenSource.CreateLinkedTokenSource(new CancellationTokenSource(wait).Token, Stop);
-		var       input  = Input.Allocate();
-		var       delay  = Task.Delay(wait, source.Token);
-		var       done   = await Task.WhenAny(input, delay).On();
-
-		if (done == input)
-		{
-			await source.CancelAsync().On();
-			try
-			{
-				await delay.On();
-			}
-			catch (OperationCanceledException) {}
-			_input = await input.On();
-			if (Ready.HasDelegate)
-			{
-				await Ready.Off(_input.Value);
-			}
-			else
-			{
-				StateHasChanged();
-			}
-		}
-		else
-		{
-			Stop.ThrowIfCancellationRequested();
-			throw new TimeoutException($"Could not access local storage for {wait}");
-		}
-	}
-
 }
