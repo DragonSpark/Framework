@@ -3,6 +3,7 @@
 @using DragonSpark.Presentation.Components.Content.Templates
 @using DragonSpark.Presentation.Environment.Browser
 @using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@using System.Threading
 
 @typeparam T
 
@@ -10,53 +11,91 @@
 
 @if (_input is null)
 {
-    @LoadingTemplate
+	@LoadingTemplate
 }
 else if (_input.Value.Success)
 {
-    @ChildContent(_input.Value.Value)
+	@ChildContent(_input.Value.Value)
 }
 else
 {
-    @NotFoundTemplate
+	@NotFoundTemplate
 }
 
 @code {
-    ProtectedBrowserStorageResult<T>? _input;
 
-    [Parameter]
-    public required IClientVariable<T> Input { get; set; }
+	ProtectedBrowserStorageResult<T>? _input;
 
-    [Parameter]
-    public required RenderFragment<T?> ChildContent { get; set; }
+	[Parameter]
+	public required IClientVariable<T> Input { get; set; }
 
-    [Parameter]
-    public required Switch? Refresh { get; set; }
+	[Parameter]
+	public required RenderFragment<T?> ChildContent { get; set; }
 
-    [Parameter]
-    public RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
+	[Parameter]
+	public required Switch? Refresh { get; set; }
 
-    [Parameter]
-    public RenderFragment NotFoundTemplate { get; set; } = EmptyContentTemplate.Default;
+	[Parameter]
+	public RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
 
-    [Parameter]
-    public EventCallback<ProtectedBrowserStorageResult<T>> Ready { get; set; }
+	[Parameter]
+	public RenderFragment NotFoundTemplate { get; set; } = EmptyContentTemplate.Default;
 
-    [CascadingParameter] public required IActivityReceiver Receiver { get; set; }
+	[Parameter]
+	public EventCallback<ProtectedBrowserStorageResult<T>> Ready { get; set; }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender || (Refresh?.Down() ?? false))
-        {
-            _input = await Input.On();
-            if (Ready.HasDelegate)
-            {
-                await Ready.Off(_input.Value);
-            }
-            else
-            {
-                StateHasChanged();
-            }
-        }
-    }
+	[Parameter]
+	public EventCallback ErrorOccurred { get; set; }
+
+	[CascadingParameter]
+	public required IActivityReceiver Receiver { get; set; }
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender || (Refresh?.Down() ?? false))
+		{
+			try
+			{
+				await Load();
+			}
+			catch (Exception e) when (e is not OperationCanceledException)
+			{
+				await ErrorOccurred.Off();
+			}
+		}
+	}
+
+	async Task Load()
+	{
+		var       wait   = AccessProtectedStorageWaitTime.Default.Get();
+		using var source = CancellationTokenSource.CreateLinkedTokenSource(new CancellationTokenSource(wait).Token, Stop);
+		var       input  = Input.Allocate();
+		var       delay  = Task.Delay(wait, source.Token);
+		var       done   = await Task.WhenAny(input, delay).On();
+
+		if (done == input)
+		{
+			await source.CancelAsync().On();
+			try
+			{
+				await delay.On();
+			}
+			catch (OperationCanceledException) {}
+			_input = await input.On();
+			if (Ready.HasDelegate)
+			{
+				await Ready.Off(_input.Value);
+			}
+			else
+			{
+				StateHasChanged();
+			}
+		}
+		else
+		{
+			Stop.ThrowIfCancellationRequested();
+			throw new TimeoutException($"Could not access local storage for {wait}");
+		}
+	}
+
 }
