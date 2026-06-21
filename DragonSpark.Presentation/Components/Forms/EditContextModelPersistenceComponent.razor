@@ -3,6 +3,7 @@
 @using DragonSpark.Model.Results
 @using DragonSpark.Model.Sequences
 @using DragonSpark.Presentation.Components.Eventing
+@using System.Threading
 
 @inherits ModelPersistenceComponentBase<T>
 @implements IAsyncDisposable
@@ -10,10 +11,10 @@
 @inject IPublisher<SaveModelMessage> Save
 
 @code {
-    readonly Variable<ValueTask?> _save  = new();
-    Array<string>                 _skip  = Array<string>.Empty;
-    T                             _model = null!;
-    EditContext?                  _context;
+	readonly Switch _save  = false;
+	Array<string>   _skip  = Array<string>.Empty;
+	T               _model = null!;
+	EditContext?    _context;
 
     protected override void OnParametersSet()
     {
@@ -66,19 +67,18 @@
 
     void FieldChanged(object? sender, FieldChangedEventArgs args)
     {
-        if (Enabled && !_skip.Open().Contains(args.FieldIdentifier.FieldName) && _save.Get() is null)
-        {
-            _save.Execute(Save.Get(new(_model)));
-            StateHasChanged();
+		if (Enabled && !_skip.Open().Contains(args.FieldIdentifier.FieldName) && _save.Up())
+	    {
+		    StateHasChanged();
         }
     }
 
     protected override Task OnAfterRenderAsync(bool firstRender)
-        => _save.TryPop(out var save) ? save.Value.AsTask() : base.OnAfterRenderAsync(firstRender);
+	    => _save.Down() ? Save.Allocate(new(_model)) : base.OnAfterRenderAsync(firstRender);
 
     public ValueTask DisposeAsync()
     {
         _context?.OnFieldChanged -= FieldChanged;
-        return _save.TryPop(out var save) ? save.Value : ValueTask.CompletedTask;
+		return _save.Down() ? Save.Get(new(_model)) : ValueTask.CompletedTask;
     }
 }

@@ -1,4 +1,5 @@
-﻿using DragonSpark.Compose.Model.Operations.Allocated;
+﻿using AsyncUtilities;
+using DragonSpark.Compose.Model.Operations.Allocated;
 using DragonSpark.Compose.Model.Results;
 using DragonSpark.Compose.Model.Selection;
 using DragonSpark.Diagnostics.Logging;
@@ -46,15 +47,7 @@ public class OperationComposer<T> : Composer<T, ValueTask>
 
 	public OperationComposer Bind(Func<ValueTask<T>> parameter) => new(new Binding<T>(this.Out(), parameter));
 
-
-	/*public OperationComposer<CancellationToken> Bind(ISelect<CancellationToken, ValueTask<T>> parameter)
-		=> Bind(parameter.ToDelegate());
-
-	public OperationComposer<CancellationToken> Bind(Func<CancellationToken, T> parameter)
-		=> new(new StopAwareBinding<T>(this.Out(), x => parameter(x).ToOperation()));
-
-	public OperationComposer<CancellationToken> Bind(Func<CancellationToken, ValueTask<T>> parameter)
-		=> new(new StopAwareBinding<T>(Get(), parameter));*/
+	public OperationComposer<T> Protecting(AsyncLock @lock) => new(new Protecting<T>(Get(), @lock));
 
 	public OperationComposer<T> Watching(CancellationToken token) => Watching(Start.A.Result(token));
 

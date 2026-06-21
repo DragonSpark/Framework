@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Model.Commands;
+using DragonSpark.Model.Operations.Selection;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Alterations;
@@ -23,6 +24,8 @@ public static class A
 	public static ICondition<T> Condition<T>(ICondition<T> instance) => instance;
 
 	public static ISelect<TIn, TOut> Selection<TIn, TOut>(ISelect<TIn, TOut> instance) => instance;
+
+	public static ISelecting<TIn, TOut> Selecting<TIn, TOut>(ISelecting<TIn, TOut> instance) => instance;
 
 	public static IResult<T> Result<T>(IResult<T> instance) => instance;
 

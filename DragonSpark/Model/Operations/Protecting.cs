@@ -1,17 +1,18 @@
-using System.Threading.Tasks;
 using AsyncUtilities;
 using DragonSpark.Compose;
+using DragonSpark.Model.Selection;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations;
 
 public class Protecting<T> : IOperation<T>
 {
-	readonly IOperation<T> _previous;
-	readonly AsyncLock     _lock;
+	readonly ISelect<T, ValueTask> _previous;
+	readonly AsyncLock             _lock;
 
 	public Protecting(IOperation<T> previous) : this(previous, new AsyncLock()) {}
 
-	public Protecting(IOperation<T> previous, AsyncLock @lock)
+	public Protecting(ISelect<T, ValueTask> previous, AsyncLock @lock)
 	{
 		_previous = previous;
 		_lock     = @lock;
