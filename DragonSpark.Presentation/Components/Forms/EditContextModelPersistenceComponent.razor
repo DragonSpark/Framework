@@ -3,7 +3,6 @@
 @using DragonSpark.Model.Results
 @using DragonSpark.Model.Sequences
 @using DragonSpark.Presentation.Components.Eventing
-@using System.Threading
 
 @inherits ModelPersistenceComponentBase<T>
 @implements IAsyncDisposable
@@ -16,69 +15,69 @@
 	T               _model = null!;
 	EditContext?    _context;
 
-    protected override void OnParametersSet()
-    {
-        var context = ResolvedContext;
-        if (_context != context)
-        {
-            if (_context is not null)
-            {
-                _context.OnFieldChanged -= FieldChanged;
-            }
+	protected override void OnParametersSet()
+	{
+		var context = ResolvedContext;
+		if (_context != context)
+		{
+			if (_context is not null)
+			{
+				_context.OnFieldChanged -= FieldChanged;
+			}
 
-            if ((_context = context) != null)
-            {
-                _context.OnFieldChanged += FieldChanged;
-                _model = Model ?? _context.Model.To<T>();
-            }
-        }
+			if ((_context = context) != null)
+			{
+				_context.OnFieldChanged += FieldChanged;
+				_model = Model ?? _context.Model.To<T>();
+			}
+		}
 
-        base.OnParametersSet();
-    }
+		base.OnParametersSet();
+	}
 
-    [Parameter]
-    public T? Model { get; set; }
+	[Parameter]
+	public T? Model { get; set; }
 
-    EditContext ResolvedContext
-        => (EditContext ?? ParentEditContext).Verify($"Edit Context is required for {GetType().Name}");
+	EditContext ResolvedContext
+		=> (EditContext ?? ParentEditContext).Verify($"Edit Context is required for {GetType().Name}");
 
-    [Parameter]
-    public bool Enabled { get; set; } = true;
+	[Parameter]
+	public bool Enabled { get; set; } = true;
 
-    [Parameter]
-    public EditContext? EditContext { get; set; }
+	[Parameter]
+	public EditContext? EditContext { get; set; }
 
-    [Parameter]
-    public required string FieldsToSkip
-    {
-        get;
-        set
-        {
-            if (field != value)
-            {
-                field = value;
-                _skip = field.Split(',', StringSplitOptions.RemoveEmptyEntries);
-            }
-        }
-    }
+	[Parameter]
+	public required string FieldsToSkip
+	{
+		get;
+		set
+		{
+			if (field != value)
+			{
+				field = value;
+				_skip = field.Split(',', StringSplitOptions.RemoveEmptyEntries);
+			}
+		}
+	}
 
-    [CascadingParameter]
-    EditContext? ParentEditContext { get; set; }
+	[CascadingParameter]
+	EditContext? ParentEditContext { get; set; }
 
-    void FieldChanged(object? sender, FieldChangedEventArgs args)
-    {
+	void FieldChanged(object? sender, FieldChangedEventArgs args)
+	{
 		if (Enabled && !_skip.Open().Contains(args.FieldIdentifier.FieldName) && _save.Up())
-	    {
-		    StateHasChanged();
-        }
-    }
+		{
+			StateHasChanged();
+		}
+	}
 
-    protected override Task OnAfterRenderAsync(bool firstRender)
-	    => _save.Down() ? Save.Allocate(new(_model)) : base.OnAfterRenderAsync(firstRender);
+	protected override Task OnAfterRenderAsync(bool firstRender)
+		=> _save.Down() ? Save.Allocate(new(_model)) : base.OnAfterRenderAsync(firstRender);
 
-    public ValueTask DisposeAsync()
-    {
-        _context?.OnFieldChanged -= FieldChanged;
+	public ValueTask DisposeAsync()
+	{
+		_context?.OnFieldChanged -= FieldChanged;
 		return _save.Down() ? Save.Get(new(_model)) : ValueTask.CompletedTask;
-    }
+	}
 }
