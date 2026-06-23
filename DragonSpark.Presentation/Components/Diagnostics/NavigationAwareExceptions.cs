@@ -11,7 +11,7 @@ sealed class NavigationAwareExceptions : IExceptions
 	readonly IExceptions      _previous;
 	readonly Alter<Exception> _select;
 
-	public NavigationAwareExceptions(IExceptions previous) : this(previous, Aggregation.Default.Get) {}
+	public NavigationAwareExceptions(IExceptions previous) : this(previous, Flatten.Default.Get) {}
 
 	public NavigationAwareExceptions(IExceptions previous, Alter<Exception> select)
 	{

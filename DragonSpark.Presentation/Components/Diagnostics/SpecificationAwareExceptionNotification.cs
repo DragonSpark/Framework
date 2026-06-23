@@ -4,7 +4,6 @@ using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Selection.Conditions;
 using Radzen;
 using System;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Diagnostics;
 
@@ -15,11 +14,10 @@ sealed class SpecificationAwareExceptionNotification : IExceptionNotification
 	readonly Alter<Exception>       _select;
 
 	public SpecificationAwareExceptionNotification(IExceptionNotification previous)
-		: this(Start.A.Condition<Exception>()
-		            .By.Calling(x => x is TaskCanceledException || x.InnerException is TaskCanceledException)
-		            .Inverse()
-		            .Out(),
-		       previous, Aggregation.Default.Get) {}
+		: this(previous, Application.AspNet.Diagnostics.AggregateAwareIgnoreException.Default) {}
+
+	public SpecificationAwareExceptionNotification(IExceptionNotification previous, ICondition<Exception> ignore)
+		: this(ignore.Then().Inverse().Out(), previous, Flatten.Default.Get) {}
 
 	public SpecificationAwareExceptionNotification(ICondition<Exception> condition, IExceptionNotification previous,
 	                                               Alter<Exception> select)
@@ -30,9 +28,5 @@ sealed class SpecificationAwareExceptionNotification : IExceptionNotification
 	}
 
 	public NotificationMessage? Get(Exception parameter)
-	{
-		var exception = _select(parameter);
-		var result    = _condition.Get(exception) ? _previous.Get(exception) : null;
-		return result;
-	}
+		=> _condition.Get(parameter) ? _previous.Get(_select(parameter)) : null;
 }

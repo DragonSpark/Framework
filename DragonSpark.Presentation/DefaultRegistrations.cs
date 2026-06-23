@@ -35,6 +35,8 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Decorate<ClientExceptionAwareExceptionNotification>()
 		         .Decorate<SpecificationAwareExceptionNotification>()
 		         .Scoped()
+				 //
+		         .Then.Start<NotificationAwareExceptions>().Include(x => x.Dependencies).Scoped()
 		         //
 		         .Then.Decorate<IExceptions, CompensationAwareExceptions>()
 		         .Decorate<IExceptions, NotificationAwareExceptions>()

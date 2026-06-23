@@ -43,6 +43,10 @@ public class CommandComposer<T> : Instance<ICommand<T>>
 	public CommandComposer<T> Prepend(params ICommand<T>[] commands)
 		=> new(new Commands<T>(commands.Append(Get()).Result()));
 
+	public CommandComposer<T> Protect() => Protect(new());
+
+	public CommandComposer<T> Protect(object @lock) => new(new Protect<T>(Get(), @lock));
+
 	public CommandComposer<T> Append(System.Action<T> command) => Append(Start.A.Command(command).Get());
 
 	public CommandComposer<T> Append(ICommand<T> command) => new(new AppendedCommand<T>(Get(), command));
