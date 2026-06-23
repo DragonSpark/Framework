@@ -25,8 +25,7 @@ sealed class NotificationAwareExceptions : IExceptions
 
 	public ValueTask Get(ExceptionInput parameter)
 	{
-		var result = _exceptions.Get(parameter);
-
+		var result  = _exceptions.Get(parameter);
 		var message = _message.Get(parameter.Exception);
 		if (message is not null)
 		{
