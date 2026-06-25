@@ -1,6 +1,5 @@
-﻿@using DragonSpark.Application.AspNet.Runtime.Operations
-
-@inject IScopedToken Session
+@using DragonSpark.Presentation.Runtime.Operations
+@inject IRequestToken Session
 
 <CascadingValue IsFixed="true" Value="@Session.Get()" ChildContent="@ChildContent" />
 

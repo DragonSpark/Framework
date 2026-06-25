@@ -15,5 +15,9 @@ public class Selection<TIn, TFrom, TTo> : ISelect<TIn, TTo>
 		_current  = current;
 	}
 
-	public TTo Get(TIn parameter) => _current(_previous(parameter));
+	public TTo Get(TIn parameter)
+    {
+        var tFrom = _previous(parameter);
+        return _current(tFrom);
+    }
 }

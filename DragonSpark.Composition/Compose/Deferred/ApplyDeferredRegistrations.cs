@@ -1,4 +1,4 @@
-﻿using DragonSpark.Model.Commands;
+using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,16 +10,20 @@ sealed class ApplyDeferredRegistrations : ICommand<IServiceCollection>
 
 	ApplyDeferredRegistrations() : this(GetDeferredRegistrations.Default) { }
 
-	readonly ISelect<IServiceCollection, DeferredRegistrations> _accessor;
+	readonly ISelect<IServiceCollection, DeferredRegistrations?> _accessor;
 
-	public ApplyDeferredRegistrations(ISelect<IServiceCollection, DeferredRegistrations> accessor)
+	public ApplyDeferredRegistrations(ISelect<IServiceCollection, DeferredRegistrations?> accessor)
 		=> _accessor = accessor;
 
 	public void Execute(IServiceCollection parameter)
 	{
-		foreach (var registration in _accessor.Get(parameter))
+		var registrations = _accessor.Get(parameter);
+		if (registrations is not null)
 		{
-			registration.Execute(parameter);
+			foreach (var registration in registrations)
+			{
+				registration.Execute(parameter);
+			}
 		}
 	}
 }

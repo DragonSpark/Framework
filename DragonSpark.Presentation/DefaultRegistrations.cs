@@ -1,4 +1,4 @@
-﻿using BlazorPro.BlazorSize;
+using BlazorPro.BlazorSize;
 using DragonSpark.Application.AspNet.Navigation.Security;
 using DragonSpark.Application.Diagnostics;
 using DragonSpark.Application.Security.Identity;
@@ -14,6 +14,7 @@ using DragonSpark.Presentation.Components.Routing;
 using DragonSpark.Presentation.Connections;
 using DragonSpark.Presentation.Environment;
 using DragonSpark.Presentation.Environment.Browser.Document;
+using DragonSpark.Presentation.Runtime.Operations;
 using DragonSpark.Presentation.Security.Identity;
 using Majorsoft.Blazor.Components.Common.JsInterop;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,118 +32,126 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 	public void Execute(IServiceCollection parameter)
 	{
 		parameter.Start<IExceptionNotification>()
-		         .Forward<ExceptionNotification>()
-		         .Decorate<ClientExceptionAwareExceptionNotification>()
-		         .Decorate<SpecificationAwareExceptionNotification>()
-		         .Scoped()
+				 .Forward<ExceptionNotification>()
+				 .Decorate<ClientExceptionAwareExceptionNotification>()
+				 .Decorate<SpecificationAwareExceptionNotification>()
+				 .Scoped()
 				 //
-		         .Then.Start<NotificationAwareExceptions>().Include(x => x.Dependencies).Scoped()
-		         //
-		         .Then.Decorate<IExceptions, CompensationAwareExceptions>()
-		         .Decorate<IExceptions, NotificationAwareExceptions>()
-		         .Decorate<IExceptions, NavigationAwareExceptions>()
-		         .Decorate<IExceptions, CommonUserInterfaceExceptionsAwareExceptions>()
-		         .Decorate<IExceptionLogger, CommonUserInterfaceExceptionsAwareExceptionLogger>()
-		         //
-		         .Decorate<ILogException, NavigationAwareLogException>()
-		         //
-		         .Start<IEventAggregator>()
-		         .Forward<EventAggregator>()
-		         .Scoped()
-		         //
-		         .Then.Start<RenderStateMonitor>()
-		         .Include(x => x.Dependencies.Recursive())
-		         .Scoped()
-		         //
-		         .Then.Start<DefaultExternalLogin>()
-		         .Include(x => x.Dependencies)
-		         .Scoped()
-		         //
-		         .Then.Start<ScrollToFirstValidationMessage>()
-		         .And<ResourceExistsValidation>()
-		         .Scoped()
-		         //
-		         .Then.AddScoped(typeof(IPublisher<>), typeof(Publisher<>))
-		         .AddScoped(typeof(IActiveContents<>), typeof(ActiveContents<>))
-		         //
-		         .ForDefinition<RenderingAwareActiveContents<object>>()
-		         .Include(x => x.Dependencies)
-		         .Scoped()
-		         //
-		         .Then.ForDefinition<RenderStateAwarePagingContents<object>>()
-		         .Include(x => x.Dependencies)
-		         .Scoped()
-		         .Then.Start<IContentKey>()
-		         .Forward<ContentKey>()
-		         .Decorate<StoreAwareContentKey>()
-		         .Include(x => x.Dependencies.Recursive())
-		         .Scoped()
-		         //
-		         .Then.Start<IRenderContentKey>()
-		         .Forward<RenderContentKey>()
-		         .Scoped()
-		         //
-		         .Then.Start<IRenderState>()
-		         .Forward<CurrentRenderState>()
-		         .Scoped()
-		         //
-		         .Then.Start<ICurrentPrincipal>()
-		         .Forward<CurrentPrincipal>()
-		         .Include(x => x.Dependencies)
-		         .Scoped()
-		         //
-		         .Then.Start<ISetPageExitCheck>()
-		         .Forward<SetPageExitCheck>()
-		         .Decorate<ConnectionAwareSetPageExitCheck>()
-		         .Scoped()
-		         //
-		         .Then.Start<ICopyContext>()
-		         .Forward<CopyContext>()
-		         .Scoped()
-		         //
-		         .Then.Start<IEnter>()
-		         .Forward<Enter>()
-		         .Scoped()
-		         //
-		         .Then.Start<IEstablishContext>()
-		         .Forward<EstablishContext>()
-		         .Decorate<ApplicationAgentAwareEstablishContext>()
-		         .Include(x => x.Dependencies)
-		         .Scoped()
-		         //
-		         .Then.Start<IInitializeConnection>()
-		         .Forward<InitializeConnection>()
-		         .Scoped()
-		         //
-		         .Then.Start<IConnectionIdentifier>()
-		         .Forward<ConnectionIdentifier>()
-		         .Include(x => x.Dependencies.Recursive())
-		         .Scoped()
-		         //
-		         .Then.Start<IResourceQuery>()
-		         .Forward<ResourceQuery>()
-		         .Decorate<StoreAwareResourceQuery>()
-		         .Singleton()
-		         //
-		         .Then.Start<IFocus>()
-		         .Forward<Focus>()
-		         .Scoped()
-		         //
-		         .Then.Start<IFocusedElement>()
-		         .Forward<FocusedElement>()
-		         .Include(x => x.Dependencies.Recursive())
-		         .Scoped()
-		         //
-		         .Then.Start<RenderCache>()
-		         .Singleton()
-		         //
-		         .Then.AddJsInteropExtensions()
-		         .AddMediaQueryService()
-		         .Start<IMediaQueryService>()
-		         .Forward<DragonSpark.Presentation.Components.Interaction.MediaQueryService>()
-		         .Scoped()
-		         //
-		         .Then.AddFluentUIComponents()
-		         .AddRadzenComponents();
+				 .Then.Start<NotificationAwareExceptions>().Include(x => x.Dependencies).Scoped()
+				 //
+				 .Then.Decorate<IExceptions, CompensationAwareExceptions>()
+				 .Decorate<IExceptions, NotificationAwareExceptions>()
+				 .Decorate<IExceptions, NavigationAwareExceptions>()
+				 .Decorate<IExceptions, CommonUserInterfaceExceptionsAwareExceptions>()
+				 .Decorate<IExceptionLogger, CommonUserInterfaceExceptionsAwareExceptionLogger>()
+				 //
+				 .Decorate<ILogException, NavigationAwareLogException>()
+				 //
+				 .Start<IEventAggregator>()
+				 .Forward<EventAggregator>()
+				 .Scoped()
+				 //
+				 .Then.Start<RenderStateMonitor>()
+				 .Include(x => x.Dependencies.Recursive())
+				 .Scoped()
+				 //
+				 .Then.Start<DefaultExternalLogin>()
+				 .Include(x => x.Dependencies)
+				 .Scoped()
+				 //
+				 .Then.Start<ScrollToFirstValidationMessage>()
+				 .And<ResourceExistsValidation>()
+				 .Scoped()
+				 //
+				 .Then.AddScoped(typeof(IPublisher<>), typeof(Publisher<>))
+				 .AddScoped(typeof(IActiveContents<>), typeof(ActiveContents<>))
+				 //
+				 .ForDefinition<RenderingAwareActiveContents<object>>()
+				 .Include(x => x.Dependencies)
+				 .Scoped()
+				 //
+				 .Then.ForDefinition<RenderStateAwarePagingContents<object>>()
+				 .Include(x => x.Dependencies)
+				 .Scoped()
+				 .Then.Start<IContentKey>()
+				 .Forward<ContentKey>()
+				 .Decorate<StoreAwareContentKey>()
+				 .Include(x => x.Dependencies.Recursive())
+				 .Scoped()
+				 //
+				 .Then.Start<IRenderContentKey>()
+				 .Forward<RenderContentKey>()
+				 .Scoped()
+				 //
+				 .Then.Start<IRenderState>()
+				 .Forward<CurrentRenderState>()
+				 .Scoped()
+				 //
+				 .Then.Start<ICurrentPrincipal>()
+				 .Forward<CurrentPrincipal>()
+				 .Include(x => x.Dependencies)
+				 .Scoped()
+				 //
+				 .Then.Start<ISetPageExitCheck>()
+				 .Forward<SetPageExitCheck>()
+				 .Decorate<ConnectionAwareSetPageExitCheck>()
+				 .Scoped()
+				 //
+				 .Then.Start<ICopyContext>()
+				 .Forward<CopyContext>()
+				 .Scoped()
+				 //
+				 .Then.Start<IEnter>()
+				 .Forward<Enter>()
+				 .Scoped()
+				 //
+				 .Then.Start<IEstablishContext>()
+				 .Forward<EstablishContext>()
+				 .Decorate<ApplicationAgentAwareEstablishContext>()
+				 .Include(x => x.Dependencies)
+				 .Scoped()
+				 //
+				 .Then.Start<IRequestToken>()
+				 .Forward<RequestToken>()
+				 .Decorate<CircuitAwareRequestToken>()
+				 .Decorate<AmbientAwareToken>()
+				 .Include(x => x.Dependencies)
+				 .Scoped()
+				 //
+				 .Then.Start<IInitializeConnection>()
+				 .Forward<InitializeConnection>()
+				 .Scoped()
+				 //
+				 .Then.Start<IConnectionIdentifier>()
+				 .Forward<ConnectionIdentifier>()
+				 .Include(x => x.Dependencies.Recursive())
+				 .Scoped()
+				 //
+				 .Then.Start<IResourceQuery>()
+				 .Forward<ResourceQuery>()
+				 .Decorate<StoreAwareResourceQuery>()
+				 .Singleton()
+				 //
+				 .Then.Start<IFocus>()
+				 .Forward<Focus>()
+				 .Scoped()
+				 //
+				 .Then.Start<IFocusedElement>()
+				 .Forward<FocusedElement>()
+				 .Include(x => x.Dependencies.Recursive())
+				 .Scoped()
+				 //
+				 .Then.Start<RenderCache>()
+				 .Singleton()
+				 //
+				 .Then.AddJsInteropExtensions()
+				 .AddMediaQueryService()
+				 .Start<IMediaQueryService>()
+				 .Forward<DragonSpark.Presentation.Components.Interaction.MediaQueryService>()
+				 .Scoped()
+				 //
+				 .Then.AddFluentUIComponents()
+				 .AddRadzenComponents()
+				 ;
 	}
 }

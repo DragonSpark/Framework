@@ -16,8 +16,7 @@ sealed class WebApplicationHostBuilder : IHostBuilder, ISupportsConfigureWebHost
 	readonly IHostBuilder                     _host;
 	readonly HashSet<Action<IWebHostBuilder>> _configurations;
 
-	public WebApplicationHostBuilder(WebApplicationBuilder application)
-		: this(application, new HashSet<Action<IWebHostBuilder>>()) {}
+	public WebApplicationHostBuilder(WebApplicationBuilder application) : this(application, []) {}
 
 	public WebApplicationHostBuilder(WebApplicationBuilder application, HashSet<Action<IWebHostBuilder>> configurations)
 		: this(application, application.Host, configurations) {}

@@ -12,16 +12,16 @@ namespace DragonSpark.Application.Compose;
 sealed class InitializedAwareHostBuilder : IHostBuilder
 {
     readonly IHostBuilder _previous;
-    readonly ICommand _initialized;
+    readonly ICommand     _initialized;
 
     public InitializedAwareHostBuilder(IHostBuilder previous, ICommand initialized)
-        : this(previous, initialized, previous.Properties) { }
+        : this(previous, initialized, previous.Properties) {}
 
     public InitializedAwareHostBuilder(IHostBuilder previous, ICommand initialized,
                                        IDictionary<object, object> properties)
     {
-        Properties = properties;
-        _previous = previous;
+        Properties   = properties;
+        _previous    = previous;
         _initialized = initialized;
     }
 

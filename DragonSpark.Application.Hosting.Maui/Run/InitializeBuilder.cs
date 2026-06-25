@@ -13,7 +13,8 @@ sealed class InitializeBuilder(Func<IHostBuilder, IHostBuilder> host, Action<Mau
     public MauiAppBuilder Get(MauiAppBuilder parameter)
     {
         parameter.Services.AddSingleton(parameter);
-        host(new MauiHostBuilder(parameter));
+        var builder = new MauiHostBuilder(parameter);
+        host(builder);
         configure(parameter);
         parameter.Services.Remove(parameter.Services.Single(x => x.ImplementationInstance == parameter));
         return parameter;

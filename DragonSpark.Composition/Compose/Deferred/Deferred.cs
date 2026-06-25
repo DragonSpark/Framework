@@ -1,19 +1,19 @@
-﻿using DragonSpark.Model.Commands;
+using System.Collections.Generic;
+using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
 using Microsoft.Extensions.DependencyInjection;
-using System.Collections.Generic;
 
 namespace DragonSpark.Composition.Compose.Deferred;
 
 sealed class Deferred : ICommand<IServiceCollection>
 {
 	readonly ICommand<IServiceCollection>                                     _command;
-	readonly ISelect<IServiceCollection, IList<ICommand<IServiceCollection>>> _registrations;
+	readonly ISelect<IServiceCollection, IList<ICommand<IServiceCollection>>?> _registrations;
 
 	public Deferred(ICommand<IServiceCollection> command) : this(command, GetDeferredRegistrations.Default) { }
 
 	public Deferred(ICommand<IServiceCollection> command,
-	                ISelect<IServiceCollection, IList<ICommand<IServiceCollection>>> registrations)
+					ISelect<IServiceCollection, IList<ICommand<IServiceCollection>>?> registrations)
 	{
 		_command       = command;
 		_registrations = registrations;
@@ -21,6 +21,15 @@ sealed class Deferred : ICommand<IServiceCollection>
 
 	public void Execute(IServiceCollection parameter)
 	{
-		_registrations.Get(parameter).Add(_command);
+		var commands = _registrations.Get(parameter);
+		if (commands is not null)
+		{
+			commands.Add(_command);    
+		}
+		else
+		{
+			_command.Execute(parameter);
+		}
+		
 	}
 }
