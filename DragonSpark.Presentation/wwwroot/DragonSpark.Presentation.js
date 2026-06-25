@@ -12,16 +12,22 @@ window.cec_showExitDialog = function(event) {
 	event.returnValue = "There are unsaved changes on this page.  Do you want to leave?";
 }
 
-/* ATTRIBUTION: https://stackoverflow.com/a/55187677/10340424 */
 window.scrollToElementId = (elementId) => {
-	var element = document.getElementById(elementId);
+	const element = document.getElementById(elementId);
 	if (!element) {
 		console.warn('element was not found', elementId);
 		return false;
 	}
-	element.scrollIntoView({ behavior: 'smooth' });
+
+	element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+	const offset = window.innerHeight / 4;
+	
+	setTimeout(() => window.scrollBy({ top: -offset, behavior: 'smooth' }), 150);
+
 	return true;
-}
+};
+
 
 window.applyLocationHash = () => {
 	var current = window.location.hash;

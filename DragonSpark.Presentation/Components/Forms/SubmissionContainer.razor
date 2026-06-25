@@ -1,4 +1,5 @@
 ﻿@using DragonSpark.Compose
+@using DragonSpark.Model.Results
 @using DragonSpark.Presentation.Components.Forms.Validation
 
 @inherits InteractiveComponentBase
@@ -13,12 +14,15 @@
     protected override void OnInitialized()
     {
         _submit  = Start.A.Callback(Submit).UpdateActivity(Receiver).Handle(Exceptions);
-        _monitor = new(_submit, _store);
+        _monitor = new(_submit, Allowed, _store);
         base.OnInitialized();
     }
 
     [Parameter]
     public required RenderFragment<EventCallback<EditContext>> ChildContent { get; set; }
+
+    [Parameter, EditorRequired]
+    public Switch? Allowed { get; set; }
 
     [Parameter]
     public EventCallback<SubmittingInput> Submitting { get; set; }
@@ -34,7 +38,7 @@
         var submitting = new SubmittingInput(parameter);
         try
         {
-            if (await Allowed(submitting).On())
+            if (await Continue(submitting).On())
             {
                 await Submitted.On(parameter);
                 await Completed.Off();
@@ -52,7 +56,7 @@
         }
     }
 
-    async Task<bool> Allowed(SubmittingInput parameter)
+    async Task<bool> Continue(SubmittingInput parameter)
     {
         foreach (var callback in _store.Prepend(Submitting))
         {
