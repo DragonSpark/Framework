@@ -27,6 +27,7 @@
         {
             <EditFormContainer T="T" Input="@_current"
                                Completed="@back" 
+							   Allowed="@Allowed"
                                ChildContent="@EditTemplate"
                                AllowEdit="@AllowEdit"
                                ButtonCssClass="@ButtonCssClass"
@@ -60,6 +61,9 @@
 
     [Parameter]
     public required Switch ViewState { get; set; } = false;
+
+    [Parameter]
+    public required Switch Allowed { get; set; } = true;
 
     async Task OnEditing()
     {
