@@ -3,7 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Composition.Compose.Deferred;
 
-sealed class GetDeferredRegistrations : ISelect<IServiceCollection, DeferredRegistrations>
+sealed class GetDeferredRegistrations : ISelect<IServiceCollection, DeferredRegistrations?>
 {
 	public static GetDeferredRegistrations Default { get; } = new();
 
@@ -13,6 +13,5 @@ sealed class GetDeferredRegistrations : ISelect<IServiceCollection, DeferredRegi
 
 	public GetDeferredRegistrations(IDeferredRegistrationStateAccessor accessor) => _accessor = accessor;
 
-	public DeferredRegistrations Get(IServiceCollection parameter)
-		=> _accessor.Get(parameter.Context().Properties);
+	public DeferredRegistrations? Get(IServiceCollection parameter) => _accessor.Get(parameter.Context().Properties);
 }

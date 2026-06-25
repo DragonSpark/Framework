@@ -1,3 +1,5 @@
+using System;
+using System.Threading.Tasks;
 using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations.Selection;
@@ -6,8 +8,6 @@ using DragonSpark.Runtime.Activation;
 using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Composition.Compose;
 
@@ -17,7 +17,7 @@ public sealed class BuildHostContext : ISelecting<IHostBuilder, IHost>, IActivat
 
     readonly IAlteration<IHostBuilder> _select;
 
-    public BuildHostContext() : this(A.Self<IHostBuilder>()) { }
+    public BuildHostContext() : this(A.Self<IHostBuilder>()) {}
 
     public BuildHostContext(IAlteration<IHostBuilder> select) => _select = select;
 

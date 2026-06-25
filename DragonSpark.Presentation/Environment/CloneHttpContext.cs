@@ -23,7 +23,7 @@ sealed class CloneHttpContext : IAlteration<HttpContext>
 		var feature = parameter.Features.Get<IHttpRequestFeature>().Verify();
 
 		var requestHeaders = new Dictionary<string, StringValues>(feature.Headers.Count,
-		                                                          StringComparer.OrdinalIgnoreCase);
+																  StringComparer.OrdinalIgnoreCase);
 		foreach (var header in feature.Headers)
 		{
 			requestHeaders[header.Key] = header.Value;
@@ -40,8 +40,9 @@ sealed class CloneHttpContext : IAlteration<HttpContext>
 			RawTarget   = feature.RawTarget,
 			Headers     = new HeaderDictionary(requestHeaders),
 		};
-
+		
 		var features = new FeatureCollection();
+		features.Set<IHttpRequestLifetimeFeature>(new HttpRequestLifetimeFeature());
 		features.Set<IHttpRequestFeature>(requestFeature);
 		features.Set<IHttpResponseFeature>(new HttpResponseFeature());
 		features.Set<IHttpResponseBodyFeature>(new StreamResponseBodyFeature(Stream.Null));

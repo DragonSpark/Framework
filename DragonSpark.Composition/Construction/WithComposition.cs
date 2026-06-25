@@ -1,11 +1,11 @@
 using DragonSpark.Composition.Compose;
-using DragonSpark.Model.Selection.Stores;
+using DragonSpark.Model.Selection.Alterations;
 
 namespace DragonSpark.Composition.Construction;
 
-sealed class WithComposition : ReferenceValueStore<BuildHostContext, BuildHostContext>
+sealed class WithComposition : Alteration<BuildHostContext>
 {
     public static WithComposition Default { get; } = new();
 
-    WithComposition() : base(x => x.Select(ComposeWithComposition.Default)) {}
+    WithComposition() : base(x => x.Select(FactoryConfiguration.Default)) {}
 }

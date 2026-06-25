@@ -1,6 +1,5 @@
 using DragonSpark.Application.AspNet.Navigation;
 using DragonSpark.Application.AspNet.Navigation.Security;
-using DragonSpark.Application.AspNet.Runtime.Operations;
 using DragonSpark.Application.AspNet.Security;
 using DragonSpark.Application.AspNet.Security.Identity;
 using DragonSpark.Application.AspNet.Security.Identity.Model;
@@ -20,12 +19,7 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 
     public void Execute(IServiceCollection parameter)
     {
-        parameter.Start<IScopedToken>()
-                 .Forward<ScopedToken>()
-                 .Decorate<AmbientAwareToken>()
-                 .Scoped()
-                 //
-                 .Then.Start<CurrentRootPath>()
+        parameter.Start<CurrentRootPath>()
                  .And<RedirectLoginPath>()
                  .And<RefreshCurrentPath>()
                  .And<CurrentPath>()

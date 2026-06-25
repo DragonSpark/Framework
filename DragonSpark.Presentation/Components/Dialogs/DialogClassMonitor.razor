@@ -1,13 +1,13 @@
-@using DragonSpark.Application.AspNet.Runtime.Operations
 @using DragonSpark.Compose
 @using DragonSpark.Presentation.Environment.Browser.Document
+@using DragonSpark.Presentation.Runtime.Operations
 @using System.Threading
 
 @implements IAsyncDisposable
 
 @inject DialogService Model
 @inject CreateDocumentElementHandle Create
-@inject IScopedToken Token 
+@inject IRequestToken Token 
 
 @code {
 

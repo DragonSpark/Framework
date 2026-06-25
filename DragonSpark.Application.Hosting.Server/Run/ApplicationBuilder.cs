@@ -1,12 +1,12 @@
-﻿using DragonSpark.Application.AspNet.Run;
+using System;
+using System.Collections.Generic;
+using DragonSpark.Application.AspNet.Run;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Diagnostics.Metrics;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
 
 namespace DragonSpark.Application.Hosting.Server.Run;
 
@@ -21,7 +21,7 @@ sealed class ApplicationBuilder : IHostedApplicationBuilder
 		: this(previous, builder, builder.Properties) {}
 
 	public ApplicationBuilder(WebApplicationBuilder previous, IHostBuilder builder,
-	                          IDictionary<object, object> properties)
+							  IDictionary<object, object> properties)
 	{
 		_previous  = previous;
 		Builder    = builder;
@@ -32,7 +32,7 @@ sealed class ApplicationBuilder : IHostedApplicationBuilder
 		=> new ApplicationBuilder(_previous, builder, Properties);
 
 	public void ConfigureContainer<TContainerBuilder>(IServiceProviderFactory<TContainerBuilder> factory,
-	                                                  Action<TContainerBuilder>? configure = null)
+													  Action<TContainerBuilder>? configure = null)
 		where TContainerBuilder : notnull
 	{
 		((IHostApplicationBuilder)_previous).ConfigureContainer(factory, configure);

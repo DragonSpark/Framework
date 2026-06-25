@@ -1,4 +1,4 @@
-﻿using DragonSpark.Composition;
+using DragonSpark.Composition;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Selection.Alterations;
 
