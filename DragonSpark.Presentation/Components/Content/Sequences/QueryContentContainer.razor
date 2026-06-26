@@ -7,7 +7,7 @@
 @inject IPaging<T> Paging
 
 <DragonSpark.Presentation.Components.Content.ApplicationPrincipalAwareContentView>
-    <DragonSpark.Presentation.Components.Rendering.ClientCover Enabled="@(EnableClientCover && !_ready)">
+    <DragonSpark.Presentation.Components.Rendering.GatedClientCover Enabled="@(EnableClientCover && !_ready)">
         <PagingContentContainer T="T" @ref="_relay" Content="@_subject" ReportedType="@ReportedType" Results="@Results" HeaderTemplate="@HeaderTemplate" FooterTemplate="@FooterTemplate" ChildContent="@ChildContent" LoadingTemplate="@LoadingTemplate" EmptyElementsTemplate="@EmptyElementsTemplate" />
-    </DragonSpark.Presentation.Components.Rendering.ClientCover>
+    </DragonSpark.Presentation.Components.Rendering.GatedClientCover>
 </DragonSpark.Presentation.Components.Content.ApplicationPrincipalAwareContentView>

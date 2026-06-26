@@ -1,0 +1,30 @@
+﻿@using DragonSpark.Compose
+@using DragonSpark.Model.Results
+@using DragonSpark.Presentation.Components.Content.Templates
+
+<ClientCover Enabled="@Enabled" LoadingTemplate="@LoadingTemplate">
+	<SwitchRenderGate Allowed="@_gate" ChildContent="@ChildContent" />
+</ClientCover>
+	
+@code {
+	readonly Switch _gate = false;
+
+	[Parameter]
+	public bool Enabled { get; set; }
+
+	[Parameter]
+	public required RenderFragment ChildContent { get; set; }
+
+	[Parameter]
+	public RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
+
+	public override Task SetParametersAsync(ParameterView parameters)
+	{
+		if (Enabled && parameters.DidParameterChange(nameof(Enabled), Enabled))
+		{
+			_gate.Up();
+		}
+		return base.SetParametersAsync(parameters);
+	}
+
+}
