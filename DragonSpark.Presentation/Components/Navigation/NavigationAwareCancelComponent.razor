@@ -1,9 +1,7 @@
-@using DragonSpark.Presentation.Components.Content.Rendering
 @using DragonSpark.Presentation.Runtime.Operations
 @using System.Threading
 
 @inject IRequestToken Token
-@inject IRenderState Render
 @implements IDisposable
 
 <CascadingValue IsFixed="true" Value="@_combined.Token" ChildContent="@ChildContent"/>
@@ -17,16 +15,9 @@
 
     protected override void OnInitialized()
     {
-        var token     = Token.Get();
-        var connected = Render.IsConnected();
-        var other     = connected ? _source.Token : CancellationToken.None;
-        _combined = CancellationTokenSource.CreateLinkedTokenSource(token, other);
+        var token = Token.Get();
+        _combined = CancellationTokenSource.CreateLinkedTokenSource(token, _source.Token);
         base.OnInitialized();
-    }
-
-    protected override void OnAfterRender(bool firstRender)
-    {
-        base.OnAfterRender(firstRender);
     }
 
     public void Dispose()

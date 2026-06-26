@@ -7,14 +7,14 @@ namespace DragonSpark.Presentation.Runtime.Operations;
 sealed class CircuitAwareRequestToken : IRequestToken, IDisposable
 {
     readonly IRequestToken       _previous;
-    readonly IRenderState       _state;
+    readonly IRenderState        _state;
     readonly CircuitRequestToken _request;
 
     public CircuitAwareRequestToken(IRequestToken previous, IRenderState state, CircuitRequestToken request)
     {
         _previous = previous;
         _state    = state;
-        _request   = request;
+        _request  = request;
     }
 
     public CancellationToken Get()
