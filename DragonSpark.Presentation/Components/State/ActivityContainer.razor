@@ -105,15 +105,11 @@
         {
             StateHasChanged();
         }
-        else
+        else if (Monitor is not null)
         {
-            if (Monitor is not null)
-            {
-                await Monitor.On();
-            }
-
-            _model.Execute();
+	        await Monitor.On();
         }
+        _model.Execute();
     }
 
     public async ValueTask<ActivityReceiverState?> Get()
