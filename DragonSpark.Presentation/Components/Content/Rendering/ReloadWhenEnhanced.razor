@@ -1,0 +1,24 @@
+@using DragonSpark.Model.Selection.Conditions
+@using DragonSpark.Presentation.Components.Navigation
+@using Microsoft.AspNetCore.Http
+
+@if (Condition.Get(Context))
+{
+    <Reload @rendermode="InteractiveServer" />
+}
+else
+{
+    @ChildContent
+}
+
+@code {
+
+    [CascadingParameter]
+    public required HttpContext Context { get; set; }
+
+    [Parameter]
+    public required ICondition<HttpContext> Condition { get; set; } = IsEnhanced.Default;
+
+    [Parameter]
+    public required RenderFragment ChildContent { get; set; }
+}
