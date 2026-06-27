@@ -46,6 +46,9 @@ public static partial class ExtensionMethods
 		}
 	}
 
+	public static ValueEnumerableExtensions.WhereSelectEnumerable<EnumerableExtensions.ValueEnumerable<T?>, ValueEnumerator<T?>, T?, T, FunctionWrapper<T?, bool>, FunctionWrapper<T?, T>> Assigned<T>(this IEnumerable<T?> @this)
+		=> @this.AsValueEnumerable().Where(x => x is not null).Select(x => x.Verify());
+
 	public static bool AnyTrue(this IEnumerable<bool> source)
 	{
 		foreach (var b in source)
