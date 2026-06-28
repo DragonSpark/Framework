@@ -3,27 +3,27 @@
 @inherits ConfirmResultComponent
 
 <ConfirmResult @ref="_result"
-    EnableFocus="@EnableFocus"
-    PrimaryClass="@PrimaryClass" SecondaryClass="@SecondaryClass"
-    PrimaryText="@PrimaryText" SecondaryText="@SecondaryText"
-    ContentClass="@ContentClass" Confirmation="@Confirmation" ChildContent="@ChildContent" 
-/>
+	EnableFocus="@EnableFocus"
+	PrimaryClass="@PrimaryClass" SecondaryClass="@SecondaryClass"
+	PrimaryText="@PrimaryText" SecondaryText="@SecondaryText"
+	ContentClass="@ContentClass" Confirmation="@Confirmation"
+	ChildContent="@ChildContent" />
 
 @code {
-    ConfirmResult _result = null!;
+	ConfirmResult _result = null!;
 
-    [Parameter]
-    public bool EnableFocus { get; set; } = true;
+	[Parameter]
+	public bool EnableFocus { get; set; } = true;
 
-    [Parameter]
-    public required ICommand<ConfirmResult?> Assignment { get; set; }
+	[Parameter]
+	public required ICommand<ConfirmResult?> Assignment { get; set; }
 
-    protected override void OnAfterRender(bool firstRender)
-    {
-        if (firstRender)
-        {
-            Assignment.Execute(_result);
-        }
-        base.OnAfterRender(firstRender);
-    }
+	protected override void OnAfterRender(bool firstRender)
+	{
+		if (firstRender)
+		{
+			Assignment.Execute(_result);
+		}
+		base.OnAfterRender(firstRender);
+	}
 }

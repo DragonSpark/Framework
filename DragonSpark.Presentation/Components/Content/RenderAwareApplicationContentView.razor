@@ -26,7 +26,18 @@
 		base.OnInitialized();
 	}
 
-	Task OnLoad(T parameter) => Allow.Up() ? Loaded.Invoke(parameter) : Task.CompletedTask;
+	Task OnLoad(T parameter)
+	{
+		if (Allow.Up())
+		{
+			if (Loaded.HasDelegate)
+			{
+				return Loaded.Invoke(parameter);
+			}
+			StateHasChanged();
+		}
+		return Task.CompletedTask;
+	}
 
 	[Parameter]
 	public EventCallback<T> Loaded { get; set; }
@@ -40,7 +51,7 @@
 	[Parameter]
 	public required RenderFragment<T?> ChildContent { get; set; }
 
-	[Parameter]
+	[Parameter, EditorRequired]
 	public required IStopAware<T?> Source { get; set; }
 
 	protected override async ValueTask<T?> GetContent()
