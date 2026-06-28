@@ -1,68 +1,70 @@
-﻿@* ReSharper disable UnknownCssClass *@
-@inherits RadzenComponent
+﻿@inherits RadzenComponent
 
 @using DragonSpark.Compose
 @using DragonSpark.Application.Diagnostics
+@using DragonSpark.Presentation.Components.Runtime
 
 @inject DialogService Dialogs
 @inject IExceptions Exceptions
 
-<DragonSpark.Presentation.Components.Dialogs.DefaultEscapeContainer Escaped="@(() => Cancel.Invoke(default!))" EnableFocus="@EnableFocus">
+<DragonSpark.Presentation.Components.Dialogs.DefaultEscapeContainer Escaped="@(() => Cancel.Invoke(null!))" EnableFocus="@EnableFocus">
 	<ActivityReceiverContainer Context="receiver">
-        <div class="card">
-            <div class="@ContentClass">@ChildContent</div>
-            <div class="card-footer">
-                @if (PreButtonTemplate is not null)
-                {
-                    @PreButtonTemplate
-                }
-                <div class="d-flex justify-content-between" style="gap: 20px">
-                    <ButtonComponent Text="@SecondaryText" Click="OnCancel" ButtonStyle="ButtonStyle.Secondary"
-                                     class="@SecondaryClass"/>
+		<ParameterMonitorComponent T="IActivityReceiver" Subject="@receiver" SubjectChanged="@OnChanged" />
+		<div class="card">
+			<div class="@ContentClass">@ChildContent</div>
+			<div class="card-footer">
+				@if (PreButtonTemplate is not null)
+				{
+					@PreButtonTemplate
+				}
+				<div class="d-flex justify-content-between" style="gap: 20px">
+					<ButtonComponent Text="@SecondaryText" Click="OnCancel" ButtonStyle="ButtonStyle.Secondary"
+					                 class="@SecondaryClass"/>
 
-                    <ButtonComponent Disabled="@(!EnablePrimary)" Text="@PrimaryText" Click="@_click(receiver)" class="@PrimaryClass"/>
-                </div>
-            </div>
-        </div>
-    </ActivityReceiverContainer>
+					<ButtonComponent Disabled="@(!EnablePrimary)" Text="@PrimaryText" Click="@_click" class="@PrimaryClass"/>
+				</div>
+			</div>
+		</div>
+	</ActivityReceiverContainer>
 </DragonSpark.Presentation.Components.Dialogs.DefaultEscapeContainer>
 
 @code
 {
-    Func<IActivityReceiver, EventCallback<MouseEventArgs>> _click = null!;
+	EventCallback<MouseEventArgs> _click;
 
-    protected override Task OnInitializedAsync()
-    {
-        _click = Start.A.Selection<IActivityReceiver>().By.Calling(Create).Stores().New().Get;
-        return Opened.Invoke();
-    }
+	protected override Task OnInitializedAsync() => Opened.Invoke();
 
-    EventCallback<MouseEventArgs> Create(IActivityReceiver parameter)
-        => Start.A.Callback<MouseEventArgs>(OnAccept)
-                .Handle(Exceptions, ReportedType ?? GetType())
-                .UpdateActivity(parameter)
-                .DurationBlock();
+	void OnChanged(IActivityReceiver? parameter)
+	{
+		_click = parameter is not null ?
+			         Start.A.Callback<MouseEventArgs>(OnAccept)
+			              .Handle(Exceptions, ReportedType ?? GetType())
+			              .UpdateActivity(parameter)
+			              .DurationBlock()
+			         : null!;
+	}
 
-    async Task OnAccept(MouseEventArgs parameter)
-    {
-        if (await Confirmation())
-        {
-            await Accept.Invoke(parameter);
-            Dialogs.Close();
-        }
-    }
 
-    async Task OnCancel(MouseEventArgs parameter)
-    {
-        await Cancel.Invoke(parameter);
-        Dialogs.Close();
-    }
+	async Task OnAccept(MouseEventArgs parameter)
+	{
+		if (await Confirmation())
+		{
+			await Accept.On(parameter);
+			Dialogs.Close();
+		}
+	}
 
-    [Parameter]
-    public bool EnableFocus { get; set; } = true;
+	async Task OnCancel(MouseEventArgs parameter)
+	{
+		await Cancel.Invoke(parameter);
+		Dialogs.Close();
+	}
 
-    [Parameter]
-    public bool EnablePrimary { get; set; } = true;
+	[Parameter]
+	public bool EnableFocus { get; set; } = true;
+
+	[Parameter]
+	public bool EnablePrimary { get; set; } = true;
 
 	[Parameter]
 	public string PrimaryText { get; set; } = "OK";
@@ -94,8 +96,8 @@
 	[Parameter]
 	public EventCallback<MouseEventArgs> Cancel { get; set; }
 
-    [Parameter]
-    public RenderFragment? PreButtonTemplate { get; set; }
+	[Parameter]
+	public RenderFragment? PreButtonTemplate { get; set; }
 
 	[Parameter]
 	public Type? ReportedType { get; set; }
