@@ -1,9 +1,11 @@
 @using DragonSpark.Model.Selection.Conditions
+@using DragonSpark.Presentation.Components.Content.Templates
 @using DragonSpark.Presentation.Components.Navigation
 @using Microsoft.AspNetCore.Http
 
 @if (Condition.Get(Context))
 {
+    @LoadingTemplate
     <Reload @rendermode="InteractiveServer" />
 }
 else
@@ -21,4 +23,8 @@ else
 
     [Parameter]
     public required RenderFragment ChildContent { get; set; }
+
+    [Parameter]
+    public required RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
+
 }
