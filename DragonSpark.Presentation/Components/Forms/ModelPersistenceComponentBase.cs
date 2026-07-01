@@ -11,7 +11,7 @@ public abstract class ModelPersistenceComponentBase<T> : ComponentBase where T :
 	public IClientVariable<string> Store { get; set; } = null!;
 
 	[Parameter]
-	public ISerializer<T> Serializer { get; set; } = null!;
+	public ISerializer<T> Serializer { get; set; } = DefaultSerializer<T>.Default;
 
 	[Parameter]
 	public EventCallback ErrorOccurred { get; set; }
