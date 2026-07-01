@@ -34,7 +34,7 @@
 		if ((firstRender || Force) && Type == "text/javascript")
 		{
 			var script = ChildContent?.Text();
-			if (!string.IsNullOrEmpty(script))
+			if (script.IsAssigned())
 			{
 				return _call.Allocate(new(script, Stop));
 			}
