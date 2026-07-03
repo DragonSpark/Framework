@@ -8,24 +8,25 @@ namespace DragonSpark.Server.Mobile.Platforms.Android.Attestation;
 
 sealed class ComposeIntegrityService : IResult<V1Resource>
 {
-    readonly string[]         _scopes;
-    readonly GoogleCredential _root;
+	readonly string[]         _scopes;
+	readonly GoogleCredential _root;
 
-    public ComposeIntegrityService(AndroidPackageSettings settings)
-        : this(CredentialFactory.FromJson<GoogleCredential>(Base64Decode.Default.Get(settings.EncodedKey)),
-               PlayIntegrityService.Scope.Playintegrity) {}
+	public ComposeIntegrityService(AndroidPackageSettings settings)
+		: this(CredentialFactory.FromJson(Base64Decode.Default.Get(settings.EncodedKey),
+		                                  PlayIntegrityService.Scope.Playintegrity),
+		       PlayIntegrityService.Scope.Playintegrity) {}
 
-    public ComposeIntegrityService(GoogleCredential root, params string[] scopes)
-    {
-        _root   = root;
-        _scopes = scopes;
-    }
+	public ComposeIntegrityService(GoogleCredential root, params string[] scopes)
+	{
+		_root   = root;
+		_scopes = scopes;
+	}
 
-    public V1Resource Get()
-    {
-        var credential  = _root.CreateScoped(_scopes);
-        var initializer = new BaseClientService.Initializer { HttpClientInitializer = credential };
-        var result      = new PlayIntegrityService(initializer).V1;
-        return result;
-    }
+	public V1Resource Get()
+	{
+		var credential  = _root.CreateScoped(_scopes);
+		var initializer = new BaseClientService.Initializer { HttpClientInitializer = credential };
+		var result      = new PlayIntegrityService(initializer).V1;
+		return result;
+	}
 }
