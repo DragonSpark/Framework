@@ -9,7 +9,7 @@
 
 <DragonSpark.Presentation.Components.Dialogs.DefaultEscapeContainer Escaped="@(() => Cancel.Invoke(null!))" EnableFocus="@EnableFocus">
 	<ActivityReceiverContainer Context="receiver">
-		<ParameterMonitorComponent T="IActivityReceiver" Subject="@receiver" SubjectChanged="@OnChanged" />
+		<RelayValueComponent T="IActivityReceiver" Input="@receiver" Changed="@OnChanged" />
 		<div class="card">
 			<div class="@ContentClass">@ChildContent</div>
 			<div class="card-footer">
