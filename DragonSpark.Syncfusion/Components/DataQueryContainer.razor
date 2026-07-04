@@ -7,48 +7,50 @@
 @inherits DataGridTemplateComponentBase<T>
 
 <DragonSpark.Presentation.Components.State.ActivityReceiverContainer Context="_">
-    <SyncfusionQueryContainer T="T" Content="@Content" Compose="@Compose" Results="@Results" Reporter="@Reporter"
-                              LoadingTemplate="@LoadingTemplate"
-                              EmptyElementsTemplate="@EmptyElementsTemplate"
-                              NotFoundTemplate="@NotFoundTemplate"
-                              ExceptionTemplate="@ExceptionTemplate"
-                              HeaderTemplate="@HeaderTemplate"
-                              FooterTemplate="@FooterTemplate"
-                              ReportedType="@ReportedType">
-        <DataQueryGridDisplayComponent T="T"
-                                       Id="@Id"
-                                       Qualifier="@Qualifier"
-                                       Input="@context"
-                                       FilterType="@FilterType"
-                                       ReportedType="@ReportedType"
-                                       Columns="@Columns"
-                                       AllowSelection="@AllowSelection"
-                                       AllowPaging="@AllowPaging"
-                                       AllowFiltering="@AllowFiltering"
-                                       AllowSorting="@AllowSorting"
-                                       AllowExport="@AllowExport"
-                                       LoadingTemplate="@LoadingTemplate"
-                                       DesktopToolbar="@DesktopToolbar"
-                                       MobileToolbar="@MobileToolbar"
-                                       CssClass="@CssClass"
-                                       Breakpoint="@Breakpoint"
-                                       PageSize="@PageSize"
-                                       Editing="@Editing"
-                                       Created="@Created"
-                                       Updated="@Updated"
-                                       BodyHeaderTemplate="@BodyHeaderTemplate"
-                                       BodyContentTemplate="@BodyContentTemplate"
-                                       BodyFooterTemplate="@BodyFooterTemplate"
-                                       @attributes="@AdditionalAttributes"/>
-    </SyncfusionQueryContainer>
+	<SyncfusionQueryContainer T="T" Content="@Content" Compose="@Compose" Results="@Results" Reporter="@Reporter"
+							  LoadingTemplate="@LoadingTemplate" EnableClientCover="@EnableClientCover"
+							  EmptyElementsTemplate="@EmptyElementsTemplate"
+							  NotFoundTemplate="@NotFoundTemplate"
+							  ExceptionTemplate="@ExceptionTemplate"
+							  HeaderTemplate="@HeaderTemplate"
+							  FooterTemplate="@FooterTemplate"
+							  ReportedType="@ReportedType">
+		<DataQueryGridDisplayComponent T="T"
+									   Id="@Id"
+									   Qualifier="@Qualifier"
+									   Input="@context"
+									   FilterType="@FilterType"
+									   ReportedType="@ReportedType"
+									   Columns="@Columns"
+									   AllowSelection="@AllowSelection"
+									   AllowPaging="@AllowPaging"
+									   AllowFiltering="@AllowFiltering"
+									   AllowSorting="@AllowSorting"
+									   AllowExport="@AllowExport"
+									   LoadingTemplate="@LoadingTemplate"
+									   DesktopToolbar="@DesktopToolbar"
+									   MobileToolbar="@MobileToolbar"
+									   CssClass="@CssClass"
+									   Breakpoint="@Breakpoint"
+									   PageSize="@PageSize"
+									   Editing="@Editing"
+									   Created="@Created"
+									   Updated="@Updated"
+									   BodyHeaderTemplate="@BodyHeaderTemplate"
+									   BodyContentTemplate="@BodyContentTemplate"
+									   BodyFooterTemplate="@BodyFooterTemplate"
+									   @attributes="@AdditionalAttributes"/>
+	</SyncfusionQueryContainer>
 </DragonSpark.Presentation.Components.State.ActivityReceiverContainer>
 
 @code {
+	[Parameter]
+	public required bool EnableClientCover { get; set; } = true;
 
-    [Parameter]
-    public IQueries<T> Content { get; set; } = null!;
+	[Parameter]
+	public IQueries<T> Content { get; set; } = null!;
 
-    [Parameter]
-    public ICompose<T> Compose { get; set; } = SyncfusionCompose<T>.Default;
+	[Parameter]
+	public ICompose<T> Compose { get; set; } = SyncfusionCompose<T>.Default;
 
 }

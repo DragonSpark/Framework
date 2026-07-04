@@ -10,65 +10,71 @@
 @inherits DataGridQueryBase<T>
 
 <DataGrid T="T"
-          @ref="@_subject"
-          Id="@_identity"
-          Enabled="@_active"
-          FilterType="@FilterType"
-          Columns="@Columns"
-          AllowSelection="@AllowSelection"
-          AllowPaging="@AllowPaging"
-          AllowFiltering="@AllowFiltering"
-          AllowSorting="@AllowSorting"
-          AllowExport="@AllowExport"
-          Breakpoint="@Breakpoint"
-          DesktopToolbar="@DesktopToolbar"
-          MobileToolbar="@MobileToolbar"
-          CssClass="@CssClass"
-          PageSize="@PageSize"
-          LoadingTemplate="@LoadingTemplate"
-          EmptyElementsTemplate="@EmptyElementsTemplate"
-          ProblemTemplate="@ProblemTemplate"
-          Updated="@Updated"
-          Editing="@Editing"
-          Created="@Created"
-          Ready="@Ready"
-          Empty="@Empty"
-          ReportedType="@ReportedType"
-          @attributes="@AdditionalAttributes">
-    <ChildContent>
-        <Syncfusion.Blazor.Data.SfDataManager Adaptor="Adaptors.CustomAdaptor">
-            <DataRequestCallbackAdaptor Requested="@OnRequest"/>
-        </Syncfusion.Blazor.Data.SfDataManager>
-        @if (ChildContent is not null)
-        {
-            @ChildContent
-        }
-    </ChildContent>
+		  @ref="@_subject"
+		  Id="@_identity"
+		  Enabled="@_active"
+		  FilterType="@FilterType"
+		  Columns="@Columns"
+		  AllowSelection="@AllowSelection"
+		  AllowPaging="@AllowPaging"
+		  AllowFiltering="@AllowFiltering"
+		  AllowSorting="@AllowSorting"
+		  AllowExport="@AllowExport"
+		  Breakpoint="@Breakpoint"
+		  DesktopToolbar="@DesktopToolbar"
+		  MobileToolbar="@MobileToolbar"
+		  CssClass="@CssClass"
+		  PageSize="@PageSize"
+		  LoadingTemplate="@LoadingTemplate"
+		  EmptyElementsTemplate="@EmptyElementsTemplate"
+		  ProblemTemplate="@ProblemTemplate"
+		  Updated="@Updated"
+		  Editing="@Editing"
+		  Created="@Created"
+		  Ready="@Ready"
+		  Empty="@Empty"
+		  ReportedType="@ReportedType"
+		  @attributes="@AdditionalAttributes">
+	<ChildContent>
+		<Syncfusion.Blazor.Data.SfDataManager Adaptor="Adaptors.CustomAdaptor">
+			<DataRequestCallbackAdaptor Requested="@OnRequest"/>
+		</Syncfusion.Blazor.Data.SfDataManager>
+		@if (ChildContent is not null)
+		{
+			@ChildContent
+		}
+	</ChildContent>
 </DataGrid>
 
 @code {
 
-    [Parameter]
-    public required IDataRequest Content { get; set; }
+	readonly Model.Results.Switch _reload = false;
 
-    public override async Task SetParametersAsync(ParameterView parameters)
-    {
-        var changed = parameters.DidParameterChange(nameof(Content), Content);
-        if (changed)
-        {
-            RequestNewFactory();
-        }
+	[Parameter]
+	public required IDataRequest Content { get; set; }
 
-        await base.SetParametersAsync(parameters).Off();
-    }
+	public override async Task SetParametersAsync(ParameterView parameters)
+	{
+		var changed = parameters.DidParameterChange(nameof(Content), Content);
+		if (changed)
+		{
+			RequestNewFactory();
+			_reload.Execute(Content.Account() is not null);
+		}
 
-    protected override IStopAware<DataManagerRequest, DataResult> ComposeFactory()
-    {
-        var start  = base.ComposeFactory();
-        var result = start.Then().Then().Handle(EmptyDataResult.Default).Out();
-        return result;
-    }
+		await base.SetParametersAsync(parameters).Off();
+	}
 
-    protected override IDataRequest GetRequest() => Content;
+	protected override IStopAware<DataManagerRequest, DataResult> ComposeFactory()
+	{
+		var start  = base.ComposeFactory();
+		var result = start.Then().Then().Handle(EmptyDataResult.Default).Out();
+		return result;
+	}
+
+	protected override IDataRequest GetRequest() => Content;
+
+	protected override Task OnAfterRenderAsync(bool firstRender)
+		=> _reload.Down() && _subject is {} subject ? subject.Refresh() : base.OnAfterRenderAsync(firstRender);
 
 }
