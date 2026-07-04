@@ -108,7 +108,6 @@ public abstract class ValidationComponent : ComponentBase, IDisposable
 
 	public void Dispose()
 	{
-		_messages.Account()?.Clear();
 		EditContext = null;
 	}
 }
