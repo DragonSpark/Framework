@@ -21,7 +21,7 @@ public class Contains<T> : ICondition<T>
 	public bool Get(T parameter) => _source.Contains(parameter, _comparer);
 }
 
-public class Contains : Contains<string>
+public class Contains : Contains<string?>
 {
-	protected Contains(params string[] source) : base(StringComparer.InvariantCultureIgnoreCase, source) {}
+	public Contains(params string[] source) : base(StringComparer.InvariantCultureIgnoreCase, source) {}
 }
