@@ -12,8 +12,8 @@ sealed class ComposeIntegrityService : IResult<V1Resource>
 	readonly GoogleCredential _root;
 
 	public ComposeIntegrityService(AndroidPackageSettings settings)
-		: this(CredentialFactory.FromJson(Base64Decode.Default.Get(settings.EncodedKey),
-		                                  PlayIntegrityService.Scope.Playintegrity),
+		: this(CredentialFactory.FromJson<ServiceAccountCredential>(Base64Decode.Default.Get(settings.EncodedKey))
+		                        .ToGoogleCredential(),
 		       PlayIntegrityService.Scope.Playintegrity) {}
 
 	public ComposeIntegrityService(GoogleCredential root, params string[] scopes)
