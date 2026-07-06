@@ -3,23 +3,30 @@
 @inherits PagingContainer<T>
 
 <ContentView TValue="IPages<T>" Content="@Content" NotFoundTemplate="@NotFoundTemplate">
-    @HeaderTemplate?.Invoke(new(context, _any, _loading))
+    @HeaderTemplate?.Invoke(new(_error, _any, _loading))
+	
+	@if (_error is not null)
+	{
+		@ExceptionTemplate(_error)
+	}
+	else
+	{
+		if (_loading)
+		{
+			@LoadingTemplate
+		}
 
-    @if (_any)
-    {
-        if (_loading)
-        {
-            @LoadingTemplate
-        }
+		if (_loading || _any)
+		{
+			<CascadingValue TValue="IPageContainer<T>" Value="@(this)" IsFixed="true" ChildContent="@ChildContent(context)" />
+		}
+		else
+		{
+			@EmptyElementsTemplate
+		}
+	}
 
-        <CascadingValue TValue="IPageContainer<T>" Value="@(this)" IsFixed="true" ChildContent="@ChildContent(context)" />
-    }
-    else
-    {
-        @EmptyElementsTemplate
-    }
-
-    @FooterTemplate?.Invoke(new(context, _any, _loading))
+	@FooterTemplate?.Invoke(new(_error, _any, _loading))
 </ContentView>
 
 @code {

@@ -16,26 +16,33 @@
 
 @inject Virtualization Model
 
-@foreach (var item in _items)
+@if (_error is not null)
 {
-	<Fragment @key="item?.GetHashCode()" ChildContent="@ChildContent(item)" />
+	@ExceptionTemplate(_error)
 }
-
-@if (_loading)
+else
 {
-	@LoadingTemplate
+	@foreach (var item in _items)
+	{
+		<Fragment @key="item?.GetHashCode()" ChildContent="@ChildContent(item)" />
+	}
+
+	@if (_loading)
+	{
+		@LoadingTemplate
+	}	
 }
 
 <div @ref="_element" class="d-inline-block p-0 m-0" style="width: 0px; height: 100px; transform: translateX(-300px);"></div>
 
 @code {
-	readonly Switch          _reload = true, _notify = new(), _loading = false;
-	readonly List<T>         _items  = new();
+	readonly Switch          _reload = true, _notify = false, _loading = false, _complete = false, _active = true;
+	readonly List<T>         _items  = [];
 	ElementReference?        _element;
 	IJSObjectReference?      _instance;
-	bool                     _complete, _active = true;
 	CancellationTokenSource? _source;
 	IOperation?              _dispose;
+	Exception?               _error;
 
 	protected override void OnInitialized()
 	{
@@ -43,28 +50,8 @@
 		_dispose = new ConnectionAwareOperation(this);
 	}
 
-	[Parameter]
-	public IPages<T> Input
-	{
-		get;
-		set
-		{
-			if (field != value)
-			{
-				field = value;
-				if (_items.Count > 0)
-				{
-					_reload.Up();
-				}
-
-				_items.Clear();
-				_source?.Cancel();
-				_source   = null;
-				_complete = false;
-				_loading.Down();
-			}
-		}
-	} = null!;
+	[Parameter, EditorRequired]
+	public required IPages<T> Input { get; set; }
 
 	[Parameter]
 	public string? OrderBy { get; set; }
@@ -78,6 +65,26 @@
 	[Parameter]
 	public RenderDirection Direction { get; set; }
 
+	public override Task SetParametersAsync(ParameterView parameters)
+	{
+		var changed = parameters.DidParameterChange(nameof(Input), Input);
+		if (changed)
+		{
+			if (_items.Count > 0)
+			{
+				_reload.Up();
+			}
+
+			_items.Clear();
+			_source?.Cancel();
+			_complete.Down();
+			_loading.Down();
+			_source = null;
+			_error  = null;
+		}
+		return base.SetParametersAsync(parameters);
+	}
+
 	[JSInvokable]
 	public async Task LoadMoreItems()
 	{
@@ -86,17 +93,22 @@
 			{
 				using var _ = _loading.Scoped();
 				_source ??= new();
+				_error  =   null;
 
 				StateHasChanged();
 				try
 				{
-					var page = await Input.Get(new(new(true, OrderBy, Filter, new(_items.Count, PageSize)), _source.Token));
+					var page = await Input.On(new(new(true, OrderBy, Filter, new(_items.Count, PageSize)), _source.Token));
 					if (!_source?.IsCancellationRequested ?? false)
 					{
 						await Load(page).On();
 					}
 				}
 				catch (OperationCanceledException oce) when (oce.CancellationToken == _source?.Token) {}
+				catch (Exception error)
+				{
+					_error = error;
+				}
 			}
 			
 			StateHasChanged();
@@ -117,7 +129,7 @@
 		}
 		else
 		{
-			_complete = true;
+			_complete.Up();
 		}
 	}
 
@@ -153,7 +165,7 @@
 	async Task<IJSObjectReference?> Instance(ElementReference parameter)
 	{
 		var result = await Model.Off(new(new(parameter, DotNetObjectReference.Create(this), (byte)Direction), Stop));
-		_active &= result is not null;
+		_active.Execute(_active && result is not null);
 		return result;
 	}
 
@@ -161,14 +173,12 @@
 
 	public async ValueTask Get()
 	{
-		_active = false;
-		if (_source != null)
-		{
-			_source.Dispose();
-			_source = null;
-		}
+		_active.Down();
+		_source?.Dispose();
+		_source = null;
+		_error  = null;
 
-		if (_instance != null)
+		if (_instance is not null)
 		{
 			await _instance.DisposeAsync();
 			_instance = null;

@@ -12,7 +12,8 @@ namespace DragonSpark.Presentation.Components.Content.Sequences;
 
 partial class PagingContentContainer<T> : IPageContainer<T>
 {
-	readonly Switch _error = false, _any = false, _loading = true;
+	readonly Switch _any = false, _loading = true;
+	Exception?      _error;
 	bool?           _results;
 
 	[Parameter]
@@ -24,6 +25,7 @@ partial class PagingContentContainer<T> : IPageContainer<T>
 		await base.SetParametersAsync(parameters).On();
 		if (update)
 		{
+			_error   = null;
 			_results = null;
 			Update();
 		}
@@ -31,23 +33,24 @@ partial class PagingContentContainer<T> : IPageContainer<T>
 
 	void Update()
 	{
-		_any.Execute(Results.Get(_results));
-		_loading.Execute(!_error && _results is null);
+		_loading.Execute(_error is null && _results is null);
+		_any.Execute(!_loading && (_results ?? false));
 	}
 
 	void ICommand<PageResult<T>>.Execute(PageResult<T> parameter)
 	{
-		Update(_results ?? parameter.Total is > 0);
+		_error = null;
+		Update(parameter.Total is > 0);
 	}
 
 	void ICommand<Exception>.Execute(Exception parameter)
 	{
+		_error = parameter;
 		Update(null);
 	}
 
 	void Update(bool? parameter)
 	{
-		_error.Execute(parameter.HasValue);
 		_results = parameter;
 		Update();
 		StateHasChanged();

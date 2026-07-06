@@ -1,14 +1,12 @@
-using System;
-using System.Collections.Generic;
 using BlazorPro.BlazorSize;
-using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
 using DragonSpark.Application.Runtime.Operations;
-using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Presentation.Components.Content.Sequences;
 using DragonSpark.SyncfusionRendering.Entities;
 using DragonSpark.SyncfusionRendering.Queries;
 using Microsoft.AspNetCore.Components;
 using Syncfusion.Blazor.Grids;
+using System;
+using System.Collections.Generic;
 
 namespace DragonSpark.SyncfusionRendering.Components;
 
@@ -28,9 +26,6 @@ public class DataGridTemplateComponentBase<T> : DataRequestTemplateComponentBase
 	public string Qualifier { get; set; } = string.Empty;
 
 	[Parameter]
-	public ICondition<bool?> Results { get; set; } = HasResults.Default;
-
-	[Parameter]
 	public FilterType FilterType { get; set; } = FilterType.Excel;
 
 	[Parameter]
@@ -46,10 +41,10 @@ public class DataGridTemplateComponentBase<T> : DataRequestTemplateComponentBase
 	public RenderFragment? BodyFooterTemplate { get; set; }
 
 	[Parameter]
-	public RenderFragment<PagingRenderState<T>>? HeaderTemplate { get; set; }
+	public RenderFragment<PagingRenderState>? HeaderTemplate { get; set; }
 
 	[Parameter]
-	public RenderFragment<PagingRenderState<T>>? FooterTemplate { get; set; }
+	public RenderFragment<PagingRenderState>? FooterTemplate { get; set; }
 
 	[Parameter]
 	public bool AllowSelection { get; set; }
