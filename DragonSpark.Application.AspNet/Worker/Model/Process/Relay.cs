@@ -31,11 +31,3 @@ sealed class Relay<T> : IStopAware<T> where T : ExternalProcess
 		subject.Update(@new.Updates.Single());
 	}
 }
-
-
-// TODO
-public static class Extensions
-{
-	public static T Update<T>(this T @this, ProcessUpdate parameter) where T : ExternalProcess
-		=> UpdateProcess.Default.Parameter(new(@this, parameter)).Process.To<T>();
-}

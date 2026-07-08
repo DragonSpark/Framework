@@ -1,7 +1,3 @@
-using System;
-using System.Security.Claims;
-using System.Threading;
-using System.Threading.Tasks;
 using DragonSpark.Application.AspNet.Compose;
 using DragonSpark.Application.AspNet.Entities.Diagnostics;
 using DragonSpark.Application.AspNet.Entities.Editing;
@@ -10,6 +6,7 @@ using DragonSpark.Application.AspNet.Model.Content;
 using DragonSpark.Application.AspNet.Security;
 using DragonSpark.Application.AspNet.Security.Identity;
 using DragonSpark.Application.AspNet.Security.Identity.Authentication;
+using DragonSpark.Application.AspNet.Worker.Processes;
 using DragonSpark.Application.Model;
 using DragonSpark.Application.Security.Identity.Claims;
 using DragonSpark.Compose;
@@ -26,6 +23,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System;
+using System.Security.Claims;
+using System.Threading;
+using System.Threading.Tasks;
 using IdentityUser = DragonSpark.Application.AspNet.Security.Identity.IdentityUser;
 
 namespace DragonSpark.Application.AspNet;
@@ -162,4 +163,8 @@ partial class Extensions
     public static string Path(this NavigationManager @this) => Navigation.Path.Default.Get(@this);
 
     public static string Nonce(this HttpContext @this) => HttpContextNonce.Default.Get(@this);
+
+	/**/
+	public static T Update<T>(this T @this, ProcessUpdate parameter) where T : ExternalProcess
+		=> UpdateProcess.Default.Parameter(new(@this, parameter)).Process.To<T>();
 }
