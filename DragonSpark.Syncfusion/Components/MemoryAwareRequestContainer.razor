@@ -1,4 +1,5 @@
 ﻿@using DragonSpark.Compose
+@using DragonSpark.Presentation
 @using DragonSpark.Presentation.Components.Content.Rendering
 @using DragonSpark.SyncfusionRendering.Queries
 @using Microsoft.Extensions.Caching.Memory
@@ -6,6 +7,7 @@
 
 @inject IMemoryCache Memory
 @inject IContentKey Key
+@inject IRenderState State
 
 @ChildContent(_context)
 
@@ -34,7 +36,7 @@
         await base.SetParametersAsync(parameters).Off();
         if (changed)
         {
-            _context = new MemoryAwareDataRequest(Input, Memory, _key);
+            _context = State.IsConnected() ? Input : new MemoryAwareDataRequest(Input, Memory, _key);
         }
     }
 

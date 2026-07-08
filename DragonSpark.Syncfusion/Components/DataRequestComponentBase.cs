@@ -91,8 +91,3 @@ public class DataGridTemplateComponentBase<T> : DataRequestTemplateComponentBase
 	[Parameter(CaptureUnmatchedValues = true)]
 	public Dictionary<string, object> AdditionalAttributes { get; set; } = null!;
 }
-
-/*public class DataRequestComponentBase<T> : DataGridTemplateComponentBase<T>
-{
-	
-}*/

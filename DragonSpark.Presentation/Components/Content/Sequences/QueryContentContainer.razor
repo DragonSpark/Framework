@@ -1,13 +1,9 @@
 ﻿@typeparam T
 
-@using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination
-
-@inherits PagingContainer<T>
-
-@inject IPaging<T> Paging
+@inherits PagingContainerBase<T>
 
 <DragonSpark.Presentation.Components.Content.ApplicationPrincipalAwareContentView>
     <DragonSpark.Presentation.Components.Rendering.GatedClientCover Enabled="@(EnableClientCover && !_ready)">
-        <PagingContentContainer T="T" @ref="_relay" Content="@_subject" ReportedType="@ReportedType" HeaderTemplate="@HeaderTemplate" FooterTemplate="@FooterTemplate" ChildContent="@ChildContent" LoadingTemplate="@LoadingTemplate" EmptyElementsTemplate="@EmptyElementsTemplate" ExceptionTemplate="@ExceptionTemplate" />
+        <PagingContentContainer T="T" Content="@Content" Compose="@Compose" Pagination="@Pagination" Ready="@_ready" ReportedType="@ReportedType" HeaderTemplate="@HeaderTemplate" FooterTemplate="@FooterTemplate" ChildContent="@ChildContent" LoadingTemplate="@LoadingTemplate" EmptyElementsTemplate="@EmptyElementsTemplate" ExceptionTemplate="@ExceptionTemplate" Updated="@EmptyCallback.Default.Get(this)" />
     </DragonSpark.Presentation.Components.Rendering.GatedClientCover>
 </DragonSpark.Presentation.Components.Content.ApplicationPrincipalAwareContentView>

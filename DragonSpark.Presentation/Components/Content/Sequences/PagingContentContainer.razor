@@ -1,9 +1,11 @@
 ﻿@using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination
 @typeparam T
-@inherits PagingContainer<T>
+@inherits PagingContainerBase<T>
 
-<ContentView TValue="IPages<T>" Content="@Content" NotFoundTemplate="@NotFoundTemplate">
-    @HeaderTemplate?.Invoke(new(_error, _any, _loading))
+@inject IPaging<T> Paging
+
+<ContentView TValue="IPages<T>" Content="@_subject" NotFoundTemplate="@NotFoundTemplate">
+	@HeaderTemplate?.Invoke(new(_error, _any, _loading))
 	
 	@if (_error is not null)
 	{
@@ -18,7 +20,7 @@
 
 		if (_loading || _any)
 		{
-			<CascadingValue TValue="IPageContainer<T>" Value="@(this)" IsFixed="true" ChildContent="@ChildContent(context)" />
+			<CascadingValue TValue="IPageContainer<T>" Value="@this" IsFixed="true" ChildContent="@ChildContent(context)" />
 		}
 		else
 		{
@@ -28,9 +30,8 @@
 
 	@FooterTemplate?.Invoke(new(_error, _any, _loading))
 </ContentView>
-
 @code {
 
-    public IPages<T> Get(IPages<T> parameter) => parameter;
+	public IPages<T> Get(IPages<T> parameter) => Pagination?.Get(parameter) ?? parameter;
 
 }
