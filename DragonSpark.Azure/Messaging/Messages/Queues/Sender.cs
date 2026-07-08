@@ -1,5 +1,6 @@
 ﻿using Azure.Messaging.ServiceBus;
 using DragonSpark.Compose;
+using DragonSpark.Contracts.Messaging;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
 using System.Threading.Tasks;

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Azure;
+﻿namespace DragonSpark.Contracts.Messaging;
 
 public readonly record struct MessageInput(string Message, TimeSpan? Visibility = null, TimeSpan? Life = null)
 {
