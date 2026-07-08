@@ -6,7 +6,7 @@ using DragonSpark.Application.AspNet.Model.Content;
 using DragonSpark.Application.AspNet.Security;
 using DragonSpark.Application.AspNet.Security.Identity;
 using DragonSpark.Application.AspNet.Security.Identity.Authentication;
-using DragonSpark.Application.AspNet.Workers.Processes;
+using DragonSpark.Application.AspNet.Workers;
 using DragonSpark.Application.Model;
 using DragonSpark.Application.Security.Identity.Claims;
 using DragonSpark.Compose;
