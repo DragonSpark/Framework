@@ -1,4 +1,5 @@
 ﻿using Azure.Messaging.ServiceBus;
+using DragonSpark.Contracts.Messaging;
 using DragonSpark.Model.Operations.Stop;
 using DragonSpark.Model.Selection;
 
