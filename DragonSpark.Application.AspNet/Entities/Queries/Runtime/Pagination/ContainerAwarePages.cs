@@ -27,7 +27,6 @@ sealed class ContainerAwarePages<T> : IPages<T>
 		}
 		catch (Exception e)
 		{
-			// TODO: THROW
 			await _container.Off(e);
 			throw;
 		}

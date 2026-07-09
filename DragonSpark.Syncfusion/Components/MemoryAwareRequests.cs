@@ -1,21 +1,15 @@
-﻿using DragonSpark.Application.Compose.Store.Operations.Memory;
-using DragonSpark.Compose;
-using DragonSpark.Model.Operations;
+﻿using DragonSpark.Model.Selection.Stores;
 using DragonSpark.SyncfusionRendering.Queries;
-using Microsoft.Extensions.Caching.Memory;
 using Syncfusion.Blazor;
-using System;
+using Syncfusion.Blazor.Data;
 
 namespace DragonSpark.SyncfusionRendering.Components;
 
 public sealed class MemoryAwareRequests : IRequests
 {
-	readonly StoreProfile<Stop<DataManagerRequest>> _profile;
+	readonly ITable<DataManagerRequest, DataResult> _store;
 
-	public MemoryAwareRequests(IMemoryCache memory, TimeSpan @for, string key)
-		: this(new(memory, @for, new RequestKey(key).Then().Accept<Stop<DataManagerRequest>>(x => x.Subject).Get)) {}
+	public MemoryAwareRequests(ITable<DataManagerRequest, DataResult> store) => _store = store;
 
-	public MemoryAwareRequests(StoreProfile<Stop<DataManagerRequest>> profile) => _profile = profile;
-
-	public IDataRequest Get(IDataRequest parameter) => new MemoryAwareDataRequest(parameter, _profile);
+	public IDataRequest Get(IDataRequest parameter) => new StoreAwareDataRequest(_store, parameter);
 }

@@ -11,7 +11,7 @@
     {
         @BodyHeaderTemplate
     }
-    <DragonSpark.SyncfusionRendering.Components.MemoryAwareRequestContainer Id="@_identity" Input="Input" Context="input">
+    <DragonSpark.SyncfusionRendering.Components.DataRequestGateContainer Input="Input" Store="@_store" Context="input">
         <DataQueryGrid T="T" Content="@input"
                        Identifier="@_identity"
                        FilterType="@FilterType"
@@ -31,13 +31,16 @@
                        Editing="@Editing"
                        Created="@Created"
                        Updated="@Updated"
+					   Empty="@_clear"
+					   Ready="@_clear"
+					   Error="@_clear"
                        @attributes="@AdditionalAttributes">
             @if (BodyContentTemplate is not null)
             {
                 @BodyContentTemplate
             }
         </DataQueryGrid>
-    </DragonSpark.SyncfusionRendering.Components.MemoryAwareRequestContainer>
+    </DragonSpark.SyncfusionRendering.Components.DataRequestGateContainer>
 
     if (BodyFooterTemplate is not null)
     {
@@ -50,9 +53,17 @@ else
 }
 
 @code {
-    string? _identity;
+	readonly IDataResults _store = new DataResults();
+	string?               _identity;
+	Action                _clear = null!;
 
-    [Parameter]
+	protected override void OnInitialized()
+	{
+		_clear = Clear;
+		base.OnInitialized();
+	}
+
+	[Parameter]
     public required IDataRequest Input { get; set; }
 
     public override async Task SetParametersAsync(ParameterView parameters)
@@ -63,5 +74,10 @@ else
         {
             _identity = $"{GenerateElementIdentifier.Default.Get(Id)}{Qualifier}";
         }
+    }
+
+    void Clear()
+    {
+	    _store.Execute();
     }
 }

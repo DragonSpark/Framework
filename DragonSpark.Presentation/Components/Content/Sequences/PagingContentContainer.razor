@@ -5,7 +5,7 @@
 @inject IPaging<T> Paging
 
 <ContentView TValue="IPages<T>" Content="@_subject" NotFoundTemplate="@NotFoundTemplate">
-	@HeaderTemplate?.Invoke(new(_error, _any, _loading))
+	@HeaderTemplate?.Invoke(new(_error, _state))
 	
 	@if (_error is not null)
 	{
@@ -13,22 +13,22 @@
 	}
 	else
 	{
-		if (_loading)
+		if (_state == QueryRenderState.Loading)
 		{
 			@LoadingTemplate
 		}
 
-		if (_loading || _any)
-		{
-			<CascadingValue TValue="IPageContainer<T>" Value="@this" IsFixed="true" ChildContent="@ChildContent(context)" />
-		}
-		else
+		if (_state == QueryRenderState.Empty && EmptyElementsTemplate is not null)
 		{
 			@EmptyElementsTemplate
 		}
+		else
+		{
+			<CascadingValue TValue="IPageContainer<T>" Value="@this" IsFixed="true" ChildContent="@ChildContent(context)" />
+		}
 	}
 
-	@FooterTemplate?.Invoke(new(_error, _any, _loading))
+	@FooterTemplate?.Invoke(new(_error, _state))
 </ContentView>
 @code {
 

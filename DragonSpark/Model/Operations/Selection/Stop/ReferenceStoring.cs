@@ -12,6 +12,6 @@ public class ReferenceStoring<TIn, TOut> : Storing<TIn, TOut> where TIn : class 
 	protected ReferenceStoring(Func<Stop<TIn>, ValueTask<TOut>> source)
 		: this(new ReferenceValueTable<TIn, TOut>(), source) {}
 
-	protected ReferenceStoring(ITable<TIn, TOut> store, Func<Stop<TIn>, ValueTask<TOut>> source) :
-		base(store, source) {}
+	protected ReferenceStoring(ITable<TIn, TOut> store, Func<Stop<TIn>, ValueTask<TOut>> source)
+		: base(store, source) {}
 }

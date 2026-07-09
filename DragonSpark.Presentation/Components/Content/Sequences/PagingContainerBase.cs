@@ -20,7 +20,7 @@ public abstract class PagingContainerBase<T> : ActiveContentTemplateComponentBas
 
 	[Parameter]
 	public IPagination<T>? Pagination { get; set; }
-	
+
 	[Parameter]
 	public RenderFragment<PagingRenderState>? HeaderTemplate { get; set; }
 
@@ -28,5 +28,5 @@ public abstract class PagingContainerBase<T> : ActiveContentTemplateComponentBas
 	public RenderFragment<PagingRenderState>? FooterTemplate { get; set; }
 
 	[Parameter]
-	public virtual RenderFragment EmptyElementsTemplate { get; set; } = DefaultEmptySequenceTemplate.Default;
+	public virtual RenderFragment? EmptyElementsTemplate { get; set; } = DefaultEmptySequenceTemplate.Default;
 }

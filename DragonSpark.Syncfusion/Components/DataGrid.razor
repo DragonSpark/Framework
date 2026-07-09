@@ -169,7 +169,7 @@
         var exception = parameter.Error.Verify();
         _fragment = _ => ProblemTemplate(exception);
         await Exceptions.Get(new(ReportedType ?? GetType(), exception));
-        await Error.Invoke(parameter.Error).Off();
+		await Error.Off(exception);
     }
 
     void ICommand<string>.Execute(string parameter)

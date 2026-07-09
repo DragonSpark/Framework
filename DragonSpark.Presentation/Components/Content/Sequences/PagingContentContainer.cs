@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
 using DragonSpark.Compose;
 using DragonSpark.Contracts.Queries;
-using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.Components;
 using Radzen;
 using System;
@@ -11,57 +10,43 @@ namespace DragonSpark.Presentation.Components.Content.Sequences;
 
 partial class PagingContentContainer<T> : IPageContainer<T>
 {
-	readonly Switch _any = false, _loading = true;
-	Exception?      _error;
-	bool?           _results;
-	IPages<T>?      _subject;
-
-	[CascadingParameter] IPageContainer<T>? Parent { get; set; }
-
-	[Parameter, EditorRequired]
-	public required Switch Ready { get; set; }
+	QueryRenderState _state;
+	Exception?       _error;
+	IPages<T>?       _subject;
 
 	[Parameter]
-	public EventCallback Updated { get; set; }
+	public EventCallback<QueryRenderState> Changed { get; set; }
+
+	[CascadingParameter] IPageContainer<T>? Parent { get; set; }
 
 	public override async Task SetParametersAsync(ParameterView parameters)
 	{
 		var changed = parameters.DidParameterChange(nameof(Content), Content) ||
 		              parameters.DidParameterChange(nameof(Compose), Compose);
-		await base.SetParametersAsync(parameters).Off();
+		await base.SetParametersAsync(parameters).On();
 		if (changed)
 		{
-			Ready.Down();
-			_subject = DetermineSubject();
+			_subject = Paging.Get(new(this, Content.Verify(), Compose));
 			_error   = null;
-			_results = null;
-			Update();
+			_state   = QueryRenderState.Loading;
+			await Changed.Off(_state);
 		}
 	}
-
-	IPages<T> DetermineSubject()
-	{
-		var content = Content.Verify();
-		var result  = Paging.Get(new(this, content, Compose));
-		return result;
-	}
-
-	void Update()
-	{
-		_loading.Execute(_error is null && _results is null);
-		_any.Execute(!_loading && (_results ?? false));
-	}
-
+	
 	Task Update(bool? parameter)
 	{
-		_results = parameter;
-		Update();
-		Ready.Up();
+		_state = _error is not null
+			         ? QueryRenderState.Error
+			         : parameter is null
+				         ? QueryRenderState.Loading
+				         : parameter.Value
+					         ? QueryRenderState.Ready
+					         : QueryRenderState.Empty;
 		if (Parent is null)
 		{
-			if (Updated.HasDelegate)
+			if (Changed.HasDelegate)
 			{
-				return Updated.Invoke();
+				return Changed.Invoke(_state);
 			}
 			StateHasChanged();
 		}
