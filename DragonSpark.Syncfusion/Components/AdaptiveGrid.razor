@@ -35,7 +35,6 @@ else
 		<GridPageSettings PageSize="@PageSize" />
 		<GridFilterSettings Type="@FilterType" />
 		<GridColumns ChildContent="@Columns" />
-		<GridEvents TValue="T"  />
 		<GridEvents TValue="T" OnLoad="@OnLoad" DataBound="@DataBound" OnActionBegin="@BeginAction" OnActionFailure="@Failure" OnActionComplete="@OnActionComplete" />
 		@if (ChildContent is not null)
 		{
