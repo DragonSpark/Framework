@@ -77,6 +77,6 @@ public class PolicyAware<TIn, TOut> : IStopAware<TIn, TOut>
 	public ValueTask<TOut> Get(Stop<TIn> parameter)
 	{
 		var (subject, stop) = parameter;
-		return _policy.ExecuteAsync(x => _previous.Allocate(new(subject, x)), stop).ToOperation();
+		return _policy.ExecuteAsync(x => _previous.Allocate(new(subject, x)), stop, true).ToOperation();
 	}
 }

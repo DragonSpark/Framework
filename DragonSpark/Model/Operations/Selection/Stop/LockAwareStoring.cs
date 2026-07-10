@@ -29,7 +29,7 @@ public class LockAwareStoring<TIn, TOut> : IStopAware<TIn, TOut>
 
 	public async ValueTask<TOut> Get(Stop<TIn> parameter)
 	{
-		using var @lock = await _lock.LockAsync(parameter).Off();
+		using var @lock = await _lock.LockAsync(parameter).On();
 		return await _previous.Off(parameter);
 	}
 }

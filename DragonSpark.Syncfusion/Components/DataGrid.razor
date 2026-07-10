@@ -39,11 +39,12 @@
                   CssClass="@CssClass"
                   PageSize="@PageSize"
                   LoadingTemplate="@LoadingTemplate"
+				  Load="@Load"
+				  DataBound="@OnDataBound" BeginAction="@OnActionBegin" Failure="@OnFailure"
                   @attributes="@AdditionalAttributes">
 
-        <GridTemplates EmptyRecordTemplate="@_fragment" />
-        <GridEvents TValue="T" DataBound="@OnDataBound" OnActionBegin="@OnActionBegin" OnActionFailure="@OnFailure" />
-
+	    <GridTemplates EmptyRecordTemplate="@_fragment" />
+        
         @if (ChildContent is not null)
         {
             @ChildContent
@@ -125,6 +126,9 @@
 
     [Parameter]
     public EventCallback<Exception> Error { get; set; }
+
+    [Parameter]
+    public EventCallback<ActionEventArgs<T>> BeginAction { get; set; }
 
     [Parameter]
     public EventCallback Ready { get; set; }
