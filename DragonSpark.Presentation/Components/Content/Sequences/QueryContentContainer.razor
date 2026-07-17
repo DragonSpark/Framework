@@ -1,13 +1,33 @@
 ﻿@typeparam T
 
-@using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination
-
-@inherits PagingContainer<T>
-
-@inject IPaging<T> Paging
+@inherits PagingContainerBase<T>
 
 <DragonSpark.Presentation.Components.Content.ApplicationPrincipalAwareContentView>
-    <DragonSpark.Presentation.Components.Rendering.GatedClientCover Enabled="@(EnableClientCover && !_ready)">
-        <PagingContentContainer T="T" @ref="_relay" Content="@_subject" ReportedType="@ReportedType" Results="@Results" HeaderTemplate="@HeaderTemplate" FooterTemplate="@FooterTemplate" ChildContent="@ChildContent" LoadingTemplate="@LoadingTemplate" EmptyElementsTemplate="@EmptyElementsTemplate" />
-    </DragonSpark.Presentation.Components.Rendering.GatedClientCover>
+	<DragonSpark.Presentation.Components.Rendering.GatedClientCover Enabled="@(EnableClientCover && !_ready)">
+		<PagingContentContainer T="T" Content="@Content" Compose="@Compose" Pagination="@Pagination"
+		                        ReportedType="@ReportedType" HeaderTemplate="@HeaderTemplate" 
+		                        FooterTemplate="@FooterTemplate" ChildContent="@ChildContent" 
+		                        LoadingTemplate="@LoadingTemplate" 
+		                        EmptyElementsTemplate="@(EnableEmptyElements ? EmptyElementsTemplate : null)" 
+		                        ExceptionTemplate="@ExceptionTemplate"
+		                        Changed="@OnChanged" 
+		                        />
+	</DragonSpark.Presentation.Components.Rendering.GatedClientCover>
 </DragonSpark.Presentation.Components.Content.ApplicationPrincipalAwareContentView>
+
+@code {
+
+	bool _ready;
+	
+	[Parameter]
+	public required bool EnableClientCover { get; set; } = true;
+
+	[Parameter]
+	public required bool EnableEmptyElements { get; set; }
+
+	void OnChanged(QueryRenderState parameter)
+	{
+		_ready = parameter > QueryRenderState.Loading;
+	}
+
+}

@@ -1,29 +1,37 @@
 ﻿@using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination
 @typeparam T
-@inherits PagingContainer<T>
+@inherits PagingContainerBase<T>
 
-<ContentView TValue="IPages<T>" Content="@Content" NotFoundTemplate="@NotFoundTemplate">
-    @HeaderTemplate?.Invoke(new(context, _any, _loading))
+@inject IPaging<T> Paging
 
-    @if (_any)
-    {
-        if (_loading)
-        {
-            @LoadingTemplate
-        }
+<ContentView TValue="IPages<T>" Content="@_subject" NotFoundTemplate="@NotFoundTemplate">
+	@HeaderTemplate?.Invoke(new(_error, _state))
+	
+	@if (_error is not null)
+	{
+		@ExceptionTemplate(_error)
+	}
+	else
+	{
+		if (_state == QueryRenderState.Loading)
+		{
+			@LoadingTemplate
+		}
 
-        <CascadingValue TValue="IPageContainer<T>" Value="@(this)" IsFixed="true" ChildContent="@ChildContent(context)" />
-    }
-    else
-    {
-        @EmptyElementsTemplate
-    }
+		if (_state == QueryRenderState.Empty && EmptyElementsTemplate is not null)
+		{
+			@EmptyElementsTemplate
+		}
+		else
+		{
+			<CascadingValue TValue="IPageContainer<T>" Value="@this" IsFixed="true" ChildContent="@ChildContent(context)" />
+		}
+	}
 
-    @FooterTemplate?.Invoke(new(context, _any, _loading))
+	@FooterTemplate?.Invoke(new(_error, _state))
 </ContentView>
-
 @code {
 
-    public IPages<T> Get(IPages<T> parameter) => parameter;
+	public IPages<T> Get(IPages<T> parameter) => Pagination?.Get(parameter) ?? parameter;
 
 }

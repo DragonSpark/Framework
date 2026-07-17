@@ -81,6 +81,9 @@ public class DataGridBase<T> : DataComponent
 	[Parameter]
 	public EventCallback Empty { get; set; }
 
+	[Parameter]
+	public EventCallback<Exception> Error { get; set; }
+
 	public Task Export() => _subject?.Export() ?? Task.CompletedTask;
 
 	public Task Refresh() => _subject?.Refresh() ?? Task.CompletedTask;

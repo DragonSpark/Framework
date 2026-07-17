@@ -1,8 +1,10 @@
 @typeparam T
+
 @using DragonSpark.Compose
 @using DragonSpark.Presentation.Components
 @using DragonSpark.SyncfusionRendering.Queries
 @using Radzen
+
 @inherits DataGridTemplateComponentBase<T>
 
 @if (_identity is not null)
@@ -11,33 +13,33 @@
     {
         @BodyHeaderTemplate
     }
-    <DragonSpark.SyncfusionRendering.Components.MemoryAwareRequestContainer Id="@_identity" Input="Input" Context="input">
-        <DataQueryGrid T="T" Content="@input"
-                       Identifier="@_identity"
-                       FilterType="@FilterType"
-                       ReportedType="@ReportedType"
-                       Columns="@Columns"
-                       AllowSelection="@AllowSelection"
-                       AllowPaging="@AllowPaging"
-                       AllowFiltering="@AllowFiltering"
-                       AllowSorting="@AllowSorting"
-                       AllowExport="@AllowExport"
-                       LoadingTemplate="@LoadingTemplate"
-                       DesktopToolbar="@DesktopToolbar"
-                       MobileToolbar="@MobileToolbar"
-                       CssClass="@CssClass"
-                       Breakpoint="@Breakpoint"
-                       PageSize="@PageSize"
-                       Editing="@Editing"
-                       Created="@Created"
-                       Updated="@Updated"
-                       @attributes="@AdditionalAttributes">
-            @if (BodyContentTemplate is not null)
-            {
-                @BodyContentTemplate
-            }
-        </DataQueryGrid>
-    </DragonSpark.SyncfusionRendering.Components.MemoryAwareRequestContainer>
+	
+    <DataQueryGrid T="T" Content="@Input"
+                   Identifier="@_identity"
+                   FilterType="@FilterType"
+                   ReportedType="@ReportedType"
+                   Columns="@Columns"
+                   AllowSelection="@AllowSelection"
+                   AllowPaging="@AllowPaging"
+                   AllowFiltering="@AllowFiltering"
+                   AllowSorting="@AllowSorting"
+                   AllowExport="@AllowExport"
+                   LoadingTemplate="@LoadingTemplate"
+                   DesktopToolbar="@DesktopToolbar"
+                   MobileToolbar="@MobileToolbar"
+                   CssClass="@CssClass"
+                   Breakpoint="@Breakpoint"
+                   PageSize="@PageSize"
+                   Editing="@Editing"
+                   Created="@Created"
+                   Updated="@Updated"
+                   @attributes="@AdditionalAttributes">
+	    @if (BodyContentTemplate is not null)
+	    {
+		    @BodyContentTemplate
+	    }
+    </DataQueryGrid>
+    
 
     if (BodyFooterTemplate is not null)
     {
@@ -50,9 +52,9 @@ else
 }
 
 @code {
-    string? _identity;
+	string? _identity;
 
-    [Parameter]
+	[Parameter]
     public required IDataRequest Input { get; set; }
 
     public override async Task SetParametersAsync(ParameterView parameters)

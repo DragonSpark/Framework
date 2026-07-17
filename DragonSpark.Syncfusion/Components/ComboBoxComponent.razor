@@ -12,18 +12,18 @@
 
 <DragonSpark.Presentation.Components.State.ActivityReceiverContainer Context="_">
 	<SyncfusionQueryContainer T="TItem" Content="@Content" Compose="@Compose" Reporter="@Reporter"
-	                          LoadingTemplate="@EmptyContentTemplate.Default"
-	                          EmptyElementsTemplate="@EmptyElementsTemplate"
-	                          NotFoundTemplate="@NotFoundTemplate"
-	                          ExceptionTemplate="@ExceptionTemplate"
-	                          >
+							  LoadingTemplate="@EmptyContentTemplate.Default"
+							  EmptyElementsTemplate="@EmptyElementsTemplate"
+							  NotFoundTemplate="@NotFoundTemplate"
+							  ExceptionTemplate="@ExceptionTemplate"
+							  >
 		@if (HeaderTemplate is not null)
 		{
 			@HeaderTemplate
 		}
 
 		<ComboBoxDataQueryComponent TItem="TItem" TValue="TValue" Content="context"
-		    HeaderTemplate="@ControlHeaderTemplate"
+			HeaderTemplate="@ControlHeaderTemplate"
 			ItemTemplate="@ControlItemTemplate"
 			ReportedType="@ReportedType"
 			AllowPaging="@AllowPaging"
@@ -91,13 +91,13 @@
 	public ushort PageSize { get; set; } = 10;
 
 	[Parameter]
-    public string Placeholder { get; set; } = null!;
+	public string Placeholder { get; set; } = null!;
 
-    [Parameter]
-    public RenderFragment ControlHeaderTemplate { get; set; } = null!;
+	[Parameter]
+	public RenderFragment ControlHeaderTemplate { get; set; } = null!;
 
-    [Parameter]
-    public RenderFragment<TItem> ControlItemTemplate { get; set; } = null!;
+	[Parameter]
+	public RenderFragment<TItem> ControlItemTemplate { get; set; } = null!;
 
 	[Parameter(CaptureUnmatchedValues = true)]
 	public Dictionary<string, object> AdditionalAttributes { get; set; } = null!;

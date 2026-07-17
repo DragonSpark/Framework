@@ -6,7 +6,7 @@ namespace DragonSpark.Presentation.Environment;
 
 sealed class ApplicationAgentAwareEstablishContext : IEstablishContext
 {
-	readonly IEstablishContext      _previous;
+	readonly IEstablishContext       _previous;
 	readonly IsApplicationAgentStore _store;
 	readonly ICondition<HttpContext> _condition;
 
@@ -15,7 +15,7 @@ sealed class ApplicationAgentAwareEstablishContext : IEstablishContext
 		: this(previous, store, IsApplicationAgent.Default) {}
 
 	public ApplicationAgentAwareEstablishContext(IEstablishContext previous, IsApplicationAgentStore store,
-	                                              ICondition<HttpContext> condition)
+	                                             ICondition<HttpContext> condition)
 	{
 		_previous  = previous;
 		_store     = store;

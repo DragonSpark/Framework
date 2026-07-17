@@ -1,13 +1,13 @@
 @using BlazorPro.BlazorSize
 @using DragonSpark.Compose
+@using DragonSpark.Presentation
 @using DragonSpark.Presentation.Components.Content.Templates
 @using DragonSpark.Presentation.Environment.Browser
 @using Syncfusion.Blazor.Grids
 @using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@using Action = Syncfusion.Blazor.Grids.Action
 
 @typeparam T
-
-@implements Model.Operations.Results.IResulting<string>
 
 @inject ProtectedSessionStorage Session
 
@@ -26,25 +26,21 @@ else
 			AllowPaging="@AllowPaging"
 			AllowSorting="@AllowSorting"
 			ClipMode="@ClipMode.EllipsisWithTooltip"
-			Toolbar="@((Matches ? DesktopToolbar : MobileToolbar)!)"
+			Toolbar="@(Matches ? DesktopToolbar : MobileToolbar)"
 			EnableAdaptiveUI="@(!Matches)"
 			RowRenderingMode="@(Matches ? RowDirection.Horizontal : RowDirection.Vertical)"
-			DataSource="@(DataSource!)"
+			DataSource="@DataSource"
 			class="@Class"
 			@attributes="@AdditionalAttributes">
 		<GridPageSettings PageSize="@PageSize" />
 		<GridFilterSettings Type="@FilterType" />
 		<GridColumns ChildContent="@Columns" />
+		<GridEvents TValue="T" OnLoad="@OnLoad" DataBound="@DataBound" OnActionBegin="@BeginAction" OnActionFailure="@Failure" OnActionComplete="@OnActionComplete" />
 		@if (ChildContent is not null)
 		{
 			@ChildContent
 		}
 	</SfGrid>
-	<DragonSpark.Presentation.Components.Client.ClientValueComponent T="string" Enabled="@Enabled"
-		Source="@this"
-		Store="@_store"
-		Initialized="@OnClientInitialized"
-		/>
 }
 
 <MediaQuery Media="@Breakpoint" @bind-Matches="@Matches" />
@@ -117,6 +113,18 @@ else
 	[Parameter]
 	public bool Enabled { get; set; } = true;
 
+	[Parameter]
+	public EventCallback<object> Load { get; set; }
+
+	[Parameter]
+	public EventCallback<object> DataBound { get; set; }
+
+	[Parameter]
+	public EventCallback<ActionEventArgs<T>> BeginAction { get; set; }
+
+	[Parameter]
+	public EventCallback<FailureEventArgs> Failure { get; set; }
+
 	[Parameter(CaptureUnmatchedValues = true)]
 	public required Dictionary<string, object?> AdditionalAttributes { get; set; }
 
@@ -141,7 +149,23 @@ else
 		}
 	}
 
-	Task OnClientInitialized(string parameter) => _subject?.SetPersistDataAsync(parameter) ?? Task.CompletedTask;
+	async Task OnLoad(object parameter)
+	{
+		var store = await _store.On();
+		if (store.Success && store.Value.IsAssigned())
+		{
+			var grid = _subject.Verify();
+			await grid.SetPersistDataAsync(store.Value).On();
+		}
+		await Load.Off(parameter);
+	}
 
-	public ValueTask<string> Get() => _subject is not null ? _subject.GetPersistDataAsync().ToOperation() : ValueTask.FromResult(string.Empty);
+	async Task OnActionComplete(ActionEventArgs<T> args)
+	{
+		if (args.RequestType is Action.Sorting or Action.Filtering or Action.Paging or Action.Refresh)
+		{
+			var state = await _subject.Verify().GetPersistDataAsync().Off();
+			await _store.Off(state);
+		}
+	}
 }

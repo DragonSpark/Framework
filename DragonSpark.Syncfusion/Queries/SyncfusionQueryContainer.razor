@@ -1,8 +1,6 @@
 @using DragonSpark.Application.AspNet.Entities.Queries.Runtime
-@using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination
 @using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Shape
 @using DragonSpark.Application.Runtime.Operations
-@using DragonSpark.Model.Selection.Conditions
 @using DragonSpark.Presentation.Components.Content.Sequences
 @using DragonSpark.Presentation.Components.Content.Templates
 
@@ -13,7 +11,6 @@
 <QueryContentContainer
 	Content="@Content"
 	Compose="@Compose"
-	Results="@Results"
 	LoadingTemplate="@EmptyContentTemplate.Default"
 	EnableClientCover="@EnableClientCover"
 	EmptyElementsTemplate="@EmptyElementsTemplate"
@@ -44,17 +41,14 @@
 	public ICompose<T> Compose { get; set; } = SyncfusionCompose<T>.Default;
 
 	[Parameter]
-	public ICondition<bool?> Results { get; set; } = HasResults.Default;
-
-	[Parameter]
 	public IReporter<IDataRequest> Reporter { get; set; } = Queries.Reporter.Default;
 
 	[Parameter]
 	public Type? ReportedType { get; set; }
 
 	[Parameter]
-	public RenderFragment<PagingRenderState<T>>? HeaderTemplate { get; set; }
+	public RenderFragment<PagingRenderState>? HeaderTemplate { get; set; }
 
 	[Parameter]
-	public RenderFragment<PagingRenderState<T>>? FooterTemplate { get; set; }
+	public RenderFragment<PagingRenderState>? FooterTemplate { get; set; }
 }

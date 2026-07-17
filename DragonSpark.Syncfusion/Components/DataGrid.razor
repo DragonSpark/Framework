@@ -39,11 +39,12 @@
                   CssClass="@CssClass"
                   PageSize="@PageSize"
                   LoadingTemplate="@LoadingTemplate"
+				  Load="@Load"
+				  DataBound="@OnDataBound" BeginAction="@OnActionBegin" Failure="@OnFailure"
                   @attributes="@AdditionalAttributes">
 
-        <GridTemplates EmptyRecordTemplate="@_fragment" />
-        <GridEvents TValue="T" DataBound="@OnDataBound" OnActionBegin="@OnActionBegin" OnActionFailure="@OnFailure" />
-
+	    <GridTemplates EmptyRecordTemplate="@_fragment" />
+        
         @if (ChildContent is not null)
         {
             @ChildContent
@@ -127,6 +128,9 @@
     public EventCallback<Exception> Error { get; set; }
 
     [Parameter]
+    public EventCallback<ActionEventArgs<T>> BeginAction { get; set; }
+
+    [Parameter]
     public EventCallback Ready { get; set; }
 
     [Parameter]
@@ -169,7 +173,7 @@
         var exception = parameter.Error.Verify();
         _fragment = _ => ProblemTemplate(exception);
         await Exceptions.Get(new(ReportedType ?? GetType(), exception));
-        await Error.Invoke(parameter.Error).Off();
+		await Error.Off(exception);
     }
 
     void ICommand<string>.Execute(string parameter)

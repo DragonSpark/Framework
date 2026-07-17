@@ -22,12 +22,12 @@ sealed class ContainerAwarePages<T> : IPages<T>
 		try
 		{
 			var result = await _pages.On(parameter);
-			_container.Execute(result);
+			await _container.On(result);
 			return result;
 		}
 		catch (Exception e)
 		{
-			_container.Execute(e);
+			await _container.Off(e);
 			throw;
 		}
 	}

@@ -1,5 +1,5 @@
 ﻿@*
-    // ATTRIBUTION: https://github.com/meziantou/Meziantou.Framework/blob/5cc4602de6ca4a7cf0caf23c57259cc60e46cf83/src/Meziantou.AspNetCore.Components/InfiniteScrolling/InfiniteScrolling.razor
+	// ATTRIBUTION: https://github.com/meziantou/Meziantou.Framework/blob/5cc4602de6ca4a7cf0caf23c57259cc60e46cf83/src/Meziantou.AspNetCore.Components/InfiniteScrolling/InfiniteScrolling.razor
 *@
 @using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination
 @using DragonSpark.Compose
@@ -16,163 +16,172 @@
 
 @inject Virtualization Model
 
-@foreach (var item in _items)
+@if (_error is not null)
 {
-    <Fragment @key="item?.GetHashCode()" ChildContent="@ChildContent(item)" />
+	@ExceptionTemplate(_error)
+}
+else
+{
+	@foreach (var item in _items)
+	{
+		<Fragment @key="item?.GetHashCode()" ChildContent="@ChildContent(item)" />
+	}
+
+	@if (_loading)
+	{
+		@LoadingTemplate
+	}	
 }
 
-@if (_loading)
-{
-    @LoadingTemplate
-}
-
-<div @ref="_element" style="width: 1px;height: 1px"></div>
+<div @ref="_element" class="d-inline-block p-0 m-0" style="width: 0px; height: 100px; transform: translateX(-300px);"></div>
 
 @code {
-    readonly Switch _reload = new(), _notify = new();
-    readonly List<T> _items = new();
-    ElementReference? _element;
-    IJSObjectReference? _instance;
-    bool _loading, _complete, _active = true;
-    CancellationTokenSource? _source;
-    IOperation? _dispose;
+	readonly Switch          _reload = true, _notify = false, _loading = false, _complete = false, _active = true;
+	readonly List<T>         _items  = [];
+	ElementReference?        _element;
+	IJSObjectReference?      _instance;
+	CancellationTokenSource? _source;
+	IOperation?              _dispose;
+	Exception?               _error;
 
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-        _dispose = new ConnectionAwareOperation(this);
-    }
+	protected override void OnInitialized()
+	{
+		base.OnInitialized();
+		_dispose = new ConnectionAwareOperation(this);
+	}
 
-    [Parameter]
-    public IPages<T> Input
-    {
-        get;
-        set
-        {
-            if (field != value)
-            {
-                field = value;
-                if (_items.Count > 0)
-                {
-                    _reload.Up();
-                }
+	[Parameter, EditorRequired]
+	public required IPages<T> Input { get; set; }
 
-                _items.Clear();
-                _source?.Cancel();
-                _source   = null;
-                _complete = _loading = false;
-            }
-        }
-    } = null!;
+	[Parameter]
+	public string? OrderBy { get; set; }
 
-    [Parameter]
-    public string? OrderBy { get; set; }
+	[Parameter]
+	public string? Filter { get; set; }
 
-    [Parameter]
-    public string? Filter { get; set; }
+	[Parameter]
+	public ushort PageSize { get; set; } = DefaultPageSize.Default;
 
-    [Parameter]
-    public ushort PageSize { get; set; } = DefaultPageSize.Default;
+	[Parameter]
+	public RenderDirection Direction { get; set; }
 
-    [Parameter]
-    public RenderDirection Direction { get; set; }
+	public override Task SetParametersAsync(ParameterView parameters)
+	{
+		var changed = parameters.DidParameterChange(nameof(Input), Input);
+		if (changed)
+		{
+			if (_items.Count > 0)
+			{
+				_reload.Up();
+			}
 
-    [JSInvokable]
-    public async Task LoadMoreItems()
-    {
-        if (!_complete && !_loading)
-        {
-            _loading =   true;
-            _source  ??= new();
+			_items.Clear();
+			_source?.Cancel();
+			_complete.Down();
+			_loading.Down();
+			_source = null;
+			_error  = null;
+		}
+		return base.SetParametersAsync(parameters);
+	}
 
-            StateHasChanged();
-            try
-            {
-                var page = await Input.Get(new(new(true, OrderBy, Filter, new(_items.Count, PageSize)), _source.Token));
-                if (!_source?.IsCancellationRequested ?? false)
-                {
-                    await Load(page);
-                }
-            }
-            catch (OperationCanceledException oce) when (oce.CancellationToken == _source?.Token) {}
-            finally
-            {
-                _loading = false;
-            }
+	[JSInvokable]
+	public async Task LoadMoreItems()
+	{
+		if (!_complete && _loading.Up())
+		{
+			{
+				using var _ = _loading.Scoped();
+				_source ??= new();
+				_error  =   null;
 
-            StateHasChanged();
-        }
-    }
+				StateHasChanged();
+				try
+				{
+					var page = await Input.On(new(new(true, OrderBy, Filter, new(_items.Count, PageSize)), _source.Token));
+					if (!_source?.IsCancellationRequested ?? false)
+					{
+						await Load(page).On();
+					}
+				}
+				catch (OperationCanceledException oce) when (oce.CancellationToken == _source?.Token) {}
+				catch (Exception error)
+				{
+					_error = error;
+				}
+			}
+			
+			StateHasChanged();
+		}
+	}
 
-    async Task Load(PageResult<T> page)
-    {
-        var (items, total) = page;
-        if (items.Length > 0)
-        {
-            _items.AddRange(items);
-        }
+	async Task Load(PageResult<T> page)
+	{
+		var (items, total) = page;
+		if (items.Length > 0)
+		{
+			_items.AddRange(items);
+		}
 
-        if (_items.Count < (int)total.Value())
-        {
-            await Notify().Off();
-        }
-        else
-        {
-            _complete = true;
-        }
-    }
+		if (_items.Count < (int)total.Value())
+		{
+			await Notify().Off();
+		}
+		else
+		{
+			_complete.Up();
+		}
+	}
 
-    async Task Notify()
-    {
-        if (_instance is not null)
-        {
-            await _instance.InvokeVoidAsync("onNewItems").Off();
-        }
-        else
-        {
-            _notify.Up();
-        }
-    }
+	async Task Notify()
+	{
+		if (_instance is not null)
+		{
+			await _instance.InvokeVoidAsync("onNewItems").Off();
+		}
+		else
+		{
+			_notify.Up();
+		}
+	}
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        _instance ??= _active && _element is not null ? await Instance(_element.Value) : null;
-        if (_instance is not null)
-        {
-            if(_notify.Down())
-            {
-                await Notify().Off();
-            }
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		_instance ??= _active && _element is not null ? await Instance(_element.Value) : null;
+		if (_instance is not null)
+		{
+			if (_notify.Down())
+			{
+				await Notify().On();
+			}
 
-            if (_reload.Down())
-            {
-                await LoadMoreItems().Off();
-            }
-        }
-    }
+			if (_reload.Down())
+			{
+				await LoadMoreItems().Off();
+			}
+		}
+	}
 
-    async Task<IJSObjectReference?> Instance(ElementReference parameter)
-    {
-        var result = await Model.Off(new(new(parameter, DotNetObjectReference.Create(this), (byte)Direction), Stop));
-        _active &= result is not null;
-        return result;
-    }
+	async Task<IJSObjectReference?> Instance(ElementReference parameter)
+	{
+		var result = await Model.Off(new(new(parameter, DotNetObjectReference.Create(this), (byte)Direction), Stop));
+		_active.Execute(_active && result is not null);
+		return result;
+	}
 
-    public ValueTask DisposeAsync() => _dispose?.Get() ?? ValueTask.CompletedTask;
+	public ValueTask DisposeAsync() => _dispose?.Get() ?? ValueTask.CompletedTask;
 
-    public async ValueTask Get()
-    {
-        _active = false;
-        if (_source != null)
-        {
-            _source.Dispose();
-            _source = null;
-        }
+	public async ValueTask Get()
+	{
+		_active.Down();
+		_source?.Dispose();
+		_source = null;
+		_error  = null;
 
-        if (_instance != null)
-        {
-            await _instance.DisposeAsync();
-            _instance = null;
-        }
-    }
+		if (_instance is not null)
+		{
+			await _instance.DisposeAsync();
+			_instance = null;
+		}
+	}
 }

@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Presentation.Components.Content.Templates;
 using DragonSpark.Presentation.Components.State;
 using Microsoft.AspNetCore.Components;
+using Syncfusion.Blazor.Grids;
 using System;
 using System.Collections.Generic;
 
@@ -37,4 +38,13 @@ public class DataComponent : DragonSpark.Presentation.Components.ComponentBase
 
 	[CascadingParameter]
 	protected IActivityReceiver Receiver { get; set; } = null!;
+
+	[Parameter]
+	public EventCallback<object> Load { get; set; }
+
+	[Parameter]
+	public EventCallback<object> DataBound { get; set; }
+
+	[Parameter]
+	public EventCallback<FailureEventArgs> Failure { get; set; }
 }

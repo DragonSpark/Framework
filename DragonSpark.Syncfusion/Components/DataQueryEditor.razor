@@ -93,10 +93,10 @@
     public RenderFragment? BodyFooterTemplate { get; set; }
 
     [Parameter]
-    public RenderFragment<PagingRenderState<T>>? HeaderTemplate { get; set; }
+    public RenderFragment<PagingRenderState>? HeaderTemplate { get; set; }
 
     [Parameter]
-    public RenderFragment<PagingRenderState<T>>? FooterTemplate { get; set; }
+    public RenderFragment<PagingRenderState>? FooterTemplate { get; set; }
 
     [Parameter]
     public bool AllowPaging { get; set; } = true;

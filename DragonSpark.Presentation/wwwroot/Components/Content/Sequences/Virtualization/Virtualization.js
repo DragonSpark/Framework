@@ -10,7 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 // ATTRIBUTION: https://github.com/meziantou/Meziantou.Framework/blob/5cc4602de6ca4a7cf0caf23c57259cc60e46cf83/src/Meziantou.AspNetCore.Components/wwwroot/InfiniteScrolling.ts
 export function initialize(lastIndicator, instance, direction) {
     const options = {
-        root: findClosestScrollContainer(lastIndicator, direction),
+        // Look at the main container viewport natively
+        root: null,
         rootMargin: '0px',
         threshold: 0,
     };
