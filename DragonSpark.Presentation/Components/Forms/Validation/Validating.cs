@@ -11,7 +11,7 @@ namespace DragonSpark.Presentation.Components.Forms.Validation;
 
 public class Validating : ComponentBase, IDisposable
 {
-	readonly Switch           _requested = new();
+	readonly Switch           _requested = false, _start = false;
 	readonly IOperationsStore _store;
 	Task?                     _current;
 	ValidationMessageStore    _messages = null!;
@@ -91,7 +91,7 @@ public class Validating : ComponentBase, IDisposable
 
 	void Request()
 	{
-		if (Enabled && _current is null)
+		if (Enabled && _current is null && _start.Up())
 		{
 			_list.Execute(_current = Update());
 		}
@@ -109,7 +109,7 @@ public class Validating : ComponentBase, IDisposable
 
 	protected override async Task OnAfterRenderAsync(bool firstRender)
 	{
-		if (_current is not null)
+		if (_current is not null && _start.Down())
 		{
 			try
 			{
@@ -137,16 +137,16 @@ public class Validating : ComponentBase, IDisposable
 		var context = _context;
 		if (context is not null && context.IsValid())
 		{
-			await Validate.Invoke(new(new(new(context, Identifier), _messages, Message), Stop));
+			await Validate.On(new(new(new(context, Identifier), _messages, Message), Stop));
 
 			context.NotifyValidationStateChanged();
 
 			var callback = IsEmpty() ? Valid : Invalid;
-			await callback.Invoke().Off();
+			await callback.Off();
 		}
 	}
 
-	public virtual void Dispose()
+	public void Dispose()
 	{
 		Context = null;
 	}

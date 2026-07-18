@@ -14,165 +14,165 @@
 @inject IFocusedElement Focus
 
 <div class="@_outer">
-    <div class="@_class">
-        <fieldset disabled="@Active">
-            <ShouldRenderComponent Enabled="@Render">
-                <CascadingValue TValue="IActivityReceiver" Value="@this" IsFixed="true" ChildContent="@_content" />
-            </ShouldRenderComponent>
-        </fieldset>
-    </div>
-    @if (Active && _model.Current is CancelAwareActivityOptions cancel)
-    {
-        <div class="position-absolute top-0 d-flex w-100 h-100 flex-column align-items-center justify-content-center">
-            <div class="d-flex gap-2">
-                <div class="spinner-border" role="status"></div>
-                <div>@(_displaying ? "Please wait..." : cancel.Message)</div>
-            </div>
-            @if (!_displaying)
-            {
-                <ul class="actions">
-                    <li><MatButton Class="small button" Type="button" Disabled="@_displaying" OnClick="@OnCancel">Cancel</MatButton></li>
-                </ul>
-            }
-        </div>
-    }
+	<div class="@_class">
+		<fieldset disabled="@Active">
+			<ShouldRenderComponent Enabled="@Render">
+				<CascadingValue TValue="IActivityReceiver" Value="@this" IsFixed="true" ChildContent="@_content" />
+			</ShouldRenderComponent>
+		</fieldset>
+	</div>
+	@if (Active && _model.Current is CancelAwareActivityOptions cancel)
+	{
+		<div class="position-absolute top-0 d-flex w-100 h-100 flex-column align-items-center justify-content-center">
+			<div class="d-flex gap-2">
+				<div class="spinner-border" role="status"></div>
+				<div>@(_displaying ? "Please wait..." : cancel.Message)</div>
+			</div>
+			@if (!_displaying)
+			{
+				<ul class="actions">
+					<li><MatButton Class="small button" Type="button" Disabled="@_displaying" OnClick="@OnCancel">Cancel</MatButton></li>
+				</ul>
+			}
+		</div>
+	}
 </div>
 
 @code
 {
-    readonly Switch                _start   = false, _restore = false, _displaying = false, _render = true;
-    readonly ActivityReceiverModel _model   = new();
-    RenderFragment                 _content = null!;
-    string?                        _class, _outer;
+	readonly Switch                _start   = false, _restore = false, _displaying = false, _render = true;
+	readonly ActivityReceiverModel _model   = new();
+	RenderFragment                 _content = null!;
+	string?                        _class, _outer;
 
-    protected override void OnInitialized()
-    {
-        _content = ChildContent(this);
-        Monitor?.Add.Execute(this);
-        Parent?.Add.Execute(this);
-        base.OnInitialized();
-    }
+	protected override void OnInitialized()
+	{
+		_content = ChildContent(this);
+		Monitor?.Add.Execute(this);
+		Parent?.Add.Execute(this);
+		base.OnInitialized();
+	}
 
-    [Parameter]
-    public string CssClass { get; set; } = string.Empty;
+	[Parameter]
+	public string CssClass { get; set; } = string.Empty;
 
-    [Parameter]
-    public string ActiveStyle { get; set; } = "dragonspark-activity-active";
+	[Parameter]
+	public string ActiveStyle { get; set; } = "dragonspark-activity-active";
 
-    [Parameter]
-    public required RenderFragment<IActivityReceiver> ChildContent { get; set; }
+	[Parameter]
+	public required RenderFragment<IActivityReceiver> ChildContent { get; set; }
 
-    [CascadingParameter] IActivityMonitor? Monitor { get; set; }
+	[CascadingParameter] IActivityMonitor? Monitor { get; set; }
 
-    [CascadingParameter] IActivityReceiver? Parent { get; set; }
+	[CascadingParameter] IActivityReceiver? Parent { get; set; }
 
-    string? Class()
-    {
-        var start  = Active ? $"{ActiveStyle} {CssClass}" : CssClass;
-        var result = start.Trim().NullIfEmpty();
-        return result;
-    }
+	string? Class()
+	{
+		var start  = Active ? $"{ActiveStyle} {CssClass}" : CssClass;
+		var result = start.Trim().NullIfEmpty();
+		return result;
+	}
 
-    bool Render
-    {
-        get
-        {
-            var result = !Active && (_render || !_render.Up());
-            return result;
-        }
-    }
+	bool Render
+	{
+		get
+		{
+			var result = !Active && (_render || !_render.Up());
+			return result;
+		}
+	}
 
-    public bool Active => _model.Active;
+	public bool Active => _model.Active;
 
-    void Update() => Update(_model.Current);
+	void Update() => Update(_model.Current);
 
-    void Update(ActivityOptions? parameter)
-    {
-        _class = Class();
-        _outer = Active && parameter is CancelAwareActivityOptions ? "position-relative" : null;
-    }
+	void Update(ActivityOptions? parameter)
+	{
+		_class = Class();
+		_outer = Active && parameter is CancelAwareActivityOptions ? "position-relative" : null;
+	}
 
-    public async ValueTask Get(ActivityReceiverState parameter)
-    {
-        await _model.On(parameter);
-        Update();
-        if (_start && !_restore)
-        {
-            await Focus.Store.On();
-        }
+	public async ValueTask Get(ActivityReceiverState parameter)
+	{
+		await _model.On(parameter);
+		Update();
+		if (_start && !_restore)
+		{
+			await Focus.Store.On();
+		}
 
-        if (parameter.Options.RedrawOnStart)
-        {
-            StateHasChanged();
-        }
-        else if (Monitor is not null)
-        {
-	        await Monitor.On();
-        }
-        _model.Execute();
-    }
-
-    public async ValueTask<ActivityReceiverState?> Get()
-    {
-        var result  = await _model.On();
-        var options = result?.Options;
-        Update(options);
-        if (result is not null)
-        {
-	        _restore.Up();
-	        _displaying.Down();
-
-	        if (Monitor is not null)
-	        {
-		        await Monitor.On();
-	        }
-
-	        _render.Execute(options?.RedrawOnFinish == true);
-	        StateHasChanged();
-	        _model.Execute();
-        }
-        return result;
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        _start.Up();
-        if (!Active && _restore.Down())
-        {
-            await Focus.Restore.On();
-            if (Monitor is not null)
-            {
-                await Monitor.Off();
-            }
-        }
-    }
-
-    async Task OnCancel()
-    {
-        if (_model.Current is CancelAwareActivityOptions cancel)
-        {
-            _displaying.Up();
-            await cancel.Handle.On();
-            if (cancel.Canceled is not null)
-            {
-                await cancel.Canceled.Off();
-            }
-        }
-    }
-
-    public ICommand<IRenderAware> Add => _model.Add;
-
-    public ICommand<IRenderAware> Remove => _model.Remove;
-
-    public void Execute(None parameter)
-    {
+		if (parameter.Options.RedrawOnStart)
+		{
+			StateHasChanged();
+		}
+		else if (Monitor is not null)
+		{
+			await Monitor.On();
+		}
 		_model.Execute();
-    }
+	}
 
-    public ValueTask DisposeAsync()
-    {
-        Monitor?.Remove.Execute(this);
-        return Focus.DisposeAsync();
-    }
+	public async ValueTask<ActivityReceiverState?> Get()
+	{
+		var result  = await _model.On();
+		var options = result?.Options;
+		Update(options);
+		if (result is not null)
+		{
+			_restore.Up();
+			_displaying.Down();
+
+			if (Monitor is not null)
+			{
+				await Monitor.On();
+			}
+
+			_render.Execute(options?.RedrawOnFinish == true);
+			StateHasChanged();
+			_model.Execute();
+		}
+		return result;
+	}
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		_start.Up();
+		if (!Active && _restore.Down())
+		{
+			await Focus.Restore.On();
+			if (Monitor is not null)
+			{
+				await Monitor.Off();
+			}
+		}
+	}
+
+	async Task OnCancel()
+	{
+		if (_model.Current is CancelAwareActivityOptions cancel)
+		{
+			_displaying.Up();
+			await cancel.Handle.On();
+			if (cancel.Canceled is not null)
+			{
+				await cancel.Canceled.Off();
+			}
+		}
+	}
+
+	public ICommand<IRenderAware> Add => _model.Add;
+
+	public ICommand<IRenderAware> Remove => _model.Remove;
+
+	public void Execute(None parameter)
+	{
+		_model.Execute();
+	}
+
+	public ValueTask DisposeAsync()
+	{
+		Monitor?.Remove.Execute(this);
+		return Focus.DisposeAsync();
+	}
 
 }
