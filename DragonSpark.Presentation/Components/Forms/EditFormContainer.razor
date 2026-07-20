@@ -10,26 +10,22 @@
 			<DataAnnotationsValidator/>
 			<DragonSpark.Presentation.Components.Routing.FormChangeMonitor Enabled="@EnableChangeMonitor"/>
 
-			<div class="mat-layout-grid">
-				<div class="mat-layout-grid-inner">
-					<div class="mat-layout-grid-cell mat-layout-grid-cell-span-12">
-						@ChildContent(Input)
+			<div>
+				@ChildContent(Input)
 
-						<Microsoft.AspNetCore.Components.Forms.ValidationSummary/>
-					</div>
-
-					<DragonSpark.Presentation.Components.Forms.RefreshDisplayModelMonitor>
-						<ul class="actions">
-							<li>
-								<MatButton Class="@ButtonCssClass" Type="button" OnClick="@Completed">@CancelText</MatButton>
-							</li>
-							<li>
-								<MatButton Class="@SaveButtonCssClass" Type="submit" Disabled="@Disabled(edit)">@SaveText</MatButton>
-							</li>
-						</ul>
-					</DragonSpark.Presentation.Components.Forms.RefreshDisplayModelMonitor>
-				</div>
+				<Microsoft.AspNetCore.Components.Forms.ValidationSummary/>
 			</div>
+
+			<DragonSpark.Presentation.Components.Forms.RefreshDisplayModelMonitor>
+				<ul class="actions">
+					<li>
+						<MatButton Class="@ButtonCssClass" Type="button" OnClick="@Completed">@CancelText</MatButton>
+					</li>
+					<li>
+						<MatButton Class="@SaveButtonCssClass" Type="submit" Disabled="@Disabled(edit)">@SaveText</MatButton>
+					</li>
+				</ul>
+			</DragonSpark.Presentation.Components.Forms.RefreshDisplayModelMonitor>
 		</DragonSpark.Presentation.Components.Forms.Validation.FieldRegistryContainer>
 	</EditForm>
 </SubmissionContainer>
