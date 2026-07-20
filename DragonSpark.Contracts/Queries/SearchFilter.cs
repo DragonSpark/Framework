@@ -1,4 +1,6 @@
-﻿namespace DragonSpark.Contracts.Queries;
+using System.Collections.Generic;
+
+namespace DragonSpark.Contracts.Queries;
 
 public sealed record SearchFilter(
 	IReadOnlyCollection<string> Fields,
