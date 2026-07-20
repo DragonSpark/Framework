@@ -20,4 +20,6 @@ public abstract class ExternalProcess
 	public ICollection<ProcessUpdate> Updates { get; set; } = null!;
 
 	public ProcessState State { get; set; } = null!;
+
+	public DateTimeOffset? Sent { get; set; }
 }

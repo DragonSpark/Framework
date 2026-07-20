@@ -13,7 +13,7 @@
 
     void Render()
     {
-        using (_render.Assigned(true))
+        using (_render.Scoped())
         {
             StateHasChanged();
         }

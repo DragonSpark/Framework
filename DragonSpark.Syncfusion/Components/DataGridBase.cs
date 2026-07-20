@@ -28,7 +28,7 @@ public class DataGridBase<T> : DataComponent
 	{
 		var changed = parameters.DidParameterChange(nameof(Qualifier), Qualifier);
 		await base.SetParametersAsync(parameters).Off();
-		_identity = Identifier ?? (changed ? $"{_identifier}{Qualifier}" : _identity);
+		_identity = Identifier ?? (changed || _identity.IsNullOrEmpty() ? $"{_identifier}{Qualifier}" : _identity);
 	}
 
 	[Parameter]

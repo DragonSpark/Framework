@@ -33,13 +33,13 @@
     public TValue? Value { get; set; }
 
     [Parameter]
-    public string Placeholder { get; set; } = null!;
+    public required string Placeholder { get; set; }
 
     [Parameter]
-    public RenderFragment HeaderTemplate { get; set; } = null!;
+    public required RenderFragment HeaderTemplate { get; set; }
 
     [Parameter]
-    public RenderFragment<TItem> ItemTemplate { get; set; } = null!;
+    public required RenderFragment<TItem> ItemTemplate { get; set; }
 
     [Parameter]
     public EventCallback<DataRequestResult> Requested { get; set; }
@@ -64,7 +64,7 @@
     protected override async Task OnRequest(DataRequestResult parameter)
     {
         parameter.Request.RequiresCounts = true;
-        await base.OnRequest(parameter);
+        await base.OnRequest(parameter).On();
         await Requested.Off(parameter);
     }
 

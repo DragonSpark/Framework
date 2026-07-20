@@ -143,8 +143,7 @@ public static class Extensions
 	{
 		public bool CanSubmit() => @this.IsModified() && @this.IsValid();
 
-		public bool CanSubmit(IActivityReceiver receiver)
-			=> @this.CanSubmit() && !receiver.Active;
+		public bool CanSubmit(IActivityReceiver receiver) => @this.CanSubmit() && !receiver.Active;
 
 		public ValueTask<bool> Validating() => ValidContext.Default.Get(@this);
 
