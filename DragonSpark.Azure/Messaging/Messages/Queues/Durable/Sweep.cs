@@ -1,19 +1,21 @@
-using DragonSpark.Compose;
-using DragonSpark.Contracts.Messaging;
-using DragonSpark.Model.Operations.Stop;
-using DragonSpark.Runtime;
-using Microsoft.Extensions.Logging;
-using System.Threading;
+using System;
 using System.Threading.Channels;
 using System.Threading.Tasks;
+using DragonSpark.Compose;
+using DragonSpark.Contracts.Messaging;
+using DragonSpark.Model;
+using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Selection.Stop.Conditions;
+using DragonSpark.Runtime;
+using Microsoft.Extensions.Logging;
 
 namespace DragonSpark.Azure.Messaging.Messages.Queues.Durable;
 
-sealed class Sweep : IStopAware
+sealed class Sweep : IDepending
 {
 	readonly ChannelWriter<DurableMessageProperties> _writer;
-	readonly EvaluateUnsentNotifications                 _unsent;
-	readonly ILogger<Sweep>                              _logger;
+	readonly EvaluateUnsentNotifications             _unsent;
+	readonly ILogger<Sweep>                          _logger;
 
 	public Sweep(EvaluateUnsentNotifications unsent, ILogger<Sweep> logger)
 		: this(ProcessChannel.Default, unsent, logger) {}
@@ -30,17 +32,30 @@ sealed class Sweep : IStopAware
 		_logger = logger;
 	}
 
-	public async ValueTask Get(CancellationToken parameter)
+	public async ValueTask<bool> Get(Stop<None> parameter)
 	{
-		using var unsent = await _unsent.Off(new(Time.Default, parameter));
-		foreach (var message in unsent)
+		try
 		{
-			if (!_writer.TryWrite(message))
+			using var unsent = await _unsent.Off(new(Time.Default, parameter));
+			foreach (var message in unsent)
 			{
-				_logger.LogWarning("ProcessChannel capacity reached while sweeping Notification ID {Id}",
-				                   message.Identifier);
-				break;
+				if (!_writer.TryWrite(message))
+				{
+					_logger.LogWarning("ProcessChannel capacity reached while sweeping Notification ID {Id}",
+					                   message.Identifier);
+					break;
+				}
 			}
 		}
+		catch (OperationCanceledException) when (parameter.Token.IsCancellationRequested)
+		{
+			return false;
+		}
+		catch (Exception ex)
+		{
+			_logger.LogError(ex, "An error occurred during outbox database sweep");
+		}
+
+		return true;
 	}
 }
