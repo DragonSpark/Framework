@@ -1,17 +1,17 @@
-﻿using Azure.Messaging.ServiceBus;
+using System.Threading.Tasks;
+using Azure.Messaging.ServiceBus;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
-using DragonSpark.Model.Selection;
-using System.Threading.Tasks;
+using DragonSpark.Text;
 
 namespace DragonSpark.Azure.Messaging.Messages.Queues;
 
 sealed class Send : ISend
 {
-	readonly ServiceBusSender                   _sender;
-	readonly ISelect<string, ServiceBusMessage> _message;
+	readonly ServiceBusSender           _sender;
+	readonly IParser<ServiceBusMessage> _message;
 
-	public Send(ServiceBusSender sender, ISelect<string, ServiceBusMessage> message)
+	public Send(ServiceBusSender sender, IParser<ServiceBusMessage> message)
 	{
 		_sender  = sender;
 		_message = message;
