@@ -1,7 +1,13 @@
+using System;
+using System.Buffers;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using Azure.Core.Serialization;
 using Azure.Messaging.EventHubs.Processor;
 using Azure.Messaging.ServiceBus;
 using DragonSpark.Azure.Messaging.Messages.Queues;
+using DragonSpark.Azure.Messaging.Messages.Queues.Durable;
 using DragonSpark.Azure.Storage;
 using DragonSpark.Compose;
 using DragonSpark.Composition;
@@ -10,11 +16,6 @@ using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
 using Microsoft.Extensions.DependencyInjection;
 using NetFabric.Hyperlinq;
-using System;
-using System.Buffers;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Azure;
 
@@ -77,6 +78,9 @@ public static class Extensions
 
 	public static ISend Send(this ISender @this, TimeSpan? life = null, TimeSpan? visibility = null)
 		=> @this.Get(new SendInput(life, visibility));
+    
+	public static IScopedDispatch Send(this IDurableSender @this, TimeSpan? visibility = null, TimeSpan? life = null)
+		=> @this.Get(new ScopedInput(visibility, life));
 
 	public static RegistrationResult Storage<T>(this IServiceCollection @this) where T : class, IContainer
 		=> @this.Start<IContainer>()
