@@ -7,11 +7,11 @@
 
 	<ItemGroup>
 	  <Compile Remove="Messaging\Events\**" />
-	  <Compile Remove="Storage\Queues\**" />
+	  <Compile Remove="Messaging\Messages\Queues\NewFolder\**" />
 	  <EmbeddedResource Remove="Messaging\Events\**" />
-	  <EmbeddedResource Remove="Storage\Queues\**" />
+	  <EmbeddedResource Remove="Messaging\Messages\Queues\NewFolder\**" />
 	  <None Remove="Messaging\Events\**" />
-	  <None Remove="Storage\Queues\**" />
+	  <None Remove="Messaging\Messages\Queues\NewFolder\**" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -1,11 +1,12 @@
-﻿using Azure.Messaging.ServiceBus;
+using System;
+using Azure.Messaging.ServiceBus;
 using DragonSpark.Contracts.Messaging;
 using DragonSpark.Model.Selection;
-using System;
+using DragonSpark.Text;
 
 namespace DragonSpark.Azure.Messaging.Messages;
 
-sealed class CreateMessageFromContent : ISelect<string, ServiceBusMessage>
+sealed class CreateMessageFromContent : IParser<ServiceBusMessage>
 {
 	readonly TimeSpan?                                _life, _fromNow;
 	readonly ISelect<MessageInput, ServiceBusMessage> _create;

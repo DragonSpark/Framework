@@ -1,4 +1,4 @@
-﻿using Azure.Messaging.ServiceBus;
+using Azure.Messaging.ServiceBus;
 using DragonSpark.Contracts.Messaging;
 using DragonSpark.Model.Selection;
 using DragonSpark.Runtime;
@@ -22,7 +22,7 @@ sealed class CreateMessage : ISelect<MessageInput, ServiceBusMessage>
 
 		if (visibility is not null)
 		{
-			result.ScheduledEnqueueTime = _time.Get().Add(visibility.Value);
+			result.ScheduledEnqueueTime = _time.Get() + visibility.Value;
 		}
 
 		if (life is not null)

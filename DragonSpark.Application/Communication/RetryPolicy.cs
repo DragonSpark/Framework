@@ -1,6 +1,6 @@
-﻿using DragonSpark.Diagnostics;
-using JetBrains.Annotations;
 using System.Net.Http;
+using DragonSpark.Diagnostics;
+using JetBrains.Annotations;
 
 namespace DragonSpark.Application.Communication;
 

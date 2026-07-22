@@ -1,9 +1,9 @@
-﻿using Azure.Messaging.ServiceBus;
+using System.Threading.Tasks;
+using Azure.Messaging.ServiceBus;
 using DragonSpark.Compose;
 using DragonSpark.Contracts.Messaging;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Messaging.Messages.Queues;
 
@@ -24,18 +24,16 @@ public class Sender : ISender
 		_create   = create;
 	}
 
-	public ValueTask Get(Stop<MessageInput> parameter)
-	{
-		var message = _create.Get(parameter);
-		return Get(message.Stop(parameter));
-	}
-
 	public ISend Get(SendInput parameter)
 	{
 		var (life, visibility) = parameter;
 		return new Send(_instance, new CreateMessageFromContent(life, visibility, _create));
 	}
 
-	public ValueTask Get(Stop<ServiceBusMessage> parameter)
-		=> _instance.SendMessageAsync(parameter, parameter).ToOperation();
+	public ValueTask Get(Stop<MessageInput> parameter)
+	{
+		var (subject, stop) = parameter;
+		var message = _create.Get(subject);
+		return _instance.SendMessageAsync(message, stop).ToOperation();
+	}
 }
