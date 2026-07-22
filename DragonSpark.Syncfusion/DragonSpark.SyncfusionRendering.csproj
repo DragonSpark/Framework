@@ -20,7 +20,7 @@
 	<FrameworkReference Include="Microsoft.AspNetCore.App" />
   </ItemGroup>
   <ItemGroup>
-	  <PackageReference Include="Syncfusion.Blazor" />
+	  <PackageReference Include="Syncfusion.Blazor.Grid" />
   </ItemGroup>
   <ItemGroup>
 	<ProjectReference Include="..\DragonSpark.Presentation\DragonSpark.Presentation.csproj" />
