@@ -7,10 +7,10 @@ public abstract class DurableSender : StopAware<MessageProperties>, IDurableSend
 {
 	readonly IDispatch _dispatch;
 
-	protected DurableSender(string name, ServiceBusConfiguration configuration)
-		: this(name, configuration.Audience) {}
+	protected DurableSender(IWriteMessage write, ServiceBusConfiguration configuration, string name)
+		: this(write, $"{name}{configuration.Audience}".ToLowerInvariant()) {}
 
-	protected DurableSender(string name, string? audience) : this(new Dispatch(name, audience)) {}
+	protected DurableSender(IWriteMessage write, string name) : this(new Dispatch(write, name)) {}
 
 	protected DurableSender(IDispatch dispatch) : base(dispatch) => _dispatch = dispatch;
 

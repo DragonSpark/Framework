@@ -1,30 +1,30 @@
+using System;
+using System.Threading.Tasks;
 using DragonSpark.Compose;
 using DragonSpark.Contracts.Messaging;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Selection.Stop.Conditions;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Messaging.Messages.Queues.Durable;
 
 sealed class ProcessMessage : IDepending<DurableMessageProperties>
 {
-	readonly IProcess                _process;
+	readonly ISendMessage            _send;
 	readonly ILogger<ProcessMessage> _logger;
 
-	public ProcessMessage(IProcess process, ILogger<ProcessMessage> logger)
+	public ProcessMessage(ISendMessage send, ILogger<ProcessMessage> logger)
 	{
-		_process = process;
-		_logger  = logger;
+		_send   = send;
+		_logger = logger;
 	}
 
 	public async ValueTask<bool> Get(Stop<DurableMessageProperties> parameter)
 	{
-		var (subject, stop) = parameter;
+		var ((identifier, _, destination, _, _), stop) = parameter;
 		try
 		{
-			await _process.Off(parameter);
+			await _send.Off(parameter);
 		}
 		catch (OperationCanceledException) when (stop.IsCancellationRequested)
 		{
@@ -33,8 +33,8 @@ sealed class ProcessMessage : IDepending<DurableMessageProperties>
 		catch (Exception ex)
 		{
 			_logger.LogError(ex,
-			                 "Failed to process distributed message for Notification ID {Id} targeting {Queue}",
-			                 subject.Identifier, subject.Destination);
+							 "Failed to process distributed message for Notification ID {Id} targeting {Queue}",
+							 identifier, destination);
 		}
 
 		return true;

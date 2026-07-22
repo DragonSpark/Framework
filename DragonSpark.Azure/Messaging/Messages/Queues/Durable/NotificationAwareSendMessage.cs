@@ -27,13 +27,14 @@ sealed class NotificationAwareSendMessage : ISendMessage
 
 	public async ValueTask Get(Stop<DurableMessageProperties> parameter)
 	{
-		var ((identifier, _, _, _, _), stop) = parameter;
 		await _previous.Off(parameter);
+		
+		var ((identifier, _, _, _, _), stop) = parameter;
 		using var scope = _scopes.Get();
 		var       time  = _time.Get();
 		await scope.Owner.Set<ProcessNotification>()
-		           .Where(x => x.Id == identifier && x.Sent == null)
-		           .ExecuteUpdateAsync(s => s.SetProperty(x => x.Sent, time), stop)
-		           .Off();
+				   .Where(x => x.Id == identifier && x.Sent == null)
+				   .ExecuteUpdateAsync(s => s.SetProperty(x => x.Sent, time), stop)
+				   .Off();
 	}
 }

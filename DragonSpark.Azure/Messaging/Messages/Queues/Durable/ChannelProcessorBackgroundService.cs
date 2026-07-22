@@ -1,34 +1,15 @@
-using DragonSpark.Compose;
-using DragonSpark.Contracts.Messaging;
-using Microsoft.Extensions.Hosting;
 using System.Threading;
-using System.Threading.Channels;
 using System.Threading.Tasks;
+using DragonSpark.Compose;
+using Microsoft.Extensions.Hosting;
 
 namespace DragonSpark.Azure.Messaging.Messages.Queues.Durable;
 
 sealed class ChannelProcessorBackgroundService : BackgroundService
 {
-	readonly ChannelReader<DurableMessageProperties> _reader;
-	readonly ProcessMessage                              _process;
+	readonly ChannelProcessor _process;
 
-	public ChannelProcessorBackgroundService(ProcessMessage process)
-		: this(ProcessChannel.Default, process) {}
+	public ChannelProcessorBackgroundService(ChannelProcessor process) => _process = process;
 
-	public ChannelProcessorBackgroundService(Channel<DurableMessageProperties> channel, ProcessMessage process)
-		: this(channel.Reader, process) {}
-
-	public ChannelProcessorBackgroundService(ChannelReader<DurableMessageProperties> reader, ProcessMessage process)
-	{
-		_reader  = reader;
-		_process = process;
-	}
-
-	protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-	{
-		while (await _reader.WaitToReadAsync(stoppingToken).Off())
-		{
-			while (_reader.TryRead(out var item) && await _process.Off(new(item, stoppingToken))) {}
-		}
-	}
+	protected override Task ExecuteAsync(CancellationToken stoppingToken) => _process.Allocate(stoppingToken);
 }

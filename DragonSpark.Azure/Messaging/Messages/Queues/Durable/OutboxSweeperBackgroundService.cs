@@ -8,9 +8,9 @@ namespace DragonSpark.Azure.Messaging.Messages.Queues.Durable;
 
 sealed class OutboxSweeperBackgroundService : BackgroundService
 {
-	readonly Sweep                                   _sweep;
-	readonly TimeSpan                                _pollingInterval;
-	
+	readonly Sweep    _sweep;
+	readonly TimeSpan _pollingInterval;
+
 	public OutboxSweeperBackgroundService(Sweep sweep) : this(sweep, TimeSpan.FromSeconds(15)) {}
 
 	public OutboxSweeperBackgroundService(Sweep sweep, TimeSpan pollingInterval)

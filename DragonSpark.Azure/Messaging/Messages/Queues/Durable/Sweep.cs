@@ -17,13 +17,6 @@ sealed class Sweep : IDepending
 	readonly EvaluateUnsentNotifications             _unsent;
 	readonly ILogger<Sweep>                          _logger;
 
-	public Sweep(EvaluateUnsentNotifications unsent, ILogger<Sweep> logger)
-		: this(ProcessChannel.Default, unsent, logger) {}
-
-	public Sweep(Channel<DurableMessageProperties> channel, EvaluateUnsentNotifications unsent,
-	             ILogger<Sweep> logger)
-		: this(channel.Writer, unsent, logger) {}
-
 	public Sweep(ChannelWriter<DurableMessageProperties> writer, EvaluateUnsentNotifications unsent,
 	             ILogger<Sweep> logger)
 	{

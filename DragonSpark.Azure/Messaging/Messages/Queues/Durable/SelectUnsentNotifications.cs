@@ -16,5 +16,8 @@ sealed class SelectUnsentNotifications
 		       (d, p, q) => q.OrderBy(x => x.AvailableAt)
 		                     .Take(100)
 		                     .Select(x => new DurableMessageProperties(x.Id, x.Destination,
-		                                                                   x.AvailableAt - p, x.Lifetime))) {}
+		                                                               x.AvailableAt.HasValue
+			                                                               ? p - x.AvailableAt
+			                                                               : null, 
+		                                                               x.Lifetime))) {}
 }

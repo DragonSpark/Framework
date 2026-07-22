@@ -1,9 +1,10 @@
-using DragonSpark.Contracts.Messaging;
 using System.Threading.Channels;
+using DragonSpark.Contracts.Messaging;
+using DragonSpark.Model.Results;
 
 namespace DragonSpark.Azure.Messaging.Messages.Queues.Durable;
 
-sealed class ProcessChannel : Model.Results.Instance<Channel<DurableMessageProperties>>
+sealed class ProcessChannel : Instance<Channel<DurableMessageProperties>>
 {
 	public static ProcessChannel Default { get; } = new();
 

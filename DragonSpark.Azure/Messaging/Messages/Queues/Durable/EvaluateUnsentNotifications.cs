@@ -1,7 +1,7 @@
+using System;
 using DragonSpark.Application.AspNet.Entities;
 using DragonSpark.Application.AspNet.Entities.Queries.Compiled.Evaluation;
 using DragonSpark.Contracts.Messaging;
-using System;
 
 namespace DragonSpark.Azure.Messaging.Messages.Queues.Durable;
 

@@ -1,6 +1,8 @@
+using System.Threading.Channels;
 using Azure.Messaging.ServiceBus;
 using DragonSpark.Azure.Messaging.Messages.Queues.Durable;
 using DragonSpark.Composition;
+using DragonSpark.Contracts.Messaging;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,9 +21,19 @@ sealed class Registrations : ICommand<IServiceCollection>
 		         .Use<Client>()
 		         .Singleton()
 		         //
-		         .Then.Start<IProcess>()
-		         .Forward<Process>()
-		         .Decorate<SendAwareProcess>()
+		         .Then.Start<Channel<DurableMessageProperties>>()
+		         .Use<ProcessChannel>()
+		         .Singleton()
+		         .Then.Start<ChannelReader<DurableMessageProperties>>()
+		         .Use<ProcessReader>()
+		         .Singleton()
+		         .Then.Start<ChannelWriter<DurableMessageProperties>>()
+		         .Use<ProcessWriter>()
+		         .Singleton()
+		         //
+		         .Then.Start<IWriteMessage>()
+		         .Forward<WriteMessage>()
+		         .Decorate<ProcessAwareWriteMessage>()
 		         .Include(x => x.Dependencies.Recursive())
 		         .Singleton()
 		         //

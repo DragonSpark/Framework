@@ -1,10 +1,10 @@
+using System.Threading.Tasks;
 using DragonSpark.Application.AspNet.Workers;
 using DragonSpark.Compose;
 using DragonSpark.Contracts.Messaging;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Selection.Stop;
 using DragonSpark.Runtime;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Messaging.Messages.Queues.Durable;
 
@@ -30,7 +30,7 @@ sealed class NewProcessNotification : IStopAware<DurableMessageProperties, Proce
 			Subject     = await _process.Off(new(identifier.Value(), stop)),
 			Destination = destination,
 			Created     = now,
-			AvailableAt = visibility.HasValue ? now + visibility.Value : now,
+			AvailableAt = visibility.HasValue ? now + visibility.Value : null,
 			Lifetime    = life
 		};
 	}
