@@ -92,8 +92,8 @@
     <PackageVersion Include="Microsoft.Extensions.Http.Polly" Version="10.0.10" />
     <PackageVersion Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.14.3" />
     <PackageVersion Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.14.3" />
-    <PackageVersion Include="Microsoft.IdentityModel.Protocols" Version="8.20.0" />
-    <PackageVersion Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.20.0" />
+    <PackageVersion Include="Microsoft.IdentityModel.Protocols" Version="8.21.0" />
+    <PackageVersion Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.21.0" />
     <PackageVersion Include="Microsoft.Maui.Controls" Version="10.0.90" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.8.1" />
     <PackageVersion Include="MockQueryable.Moq" Version="10.0.8" />
