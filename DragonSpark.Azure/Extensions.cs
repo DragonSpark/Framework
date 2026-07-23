@@ -1,8 +1,3 @@
-using System;
-using System.Buffers;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using Azure.Core.Serialization;
 using Azure.Messaging.EventHubs.Processor;
 using Azure.Messaging.ServiceBus;
@@ -14,8 +9,14 @@ using DragonSpark.Composition;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NetFabric.Hyperlinq;
+using System;
+using System.Buffers;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Azure;
 
@@ -32,12 +33,12 @@ public static class Extensions
 	public static ISnapshots Snapshots(this IContainer @this) => new Snapshots(new Snapshot(@this.Get()));
 
 	public static ValueTask<ISnapshotEntry> Get(this ISnapshots @this, CancellationToken stop,
-	                                                  params ReadOnlySpan<string?> names)
+													  params ReadOnlySpan<string?> names)
 	{
 		using var promote = names.AsValueEnumerable()
-		                         .Where(x => x is not null)
-		                         .Select(x => x.Verify())
-		                         .ToArray(ArrayPool<string>.Shared);
+								 .Where(x => x is not null)
+								 .Select(x => x.Verify())
+								 .ToArray(ArrayPool<string>.Shared);
 		return Get(@this, new(promote, stop));
 	}
 
@@ -78,7 +79,7 @@ public static class Extensions
 
 	public static ISend Send(this ISender @this, TimeSpan? life = null, TimeSpan? visibility = null)
 		=> @this.Get(new SendInput(life, visibility));
-    
+	
 	public static IScopedDispatch Send(this IDurableSender @this, TimeSpan? visibility = null, TimeSpan? life = null)
 		=> @this.Get(new ScopedInput(visibility, life));
 
@@ -107,4 +108,9 @@ public static class Extensions
 	public static T Get<T>(this ISelect<IReadOnlyDictionary<string, object>, T> @this,
 						   ServiceBusReceivedMessage parameter)
 		=> @this.Get(parameter.ApplicationProperties);
+
+	/**/
+
+	public static ModelBuilder WithDurableMessaging(this ModelBuilder parameter)
+		=> EnableDurableMessaging.Default.Get(parameter);
 }
