@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model.Results;
 using DragonSpark.Presentation.Components.Content.Rendering;
-using DragonSpark.Runtime.Execution;
 using Microsoft.AspNetCore.Components;
 using System.Threading.Tasks;
 
@@ -9,6 +9,8 @@ namespace DragonSpark.Presentation.Components.Content;
 public abstract class OwningContentComponentBase<TService, TContent> : Scoped.OwningComponentBase<TService>
 	where TService : class
 {
+	readonly Switch _load = true;
+
 	protected override void OnInitialized()
 	{
 		var start = Start.A.Result<ValueTask<TContent?>>().By.Calling(GetContent).Out();
@@ -28,27 +30,24 @@ public abstract class OwningContentComponentBase<TService, TContent> : Scoped.Ow
 
 	protected abstract ValueTask<TContent?> GetContent();
 
-	First? first;
 	protected virtual void RequestNewContent()
 	{
-		first = new();
+		_load.Up();
 	}
 
 	protected override ValueTask RefreshState()
 	{
-		switch (Current.Get())
+		if (Current.IsConnected())
 		{
-			case RenderState.Ready:
-			case RenderState.Established:
-				RequestNewContent();
-				return base.RefreshState();
+			RequestNewContent();
+			return base.RefreshState();
 		}
 		return ValueTask.CompletedTask;
 	}
 
 	protected override void OnAfterRender(bool firstRender)
 	{
-		if (first?.Get() ?? false)
+		if (_load.Down())
 		{
 			Content.Execute();
 		}

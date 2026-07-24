@@ -235,7 +235,7 @@ public static class Extensions
 	
 	/**/
 	public static bool IsConnected(this IResult<RenderState> @this)
-		=> @this.Get() is RenderState.Ready or RenderState.Established;
+		=> @this.Get() is RenderState.Connected or RenderState.Established;
 	
 	/**/
 	extension(ResourceAssetCollection @this)

@@ -3,7 +3,7 @@
 public enum RenderState : byte
 {
 	Default,
-	Ready,
+	Connected,
 	Established,
 	Destroyed
 }

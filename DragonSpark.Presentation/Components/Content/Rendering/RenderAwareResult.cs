@@ -27,7 +27,7 @@ sealed class RenderAwareResult<T> : IResulting<T?>
 				_variable.Execute(result);
 				return result;
 			}
-			case RenderState.Ready:
+			case RenderState.Connected:
 			{
 				return _variable.Pop(out var stored) ? stored : await _previous.Off();
 			}

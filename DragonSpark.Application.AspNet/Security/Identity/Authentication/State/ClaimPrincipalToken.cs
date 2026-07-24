@@ -7,5 +7,5 @@ sealed class ClaimPrincipalToken : ReferenceValueStore<ClaimsPrincipal, object>
 {
 	public static ClaimPrincipalToken Default { get; } = new();
 
-	ClaimPrincipalToken() : base(x => new()) {}
+	ClaimPrincipalToken() : base(_ => new()) {}
 }

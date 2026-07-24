@@ -35,12 +35,10 @@ public abstract class ContentComponentBase<T> : ComponentBase
 
 	protected override ValueTask RefreshState()
 	{
-		switch (Current.Get())
+		if (Current.IsConnected())
 		{
-			case RenderState.Ready:
-			case RenderState.Established:
-				RequestNewContent();
-				return base.RefreshState();
+			RequestNewContent();
+			return base.RefreshState();
 		}
 		return ValueTask.CompletedTask;
 	}
