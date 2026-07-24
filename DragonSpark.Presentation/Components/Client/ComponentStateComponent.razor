@@ -11,14 +11,14 @@
 
 @code
 {
-    IClientVariable<T> _store = null!;
+	IClientVariable<T> _store = null!;
 
-    [Parameter]
-    public ProtectedBrowserStorage Storage { get; set; } = null!;
+	[Parameter]
+	public ProtectedBrowserStorage Storage { get; set; } = null!;
 
-    protected override void OnInitialized()
-    {
-        _store = new ComponentStateVariable<T>($"{ProvidedKey ?? Key.Get(Owner)}/{Qualifier}", Storage);
-        base.OnInitialized();
-    }
+	protected override void OnInitialized()
+	{
+		_store = new ComponentStateVariable<T>($"{ProvidedKey ?? Key.Get(new(Owner))}/{Qualifier}", Storage);
+		base.OnInitialized();
+	}
 }

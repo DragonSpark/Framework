@@ -9,5 +9,5 @@ namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.State;
 sealed class MemoryAwareStateViews<T> : Selecting<ClaimsPrincipal, StateView<T>>, IStateViews<T> where T : IdentityUser
 {
 	public MemoryAwareStateViews(IStateViews<T> previous, IMemoryCache memory)
-		: base(previous.Then().Store().In(memory).For(TimeSpan.FromSeconds(1).Slide()).UsingSelf()) {}
+		: base(previous.Then().Store().In(memory).For(TimeSpan.FromSeconds(1).Slide()).Using(ClaimPrincipalToken.Default)) {}
 }

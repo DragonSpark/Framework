@@ -13,5 +13,5 @@ sealed class ContentKey : IContentKey
 		_content = content;
 	}
 
-	public string Get(object parameter) => $"{_number.Get()}/{_content.Get(parameter)}";
+	public string Get(ContentKeyInput parameter) => $"{_number.Get()}/{_content.Get(parameter)}";
 }
