@@ -101,13 +101,14 @@
 			await Focus.Store.On();
 		}
 
+		if (Monitor is not null)
+		{
+			await Monitor.On();
+		}
+		
 		if (parameter.Options.RedrawOnStart)
 		{
 			StateHasChanged();
-		}
-		else if (Monitor is not null)
-		{
-			await Monitor.On();
 		}
 		_model.Execute();
 	}

@@ -1,6 +1,7 @@
 ﻿@typeparam T where T : class
 @using DragonSpark.Compose
 @using DragonSpark.Model.Results
+@using DragonSpark.Model.Selection.Conditions
 @using DragonSpark.Model.Sequences
 @using DragonSpark.Presentation.Components.Eventing
 
@@ -48,6 +49,9 @@
 	public EditContext? EditContext { get; set; }
 
 	[Parameter]
+	public ICondition<FieldIdentifier>? Condition { get; set; }
+
+	[Parameter]
 	public required string FieldsToSkip
 	{
 		get;
@@ -61,12 +65,13 @@
 		}
 	}
 
-	[CascadingParameter]
-	EditContext? ParentEditContext { get; set; }
+	[CascadingParameter] EditContext? ParentEditContext { get; set; }
 
 	void FieldChanged(object? sender, FieldChangedEventArgs args)
 	{
-		if (Enabled && !_skip.Open().Contains(args.FieldIdentifier.FieldName) && _save.Up())
+		var identifier = args.FieldIdentifier;
+		if (Enabled && (Condition?.Get(identifier) ?? true)
+		            && !_skip.Open().Contains(identifier.FieldName) && _save.Up())
 		{
 			StateHasChanged();
 		}
