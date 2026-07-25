@@ -1,7 +1,6 @@
 using Azure.Core.Serialization;
 using Azure.Messaging.EventHubs.Processor;
 using Azure.Messaging.ServiceBus;
-using DragonSpark.Azure.Messaging.Messages.Queues;
 using DragonSpark.Azure.Messaging.Messages.Queues.Durable;
 using DragonSpark.Azure.Storage;
 using DragonSpark.Compose;
@@ -77,9 +76,6 @@ public static class Extensions
 												   CancellationToken cancellationToken = default)
 		=> serializer.DeserializeAsync(data.ToStream(), type, cancellationToken);
 
-	public static ISend Send(this ISender @this, TimeSpan? life = null, TimeSpan? visibility = null)
-		=> @this.Get(new SendInput(life, visibility));
-	
 	public static IScopedDispatch Send(this IDurableSender @this, TimeSpan? visibility = null, TimeSpan? life = null)
 		=> @this.Get(new ScopedInput(visibility, life));
 
