@@ -10,8 +10,7 @@ public abstract class DataMigration : Microsoft.EntityFrameworkCore.Migrations.M
 	readonly IResult<IDataMigrationRegistry?> _registry;
 	readonly ISeed                            _initializer;
 
-	protected DataMigration(Type initializer)
-		: this(LogicalMigrationRegistry.Default, new Seed(initializer)) {}
+	protected DataMigration(Type initializer) : this(LogicalMigrationRegistry.Default, new Seed(initializer)) {}
 
 	protected DataMigration(IResult<IDataMigrationRegistry?> registry, ISeed initializer)
 	{

@@ -4,7 +4,7 @@ using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Application.AspNet.Entities.Initialization;
 
-sealed class InitializationAssignments : ISelect<IServiceProvider, Assignments>
+public sealed class InitializationAssignments : ISelect<IServiceProvider, Assignments>
 {
     public static InitializationAssignments Default { get; } = new();
 
