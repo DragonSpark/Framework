@@ -3,7 +3,7 @@ using DragonSpark.Text;
 
 namespace DragonSpark.Presentation.Components.Content.Rendering;
 
-sealed class ContentIdentification : IFormatter<object>
+sealed class ContentIdentification : IFormatter<ContentKeyInput>
 {
 	readonly CurrentPath       _path;
 	readonly ContentIdentifier _identifiers;
@@ -14,5 +14,5 @@ sealed class ContentIdentification : IFormatter<object>
 		_identifiers = identifiers;
 	}
 
-	public string Get(object parameter) => $"{_path.Get()}+{_identifiers.Get(parameter)}";
+	public string Get(ContentKeyInput parameter) => $"{_path.Get()}+{_identifiers.Get(parameter)}";
 }

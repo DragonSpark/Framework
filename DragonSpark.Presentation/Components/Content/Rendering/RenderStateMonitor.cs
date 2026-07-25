@@ -19,7 +19,7 @@ sealed class RenderStateMonitor : ICommand, ICommand<RenderState>
 	{
 		switch (_store.Get())
 		{
-			case RenderState.Ready:
+			case RenderState.Connected:
 				_store.Execute(RenderState.Established);
 				break;
 			case RenderState.Established:

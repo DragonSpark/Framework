@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Application.AspNet.Diagnostics;
 using DragonSpark.Application.Diagnostics;
-using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Conditions;
 using System;
 using System.Threading.Tasks;
@@ -12,8 +11,7 @@ sealed class CommonUserInterfaceExceptionsAwareExceptions : IExceptions
 	readonly IExceptions           _previous;
 	readonly ICondition<Exception> _process;
 
-	public CommonUserInterfaceExceptionsAwareExceptions(IExceptions previous)
-		: this(previous, AggregateAwareIgnoreException.Default.Then().Inverse().Out()) {}
+	public CommonUserInterfaceExceptionsAwareExceptions(IExceptions previous) : this(previous, ShouldProcess.Default) {}
 
 	public CommonUserInterfaceExceptionsAwareExceptions(IExceptions previous, ICondition<Exception> process)
 	{

@@ -16,8 +16,7 @@ sealed class RenderAwareCircuitHandler : CircuitHandler
 		switch (_store.Get())
 		{
 			case RenderState.Default:
-			case RenderState.Ready:
-				_store.Execute(RenderState.Established);
+				_store.Execute(RenderState.Connected);
 				break;
 		}
 		

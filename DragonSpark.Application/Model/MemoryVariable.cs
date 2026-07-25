@@ -1,5 +1,4 @@
-﻿using DragonSpark.Application.Compose.Store;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using Microsoft.Extensions.Caching.Memory;
@@ -16,7 +15,7 @@ public class MemoryVariable<T> : IMutable<T?>
 		: this(memory, key.Start(), configure) {}
 
 	protected MemoryVariable(IMemoryCache memory, Func<string> key, ICommand<ICacheEntry> configure)
-		: this(key, new MemoryAssignment<T?>(memory, new ConfiguredMemoryResult<T?>(memory, configure.Execute))) {}
+		: this(key, new MemoryAssignment<T?>(memory, configure)) {}
 
 	protected MemoryVariable(Func<string> key, MemoryAssignment<T?> assignment)
 	{

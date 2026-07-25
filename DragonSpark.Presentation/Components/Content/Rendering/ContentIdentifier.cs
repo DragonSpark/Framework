@@ -6,24 +6,22 @@ using System.Collections.Generic;
 
 namespace DragonSpark.Presentation.Components.Content.Rendering;
 
-sealed class ContentIdentifier : IFormatter<object>, ICommand<object>
+sealed class ContentIdentifier : IFormatter<ContentKeyInput>, ICommand<Type>
 {
 	readonly ITable<Type, HashSet<int>> _counters;
 
 	public ContentIdentifier(ContentIdentifierStore counters) => _counters = counters;
 
-	public string Get(object parameter)
+	public string Get(ContentKeyInput parameter)
 	{
-		var type = parameter.GetType();
-		var set  = _counters.Get(type);
-		set.Add(parameter.GetHashCode());
-		var result = $"{type.FullName}+{set.Count}";
-		return result;
+		var (type, pointer) = parameter;
+		var set = _counters.Get(type);
+		set.Add(pointer);
+		return $"{type.FullName}+{set.Count}";
 	}
 
-	public void Execute(object parameter)
+	public void Execute(Type parameter)
 	{
-		var type = parameter.GetType();
-		_counters.Get(type).Clear();
+		_counters.Get(parameter).Clear();
 	}
 }

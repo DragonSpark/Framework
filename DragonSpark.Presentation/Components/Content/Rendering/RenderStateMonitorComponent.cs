@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Runtime.Execution;
+using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
 using System;
@@ -8,7 +8,7 @@ namespace DragonSpark.Presentation.Components.Content.Rendering;
 
 public sealed class RenderStateMonitorComponent : Microsoft.AspNetCore.Components.ComponentBase, IDisposable
 {
-	readonly First                         _rendered = new();
+	readonly Switch                        _rendered = new();
 	EventHandler<LocationChangedEventArgs> _changed  = null!;
 
 	[Inject]
@@ -34,9 +34,10 @@ public sealed class RenderStateMonitorComponent : Microsoft.AspNetCore.Component
 	{
 		if (firstRender)
 		{
+			Monitor.Execute();
 			StateHasChanged();
 		}
-		else if (_rendered.Get())
+		else if (_rendered.Up())
 		{
 			Monitor.Execute();
 		}

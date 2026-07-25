@@ -6,7 +6,7 @@ using Microsoft.Extensions.Caching.Memory;
 
 namespace DragonSpark.Application.Model;
 
-public class MemoryAssignment<T> : IAssign<string, T?>, ISelect<string, T?>
+public sealed class MemoryAssignment<T> : IAssign<string, T?>, ISelect<string, T?>
 {
 	readonly IMemoryCache               _subject;
 	readonly IConfiguredMemoryResult<T> _configured;
