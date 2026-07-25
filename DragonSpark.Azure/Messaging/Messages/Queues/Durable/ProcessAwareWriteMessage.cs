@@ -13,7 +13,7 @@ sealed class ProcessAwareWriteMessage : IWriteMessage
 	readonly IStopAware<DurableMessageProperties> _previous;
 	readonly CreateProcessNotification            _create;
 
-    [ActivatorUtilitiesConstructor]
+	[ActivatorUtilitiesConstructor]
 	public ProcessAwareWriteMessage(IWriteMessage previous, CreateProcessNotification create) 
 		: this(previous.Ambient().Out(), create) {}
 
