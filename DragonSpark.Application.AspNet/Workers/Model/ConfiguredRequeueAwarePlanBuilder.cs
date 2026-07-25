@@ -6,11 +6,11 @@ namespace DragonSpark.Application.AspNet.Workers.Model;
 
 public class ConfiguredRequeueAwarePlanBuilder<T> : IPlanBuilder<T> where T : ExternalProcess
 {
-	readonly IPlanBuilder<T>          _previous;
-	readonly IStopAware<MessageInput> _message;
-	readonly UpdateStatus             _status;
+	readonly IPlanBuilder<T>               _previous;
+	readonly IStopAware<MessageProperties> _message;
+	readonly UpdateStatus                  _status;
 
-	protected ConfiguredRequeueAwarePlanBuilder(IPlanBuilder<T> previous, IStopAware<MessageInput> message,
+	protected ConfiguredRequeueAwarePlanBuilder(IPlanBuilder<T> previous, IStopAware<MessageProperties> message,
 	                                            UpdateStatus status)
 	{
 		_previous = previous;

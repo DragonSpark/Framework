@@ -9,11 +9,11 @@ namespace DragonSpark.Application.AspNet.Workers.Model;
 
 sealed class ConfiguredRequeueAwareStep<T> : IStopAware<T> where T : ExternalProcess
 {
-	readonly IStopAware<T>            _previous;
-	readonly IStopAware<MessageInput> _message;
-	readonly UpdateStatus             _status;
+	readonly IStopAware<T>                 _previous;
+	readonly IStopAware<MessageProperties> _message;
+	readonly UpdateStatus                  _status;
 
-	public ConfiguredRequeueAwareStep(IStopAware<T> previous, IStopAware<MessageInput> message, UpdateStatus status)
+	public ConfiguredRequeueAwareStep(IStopAware<T> previous, IStopAware<MessageProperties> message, UpdateStatus status)
 	{
 		_previous = previous;
 		_message  = message;
@@ -29,7 +29,7 @@ sealed class ConfiguredRequeueAwareStep<T> : IStopAware<T> where T : ExternalPro
 		catch (ConfiguredRequeueProcessException error)
 		{
 			var (subject, stop) = parameter;
-			await _message.Off(new(new(subject.Id.ToString(), error.Visibility, error.Life), stop));
+			await _message.Off(new(new(subject.Id, error.Visibility, error.Life), stop));
 			await _status.Off(new(new(subject, ProcessStatus.Queued, error.Reason), stop));
 		}
 	}

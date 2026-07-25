@@ -3,4 +3,4 @@ using DragonSpark.Model.Operations.Stop;
 
 namespace DragonSpark.Azure.Messaging.Messages.Queues.Durable;
 
-public interface IScopedDispatch : IStopAware<IdentifiedMessage>;
+public interface ISend : IStopAware<MessageBody>;

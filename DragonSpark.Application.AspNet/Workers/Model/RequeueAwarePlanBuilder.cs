@@ -1,15 +1,16 @@
-﻿using DragonSpark.Model.Operations.Stop;
+﻿using DragonSpark.Contracts.Messaging;
+using DragonSpark.Model.Operations.Stop;
 using DragonSpark.Model.Sequences;
 
 namespace DragonSpark.Application.AspNet.Workers.Model;
 
 public class RequeueAwarePlanBuilder<T> : IPlanBuilder<T> where T : ExternalProcess
 {
-	readonly IPlanBuilder<T>    _previous;
-	readonly IStopAware<string> _send;
-	readonly UpdateStatus       _status;
+	readonly IPlanBuilder<T>               _previous;
+	readonly IStopAware<MessageBody> _send;
+	readonly UpdateStatus                  _status;
 
-	protected RequeueAwarePlanBuilder(IPlanBuilder<T> previous, IStopAware<string> send, UpdateStatus status)
+	protected RequeueAwarePlanBuilder(IPlanBuilder<T> previous, IStopAware<MessageBody> send, UpdateStatus status)
 	{
 		_previous = previous;
 		_send     = send;
