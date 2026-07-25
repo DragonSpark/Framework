@@ -11,12 +11,7 @@ sealed class EnableDurableMessaging : IAlteration<ModelBuilder>
 	EnableDurableMessaging() {}
 
 	public ModelBuilder Get(ModelBuilder parameter)
-		=> parameter.Entity<ProcessNotification>(x =>
-		                                         {
-			                                         x.HasIndex(y => new { y.AvailableAt, y.Sent })
-			                                          .HasFilter("[Sent] IS NULL");
-			                                         x.HasOne(y => y.Subject)
-			                                          .WithOne()
-			                                          .HasPrincipalKey<ExternalProcess>();
-		                                         });
+		=> parameter.Entity<ProcessNotification>(x => x.HasOne(y => y.Subject)
+		                                               .WithOne()
+		                                               .HasPrincipalKey<ExternalProcess>());
 }

@@ -1,8 +1,8 @@
-using System;
-using System.Linq;
 using DragonSpark.Application.AspNet.Entities.Queries.Composition;
 using DragonSpark.Application.AspNet.Workers;
 using DragonSpark.Contracts.Messaging;
+using System;
+using System.Linq;
 
 namespace DragonSpark.Azure.Messaging.Messages.Queues.Durable;
 
@@ -12,7 +12,7 @@ sealed class SelectUnsentNotifications
 	public static SelectUnsentNotifications Default { get; } = new();
 
 	SelectUnsentNotifications()
-		: base((p, x) => x.Sent == null && x.AvailableAt <= p,
+		: base((p, x) => x.AvailableAt <= p,
 		       (d, p, q) => q.OrderBy(x => x.AvailableAt)
 		                     .Take(100)
 		                     .Select(x => new DurableMessageProperties(x.Id, x.Destination,

@@ -15,6 +15,4 @@ public sealed class ProcessNotification
 	public required DateTimeOffset? AvailableAt { get; set; }
 
 	public required TimeSpan? Lifetime { get; set; }
-
-	public DateTimeOffset? Sent { get; set; }
 }
