@@ -3,7 +3,6 @@ using DragonSpark.Model;
 using DragonSpark.Model.Operations.Results;
 using FluentAssertions;
 using Microsoft.Extensions.Caching.Memory;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace DragonSpark.Application.Testing.Compose.Store.Operations;

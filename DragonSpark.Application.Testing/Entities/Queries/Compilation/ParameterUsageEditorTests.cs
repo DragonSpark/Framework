@@ -4,8 +4,6 @@ using DragonSpark.Model;
 using FluentAssertions;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
 using System.Linq.Expressions;
 using Xunit;
 

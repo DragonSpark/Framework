@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Refit;
-using System;
 
 namespace DragonSpark.Application.Communication.Http;
 

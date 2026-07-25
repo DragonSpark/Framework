@@ -3,7 +3,6 @@ using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences;
 using LightInject;
 using NetFabric.Hyperlinq;
-using System;
 
 namespace DragonSpark.Composition.Construction;
 

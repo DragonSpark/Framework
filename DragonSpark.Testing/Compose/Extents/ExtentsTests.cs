@@ -2,7 +2,6 @@
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using FluentAssertions;
-using System;
 using System.Reflection;
 using Xunit;
 

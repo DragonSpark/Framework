@@ -2,7 +2,6 @@
 using Azure.Storage.Blobs;
 using DragonSpark.Azure.Data;
 using DragonSpark.Model.Results;
-using System;
 
 namespace DragonSpark.Azure.Storage;
 

@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Passkeys;
 

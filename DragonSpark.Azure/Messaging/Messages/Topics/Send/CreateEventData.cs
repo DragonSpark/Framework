@@ -1,6 +1,5 @@
 ﻿using Azure.Messaging.ServiceBus;
 using DragonSpark.Compose;
-using System;
 
 namespace DragonSpark.Azure.Messaging.Messages.Topics.Send;
 

@@ -1,7 +1,6 @@
 ﻿using BenchmarkDotNet.Attributes;
 using DragonSpark.Compose;
 using DragonSpark.Runtime.Execution;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Testing.Runtime.Execution;
 

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using DragonSpark.Model.Results;
+﻿using DragonSpark.Model.Results;
 
 namespace DragonSpark.Application.Communication.Http.Messaging;
 

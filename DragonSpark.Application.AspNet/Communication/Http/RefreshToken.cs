@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Communication.Http;
 

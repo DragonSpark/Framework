@@ -1,6 +1,5 @@
 ﻿using AspNet.Security.OAuth.Paypal;
 using DragonSpark.Application.AspNet.Compose;
-using System;
 
 namespace DragonSpark.Identity.PayPal;
 

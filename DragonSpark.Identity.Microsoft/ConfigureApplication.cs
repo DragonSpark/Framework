@@ -4,7 +4,6 @@ using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace DragonSpark.Identity.Microsoft;
 

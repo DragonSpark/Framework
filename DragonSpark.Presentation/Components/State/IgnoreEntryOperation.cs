@@ -1,20 +1,18 @@
-using System;
-using System.Threading.Tasks;
-using System.Timers;
 using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
 using DragonSpark.Runtime.Execution;
+using System.Timers;
 
 namespace DragonSpark.Presentation.Components.State;
 
 sealed class IgnoreEntryOperation : IOperation, ICommand
 {
-	readonly IOperation _operation;
-	readonly FirstBase  _active;
-	readonly Timer      _timer;
-	readonly TimeSpan   _duration;
+	readonly IOperation          _operation;
+	readonly FirstBase           _active;
+	readonly System.Timers.Timer _timer;
+	readonly TimeSpan            _duration;
 
 	public IgnoreEntryOperation(IOperation operation) : this(operation, TimeSpan.FromSeconds(1)) {}
 
@@ -22,10 +20,10 @@ sealed class IgnoreEntryOperation : IOperation, ICommand
 
 	public IgnoreEntryOperation(IOperation operation, FirstBase active, TimeSpan duration)
 		: this(operation, active, duration,
-		       new Timer { AutoReset = false, Enabled = true, Interval = duration.TotalMilliseconds }) {}
+		       new System.Timers.Timer { AutoReset = false, Enabled = true, Interval = duration.TotalMilliseconds }) {}
 
 	// ReSharper disable once TooManyDependencies
-	public IgnoreEntryOperation(IOperation operation, FirstBase active, TimeSpan duration, Timer timer)
+	public IgnoreEntryOperation(IOperation operation, FirstBase active, TimeSpan duration, System.Timers.Timer timer)
 	{
 		_operation     =  operation;
 		_active        =  active;

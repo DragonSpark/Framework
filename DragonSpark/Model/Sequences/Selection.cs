@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Model.Sequences;
+﻿namespace DragonSpark.Model.Sequences;
 
 public readonly struct Selection : IEquatable<Selection>
 {

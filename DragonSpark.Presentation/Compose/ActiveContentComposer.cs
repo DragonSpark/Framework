@@ -3,7 +3,6 @@ using DragonSpark.Application.Diagnostics;
 using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 using DragonSpark.Presentation.Components.Content;
-using System;
 
 namespace DragonSpark.Presentation.Compose;
 

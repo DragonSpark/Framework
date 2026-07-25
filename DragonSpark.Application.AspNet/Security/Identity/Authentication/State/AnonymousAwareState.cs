@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Compose;
 using JetBrains.Annotations;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.State;
 

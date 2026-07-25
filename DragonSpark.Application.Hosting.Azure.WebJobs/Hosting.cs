@@ -3,7 +3,6 @@ using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.ServiceBus;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
 
 namespace DragonSpark.Application.Hosting.Azure.WebJobs;
 

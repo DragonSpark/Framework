@@ -3,8 +3,6 @@ using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Runtime.Activation;
 using FluentAssertions;
-using System;
-using System.Linq;
 using Xunit;
 
 namespace DragonSpark.Testing.Runtime;

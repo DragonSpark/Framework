@@ -3,8 +3,6 @@ using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.Persist;
 

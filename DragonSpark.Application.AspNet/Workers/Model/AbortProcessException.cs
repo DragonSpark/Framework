@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Application.AspNet.Workers.Model;
+﻿namespace DragonSpark.Application.AspNet.Workers.Model;
 
 public class AbortProcessException : Exception
 {

@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Stores;
-using System;
 
 namespace DragonSpark.Compose.Model.Selection;
 

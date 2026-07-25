@@ -3,8 +3,6 @@ using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using DragonSpark.Testing.Objects;
 using FluentAssertions;
-using System.Collections.Generic;
-using System.Linq;
 using Xunit;
 
 namespace DragonSpark.Testing.Model.Sequences.Query;

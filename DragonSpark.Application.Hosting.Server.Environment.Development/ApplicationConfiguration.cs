@@ -3,7 +3,6 @@ using JetBrains.Annotations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
 
 namespace DragonSpark.Application.Hosting.Server.Environment.Development;
 

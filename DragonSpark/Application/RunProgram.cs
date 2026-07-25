@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Model.Operations.Allocated;
 using Microsoft.Extensions.Hosting;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application;
 

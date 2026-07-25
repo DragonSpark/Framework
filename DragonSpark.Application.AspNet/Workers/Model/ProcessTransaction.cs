@@ -3,8 +3,6 @@ using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Results;
 using Microsoft.EntityFrameworkCore;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Workers.Model;
 

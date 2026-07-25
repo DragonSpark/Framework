@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Model.Selection;
 using DragonSpark.Runtime.Activation;
-using System;
 using System.Globalization;
 
 namespace DragonSpark.Text.Formatting;

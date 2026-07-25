@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Authentication.Facebook;
-using System;
 
 namespace DragonSpark.Identity.Facebook;
 

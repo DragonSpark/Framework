@@ -3,8 +3,6 @@ using DragonSpark.Diagnostics.Logging;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Stop;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Threading.Tasks;
 using Exception = System.Exception;
 
 namespace DragonSpark.Application.Hosting.Azure.WebJobs;

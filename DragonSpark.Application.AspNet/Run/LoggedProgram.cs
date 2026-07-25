@@ -2,7 +2,6 @@ using DragonSpark.Application.Diagnostics.Initialization;
 using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Sequences;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Run;
 

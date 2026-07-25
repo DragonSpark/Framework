@@ -1,7 +1,6 @@
 ﻿using AutoFixture;
 using AutoFixture.AutoMoq;
 using DragonSpark.Model;
-using System.Linq;
 
 namespace DragonSpark.Application.Hosting.xUnit;
 

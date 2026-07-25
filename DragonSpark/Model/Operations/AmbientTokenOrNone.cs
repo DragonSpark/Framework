@@ -1,5 +1,4 @@
-﻿using System.Threading;
-using DragonSpark.Model.Results;
+﻿using DragonSpark.Model.Results;
 
 namespace DragonSpark.Model.Operations;
 

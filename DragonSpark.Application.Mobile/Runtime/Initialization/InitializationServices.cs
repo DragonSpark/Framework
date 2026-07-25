@@ -1,4 +1,3 @@
-using System;
 using DragonSpark.Model.Results;
 
 namespace DragonSpark.Application.Mobile.Runtime.Initialization;

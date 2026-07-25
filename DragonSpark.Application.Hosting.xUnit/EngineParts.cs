@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using AutoFixture;
 using AutoFixture.Kernel;
 using JetBrains.Annotations;

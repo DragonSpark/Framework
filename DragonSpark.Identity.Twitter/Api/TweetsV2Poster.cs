@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Model.Operations.Allocated;
-using System.Threading.Tasks;
 using Tweetinvi;
 using Tweetinvi.Client;
 using Tweetinvi.Core.Web;

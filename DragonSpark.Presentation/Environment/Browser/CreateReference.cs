@@ -2,7 +2,6 @@
 using DragonSpark.Model.Operations.Selection.Stop;
 using DragonSpark.Model.Sequences;
 using Microsoft.JSInterop;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Environment.Browser;
 

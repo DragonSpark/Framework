@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Model.Selection;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
-using System;
 
 namespace DragonSpark.Presentation.Environment.Browser;
 

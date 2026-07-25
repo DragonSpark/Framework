@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace DragonSpark.Application.AspNet.Entities.Migration.Planning.Comparison;
+﻿namespace DragonSpark.Application.AspNet.Entities.Migration.Planning.Comparison;
 
 sealed class PropertyRecordEqualityComparer : IEqualityComparer<PropertyRecord>
 {

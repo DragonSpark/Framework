@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

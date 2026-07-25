@@ -1,12 +1,8 @@
 using DragonSpark.Model.Selection;
 using Refit;
-using System;
-using System.Net.Http;
 using System.Net.Http.Json;
 using System.Reflection;
 using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Communication.Http;
 

@@ -3,7 +3,6 @@ using DragonSpark.Application.AspNet.Security.Identity.Profile;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Model.Authenticators;
 

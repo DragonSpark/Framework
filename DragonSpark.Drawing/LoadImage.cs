@@ -2,9 +2,6 @@
 using DragonSpark.Model.Operations.Results.Stop;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 using Image = SixLabors.ImageSharp.Image;
 
 namespace DragonSpark.Drawing;

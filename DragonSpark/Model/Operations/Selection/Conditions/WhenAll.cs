@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace DragonSpark.Model.Operations.Selection.Conditions;
+﻿namespace DragonSpark.Model.Operations.Selection.Conditions;
 
 public class WhenAll<T> : IDepending<T>
 {

@@ -1,14 +1,12 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Runtime.Activation;
-using System;
-using System.Collections.Generic;
 
 namespace DragonSpark.Model.Selection.Stores;
 
 public class Lookup<TIn, TOut> : Conditional<TIn, TOut>,
-                                 IActivateUsing<IReadOnlyDictionary<TIn, TOut>>,
-                                 IActivateUsing<IDictionary<TIn, TOut>>
+								 IActivateUsing<IReadOnlyDictionary<TIn, TOut>>,
+								 IActivateUsing<IDictionary<TIn, TOut>>
 	where TIn : notnull
 {
 	public Lookup(IDictionary<TIn, TOut> dictionary) : this((IReadOnlyDictionary<TIn, TOut>)dictionary.AsReadOnly()) {}

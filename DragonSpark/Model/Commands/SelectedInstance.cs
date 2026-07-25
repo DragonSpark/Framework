@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Model.Commands;
+﻿namespace DragonSpark.Model.Commands;
 
 sealed class SelectedInstance<TIn, TOut> : IAssign<TIn, TOut>
 {

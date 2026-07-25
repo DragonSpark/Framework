@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using DragonSpark.Model.Operations.Selection.Stop;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Bearer;

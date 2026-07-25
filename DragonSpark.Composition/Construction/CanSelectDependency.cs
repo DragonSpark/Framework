@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Conditions;
 using LightInject;
-using System;
 using System.Linq.Expressions;
 using System.Reflection;
 using Array = DragonSpark.Model.Sequences.Array;

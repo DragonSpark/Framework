@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Text;
-using System;
 
 namespace DragonSpark.Runtime.Environment;
 

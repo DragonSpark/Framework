@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Runtime.Activation;
-using System;
 
 namespace DragonSpark.Model.Sequences;
 

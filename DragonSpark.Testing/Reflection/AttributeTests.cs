@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Reflection;
 using FluentAssertions;
-using System;
 using Xunit;
 
 namespace DragonSpark.Testing.Reflection;

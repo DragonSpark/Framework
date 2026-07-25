@@ -6,10 +6,7 @@ using DragonSpark.Compose;
 using DragonSpark.Testing.Objects.Entities.SqlLite;
 using FluentAssertions;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Threading;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace DragonSpark.Application.Testing.Entities.Queries;

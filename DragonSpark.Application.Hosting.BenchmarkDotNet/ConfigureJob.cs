@@ -2,7 +2,6 @@
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Sequences;
-using System.Linq;
 
 namespace DragonSpark.Application.Hosting.BenchmarkDotNet;
 

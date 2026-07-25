@@ -2,7 +2,6 @@
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations.Allocated;
 using DragonSpark.Model.Selection;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Messaging.Messages.Topics.Receive;
 

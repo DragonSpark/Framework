@@ -1,4 +1,3 @@
-using System;
 using DragonSpark.Composition.Scopes;
 using DragonSpark.Model.Results;
 using Microsoft.EntityFrameworkCore;

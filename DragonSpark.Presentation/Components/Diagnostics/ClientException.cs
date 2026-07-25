@@ -1,5 +1,4 @@
 ﻿using Radzen;
-using System;
 
 namespace DragonSpark.Presentation.Components.Diagnostics;
 

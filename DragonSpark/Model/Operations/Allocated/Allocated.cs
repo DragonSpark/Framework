@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 

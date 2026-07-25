@@ -1,6 +1,5 @@
 using DragonSpark.Model.Sequences;
 using Microsoft.AspNetCore.Components;
-using System;
 
 namespace DragonSpark.Presentation.Components.Content.Sequences.Virtualization;
 

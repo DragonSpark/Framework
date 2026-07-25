@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Runtime.Execution;
+﻿namespace DragonSpark.Runtime.Execution;
 
 public readonly struct Details
 {

@@ -1,8 +1,6 @@
 ﻿using DragonSpark.Diagnostics.Logging;
 using Microsoft.AspNetCore.Components.Server.Circuits;
 using Microsoft.Extensions.Logging;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Diagnostics;
 

@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Runtime.Invocation;
-using System;
 
 namespace DragonSpark.Text.Formatting;
 

@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Model.Commands;
 using SendGrid;
-using System;
 
 namespace DragonSpark.SendGrid;
 

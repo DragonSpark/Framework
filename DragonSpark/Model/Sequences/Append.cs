@@ -1,6 +1,4 @@
-﻿using DragonSpark.Compose;
-
-namespace DragonSpark.Model.Sequences;
+﻿namespace DragonSpark.Model.Sequences;
 
 public class Append<T> : Instances<T>
 {

@@ -2,8 +2,6 @@
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
 using Polly;
-using System;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Diagnostics;
 

@@ -1,6 +1,5 @@
 ﻿using JetBrains.Annotations;
 using Polly;
-using System;
 
 namespace DragonSpark.Diagnostics;
 

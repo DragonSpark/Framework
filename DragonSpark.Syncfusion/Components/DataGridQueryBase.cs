@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Syncfusion.Blazor;
 using Syncfusion.Blazor.Data;
-using System.Threading.Tasks;
 
 namespace DragonSpark.SyncfusionRendering.Components;
 

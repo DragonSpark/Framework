@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Application.Runtime;
 using DragonSpark.Compose;
 using FluentAssertions;
-using System.Linq;
 using Xunit;
 
 namespace DragonSpark.Application.Testing.Runtime;

@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using System.Linq;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 

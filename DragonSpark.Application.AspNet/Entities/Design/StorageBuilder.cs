@@ -3,7 +3,6 @@ using DragonSpark.Model.Results;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
-using System;
 
 namespace DragonSpark.Application.AspNet.Entities.Design;
 

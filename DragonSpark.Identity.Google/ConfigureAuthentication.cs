@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Application.AspNet.Security.Identity.Claims.Actions;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Authentication.Google;
-using System;
 
 namespace DragonSpark.Identity.Google;
 

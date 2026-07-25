@@ -3,7 +3,6 @@ using Azure.Storage.Blobs.Models;
 using Azure.Storage.Blobs.Specialized;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Storage;
 

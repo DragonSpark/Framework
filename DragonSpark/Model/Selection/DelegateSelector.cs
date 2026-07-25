@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Model.Selection;
+﻿namespace DragonSpark.Model.Selection;
 
 sealed class DelegateSelector<TIn, TOut> : ISelect<ISelect<TIn, TOut>, Func<TIn, TOut>>
 {

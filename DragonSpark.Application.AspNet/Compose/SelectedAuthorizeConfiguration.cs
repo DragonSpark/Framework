@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace DragonSpark.Application.AspNet.Compose;
 

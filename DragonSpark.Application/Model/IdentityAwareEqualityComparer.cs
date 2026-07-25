@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace DragonSpark.Application.Model;
+﻿namespace DragonSpark.Application.Model;
 
 public sealed class IdentityAwareEqualityComparer : IEqualityComparer<IIdentityAware>
 {

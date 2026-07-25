@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using JetBrains.Annotations;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Claims.Compile;

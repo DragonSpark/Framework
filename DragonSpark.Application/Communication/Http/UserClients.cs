@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Model.Results;
-using System.Net.Http;
 
 namespace DragonSpark.Application.Communication.Http;
 

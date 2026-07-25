@@ -1,4 +1,3 @@
-using System;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;

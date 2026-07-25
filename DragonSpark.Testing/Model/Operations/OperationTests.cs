@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations.Selection;
 using FluentAssertions;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace DragonSpark.Testing.Model.Operations;

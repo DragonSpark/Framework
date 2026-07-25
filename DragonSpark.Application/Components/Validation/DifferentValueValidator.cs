@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Application.Components.Validation;
+﻿namespace DragonSpark.Application.Components.Validation;
 
 public sealed class DifferentValueValidator : IValidateValue<string>
 {

@@ -1,4 +1,3 @@
-using System;
 using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Model.Results;

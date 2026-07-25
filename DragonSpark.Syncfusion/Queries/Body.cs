@@ -3,8 +3,6 @@ using DragonSpark.Compose;
 using DragonSpark.Contracts.Queries;
 using DragonSpark.Model.Selection;
 using Syncfusion.Blazor;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DragonSpark.SyncfusionRendering.Queries;
 

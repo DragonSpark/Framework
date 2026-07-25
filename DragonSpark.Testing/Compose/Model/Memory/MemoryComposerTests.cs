@@ -1,7 +1,5 @@
 ﻿using DragonSpark.Compose;
 using FluentAssertions;
-using System;
-using System.Linq;
 using Xunit;
 
 namespace DragonSpark.Testing.Compose.Model.Memory;

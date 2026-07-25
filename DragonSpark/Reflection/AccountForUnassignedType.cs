@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Model.Selection.Alterations;
-using System;
 using System.Reflection;
 
 namespace DragonSpark.Reflection;

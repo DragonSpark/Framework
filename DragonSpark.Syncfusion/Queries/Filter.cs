@@ -1,7 +1,5 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DragonSpark.SyncfusionRendering.Queries;
 

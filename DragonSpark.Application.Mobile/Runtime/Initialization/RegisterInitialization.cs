@@ -1,4 +1,3 @@
-using System;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations.Stop;
 

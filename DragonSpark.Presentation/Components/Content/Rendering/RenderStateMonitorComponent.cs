@@ -2,7 +2,6 @@
 using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
-using System;
 
 namespace DragonSpark.Presentation.Components.Content.Rendering;
 

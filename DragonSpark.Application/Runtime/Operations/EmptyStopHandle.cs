@@ -1,7 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-
-namespace DragonSpark.Application.Runtime.Operations;
+﻿namespace DragonSpark.Application.Runtime.Operations;
 
 public sealed class EmptyStopHandle : IStopHandle
 {

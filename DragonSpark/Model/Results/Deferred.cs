@@ -1,5 +1,3 @@
-using System;
-
 namespace DragonSpark.Model.Results;
 
 public class Deferred<T> : IResult<T>

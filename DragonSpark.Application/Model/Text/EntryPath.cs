@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Sequences.Memory;
-using System;
 
 namespace DragonSpark.Application.Model.Text;
 

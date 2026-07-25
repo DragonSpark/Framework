@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Model;
 using DragonSpark.Model.Selection;
 using DragonSpark.Text;
-using System;
 
 namespace DragonSpark.Runtime.Objects;
 

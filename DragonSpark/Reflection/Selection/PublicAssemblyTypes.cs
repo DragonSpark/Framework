@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Model.Sequences;
 using DragonSpark.Runtime.Activation;
 using JetBrains.Annotations;
-using System;
 using System.Reflection;
 
 namespace DragonSpark.Reflection.Selection;

@@ -2,7 +2,6 @@
 using BenchmarkDotNet.Reports;
 using BenchmarkDotNet.Running;
 using DragonSpark.Model.Selection;
-using System;
 
 namespace DragonSpark.Application.Hosting.BenchmarkDotNet;
 

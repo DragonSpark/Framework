@@ -3,7 +3,6 @@ using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection.Alterations;
 using Microsoft.Extensions.Hosting;
-using System;
 
 namespace DragonSpark.Application.Compose;
 

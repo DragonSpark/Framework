@@ -3,9 +3,6 @@ using DragonSpark.Composition;
 using FluentAssertions;
 using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace DragonSpark.Testing.Composition.Compose;

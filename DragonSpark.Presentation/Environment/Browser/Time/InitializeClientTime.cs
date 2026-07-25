@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Presentation.Environment.Browser.Time;
+﻿namespace DragonSpark.Presentation.Environment.Browser.Time;
 
 sealed class InitializeClientTime : DragonSpark.Model.Operations.Stop.SelectingOperation<TimeSpan>
 {

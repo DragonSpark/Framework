@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Stores;
 using LightInject;

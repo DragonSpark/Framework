@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Application.Connections.Events;
 using DragonSpark.Model.Operations.Stop;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Messaging.Messages.Topics.Receive;
 

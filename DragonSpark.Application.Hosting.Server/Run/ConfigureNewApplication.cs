@@ -3,7 +3,6 @@ using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Hosting;
-using System;
 
 namespace DragonSpark.Application.Hosting.Server.Run;
 

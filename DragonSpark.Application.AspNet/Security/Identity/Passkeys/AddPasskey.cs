@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using DragonSpark.Application.AspNet.Security.Identity.Authentication;
 using DragonSpark.Application.Security.Identity;
 using DragonSpark.Compose;

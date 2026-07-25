@@ -1,5 +1,3 @@
-﻿using System.IO;
-
-namespace DragonSpark.Runtime;
+﻿namespace DragonSpark.Runtime;
 
 public readonly record struct CopyInput(Stream Source, string Destination);

@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using DragonSpark.Application.AspNet.Workers;
 using DragonSpark.Compose;
 using DragonSpark.Contracts.Messaging;

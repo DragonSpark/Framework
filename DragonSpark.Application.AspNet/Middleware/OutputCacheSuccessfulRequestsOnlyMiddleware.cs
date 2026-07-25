@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace DragonSpark.Application.AspNet.Middleware;
+﻿namespace DragonSpark.Application.AspNet.Middleware;
 
 /// <summary>
 /// Attribution: https://stackoverflow.com/a/74753573

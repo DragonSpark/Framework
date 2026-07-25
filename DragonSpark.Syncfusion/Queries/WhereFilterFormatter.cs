@@ -1,8 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Text;
-using System;
-using System.Linq;
 
 namespace DragonSpark.SyncfusionRendering.Queries;
 

@@ -1,4 +1,3 @@
-using System;
 using DragonSpark.Application.AspNet.Entities;
 using DragonSpark.Application.AspNet.Entities.Transactions;
 using DragonSpark.Application.AspNet.Security.Identity;

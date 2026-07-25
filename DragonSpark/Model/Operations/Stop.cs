@@ -1,6 +1,4 @@
-﻿using System.Threading;
-
-namespace DragonSpark.Model.Operations;
+﻿namespace DragonSpark.Model.Operations;
 
 public readonly record struct Stop<T>(T Subject, CancellationToken Token)
 {

@@ -4,7 +4,6 @@ using DragonSpark.Model.Sequences.Memory;
 using FluentAssertions;
 using NetFabric.Hyperlinq;
 using System.Buffers;
-using System.Linq;
 using Xunit;
 using Xunit.Abstractions;
 

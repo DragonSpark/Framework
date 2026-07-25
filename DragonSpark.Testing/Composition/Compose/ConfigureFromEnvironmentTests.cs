@@ -2,7 +2,6 @@
 using DragonSpark.Composition;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace DragonSpark.Testing.Composition.Compose;

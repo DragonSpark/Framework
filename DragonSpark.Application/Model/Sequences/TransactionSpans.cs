@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Application.Model.Sequences;
+﻿namespace DragonSpark.Application.Model.Sequences;
 
 public readonly struct TransactionSpans<T>(Memory<T> add, Memory<Update<T>> update, Memory<T> delete)
 {

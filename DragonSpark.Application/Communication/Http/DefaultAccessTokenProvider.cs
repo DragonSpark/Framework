@@ -1,5 +1,3 @@
-using System.Net.Http;
-using System.Threading.Tasks;
 using DragonSpark.Application.Communication.Http.Security;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;

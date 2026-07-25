@@ -1,7 +1,5 @@
 ﻿using BenchmarkDotNet.Attributes;
 using NetFabric.Hyperlinq;
-using System.Collections.Generic;
-using System.Linq;
 using Enumerable = System.Linq.Enumerable;
 
 namespace DragonSpark.Testing;

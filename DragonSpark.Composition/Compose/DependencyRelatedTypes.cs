@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using DragonSpark.Compose;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Model.Sequences.Memory;

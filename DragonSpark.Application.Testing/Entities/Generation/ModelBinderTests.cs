@@ -5,7 +5,6 @@ using DragonSpark.Testing.Objects;
 using DragonSpark.Testing.Objects.Entities.Generation;
 using FluentAssertions;
 using JetBrains.Annotations;
-using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Xunit;

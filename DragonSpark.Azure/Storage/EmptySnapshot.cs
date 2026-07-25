@@ -1,7 +1,4 @@
-﻿using System.Threading;
-using System.Threading.Tasks;
-
-namespace DragonSpark.Azure.Storage;
+﻿namespace DragonSpark.Azure.Storage;
 
 sealed class EmptySnapshot : ISnapshotEntry
 {

@@ -1,7 +1,5 @@
 ﻿using DragonSpark.Compose;
 using Microsoft.JSInterop;
-using System;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Environment.Browser;
 

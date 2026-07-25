@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Components;
-using System;
 
 namespace DragonSpark.Application.AspNet.Navigation;
 

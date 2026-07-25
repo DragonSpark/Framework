@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Identity.DeviantArt.Api;
+﻿namespace DragonSpark.Identity.DeviantArt.Api;
 
 sealed class AccessTokenLocation : Model.Results.Instance<Uri>
 {

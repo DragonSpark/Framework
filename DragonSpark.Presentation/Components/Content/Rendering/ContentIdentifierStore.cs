@@ -1,6 +1,4 @@
 ﻿using DragonSpark.Model.Selection.Stores;
-using System;
-using System.Collections.Generic;
 
 namespace DragonSpark.Presentation.Components.Content.Rendering;
 

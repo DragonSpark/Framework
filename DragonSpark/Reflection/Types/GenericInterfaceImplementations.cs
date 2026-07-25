@@ -3,7 +3,6 @@ using DragonSpark.Compose.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Selection.Stores;
 using DragonSpark.Model.Sequences;
-using System;
 
 namespace DragonSpark.Reflection.Types;
 

@@ -1,6 +1,4 @@
 ﻿using DragonSpark.Model.Results;
-using System;
-using System.Collections.Generic;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 

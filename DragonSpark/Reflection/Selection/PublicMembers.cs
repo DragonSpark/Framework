@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Model.Selection;
 using JetBrains.Annotations;
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace DragonSpark.Reflection.Selection;

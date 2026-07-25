@@ -1,5 +1,3 @@
-using System;
-
 namespace DragonSpark.Application.Security.Identity.Bearer;
 
 public sealed record BearerSettings

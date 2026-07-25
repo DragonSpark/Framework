@@ -2,7 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NetFabric.Hyperlinq;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application;
 

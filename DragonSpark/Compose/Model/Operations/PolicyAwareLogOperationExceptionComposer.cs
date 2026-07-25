@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Diagnostics.Logging;
 using DragonSpark.Model.Operations.Diagnostics;
 using DragonSpark.Model.Operations.Stop;
-using System;
 using Exception = System.Exception;
 
 namespace DragonSpark.Compose.Model.Operations;

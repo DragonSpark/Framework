@@ -1,7 +1,6 @@
 using DragonSpark.Application.Communication.Http;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Selection;
-using System.Net.Http;
 
 namespace DragonSpark.Application.Security.Identity.Bearer;
 

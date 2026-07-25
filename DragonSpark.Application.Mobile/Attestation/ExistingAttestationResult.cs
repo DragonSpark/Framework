@@ -1,4 +1,3 @@
-using System;
 using DragonSpark.Contracts.Security;
 
 namespace DragonSpark.Application.Mobile.Attestation;

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using DragonSpark.Model.Operations.Stop;
 using DragonSpark.Model.Results;
 

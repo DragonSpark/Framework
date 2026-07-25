@@ -1,7 +1,5 @@
 ﻿using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Stores;
-using System;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Model.Operations.Selection.Stop;
 

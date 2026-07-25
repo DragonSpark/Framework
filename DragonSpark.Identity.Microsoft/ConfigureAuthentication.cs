@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
-using System;
 
 namespace DragonSpark.Identity.Microsoft;
 

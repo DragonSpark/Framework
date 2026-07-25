@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Model.Commands;
-using System;
 
 namespace DragonSpark.ElasticEmail;
 

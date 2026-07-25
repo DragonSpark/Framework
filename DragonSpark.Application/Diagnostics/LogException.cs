@@ -1,8 +1,6 @@
 ﻿using DragonSpark.Compose;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Diagnostics;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Diagnostics;
 

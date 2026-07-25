@@ -4,7 +4,6 @@ using DragonSpark.Model.Operations.Selection.Stop;
 using DragonSpark.Presentation.Environment.Browser;
 using DragonSpark.Presentation.Environment.Browser.Document;
 using Microsoft.JSInterop;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content.Sequences.Virtualization;
 

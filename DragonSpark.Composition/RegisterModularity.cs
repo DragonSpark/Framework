@@ -1,9 +1,8 @@
-using System;
-using System.Reflection;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Reflection;
 
 namespace DragonSpark.Composition;
 

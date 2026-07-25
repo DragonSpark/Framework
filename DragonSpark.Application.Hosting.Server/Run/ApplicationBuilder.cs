@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using DragonSpark.Application.AspNet.Run;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;

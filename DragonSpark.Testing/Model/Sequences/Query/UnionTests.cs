@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Compose;
 using FluentAssertions;
-using System.Linq;
 using Xunit;
 
 namespace DragonSpark.Testing.Model.Sequences.Query;

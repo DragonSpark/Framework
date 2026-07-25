@@ -3,7 +3,6 @@ using DragonSpark.Azure.Data;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations.Results;
 using StackExchange.Redis;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Redis;
 

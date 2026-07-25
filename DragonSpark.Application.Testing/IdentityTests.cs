@@ -6,9 +6,7 @@ using JetBrains.Annotations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.ComponentModel.DataAnnotations;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace DragonSpark.Application.Testing;

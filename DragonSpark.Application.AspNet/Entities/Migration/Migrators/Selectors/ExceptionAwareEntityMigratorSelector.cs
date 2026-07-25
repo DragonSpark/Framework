@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators.Selectors;
+﻿namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators.Selectors;
 
 sealed class ExceptionAwareEntityMigratorSelector : IEntityMigratorSelector
 {

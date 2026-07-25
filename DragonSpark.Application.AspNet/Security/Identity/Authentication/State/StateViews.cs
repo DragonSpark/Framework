@@ -2,7 +2,6 @@
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Conditions;
 using System.Security.Claims;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.State;
 

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Presentation.Components.Wizard;
+﻿namespace DragonSpark.Presentation.Components.Wizard;
 
 [Flags]
 public enum WizardButtonsLocation : byte

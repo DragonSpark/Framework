@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Application.Diagnostics;
 using DragonSpark.Contracts.Queries;
 using DragonSpark.Model.Operations;
-using System;
 
 namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
 

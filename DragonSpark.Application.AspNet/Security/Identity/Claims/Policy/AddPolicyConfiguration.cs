@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Authorization;
-using System;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Claims.Policy;
 

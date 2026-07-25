@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Application.Security.Identity.Claims;
+﻿namespace DragonSpark.Application.Security.Identity.Claims;
 
 public readonly struct Read<T>
 {

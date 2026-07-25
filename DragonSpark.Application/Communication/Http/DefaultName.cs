@@ -1,5 +1,4 @@
-﻿using System;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Text;
 
 namespace DragonSpark.Application.Communication.Http;

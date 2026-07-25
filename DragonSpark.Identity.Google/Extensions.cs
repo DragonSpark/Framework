@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Application.AspNet.Compose;
 using Microsoft.AspNetCore.Authentication.Google;
-using System;
 
 namespace DragonSpark.Identity.Google;
 

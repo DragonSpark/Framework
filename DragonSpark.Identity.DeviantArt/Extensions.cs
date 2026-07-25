@@ -4,7 +4,6 @@ using DragonSpark.Application.AspNet.Security.Identity.Claims.Actions;
 using DragonSpark.Compose;
 using DragonSpark.Identity.DeviantArt.Api;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace DragonSpark.Identity.DeviantArt;
 

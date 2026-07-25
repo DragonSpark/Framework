@@ -4,7 +4,6 @@ using DragonSpark.Model.Selection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Security.Identity;
 

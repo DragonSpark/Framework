@@ -3,7 +3,6 @@ using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Stop;
 using DragonSpark.Model.Selection;
 using Medallion.Threading;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Storage;
 

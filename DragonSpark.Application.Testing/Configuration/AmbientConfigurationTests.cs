@@ -4,7 +4,6 @@ using DragonSpark.Runtime.Environment;
 using FluentAssertions;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
-using System.IO;
 using Xunit;
 
 namespace DragonSpark.Application.Testing.Configuration;

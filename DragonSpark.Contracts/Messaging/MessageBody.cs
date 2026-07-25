@@ -1,5 +1,3 @@
-using System;
-
 namespace DragonSpark.Contracts.Messaging;
 
 public readonly record struct MessageBody(string Message, Guid? Identifier)

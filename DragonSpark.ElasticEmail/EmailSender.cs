@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Compose;
 using ElasticEmailClient;
 using Microsoft.AspNetCore.Identity.UI.Services;
-using System.Threading.Tasks;
 
 namespace DragonSpark.ElasticEmail;
 

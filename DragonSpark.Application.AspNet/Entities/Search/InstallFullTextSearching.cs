@@ -4,8 +4,6 @@ using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Search;
 

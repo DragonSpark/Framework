@@ -1,9 +1,6 @@
 ﻿using AutoFixture.Xunit2;
 using DragonSpark.Compose;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Xunit;
 
 // ReSharper disable PossibleMultipleEnumeration

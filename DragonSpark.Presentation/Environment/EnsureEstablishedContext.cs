@@ -2,7 +2,6 @@
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Stop;
 using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Environment;
 

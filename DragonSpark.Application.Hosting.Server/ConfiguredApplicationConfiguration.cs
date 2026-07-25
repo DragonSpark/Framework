@@ -2,7 +2,6 @@
 using DragonSpark.Server.Requests.Warmup;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
-using System;
 
 namespace DragonSpark.Application.Hosting.Server;
 

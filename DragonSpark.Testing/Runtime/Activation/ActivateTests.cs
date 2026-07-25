@@ -1,4 +1,3 @@
-using System;
 using DragonSpark.Application.Hosting.xUnit;
 using DragonSpark.Compose;
 using DragonSpark.Compose.Extents;
@@ -25,16 +24,16 @@ public sealed class ActivateTests
 		subject.Number.Should().Be(number);
 	}
 
-    readonly ITestOutputHelper _output;
+	readonly ITestOutputHelper _output;
 
-    public ActivateTests(ITestOutputHelper output) => _output = output;
+	public ActivateTests(ITestOutputHelper output) => _output = output;
 
-    [Fact]
-    public void Verify()
-    {
-        _output.WriteLine(TimeSpan.FromMilliseconds(750).ToString());
-        
-    }
+	[Fact]
+	public void Verify()
+	{
+		_output.WriteLine(TimeSpan.FromMilliseconds(750).ToString());
+		
+	}
 
 	[Theory, AutoData]
 	void VerifyParameter(Extent<Object> sut, object parameter)
@@ -84,12 +83,12 @@ public sealed class ActivateTests
 	public void VerifyGeneralized()
 	{
 		Activator.Default.Get(typeof(Activated))
-		         .Should()
-		         .NotBeNull()
-		         .And.Subject.Should()
-		         .BeOfType<Activated>()
-		         .And.Subject.Should()
-		         .NotBeSameAs(Activator.Default.Get(typeof(Activated)));
+				 .Should()
+				 .NotBeNull()
+				 .And.Subject.Should()
+				 .BeOfType<Activated>()
+				 .And.Subject.Should()
+				 .NotBeSameAs(Activator.Default.Get(typeof(Activated)));
 	}
 
 	[Fact]

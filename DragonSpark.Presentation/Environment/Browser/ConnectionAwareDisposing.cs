@@ -1,8 +1,6 @@
 ﻿using DragonSpark.Diagnostics;
 using DragonSpark.Model.Results;
 using Polly;
-using System;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Environment.Browser;
 

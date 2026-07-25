@@ -1,4 +1,3 @@
-using System;
 using DragonSpark.Application.AspNet.Security.Identity;
 using DragonSpark.Application.Security.Tokens;
 using DragonSpark.Model.Selection;

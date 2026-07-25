@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.JSInterop;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Routing;
 

@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Queries.Compiled;
 using DragonSpark.Application.AspNet.Entities.Queries.Compiled.Evaluation;
 using DragonSpark.Model.Operations.Selection.Stop;
-using System.Collections.Generic;
 
 namespace DragonSpark.Application.AspNet.Entities;
 

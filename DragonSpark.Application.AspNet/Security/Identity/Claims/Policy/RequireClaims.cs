@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Model.Commands;
 using DragonSpark.Model.Sequences;
 using Microsoft.AspNetCore.Authorization;
-using System.Linq;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Claims.Policy;
 

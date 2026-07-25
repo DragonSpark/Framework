@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Model;
 using FluentAssertions;
 using System.Collections.Immutable;
-using System.Linq;
 using Xunit;
 
 namespace DragonSpark.Testing.Model;

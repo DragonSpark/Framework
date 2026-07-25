@@ -1,5 +1,3 @@
-using System;
-
 namespace DragonSpark.Model.Selection;
 
 public class Selection<TIn, TFrom, TTo> : ISelect<TIn, TTo>

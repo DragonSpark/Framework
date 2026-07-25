@@ -1,4 +1,3 @@
-using System;
 using DragonSpark.Model.Selection.Conditions;
 using Microsoft.Data.SqlClient;
 

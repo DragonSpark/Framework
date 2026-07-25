@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Model.Results;
-using System;
 
 namespace DragonSpark.SyncfusionRendering.Components;
 

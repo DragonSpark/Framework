@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Model.Selection.Stores;
 using FluentAssertions;
 using JetBrains.Annotations;
-using System;
 using Xunit;
 
 namespace DragonSpark.Application.Testing.Runtime;

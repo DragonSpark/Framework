@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Commands;
@@ -9,6 +5,7 @@ using DragonSpark.Model.Results;
 using DragonSpark.Reflection.Collections;
 using FluentAssertions;
 using JetBrains.Annotations;
+using System.Collections;
 using Xunit;
 
 namespace DragonSpark.Testing.Reflection.Collections;

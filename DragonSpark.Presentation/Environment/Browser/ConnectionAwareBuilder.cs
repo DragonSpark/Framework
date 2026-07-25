@@ -1,7 +1,5 @@
 ﻿using DragonSpark.Diagnostics;
 using Microsoft.JSInterop;
-using System;
-using System.Threading.Tasks;
 using Policy = Polly.Policy;
 
 namespace DragonSpark.Presentation.Environment.Browser;

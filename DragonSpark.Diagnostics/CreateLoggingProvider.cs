@@ -5,8 +5,6 @@ using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Core;
 using Serilog.Extensions.Logging;
-using System;
-using System.Linq;
 using ILogger = Serilog.ILogger;
 
 namespace DragonSpark.Diagnostics;

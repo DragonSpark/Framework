@@ -1,7 +1,6 @@
 ﻿using AutoFixture;
 using AutoFixture.Kernel;
 using DragonSpark.Compose;
-using System;
 
 namespace DragonSpark.Application.Hosting.xUnit;
 

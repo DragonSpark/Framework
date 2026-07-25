@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
 using Exception = System.Exception;
 
 namespace DragonSpark.Application.Diagnostics;

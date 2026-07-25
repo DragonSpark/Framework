@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Compose;
 using Microsoft.AspNetCore.Identity;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Profile;
 

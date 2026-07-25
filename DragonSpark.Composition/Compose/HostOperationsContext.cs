@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using DragonSpark.Model.Operations.Selection;
 using JetBrains.Annotations;
 using Microsoft.Extensions.Hosting;

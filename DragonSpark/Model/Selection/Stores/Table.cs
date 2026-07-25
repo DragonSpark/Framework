@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
+﻿namespace DragonSpark.Model.Selection.Stores;
 
-namespace DragonSpark.Model.Selection.Stores;
-
-public class Table<TIn, TOut> : Lookup<TIn, TOut>, ITable<TIn, TOut>
-	where TIn : notnull
+public class Table<TIn, TOut> : Lookup<TIn, TOut>, ITable<TIn, TOut> where TIn : notnull
 {
 	readonly IDictionary<TIn, TOut> _store;
 

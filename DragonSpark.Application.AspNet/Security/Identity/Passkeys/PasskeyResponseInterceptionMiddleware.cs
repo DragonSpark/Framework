@@ -1,5 +1,4 @@
-﻿using System.Threading.Tasks;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Http;
 

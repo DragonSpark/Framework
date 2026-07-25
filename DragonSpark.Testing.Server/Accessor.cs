@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.Http;
-using System;
 
 namespace DragonSpark.Testing.Server;
 

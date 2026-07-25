@@ -1,5 +1,4 @@
-﻿using System;
-using DragonSpark.Model.Results;
+﻿using DragonSpark.Model.Results;
 
 namespace DragonSpark.Application.AspNet.Entities.Initialization;
 

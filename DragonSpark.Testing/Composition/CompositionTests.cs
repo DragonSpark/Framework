@@ -1,6 +1,3 @@
-using System;
-using System.Reflection;
-using System.Threading.Tasks;
 using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Model.Selection;
@@ -11,6 +8,7 @@ using FluentAssertions;
 using JetBrains.Annotations;
 using LightInject;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 using Xunit;
 
 namespace DragonSpark.Testing.Composition;

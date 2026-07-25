@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Presentation.Components.Client;
+﻿namespace DragonSpark.Presentation.Components.Client;
 
 public sealed class AccessProtectedStorageWaitTime : DragonSpark.Model.Results.Instance<TimeSpan>
 {

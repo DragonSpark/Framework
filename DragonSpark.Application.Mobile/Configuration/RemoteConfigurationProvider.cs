@@ -1,12 +1,9 @@
-using System;
-using System.Net;
-using System.Threading;
-using System.Threading.Tasks;
 using DragonSpark.Application.Mobile.Runtime.Initialization;
 using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations.Stop;
 using Microsoft.Extensions.Configuration.Json;
+using System.Net;
 
 namespace DragonSpark.Application.Mobile.Configuration;
 

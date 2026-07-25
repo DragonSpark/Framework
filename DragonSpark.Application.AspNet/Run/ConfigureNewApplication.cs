@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Model.Commands;
 using Microsoft.Extensions.Hosting;
-using System;
 
 namespace DragonSpark.Application.AspNet.Run;
 

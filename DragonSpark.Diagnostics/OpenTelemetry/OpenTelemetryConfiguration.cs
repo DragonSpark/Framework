@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using OpenTelemetry;
 using OpenTelemetry.Metrics;
 using OpenTelemetry.Trace;
-using System;
 
 namespace DragonSpark.Diagnostics.OpenTelemetry;
 

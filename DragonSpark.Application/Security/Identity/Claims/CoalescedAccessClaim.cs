@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Model.Sequences;
 using NetFabric.Hyperlinq;
-using System;
 using System.Security.Claims;
 
 namespace DragonSpark.Application.Security.Identity.Claims;

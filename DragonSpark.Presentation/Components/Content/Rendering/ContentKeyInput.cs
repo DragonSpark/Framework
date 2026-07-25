@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Presentation.Components.Content.Rendering;
+﻿namespace DragonSpark.Presentation.Components.Content.Rendering;
 
 public readonly record struct ContentKeyInput(Type Type, int Pointer)
 {

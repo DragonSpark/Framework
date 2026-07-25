@@ -1,5 +1,3 @@
-﻿using System;
-
-namespace DragonSpark.Composition.Scopes.Hierarchy;
+﻿namespace DragonSpark.Composition.Scopes.Hierarchy;
 
 public interface IScopedServiceProvider : IServiceProvider, IDisposable, IAsyncDisposable;

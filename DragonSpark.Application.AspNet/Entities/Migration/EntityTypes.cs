@@ -1,7 +1,5 @@
 ﻿using DragonSpark.Model.Selection.Stores;
 using Microsoft.EntityFrameworkCore.Metadata;
-using System;
-using System.Collections.Generic;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration;
 

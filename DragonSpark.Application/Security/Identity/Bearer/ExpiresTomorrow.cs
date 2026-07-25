@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Results;
-using System;
 
 namespace DragonSpark.Application.Security.Identity.Bearer;
 

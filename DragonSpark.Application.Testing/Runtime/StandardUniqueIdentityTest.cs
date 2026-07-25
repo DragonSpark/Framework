@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Application.Runtime;
 using FluentAssertions;
 using JetBrains.Annotations;
-using System;
 using Xunit;
 
 namespace DragonSpark.Application.Testing.Runtime;

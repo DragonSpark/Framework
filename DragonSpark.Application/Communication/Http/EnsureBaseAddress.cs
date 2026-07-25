@@ -1,6 +1,4 @@
-﻿using System;
-using System.Net.Http;
-using DragonSpark.Model.Commands;
+﻿using DragonSpark.Model.Commands;
 
 namespace DragonSpark.Application.Communication.Http;
 

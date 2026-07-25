@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Identity;
 

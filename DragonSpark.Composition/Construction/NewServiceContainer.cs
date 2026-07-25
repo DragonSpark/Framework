@@ -1,8 +1,7 @@
-﻿using System;
-using System.Reflection;
-using DragonSpark.Compose;
+﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using LightInject;
+using System.Reflection;
 
 namespace DragonSpark.Composition.Construction;
 

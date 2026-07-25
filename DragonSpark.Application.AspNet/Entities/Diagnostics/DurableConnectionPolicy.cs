@@ -3,7 +3,6 @@ using DragonSpark.Diagnostics;
 using DragonSpark.Model.Results;
 using Microsoft.Data.SqlClient;
 using Polly;
-using System;
 using Policy = Polly.Policy;
 
 namespace DragonSpark.Application.AspNet.Entities.Diagnostics;

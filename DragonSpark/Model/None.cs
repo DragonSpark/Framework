@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Model;
+﻿namespace DragonSpark.Model;
 
 public readonly struct None : IEquatable<None>
 {

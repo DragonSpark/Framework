@@ -1,9 +1,7 @@
-using System.Threading;
-using System.Threading.Channels;
-using System.Threading.Tasks;
 using DragonSpark.Compose;
 using DragonSpark.Contracts.Messaging;
 using DragonSpark.Model.Operations.Stop;
+using System.Threading.Channels;
 
 namespace DragonSpark.Azure.Messaging.Messages.Queues.Durable;
 

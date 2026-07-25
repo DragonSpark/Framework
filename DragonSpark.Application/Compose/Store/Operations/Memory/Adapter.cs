@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Model.Commands;
 using Microsoft.Extensions.Caching.Memory;
-using System;
 
 namespace DragonSpark.Application.Compose.Store.Operations.Memory;
 

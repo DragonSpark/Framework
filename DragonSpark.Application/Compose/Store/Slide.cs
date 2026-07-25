@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Application.Compose.Store;
+﻿namespace DragonSpark.Application.Compose.Store;
 
 public readonly struct Slide
 {

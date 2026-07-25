@@ -1,6 +1,5 @@
 ﻿using AutoFixture;
 using DragonSpark.Model.Selection;
-using System.Collections.Generic;
 
 namespace DragonSpark.Testing.Objects;
 

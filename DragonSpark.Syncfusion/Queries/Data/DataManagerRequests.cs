@@ -2,8 +2,6 @@
 using DragonSpark.Model.Selection;
 using DragonSpark.Presentation.Components.Content.Sequences;
 using Syncfusion.Blazor;
-using System;
-using System.Linq;
 
 namespace DragonSpark.SyncfusionRendering.Queries.Data;
 

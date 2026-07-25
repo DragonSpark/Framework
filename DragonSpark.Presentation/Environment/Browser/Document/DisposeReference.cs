@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Compose;
 using Microsoft.JSInterop;
 using Polly;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Environment.Browser.Document;
 

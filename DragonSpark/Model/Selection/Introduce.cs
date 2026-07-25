@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Model.Selection;
+﻿namespace DragonSpark.Model.Selection;
 
 sealed class Introduce<TIn, TOut> : ISelect<TIn, (TIn, TOut)>
 {

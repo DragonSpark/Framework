@@ -1,6 +1,5 @@
 ﻿using AspNet.Security.OAuth.Amazon;
 using DragonSpark.Model.Commands;
-using System;
 
 namespace DragonSpark.Identity.Amazon;
 

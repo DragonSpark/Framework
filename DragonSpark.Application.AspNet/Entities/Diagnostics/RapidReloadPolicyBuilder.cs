@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Diagnostics;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace DragonSpark.Application.AspNet.Entities.Diagnostics;
 

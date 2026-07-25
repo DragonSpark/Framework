@@ -1,5 +1,4 @@
 using DragonSpark.Reflection.Types;
-using System.Collections.Generic;
 
 namespace DragonSpark.Reflection.Collections;
 

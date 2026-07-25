@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Sequences.Collections;
 using FluentAssertions;
-using System.Linq;
 using Xunit;
 
 namespace DragonSpark.Testing.Model.Sequences.Collections;

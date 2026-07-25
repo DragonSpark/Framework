@@ -3,10 +3,6 @@ using DragonSpark.Application.Security;
 using DragonSpark.Compose;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.OutputCaching;
-using System;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Server.Output;
 

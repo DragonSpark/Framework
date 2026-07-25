@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Model.Selection.Conditions;
 using FluentAssertions;
-using System;
 using System.Reflection;
 using Xunit;
 

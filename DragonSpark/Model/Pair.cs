@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace DragonSpark.Model;
+﻿namespace DragonSpark.Model;
 
 public readonly record struct Pair<TKey, TValue>(TKey Key, TValue Value)
 {

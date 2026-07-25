@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace DragonSpark.Model.Selection.Stores;
+﻿namespace DragonSpark.Model.Selection.Stores;
 
 sealed class TableValueAdapter<TIn, TOut> : ISelect<TIn, TOut> where TIn : notnull
 {

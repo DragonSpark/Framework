@@ -1,4 +1,3 @@
-using System;
 using DragonSpark.Diagnostics.OpenTelemetry;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Sequences;

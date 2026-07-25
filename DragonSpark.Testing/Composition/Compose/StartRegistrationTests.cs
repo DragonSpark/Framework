@@ -4,7 +4,6 @@ using DragonSpark.Model.Results;
 using FluentAssertions;
 using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 using Xunit;
 
 namespace DragonSpark.Testing.Composition.Compose;

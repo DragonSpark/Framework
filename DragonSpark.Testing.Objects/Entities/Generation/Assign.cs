@@ -1,6 +1,5 @@
 ﻿using Bogus;
 using DragonSpark.Model.Commands;
-using System;
 
 namespace DragonSpark.Testing.Objects.Entities.Generation;
 

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Application.Model.Sequences;
+﻿namespace DragonSpark.Application.Model.Sequences;
 
 public readonly record struct ActionSpans<TView, TModel>(Memory<TView> Add, Memory<Update<TView, TModel>> Update,
                                                          Memory<TModel> Delete)

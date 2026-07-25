@@ -1,4 +1,3 @@
-using System;
 using Microsoft.Extensions.Configuration;
 
 namespace DragonSpark.Application.Mobile.Configuration;

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Model.Selection.Stores;
+﻿namespace DragonSpark.Model.Selection.Stores;
 
 public class ConcurrentStore<TIn, TOut> : Select<TIn, TOut> where TIn : class where TOut : class?
 {

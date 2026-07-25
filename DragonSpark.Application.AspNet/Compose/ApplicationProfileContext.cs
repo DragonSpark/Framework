@@ -9,7 +9,6 @@ using DragonSpark.Runtime.Environment;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 using System.Reflection;
 
 namespace DragonSpark.Application.AspNet.Compose;

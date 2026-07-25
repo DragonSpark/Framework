@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Application.AspNet.Workers;
+﻿namespace DragonSpark.Application.AspNet.Workers;
 
 public sealed class CompletedStep
 {

@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Diagnostics.Logging;
-using System;
 
 namespace DragonSpark.Application.Diagnostics.Initialization;
 

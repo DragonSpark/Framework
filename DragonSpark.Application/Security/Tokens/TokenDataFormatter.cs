@@ -1,4 +1,3 @@
-using System;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Text;
 

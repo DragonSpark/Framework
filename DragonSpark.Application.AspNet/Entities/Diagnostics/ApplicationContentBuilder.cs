@@ -1,5 +1,4 @@
 ﻿using Polly;
-using System;
 
 namespace DragonSpark.Application.AspNet.Entities.Diagnostics;
 

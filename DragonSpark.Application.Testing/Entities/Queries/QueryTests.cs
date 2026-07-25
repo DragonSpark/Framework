@@ -18,12 +18,8 @@ using LinqKit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using NetFabric.Hyperlinq;
-using System;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Threading;
-using System.Threading.Tasks;
 using Xunit;
 using Array = System.Array;
 

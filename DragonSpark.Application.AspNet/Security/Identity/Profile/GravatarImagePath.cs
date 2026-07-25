@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Application.Security;
 using DragonSpark.Model.Selection.Alterations;
-using System;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Profile;
 

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using DragonSpark.Model.Selection.Conditions;
 
 namespace DragonSpark.Application.Mobile.Model.Validation;

@@ -1,5 +1,4 @@
-﻿using System;
-using Exception = System.Exception;
+﻿using Exception = System.Exception;
 
 namespace DragonSpark.Application.Diagnostics;
 

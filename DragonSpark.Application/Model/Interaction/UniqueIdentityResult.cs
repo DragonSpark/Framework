@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Application.Model.Interaction;
+﻿namespace DragonSpark.Application.Model.Interaction;
 
 public class UniqueIdentityResult : SuccessResult<Guid>
 {

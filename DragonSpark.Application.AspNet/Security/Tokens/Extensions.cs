@@ -1,5 +1,3 @@
-using System.Threading;
-
 namespace DragonSpark.Application.AspNet.Security.Tokens;
 
 public static class Extensions

@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Components;
 using Radzen;
 using Syncfusion.Blazor;
 using Syncfusion.Blazor.Data;
-using System.Threading.Tasks;
 
 namespace DragonSpark.SyncfusionRendering.Components;
 

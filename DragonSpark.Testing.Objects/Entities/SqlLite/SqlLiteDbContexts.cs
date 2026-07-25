@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace DragonSpark.Testing.Objects.Entities.SqlLite;
 

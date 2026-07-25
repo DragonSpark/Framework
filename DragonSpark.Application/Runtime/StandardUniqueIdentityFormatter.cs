@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Text;
-using System;
 
 namespace DragonSpark.Application.Runtime;
 

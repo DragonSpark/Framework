@@ -5,8 +5,6 @@ using DragonSpark.SyncfusionRendering.Entities;
 using DragonSpark.SyncfusionRendering.Queries;
 using Microsoft.AspNetCore.Components;
 using Syncfusion.Blazor.Grids;
-using System;
-using System.Collections.Generic;
 
 namespace DragonSpark.SyncfusionRendering.Components;
 

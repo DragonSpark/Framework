@@ -1,4 +1,3 @@
-using System;
 using DragonSpark.Model.Sequences.Memory;
 
 namespace DragonSpark.Application.Security.Tokens;

@@ -1,7 +1,6 @@
 ﻿using AspNet.Security.OAuth.Reddit;
 using DragonSpark.Application.AspNet.Compose;
 using DragonSpark.Application.AspNet.Security.Identity.Claims.Actions;
-using System;
 
 namespace DragonSpark.Identity.Reddit;
 
