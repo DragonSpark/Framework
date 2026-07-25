@@ -5,11 +5,11 @@ namespace DragonSpark.Presentation.Components.Content.Rendering.Sequences;
 
 sealed class RenderAwarePaging<T> : IPaging<T>
 {
-	readonly IsConnecting                      _condition;
+	readonly IsLoading                      _condition;
 	readonly RenderStateAwarePagingContents<T> _contents;
 	readonly IPaging<T>                        _previous;
 
-	public RenderAwarePaging(IsConnecting condition, RenderStateAwarePagingContents<T> contents, IPaging<T> previous)
+	public RenderAwarePaging(IsLoading condition, RenderStateAwarePagingContents<T> contents, IPaging<T> previous)
 	{
 		_condition = condition;
 		_contents  = contents;
