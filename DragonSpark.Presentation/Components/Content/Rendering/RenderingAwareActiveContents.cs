@@ -4,11 +4,11 @@ namespace DragonSpark.Presentation.Components.Content.Rendering;
 
 sealed class RenderingAwareActiveContents<T> : IActiveContents<T>
 {
-	readonly IsConnecting                      _condition;
+	readonly IsLoading                      _condition;
 	readonly RenderStateAwareActiveContents<T> _contents;
 	readonly IActiveContents<T>                _previous;
 
-	public RenderingAwareActiveContents(IsConnecting condition, RenderStateAwareActiveContents<T> contents,
+	public RenderingAwareActiveContents(IsLoading condition, RenderStateAwareActiveContents<T> contents,
 	                                    IActiveContents<T> previous)
 	{
 		_condition = condition;

@@ -3,11 +3,11 @@ using DragonSpark.Model.Selection.Conditions;
 
 namespace DragonSpark.Presentation.Components.Content.Rendering;
 
-sealed class IsConnecting : ICondition
+sealed class IsLoading : ICondition
 {
 	readonly RenderStateStore _state;
 
-	public IsConnecting(RenderStateStore state) => _state = state;
+	public IsLoading(RenderStateStore state) => _state = state;
 
 	public bool Get(None parameter) => _state.Get() < RenderState.Established;
 }
