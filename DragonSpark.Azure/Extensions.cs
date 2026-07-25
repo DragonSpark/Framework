@@ -76,7 +76,7 @@ public static class Extensions
 												   CancellationToken cancellationToken = default)
 		=> serializer.DeserializeAsync(data.ToStream(), type, cancellationToken);
 
-	public static IScopedDispatch Send(this IDurableSender @this, TimeSpan? visibility = null, TimeSpan? life = null)
+	public static ISend Send(this ISender @this, TimeSpan? visibility = null, TimeSpan? life = null)
 		=> @this.Get(new ScopedInput(visibility, life));
 
 	public static RegistrationResult Storage<T>(this IServiceCollection @this) where T : class, IContainer

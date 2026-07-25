@@ -10,10 +10,10 @@ namespace DragonSpark.Application.AspNet.Workers.Model;
 sealed class RequeueAwareStep<T> : IStopAware<T> where T : ExternalProcess
 {
 	readonly IStopAware<T>                 _previous;
-	readonly IStopAware<IdentifiedMessage> _send;
+	readonly IStopAware<MessageBody> _send;
 	readonly UpdateStatus                  _status;
 
-	public RequeueAwareStep(IStopAware<T> previous, IStopAware<IdentifiedMessage> send, UpdateStatus status)
+	public RequeueAwareStep(IStopAware<T> previous, IStopAware<MessageBody> send, UpdateStatus status)
 	{
 		_previous = previous;
 		_send     = send;

@@ -1,6 +1,6 @@
-using System.Threading.Tasks;
 using DragonSpark.Contracts.Messaging;
 using DragonSpark.Model.Operations;
+using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Messaging.Messages.Queues.Durable;
 
