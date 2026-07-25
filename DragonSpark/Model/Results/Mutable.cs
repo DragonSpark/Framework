@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Model.Results;
+﻿namespace DragonSpark.Model.Results;
 
 public class Mutable<T> : IMutable<T>
 {

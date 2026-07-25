@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Text.Formatting;
+﻿namespace DragonSpark.Text.Formatting;
 
 sealed class ApplicationDomainName : FormatEntry<AppDomain>
 {

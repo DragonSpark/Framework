@@ -1,4 +1,3 @@
-using System;
 using DragonSpark.Text;
 
 namespace DragonSpark.Runtime;

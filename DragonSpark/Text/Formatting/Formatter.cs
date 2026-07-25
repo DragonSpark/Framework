@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Reflection.Types;
-using System;
 
 namespace DragonSpark.Text.Formatting;
 

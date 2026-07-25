@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Runtime;
+﻿namespace DragonSpark.Runtime;
 
 public static class Delegates<T>
 {

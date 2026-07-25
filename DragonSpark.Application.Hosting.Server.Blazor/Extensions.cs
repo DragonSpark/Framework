@@ -2,7 +2,6 @@
 using DragonSpark.Application.AspNet.Compose;
 using DragonSpark.Composition.Compose;
 using Microsoft.AspNetCore.Builder;
-using System;
 using System.Reflection;
 
 namespace DragonSpark.Application.Hosting.Server.Blazor;

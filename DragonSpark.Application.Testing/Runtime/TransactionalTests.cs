@@ -2,7 +2,6 @@
 using DragonSpark.Compose;
 using DragonSpark.Model.Sequences.Collections;
 using FluentAssertions;
-using System;
 using Xunit;
 
 namespace DragonSpark.Application.Testing.Runtime;

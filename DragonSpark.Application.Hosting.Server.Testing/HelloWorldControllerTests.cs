@@ -5,9 +5,7 @@ using DragonSpark.Testing.Server;
 using FluentAssertions;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 using System.Net;
-using System.Threading.Tasks;
 using Xunit;
 using Dependency = DragonSpark.Application.Hosting.Server.Testing.Environment.Development.Dependency;
 

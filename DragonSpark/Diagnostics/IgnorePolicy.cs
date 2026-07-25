@@ -1,5 +1,4 @@
 ﻿using Polly;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Diagnostics;
 

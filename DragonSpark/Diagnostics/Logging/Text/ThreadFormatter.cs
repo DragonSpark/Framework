@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Text;
-using System.Threading;
 
 namespace DragonSpark.Diagnostics.Logging.Text;
 

@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Runtime.Environment;
 using FluentAssertions;
-using System;
 using System.Reflection;
 using Xunit;
 

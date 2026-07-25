@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Model.Selection;
 using DragonSpark.Reflection.Types;
-using System;
 using Activator = DragonSpark.Runtime.Activation.Activator;
 
 namespace DragonSpark.Compose.Model.Selection;

@@ -1,4 +1,3 @@
-using System.Threading;
 using DragonSpark.Model.Operations.Selection;
 
 namespace DragonSpark.Model.Operations.Results.Stop;

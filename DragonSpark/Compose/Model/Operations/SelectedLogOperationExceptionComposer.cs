@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Diagnostics.Logging;
 using DragonSpark.Model.Operations.Stop;
-using System;
 
 namespace DragonSpark.Compose.Model.Operations;
 

@@ -1,5 +1,3 @@
-using System;
-
 namespace DragonSpark.Model.Selection.Alterations;
 
 public class Configured<T> : IAlteration<T>

@@ -1,7 +1,5 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Sequences;
-using System;
-using System.Linq;
 
 namespace DragonSpark.Model.Selection.Conditions;
 

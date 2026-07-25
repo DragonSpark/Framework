@@ -1,4 +1,3 @@
-using System;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences.Memory;
 using JetBrains.Annotations;

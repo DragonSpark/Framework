@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Model.Selection.Conditions;
+﻿namespace DragonSpark.Model.Selection.Conditions;
 
 public class Condition<T> : Select<T, bool>, ICondition<T>
 {

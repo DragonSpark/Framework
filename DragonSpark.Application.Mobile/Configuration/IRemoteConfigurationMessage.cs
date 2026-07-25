@@ -1,5 +1,3 @@
-using System;
-using System.Net.Http;
 using DragonSpark.Model.Operations.Results.Stop;
 
 namespace DragonSpark.Application.Mobile.Configuration;

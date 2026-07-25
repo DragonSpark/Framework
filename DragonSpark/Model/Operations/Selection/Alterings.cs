@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace DragonSpark.Model.Operations.Selection;
+﻿namespace DragonSpark.Model.Operations.Selection;
 
 public class Alterings<T> : IAltering<T>
 {

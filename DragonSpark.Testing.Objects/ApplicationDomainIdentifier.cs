@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Text.Formatting;
-using System;
 
 namespace DragonSpark.Testing.Objects;
 

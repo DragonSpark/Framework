@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Reflection.Assemblies;
+﻿namespace DragonSpark.Reflection.Assemblies;
 
 [AttributeUsage(AttributeTargets.Assembly)]
 public sealed class AssemblyBuildDateAttribute : Attribute

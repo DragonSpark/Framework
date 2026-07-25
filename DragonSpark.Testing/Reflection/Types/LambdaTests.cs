@@ -2,7 +2,6 @@
 using DragonSpark.Model;
 using DragonSpark.Runtime.Invocation.Expressions;
 using FluentAssertions;
-using System;
 using Xunit;
 
 namespace DragonSpark.Testing.Reflection.Types;

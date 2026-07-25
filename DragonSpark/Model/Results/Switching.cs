@@ -1,4 +1,3 @@
-using System;
 using DragonSpark.Compose;
 using JetBrains.Annotations;
 

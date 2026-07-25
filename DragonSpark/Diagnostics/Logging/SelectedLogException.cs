@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Diagnostics.Logging;
+﻿namespace DragonSpark.Diagnostics.Logging;
 
 public class SelectedLogException<TIn, T> : ILogException<TIn>
 {

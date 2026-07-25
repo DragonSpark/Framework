@@ -1,5 +1,3 @@
-using System;
-
 namespace DragonSpark.Model.Commands;
 
 public class Assign<TKey, TValue> : IAssign<TKey, TValue>

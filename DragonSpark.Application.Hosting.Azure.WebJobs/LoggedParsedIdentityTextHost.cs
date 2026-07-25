@@ -2,8 +2,6 @@
 using DragonSpark.Model.Operations.Allocated.Stop;
 using DragonSpark.Model.Operations.Stop;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.Hosting.Azure.WebJobs;
 

@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Reflection.Members;
-using System;
 using Xunit;
 
 // ReSharper disable All

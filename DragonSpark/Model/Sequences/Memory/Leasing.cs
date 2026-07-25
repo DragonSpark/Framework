@@ -1,7 +1,6 @@
 using DragonSpark.Compose;
 using JetBrains.Annotations;
 using NetFabric.Hyperlinq;
-using System;
 using System.Runtime.CompilerServices;
 
 namespace DragonSpark.Model.Sequences.Memory;

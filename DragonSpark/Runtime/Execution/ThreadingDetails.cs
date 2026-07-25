@@ -1,6 +1,4 @@
-﻿using System.Threading;
-
-namespace DragonSpark.Runtime.Execution;
+﻿namespace DragonSpark.Runtime.Execution;
 
 public sealed class ThreadingDetails
 {

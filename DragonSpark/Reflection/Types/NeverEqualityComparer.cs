@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace DragonSpark.Reflection.Types;
 
 public sealed class NeverEqualityComparer<T> : IEqualityComparer<T>

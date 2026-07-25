@@ -1,4 +1,3 @@
-using System.IO;
 using DragonSpark.Model.Selection;
 using JetBrains.Annotations;
 

@@ -1,16 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text.Json;
-using System.Threading;
-using System.Threading.Tasks;
 using DragonSpark.Application.Mobile.Diagnostics;
 using DragonSpark.Application.Mobile.Model.Validation;
 using DragonSpark.Compose;
 using Metalama.Extensions.DependencyInjection;
 using Metalama.Framework.Aspects;
 using Refit;
+using System.Net;
+using System.Text.Json;
 
 namespace DragonSpark.Application.Mobile.Aspects;
 

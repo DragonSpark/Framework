@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Diagnostics.Logging;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.Logging;
-using System.IO;
 
 namespace DragonSpark.Runtime;
 

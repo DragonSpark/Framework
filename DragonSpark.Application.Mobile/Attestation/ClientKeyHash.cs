@@ -1,7 +1,6 @@
-using System;
-using System.Security.Cryptography;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations.Results.Stop;
+using System.Security.Cryptography;
 
 namespace DragonSpark.Application.Mobile.Attestation;
 

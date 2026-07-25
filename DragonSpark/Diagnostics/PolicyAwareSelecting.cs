@@ -3,7 +3,6 @@ using DragonSpark.Compose.Model.Operations;
 using DragonSpark.Model.Operations.Selection;
 using DragonSpark.Model.Results;
 using Polly;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Diagnostics;
 

@@ -6,8 +6,6 @@ using DragonSpark.Model;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Testing.Objects.Entities.Generation.Compose;
-using System;
-using System.Collections.Generic;
 using Configuration = DragonSpark.Testing.Objects.Entities.Generation.Configuration;
 
 namespace DragonSpark.Testing.Objects;

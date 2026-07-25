@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Compose;
 using JetBrains.Annotations;
-using System;
 using System.Reflection;
 
 namespace DragonSpark.Reflection.Members;

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Model.Commands;
+﻿namespace DragonSpark.Model.Commands;
 
 public class SelectedParameterInvocation<TFrom, TTo, _> : ICommand<TFrom>
 {

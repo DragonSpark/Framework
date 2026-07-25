@@ -2,7 +2,6 @@
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Runtime;
-using System;
 using System.Reflection;
 
 namespace DragonSpark.Reflection.Members;

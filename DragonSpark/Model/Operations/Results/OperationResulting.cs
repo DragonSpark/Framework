@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-
-namespace DragonSpark.Model.Operations.Results;
+﻿namespace DragonSpark.Model.Operations.Results;
 
 sealed class OperationResulting<TIn, TOut> : IResulting<TOut>
 {

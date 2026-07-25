@@ -1,5 +1,3 @@
-using System;
-
 namespace DragonSpark.Text;
 
 public sealed class Base64EncodeData : Formatter<byte[]>

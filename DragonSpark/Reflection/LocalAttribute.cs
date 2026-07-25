@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Reflection;
+﻿namespace DragonSpark.Reflection;
 
 sealed class LocalAttribute<T> : AttributeStore<T> where T : Attribute
 {

@@ -1,4 +1,3 @@
-using System;
 using DragonSpark.Application.Diagnostics;
 using DragonSpark.Compose;
 using Microsoft.Extensions.DependencyInjection;

@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Compose;
 using FluentAssertions;
-using System;
 using Xunit;
 
 namespace DragonSpark.Testing.Compose.Model.Validation;

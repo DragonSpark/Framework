@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using JetBrains.Annotations;
 
 namespace DragonSpark.Model.Sequences.Memory;

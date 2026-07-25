@@ -3,7 +3,6 @@ using DragonSpark.Model.Selection;
 using DragonSpark.Runtime.Objects;
 using DragonSpark.Text;
 using DragonSpark.Text.Formatting;
-using System;
 using System.Linq.Expressions;
 
 namespace DragonSpark.Compose;

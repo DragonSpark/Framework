@@ -2,7 +2,6 @@
 using DragonSpark.Model;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
-using System;
 using System.Reflection;
 
 namespace DragonSpark.Reflection.Members;

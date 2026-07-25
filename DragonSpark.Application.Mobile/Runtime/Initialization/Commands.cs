@@ -1,9 +1,7 @@
-using System;
-using System.Buffers;
-using System.Collections.Generic;
 using DragonSpark.Model;
 using DragonSpark.Model.Results;
 using NetFabric.Hyperlinq;
+using System.Buffers;
 
 namespace DragonSpark.Application.Mobile.Runtime.Initialization;
 

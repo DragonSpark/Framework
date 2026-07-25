@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace DragonSpark.Model.Operations.Allocated;
+﻿namespace DragonSpark.Model.Operations.Allocated;
 
 public sealed class EmptyAllocated : Allocated
 {

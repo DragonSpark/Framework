@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Application.Hosting.xUnit;
+﻿namespace DragonSpark.Application.Hosting.xUnit;
 
 sealed class EpochSpecimen : Specimen<DateTimeOffset>
 {

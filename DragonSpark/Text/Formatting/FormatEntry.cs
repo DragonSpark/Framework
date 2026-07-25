@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Model;
-using System;
 
 namespace DragonSpark.Text.Formatting;
 

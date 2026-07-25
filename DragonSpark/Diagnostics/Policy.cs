@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Model.Results;
 using Polly;
-using System;
 
 namespace DragonSpark.Diagnostics;
 

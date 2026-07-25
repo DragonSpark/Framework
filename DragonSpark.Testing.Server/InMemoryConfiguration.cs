@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Model.Commands;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace DragonSpark.Testing.Server;
 

@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 using DragonSpark.Application.AspNet.Run;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Builder;

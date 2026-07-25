@@ -5,7 +5,6 @@ using DragonSpark.Composition;
 using DragonSpark.Composition.Compose;
 using Microsoft.Azure.WebJobs.ServiceBus;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace DragonSpark.Application.Hosting.Azure.WebJobs;
 

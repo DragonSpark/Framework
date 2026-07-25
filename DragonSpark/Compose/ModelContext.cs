@@ -3,7 +3,6 @@ using DragonSpark.Compose.Extents.Conditions;
 using DragonSpark.Compose.Extents.Generics;
 using DragonSpark.Compose.Extents.Results;
 using DragonSpark.Compose.Extents.Selections;
-using System;
 
 namespace DragonSpark.Compose;
 

@@ -1,4 +1,3 @@
-using System;
 using DragonSpark.Application.AspNet;
 using DragonSpark.Application.AspNet.Compose;
 using DragonSpark.Composition.Compose;

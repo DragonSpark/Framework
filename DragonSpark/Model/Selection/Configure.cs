@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Model.Selection;
+﻿namespace DragonSpark.Model.Selection;
 
 sealed class Configure<TIn, TOut> : ISelect<TIn, TOut>
 {

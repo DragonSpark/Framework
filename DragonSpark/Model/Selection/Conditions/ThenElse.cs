@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Model.Selection.Conditions;
+﻿namespace DragonSpark.Model.Selection.Conditions;
 
 sealed class ThenElse<T> : ICondition<T>
 {

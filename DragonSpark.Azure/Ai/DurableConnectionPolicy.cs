@@ -3,7 +3,6 @@ using DragonSpark.Diagnostics;
 using DragonSpark.Model.Results;
 using Polly;
 using System.ClientModel;
-using System.IO;
 using Policy = Polly.Policy;
 
 namespace DragonSpark.Azure.Ai;

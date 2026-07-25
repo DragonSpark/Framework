@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Model.Sequences;
+﻿namespace DragonSpark.Model.Sequences;
 
 public class OpenArray<T> : IArray<T>
 {

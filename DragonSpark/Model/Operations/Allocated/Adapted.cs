@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-
-namespace DragonSpark.Model.Operations.Allocated;
+﻿namespace DragonSpark.Model.Operations.Allocated;
 
 public class Adapted : IAllocated
 {

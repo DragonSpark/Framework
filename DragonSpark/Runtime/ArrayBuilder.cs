@@ -1,9 +1,7 @@
 using DragonSpark.Model.Sequences;
 using DragonSpark.Model.Sequences.Memory;
 using JetBrains.Annotations;
-using System;
 using System.Buffers;
-using System.Collections.Generic;
 using System.Diagnostics;
 using Array = System.Array;
 
