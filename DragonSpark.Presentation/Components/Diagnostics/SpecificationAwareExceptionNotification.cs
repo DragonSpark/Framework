@@ -1,5 +1,5 @@
-﻿using DragonSpark.Application.Diagnostics;
-using DragonSpark.Compose;
+﻿using DragonSpark.Application.AspNet.Diagnostics;
+using DragonSpark.Application.Diagnostics;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Selection.Conditions;
 using Radzen;
@@ -14,10 +14,10 @@ sealed class SpecificationAwareExceptionNotification : IExceptionNotification
 	readonly Alter<Exception>       _select;
 
 	public SpecificationAwareExceptionNotification(IExceptionNotification previous)
-		: this(previous, Application.AspNet.Diagnostics.AggregateAwareIgnoreException.Default) {}
+		: this(previous, ShouldProcess.Default) {}
 
-	public SpecificationAwareExceptionNotification(IExceptionNotification previous, ICondition<Exception> ignore)
-		: this(ignore.Then().Inverse().Out(), previous, Flatten.Default.Get) {}
+	public SpecificationAwareExceptionNotification(IExceptionNotification previous, ICondition<Exception> process)
+		: this(process, previous, Flatten.Default.Get) {}
 
 	public SpecificationAwareExceptionNotification(ICondition<Exception> condition, IExceptionNotification previous,
 	                                               Alter<Exception> select)
