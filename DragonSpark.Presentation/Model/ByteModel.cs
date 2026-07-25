@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Presentation.Model;
+﻿namespace DragonSpark.Presentation.Model;
 
 public class ByteModel : BindingModel<byte>
 {

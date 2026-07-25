@@ -2,8 +2,6 @@
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Stop;
 using DragonSpark.Model.Selection;
-using System;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Messaging.Messages.Topics.Receive;
 

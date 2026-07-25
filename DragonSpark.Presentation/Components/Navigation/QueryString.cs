@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Primitives;
-using System.Collections.Generic;
 
 namespace DragonSpark.Presentation.Components.Navigation;
 

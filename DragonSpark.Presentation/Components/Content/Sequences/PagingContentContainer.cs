@@ -3,8 +3,6 @@ using DragonSpark.Compose;
 using DragonSpark.Contracts.Queries;
 using Microsoft.AspNetCore.Components;
 using Radzen;
-using System;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content.Sequences;
 

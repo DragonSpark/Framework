@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata;
-using System;
-using System.Collections.Generic;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Planning.Comparison;
 

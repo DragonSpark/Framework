@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Caching.Distributed;
-using System;
 
 namespace DragonSpark.Identity.Twitter;
 

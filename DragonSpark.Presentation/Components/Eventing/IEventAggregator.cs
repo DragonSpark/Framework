@@ -1,6 +1,4 @@
-﻿using System.Threading.Tasks;
-
-namespace DragonSpark.Presentation.Components.Eventing;
+﻿namespace DragonSpark.Presentation.Components.Eventing;
 
 /// <summary>
 /// ATTRIBUTION: https://github.com/mikoskinen/Blazor.EventAggregator

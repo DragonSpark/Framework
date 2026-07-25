@@ -1,9 +1,8 @@
-using System;
-using System.Security.Cryptography;
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Text;
+using System.Security.Cryptography;
 
 namespace DragonSpark.Server.Security;
 

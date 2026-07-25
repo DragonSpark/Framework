@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Application.AspNet.Communication;
 using DragonSpark.Model.Results;
-using System.Net.Http;
 
 namespace DragonSpark.Presentation.Environment;
 

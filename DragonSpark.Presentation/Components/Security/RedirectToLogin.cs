@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using DragonSpark.Application.AspNet.Navigation;
 using DragonSpark.Application.AspNet.Navigation.Security;
 using DragonSpark.Application.Navigation;

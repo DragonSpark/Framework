@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Model;
 using DragonSpark.Model.Sequences;
-using System.Collections.Generic;
 using System.Security.Claims;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Claims.Compile;

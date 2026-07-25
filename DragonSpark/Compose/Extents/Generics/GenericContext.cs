@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Compose.Extents.Generics;
+﻿namespace DragonSpark.Compose.Extents.Generics;
 
 public sealed class GenericContext
 {

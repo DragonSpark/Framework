@@ -1,4 +1,3 @@
-using System;
 using DragonSpark.Application.Security.Identity.Bearer;
 using DragonSpark.Composition;
 using DragonSpark.Model.Results;

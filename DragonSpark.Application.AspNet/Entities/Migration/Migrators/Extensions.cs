@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
+﻿namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
 public static class Extensions
 {

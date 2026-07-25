@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System.Collections.Generic;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Model;
 

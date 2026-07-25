@@ -1,5 +1,4 @@
-﻿using System;
-using DragonSpark.Model.Commands;
+﻿using DragonSpark.Model.Commands;
 using LightInject;
 using Microsoft.Extensions.DependencyInjection;
 

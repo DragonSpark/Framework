@@ -1,9 +1,7 @@
 ﻿using DragonSpark.Application.AspNet.Security.Identity.Authentication.Persist;
 using DragonSpark.Application.AspNet.Security.Identity.Claims.Compile;
 using DragonSpark.Application.Security.Identity.Claims;
-using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Authentication;
 

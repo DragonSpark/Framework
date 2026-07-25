@@ -3,7 +3,6 @@ using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace DragonSpark.Identity.Yahoo;
 

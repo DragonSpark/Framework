@@ -11,11 +11,7 @@ using DragonSpark.Model.Selection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NetFabric.Hyperlinq;
-using System;
 using System.Buffers;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Azure;
 
@@ -25,7 +21,7 @@ public static class Extensions
 
 	public static ISaveContent Save(this IContainer @this) => new SaveContent(@this.Write());
 
-	public static IPath Path(this IContainer @this) => new Path(@this.Get());
+	public static IPath Path(this IContainer @this) => new Storage.Path(@this.Get());
 
 	public static IEntry Entry(this IContainer @this) => new Entry(@this.Get());
 	

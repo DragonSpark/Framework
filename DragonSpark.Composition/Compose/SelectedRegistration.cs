@@ -3,7 +3,6 @@ using DragonSpark.Model.Selection;
 using DragonSpark.Reflection.Types;
 using JetBrains.Annotations;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace DragonSpark.Composition.Compose;
 

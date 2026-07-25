@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Text;
 using Microsoft.AspNetCore.Http;
-using System.Linq;
 
 namespace DragonSpark.Presentation.Environment;
 

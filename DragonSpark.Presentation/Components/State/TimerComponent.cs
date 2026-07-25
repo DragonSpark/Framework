@@ -1,8 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.Components;
-using System;
-using System.Threading.Tasks;
 using System.Timers;
 
 namespace DragonSpark.Presentation.Components.State;
@@ -13,7 +11,7 @@ public class TimerComponent : Microsoft.AspNetCore.Components.ComponentBase, IDi
 	Func<Task>      _refresh = null!;
 
 	[Parameter]
-	public Timer? Timer
+	public System.Timers.Timer? Timer
 	{
 		get => _timer;
 		set
@@ -33,7 +31,7 @@ public class TimerComponent : Microsoft.AspNetCore.Components.ComponentBase, IDi
 				}
 			}
 		}
-	}	Timer? _timer;
+	}	System.Timers.Timer? _timer;
 
 	[Parameter]
 	public bool AutoStart
@@ -76,7 +74,7 @@ public class TimerComponent : Microsoft.AspNetCore.Components.ComponentBase, IDi
 	{
 		base.OnInitialized();
 		_refresh = () => Updated.Invoke();
-		Timer    = new Timer();
+		Timer    = new();
 	}
 
 	protected override void OnAfterRender(bool firstRender)

@@ -4,8 +4,6 @@ using DragonSpark.Compose;
 using DragonSpark.Contracts.Messaging;
 using DragonSpark.Model.Operations;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Messaging.Messages.Queues.Durable;
 

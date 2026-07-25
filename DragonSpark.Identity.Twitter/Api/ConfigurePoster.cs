@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Model.Commands;
-using System.Net.Http;
 using System.Text;
 using Tweetinvi.Client;
 using Tweetinvi.Models;

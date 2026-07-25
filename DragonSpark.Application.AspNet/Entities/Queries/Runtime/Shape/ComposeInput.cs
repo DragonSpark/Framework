@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Contracts.Queries;
-using System.Linq;
 
 namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Shape;
 

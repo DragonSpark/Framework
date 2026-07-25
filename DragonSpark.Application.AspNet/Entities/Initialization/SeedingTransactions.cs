@@ -1,8 +1,6 @@
 using DragonSpark.Application.AspNet.Entities.Transactions;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Initialization;
 

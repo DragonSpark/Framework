@@ -2,7 +2,6 @@
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.Hosting;
-using System;
 using System.Reflection;
 
 namespace DragonSpark.Application.AspNet.Compose;

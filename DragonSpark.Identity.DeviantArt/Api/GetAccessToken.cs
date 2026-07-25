@@ -1,9 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
-using System;
-using System.Net.Http;
 using System.Net.Http.Json;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Identity.DeviantArt.Api;
 

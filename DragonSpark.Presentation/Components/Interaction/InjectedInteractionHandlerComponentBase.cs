@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Application.Model.Interaction;
 using DragonSpark.Model.Operations;
 using Microsoft.AspNetCore.Components;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Interaction;
 

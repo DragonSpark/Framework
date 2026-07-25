@@ -1,7 +1,6 @@
 ﻿using AspNet.Security.OAuth.Twitter;
 using DragonSpark.Application.AspNet.Security.Identity.Claims.Actions;
 using DragonSpark.Model.Commands;
-using System;
 
 namespace DragonSpark.Identity.Twitter;
 

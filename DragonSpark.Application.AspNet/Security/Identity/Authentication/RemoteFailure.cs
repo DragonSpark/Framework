@@ -2,7 +2,6 @@
 using DragonSpark.Model.Operations.Allocated;
 using DragonSpark.Text;
 using Microsoft.AspNetCore.Authentication;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Authentication;
 

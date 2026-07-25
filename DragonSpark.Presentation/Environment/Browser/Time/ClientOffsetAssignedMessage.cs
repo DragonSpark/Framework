@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Presentation.Environment.Browser.Time;
+﻿namespace DragonSpark.Presentation.Environment.Browser.Time;
 
 public sealed class ClientOffsetAssignedMessage : DragonSpark.Model.Results.Instance<TimeSpan>
 {

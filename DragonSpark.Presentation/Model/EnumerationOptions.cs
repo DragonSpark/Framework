@@ -1,7 +1,5 @@
 ﻿using DragonSpark.Model.Sequences;
 using Humanizer;
-using System;
-using System.Linq;
 
 namespace DragonSpark.Presentation.Model;
 

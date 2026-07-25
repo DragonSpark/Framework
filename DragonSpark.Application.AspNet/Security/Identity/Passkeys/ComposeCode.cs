@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text.Json;
+﻿using System.Text.Json;
 using DragonSpark.Application.AspNet.Security.Identity.Bearer;
 using DragonSpark.Model.Selection.Alterations;
 

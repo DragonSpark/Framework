@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Model.Selection.Conditions;
 using Microsoft.Data.SqlClient;
 using Microsoft.JSInterop;
-using System;
 
 namespace DragonSpark.Application.AspNet.Diagnostics;
 

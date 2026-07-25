@@ -3,8 +3,6 @@ using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Runtime;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Profile;
 

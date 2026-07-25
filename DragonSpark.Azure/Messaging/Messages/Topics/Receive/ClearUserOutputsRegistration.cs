@@ -2,7 +2,6 @@
 using DragonSpark.Model.Operations.Selection.Stop;
 using DragonSpark.Server.Output;
 using Microsoft.AspNetCore.OutputCaching;
-using System;
 
 namespace DragonSpark.Azure.Messaging.Messages.Topics.Receive;
 

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Server.Requests;
+﻿namespace DragonSpark.Server.Requests;
 
 public readonly record struct Unique<T>(uint? User, Guid Identity, T Subject);
 

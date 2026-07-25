@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Options;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.State;
 

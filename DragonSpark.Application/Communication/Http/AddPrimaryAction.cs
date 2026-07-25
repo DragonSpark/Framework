@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Http;
-using System.Net.Http;
 
 namespace DragonSpark.Application.Communication.Http;
 

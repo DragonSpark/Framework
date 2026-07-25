@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using Azure.Messaging.ServiceBus;
 using DragonSpark.Compose;
 using DragonSpark.Contracts.Messaging;

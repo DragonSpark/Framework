@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Contracts.Worker;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace DragonSpark.Application.AspNet.Workers;

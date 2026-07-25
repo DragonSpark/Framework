@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Presentation.Components.Forms.Validation;
+﻿namespace DragonSpark.Presentation.Components.Forms.Validation;
 
 public interface IValidated
 {

@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Model.Results;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore.Migrations;
-using System;
 
 namespace DragonSpark.Application.AspNet.Entities.Initialization;
 

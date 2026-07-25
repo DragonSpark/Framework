@@ -2,7 +2,6 @@
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations.Results;
 using Microsoft.AspNetCore.Components.Authorization;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Authentication;
 

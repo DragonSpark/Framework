@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
-namespace DragonSpark.Application.AspNet.Entities.Migration.Planning.Comparison;
+﻿namespace DragonSpark.Application.AspNet.Entities.Migration.Planning.Comparison;
 
 sealed class KeyRecordEqualityComparer : IEqualityComparer<KeyRecord>
 {

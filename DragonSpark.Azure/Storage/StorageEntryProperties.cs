@@ -1,6 +1,4 @@
 ﻿using Azure;
-using System;
-using System.Collections.Generic;
 
 namespace DragonSpark.Azure.Storage;
 

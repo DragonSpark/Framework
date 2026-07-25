@@ -1,4 +1,3 @@
-using System.Net.Http;
 using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 using JetBrains.Annotations;

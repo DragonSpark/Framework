@@ -3,7 +3,6 @@ using JetBrains.Annotations;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Configuration;
-using System;
 
 namespace DragonSpark.Diagnostics;
 

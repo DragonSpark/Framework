@@ -1,6 +1,5 @@
 ﻿using AspNet.Security.OAuth.Patreon;
 using DragonSpark.Model.Commands;
-using System;
 
 namespace DragonSpark.Identity.Patreon;
 

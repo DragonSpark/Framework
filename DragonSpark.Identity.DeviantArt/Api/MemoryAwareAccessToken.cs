@@ -2,7 +2,6 @@
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations.Results;
 using Microsoft.Extensions.Caching.Memory;
-using System;
 
 namespace DragonSpark.Identity.DeviantArt.Api;
 

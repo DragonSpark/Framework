@@ -1,6 +1,5 @@
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using System;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.State;
 

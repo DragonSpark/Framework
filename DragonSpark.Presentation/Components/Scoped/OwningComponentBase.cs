@@ -2,8 +2,6 @@
 using DragonSpark.Composition.Scopes.Hierarchy;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Scoped;
 

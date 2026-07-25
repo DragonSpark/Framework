@@ -1,4 +1,3 @@
-using System;
 using DragonSpark.Application.AspNet.Entities;
 using DragonSpark.Application.AspNet.Entities.Queries.Compiled.Evaluation;
 using DragonSpark.Contracts.Messaging;

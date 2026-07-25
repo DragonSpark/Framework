@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Model.Commands;
 using LightInject;
 using Microsoft.Extensions.Hosting;
-using System;
 
 namespace DragonSpark.Composition;
 

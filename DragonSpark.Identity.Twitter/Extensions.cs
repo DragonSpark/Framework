@@ -3,7 +3,6 @@ using DragonSpark.Application.AspNet.Compose;
 using DragonSpark.Application.AspNet.Security.Identity.Claims.Actions;
 using DragonSpark.Identity.Twitter.Api;
 using DragonSpark.Identity.Twitter.Claims;
-using System;
 
 namespace DragonSpark.Identity.Twitter;
 

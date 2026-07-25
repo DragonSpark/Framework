@@ -2,7 +2,6 @@
 using DragonSpark.Model.Commands;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
-using System;
 
 namespace DragonSpark.Drawing;
 

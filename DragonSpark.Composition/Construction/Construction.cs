@@ -2,7 +2,6 @@
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Runtime.Activation;
 using LightInject;
-using System;
 using Activator = DragonSpark.Runtime.Activation.Activator;
 
 namespace DragonSpark.Composition.Construction;

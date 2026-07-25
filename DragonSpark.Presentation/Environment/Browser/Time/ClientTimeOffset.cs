@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations.Results.Stop;
-using System;
 
 namespace DragonSpark.Presentation.Environment.Browser.Time;
 

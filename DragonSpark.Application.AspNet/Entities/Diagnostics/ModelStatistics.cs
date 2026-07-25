@@ -3,7 +3,6 @@ using DragonSpark.Model.Commands;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Logging;
-using System.Linq;
 
 namespace DragonSpark.Application.AspNet.Entities.Diagnostics;
 

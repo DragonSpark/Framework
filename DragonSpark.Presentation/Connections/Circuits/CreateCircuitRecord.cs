@@ -3,7 +3,6 @@ using DragonSpark.Model.Operations.Selection;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Server.Circuits;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Connections.Circuits;
 

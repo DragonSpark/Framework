@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Runtime.Environment;
 using DragonSpark.Text;
-using System;
 using System.Reflection;
 
 namespace DragonSpark.Presentation.Environment.Browser;

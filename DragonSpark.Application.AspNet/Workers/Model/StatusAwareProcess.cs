@@ -4,9 +4,6 @@ using DragonSpark.Diagnostics.Logging;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Stop;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Workers.Model;
 

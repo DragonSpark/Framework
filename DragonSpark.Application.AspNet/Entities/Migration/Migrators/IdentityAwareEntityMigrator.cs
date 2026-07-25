@@ -3,7 +3,6 @@ using DragonSpark.Model.Operations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 

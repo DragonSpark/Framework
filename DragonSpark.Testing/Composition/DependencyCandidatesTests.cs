@@ -1,8 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Composition.Compose;
 using FluentAssertions;
-using System;
-using System.Collections.Generic;
 using Xunit;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Local

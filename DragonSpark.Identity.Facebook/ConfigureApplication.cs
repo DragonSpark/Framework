@@ -3,7 +3,6 @@ using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Facebook;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace DragonSpark.Identity.Facebook;
 

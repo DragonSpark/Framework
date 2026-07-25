@@ -1,9 +1,7 @@
 ﻿using BenchmarkDotNet.Attributes;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Testing.Objects;
-using System;
 using System.Collections.Immutable;
-using System.Linq;
 
 namespace DragonSpark.Testing;
 

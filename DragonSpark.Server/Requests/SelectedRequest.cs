@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations.Selection.Stop;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Server.Requests;
 

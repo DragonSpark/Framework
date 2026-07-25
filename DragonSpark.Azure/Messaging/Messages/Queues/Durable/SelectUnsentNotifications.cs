@@ -1,8 +1,6 @@
 using DragonSpark.Application.AspNet.Entities.Queries.Composition;
 using DragonSpark.Application.AspNet.Workers;
 using DragonSpark.Contracts.Messaging;
-using System;
-using System.Linq;
 
 namespace DragonSpark.Azure.Messaging.Messages.Queues.Durable;
 

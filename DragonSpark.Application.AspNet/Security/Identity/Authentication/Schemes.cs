@@ -2,7 +2,6 @@
 using DragonSpark.Model.Operations.Results;
 using DragonSpark.Model.Sequences;
 using NetFabric.Hyperlinq;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Authentication;
 

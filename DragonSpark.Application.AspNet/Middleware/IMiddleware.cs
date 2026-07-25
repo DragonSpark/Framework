@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Model.Operations.Allocated;
 using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Middleware;
 

@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Model;
-using System.Linq;
 
 namespace DragonSpark.Application.AspNet.Entities.Queries.Composition;
 

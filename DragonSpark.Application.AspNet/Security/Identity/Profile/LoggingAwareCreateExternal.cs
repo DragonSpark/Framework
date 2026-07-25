@@ -3,7 +3,6 @@ using DragonSpark.Diagnostics.Logging;
 using DragonSpark.Model.Operations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Profile;
 

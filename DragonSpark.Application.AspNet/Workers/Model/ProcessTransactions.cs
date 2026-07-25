@@ -1,7 +1,5 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Transactions;
 using DragonSpark.Compose;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Workers.Model;
 

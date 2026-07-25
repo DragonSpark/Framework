@@ -1,8 +1,5 @@
 ﻿using DragonSpark.Model.Results;
 using Microsoft.EntityFrameworkCore.Metadata;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration;
 

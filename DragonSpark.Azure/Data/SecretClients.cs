@@ -5,13 +5,12 @@ using DragonSpark.Composition;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Selection;
 using Microsoft.Extensions.Configuration;
-using System;
 
 namespace DragonSpark.Azure.Data;
 
 sealed class SecretClients : ISelect<Uri, SecretClient>,
-                             ISelect<IConfiguration, SecretClient>,
-                             ISelect<HostingInput, SecretClient>
+							 ISelect<IConfiguration, SecretClient>,
+							 ISelect<HostingInput, SecretClient>
 {
 	public static SecretClients Default { get; } = new();
 
@@ -45,8 +44,8 @@ sealed class SecretClients : ISelect<Uri, SecretClient>,
 	{
 		var (_, context, builder) = parameter;
 		var configuration = context.Configuration.Section<ProtectedConfiguration>()
-		                    ??
-		                    builder.Build().Section<ProtectedConfiguration>().Verify();
+							??
+							builder.Build().Section<ProtectedConfiguration>().Verify();
 		return Get(configuration);
 	}
 }

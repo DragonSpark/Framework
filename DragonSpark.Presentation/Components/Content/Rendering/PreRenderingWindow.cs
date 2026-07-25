@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Presentation.Components.Content.Rendering;
+﻿namespace DragonSpark.Presentation.Components.Content.Rendering;
 
 sealed class PreRenderingWindow : DragonSpark.Model.Results.Instance<TimeSpan>
 {

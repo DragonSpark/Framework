@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Model.Sequences;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 
 namespace DragonSpark.Compose.Extents.Selections;

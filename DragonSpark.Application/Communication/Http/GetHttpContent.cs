@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Net.Http;
-using DragonSpark.Model.Selection;
+﻿using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Application.Communication.Http;
 

@@ -1,7 +1,6 @@
-using System.Linq;
-using System.Reflection;
 using DragonSpark.Runtime.Environment;
 using FluentAssertions;
+using System.Reflection;
 using Xunit;
 
 namespace DragonSpark.Testing.Runtime.Environment;

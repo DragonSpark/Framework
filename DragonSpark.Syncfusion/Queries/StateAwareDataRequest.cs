@@ -4,7 +4,6 @@ using DragonSpark.Model.Results;
 using DragonSpark.Presentation.Environment.Browser;
 using Syncfusion.Blazor;
 using Syncfusion.Blazor.Data;
-using System.Threading.Tasks;
 
 namespace DragonSpark.SyncfusionRendering.Queries;
 

@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Model.Selection.Conditions;
-using System.Linq;
 
 namespace DragonSpark.Application.AspNet.Entities.Diagnostics;
 

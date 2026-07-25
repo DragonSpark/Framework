@@ -1,4 +1,3 @@
-using System.Net.Http;
 using DragonSpark.Diagnostics;
 using Polly.Extensions.Http;
 

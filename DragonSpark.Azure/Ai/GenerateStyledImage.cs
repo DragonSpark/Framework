@@ -2,7 +2,6 @@ using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Selection.Stop;
 using DragonSpark.Model.Selection.Alterations;
 using OpenAI.Images;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Ai;
 

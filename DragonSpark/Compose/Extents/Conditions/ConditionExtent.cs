@@ -2,7 +2,6 @@
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection.Conditions;
-using System;
 using System.Reflection;
 
 namespace DragonSpark.Compose.Extents.Conditions;

@@ -6,8 +6,6 @@ using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Runtime;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace DragonSpark.Testing.Composition;

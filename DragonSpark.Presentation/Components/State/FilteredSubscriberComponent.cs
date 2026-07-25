@@ -1,8 +1,6 @@
 ﻿using DragonSpark.Application.Connections.Events;
 using DragonSpark.Model;
 using Microsoft.AspNetCore.Components;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.State;
 

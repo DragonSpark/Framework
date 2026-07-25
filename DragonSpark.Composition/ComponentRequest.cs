@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Model.Sequences;
-using System;
 using Array = DragonSpark.Model.Sequences.Array;
 
 namespace DragonSpark.Composition;

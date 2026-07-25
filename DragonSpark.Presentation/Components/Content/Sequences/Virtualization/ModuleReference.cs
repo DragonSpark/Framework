@@ -1,7 +1,5 @@
 using DragonSpark.Presentation.Environment.Browser;
 using Microsoft.JSInterop;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content.Sequences.Virtualization;
 

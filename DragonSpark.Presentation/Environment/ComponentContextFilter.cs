@@ -3,8 +3,6 @@ using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Environment;
 

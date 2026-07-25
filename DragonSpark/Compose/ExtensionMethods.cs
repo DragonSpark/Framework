@@ -2,7 +2,6 @@ using DragonSpark.Diagnostics.Logging;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Sequences;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using Exception = System.Exception;
@@ -34,13 +33,13 @@ public static partial class ExtensionMethods
 	}
 
 	public static void LogTrace<T1, T2>(this ILogger @this, Exception exception, string template, T1 first,
-	                                    T2 second)
+										T2 second)
 	{
 		LoggerExtensions.LogTrace(@this, exception, template, first, second);
 	}
 
 	public static void LogTrace<T1, T2, T3>(this ILogger @this, Exception exception, string template, T1 first,
-	                                        T2 second, T3 third)
+											T2 second, T3 third)
 	{
 		LoggerExtensions.LogTrace(@this, exception, template, first, second, third);
 	}
@@ -66,13 +65,13 @@ public static partial class ExtensionMethods
 	}
 
 	public static void LogDebug<T1, T2>(this ILogger @this, Exception exception, string template, T1 first,
-	                                    T2 second)
+										T2 second)
 	{
 		LoggerExtensions.LogDebug(@this, exception, template, first, second);
 	}
 
 	public static void LogDebug<T1, T2, T3>(this ILogger @this, Exception exception, string template, T1 first,
-	                                        T2 second, T3 third)
+											T2 second, T3 third)
 	{
 		LoggerExtensions.LogDebug(@this, exception, template, first, second, third);
 	}
@@ -88,7 +87,7 @@ public static partial class ExtensionMethods
 	}
 
 	public static void LogInformation<T1, T2, T3>(this ILogger @this, string template, T1 first, T2 second,
-	                                              T3 third)
+												  T3 third)
 	{
 		LoggerExtensions.LogInformation(@this, template, first, second, third);
 	}
@@ -99,13 +98,13 @@ public static partial class ExtensionMethods
 	}
 
 	public static void LogInformation<T1, T2>(this ILogger @this, Exception exception, string template, T1 first,
-	                                          T2 second)
+											  T2 second)
 	{
 		LoggerExtensions.LogInformation(@this, exception, template, first, second);
 	}
 
 	public static void LogInformation<T1, T2, T3>(this ILogger @this, Exception exception, string template,
-	                                              T1 first, T2 second, T3 third)
+												  T1 first, T2 second, T3 third)
 	{
 		LoggerExtensions.LogInformation(@this, exception, template, first, second, third);
 	}
@@ -131,13 +130,13 @@ public static partial class ExtensionMethods
 	}
 
 	public static void LogWarning<T1, T2>(this ILogger @this, Exception exception, string template, T1 first,
-	                                      T2 second)
+										  T2 second)
 	{
 		LoggerExtensions.LogWarning(@this, exception, template, first, second);
 	}
 
 	public static void LogWarning<T1, T2, T3>(this ILogger @this, Exception exception, string template, T1 first,
-	                                          T2 second, T3 third)
+											  T2 second, T3 third)
 	{
 		LoggerExtensions.LogWarning(@this, exception, template, first, second, third);
 	}
@@ -163,13 +162,13 @@ public static partial class ExtensionMethods
 	}
 
 	public static void LogError<T1, T2>(this ILogger @this, Exception exception, string template, T1 first,
-	                                    T2 second)
+										T2 second)
 	{
 		LoggerExtensions.LogError(@this, exception, template, first, second);
 	}
 
 	public static void LogError<T1, T2, T3>(this ILogger @this, Exception exception, string template, T1 first,
-	                                        T2 second, T3 third)
+											T2 second, T3 third)
 	{
 		LoggerExtensions.LogError(@this, exception, template, first, second, third);
 	}
@@ -195,19 +194,19 @@ public static partial class ExtensionMethods
 	}
 
 	public static void LogCritical<T1, T2>(this ILogger @this, Exception exception, string template, T1 first,
-	                                       T2 second)
+										   T2 second)
 	{
 		LoggerExtensions.LogCritical(@this, exception, template, first, second);
 	}
 
 	public static void LogCritical<T1, T2, T3>(this ILogger @this, Exception exception, string template, T1 first,
-	                                           T2 second, T3 third)
+											   T2 second, T3 third)
 	{
 		LoggerExtensions.LogCritical(@this, exception, template, first, second, third);
 	}
 
 	public static void Execute(this ICommand<ExceptionParameter<Array<object>>> @this,
-	                           Exception exception, params object[] arguments)
+							   Exception exception, params object[] arguments)
 	{
 		@this.Execute(new(exception, arguments));
 	}
@@ -218,13 +217,13 @@ public static partial class ExtensionMethods
 	}
 
 	public static void Execute<T1, T2>(this ICommand<ExceptionParameter<ValueTuple<T1, T2>>> @this,
-	                                   Exception exception, T1 first, T2 second)
+									   Exception exception, T1 first, T2 second)
 	{
 		@this.Execute(new(exception, (first, second)));
 	}
 
 	public static void Execute<T1, T2, T3>(this ICommand<ExceptionParameter<ValueTuple<T1, T2, T3>>> @this,
-	                                       Exception exception, T1 first, T2 second, T3 third)
+										   Exception exception, T1 first, T2 second, T3 third)
 	{
 		@this.Execute(new(exception, (first, second, third)));
 	}
@@ -239,15 +238,15 @@ public static partial class ExtensionMethods
 		=> @this.Get(new InvalidOperationException(), first, second);
 
 	public static TemplateException Get<T1, T2>(this ITemplate<(T1, T2)> @this,
-	                                            Exception exception, T1 first, T2 second)
+												Exception exception, T1 first, T2 second)
 		=> @this.Get(new(exception, (first, second)));
 
 	public static TemplateException Get<T1, T2, T3>(this ITemplate<(T1, T2, T3)> @this,
-	                                                T1 first, T2 second, T3 third)
+													T1 first, T2 second, T3 third)
 		=> @this.Get(new InvalidOperationException(), first, second, third);
 
 	public static TemplateException Get<T1, T2, T3>(this ITemplate<(T1, T2, T3)> @this,
-	                                                Exception exception, T1 first, T2 second, T3 third)
+													Exception exception, T1 first, T2 second, T3 third)
 		=> @this.Get(new(exception, (first, second, third)));
 
 	extension(string @this)
@@ -271,12 +270,12 @@ public static partial class ExtensionMethods
 
 	extension([NotNullWhen(false)]string? @this)
 	{
-	    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
 		public bool IsNullOrEmpty() => string.IsNullOrEmpty(@this);
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public bool IsNullOrWhiteSpace() => string.IsNullOrWhiteSpace(@this);
-    }
+		[MethodImpl(MethodImplOptions.AggressiveInlining)]
+		public bool IsNullOrWhiteSpace() => string.IsNullOrWhiteSpace(@this);
+	}
 	
 	extension([NotNullWhen(true)]string? @this)
 	{
@@ -284,13 +283,13 @@ public static partial class ExtensionMethods
 		public bool IsAssigned() => !string.IsNullOrEmpty(@this);
 		
 	}
-    extension(DateOnly @this)
-    {
-        public DateTime ToDateTimeLocal() => @this.ToDateTime(TimeOnly.MinValue);
+	extension(DateOnly @this)
+	{
+		public DateTime ToDateTimeLocal() => @this.ToDateTime(TimeOnly.MinValue);
 
-        public DateTime ToDateTime() => @this.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
-    }
+		public DateTime ToDateTime() => @this.ToDateTime(TimeOnly.MinValue, DateTimeKind.Utc);
+	}
 
-    public static ReadOnlyMemory<T> AsReadOnly<T>(this Memory<T> @this) => @this;
-    public static ReadOnlySpan<T> AsReadOnly<T>(this Span<T> @this) => @this;
+	public static ReadOnlyMemory<T> AsReadOnly<T>(this Memory<T> @this) => @this;
+	public static ReadOnlySpan<T> AsReadOnly<T>(this Span<T> @this) => @this;
 }

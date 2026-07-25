@@ -1,4 +1,3 @@
-using System.Net.Http;
 using DragonSpark.Model.Selection.Conditions;
 
 namespace DragonSpark.Application.Communication.Http.Messaging;

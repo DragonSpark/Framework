@@ -1,5 +1,4 @@
 ﻿using Syncfusion.Blazor;
-using System.Linq;
 
 namespace DragonSpark.SyncfusionRendering.Queries;
 

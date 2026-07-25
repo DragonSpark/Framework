@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Composition;
+﻿namespace DragonSpark.Composition;
 
 [AttributeUsage(AttributeTargets.Constructor)]
 public sealed class CandidateAttribute : Attribute

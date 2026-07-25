@@ -1,10 +1,8 @@
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
 using DragonSpark.Model;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Selection.Stores;
+using System.Collections.Concurrent;
 
 namespace DragonSpark.Compose;
 
@@ -22,7 +20,7 @@ public static partial class ExtensionMethods
 
 	public static IConditional<TIn, TOut> ToStore<TIn, TOut>(this IReadOnlyDictionary<TIn, TOut> @this)
 		where TIn : notnull
-		=> Compose.Start.An.Extent<Lookup<TIn, TOut>>().From(@this);
+		=> Compose.Start.An.Extent<DragonSpark.Model.Selection.Stores.Lookup<TIn, TOut>>().From(@this);
 
 	public static ITable<TIn, TOut> ToTable<TIn, TOut>(this IDictionary<TIn, TOut> @this)
 		where TIn : notnull => ToTable(@this, _ => default!);

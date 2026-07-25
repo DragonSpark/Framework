@@ -2,7 +2,6 @@
 using DragonSpark.Model.Selection;
 using DragonSpark.Runtime.Environment;
 using Microsoft.Extensions.Hosting;
-using System.IO;
 
 namespace DragonSpark.Application.Configuration;
 

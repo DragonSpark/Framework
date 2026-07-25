@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using Microsoft.IdentityModel.Tokens;
-using System;
 using System.Security.Claims;
 
 namespace DragonSpark.Application.Security.Identity.Bearer;

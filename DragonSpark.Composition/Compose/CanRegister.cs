@@ -1,8 +1,6 @@
 ﻿using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences.Collections;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Linq;
 
 namespace DragonSpark.Composition.Compose;
 

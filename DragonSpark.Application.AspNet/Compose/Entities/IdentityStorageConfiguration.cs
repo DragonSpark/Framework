@@ -1,4 +1,3 @@
-using System;
 using DragonSpark.Application.AspNet.Entities.Configure;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;

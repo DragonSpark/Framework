@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Composition.Scopes.Hierarchy;
+﻿namespace DragonSpark.Composition.Scopes.Hierarchy;
 
 class ServiceProvider : IParentServiceProvider
 {

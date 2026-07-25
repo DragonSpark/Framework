@@ -4,7 +4,6 @@ using DragonSpark.Model.Selection;
 using DragonSpark.Testing.Objects;
 using FluentAssertions;
 using NetFabric.Hyperlinq;
-using System.Linq;
 using Xunit;
 using Array = System.Array;
 using Enumerable = System.Linq.Enumerable;

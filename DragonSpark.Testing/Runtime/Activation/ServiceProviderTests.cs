@@ -2,7 +2,6 @@
 using DragonSpark.Compose;
 using DragonSpark.Runtime.Activation;
 using FluentAssertions;
-using System;
 using Xunit;
 
 namespace DragonSpark.Testing.Runtime.Activation;

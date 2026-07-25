@@ -4,8 +4,6 @@ using DragonSpark.Application.AspNet.Security.Identity.Authentication;
 using DragonSpark.Application.AspNet.Security.Identity.Claims.Compile;
 using DragonSpark.Compose;
 using DragonSpark.Model.Sequences;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 
 namespace DragonSpark.Identity.PayPal;

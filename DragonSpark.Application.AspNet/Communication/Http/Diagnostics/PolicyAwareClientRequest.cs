@@ -2,8 +2,6 @@
 using DragonSpark.Diagnostics.Logging;
 using DragonSpark.Model.Operations.Stop;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Net.Http;
 
 namespace DragonSpark.Application.AspNet.Communication.Http.Diagnostics;
 

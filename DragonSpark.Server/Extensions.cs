@@ -1,5 +1,3 @@
-using System;
-using System.Security.Claims;
 using DragonSpark.Application.AspNet;
 using DragonSpark.Application.AspNet.Compose;
 using DragonSpark.Compose;
@@ -10,6 +8,7 @@ using DragonSpark.Server.Security.Content;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using System.Security.Claims;
 
 namespace DragonSpark.Server;
 

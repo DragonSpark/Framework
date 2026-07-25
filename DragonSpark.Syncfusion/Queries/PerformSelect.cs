@@ -2,7 +2,6 @@
 using NetFabric.Hyperlinq;
 using Syncfusion.Blazor.Data;
 using System.Buffers;
-using System.Linq;
 
 namespace DragonSpark.SyncfusionRendering.Queries;
 

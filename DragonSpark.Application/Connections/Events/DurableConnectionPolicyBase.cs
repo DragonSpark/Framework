@@ -2,8 +2,6 @@
 using DragonSpark.Diagnostics;
 using DragonSpark.Model.Results;
 using Polly;
-using System;
-using System.Net.Http;
 using Policy = Polly.Policy;
 
 namespace DragonSpark.Application.Connections.Events;

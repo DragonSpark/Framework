@@ -5,7 +5,6 @@ using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
 using Syncfusion.Blazor;
 using Syncfusion.Blazor.Data;
-using System.Threading.Tasks;
 
 namespace DragonSpark.SyncfusionRendering.Queries;
 

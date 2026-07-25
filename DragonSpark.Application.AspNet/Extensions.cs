@@ -23,10 +23,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 using System.Security.Claims;
-using System.Threading;
-using System.Threading.Tasks;
 using IdentityUser = DragonSpark.Application.AspNet.Security.Identity.IdentityUser;
 
 namespace DragonSpark.Application.AspNet;

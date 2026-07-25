@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Contracts.Worker;
-using System;
 
 namespace DragonSpark.Application.AspNet.Workers;
 

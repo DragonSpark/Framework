@@ -1,4 +1,3 @@
-using System;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using IdentityUser = DragonSpark.Application.AspNet.Security.Identity.IdentityUser;

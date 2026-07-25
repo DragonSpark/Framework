@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace DragonSpark.SyncfusionRendering.Components;
+﻿namespace DragonSpark.SyncfusionRendering.Components;
 
 public sealed class EditToolbar : List<string>
 {

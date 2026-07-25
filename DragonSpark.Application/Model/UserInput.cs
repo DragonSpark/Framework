@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Application.Model;
+﻿namespace DragonSpark.Application.Model;
 
 public readonly record struct UserInput<T>(ulong User, T Input) : IUserIdentity
 {

@@ -1,4 +1,3 @@
-using System;
 using DragonSpark.Application.Security.Identity.Bearer;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Sequences;

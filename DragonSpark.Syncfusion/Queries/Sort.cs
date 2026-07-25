@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Compose;
 using Syncfusion.Blazor;
-using System.Threading.Tasks;
 
 namespace DragonSpark.SyncfusionRendering.Queries;
 

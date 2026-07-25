@@ -2,9 +2,7 @@
 using DragonSpark.Diagnostics.Logging;
 using DragonSpark.Model.Operations;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Net.Http.Json;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Identity.DeviantArt.Api;
 

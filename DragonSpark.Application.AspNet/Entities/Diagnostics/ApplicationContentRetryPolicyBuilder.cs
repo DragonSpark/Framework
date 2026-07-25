@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Diagnostics;
-using System;
 
 namespace DragonSpark.Application.AspNet.Entities.Diagnostics;
 

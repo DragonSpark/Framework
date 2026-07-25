@@ -1,8 +1,5 @@
 ﻿using DragonSpark.Compose;
 using Microsoft.Extensions.Hosting;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Messaging.Messages.Topics.Receive;
 

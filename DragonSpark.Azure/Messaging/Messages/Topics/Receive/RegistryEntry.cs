@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Azure.Messaging.Messages.Topics.Receive;
+﻿namespace DragonSpark.Azure.Messaging.Messages.Topics.Receive;
 
 public sealed record RegistryEntry(Type MessageType, Handlers Handlers)
 {

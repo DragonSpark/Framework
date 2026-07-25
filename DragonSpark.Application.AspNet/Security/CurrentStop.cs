@@ -1,6 +1,4 @@
-﻿using System.Threading;
-
-namespace DragonSpark.Application.AspNet.Security;
+﻿namespace DragonSpark.Application.AspNet.Security;
 
 sealed class CurrentStop : ICurrentStop
 {

@@ -1,8 +1,6 @@
 ﻿using DragonSpark.Application.Diagnostics;
 using DragonSpark.Model.Selection.Alterations;
 using Microsoft.AspNetCore.Components;
-using System;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Diagnostics;
 

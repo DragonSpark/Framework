@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using System;
 
 namespace DragonSpark.Application.AspNet.Compose;
 

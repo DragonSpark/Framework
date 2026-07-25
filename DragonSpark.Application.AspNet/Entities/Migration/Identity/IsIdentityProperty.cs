@@ -2,7 +2,6 @@
 using DragonSpark.Model.Sequences;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
-using System;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Identity;
 

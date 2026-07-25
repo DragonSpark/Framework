@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Application.Diagnostics;
 using DragonSpark.Compose;
 using DragonSpark.Model.Results;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Connections.Circuits;
 

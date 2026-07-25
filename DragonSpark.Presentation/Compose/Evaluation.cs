@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Compose;
 using Microsoft.AspNetCore.Components;
-using System;
 
 namespace DragonSpark.Presentation.Compose;
 

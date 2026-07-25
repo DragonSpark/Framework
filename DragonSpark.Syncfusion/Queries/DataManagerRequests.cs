@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Contracts.Queries;
 using DragonSpark.Model.Selection;
 using Syncfusion.Blazor;
-using System;
 
 namespace DragonSpark.SyncfusionRendering.Queries;
 

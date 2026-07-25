@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace DragonSpark.Application.Model.Sequences;
+﻿namespace DragonSpark.Application.Model.Sequences;
 
 public sealed class MembershipTransaction<T> : MembershipTransaction<T, T>
 {

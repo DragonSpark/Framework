@@ -1,5 +1,3 @@
-using System;
-
 namespace DragonSpark.Application.Security;
 
 public sealed class HexNonce : NonceBase

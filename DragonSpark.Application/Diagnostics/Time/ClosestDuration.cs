@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Model.Selection;
 using DragonSpark.Runtime;
-using System;
 
 namespace DragonSpark.Application.Diagnostics.Time;
 

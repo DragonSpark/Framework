@@ -3,7 +3,6 @@ using DragonSpark.Application.AspNet.Security.Identity.Claims.Actions;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace DragonSpark.Identity.PayPal;
 

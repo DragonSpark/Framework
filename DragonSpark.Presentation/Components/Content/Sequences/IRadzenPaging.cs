@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Model.Operations.Allocated.Stop;
 using Radzen;
-using System.Collections.Generic;
 
 namespace DragonSpark.Presentation.Components.Content.Sequences;
 

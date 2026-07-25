@@ -3,7 +3,6 @@ using DragonSpark.Compose;
 using DragonSpark.Diagnostics.Logging;
 using DragonSpark.Model.Operations.Allocated;
 using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Messaging.Messages.Topics.Receive;
 

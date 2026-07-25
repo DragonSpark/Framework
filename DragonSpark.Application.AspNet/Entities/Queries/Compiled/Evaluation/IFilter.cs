@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Model.Selection;
-using System.Linq;
 
 namespace DragonSpark.Application.AspNet.Entities.Queries.Compiled.Evaluation;
 

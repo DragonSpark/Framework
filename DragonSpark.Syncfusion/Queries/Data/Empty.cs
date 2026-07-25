@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Contracts.Queries;
-using System.Collections.Generic;
 
 namespace DragonSpark.SyncfusionRendering.Queries.Data;
 

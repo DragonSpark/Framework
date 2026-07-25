@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.Components;
-using System;
 
 namespace DragonSpark.Application.AspNet.Navigation;
 

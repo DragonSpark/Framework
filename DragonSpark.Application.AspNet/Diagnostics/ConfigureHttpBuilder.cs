@@ -2,8 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Http.Resilience;
 using Polly;
-using System;
-using System.Net.Http;
 
 namespace DragonSpark.Application.AspNet.Diagnostics;
 

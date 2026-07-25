@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Application.AspNet;
 using Microsoft.AspNetCore.Http;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Server.Security.Content;
 

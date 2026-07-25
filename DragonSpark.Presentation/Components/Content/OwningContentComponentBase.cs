@@ -2,7 +2,6 @@
 using DragonSpark.Model.Results;
 using DragonSpark.Presentation.Components.Content.Rendering;
 using Microsoft.AspNetCore.Components;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Presentation.Components.Content;
 

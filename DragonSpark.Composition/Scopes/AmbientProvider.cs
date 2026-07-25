@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Model.Results;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace DragonSpark.Composition.Scopes;
 

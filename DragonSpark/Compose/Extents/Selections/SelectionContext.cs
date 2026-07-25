@@ -5,7 +5,6 @@ using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Runtime.Activation;
 using DragonSpark.Runtime.Objects;
-using System;
 using System.Reflection;
 
 namespace DragonSpark.Compose.Extents.Selections;

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DragonSpark.Application.AspNet.Entities.Transactions;
+﻿namespace DragonSpark.Application.AspNet.Entities.Transactions;
 
 public interface IScopedTransaction : ITransaction
 {

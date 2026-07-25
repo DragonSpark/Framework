@@ -1,8 +1,5 @@
 ﻿using Azure.Messaging.ServiceBus;
 using DragonSpark.Compose;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Azure.Messaging.Messages.Topics.Receive;
 

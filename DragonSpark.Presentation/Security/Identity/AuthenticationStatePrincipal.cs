@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.Components.Authorization;
-using System;
 using System.Security.Claims;
 
 namespace DragonSpark.Presentation.Security.Identity;

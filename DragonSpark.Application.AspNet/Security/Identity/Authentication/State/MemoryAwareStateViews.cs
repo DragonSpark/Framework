@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations.Selection;
 using Microsoft.Extensions.Caching.Memory;
-using System;
 using System.Security.Claims;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.State;

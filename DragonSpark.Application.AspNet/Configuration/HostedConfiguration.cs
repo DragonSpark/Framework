@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using DragonSpark.Model.Sequences;
 using Microsoft.Extensions.Configuration;
 

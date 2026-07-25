@@ -1,5 +1,3 @@
-using System;
-
 namespace DragonSpark.Application.AspNet.Workers;
 
 public sealed class ProcessNotification

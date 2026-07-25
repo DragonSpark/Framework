@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OAuth.Claims;
-using System;
 using System.Text.Json;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Claims.Actions;

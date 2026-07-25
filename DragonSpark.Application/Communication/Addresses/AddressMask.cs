@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Application.Security.Data;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Text;
-using System.Linq;
 using System.Net.Mail;
 
 namespace DragonSpark.Application.Communication.Addresses;

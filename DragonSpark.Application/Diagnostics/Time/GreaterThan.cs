@@ -1,5 +1,4 @@
-﻿using System;
-using DragonSpark.Runtime;
+﻿using DragonSpark.Runtime;
 
 namespace DragonSpark.Application.Diagnostics.Time;
 

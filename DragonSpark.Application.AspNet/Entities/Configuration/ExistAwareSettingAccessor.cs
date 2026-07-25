@@ -4,7 +4,6 @@ using DragonSpark.Model;
 using DragonSpark.Model.Operations;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Logging;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Configuration;
 

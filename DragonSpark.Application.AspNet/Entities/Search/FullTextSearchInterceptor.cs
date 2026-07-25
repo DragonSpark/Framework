@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Model.Commands;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using System.Data.Common;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Search;
 
@@ -25,7 +24,7 @@ public sealed class FullTextSearchInterceptor : DbCommandInterceptor
 	// ReSharper disable once TooManyArguments
 	public override ValueTask<InterceptionResult<DbDataReader>> ReaderExecutingAsync(
 		DbCommand command, CommandEventData eventData, InterceptionResult<DbDataReader> result,
-		System.Threading.CancellationToken cancellationToken = default)
+		CancellationToken cancellationToken = default)
 	{
 		_rewrite.Execute(command);
 		return base.ReaderExecutingAsync(command, eventData, result, cancellationToken);

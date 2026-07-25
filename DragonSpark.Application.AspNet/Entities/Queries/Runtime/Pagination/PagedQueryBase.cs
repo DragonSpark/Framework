@@ -2,7 +2,6 @@
 using DragonSpark.Compose;
 using DragonSpark.Contracts.Queries;
 using DragonSpark.Model.Operations;
-using System.Threading.Tasks;
 
 namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
 

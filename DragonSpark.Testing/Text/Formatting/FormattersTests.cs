@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Text.Formatting;
 using FluentAssertions;
-using System;
 using Xunit;
 
 namespace DragonSpark.Testing.Text.Formatting;

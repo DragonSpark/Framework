@@ -2,7 +2,6 @@
 using DragonSpark.Reflection.Assemblies;
 using DragonSpark.Runtime.Environment;
 using Microsoft.Extensions.Hosting;
-using System;
 using System.Globalization;
 using System.Text.Encodings.Web;
 

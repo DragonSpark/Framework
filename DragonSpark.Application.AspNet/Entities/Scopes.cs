@@ -2,7 +2,6 @@ using DragonSpark.Model.Results;
 using DragonSpark.Runtime;
 using JetBrains.Annotations;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace DragonSpark.Application.AspNet.Entities;
 

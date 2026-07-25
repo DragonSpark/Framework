@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Compose;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using System;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Model;
 

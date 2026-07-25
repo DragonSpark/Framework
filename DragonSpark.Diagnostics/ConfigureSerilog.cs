@@ -4,7 +4,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
 using SerilogTracing;
-using System;
 using ILogger = Serilog.ILogger;
 
 namespace DragonSpark.Diagnostics;

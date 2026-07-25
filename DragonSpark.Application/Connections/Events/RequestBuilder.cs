@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Diagnostics;
-using System.Net.Http;
 using Policy = Polly.Policy;
 
 namespace DragonSpark.Application.Connections.Events;

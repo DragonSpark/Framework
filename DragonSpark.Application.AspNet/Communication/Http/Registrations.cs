@@ -1,4 +1,3 @@
-using System.Net.Http;
 using DragonSpark.Application.Communication.Http.Messaging;
 using DragonSpark.Application.Communication.Http.Security;
 using DragonSpark.Composition;

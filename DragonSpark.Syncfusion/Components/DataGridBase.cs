@@ -5,9 +5,6 @@ using DragonSpark.Presentation.Components.Content.Templates;
 using DragonSpark.SyncfusionRendering.Entities;
 using Microsoft.AspNetCore.Components;
 using Radzen;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using FilterType = Syncfusion.Blazor.Grids.FilterType;
 
 namespace DragonSpark.SyncfusionRendering.Components;

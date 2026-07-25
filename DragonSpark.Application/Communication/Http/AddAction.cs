@@ -1,5 +1,4 @@
 using System.Buffers;
-using System.Net.Http;
 using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;

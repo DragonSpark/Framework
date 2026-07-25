@@ -1,6 +1,4 @@
-﻿using System.Linq;
-
-namespace DragonSpark.Presentation.Model;
+﻿namespace DragonSpark.Presentation.Model;
 
 public class NumberOptions : Options<ushort>
 {

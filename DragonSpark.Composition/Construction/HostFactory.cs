@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using DragonSpark.Model.Selection;
 using LightInject;
 using Microsoft.Extensions.DependencyInjection;
