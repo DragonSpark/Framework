@@ -7,7 +7,7 @@ using DragonSpark.Runtime;
 
 namespace DragonSpark.Azure.Messaging.Messages.Queues.Durable;
 
-sealed class NewProcessNotification : IStopAware<DurableMessageProperties, ProcessNotification>
+sealed class NewProcessNotification : IStopAware<DurableMessageProperties, ProcessNotification?>
 {
 	readonly LocateExternalProcessReference _process;
 	readonly ITime                          _time;
@@ -20,17 +20,20 @@ sealed class NewProcessNotification : IStopAware<DurableMessageProperties, Proce
 		_time    = time;
 	}
 
-	public async ValueTask<ProcessNotification> Get(Stop<DurableMessageProperties> parameter)
+	public async ValueTask<ProcessNotification?> Get(Stop<DurableMessageProperties> parameter)
 	{
 		var ((identifier, _, destination, visibility, life), stop) = parameter;
-		var now = _time.Get();
-		return new()
-		{
-			Subject     = await _process.Off(new(identifier.Value(), stop)),
-			Destination = destination,
-			Created     = now,
-			AvailableAt = visibility.HasValue ? now + visibility.Value : null,
-			Lifetime    = life
-		};
+		var now     = _time.Get();
+		var process = await _process.Off(new(identifier.Value(), stop));
+		return process is not null
+			       ? new()
+			       {
+				       Subject     = process,
+				       Destination = destination,
+				       Created     = now,
+				       AvailableAt = visibility.HasValue ? now + visibility.Value : null,
+				       Lifetime    = life
+			       }
+			       : null;
 	}
 }
