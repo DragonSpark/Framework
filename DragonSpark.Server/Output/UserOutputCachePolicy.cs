@@ -47,7 +47,7 @@ public class UserOutputCachePolicy : Text.Text, IOutputsPolicy
 			rules.QueryKeys = "*";
 		}
 
-		var tag = _key.Get(new UserIdentity(number));
+		var tag = _key.Get(number);
 		context.Tags.Add(tag);
 	}
 

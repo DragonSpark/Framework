@@ -49,14 +49,18 @@ public class OutputCachePolicy<T> : Text.Text, IOutputsPolicy
 {
 	readonly static Func<T?, bool> Assigned = Is.Assigned<T?>();
 	
-	readonly Func<HttpContext, T?> _select;
-	readonly IOutputKey<T>         _key;
-	readonly TimeSpan              _for;
+	readonly Func<HttpContext, T?>   _select;
+	readonly IOutputKeyDefinition<T> _key;
+	readonly TimeSpan                _for;
 
 	protected OutputCachePolicy(Func<HttpContext, T?> select, IOutputKey<T> key)
 		: this(select, key, DefaultExpiration.Default) {}
 
-	protected OutputCachePolicy(Func<HttpContext, T?> select, IOutputKey<T> key, TimeSpan @for) : base(key.Name)
+	protected OutputCachePolicy(Func<HttpContext, T?> select, IOutputKey<T> key, TimeSpan @for)
+		: this(select, new OutputKeyDefinition<T>(key), @for) {}
+
+	protected OutputCachePolicy(Func<HttpContext, T?> select, IOutputKeyDefinition<T> key, TimeSpan @for) 
+		: base(key.Get())
 	{
 		_select = select;
 		_key    = key;
@@ -80,7 +84,7 @@ public class OutputCachePolicy<T> : Text.Text, IOutputsPolicy
 		var value = _select(http);
 		if (Assigned(value))
 		{
-			var tag = _key.Get(value.Verify());
+			var tag = _key.Get(http.RequestServices).Get(value.Verify());
 			context.Tags.Add(tag);
 		}
 
