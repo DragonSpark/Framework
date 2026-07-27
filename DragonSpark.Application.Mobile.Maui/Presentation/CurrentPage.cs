@@ -1,8 +1,5 @@
-using System.Collections.Generic;
-using System.Linq;
 using DragonSpark.Compose;
 using DragonSpark.Model.Results;
-using Microsoft.Maui.Controls;
 
 namespace DragonSpark.Application.Mobile.Maui.Presentation;
 

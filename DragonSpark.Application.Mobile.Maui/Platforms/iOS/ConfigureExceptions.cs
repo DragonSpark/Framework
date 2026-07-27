@@ -1,4 +1,3 @@
-using System;
 using DragonSpark.Application.Mobile.Maui.Diagnostics;
 using ObjCRuntime;
 

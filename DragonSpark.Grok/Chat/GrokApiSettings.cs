@@ -1,5 +1,3 @@
-using System;
-
 namespace DragonSpark.Grok.Chat;
 
 public sealed record GrokApiSettings

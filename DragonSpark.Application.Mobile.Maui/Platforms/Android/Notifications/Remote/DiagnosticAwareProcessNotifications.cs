@@ -1,6 +1,5 @@
 using Android.Content;
 using DragonSpark.Model.Commands;
-using Java.Lang;
 using Microsoft.Extensions.Logging;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.Android.Notifications.Remote;

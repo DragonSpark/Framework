@@ -1,4 +1,3 @@
-using System;
 using DragonSpark.Application.Mobile.Diagnostics;
 using DragonSpark.Compose;
 using DragonSpark.Diagnostics;

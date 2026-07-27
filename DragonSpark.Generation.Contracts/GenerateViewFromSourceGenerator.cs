@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -144,7 +142,7 @@ public sealed class GenerateViewFromSourceGenerator : IIncrementalGenerator
             {
                 var name = attr.AttributeClass!.Name;
 
-                if (name.EndsWith("Attribute", System.StringComparison.Ordinal))
+                if (name.EndsWith("Attribute", StringComparison.Ordinal))
                     name = name.Substring(0, name.Length - "Attribute".Length);
 
                 if (attr.ConstructorArguments.Length == 0)

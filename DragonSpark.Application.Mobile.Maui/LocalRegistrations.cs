@@ -2,7 +2,6 @@ using DragonSpark.Application.Mobile.Maui.Device.Messaging;
 using DragonSpark.Application.Mobile.Maui.Run;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Application.Mobile.Maui;
 

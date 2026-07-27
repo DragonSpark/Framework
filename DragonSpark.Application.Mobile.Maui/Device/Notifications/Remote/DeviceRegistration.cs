@@ -1,10 +1,7 @@
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations.Stop;
-using DragonSpark.Model.Results;
 using Microsoft.Extensions.Logging;
+using Switch = DragonSpark.Model.Results.Switch;
 
 namespace DragonSpark.Application.Mobile.Maui.Device.Notifications.Remote;
 

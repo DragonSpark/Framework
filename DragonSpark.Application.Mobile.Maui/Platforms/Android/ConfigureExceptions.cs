@@ -1,4 +1,3 @@
-using System;
 using Android.Runtime;
 using DragonSpark.Application.Mobile.Maui.Diagnostics;
 

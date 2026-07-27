@@ -1,11 +1,8 @@
-using System.Threading;
-using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Views.InputMethods;
 using DragonSpark.Application.Mobile.Maui.Device.Input;
 using DragonSpark.Compose;
-using Microsoft.Maui.ApplicationModel;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.Android.Input;
 

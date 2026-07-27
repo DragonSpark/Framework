@@ -1,8 +1,6 @@
-using System.Threading.Tasks;
 using DragonSpark.Application.Mobile.Maui.Device.Input;
 using DragonSpark.Composition;
 using DragonSpark.Model.Operations;
-using Microsoft.Maui.Controls;
 using UIKit;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.iOS.Input;

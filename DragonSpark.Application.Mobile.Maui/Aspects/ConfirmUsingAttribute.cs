@@ -1,9 +1,6 @@
-using System;
-using System.Threading.Tasks;
 using DragonSpark.Compose;
 using Metalama.Extensions.DependencyInjection;
 using Metalama.Framework.Aspects;
-using Microsoft.Extensions.DependencyInjection;
 using Syncfusion.Maui.Toolkit.Popup;
 
 namespace DragonSpark.Application.Mobile.Maui.Aspects;

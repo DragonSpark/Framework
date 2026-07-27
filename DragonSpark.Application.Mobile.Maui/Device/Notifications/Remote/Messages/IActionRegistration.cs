@@ -1,7 +1,6 @@
 using System.Windows.Input;
 using DragonSpark.Model.Selection;
-using DragonSpark.Text;
 
 namespace DragonSpark.Application.Mobile.Maui.Device.Notifications.Remote.Messages;
 
-public interface IActionRegistration : IText, ISelect<string?, ICommand>;
+public interface IActionRegistration : DragonSpark.Text.IText, ISelect<string?, ICommand>;

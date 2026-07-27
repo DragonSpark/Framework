@@ -2,7 +2,6 @@ using DragonSpark.Application.Communication.Http;
 using DragonSpark.Application.Communication.Http.Security;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Application.Mobile.Maui.Security.Identity;
 

@@ -1,4 +1,3 @@
-using System;
 using System.Windows.Input;
 using DragonSpark.Application.Mobile.Maui.Model.Commands;
 using DragonSpark.Compose;

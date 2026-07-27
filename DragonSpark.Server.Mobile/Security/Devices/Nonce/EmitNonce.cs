@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using DragonSpark.Application.AspNet.Security.Tokens;
 using DragonSpark.Application.Security.Tokens;
 using DragonSpark.Compose;

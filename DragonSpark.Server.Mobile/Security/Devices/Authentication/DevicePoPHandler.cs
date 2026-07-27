@@ -1,5 +1,4 @@
 using System.Text.Encodings.Web;
-using System.Threading.Tasks;
 using DragonSpark.Compose;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.Extensions.Logging;

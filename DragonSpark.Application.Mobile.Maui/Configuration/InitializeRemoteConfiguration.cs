@@ -1,9 +1,6 @@
-using System;
 using DragonSpark.Application.Mobile.Runtime.Initialization;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations.Stop;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Maui.Hosting;
 
 namespace DragonSpark.Application.Mobile.Maui.Configuration;
 

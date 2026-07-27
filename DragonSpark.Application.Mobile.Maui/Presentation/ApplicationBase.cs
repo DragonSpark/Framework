@@ -1,5 +1,3 @@
-using System;
-
 namespace DragonSpark.Application.Mobile.Maui.Presentation;
 
 public abstract class ApplicationBase : Microsoft.Maui.Controls.Application, IApplication

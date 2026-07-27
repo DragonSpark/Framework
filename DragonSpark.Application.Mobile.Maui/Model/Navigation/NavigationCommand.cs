@@ -1,8 +1,6 @@
-using System;
 using System.ComponentModel;
 using System.Globalization;
 using DragonSpark.Application.Mobile.Maui.Model.Commands;
-using Microsoft.Maui.Controls;
 
 namespace DragonSpark.Application.Mobile.Maui.Model.Navigation;
 

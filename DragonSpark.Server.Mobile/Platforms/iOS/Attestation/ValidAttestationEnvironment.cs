@@ -1,5 +1,3 @@
-using System;
-
 namespace DragonSpark.Server.Mobile.Platforms.iOS.Attestation;
 
 public sealed class ValidAttestationEnvironment : IValidAttestation

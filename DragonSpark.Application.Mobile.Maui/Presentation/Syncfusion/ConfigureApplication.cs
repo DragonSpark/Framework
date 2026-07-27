@@ -1,10 +1,7 @@
-using System;
 using DragonSpark.Application.Mobile.Runtime.Initialization;
 using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Commands;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Maui.Hosting;
 
 namespace DragonSpark.Application.Mobile.Maui.Presentation.Syncfusion;
 

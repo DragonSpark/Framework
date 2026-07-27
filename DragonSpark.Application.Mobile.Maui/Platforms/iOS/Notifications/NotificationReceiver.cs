@@ -1,7 +1,5 @@
-using System;
 using DragonSpark.Application.Mobile.Maui.Device.Notifications;
 using DragonSpark.Application.Mobile.Maui.Presentation;
-using Microsoft.Extensions.DependencyInjection;
 using UserNotifications;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.iOS.Notifications;

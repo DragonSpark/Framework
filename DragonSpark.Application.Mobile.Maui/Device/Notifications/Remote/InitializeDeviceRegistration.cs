@@ -1,8 +1,3 @@
-using System;
-using System.Threading;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Maui.Hosting;
-
 namespace DragonSpark.Application.Mobile.Maui.Device.Notifications.Remote;
 
 sealed class InitializeDeviceRegistration : IMauiInitializeService

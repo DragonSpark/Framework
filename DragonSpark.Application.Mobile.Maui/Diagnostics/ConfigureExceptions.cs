@@ -1,5 +1,3 @@
-using System;
-
 namespace DragonSpark.Application.Mobile.Maui.Diagnostics;
 
 sealed class DefaultConfigureExceptions : IConfigureExceptions

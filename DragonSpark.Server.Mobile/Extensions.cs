@@ -1,4 +1,3 @@
-using System;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Server.Mobile.Security.Devices;
 

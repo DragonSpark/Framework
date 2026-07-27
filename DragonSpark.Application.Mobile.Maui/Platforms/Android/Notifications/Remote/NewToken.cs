@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using DragonSpark.Application.Mobile.Maui.Device.Notifications.Remote;
 using DragonSpark.Application.Mobile.Maui.Messaging;
 using DragonSpark.Application.Mobile.Maui.Presentation;

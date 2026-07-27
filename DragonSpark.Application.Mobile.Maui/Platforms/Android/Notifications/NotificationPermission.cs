@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
 using Android;
-using Microsoft.Maui.ApplicationModel;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.Android.Notifications;
 

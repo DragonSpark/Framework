@@ -1,10 +1,7 @@
-using System;
-using System.Threading;
 using Android.Content;
 using Android.Runtime;
 using DragonSpark.Application.Mobile.Maui.Device.Notifications;
 using DragonSpark.Application.Mobile.Maui.Presentation;
-using Microsoft.Extensions.DependencyInjection;
 using Context = Android.Content.Context;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.Android.Notifications;

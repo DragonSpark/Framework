@@ -1,6 +1,3 @@
-using System;
-using Microsoft.Extensions.DependencyInjection;
-
 namespace DragonSpark.Application.Mobile.Maui.Diagnostics;
 
 sealed class HandleExceptions

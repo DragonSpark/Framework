@@ -1,4 +1,3 @@
-using System;
 using System.Windows.Input;
 using Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;
 

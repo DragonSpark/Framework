@@ -1,4 +1,3 @@
-using System;
 using DragonSpark.Application.Mobile.Maui.Device.Notifications.Remote.Messages;
 using DragonSpark.Application.Mobile.Maui.Presentation;
 using DragonSpark.Application.Mobile.Runtime.Initialization;
@@ -6,7 +5,6 @@ using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations.Stop;
 using Firebase.Messaging;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.Android.Notifications.Remote;
 

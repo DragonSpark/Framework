@@ -2,7 +2,6 @@ using Android.Content;
 using Android.Provider;
 using DragonSpark.Compose;
 using DragonSpark.Model.Results;
-using Microsoft.Maui.ApplicationModel;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.Android.Attestation;
 

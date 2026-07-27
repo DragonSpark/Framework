@@ -1,5 +1,3 @@
-using DragonSpark.Text;
-
 namespace DragonSpark.Application.Mobile.Maui.Device.Notifications.Remote;
 
-public interface IDeviceIdentifier : IText;
+public interface IDeviceIdentifier : DragonSpark.Text.IText;

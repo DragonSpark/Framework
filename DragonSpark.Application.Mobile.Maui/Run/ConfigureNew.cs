@@ -1,4 +1,3 @@
-using System;
 using DragonSpark.Model.Commands;
 
 namespace DragonSpark.Application.Mobile.Maui.Run;

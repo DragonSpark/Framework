@@ -1,5 +1,3 @@
-﻿using System;
-
 namespace DragonSpark.Server.Mobile.Notifications;
 
 public sealed record CleanUpSettings

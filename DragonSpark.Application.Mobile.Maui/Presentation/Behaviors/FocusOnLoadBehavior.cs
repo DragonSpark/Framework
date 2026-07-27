@@ -1,6 +1,3 @@
-using System;
-using Microsoft.Maui.Controls;
-
 namespace DragonSpark.Application.Mobile.Maui.Presentation.Behaviors;
 
 public sealed class FocusOnLoadBehavior : BehaviorBase<VisualElement>

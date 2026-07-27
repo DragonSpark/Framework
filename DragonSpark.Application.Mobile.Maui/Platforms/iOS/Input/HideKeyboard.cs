@@ -1,5 +1,3 @@
-using System.Threading;
-using System.Threading.Tasks;
 using DragonSpark.Application.Mobile.Maui.Device.Input;
 using DragonSpark.Composition;
 using UIKit;

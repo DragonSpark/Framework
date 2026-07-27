@@ -1,8 +1,6 @@
-using System;
 using DragonSpark.Application.Mobile.Runtime.Initialization;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
-using Microsoft.Maui.Hosting;
 
 namespace DragonSpark.Application.Hosting.Maui.Run;
 

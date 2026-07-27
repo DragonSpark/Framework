@@ -1,4 +1,3 @@
-using System;
 using Microsoft.AspNetCore.Http;
 
 namespace DragonSpark.Server.Mobile.Security.Devices.Authentication;

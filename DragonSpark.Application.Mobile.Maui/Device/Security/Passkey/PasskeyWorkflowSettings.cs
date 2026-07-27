@@ -1,5 +1,3 @@
-using System;
-
 namespace DragonSpark.Application.Mobile.Maui.Device.Security.Passkey;
 
 public sealed record PasskeyWorkflowSettings

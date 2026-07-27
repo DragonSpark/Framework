@@ -1,4 +1,3 @@
-using System.Linq;
 using DragonSpark.Text;
 
 namespace DragonSpark.Application.Mobile.Maui.Device.Notifications.Remote.Messages;

@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using DragonSpark.Model.Operations;
 using DragonSpark.Server.Mobile.Security.Devices.Claims;
 using Microsoft.AspNetCore.Http;

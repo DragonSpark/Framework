@@ -1,7 +1,5 @@
-using System;
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Application.Hosting.Maui.Run;
 

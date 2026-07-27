@@ -1,9 +1,7 @@
-using System;
 using DragonSpark.Compose;
 using DragonSpark.Diagnostics;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
-using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 
 namespace DragonSpark.Application.Mobile.Maui.Diagnostics;

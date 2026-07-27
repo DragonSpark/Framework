@@ -4,7 +4,7 @@ using DragonSpark.Model.Commands;
 
 namespace DragonSpark.Application.Mobile.Maui.Device.Notifications.Remote.Messages;
 
-sealed class ProcessNotification : Command<ProcessNotificationInput>, IProcessNotification
+sealed class ProcessNotification : DragonSpark.Model.Commands.Command<ProcessNotificationInput>, IProcessNotification
 {
     public ProcessNotification(ComposeNotificationMessage message)
         : this(message, Send<NotificationReceivedMessage>.Default) {}

@@ -1,9 +1,6 @@
-using System;
-using System.Threading.Tasks;
 using Android.Gms.Extensions;
 using DragonSpark.Application.Mobile.Attestation;
 using DragonSpark.Model.Operations;
-using Microsoft.Maui.ApplicationModel;
 using Xamarin.Google.Android.Play.Core.Integrity;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.Android.Attestation;

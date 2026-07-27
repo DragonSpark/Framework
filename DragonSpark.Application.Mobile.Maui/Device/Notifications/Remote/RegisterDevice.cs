@@ -1,5 +1,3 @@
-using System.Threading;
-using System.Threading.Tasks;
 using DragonSpark.Compose;
 
 namespace DragonSpark.Application.Mobile.Maui.Device.Notifications.Remote;

@@ -1,6 +1,4 @@
-using System;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Maui.Hosting;
 
 namespace DragonSpark.Application.Hosting.Maui.Run;
 

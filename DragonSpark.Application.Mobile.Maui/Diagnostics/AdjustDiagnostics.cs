@@ -1,9 +1,7 @@
-using System;
 using DragonSpark.Application.Mobile.Runtime.Initialization;
 using DragonSpark.Compose;
 using DragonSpark.Diagnostics;
 using DragonSpark.Model.Commands;
-using Microsoft.Maui.Hosting;
 using Serilog;
 
 namespace DragonSpark.Application.Mobile.Maui.Diagnostics;

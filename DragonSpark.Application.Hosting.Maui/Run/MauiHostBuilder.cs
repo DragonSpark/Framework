@@ -1,12 +1,8 @@
-using System;
-using System.Collections.Generic;
 using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Model.Results;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Maui.Hosting;
 
 namespace DragonSpark.Application.Hosting.Maui.Run;
 
