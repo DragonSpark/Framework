@@ -1,6 +1,3 @@
-using Microsoft.Maui;
-using Microsoft.Maui.Controls;
-using Microsoft.Maui.Devices;
 using Syncfusion.Maui.Toolkit.Popup;
 
 namespace DragonSpark.Application.Mobile.Maui.Presentation.Behaviors;

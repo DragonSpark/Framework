@@ -1,8 +1,4 @@
-using System;
-using System.Threading.Tasks;
 using DragonSpark.Compose;
-using Microsoft.Maui.ApplicationModel;
-using Microsoft.Maui.Controls;
 
 namespace DragonSpark.Application.Mobile.Maui.Presentation.Behaviors;
 

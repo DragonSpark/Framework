@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using DragonSpark.Model.Operations;
 
 namespace DragonSpark.Application.Mobile.Maui.Device.Notifications;

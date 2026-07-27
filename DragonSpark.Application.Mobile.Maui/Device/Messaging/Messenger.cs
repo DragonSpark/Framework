@@ -1,8 +1,5 @@
-using System.Threading.Tasks;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
-using Microsoft.Maui.ApplicationModel;
-using Microsoft.Maui.ApplicationModel.Communication;
 
 namespace DragonSpark.Application.Mobile.Maui.Device.Messaging;
 

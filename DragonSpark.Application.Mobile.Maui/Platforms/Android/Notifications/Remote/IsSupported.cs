@@ -2,7 +2,6 @@ using Android.Content;
 using Android.Gms.Common;
 using DragonSpark.Model;
 using DragonSpark.Model.Selection.Conditions;
-using Microsoft.Maui.ApplicationModel;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.Android.Notifications.Remote;
 

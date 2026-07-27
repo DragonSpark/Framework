@@ -1,10 +1,8 @@
-using System;
 using System.Reflection;
 using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Maui.Hosting;
 
 namespace DragonSpark.Application.Mobile.Maui;
 

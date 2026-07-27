@@ -1,7 +1,6 @@
 using DragonSpark.Application.Mobile.Attestation;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.Android.Attestation;
 

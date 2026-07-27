@@ -1,5 +1,4 @@
 using System.Buffers;
-using System.Collections.Generic;
 using NetFabric.Hyperlinq;
 using Serilog;
 using Serilog.Events;

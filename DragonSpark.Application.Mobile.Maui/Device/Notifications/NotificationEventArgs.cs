@@ -1,5 +1,3 @@
-using System;
-
 namespace DragonSpark.Application.Mobile.Maui.Device.Notifications;
 
 public sealed class NotificationEventArgs : EventArgs

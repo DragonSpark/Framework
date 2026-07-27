@@ -1,4 +1,3 @@
-using System;
 using DragonSpark.Server.Mobile.Platforms.iOS.Attestation.Records;
 
 namespace DragonSpark.Server.Mobile.Platforms.iOS.Assertion;

@@ -1,9 +1,6 @@
-using System.Threading.Tasks;
 using DragonSpark.Application.Mobile.Maui.Presentation.Models;
 using DragonSpark.Model.Operations.Allocated;
 using DragonSpark.Model.Operations.Results;
-using Microsoft.Maui.ApplicationModel;
-using Microsoft.Maui.Dispatching;
 
 namespace DragonSpark.Application.Mobile.Maui.Presentation;
 

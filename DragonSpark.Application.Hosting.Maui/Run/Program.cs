@@ -1,4 +1,3 @@
-using System;
 using DragonSpark.Model.Operations.Allocated;
 using Microsoft.Extensions.Hosting;
 

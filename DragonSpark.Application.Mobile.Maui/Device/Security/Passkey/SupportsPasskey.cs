@@ -1,12 +1,8 @@
-using System;
-using System.Threading.Tasks;
 using DragonSpark.Application.Mobile.Maui.Presentation;
 using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Operations.Allocated;
 using DragonSpark.Model.Selection;
-using Microsoft.Maui.Controls;
-using Microsoft.Maui.Graphics;
 
 namespace DragonSpark.Application.Mobile.Maui.Device.Security.Passkey;
 

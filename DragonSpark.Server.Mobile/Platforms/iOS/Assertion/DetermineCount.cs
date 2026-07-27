@@ -1,4 +1,3 @@
-using System;
 using System.Buffers.Binary;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;

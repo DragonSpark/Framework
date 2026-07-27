@@ -1,4 +1,3 @@
-using System;
 using System.Security.Cryptography;
 
 namespace DragonSpark.Server.Mobile.Platforms.iOS.Attestation;

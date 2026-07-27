@@ -1,12 +1,7 @@
-using System;
 using System.Collections;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Linq;
-using System.Threading.Tasks;
 using DragonSpark.Compose;
-using Microsoft.Maui.ApplicationModel;
-using Microsoft.Maui.Controls;
 using Switch = DragonSpark.Model.Results.Switch;
 
 namespace DragonSpark.Application.Mobile.Maui.Presentation.Behaviors;

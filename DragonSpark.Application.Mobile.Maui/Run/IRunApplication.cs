@@ -1,5 +1,4 @@
 using DragonSpark.Model.Selection;
-using Microsoft.Maui.Hosting;
 
 namespace DragonSpark.Application.Mobile.Maui.Run;
 

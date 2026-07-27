@@ -1,4 +1,3 @@
-using System.Linq;
 using DragonSpark.Application.Mobile.Maui.Model;
 using DragonSpark.Compose;
 using Syncfusion.Maui.DataForm;

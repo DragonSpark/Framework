@@ -1,4 +1,3 @@
-using System;
 using Android.OS;
 using DragonSpark.Model;
 using DragonSpark.Model.Selection.Conditions;

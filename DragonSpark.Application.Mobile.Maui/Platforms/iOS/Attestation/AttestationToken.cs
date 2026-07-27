@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using DeviceCheck;
 using DragonSpark.Application.Mobile.Attestation;
 using DragonSpark.Application.Security.Tokens;

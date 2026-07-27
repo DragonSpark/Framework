@@ -1,8 +1,3 @@
-using System;
-using System.Linq;
-using Microsoft.Maui.Controls.Xaml;
-using Microsoft.Maui.Devices;
-
 namespace DragonSpark.Application.Mobile.Maui.Presentation.Markup;
 
 public sealed class UriMarkupExtension : MarkupExtension<Uri>

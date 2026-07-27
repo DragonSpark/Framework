@@ -1,8 +1,5 @@
-using System;
-using System.Threading.Tasks;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
-using Microsoft.Maui.Controls;
 
 namespace DragonSpark.Application.Mobile.Maui.Navigation;
 

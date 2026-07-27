@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using DragonSpark.Contracts.General.Chat;
 
 namespace DragonSpark.Grok.Chat;

@@ -1,5 +1,4 @@
 using System.Security.Claims;
-using System.Threading.Tasks;
 using DragonSpark.Application.AspNet.Security;
 using DragonSpark.Compose;
 using DragonSpark.Server.Mobile.Security.Devices.Claims;

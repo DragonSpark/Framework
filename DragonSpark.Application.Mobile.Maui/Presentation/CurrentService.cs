@@ -1,5 +1,4 @@
 using DragonSpark.Model.Results;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Application.Mobile.Maui.Presentation;
 

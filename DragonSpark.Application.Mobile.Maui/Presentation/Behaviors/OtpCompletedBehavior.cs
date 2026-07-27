@@ -1,5 +1,4 @@
 using System.Windows.Input;
-using Microsoft.Maui.Controls;
 using Syncfusion.Maui.Toolkit.OtpInput;
 
 namespace DragonSpark.Application.Mobile.Maui.Presentation.Behaviors;

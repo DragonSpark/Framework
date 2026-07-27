@@ -1,5 +1,4 @@
 using DragonSpark.Compose;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.Android;
 

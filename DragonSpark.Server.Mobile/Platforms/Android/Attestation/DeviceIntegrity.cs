@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace DragonSpark.Server.Mobile.Platforms.Android.Attestation;
 
 public sealed record DeviceIntegrity(bool IsTrusted, IList<string> Verdict)

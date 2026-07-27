@@ -25,7 +25,7 @@ sealed class DiagnosticAwareProcessNotifications : IProcessNotifications
         {
             _previous.Execute(parameter);
         }
-        catch (System.Exception e)
+        catch (Exception e)
         {
             _logger.LogError(e, "An exception occurred while handling a push notification");
             throw;

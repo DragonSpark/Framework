@@ -1,6 +1,4 @@
 ﻿using DragonSpark.Model.Commands;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Maui.Hosting;
 
 namespace DragonSpark.Application.Mobile.Maui.Run;
 

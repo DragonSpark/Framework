@@ -1,6 +1,5 @@
 using DragonSpark.Application.Communication.Http.Security;
 using DragonSpark.Model.Commands;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Application.Mobile.Maui.Device.Security;
 

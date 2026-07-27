@@ -1,4 +1,3 @@
-using System.Linq;
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;

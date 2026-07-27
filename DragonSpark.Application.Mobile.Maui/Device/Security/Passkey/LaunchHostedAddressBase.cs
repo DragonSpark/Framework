@@ -1,10 +1,7 @@
-using System;
-using System.Threading.Tasks;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Stop;
 using DragonSpark.Model.Selection;
-using Microsoft.Maui.ApplicationModel;
 
 namespace DragonSpark.Application.Mobile.Maui.Device.Security.Passkey;
 

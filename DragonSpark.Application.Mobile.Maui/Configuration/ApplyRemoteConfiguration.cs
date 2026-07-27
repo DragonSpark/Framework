@@ -2,8 +2,6 @@ using DragonSpark.Application.Mobile.Attestation;
 using DragonSpark.Application.Mobile.Configuration;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Maui.Hosting;
 
 namespace DragonSpark.Application.Mobile.Maui.Configuration;
 

@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Graphics;
@@ -9,7 +7,6 @@ using DragonSpark.Application.Mobile.Maui.Device.Notifications;
 using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Model.Operations;
-using Microsoft.Maui.ApplicationModel;
 using Context = Android.Content.Context;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.Android.Notifications;

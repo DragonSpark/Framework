@@ -1,7 +1,3 @@
-using System;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Maui.Hosting;
-
 namespace DragonSpark.Application.Mobile.Maui.Diagnostics;
 
 sealed class UnhandledExceptions : IMauiInitializeService

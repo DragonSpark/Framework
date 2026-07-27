@@ -4,7 +4,6 @@ using DragonSpark.Application.Mobile.Maui.Runtime;
 using DragonSpark.Compose;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Commands;
-using Microsoft.Extensions.DependencyInjection;
 using Registrations = DragonSpark.Application.Security.Identity.Profile.Registrations;
 
 namespace DragonSpark.Application.Mobile.Maui;

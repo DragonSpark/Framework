@@ -1,5 +1,3 @@
-using System;
-
 namespace DragonSpark.Server.Mobile.Security.Devices.Registry;
 
 public sealed record DeviceRecord(

@@ -1,5 +1,3 @@
-using System.Threading;
-using System.Threading.Tasks;
 using DragonSpark.Application.Mobile.Maui.Device.Notifications.Remote;
 using DragonSpark.Application.Mobile.Maui.Device.Security;
 using DragonSpark.Application.Mobile.Maui.Security.Identity;

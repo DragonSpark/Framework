@@ -1,5 +1,3 @@
-using System;
-using System.Threading.Tasks;
 using DragonSpark.Application.Mobile.Diagnostics;
 using DragonSpark.Application.Mobile.Maui.Presentation.Components.Notification;
 using DragonSpark.Compose;

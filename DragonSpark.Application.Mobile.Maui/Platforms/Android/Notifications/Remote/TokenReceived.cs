@@ -31,7 +31,7 @@ sealed class TokenReceived : Java.Lang.Object, IOnSuccessListener
         {
             await _token.Off(new(token, CancellationToken.None));
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             var logger = CurrentService<ILogger<PushNotificationFirebaseMessagingServiceBase>>.Default.Get();
             logger.LogError(ex, "Failed to process new FCM token");

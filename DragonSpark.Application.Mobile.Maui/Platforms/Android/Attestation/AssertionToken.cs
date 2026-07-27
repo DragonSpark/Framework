@@ -1,4 +1,3 @@
-using System.Threading.Tasks;
 using DragonSpark.Application.Mobile.Attestation;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;

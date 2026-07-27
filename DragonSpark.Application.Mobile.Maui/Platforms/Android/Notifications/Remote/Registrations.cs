@@ -1,5 +1,4 @@
 using DragonSpark.Model.Commands;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.Android.Notifications.Remote;
 

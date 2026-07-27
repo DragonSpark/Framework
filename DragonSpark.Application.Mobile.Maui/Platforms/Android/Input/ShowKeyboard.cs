@@ -15,7 +15,7 @@ sealed class ShowKeyboard : IShowKeyboard
 
     public ShowKeyboard(Context context) => _context = context;
 
-    public ValueTask Get(Stop<Microsoft.Maui.Controls.VisualElement> parameter)
+    public ValueTask Get(Stop<VisualElement> parameter)
     {
         if (_context.GetSystemService(Context.InputMethodService) is InputMethodManager manager)
         {

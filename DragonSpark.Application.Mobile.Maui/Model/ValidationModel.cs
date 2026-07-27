@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using CommunityToolkit.Mvvm.ComponentModel;
 using DragonSpark.Application.Mobile.Model.Validation;
 using DragonSpark.Model;

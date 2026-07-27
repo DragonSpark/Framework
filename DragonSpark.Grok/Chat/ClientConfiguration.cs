@@ -1,5 +1,3 @@
-using System;
-using System.Net.Http;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 

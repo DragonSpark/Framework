@@ -1,6 +1,5 @@
 using DragonSpark.Application.Mobile.Attestation;
 using DragonSpark.Model.Commands;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Application.Mobile.Maui.Security.Identity.Client;
 

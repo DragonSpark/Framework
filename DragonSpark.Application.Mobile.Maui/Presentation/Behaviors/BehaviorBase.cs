@@ -1,7 +1,5 @@
-using System;
 using CommunityToolkit.Maui.Behaviors;
 using DragonSpark.Compose;
-using Microsoft.Maui.Controls;
 
 namespace DragonSpark.Application.Mobile.Maui.Presentation.Behaviors;
 

@@ -1,4 +1,3 @@
-using System;
 using DragonSpark.Server.Mobile.Security.Devices.Registry;
 
 namespace DragonSpark.Server.Mobile.Security.Devices.Authentication;

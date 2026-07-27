@@ -1,4 +1,3 @@
-using System;
 using DragonSpark.Model.Selection;
 using Foundation;
 using UserNotifications;

@@ -1,10 +1,6 @@
-using System;
-using System.Threading.Tasks;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations.Allocated;
 using DragonSpark.Model.Operations.Results;
-using Microsoft.Maui.Media;
-using Microsoft.Maui.Storage;
 
 namespace DragonSpark.Application.Mobile.Maui.Device.Camera;
 

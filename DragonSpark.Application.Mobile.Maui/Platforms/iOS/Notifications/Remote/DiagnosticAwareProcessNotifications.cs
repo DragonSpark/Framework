@@ -1,4 +1,3 @@
-using System;
 using DragonSpark.Model.Commands;
 using Foundation;
 using Microsoft.Extensions.Logging;

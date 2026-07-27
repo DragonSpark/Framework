@@ -1,6 +1,4 @@
 using System.Collections.Immutable;
-using System.Linq;
-using System.Threading.Tasks;
 using DragonSpark.Compose;
 using DragonSpark.Contracts.General.Chat;
 using DragonSpark.Model.Operations;

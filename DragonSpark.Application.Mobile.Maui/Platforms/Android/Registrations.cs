@@ -6,7 +6,6 @@ using DragonSpark.Application.Mobile.Maui.Platforms.Android.Input;
 using DragonSpark.Application.Mobile.Maui.Platforms.Android.Notifications;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Application.Mobile.Maui.Platforms.Android;
 

@@ -1,10 +1,8 @@
-using System;
 using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Model;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.Configuration;
-using Sentry;
 
 namespace DragonSpark.Application.Mobile.Maui.Diagnostics;
 

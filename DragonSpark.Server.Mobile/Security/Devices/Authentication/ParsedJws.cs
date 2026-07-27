@@ -1,4 +1,3 @@
-using System;
 using DragonSpark.Model.Sequences.Memory;
 
 namespace DragonSpark.Server.Mobile.Security.Devices.Authentication;
