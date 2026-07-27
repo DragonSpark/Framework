@@ -1,8 +1,6 @@
-using DragonSpark.Model.Results;
-
 namespace DragonSpark.Application.Mobile.Maui.Presentation;
 
-public sealed class Popped : Switch
+public sealed class Popped : DragonSpark.Model.Results.Switch
 {
     public static Popped Default { get; } = new();
 

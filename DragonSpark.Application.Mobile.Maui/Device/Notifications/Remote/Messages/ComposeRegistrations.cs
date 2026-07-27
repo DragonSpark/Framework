@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection.Conditions;
