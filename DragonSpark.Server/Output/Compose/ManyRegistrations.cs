@@ -31,7 +31,7 @@ sealed class ManyRegistrations<TIn, TOut, TKey> : IRegistration
 				foreach (var k1 in _keys(item))
 				{
 					result.Add(k.Get(k1));
-				}	
+				}
 			}
 		}
 	}

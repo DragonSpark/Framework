@@ -18,12 +18,14 @@ sealed class Tags : ITags
 			results.Add(k.Get(u.Get()));
 		}
 		else
+		{
 			switch (results.Count)
 			{
 				case 0:
 					results.Add(key.Get());
 					break;
 			}
+		}
 
 		return ValueTask.CompletedTask;
 	}
