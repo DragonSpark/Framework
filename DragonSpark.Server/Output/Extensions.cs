@@ -10,6 +10,6 @@ public static class Extensions
 	public static IServiceCollection AddOutputCache(this IServiceCollection @this, params IOutputsPolicy[] parameter)
 		=> @this.AddOutputCache(new ApplyPolicies(parameter).Execute);
 
-	public static StartRegistration<T> Register<T>(this IOutputCacheStore @this, Array<IOutputKey> keys)
+	public static StartRegistration<T> Start<T>(this IOutputCacheStore @this, Array<IOutputKey> keys)
 		where T : notnull => new(@this, keys);
 }

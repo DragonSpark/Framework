@@ -45,26 +45,23 @@ public class OutputCachePolicy : Text.Text, IOutputsPolicy
 	}
 }
 
-public class OutputCachePolicy<T> : Text.Text, IOutputsPolicy
+public class FormattedOutputCachePolicy : Text.Text, IOutputsPolicy
 {
-	readonly static Func<T?, bool> Assigned = Is.Assigned<T?>();
-	
-	readonly Func<HttpContext, T?>   _select;
-	readonly IOutputKeyDefinition<T> _key;
-	readonly TimeSpan                _for;
+	readonly Func<HttpContext, string?> _tag;
+	readonly string                     _key;
+	readonly TimeSpan                   _for;
 
-	protected OutputCachePolicy(Func<HttpContext, T?> select, IOutputKey<T> key)
-		: this(select, key, DefaultExpiration.Default) {}
+	protected FormattedOutputCachePolicy(Func<HttpContext, string?> tag, IOutputKey key)
+		: this(tag, key, DefaultExpiration.Default) {}
 
-	protected OutputCachePolicy(Func<HttpContext, T?> select, IOutputKey<T> key, TimeSpan @for)
-		: this(select, new OutputKeyDefinition<T>(key), @for) {}
+	protected FormattedOutputCachePolicy(Func<HttpContext, string?> tag, IOutputKey key, TimeSpan @for)
+		: this(tag, key.Get(), @for) {}
 
-	protected OutputCachePolicy(Func<HttpContext, T?> select, IOutputKeyDefinition<T> key, TimeSpan @for) 
-		: base(key.Get())
+	protected FormattedOutputCachePolicy(Func<HttpContext, string?> tag, string key, TimeSpan @for) : base(key)
 	{
-		_select = select;
-		_key    = key;
-		_for    = @for;
+		_tag = tag;
+		_key = key;
+		_for = @for;
 	}
 
 	ValueTask IOutputCachePolicy.CacheRequestAsync(OutputCacheContext context, CancellationToken cancellationToken)
@@ -80,11 +77,11 @@ public class OutputCachePolicy<T> : Text.Text, IOutputsPolicy
 		context.AllowLocking               = true;
 		context.ResponseExpirationTimeSpan = _for;
 		rules.QueryKeys                    = "*";
-		context.Tags.Add(_key.Get());
-		var value = _select(http);
-		if (Assigned(value))
+		//context.Tags.Add(_key);
+		var input = _tag(http);
+		if (input.IsAssigned())
 		{
-			var tag = _key.Get(http.RequestServices).Get(value.Verify());
+			var tag = OutputKeyFormatter.Default.Get(new(_key, input));
 			context.Tags.Add(tag);
 		}
 

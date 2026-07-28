@@ -1,17 +1,21 @@
-﻿using Microsoft.AspNetCore.OutputCaching;
+﻿using DragonSpark.Model.Operations.Stop;
+using Microsoft.AspNetCore.OutputCaching;
 
 namespace DragonSpark.Server.Output.Compose;
 
 public sealed class StartRegistration<T> where T : notnull
 {
-	readonly IOutputCacheStore _store;
-	readonly IOutputKey[]      _keys;
+	readonly RegistrationComponents _components;
 
-	public StartRegistration(IOutputCacheStore store, IOutputKey[] keys)
+	public StartRegistration(IOutputCacheStore store, IOutputKey[] keys) : this(new(store, keys)) {}
+
+	public StartRegistration(RegistrationComponents components) => _components = components;
+
+	public SelectedKeyRegistration<T, TKey> For<TKey>(Func<T, TKey> select) => new(_components, select);
+
+	public IStopAware<T> Build()
 	{
-		_store = store;
-		_keys  = keys;
+		var (store, keys, registrations) = _components;
+		return new Evict<T>(store, new RegistrationAwareTags(registrations), keys);
 	}
-
-	public SelectedRegistration<T, TTo> Using<TTo>(Func<T, TTo> select) => new(_store, _keys, select);
 }

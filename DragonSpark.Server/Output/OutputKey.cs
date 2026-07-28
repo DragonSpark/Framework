@@ -1,14 +1,22 @@
-﻿namespace DragonSpark.Server.Output;
+﻿using DragonSpark.Compose;
+using DragonSpark.Text;
 
-public class OutputKey<T> : OutputKey, IOutputKey<T>
+namespace DragonSpark.Server.Output;
+
+public class OutputKey<T> : OutputKey, IOutputKey<T> where T : notnull
 {
-	readonly string _key;
+	readonly string                              _key;
+	readonly IFormatter<OutputKeyFormatterInput> _formatter;
 
-	protected OutputKey(string name) : this(name, name.ToLowerInvariant()) {}
+	public OutputKey(string name) : this(name, name.ToLowerInvariant(), OutputKeyFormatter.Default) {}
 
-	protected OutputKey(string name, string key) : base(name) => _key = key;
+	protected OutputKey(string name, string key, IFormatter<OutputKeyFormatterInput> formatter) : base(name)
+	{
+		_key       = key;
+		_formatter = formatter;
+	}
 
-	public string Get(T parameter) => $"{_key}:{parameter}";
+	public string Get(T parameter) => _formatter.Get(new(_key, parameter.ToString().Verify()));
 }
 
 public class OutputKey : Text.Text, IOutputKey
