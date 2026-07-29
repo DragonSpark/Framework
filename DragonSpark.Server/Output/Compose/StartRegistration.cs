@@ -13,9 +13,11 @@ public sealed class StartRegistration<T> where T : notnull
 
 	public SelectedKeyRegistration<T, TKey> For<TKey>(Func<T, TKey> select) => new(_components, select);
 
-	public IStopAware<T> Build()
+	public StartRegistration<TNext> Start<TNext>() where TNext : notnull => new(_components);
+
+	public IStopAware<EvictInput> Build()
 	{
 		var (store, keys, registrations) = _components;
-		return new Evict<T>(store, new RegistrationAwareTags(registrations), keys);
+		return new Evict(store, new RegistrationAwareTags(registrations), keys);
 	}
 }
