@@ -11,6 +11,7 @@ namespace DragonSpark.Server.Output;
 // TODO
 
 public readonly record struct EvictInput(object Input, object? Output = null);
+
 public sealed class Evict : IStopAware<EvictInput>
 {
 	readonly IOutputCacheStore _store;
@@ -37,8 +38,9 @@ public sealed class Evict : IStopAware<EvictInput>
 			await _tags.Off(new(new(input, key, current), stop));
 			if (output is not null)
 			{
-				await _tags.Off(new(new(output, key, current), stop));	
+				await _tags.Off(new(new(output, key, current), stop));
 			}
+
 			tags.AddRange(current);
 			current.Clear();
 		}
@@ -67,7 +69,7 @@ sealed class Evict<TIn, T> : IStopAware<TIn, T> where TIn : notnull
 	public async ValueTask<T> Get(Stop<TIn> parameter)
 	{
 		var (subject, stop) = parameter;
-		var result       = await _previous.Off(parameter);
+		var result = await _previous.Off(parameter);
 		await _evict.Off(new(new(subject, result), stop));
 		return result;
 	}

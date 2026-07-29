@@ -13,7 +13,7 @@ public class OutputsAware<T> : Appending<Stop<T>> where T : notnull
 		: this(previous, new Evict(output, keys)) {}
 
 	protected OutputsAware(IStopAware<T> previous, IStopAware<EvictInput> evict)
-		: base(previous, evict.Then().Accept<Stop<T>>(x => new Stop<EvictInput>(new(x), x)).Out()) {}
+		: base(previous, evict.Then().Accept<Stop<T>>(x => new Stop<EvictInput>(new(x.Subject), x)).Out()) {}
 }
 
 public class OutputsAware<TIn, T> : StopAware<TIn, T> where TIn : IUserIdentity

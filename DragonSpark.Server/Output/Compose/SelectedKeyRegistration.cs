@@ -32,24 +32,24 @@ public sealed class SelectedKeyRegistration<TIn, TKey> where TIn : notnull
 	                                         Func<TOut, IEnumerable<TKey>> keys)
 	{
 		_components.Registrations.Add(new RegistrationsMany<TIn, TOut, TKey>(_selection, select, keys));
-		return new(_components);
+		return Register();
 	}
 
 	public StartRegistration<TIn> Many<TOut>(IStopAware<TKey, Leasing<TOut>> select, Func<TOut, TKey> key)
 	{
 		_components.Registrations.Add(new RegistrationsSingle<TIn, TOut, TKey>(_selection, select, key));
-		return new(_components);
+		return Register();
 	}
 
 	public StartRegistration<TIn> Many<TOut>(IStopAware<TKey, TOut> select, Func<TOut, IEnumerable<TKey>> keys)
 	{
 		_components.Registrations.Add(new Registrations<TIn, TOut, TKey>(_selection, select, keys));
-		return new(_components);
+		return Register();
 	}
 
 	public StartRegistration<TIn> Single(IStopAware<TKey, TKey> select)
 	{
 		_components.Registrations.Add(new Single<TIn, TKey>(_selection, select));
-		return new(_components);
+		return Register();
 	}
 }
