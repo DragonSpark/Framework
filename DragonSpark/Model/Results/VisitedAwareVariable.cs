@@ -1,10 +1,10 @@
-﻿using DragonSpark.Compose;
+using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Runtime.Execution;
 
 namespace DragonSpark.Model.Results;
 
-public class VisitedAwareVariable<T> : IMutationAware<T>
+public sealed class VisitedAwareVariable<T> : IMutationAware<T> // TODO: Replace with switch-aware
 {
 	readonly IMutable<T?> _mutable;
 	readonly ICounter     _counter;
