@@ -1,6 +1,4 @@
-﻿using DragonSpark.Application.Model;
-
-namespace DragonSpark.Server.Output;
+﻿namespace DragonSpark.Server.Output;
 
 public class UserOutputKey : OutputKey, IUserOutputKey
 {
@@ -10,5 +8,5 @@ public class UserOutputKey : OutputKey, IUserOutputKey
 
 	protected UserOutputKey(string name, string key) : base(name) => _key = key;
 
-	public string Get<T>(T parameter) where T : IUserIdentity => $"{parameter.Get()}_{_key}";
+	public string Get(uint parameter) => $"{parameter}_{_key}";
 }

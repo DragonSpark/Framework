@@ -7,8 +7,6 @@ namespace DragonSpark.Application.Communication.Http;
 
 public static class Extensions
 {
-	public static T When<T>(this T @this, bool @true, Func<T, T> alter) => @true ? alter(@this) : @this;
-
 	public static IServiceCollection AddConfiguredHttpClient(
 		this IServiceCollection @this, string name, Options options)
 		=> AddConfiguredHttpClient(@this, name, options, (builder, _) => builder);
