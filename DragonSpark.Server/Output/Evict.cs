@@ -8,10 +8,6 @@ using Microsoft.AspNetCore.OutputCaching;
 
 namespace DragonSpark.Server.Output;
 
-// TODO
-
-public readonly record struct EvictInput(object Input, object? Output = null);
-
 public sealed class Evict : IStopAware<EvictInput>
 {
 	readonly IOutputCacheStore _store;
