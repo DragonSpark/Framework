@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>$(DefaultTargetFramework)</TargetFramework>
+	</PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DragonSpark.Application.AspNet\DragonSpark.Application.AspNet.csproj" />
+  </ItemGroup>
+<ItemGroup>
+	<PackageReference Include="Sentry.AspNetCore" />
+</ItemGroup>
+</Project>
