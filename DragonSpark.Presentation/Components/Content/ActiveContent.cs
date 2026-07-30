@@ -11,16 +11,15 @@ sealed class ActiveContent<T> : Resulting<T?>, IActiveContent<T>
 {
 	readonly ICommand _refresh;
 
-	public ActiveContent(IResulting<T?> content) : this(content, new Variable<T>(), new Variable<int>()) {}
+	public ActiveContent(IResulting<T?> content) : this(content, new Variable<T>(), new Switch()) {}
 
-	public ActiveContent(IResulting<T?> content, IMutable<T?> store, IMutable<int> counts)
-		: this(content, new VisitedAwareVariable<T?>(store, counts), counts) {}
+	public ActiveContent(IResulting<T?> content, IMutable<T?> store, IMutable<bool> state)
+		: this(content, new VisitedAwareVariable<T?>(store, state), state) {}
 
-	public ActiveContent(IResulting<T?> result, IMutationAware<T?> store, IMutable<int> counts)
-		: this(new Storing<T?>(store, result).Then().Protecting().Out(), counts) {}
+	public ActiveContent(IResulting<T?> result, IMutationAware<T?> store, IMutable<bool> state)
+		: this(new Storing<T?>(store, result).Then().Protecting().Out(), state) {}
 
-	public ActiveContent(IResulting<T?> result, IMutable<int> counts)
-		: this(result, new UpdateMonitor(counts)) {}
+	public ActiveContent(IResulting<T?> result, IMutable<bool> state) : this(result, new UpdateMonitor(state)) {}
 
 	public ActiveContent(IResulting<T?> result, UpdateMonitor monitor) : this(result, monitor, monitor) {}
 
