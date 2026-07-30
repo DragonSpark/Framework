@@ -1,25 +1,23 @@
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Conditions;
-using DragonSpark.Runtime.Execution;
 
 namespace DragonSpark.Model.Results;
 
-public sealed class VisitedAwareVariable<T> : IMutationAware<T> // TODO: Replace with switch-aware
+public sealed class VisitedAwareVariable<T> : IMutationAware<T>
 {
-	readonly IMutable<T?> _mutable;
-	readonly ICounter     _counter;
+	readonly IMutable<T?>   _mutable;
+	readonly IMutable<bool> _switch;
 
-	public VisitedAwareVariable() : this(new Variable<T>(), new Variable<int>()) {}
+	public VisitedAwareVariable() : this(new Variable<T>(), new Switch()) {}
 
-	public VisitedAwareVariable(IMutable<T?> mutable, IMutable<int> counts) : this(mutable, new Counter(counts)) {}
+	public VisitedAwareVariable(IMutable<T?> mutable, IMutable<bool> @switch)
+		: this(mutable, @switch,
+		       @switch as ICondition ?? A.Result(@switch).Then().Accept<None>().Then().Out()) {}
 
-	public VisitedAwareVariable(IMutable<T?> mutable, ICounter counter)
-		: this(mutable, counter, new HasCounted(counter)) {}
-
-	public VisitedAwareVariable(IMutable<T?> mutable, ICounter counter, ICondition condition)
+	public VisitedAwareVariable(IMutable<T?> mutable, IMutable<bool> @switch, ICondition condition)
 	{
 		_mutable  = mutable;
-		_counter  = counter;
+		_switch   = @switch;
 		Condition = condition;
 	}
 
@@ -29,7 +27,7 @@ public sealed class VisitedAwareVariable<T> : IMutationAware<T> // TODO: Replace
 
 	public void Execute(T parameter)
 	{
-		_counter.Execute();
+		_switch.Up();
 		_mutable.Execute(parameter);
 	}
 }
