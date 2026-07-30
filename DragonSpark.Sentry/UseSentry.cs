@@ -1,4 +1,4 @@
-﻿using DragonSpark.Model.Commands;
+using DragonSpark.Model.Commands;
 using Sentry.AspNetCore;
 
 namespace DragonSpark.Sentry;
@@ -16,5 +16,12 @@ sealed class UseSentry : ICommand<SentryAspNetCoreOptions>
 	public void Execute(SentryAspNetCoreOptions parameter)
 	{
 		parameter.SetBeforeSend(_select);
-	}
-}
+		parameter.SetBeforeSendLog(x =>
+		                           {
+			                           var result = !x.TryGetAttribute("sentry.origin", out var origin) ||
+			                                           origin is not "auto.log.extensions_logging"
+				                                           ? x
+				                                           : null;
+			                           return result;
+		                           });
+	}}
