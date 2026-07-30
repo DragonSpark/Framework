@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Results;
+using DragonSpark.Compose;
+using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using DragonSpark.Runtime.Environment;
 using Microsoft.Extensions.Hosting;
@@ -23,7 +24,13 @@ sealed class AmbientConfigurationRoot : ISelect<IHostEnvironment, DirectoryInfo>
 	public DirectoryInfo Get(IHostEnvironment parameter)
 	{
 		var path   = Path.Combine(parameter.ContentRootPath, _name);
-		var result = Directory.Exists(path) ? new DirectoryInfo(path) : _default.Get();
-		return result;
+		if (Directory.Exists(path))
+		{
+			return new(path);
+		}
+
+		var @default      = _default.Get();
+		var directory = @default.Subdirectory(_name);
+		return directory?.Exists == true ? directory : @default;
 	}
 }
