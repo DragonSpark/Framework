@@ -21,4 +21,6 @@ public class StorageEntry : IStorageEntry
 	public ValueTask<Stream> Get(Stop<Stream> parameter) => _previous.Get(parameter);
 
 	public ValueTask Get(Stop<IDictionary<string, string?>> parameter) => _previous.Get(parameter);
+
+	public ValueTask<Uri> Get(Stop<RelayInput> parameter) => _previous.Get(parameter);
 }

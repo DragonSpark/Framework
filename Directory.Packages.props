@@ -109,7 +109,7 @@
     <PackageVersion Include="Plugin.Firebase.CloudMessaging" Version="4.0.1" />
     <PackageVersion Include="Plugin.Maui.Biometric" Version="0.1.0" />
     <PackageVersion Include="Polly" Version="8.7.0" />
-    <PackageVersion Include="Radzen.Blazor" Version="11.1.7" />
+    <PackageVersion Include="Radzen.Blazor" Version="11.2.0" />
     <PackageVersion Include="Refit.HttpClientFactory" Version="13.1.0" />
     <PackageVersion Include="Scrutor" Version="7.0.0" />
     <PackageVersion Include="SendGrid.Extensions.DependencyInjection" Version="1.0.1" />
