@@ -23,14 +23,14 @@ sealed class AmbientConfigurationRoot : ISelect<IHostEnvironment, DirectoryInfo>
 
 	public DirectoryInfo Get(IHostEnvironment parameter)
 	{
-		var path   = Path.Combine(parameter.ContentRootPath, _name);
+		var path = Path.Combine(parameter.ContentRootPath, _name);
 		if (Directory.Exists(path))
 		{
 			return new(path);
 		}
 
-		var @default      = _default.Get();
+		var @default  = _default.Get();
 		var directory = @default.Subdirectory(_name);
-		return directory?.Exists == true ? directory : @default;
+		return directory.Exists ? directory : @default;
 	}
 }
