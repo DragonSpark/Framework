@@ -7,6 +7,8 @@ public readonly record struct RelayInput(
 	TimeSpan Access,
 	TimeSpan Content)
 {
+	public RelayInput() : this(DefaultAccessExpiration.Default, DefaultContentExpiration.Default) {}
+
 	public RelayInput(string? Name = null, string? ContentType = null)
 		: this(DefaultAccessExpiration.Default, DefaultContentExpiration.Default, Name, ContentType) {}
 
