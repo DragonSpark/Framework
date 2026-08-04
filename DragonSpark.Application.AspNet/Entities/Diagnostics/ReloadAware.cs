@@ -13,5 +13,5 @@ public sealed class ReloadAware<T> : PolicyAware<T>
 [UsedImplicitly]
 public class ReloadAware<TIn, TOut> : PolicyAware<TIn, TOut>
 {
-	protected ReloadAware(IStopAware<TIn, TOut> previous) : base(previous, ReloadPolicy.Default) {}
+	public ReloadAware(IStopAware<TIn, TOut> previous) : base(previous, ReloadPolicy.Default) {}
 }

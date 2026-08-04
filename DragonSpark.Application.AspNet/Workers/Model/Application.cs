@@ -8,24 +8,24 @@ namespace DragonSpark.Application.AspNet.Workers.Model;
 
 public class Application<T> : IStopAware<Guid> where T : ExternalProcess
 {
-	readonly ITransactions    _transactions;
-	readonly IStopAware<Guid> _body;
+	readonly ITransactions       _transactions;
+	readonly IStopAware<Guid, T> _select;
+	readonly IStopAware<T>       _process;
 
 	protected Application(AmbientAwareEntityContextTransactions transactions, IStopAware<Guid, T> select,
 	                      IStopAware<T> process)
-		: this(transactions, select.Then().Terminate(process).Out()) {}
-
-	protected Application(ITransactions transactions, IStopAware<Guid> body)
 	{
 		_transactions = transactions;
-		_body         = body;
+		_select       = select;
+		_process      = process;
 	}
 
 	public async ValueTask Get(Stop<Guid> parameter)
 	{
 		await using var transaction = await _transactions.Off(parameter);
 		transaction.Execute();
-		await _body.Off(parameter);
+		var subject = await _select.Off(parameter);
+		await _process.Off(new(subject, parameter));
 		await transaction.Off(parameter);
 	}
 }
