@@ -9,22 +9,21 @@ sealed class ConfigureSerilog : ICommand<IServiceCollection>
 {
 	readonly Action<IServiceProvider, LoggerConfiguration> _configure;
 	readonly ActivityListenerConfiguration                 _listener;
-	readonly bool                                          _preserveExistingLogging;
+	readonly bool                                          _preserveOutputs;
 
-	public ConfigureSerilog(Action<IServiceProvider, LoggerConfiguration> configure, bool preserveExistingLogging)
-		: this(configure, new(), preserveExistingLogging) {}
+	public ConfigureSerilog(Action<IServiceProvider, LoggerConfiguration> configure, bool preserveOutputs)
+		: this(configure, new(), preserveOutputs) {}
 
 	public ConfigureSerilog(Action<IServiceProvider, LoggerConfiguration> configure,
-	                        ActivityListenerConfiguration listener, bool preserveExistingLogging)
+	                        ActivityListenerConfiguration listener, bool preserveOutputs)
 	{
-		_configure               = configure;
-		_listener                = listener;
-		_preserveExistingLogging = preserveExistingLogging;
+		_configure       = configure;
+		_listener        = listener;
+		_preserveOutputs = preserveOutputs;
 	}
 
 	public void Execute(IServiceCollection parameter)
 	{
-		parameter.AddSingleton(_listener).AddSingleton<IFlushLogging, FlushLogging>();
-		parameter.AddSerilog(_configure, writeToProviders: _preserveExistingLogging);
+		parameter.AddSingleton(_listener).AddSerilog(_configure, writeToProviders: _preserveOutputs);
 	}
 }

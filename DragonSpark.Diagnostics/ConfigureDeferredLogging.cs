@@ -2,19 +2,29 @@ using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
+using SerilogTracing;
 
 namespace DragonSpark.Diagnostics;
 
 sealed class ConfigureDeferredLogging : ICommand<IServiceCollection>
 {
-	public static ConfigureDeferredLogging Default { get; } = new();
+	readonly ActivityListenerConfiguration _listener;
+	readonly bool                          _preserveOutputs;
 
-	ConfigureDeferredLogging() {}
+	public ConfigureDeferredLogging(bool preserveOutputs) : this(new(), preserveOutputs) {}
+
+	public ConfigureDeferredLogging(ActivityListenerConfiguration listener, bool preserveOutputs)
+	{
+		_listener        = listener;
+		_preserveOutputs = preserveOutputs;
+	}
 
 	public void Execute(IServiceCollection parameter)
 	{
 		var configuration = parameter.Configuration();
-		var store         = new StoredLogger(configuration);
-		parameter.TryDecorate<ILogger>(x => new Logger(store, x)); // TODO: Fix
+		var logger        = new Logger(new StoredLogger(configuration));
+		parameter.AddSingleton<IFlushLogging, FlushLogging>()
+		         .AddSingleton(_listener)
+		         .AddSerilog(logger, providers: _preserveOutputs ? new() : null);
 	}
 }

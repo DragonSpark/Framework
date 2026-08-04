@@ -10,13 +10,15 @@ public static class Extensions
 {
 	extension(BuildHostContext @this)
 	{
-		public BuildHostContext WithSerilog() => @this.WithSerilog(ConfigureLogging.Default.Execute);
+		public BuildHostContext WithSerilog(bool preserveOutputs = true)
+			=> @this.WithSerilog(ConfigureLogging.Default.Execute, preserveOutputs);
 
 		public BuildHostContext WithSerilog(Action<IServiceProvider, LoggerConfiguration> configure,
-		                                    bool preserveExistingLogging = true)
-			=> @this.Configure(new ConfigureSerilog(configure, preserveExistingLogging));
+		                                    bool preserveOutputs = true)
+			=> @this.Configure(new ConfigureSerilog(configure, preserveOutputs));
 
-		public BuildHostContext WithDeferredLogging() => @this.Configure(ConfigureDeferredLogging.Default);
+		public BuildHostContext WithSerilogUsingDeferredLogging(bool preserveOutputs = true)
+			=> @this.Configure(new ConfigureDeferredLogging(preserveOutputs));
 	}
 
 	[UsedImplicitly]
