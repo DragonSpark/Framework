@@ -1,34 +1,30 @@
-using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using Serilog;
 using SerilogTracing;
-using ILogger = Serilog.ILogger;
 
 namespace DragonSpark.Diagnostics;
 
 sealed class ConfigureSerilog : ICommand<IServiceCollection>
 {
-	readonly Func<IServiceProvider, ILoggerProvider> _provider;
-	readonly bool                                    _configure;
+	readonly Action<IServiceProvider, LoggerConfiguration> _configure;
+	readonly ActivityListenerConfiguration                 _listener;
+	readonly bool                                          _preserveExistingLogging;
 
-	public ConfigureSerilog(Func<IServiceProvider, ILoggerProvider> provider, bool configure)
+	public ConfigureSerilog(Action<IServiceProvider, LoggerConfiguration> configure, bool preserveExistingLogging)
+		: this(configure, new(), preserveExistingLogging) {}
+
+	public ConfigureSerilog(Action<IServiceProvider, LoggerConfiguration> configure,
+	                        ActivityListenerConfiguration listener, bool preserveExistingLogging)
 	{
-		_provider  = provider;
-		_configure = configure;
+		_configure               = configure;
+		_listener                = listener;
+		_preserveExistingLogging = preserveExistingLogging;
 	}
 
 	public void Execute(IServiceCollection parameter)
 	{
-		var logger = new Logger(new StoredLogger(parameter.Configuration()));
-		var services = parameter.AddSingleton(new ActivityListenerConfiguration())
-		                        .AddSingleton<IFlushLogging, FlushLogging>()
-		                        .AddScoped(_provider)
-		                        .AddSingleton<ILogger>(logger);
-		if (_configure)
-		{
-			services.AddSerilog(logger);
-		}
+		parameter.AddSingleton(_listener).AddSingleton<IFlushLogging, FlushLogging>();
+		parameter.AddSerilog(_configure, writeToProviders: _preserveExistingLogging);
 	}
 }
