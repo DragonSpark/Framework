@@ -1,14 +1,15 @@
+using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 using Microsoft.Extensions.Configuration;
 using Serilog;
+using ILogger = Serilog.ILogger;
 
 namespace DragonSpark.Diagnostics;
 
-sealed class CreateLogger : IResult<ILogger>
+sealed class CreateLogger : Result<ILogger>
 {
-	readonly IConfiguration _configuration;
+	public CreateLogger(IConfiguration configuration)
+		: this(ApplyConfiguration.Default.Parameter(new(configuration)).Subject) {}
 
-	public CreateLogger(IConfiguration configuration) => _configuration = configuration;
-
-	public ILogger Get() => new LoggerConfiguration().ReadFrom.Configuration(_configuration).CreateLogger();
+	public CreateLogger(LoggerConfiguration configuration) : base(configuration.CreateLogger) {}
 }
