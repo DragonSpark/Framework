@@ -11,8 +11,8 @@ public class ComponentStateComponentBase : Microsoft.AspNetCore.Components.Compo
 	[Parameter]
 	public string? ProvidedKey { get; set; }
 
-	[Parameter, EditorRequired]
-	public string Qualifier { get; set; } = null!;
+	[Parameter]
+	public string Qualifier { get; set; } = string.Empty;
 }
 
 public class ComponentStateComponentBase<T> : ComponentStateComponentBase
