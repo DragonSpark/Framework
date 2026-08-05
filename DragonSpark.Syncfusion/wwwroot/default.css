@@ -8,7 +8,7 @@ label.e-float-text,
 .e-corner.e-float-input:not(.e-input-focus) input:not(:focus):valid ~ label.e-float-text.e-label-bottom {
     padding-left: 34px;
 }
-/* Override Syncfusion alignment helper classes inside mobile mode */
+
 .dragonspark-minimal.e-grid .e-rowcell.e-leftalign,
 .dragonspark-minimal.e-grid .e-rowcell.e-centeralign,
 .dragonspark-minimal.e-grid .e-rowcell.e-rightalign,
@@ -17,24 +17,16 @@ label.e-float-text,
 .dragonspark-minimal.e-grid .e-headercell.e-rightalign,
 .dragonspark-minimal.e-grid .e-headercelldiv.e-leftalign,
 .dragonspark-minimal.e-grid .e-headercelldiv.e-centeralign,
-.dragonspark-minimal.e-grid .e-headercelldiv.e-rightalign {
+.dragonspark-minimal.e-grid .e-headercelldiv.e-rightalign,
+.dragonspark-minimal.e-grid.e-row-responsive .e-gridcontent td[data-cell] .text-center {
     text-align: left !important;
 }
 
 .dragonspark-minimal.e-grid.e-row-responsive .e-gridcontent td::before,
 .dragonspark-minimal.e-grid.e-row-responsive .e-summarycontent td::before {
-    left: 0 !important;
-    padding-left: 0 !important;
-    text-align: left !important;
+    left: -7% !important;
 }
 
-/* 1. Apply 10% padding ONLY to the outer top-level wrapper div */
-.dragonspark-minimal.e-grid.e-row-responsive .e-gridcontent td.e-rowcell > div:not(:has(img)) {
+.dragonspark-minimal.e-grid.e-row-responsive .e-gridcontent td[data-cell]:not(:has(img)) {
     padding-left: 10% !important;
-    text-align: left !important;
-}
-
-.dragonspark-minimal.e-grid.e-row-responsive .e-gridcontent td.e-rowcell > div:not(:has(img)) div {
-    padding-left: 0 !important;
-    text-align: left !important;
 }
