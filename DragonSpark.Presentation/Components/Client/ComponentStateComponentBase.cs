@@ -5,13 +5,13 @@ namespace DragonSpark.Presentation.Components.Client;
 
 public class ComponentStateComponentBase : Microsoft.AspNetCore.Components.ComponentBase
 {
-	[Parameter]
+	[Parameter, EditorRequired]
 	public Microsoft.AspNetCore.Components.ComponentBase Owner { get; set; } = null!;
 
 	[Parameter]
 	public string? ProvidedKey { get; set; }
 
-	[Parameter]
+	[Parameter, EditorRequired]
 	public string Qualifier { get; set; } = null!;
 }
 
