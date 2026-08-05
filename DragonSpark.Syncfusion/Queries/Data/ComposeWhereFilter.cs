@@ -17,6 +17,6 @@ sealed class ComposeWhereFilter : ISelect<Syncfusion.Blazor.Data.WhereFilter, Wh
 		       parameter.IsComplex,
 		       parameter.Operator.Account() ?? "equal",
 		       parameter.Condition.Account() ?? "and",
-		       parameter.value.Verify(),
+		       parameter.value,
 		       predicates: parameter.predicates.Account()?.Select(Get).ToList() ?? []);
 }

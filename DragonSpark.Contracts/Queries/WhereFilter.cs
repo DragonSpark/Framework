@@ -7,5 +7,5 @@ public sealed record WhereFilter(
 	bool IsComplex,
 	string Operator,
 	string Condition,
-	object value,
+	object? value,
 	IReadOnlyCollection<WhereFilter> predicates);
