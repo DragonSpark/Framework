@@ -19,7 +19,7 @@ sealed class ConfigurePoster : ICommand<ITwitterRequest>
 		: this(new StringContent(client.Serialize(request), Encoding.UTF8, "application/json")) {}
 
 	public ConfigurePoster(StringContent content, HttpMethod method = HttpMethod.POST,
-	                       string address = "https://api.twitter.com/2/tweets")
+	                       string address = "https://api.x.com/2/posts")
 	{
 		_content = content;
 		_method  = method;
