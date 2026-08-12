@@ -1,9 +1,10 @@
+using System.ComponentModel.DataAnnotations;
+using DragonSpark.Application.Components.Validation.Objects;
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Conditions;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
-using System.ComponentModel.DataAnnotations;
 
 namespace DragonSpark.Application.AspNet.Components.Validation;
 
@@ -72,12 +73,12 @@ public sealed class ObjectGraphDataAnnotationsValidator : ComponentBase, IDispos
 	{
 		var edit    = EditContext.Verify();
 		var field   = e.FieldIdentifier;
-		if (!string.IsNullOrEmpty(field.FieldName))
+		if (field.FieldName.IsAssigned())
 		{
 			var value = _delegates.Get(field);
 			if (value is not null)
 			{
-				var context = _contexts.Get(new NewValidationContext(field, _validator));
+				var context = _contexts.Get(new NewValidationContext(new(field.Model, field.FieldName), _validator));
 				var results = new List<ValidationResult>();
 
 				Validator.TryValidateProperty(value, context, results);

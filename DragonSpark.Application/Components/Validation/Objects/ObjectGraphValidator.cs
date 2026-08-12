@@ -1,8 +1,8 @@
-﻿using DragonSpark.Compose;
-using NetFabric.Hyperlinq;
 using System.ComponentModel.DataAnnotations;
+using DragonSpark.Compose;
+using NetFabric.Hyperlinq;
 
-namespace DragonSpark.Application.AspNet.Components.Validation;
+namespace DragonSpark.Application.Components.Validation.Objects;
 
 public sealed class ObjectGraphValidator
 {

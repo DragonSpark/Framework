@@ -1,8 +1,7 @@
 using System.ComponentModel.DataAnnotations;
-using DragonSpark.Application.Components.Validation;
 using DragonSpark.Compose;
 
-namespace DragonSpark.Application.AspNet.Components.Validation;
+namespace DragonSpark.Application.Components.Validation.Objects;
 
 public sealed class ValidationContexts : IValidationContexts
 {
@@ -22,7 +21,7 @@ public sealed class ValidationContexts : IValidationContexts
 	public ValidationContext Get(NewValidationContext parameter)
 	{
 		var (field, validator, context) = parameter;
-		var result = new ValidationContext(field.Model) { MemberName = field.FieldName };
+		var result = new ValidationContext(field.Instance) { MemberName = field.Member };
 
 		_context.Assign(result, context);
 		_validator.Assign(result, validator);

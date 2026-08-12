@@ -1,6 +1,4 @@
-﻿using DragonSpark.Application.Components.Validation;
-
-namespace DragonSpark.Application.AspNet.Components.Validation;
+namespace DragonSpark.Application.Components.Validation.Objects;
 
 sealed class ModelValidationContextKey : ValidatorKey<GraphValidationContext>
 {

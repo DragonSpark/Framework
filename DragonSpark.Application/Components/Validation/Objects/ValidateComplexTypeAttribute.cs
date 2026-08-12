@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
-using DragonSpark.Application.Components.Validation;
 
-namespace DragonSpark.Application.AspNet.Components.Validation;
+namespace DragonSpark.Application.Components.Validation.Objects;
 
 /// <summary>
 /// Attribution: https://www.nuget.org/packages/Microsoft.AspNetCore.Components.DataAnnotations.Validation
