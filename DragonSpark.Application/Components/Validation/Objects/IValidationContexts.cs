@@ -1,7 +1,7 @@
-﻿using DragonSpark.Model.Selection;
 using System.ComponentModel.DataAnnotations;
+using DragonSpark.Model.Selection;
 
-namespace DragonSpark.Application.AspNet.Components.Validation;
+namespace DragonSpark.Application.Components.Validation.Objects;
 
 public interface IValidationContexts : ISelect<NewValidationContext, ValidationContext>,
                                        ISelect<ValidationContext, GraphValidationContext>;

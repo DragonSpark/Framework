@@ -1,4 +1,4 @@
-﻿@using DragonSpark.Compose
+@using DragonSpark.Compose
 @using DragonSpark.Model.Selection
 @using DragonSpark.Presentation.Components.Content.Templates
 
@@ -31,7 +31,7 @@
         
     }
 
-    [Parameter]
+    [Parameter, EditorRequired]
     public required ISelect<TIn, TOut> Selector { set; get; }
 
     [Parameter]

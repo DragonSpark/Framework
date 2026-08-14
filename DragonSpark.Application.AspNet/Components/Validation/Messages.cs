@@ -1,9 +1,10 @@
-﻿using DragonSpark.Compose;
+using System.ComponentModel.DataAnnotations;
+using DragonSpark.Application.Components.Validation.Objects;
+using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Components.Forms;
 using NetFabric.Hyperlinq;
-using System.ComponentModel.DataAnnotations;
 
 namespace DragonSpark.Application.AspNet.Components.Validation;
 
@@ -29,7 +30,8 @@ sealed class Messages : ICommand<IEnumerable<ValidationResultMessage>>,
 		foreach (var message in parameter.AsValueEnumerable())
 		{
 			_messages.Add(message);
-			_store.Add(message.Field, message.Message);
+			var (instance, member) = message.Field;
+			_store.Add(new FieldIdentifier(instance, member), message.Message);
 		}
 	}
 
@@ -46,7 +48,8 @@ sealed class Messages : ICommand<IEnumerable<ValidationResultMessage>>,
 								  .Select(x => x.Item1);
 			foreach (var message in select.Any() ? select.ToArray() : Empty.Array<ValidationResultMessage>())
 			{
-				_store.Clear(message.Field);
+				var (instance, member) = message.Field;
+				_store.Clear(new FieldIdentifier(instance, member));
 				_messages.Remove(message);
 			}
 		}

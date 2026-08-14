@@ -1,4 +1,4 @@
-﻿using DragonSpark.Model.Results;
+using DragonSpark.Model.Results;
 
 namespace DragonSpark.Presentation.Model;
 
@@ -7,6 +7,9 @@ public class SwitchModel<TValue> : BindingModel<TValue>
 	readonly Func<TValue?> _initialize;
 
 	protected SwitchModel(IMutable<TValue?> store) : this(store.Execute, store.Get) {}
+    
+	protected SwitchModel(IMutable<TValue?> store, Func<TValue> initialize)
+		: this(store.Execute, store.Get, initialize) {}
 
 	protected SwitchModel(Action<TValue?> set, Func<TValue?> get) : this(set, get, get) {}
 

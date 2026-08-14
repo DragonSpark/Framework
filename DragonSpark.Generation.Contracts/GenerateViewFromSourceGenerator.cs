@@ -171,7 +171,7 @@ public sealed class GenerateViewFromSourceGenerator : IIncrementalGenerator
 
                 if (hasValidateComplexType)
                 {
-                    sb.AppendLine("    [DragonSpark.Application.AspNet.Components.Validation.ValidateComplexType]");
+                    sb.AppendLine("    [DragonSpark.Application.Components.Validation.Objects.ValidateComplexType]");
                 }
 
                 sb.AppendLine($"    public {nestedDtoName} {prop.Name} {{ get; set; }} = new();");

@@ -1,7 +1,8 @@
-﻿using DragonSpark.Compose;
+using DragonSpark.Compose;
 using SixLabors.Fonts;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
+using Color = System.Drawing.Color;
 
 namespace DragonSpark.Drawing;
 
@@ -37,6 +38,6 @@ public static class Extensions
 
 	public static Size Size(this FontRectangle @this) => new((int)@this.Width, (int)@this.Height);
 	
-	public static Rgba32 Convert(this System.Drawing.Color color) => new(color.R, color.G, color.B, color.A);
-
+	public static Rgba32 Convert(this Color @this) => new(@this.R, @this.G, @this.B, @this.A);
+	public static Color Convert(this Rgba32 @this) => Color.FromArgb(@this.A, @this.R, @this.G, @this.B);
 }

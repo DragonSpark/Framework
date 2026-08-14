@@ -26,7 +26,6 @@ public sealed class Edit<TIn, T, TResult> : IEdit<TIn, TResult>
 	}
 }
 
-[method: MustDisposeResource]
 public readonly struct Edit<T>(IEditor editor, T subject) : IEditor
 {
 	public T Subject { get; } = subject;
