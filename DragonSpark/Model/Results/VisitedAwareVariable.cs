@@ -8,7 +8,9 @@ public sealed class VisitedAwareVariable<T> : IMutationAware<T>
 	readonly IMutable<T?>   _mutable;
 	readonly IMutable<bool> _switch;
 
-	public VisitedAwareVariable() : this(new Variable<T>(), new Switch()) {}
+	public VisitedAwareVariable() : this(new Variable<T>()) {}
+
+	public VisitedAwareVariable(IMutable<T?> mutable) : this(mutable, new Switch()) {}
 
 	public VisitedAwareVariable(IMutable<T?> mutable, IMutable<bool> @switch)
 		: this(mutable, @switch,
