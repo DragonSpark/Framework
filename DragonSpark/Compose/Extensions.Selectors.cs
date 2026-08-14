@@ -1,6 +1,7 @@
 using DragonSpark.Compose.Model.Results;
 using DragonSpark.Compose.Model.Selection;
 using DragonSpark.Model.Operations.Allocated.Stop;
+using DragonSpark.Model.Operations.Selection.Stop;
 using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Compose;
@@ -8,9 +9,13 @@ namespace DragonSpark.Compose;
 // ReSharper disable once MismatchedFileName
 public partial class ExtensionMethods
 {
-    public static Task<TOut> Get<TIn, TOut>(this IAllocated<TIn, TOut> @this, TIn parameter,
-                                            CancellationToken stop)
-        => @this.Get(new(parameter, stop));
+	public static Task<TOut> Get<TIn, TOut>(this IAllocated<TIn, TOut> @this, TIn parameter,
+											CancellationToken stop)
+		=> @this.Get(new(parameter, stop));
+
+	public static ValueTask<TOut> Get<TIn, TOut>(this IStopAware<TIn, TOut> @this, TIn parameter,
+												 CancellationToken stop)
+		=> @this.Get(new(parameter, stop));
 
 	public static ResultComposer<T> Bind<T>(this Composer<Type, object> @this) => @this.Bind(A.Type<T>()).Cast<T>();
 
@@ -31,11 +36,11 @@ public partial class ExtensionMethods
 		=> new Coalesce<TIn, TOut>(@this, next).Then();
 
 	public static Composer<TIn, TOut?> OrMaybe<TIn, TOut>(this Composer<TIn, TOut?> @this,
-	                                                      ISelect<TIn, TOut?> second)
+														  ISelect<TIn, TOut?> second)
 		where TOut : class => @this.OrMaybe(second.Get);
 
 	public static Composer<TIn, TOut?> OrMaybe<TIn, TOut>(this Composer<TIn, TOut?> @this,
-	                                                      Func<TIn, TOut?> next)
+														  Func<TIn, TOut?> next)
 		where TOut : class
 		=> new Maybe<TIn, TOut>(@this, next).Then();
 }

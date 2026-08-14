@@ -14,9 +14,9 @@ sealed class ComposeSettings : ISelect<IServiceProvider, RefitSettings>
     public RefitSettings Get(IServiceProvider parameter)
     {
         var serializer = parameter.GetService<IHttpContentSerializer>();
-        var settings   = serializer is not null ? new() { ContentSerializer = serializer } : new RefitSettings();
         var provider   = parameter.GetService<IRefitAccessTokenProvider>();
-
+        var settings   = serializer is not null ? new() { ContentSerializer = serializer } : new RefitSettings();
+        
         settings.AuthorizationHeaderValueGetter
             = provider is not null ? provider.Get : settings.AuthorizationHeaderValueGetter;
 
