@@ -1,5 +1,5 @@
-using DragonSpark.Model.Operations.Allocated.Stop;
+using DragonSpark.Model.Operations.Selection.Stop;
 
 namespace DragonSpark.Application.Communication.Http;
 
-public interface IRefitAccessTokenProvider : IAllocated<HttpRequestMessage, string>;
+public interface IRefitAccessTokenProvider : IStopAware<HttpRequestMessage, string>;
