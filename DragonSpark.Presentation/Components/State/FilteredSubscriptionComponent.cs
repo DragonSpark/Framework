@@ -14,7 +14,7 @@ public abstract class FilteredSubscriptionComponent<T> : SubscriptionComponent<T
 
 	protected override async Task OnReceive(Stop<T> parameter)
 	{
-		if (await Condition.Get(parameter))
+		if (await Condition.On(parameter))
 		{
 			await base.OnReceive(parameter).Off();
 		}
