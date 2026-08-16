@@ -21,7 +21,7 @@ public class EvaluateToFirstOrDefault<T> : EvaluateToFirstOrDefault<None, T>
 public class EvaluateToFirstOrDefault<TIn, T> : Evaluate<TIn, T, T?>
 {
 	public EvaluateToFirstOrDefault(IScopes scopes, Expression<Func<DbContext, TIn, IQueryable<T>>> expression)
-		: this(new Reading<TIn, T>(scopes, (d, @in) => expression.Invoke(d, @in).Take(1))) {}
+		: this(new Reading<TIn, T>(scopes, (d, @in) => expression.Invoke(d, @in).OrderBy(_ => true).Take(1))) {}
 
 	protected EvaluateToFirstOrDefault(IReading<TIn, T> reading) : base(reading, ToFirstOrDefault<T>.Default) {}
 }

@@ -4,8 +4,8 @@
 
 @code
 {
-    [Parameter]
-    public ISubscribe<T> Registration { get; set; } = null!;
+    [Parameter, EditorRequired]
+    public required ISubscribe<T> Registration { get; set; }
 
     protected override ISubscription DetermineSubscription() => Registration.Get(OnReceive);
 }
