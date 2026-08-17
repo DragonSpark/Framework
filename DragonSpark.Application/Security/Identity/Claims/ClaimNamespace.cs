@@ -6,3 +6,8 @@ public sealed class ClaimNamespace : Text.Text
 
 	ClaimNamespace() : base("urn:dragonspark") {}
 }
+
+public class Claim : Text.Text // TODO
+{
+	protected Claim(string name) : base($"{ClaimNamespace.Default}:{name}") {}
+}

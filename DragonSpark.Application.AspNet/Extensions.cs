@@ -25,6 +25,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Security.Claims;
+using Claim = System.Security.Claims.Claim;
 using IdentityUser = DragonSpark.Application.AspNet.Security.Identity.IdentityUser;
 
 namespace DragonSpark.Application.AspNet;
