@@ -1,10 +1,10 @@
 using System.Reflection;
+using System.Web;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Selection.Stop;
 using DragonSpark.Runtime.Activation;
 using DragonSpark.Text;
-using Microsoft.AspNetCore.WebUtilities;
 
 namespace DragonSpark.Application.Communication.Http;
 
@@ -28,34 +28,35 @@ sealed class GetInstance<T> : IStopAware<HttpContent, T>
     // ReSharper disable once MethodTooLong
     public async ValueTask<T> Get(Stop<HttpContent> parameter)
     {
-        var (subject, stop) = parameter;
-        var text   = await subject.ReadAsStringAsync(stop).Off();
-        var parsed = QueryHelpers.ParseQuery(text);
+	    var (subject, stop) = parameter;
+	    var text   = await subject.ReadAsStringAsync(stop).Off();
+	    var parsed = HttpUtility.ParseQueryString(text);
 
-        if (typeof(T).IsValueType || typeof(T) == typeof(string))
-        {
-            return parsed.Count > 0 ? (T)(object)parsed.First().ToString() : default!;
-        }
+	    if (typeof(T).IsValueType || typeof(T) == typeof(string))
+	    {
+		    return parsed.Count > 0 ? (T)(object)parsed.Get(0)! : default!;
+	    }
 
-        var result = _new();
+	    var result = _new();
 
-        foreach (var property in typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                                          .Where(p => p.CanWrite))
-        {
-            var name = _name.Get(property.Name.AsMemory());
-            if (parsed.TryGetValue(name, out var value) && !string.IsNullOrEmpty(value))
-            {
-                if (property.PropertyType == typeof(string))
-                {
-                    property.SetValue(result, value);
-                }
-                else if (property.PropertyType == typeof(int) && int.TryParse(value, out var intVal))
-                {
-                    property.SetValue(result, intVal);
-                }
-            }
-        }
+	    foreach (var property in typeof(T).GetProperties(BindingFlags.Public | BindingFlags.Instance)
+	                                      .Where(p => p.CanWrite))
+	    {
+		    var name  = _name.Get(property.Name.AsMemory());
+		    var value = parsed.Get(name);
 
-        return result;
-    }
-}
+		    if (!string.IsNullOrEmpty(value))
+		    {
+			    if (property.PropertyType == typeof(string))
+			    {
+				    property.SetValue(result, value);
+			    }
+			    else if (property.PropertyType == typeof(int) && int.TryParse(value, out var intVal))
+			    {
+				    property.SetValue(result, intVal);
+			    }
+		    }
+	    }
+
+	    return result;
+    }}
