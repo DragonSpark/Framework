@@ -1,6 +1,6 @@
 ﻿namespace DragonSpark.Azure.Storage.Uploads;
 
-public sealed class SourceFileRequest : RequestFileResultBase // TODO
+public sealed class SourceFileRequest : RequestFileResultBase
 {
 	public static SourceFileRequest Default { get; } = new();
 

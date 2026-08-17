@@ -8,7 +8,7 @@ sealed class Registrations : ICommand<IServiceCollection>
 {
 	public static Registrations Default { get; } = new();
 
-	Registrations() {} // TODO
+	Registrations() {}
 
 	public void Execute(IServiceCollection parameter)
 	{
