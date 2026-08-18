@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.AspNet.Runtime;
+using DragonSpark.Application.AspNet.Runtime;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,6 +18,7 @@ sealed class Registrations : ICommand<IServiceCollection>
 		         .Forward<UploadRoot>()
 		         .Include(x => x.Dependencies.Recursive())
 		         .Singleton()
+		         .Then.Start<UploadsControllerBase.Error>().Singleton()
 		         //
 		         .Then.Start<ITemporaryPath>()
 		         .Forward<TemporaryPath>()
