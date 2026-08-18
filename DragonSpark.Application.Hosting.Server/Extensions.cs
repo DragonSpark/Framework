@@ -9,23 +9,24 @@ namespace DragonSpark.Application.Hosting.Server;
 
 public static class Extensions
 {
-    public static ApplicationProfileContext WithApiApplication(this BuildHostContext @this)
-        => @this.Apply(CoreServerApplicationProfile.Default);
+    extension(BuildHostContext @this)
+    {
+	    public ApplicationProfileContext WithApiApplication() => @this.Apply(CoreServerApplicationProfile.Default);
 
-	public static ApplicationProfileContext WithServerApplication(this BuildHostContext @this)
-		=> @this.Apply(ServerApplicationProfile.Default);
+	    public ApplicationProfileContext WithApiApplication(Func<IApplicationBuilder, IApplicationBuilder> configure)
+		    => @this.Apply(new CoreServerApplicationProfile(configure));
 
-	public static ApplicationProfileContext WithServerApplication(this BuildHostContext @this,
-	                                                              ICommand<MvcOptions> controllers,
-	                                                              ICommand<IApplicationBuilder> application)
-		=> @this.WithServerApplication(controllers.Execute, application);
+	    public ApplicationProfileContext WithServerApplication() => @this.Apply(ServerApplicationProfile.Default);
 
-	public static ApplicationProfileContext WithServerApplication(this BuildHostContext @this,
-	                                                              ICommand<IApplicationBuilder> application)
-		=> @this.WithServerApplication(_ => {}, application);
+	    public ApplicationProfileContext WithServerApplication(ICommand<MvcOptions> controllers,
+	                                                           ICommand<IApplicationBuilder> application)
+		    => @this.WithServerApplication(controllers.Execute, application);
 
-	public static ApplicationProfileContext WithServerApplication(this BuildHostContext @this,
-	                                                              Action<MvcOptions> configure,
-	                                                              ICommand<IApplicationBuilder> application)
-		=> @this.Apply(new ServerApplicationProfile(configure, application));
+	    public ApplicationProfileContext WithServerApplication(ICommand<IApplicationBuilder> application)
+		    => @this.WithServerApplication(_ => {}, application);
+
+	    public ApplicationProfileContext WithServerApplication(Action<MvcOptions> configure,
+	                                                           ICommand<IApplicationBuilder> application)
+		    => @this.Apply(new ServerApplicationProfile(configure, application));
+    }
 }
