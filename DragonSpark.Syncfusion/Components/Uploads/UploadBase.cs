@@ -27,6 +27,7 @@ public abstract class UploadBase<T> : UploadComponentBase<T>, IAsyncDisposable
 		base.OnInitialized();
 
 		Form.Add(new { Session });
+		Form.Add(new { Workspace });
 	}
 
 	[Parameter, EditorRequired]
