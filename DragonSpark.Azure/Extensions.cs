@@ -21,8 +21,7 @@ public static class Extensions
 	{
 		public BuildHostContext WithAzureConfigurations() => Configure.Default.Get(@this);
 
-		public BuildHostContext WithUploadSupport()
-			=> @this.Configure(Azure.Storage.Uploads.Registrations.Default);
+		public BuildHostContext WithUploadSupport() => @this.Configure(Azure.Storage.Uploads.Registrations.Default);
 	}
 
 	extension(IContainer @this)
