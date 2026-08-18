@@ -1,4 +1,5 @@
-﻿using DragonSpark.Composition;
+﻿using DragonSpark.Application.AspNet.Runtime;
+using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,6 +17,12 @@ sealed class Registrations : ICommand<IServiceCollection>
 		         .Start<IUploadRoot>()
 		         .Forward<UploadRoot>()
 		         .Include(x => x.Dependencies.Recursive())
-		         .Singleton();
+		         .Singleton()
+		         //
+		         .Then.Start<ITemporaryPath>()
+		         .Forward<TemporaryPath>()
+		         .Include(x => x.Dependencies.Recursive())
+		         .Singleton()
+			;
 	}
 }
