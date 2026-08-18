@@ -17,73 +17,94 @@ namespace DragonSpark.Azure;
 
 public static class Extensions
 {
-	public static BuildHostContext WithAzureConfigurations(this BuildHostContext @this) => Configure.Default.Get(@this);
-
-	public static ISaveContent Save(this IContainer @this) => new SaveContent(@this.Write());
-
-	public static IPath Path(this IContainer @this) => new Storage.Path(@this.Get());
-
-	public static IEntry Entry(this IContainer @this) => new Entry(@this.Get());
-	
-	public static ISnapshots Snapshots(this IContainer @this) => new Snapshots(new Snapshot(@this.Get()));
-
-	public static ValueTask<ISnapshotEntry> Get(this ISnapshots @this, CancellationToken stop,
-													  params ReadOnlySpan<string?> names)
+	extension(BuildHostContext @this)
 	{
-		using var promote = names.AsValueEnumerable()
-								 .Where(x => x is not null)
-								 .Select(x => x.Verify())
-								 .ToArray(ArrayPool<string>.Shared);
-		return Get(@this, new(promote, stop));
+		public BuildHostContext WithAzureConfigurations() => Configure.Default.Get(@this);
+
+		public BuildHostContext WithUploadSupport() => @this.Configure(Azure.Storage.Uploads.Registrations.Default);
 	}
 
-	static async ValueTask<ISnapshotEntry> Get(this ISnapshots @this, Stop<Lease<string>> parameter)
+	extension(IContainer @this)
 	{
-		var (subject, stop) = parameter;
-		using (subject)
+		public ISaveContent Save() => new SaveContent(@this.Write());
+
+		public IPath Path() => new Storage.Path(@this.Get());
+
+		public IEntry Entry() => new Entry(@this.Get());
+
+		public ISnapshots Snapshots() => new Snapshots(new Snapshot(@this.Get()));
+	}
+
+	extension(ISnapshots @this)
+	{
+		public ValueTask<ISnapshotEntry> Get(CancellationToken stop,
+		                                     params ReadOnlySpan<string?> names)
 		{
-			return await @this.Off(new(subject.Memory, stop));
+			using var promote = names.AsValueEnumerable()
+			                         .Where(x => x is not null)
+			                         .Select(x => x.Verify())
+			                         .ToArray(ArrayPool<string>.Shared);
+			return Get(@this, new(promote, stop));
+		}
+
+		async ValueTask<ISnapshotEntry> Get(Stop<Lease<string>> parameter)
+		{
+			var (subject, stop) = parameter;
+			using (subject)
+			{
+				return await @this.Off(new(subject.Memory, stop));
+			}
 		}
 	}
 
-	public static ISnapshot Snapshot(this IContainer @this) => new Snapshot(@this.Get());
+	extension(IContainer @this)
+	{
+		public ISnapshot Snapshot() => new Snapshot(@this.Get());
 
-	public static IWrite Write(this IContainer @this) => new PolicyAwareWrite(new Write(@this.Get()));
+		public IWrite Write() => new PolicyAwareWrite(new Write(@this.Get()));
 
-	public static IAppend Append(this IContainer @this) => new Append(@this.Get());
+		public IAppend Append() => new Append(@this.Get());
 
-	public static IMove Move(this IContainer @this, IContainer destination)
-		=> new Move(destination.Copy(), @this.Delete());
+		public IMove Move(IContainer destination)
+			=> new Move(destination.Copy(), @this.Delete());
 
-	public static IMove Move(this IContainer @this) => new Move(@this.Copy(), @this.Delete());
+		public IMove Move() => new Move(@this.Copy(), @this.Delete());
 
-	public static ICopy Copy(this IContainer @this) => new Copy(@this.Get());
+		public ICopy Copy() => new Copy(@this.Get());
 
-	public static IDelete Delete(this IContainer @this) => new Delete(@this.Get());
+		public IDelete Delete() => new Delete(@this.Get());
 
-	public static IDeleteContents DeleteContents(this IContainer @this) => new DeleteContents(@this.Get());
+		public IDeleteContents DeleteContents() => new DeleteContents(@this.Get());
+	}
 
-	public static ValueTask<object?> ToObjectAsync(this BinaryData data, Type type,
-												   CancellationToken cancellationToken = default)
-		=> data.ToObjectAsync(type, JsonObjectSerializer.Default, cancellationToken);
+	extension(BinaryData data)
+	{
+		public ValueTask<object?> ToObjectAsync(Type type,
+		                                        CancellationToken cancellationToken = default)
+			=> data.ToObjectAsync(type, JsonObjectSerializer.Default, cancellationToken);
+
+		public ValueTask<object?> ToObjectAsync(Type type, ObjectSerializer serializer,
+		                                        CancellationToken cancellationToken = default)
+			=> serializer.DeserializeAsync(data.ToStream(), type, cancellationToken);
+	}
 
 	// ReSharper disable once TooManyArguments
-	public static ValueTask<object?> ToObjectAsync(this BinaryData data, Type type, ObjectSerializer serializer,
-												   CancellationToken cancellationToken = default)
-		=> serializer.DeserializeAsync(data.ToStream(), type, cancellationToken);
 
 	public static ISend Send(this ISender @this, TimeSpan? visibility = null, TimeSpan? life = null)
 		=> @this.Get(new ScopedInput(visibility, life));
 
-	public static RegistrationResult Storage<T>(this IServiceCollection @this) where T : class, IContainer
-		=> @this.Start<IContainer>()
-				.Forward<T>()
-				.Singleton()
-				.Then.Start<T>()
-				.Singleton();
+	extension(IServiceCollection @this)
+	{
+		public RegistrationResult Storage<T>() where T : class, IContainer
+			=> @this.Start<IContainer>()
+			        .Forward<T>()
+			        .Singleton()
+			        .Then.Start<T>()
+			        .Singleton();
 
-	public static IServiceCollection AddAzureKeyVaultSecret(this IServiceCollection @this)
-		=> Data.AddAzureKeyVaultSecret.Default.Parameter(@this);
+		public IServiceCollection AddAzureKeyVaultSecret()
+			=> Data.AddAzureKeyVaultSecret.Default.Parameter(@this);
+	}
 
 	/**/
 
