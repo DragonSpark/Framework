@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Azure.Storage.Uploads;
+﻿namespace DragonSpark.Application.AspNet.Communication;
 
 public sealed class ReportedContentTypeHeader : Text.Text
 {
