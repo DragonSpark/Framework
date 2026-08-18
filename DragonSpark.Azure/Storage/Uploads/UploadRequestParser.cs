@@ -1,4 +1,4 @@
-﻿using DragonSpark.Compose;
+using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 using Microsoft.AspNetCore.Http;
 
@@ -27,6 +27,6 @@ sealed class UploadRequestParser : ISelect<IFormCollection, UploadRequest>
 		var chunk = _chunk.Get(parameter);
 		var input = new FormChunkValueInput(parameter, chunk?.Index);
 		return new(_workspace.Get(input), _session.Get(input).Value(),
-		           !chunk.HasValue || chunk?.Index == chunk?.Total - 1);
+		           chunk is null || chunk.Value.Index == chunk.Value.Total - 1);
 	}
 }
