@@ -1,0 +1,27 @@
+﻿@using DragonSpark.Application.Connections.Events
+@using DragonSpark.Compose
+@using DragonSpark.Model.Operations.Selection.Conditions
+
+@typeparam T where T : notnull
+
+@inherits InteractiveComponentBase<T>
+
+<DragonSpark.Presentation.Components.Content.Rendering.ConnectedStateAwareComponent>
+	<FilteredSubscribeComponent T="T" Registration="@Registration" Condition="@_filter" Received="@Updated" />
+</DragonSpark.Presentation.Components.Content.Rendering.ConnectedStateAwareComponent>
+
+@code {
+
+	IDepending<T> _filter = null!;
+
+	[Parameter, EditorRequired]
+	public required ISubscribe<T> Registration { get; set; }
+
+	public override async Task SetParametersAsync(ParameterView parameters)
+	{
+		var changed = parameters.DidParameterChange(nameof(Input), Input);
+		await base.SetParametersAsync(parameters).Off();
+		_filter = changed ? Is.EqualTo(Input).Operation().Out() : _filter;
+	}
+
+}
