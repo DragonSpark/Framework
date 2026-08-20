@@ -1,6 +1,6 @@
-﻿@using DragonSpark.Compose
+@using DragonSpark.Compose
 @using DragonSpark.Presentation.Components.Forms.Validation
-@using MatBlazor
+
 <SwitchPanel ViewState="@ViewState" Back="@OnBack" Next="@OnNext">
     <ChildContent Context="next">
         @if (ChildContent is not null)
@@ -9,7 +9,7 @@
         }
 
         <ul class="@ButtonContainerCssClass">
-            <li><MatButton Class="@ButtonCssClass" Type="button" OnClick="@next">@NextText</MatButton></li>
+            <li><button class="@ButtonCssClass" type="button" @onclick="@next">@NextText</button></li>
             @if (ButtonTemplate is not null)
             {
                 @ButtonTemplate
@@ -20,10 +20,10 @@
         @EditTemplate(back)
 
         <ul class="@ButtonContainerCssClass">
-            <li><MatButton Class="@ButtonCssClass" Type="button" OnClick="@back">@CancelText</MatButton></li>
+            <li><button class="@ButtonCssClass" type="button" @onclick="@back" @onclick:stopPropagation="true">@CancelText</button></li>
             @if (!SaveText.IsNullOrEmpty())
             {
-                <li><MatButton Class="@SaveButtonCssClass" type="button" Disabled="@(!AllowSave)" OnClick="@(() => OnSaved(back))">@SaveText</MatButton></li>
+                <li><button class="@SaveButtonCssClass" type="button" disabled="@(!AllowSave)" @onclick="@(() => OnSaved(back))" @onclick:stopPropagation="true">@SaveText</button></li>
             }
 
             @if (EditButtonTemplate is not null)
