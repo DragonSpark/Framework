@@ -4,8 +4,8 @@
 @inject NavigationManager Navigation
 
 @code {
-	string _filter = null!;
 	readonly EventHandler<LocationChangedEventArgs> _changed;
+	string                                          _filter = null!;
 
 	public NavigationAddressMonitor() => _changed = OnNavigation;
 

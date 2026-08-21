@@ -9,11 +9,22 @@ sealed class RenderAwareCircuitHandler : CircuitHandler
 
 	public RenderAwareCircuitHandler(RenderStateStore store) => _store = store;
 
-	public override Task OnConnectionUpAsync(Circuit circuit, CancellationToken cancellationToken)
+	public override Task OnCircuitOpenedAsync(Circuit circuit, CancellationToken cancellationToken)
 	{
 		switch (_store.Get())
 		{
 			case RenderState.Default:
+				_store.Execute(RenderState.Connected);
+				break;
+		}
+		return base.OnCircuitOpenedAsync(circuit, cancellationToken);
+	}
+
+	public override Task OnConnectionUpAsync(Circuit circuit, CancellationToken cancellationToken)
+	{
+		switch (_store.Get())
+		{
+			case RenderState.Paused:
 				_store.Execute(RenderState.Connected);
 				break;
 		}
@@ -23,7 +34,7 @@ sealed class RenderAwareCircuitHandler : CircuitHandler
 
 	public override Task OnConnectionDownAsync(Circuit circuit, CancellationToken cancellationToken)
 	{
-		_store.Execute(RenderState.Destroyed);
+		_store.Execute(RenderState.Paused);
 		return base.OnConnectionDownAsync(circuit, cancellationToken);
 	}
 

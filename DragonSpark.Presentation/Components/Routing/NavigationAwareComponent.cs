@@ -48,11 +48,7 @@ public abstract class NavigationAwareComponent : ComponentBase, IAsyncDisposable
 		return ValueTask.CompletedTask;
 	}
 
-	public async ValueTask DisposeAsync()
-	{
-		await OnDisposing().Off();
-		GC.SuppressFinalize(this);
-	}
+	public ValueTask DisposeAsync() => OnDisposing();
 
 	~NavigationAwareComponent()
 	{
