@@ -1,5 +1,5 @@
-﻿using DragonSpark.Text;
 using System.Drawing;
+using DragonSpark.Text;
 
 namespace DragonSpark.Drawing;
 
