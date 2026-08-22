@@ -3,14 +3,13 @@ using DragonSpark.Model.Operations.Selection;
 
 namespace DragonSpark.Presentation.Components.Content.Rendering;
 
-class RenderAwareSelection<TIn, TOut> : ISelecting<TIn, TOut>
+public class RenderAwareSelection<TIn, TOut> : ISelecting<TIn, TOut>
 {
-	readonly RenderStateStore    _state;
+	readonly IRenderState          _state;
 	readonly RenderVariable<TOut>  _variable;
 	readonly ISelecting<TIn, TOut> _previous;
 
-	protected RenderAwareSelection(ISelecting<TIn, TOut> previous, RenderStateStore state,
-	                               RenderVariable<TOut> variable)
+	protected RenderAwareSelection(ISelecting<TIn, TOut> previous, IRenderState state, RenderVariable<TOut> variable)
 	{
 		_state    = state;
 		_variable = variable;

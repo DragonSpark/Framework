@@ -2,7 +2,6 @@
 using DragonSpark.Model.Operations.Selection.Stop;
 using DragonSpark.SyncfusionRendering.Queries;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
 using Syncfusion.Blazor;
 using Syncfusion.Blazor.Data;
 
@@ -14,11 +13,11 @@ public abstract class DataGridQueryBase<T> : DataGridBase<T>
 	IStopAware<DataManagerRequest, DataResult>? _factory;
 
 	[Inject]
-	public required ProtectedSessionStorage Session { get; set; }
+	public required IDataRequests Requests { get; set; }
 
 	protected abstract IDataRequest GetRequest();
 	protected virtual IStopAware<DataManagerRequest, DataResult> ComposeFactory()
-		=> new StateAwareDataRequest(GetRequest(), new GridStateVariable(_identity, Session), _active);
+		=> Requests.Get(new(this, _identity, _active, GetRequest()));
 
 	protected void RequestNewFactory()
 	{

@@ -228,11 +228,15 @@ public static class Extensions
 	public static CancelAwareActivityOptions Get(this IStopHandle @this, string message, IOperation? canceled = null,
 												 bool RedrawOnFinish = true)
 		=> new(message, @this, RedrawOnFinish: RedrawOnFinish, Canceled: canceled);
-	
-	/**/
-	public static bool IsConnected(this IResult<RenderState> @this)
-		=> @this.Get() is RenderState.Connected or RenderState.Established;
-	
+
+	extension(IResult<RenderState> @this)
+	{
+		public bool IsConnected()
+			=> @this.Get() is RenderState.Connected or RenderState.Established;
+
+		public bool IsLoading() => @this.Get() < RenderState.Established;
+	}
+
 	/**/
 	extension(ResourceAssetCollection @this)
 	{
