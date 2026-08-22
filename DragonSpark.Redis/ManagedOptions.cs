@@ -1,12 +1,11 @@
 ﻿using Azure.Core;
 using DragonSpark.Azure.Data;
-using DragonSpark.Compose;
-using DragonSpark.Model.Operations.Results;
+using DragonSpark.Model.Operations.Allocated;
 using StackExchange.Redis;
 
 namespace DragonSpark.Redis;
 
-public sealed class ManagedOptions : IResulting<ConfigurationOptions>
+public sealed class ManagedOptions : IAllocatedResult<ConfigurationOptions>
 {
 	readonly ConfigurationOptions _options;
 	readonly TokenCredential      _credential;
@@ -22,6 +21,5 @@ public sealed class ManagedOptions : IResulting<ConfigurationOptions>
 		_credential = credential;
 	}
 
-	public ValueTask<ConfigurationOptions> Get()
-		=> _options.ConfigureForAzureWithTokenCredentialAsync(_credential).ToOperation();
+	public Task<ConfigurationOptions> Get() => _options.ConfigureForAzureWithTokenCredentialAsync(_credential);
 }

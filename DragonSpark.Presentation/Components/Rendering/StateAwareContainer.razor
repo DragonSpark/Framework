@@ -1,21 +1,29 @@
-﻿<DragonSpark.Presentation.Components.Content.Rendering.ConnectedStateAwareComponent>
-    <DragonSpark.Presentation.Components.Eventing.HandlerView T="UpdateStateMessage" Received="@OnReceived" />
+﻿@using DragonSpark.Compose
+<DragonSpark.Presentation.Components.Content.Rendering.ConnectedStateAwareComponent>
+	<DragonSpark.Presentation.Components.Eventing.HandlerView T="UpdateStateMessage" Received="@_received" />
 </DragonSpark.Presentation.Components.Content.Rendering.ConnectedStateAwareComponent>
 
 @ChildContent
 
 @code {
-    [Parameter]
-    public RenderFragment ChildContent { get; set; } = null!;
+	EventCallback<UpdateStateMessage> _received;
+	protected override void OnInitialized()
+	{
+		_received = Start.A.Callback<UpdateStateMessage>(OnReceived).Hide();
+		base.OnInitialized();
+	}
 
-    [Parameter]
-    public object? Subject { get; set; }
+	[Parameter]
+	public RenderFragment ChildContent { get; set; } = null!;
 
-    void OnReceived(UpdateStateMessage parameter)
-    {
-        if (parameter.Subject == Subject)
-        {
-            StateHasChanged();
-        }
-    }
+	[Parameter]
+	public object? Subject { get; set; }
+
+	void OnReceived(UpdateStateMessage parameter)
+	{
+		if (parameter.Subject == Subject)
+		{
+			StateHasChanged();
+		}
+	}
 }

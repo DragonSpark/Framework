@@ -5,18 +5,21 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Redis;
 
-sealed class OutputsRegistrations<T> : ICommand<IServiceCollection> where T : ConfigureDistributedOutputs
+sealed class OutputsRegistrations : ICommand<IServiceCollection>
 {
-	public static OutputsRegistrations<T> Default { get; } = new();
+	readonly string? _name;
 
-	OutputsRegistrations() {}
+	public OutputsRegistrations(string? name) => _name = name;
 
 	public void Execute(IServiceCollection parameter)
 	{
-		parameter.Start<T>()
+		parameter.Start<ManagedOptions>()
 		         .Include(x => x.Dependencies.Recursive())
 		         .Singleton()
 		         //
-		         .Then.AddStackExchangeRedisOutputCache(parameter.Deferred<T>().Assume());
+		         .Then.AddSingleton<
+			         ConfigureDistributedOutputs>(x => new(x.GetRequiredService<ManagedOptions>(), _name))
+		         //
+		         .AddStackExchangeRedisOutputCache(parameter.Deferred<ConfigureDistributedOutputs>().Assume());
 	}
 }

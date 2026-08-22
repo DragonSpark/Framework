@@ -6,39 +6,39 @@
 @implements IDisposable
 
 <CascadingValue TValue="IValidated" Value="@(this)" IsFixed="true">
-    @ChildContent(_validation.Verify());
+	@ChildContent(_validation.Verify());
 </CascadingValue>
 
 @code {
-    public event EventHandler<ValidationCallbackEventArgs> Validated = delegate {};
+	public event EventHandler<ValidationCallbackEventArgs> Validated = delegate {};
 
-    EditorValidation? _validation;
+	EditorValidation? _validation;
 
-    [Parameter]
-    public RenderFragment<EditorValidation> ChildContent { get; set; } = null!;
+	[Parameter]
+	public RenderFragment<EditorValidation> ChildContent { get; set; } = null!;
 
-    [CascadingParameter]
-    EditContext? EditContext
-    {
-        get;
-        set
-        {
-            if (field != value)
-            {
-                if (field != null)
-                {
-                    Validated = delegate {};
-                }
+	[CascadingParameter]
+	EditContext? EditContext
+	{
+		get;
+		set
+		{
+			if (field != value)
+			{
+				if (field != null)
+				{
+					Validated = delegate {};
+				}
 
-                if ((field = value) != null)
-                {
-                    _validation = new(field, this, () => Validated);
-                }
-            }
-        }
-    }
+				if ((field = value) != null)
+				{
+					_validation = new(field, this, () => Validated);
+				}
+			}
+		}
+	}
 
-    public void Dispose()
+	public void Dispose()
 	{
 		EditContext = null;
 	}

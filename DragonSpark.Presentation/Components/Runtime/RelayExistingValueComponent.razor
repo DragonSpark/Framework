@@ -1,0 +1,16 @@
+﻿@using DragonSpark.Compose
+@typeparam T
+@inherits RelayComponentBase<T>
+
+@code {
+    public override async Task SetParametersAsync(ParameterView parameters)
+    {
+        var changed = Input is not null && parameters.DidParameterChange(nameof(Input), Input);
+        await base.SetParametersAsync(parameters).On();
+        if (Enabled && changed)
+        {
+            await Changed.Off(Input);
+        }
+    }
+
+}

@@ -14,14 +14,17 @@ namespace DragonSpark.Server;
 
 public static class Extensions
 {
-	public static BuildHostContext WithChallenges(this BuildHostContext @this) =>
-		@this.Configure(Security.Challenges.Registrations.Default);
-
 	public static ApplicationProfileContext WithContentSecurity(this ApplicationProfileContext @this)
 		=> @this.Append(x => x.AddContentSecurity()).Append(x => x.UseContentSecurity());
 
-	public static BuildHostContext WithContentSecurity(this BuildHostContext @this)
-		=> @this.Configure(Registrations.Default);
+	extension(BuildHostContext @this)
+	{
+		public BuildHostContext WithOutputs() => @this.Configure(Output.Registrations.Default);
+
+		public BuildHostContext WithContentSecurity() => @this.Configure(Registrations.Default);
+
+		public BuildHostContext WithChallenges() => @this.Configure(Security.Challenges.Registrations.Default);
+	}
 
 	public static IServiceCollection AddContentSecurity(this IServiceCollection @this)
 		=> Registrations.Default.Parameter(@this);
@@ -31,19 +34,31 @@ public static class Extensions
 
 	/**/
 
-	public static View NewView(this Controller @this, Guid subject) => new (@this, subject);
-	public static View<T> NewView<T>(this Controller @this, T subject) => new (@this, subject);
+	extension(Controller @this)
+	{
+		public View NewView(Guid subject) => new (@this, subject);
 
-	public static Request<None> New(this ControllerBase @this, Guid identity) => @this.New(identity, None.Default);
+		public View<T> NewView<T>(T subject) => new (@this, subject);
+	}
 
-	public static Request<T> New<T>(this ControllerBase @this, Guid identity, T subject)
-		=> new(@this, new(@this.User.Number(), identity, subject));
+	extension(ControllerBase @this)
+	{
+		public Request<None> New(Guid identity) => @this.New(identity, None.Default);
 
-	public static Query Query(this ControllerBase @this, Guid subject) => new(@this, subject);
-	public static Query<T> Query<T>(this ControllerBase @this, T subject) => new(@this, subject);
+		public Request<T> New<T>(Guid identity, T subject)
+			=> new(@this, new(@this.User.Number(), identity, subject));
 
-	public static Input Input(this ClaimsPrincipal @this, Guid input) => new (@this, input);
-	public static Input<T> Input<T>(this ClaimsPrincipal @this, T input) => new (@this, input);
+		public Query Query(Guid subject) => new(@this, subject);
+
+		public Query<T> Query<T>(T subject) => new(@this, subject);
+	}
+
+	extension(ClaimsPrincipal @this)
+	{
+		public Input Input(Guid input) => new (@this, input);
+
+		public Input<T> Input<T>(T input) => new (@this, input);
+	}
 
 	public static Query<TOther> Subject<T, TOther>(this @Query<T> @this, TOther subject) => new(@this.Owner, subject);
 }

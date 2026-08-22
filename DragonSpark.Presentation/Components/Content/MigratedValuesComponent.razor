@@ -1,0 +1,33 @@
+﻿@typeparam T where T : notnull
+
+@using DragonSpark.Compose
+@inherits InteractiveComponentBase<T>
+
+@ChildContent(_instance)
+
+@code {
+	T _instance = default!;
+
+	[Parameter, EditorRequired]
+	public required IMigrator<T> Migrator { get; set; }
+
+	[Parameter, EditorRequired]
+	public required RenderFragment<T> ChildContent { get; set; }
+
+	public override async Task SetParametersAsync(ParameterView parameters)
+	{
+		var first   = Input.Account() is null;
+		var changed = parameters.DidParameterChange(nameof(Input), Input);
+		await base.SetParametersAsync(parameters).Off();
+
+		if (changed)
+		{
+			_instance = first ? Input : _instance;
+			if (!first)
+			{
+				Migrator.Execute(new(Input, _instance));
+			}
+		}
+	}
+
+}

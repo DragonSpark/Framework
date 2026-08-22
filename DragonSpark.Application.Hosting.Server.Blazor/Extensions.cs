@@ -8,19 +8,27 @@ namespace DragonSpark.Application.Hosting.Server.Blazor;
 
 public static class Extensions
 {
-	public static ApplicationProfileContext WithBlazorServerApplication(this BuildHostContext @this)
-		=> @this.Apply(BlazorApplicationProfile.Default);
+	extension(BuildHostContext @this)
+	{
+		public ApplicationProfileContext WithBlazorServerApplication() => @this.Apply(BlazorApplicationProfile.Default);
 
-	public static ApplicationProfileContext WithBlazorServerApplication(
-		this BuildHostContext @this, Action<IApplicationBuilder> builder)
-		=> @this.Apply(new BlazorApplicationProfile(builder));
+		public ApplicationProfileContext WithBlazorServerApplication(Action<IApplicationBuilder> builder)
+			=> @this.Apply(new BlazorApplicationProfile(builder));
 
-	public static ApplicationProfileContext WithBlazorServerApplication<T>(
-		this BuildHostContext @this, params Assembly[] additional)
-		=> @this.WithBlazorServerApplication<T>(_ => {}, additional);
+		public ApplicationProfileContext WithBlazorServerApplication<T>(params Assembly[] additional)
+			=> @this.WithBlazorServerApplication<T>(_ => {}, additional);
 
-	public static ApplicationProfileContext WithBlazorServerApplication<T>(
-		this BuildHostContext @this, Action<IApplicationBuilder> builder, params Assembly[] additional)
-		=> @this.Apply(new BlazorApplicationProfile<T>(builder, additional));
+		public ApplicationProfileContext WithBlazorServerApplication<T>(Action<IApplicationBuilder> builder,
+		                                                                params Assembly[] additional)
+			=> @this.Apply(new BlazorApplicationProfile<T>(builder, additional));
 
+		public ApplicationProfileContext WithOptimizedBlazorServerApplication<T>(Action<IApplicationBuilder> builder,
+		                                                                         byte receive = 32,
+		                                                                         params Assembly[] additional)
+		{
+			var configuration = new DefaultServiceConfiguration(OptimizedCircuitConfiguration.Default.Execute, receive);
+			var profile       = new BlazorApplicationProfile<T>(configuration.Execute, builder, additional);
+			return @this.Apply(profile);
+		}
+	}
 }

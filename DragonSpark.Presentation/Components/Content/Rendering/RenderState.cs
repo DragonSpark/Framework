@@ -5,5 +5,6 @@ public enum RenderState : byte
 	Default,
 	Connected,
 	Established,
+	Paused,
 	Destroyed
 }

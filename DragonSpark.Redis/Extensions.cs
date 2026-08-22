@@ -5,11 +5,9 @@ namespace DragonSpark.Redis;
 
 public static class Extensions
 {
-	public static IServiceCollection WithDistributedMemory<T>(this IServiceCollection @this)
-		where T : ConfigureDistributedMemory
-		=> MemoryRegistrations<T>.Default.Parameter(@this);
+	public static IServiceCollection WithDistributedMemory(this IServiceCollection @this, string name)
+		=> new MemoryRegistrations(name).Parameter(@this);
 
-	public static IServiceCollection WithDistributedOutputs<T>(this IServiceCollection @this)
-		where T : ConfigureDistributedOutputs
-		=> OutputsRegistrations<T>.Default.Parameter(@this);
+	public static IServiceCollection WithDistributedOutputs(this IServiceCollection @this, string name)
+		=> new OutputsRegistrations(name).Parameter(@this);
 }

@@ -1,25 +1,14 @@
 ﻿@using DragonSpark.Application.Connections.Events
-@using DragonSpark.Compose
 @using DragonSpark.Contracts.Worker
-@using DragonSpark.Model.Operations.Selection.Conditions
 
 @inherits InteractiveComponentBase<Guid>
 
 @if (Status is not ProcessStatus.Completed)
 {
-	<DragonSpark.Presentation.Components.Content.Rendering.ConnectedStateAwareComponent>
-		<FilteredSubscribeComponent T="Guid" Registration="@Registration" Condition="@_filter" Received="@Updated" />
-	</DragonSpark.Presentation.Components.Content.Rendering.ConnectedStateAwareComponent>
+	<DragonSpark.Presentation.Components.State.IdentitySubscriptionComponent T="Guid" Input="@Input" Updated="@Updated" Registration="@Registration" />
 }
 
 @code {
-	IDepending<Guid> _filter = null!;
-
-	protected override void OnInitialized()
-	{
-		_filter = Is.EqualTo(Input).Operation().Out();
-		base.OnInitialized();
-	}
 
 	[Parameter, EditorRequired]
 	public required ProcessStatus Status { get; set; }
