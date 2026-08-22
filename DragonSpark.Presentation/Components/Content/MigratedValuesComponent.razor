@@ -22,11 +22,7 @@
 
 		if (changed)
 		{
-			_instance = first ? Input : _instance;
-			if (!first)
-			{
-				Migrator.Execute(new(Input, _instance));
-			}
+			_instance = first ? Input : Migrator.Get(new(Input, _instance));
 		}
 	}
 
