@@ -10,11 +10,20 @@
 
 @inject IPublisher<SaveModelMessage> Save
 
+<DragonSpark.Presentation.Components.Runtime.PauseEventComponent Updated="@_update" />
+
 @code {
 	readonly Switch _save  = false;
 	Array<string>   _skip  = Array<string>.Empty;
 	T               _model = null!;
 	EditContext?    _context;
+	EventCallback   _update;
+
+	protected override void OnInitialized()
+	{
+		_update = Start.A.Callback(Commit).Hide();
+		base.OnInitialized();
+	}
 
 	protected override void OnParametersSet()
 	{
@@ -77,12 +86,14 @@
 		}
 	}
 
-	protected override Task OnAfterRenderAsync(bool firstRender)
-		=> _save.Down() ? Save.Allocate(new(_model)) : base.OnAfterRenderAsync(firstRender);
+	protected override Task OnAfterRenderAsync(bool firstRender) => Commit().AsTask();
 
-	public ValueTask DisposeAsync() // TODO
+	public ValueTask DisposeAsync()
 	{
 		_context?.OnFieldChanged -= FieldChanged;
-		return _save.Down() ? Save.Get(new(_model)) : ValueTask.CompletedTask;
+		return Commit();
 	}
+
+	ValueTask Commit() => _save.Down() ? Save.Get(new(_model)) : ValueTask.CompletedTask;
+
 }

@@ -73,8 +73,8 @@ public static class Extensions
 
 		public SubmitCallbackComposer Callback(Func<EditContext, Task> submit) => new(submit);
 
-		public SubmitCallbackComposer Callback(Func<EditContext, Task> submit,
-											   IStopAware invalid, CancellationToken stop)
+		public SubmitCallbackComposer Callback(Func<EditContext, Task> submit, IStopAware invalid,
+		                                       CancellationToken stop)
 			=> @this.Callback(submit, invalid.Then().Bind(stop).Out());
 
 		public SubmitCallbackComposer Callback(Func<EditContext, Task> submit, IOperation invalid)

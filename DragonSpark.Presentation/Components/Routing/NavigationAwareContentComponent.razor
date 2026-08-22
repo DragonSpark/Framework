@@ -11,7 +11,7 @@
 
 	public NavigationAwareContentComponent() => _changed = OnChange;
 
-    [Parameter]
+	[Parameter]
 	public RenderFragment ChildContent { get; set; } = null!;
 
 	protected override Task OnInitializedAsync()
