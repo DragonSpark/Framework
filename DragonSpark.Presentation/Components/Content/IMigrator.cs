@@ -1,5 +1,5 @@
-﻿using DragonSpark.Model.Commands;
+﻿using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Presentation.Components.Content;
 
-public interface IMigrator<T> : ICommand<MigrationInput<T>>;
+public interface IMigrator<T> : ISelect<MigrationInput<T>, T>;
