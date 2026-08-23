@@ -30,12 +30,12 @@ public class ThrottleOperation<T> : IOperation<T> where T : notnull
 
 		var source = _sources.Get(parameter);
 
-		_ = ExecuteThrottledAsync(parameter, source);
+		_ = Run(parameter, source);
 
 		return ValueTask.CompletedTask;
 	}
 
-	async Task ExecuteThrottledAsync(T parameter, CancellationTokenSource source)
+	async Task Run(T parameter, CancellationTokenSource source)
 	{
 		try
 		{

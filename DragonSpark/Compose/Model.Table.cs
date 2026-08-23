@@ -3,6 +3,7 @@ using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Selection.Stores;
 using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
 
 namespace DragonSpark.Compose;
 
@@ -70,30 +71,33 @@ public static partial class ExtensionMethods
 
 	public static ITable<TIn, TOut> ToConcurrentTable<TIn, TOut>(this Func<TIn, TOut> @this)
 		where TIn : notnull
-		=> @this.ToConcurrentTable(new ConcurrentDictionary<TIn, TOut>());
+		=> @this.ToConcurrentTable([]);
 
 	public static ITable<TIn, TOut> ToConcurrentTable<TIn, TOut>(this Func<TIn, TOut> @this,
 	                                                             ConcurrentDictionary<TIn, TOut> table)
 		where TIn : notnull
 		=> new ConcurrentTable<TIn, TOut>(table, @this);
 
-	public static bool TryPop<TIn, TOut>(this ITable<TIn, TOut> @this, TIn key, out TOut element)
+	public static bool TryPop<TIn, TOut>(this ITable<TIn, TOut> @this, TIn key, [NotNullWhen(true)] out TOut element)
 	{
 		if (@this is IPopAware<TIn, TOut> pop)
 		{
 			return pop.TryPop(key, out element);
 		}
+
 		var result = @this.IsSatisfiedBy(key);
 		element = result ? @this.Get(key) : default!;
 		return result ? @this.Remove(key) : result;
 	}
 
-	public static bool TryGet<TIn, TOut>(this IConditional<TIn, TOut> @this, TIn key, out TOut element)
+	public static bool TryGet<TIn, TOut>(this IConditional<TIn, TOut> @this, TIn key,
+	                                     [NotNullWhen(true)] out TOut element)
 	{
 		if (@this is IGetAware<TIn, TOut> pop)
 		{
 			return pop.TryGet(key, out element);
 		}
+
 		var result = @this.IsSatisfiedBy(key);
 		element = result ? @this.Get(key) : default!;
 		return result;
