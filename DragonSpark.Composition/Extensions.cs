@@ -18,107 +18,120 @@ public static class Extensions
 	public static IServiceCollection Register<T>(this IServiceCollection @this) where T : class
 		=> RegisterOption<T>.Default.Get(@this);
 
-	public static T? Section<T>(this IConfiguration @this, string name) where T : class
-		=> new Section<T>(name).Get(@this);
+	extension(IConfiguration @this)
+	{
+		public T? Section<T>(string name) where T : class
+			=> new Section<T>(name).Get(@this);
 
-	public static T? Section<T>(this IConfiguration @this) where T : class => Composition.Section<T>.Default.Get(@this);
+		public T? Section<T>() where T : class => Composition.Section<T>.Default.Get(@this);
+	}
 
-	public static T? Section<T>(this IServiceCollection @this, string name) where T : class
-		=> @this.Configuration().Section<T>(name);
+	extension(IServiceCollection @this)
+	{
+		public T? Section<T>(string name) where T : class
+			=> @this.Configuration().Section<T>(name);
 
-	public static T? Section<T>(this IServiceCollection @this) where T : class => @this.Configuration().Section<T>();
+		public T? Section<T>() where T : class => @this.Configuration().Section<T>();
+	}
 
 	public static HostOperationsContext Operations(this BuildHostContext @this) => new(@this);
 
-	public static IConfigurationRoot ConfigurationRoot(this IServiceCollection @this)
-		=> @this.Configuration().To<IConfigurationRoot>();
-
-	public static IConfiguration Configuration(this IServiceCollection @this)
-		=> @this.Single(x => x.ServiceType == typeof(IConfiguration))
-				.ImplementationFactory?.Invoke(null!)
-				.To<IConfiguration>() ?? throw new InvalidOperationException();
-
-	public static ComponentRequest Component<T>(this IServiceCollection @this)
+	extension(IServiceCollection @this)
 	{
-		var request = A.Type<T>();
-		var result  = new ComponentRequest(request, @this.GetRequiredInstance<IComponentType>().Get(request));
-		return result;
-	}
+		public IConfigurationRoot ConfigurationRoot()
+			=> @this.Configuration().To<IConfigurationRoot>();
 
-	public static Func<T> DeferredEnhanced<T>(this IServiceCollection @this) where T : class
-		=> new DeferredServiceEnhanced<T>(@this).Get;
+		public IConfiguration Configuration()
+			=> @this.Single(x => x.ServiceType == typeof(IConfiguration))
+			        .ImplementationFactory?.Invoke(null!)
+			        .To<IConfiguration>() ?? throw new InvalidOperationException();
 
-	public static Func<T> Deferred<T>(this IServiceCollection @this) where T : class
-		=> new DeferredService<T>(@this).Get;
-
-	public static IServiceCollection Replace<T>(this IServiceCollection @this, ServiceLifetime lifetime)
-		where T : class
-	{
-		var existing = @this.FirstOrDefault(x => x.ServiceType == typeof(T));
-		if (existing != null)
+		public ComponentRequest Component<T>()
 		{
-			var instance = existing.ImplementationType != null
-							   ? ServiceDescriptor.Describe(existing.ServiceType,
-															existing.ImplementationType,
-															lifetime)
-							   : existing.ImplementationFactory != null
-								   ? ServiceDescriptor.Describe(existing.ServiceType,
-																existing
-																	.ImplementationFactory,
-																lifetime)
-								   : null;
-			if (instance != null)
-			{
-				@this.Replace(instance);
-			}
+			var request = A.Type<T>();
+			var result  = new ComponentRequest(request, @this.GetRequiredInstance<IComponentType>().Get(request));
+			return result;
 		}
 
-		return @this;
+		public Func<T> DeferredEnhanced<T>() where T : class
+			=> new DeferredServiceEnhanced<T>(@this).Get;
+
+		public Func<T> Deferred<T>() where T : class
+			=> new DeferredService<T>(@this).Get;
+
+		public IServiceCollection Replace<T>(ServiceLifetime lifetime)
+			where T : class
+		{
+			var existing = @this.FirstOrDefault(x => x.ServiceType == typeof(T));
+			if (existing != null)
+			{
+				var instance = existing.ImplementationType != null
+					               ? ServiceDescriptor.Describe(existing.ServiceType,
+					                                            existing.ImplementationType,
+					                                            lifetime)
+					               : existing.ImplementationFactory != null
+						               ? ServiceDescriptor.Describe(existing.ServiceType,
+						                                            existing
+							                                            .ImplementationFactory,
+						                                            lifetime)
+						               : null;
+				if (instance != null)
+				{
+					@this.Replace(instance);
+				}
+			}
+
+			return @this;
+		}
+
+		public T GetRequiredInstance<T>() where T : class
+			=> (@this.Where(x => x.ServiceType == typeof(T))
+			         .Select(x => x.ImplementationInstance)
+			         .Only()
+			    ??
+			    @this.Select(x => x.ImplementationInstance)
+			         .OfType<T>()
+			         .FirstOrDefault()
+			   )!
+				.To<T>();
+
+		public HostBuilderContext Context()
+			=> @this.GetRequiredInstance<HostBuilderContext>();
+
+		public string EnvironmentName()
+			=> GetHostEnvironmentName.Default.Get(@this.Context());
+
+		public StartRegistration<T> Start<T>() where T : class => new(@this);
+
+		public IncludingRegistration ForDefinition<T>() where T : class
+			=> new GenericDefinitionRegistration<T>(@this);
 	}
 
-	public static T GetRequiredInstance<T>(this IServiceCollection @this) where T : class
-		=> (@this.Where(x => x.ServiceType == typeof(T))
-				 .Select(x => x.ImplementationInstance)
-				 .Only()
-			??
-			@this.Select(x => x.ImplementationInstance)
-				 .OfType<T>()
-				 .FirstOrDefault()
-		   )!
-			.To<T>();
-
-	public static HostBuilderContext Context(this IServiceCollection @this)
-		=> @this.GetRequiredInstance<HostBuilderContext>();
-
-	public static string EnvironmentName(this IServiceCollection @this)
-		=> GetHostEnvironmentName.Default.Get(@this.Context());
-
-/**/
-	public static StartRegistration<T> Start<T>(this IServiceCollection @this) where T : class => new(@this);
-
-	public static IncludingRegistration ForDefinition<T>(this IServiceCollection @this) where T : class
-		=> new GenericDefinitionRegistration<T>(@this);
+	/**/
 
 	public static IncludingRegistration Generic<T>(this StartRegistration<T> @this) where T : class
 		=> new GenericDefinitionRegistration<T>(@this.Get());
 
 	public static IServiceTypes Recursive(this Dependencies _) => RecursiveDependencies.Default;
 
-/**/
-	public static BuildHostContext WithComposition(this BuildHostContext @this)
-		=> Construction.WithComposition.Default.Get(@this);
+	extension(BuildHostContext @this)
+	{
+		/**/
+		public BuildHostContext WithComposition()
+			=> Construction.WithComposition.Default.Get(@this);
 
-	public static BuildHostContext WithDefaultComposition(this BuildHostContext @this)
-		=> @this.Configure(Registrations.Default).ComposeUsing<ConfigureDefaultActivation>();
+		public BuildHostContext WithDefaultComposition()
+			=> @this.Configure(Registrations.Default).ComposeUsing<ConfigureDefaultActivation>();
 
-	public static BuildHostContext WithDeferredRegistrations(this BuildHostContext @this)
-		=> @this.Configure(AddDeferredRegistrations.Default);
+		public BuildHostContext WithDeferredRegistrations()
+			=> @this.Configure(AddDeferredRegistrations.Default);
 
-	public static BuildHostContext RegisterModularity(this BuildHostContext @this)
-		=> @this.Configure(Composition.RegisterModularity.Default);
+		public BuildHostContext RegisterModularity()
+			=> @this.Configure(Composition.RegisterModularity.Default);
 
-	public static BuildHostContext WithPlatform(this BuildHostContext @this, string platform)
-		=> @this.Configure(new AssignHostPlatform(platform));
+		public BuildHostContext WithPlatform(string platform)
+			=> @this.Configure(new AssignHostPlatform(platform));
+	}
 
 	public static ICommand<IServiceCollection> Deferred(this ICommand<IServiceCollection> @this) => new Deferred(@this);
 
@@ -129,19 +142,22 @@ public static class Extensions
 	public static ICommand<IServiceCollection> ConfigureFromEnvironment(this ICommand<IServiceCollection> @this)
 		=> Compose.ConfigureFromEnvironment.Default.Then().Append(@this).Get();
 
-	public static BuildHostContext ComposeUsingRoot<T>(this BuildHostContext @this)
-		where T : ICompositionRoot, new()
-		=> @this.WithComposition().Configure(ConfigureContainer<T>.Default);
+	extension(BuildHostContext @this)
+	{
+		public BuildHostContext ComposeUsingRoot<T>()
+			where T : ICompositionRoot, new()
+			=> @this.WithComposition().Configure(ConfigureContainer<T>.Default);
 
-	public static BuildHostContext ComposeUsing<T>(this BuildHostContext @this)
-		where T : class, ICommand<IServiceContainer>
-		=> @this.ComposeUsing(DragonSpark.Compose.Start.An.Activation<T>().Activate());
+		public BuildHostContext ComposeUsing<T>()
+			where T : class, ICommand<IServiceContainer>
+			=> @this.ComposeUsing(DragonSpark.Compose.Start.An.Activation<T>().Activate());
 
-	public static BuildHostContext ComposeUsing(this BuildHostContext @this, ICommand<IServiceContainer> configure)
-		=> @this.ComposeUsing(configure.Execute);
+		public BuildHostContext ComposeUsing(ICommand<IServiceContainer> configure)
+			=> @this.ComposeUsing(configure.Execute);
 
-	public static BuildHostContext ComposeUsing(this BuildHostContext @this, Action<IServiceContainer> configure)
-		=> @this.WithComposition().Configure(new ConfigureContainer(configure));
+		public BuildHostContext ComposeUsing(Action<IServiceContainer> configure)
+			=> @this.WithComposition().Configure(new ConfigureContainer(configure));
+	}
 
 	/*public static BuildHostContext Decorate<T>(this BuildHostContext @this, Func<IServiceFactory, T, T> configure)
 		=> @this.ComposeUsing(new Decorate<T>(configure));
