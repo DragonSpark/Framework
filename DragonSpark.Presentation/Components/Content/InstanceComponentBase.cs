@@ -19,11 +19,11 @@ public abstract class InstanceComponentBase<T> : ContentComponentBase<T>
 		Content.Get();
 	}
 
-	protected override ValueTask RefreshState()
+	protected override Task RefreshState()
 	{
 		RequestNewContent();
 		StateHasChanged();
-		return ValueTask.CompletedTask;
+		return Task.CompletedTask;
 	}
 
 	protected T? Instance

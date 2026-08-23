@@ -12,7 +12,7 @@ public abstract class RuntimeQueryComponentBase<T> : InstanceComponentBase<IQuer
 
 	protected override void RequestNewContent() {}
 
-	protected override async ValueTask RefreshState()
+	protected override async Task RefreshState()
 	{
 		var instance = Instance;
 		if (instance is not null)
