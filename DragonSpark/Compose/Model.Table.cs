@@ -79,6 +79,10 @@ public static partial class ExtensionMethods
 
 	public static bool TryPop<TIn, TOut>(this ITable<TIn, TOut> @this, TIn key, out TOut element)
 	{
+		if (@this is IPopAware<TIn, TOut> pop)
+		{
+			return pop.TryPop(key, out element);
+		}
 		var result = @this.IsSatisfiedBy(key);
 		element = result ? @this.Get(key) : default!;
 		return result ? @this.Remove(key) : result;
@@ -86,6 +90,10 @@ public static partial class ExtensionMethods
 
 	public static bool TryGet<TIn, TOut>(this IConditional<TIn, TOut> @this, TIn key, out TOut element)
 	{
+		if (@this is IGetAware<TIn, TOut> pop)
+		{
+			return pop.TryGet(key, out element);
+		}
 		var result = @this.IsSatisfiedBy(key);
 		element = result ? @this.Get(key) : default!;
 		return result;

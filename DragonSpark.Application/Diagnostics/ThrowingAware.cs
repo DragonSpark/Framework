@@ -21,7 +21,7 @@ public class ThrowingAware<T> : IOperation<T>
 	{
 		try
 		{
-			await _previous.Off(parameter);
+			await _previous.On(parameter);
 		}
 		catch (Exception e)
 		{

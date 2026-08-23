@@ -114,10 +114,10 @@ partial class Extensions
 
     public static Compose.OperationComposer<T> Throttle<T>(this OperationComposer<T> @this, TimeSpan @for)
         where T : notnull
-        => new(new ThrottleOperation<T>(@this.Get().Get, @for));
+        => new(new ThrottleOperation<T>(@this.Get().Allocate, @for));
 
     public static OperationComposer Throttle(this OperationComposer @this, TimeSpan @for)
-        => new(new ThrottleOperation(@this.Get().Get, @for));
+        => new(new ThrottleOperation(@this.Get().Allocate, @for));
 /**/
 
     public static IOperation<T> Ambient<T>(this IOperation<T> @this) => new DeferredOperation<T>(@this);
