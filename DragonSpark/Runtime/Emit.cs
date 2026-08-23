@@ -15,11 +15,7 @@ public sealed class Emit : ISelect<SecureString, string>
 		var marshal = Marshal.SecureStringToBSTR(parameter);
 		try
 		{
-			unsafe
-			{
-				var pointer = (char*)marshal.ToPointer();
-				return new string(pointer);
-			}
+			return Marshal.PtrToStringBSTR(marshal);
 		}
 		finally
 		{

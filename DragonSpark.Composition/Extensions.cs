@@ -53,11 +53,9 @@ public static class Extensions
 			return result;
 		}
 
-		public Func<T> DeferredEnhanced<T>() where T : class
-			=> new DeferredServiceEnhanced<T>(@this).Get;
+		public Func<T> DeferredEnhanced<T>() where T : class => new DeferredServiceEnhanced<T>(@this).Get;
 
-		public Func<T> Deferred<T>() where T : class
-			=> new DeferredService<T>(@this).Get;
+		public Func<T> Deferred<T>() where T : class => new DeferredService<T>(@this).Get;
 
 		public IServiceCollection Replace<T>(ServiceLifetime lifetime)
 			where T : class
