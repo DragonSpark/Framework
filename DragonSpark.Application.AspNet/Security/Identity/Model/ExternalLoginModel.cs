@@ -50,7 +50,7 @@ public class ExternalLoginModel<T> : PageModel where T : class
 	{
 		var (login, origin) = parameter;
 		LoginProvider       = login.LoginProvider;
-		var result = ModelState.ErrorCount > 0 ? (IActionResult)Page() : new LocalRedirectResult(_path.Get(origin));
+		IActionResult result = ModelState.ErrorCount > 0 ? Page() : new LocalRedirectResult(_path.Get(origin));
 		return result;
 	}
 }
