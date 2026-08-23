@@ -34,14 +34,14 @@ public abstract class OwningContentComponentBase<TService, TContent> : Scoped.Ow
 		_load.Up();
 	}
 
-	protected override ValueTask RefreshState()
+	protected override Task RefreshState()
 	{
 		if (Current.IsConnected())
 		{
 			RequestNewContent();
 			return base.RefreshState();
 		}
-		return ValueTask.CompletedTask;
+		return Task.CompletedTask;
 	}
 
 	protected override void OnAfterRender(bool firstRender)

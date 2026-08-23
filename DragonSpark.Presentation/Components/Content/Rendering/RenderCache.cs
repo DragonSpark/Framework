@@ -2,7 +2,7 @@
 
 namespace DragonSpark.Presentation.Components.Content.Rendering;
 
-sealed class RenderCache : MemoryCache
+public sealed class RenderCache : MemoryCache
 {
 	public RenderCache() : base(new MemoryCacheOptions()) {}
 }

@@ -4,7 +4,7 @@ using System.Collections.Concurrent;
 
 namespace DragonSpark.Model.Selection.Stores;
 
-public class ConcurrentTable<TIn, TOut> : ITable<TIn, TOut>, ICommand where TIn : notnull
+public class ConcurrentTable<TIn, TOut> : ITable<TIn, TOut>, IPopAware<TIn, TOut>, IGetAware<TIn, TOut>, ICommand where TIn : notnull
 {
 	readonly Func<TIn, TOut>                 _select;
 	readonly ConcurrentDictionary<TIn, TOut> _table;
@@ -42,4 +42,8 @@ public class ConcurrentTable<TIn, TOut> : ITable<TIn, TOut>, ICommand where TIn 
 	{
 		_table.Clear();
 	}
+
+	public bool TryPop(TIn parameter, out TOut result) => _table.TryRemove(parameter, out result!);
+
+	public bool TryGet(TIn parameter, out TOut result) => _table.TryGetValue(parameter, out result!);
 }

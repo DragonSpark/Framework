@@ -3,7 +3,8 @@ using System.Runtime.CompilerServices;
 
 namespace DragonSpark.Model.Selection.Stores;
 
-public class ReferenceValueTable<TIn, TOut> : ITable<TIn, TOut> where TIn : class where TOut : class?
+public class ReferenceValueTable<TIn, TOut> : ITable<TIn, TOut>, IPopAware<TIn, TOut>, IGetAware<TIn, TOut>
+	where TIn : class where TOut : class?
 {
 	readonly ConditionalWeakTable<TIn, TOut>.CreateValueCallback _callback;
 	readonly ConditionalWeakTable<TIn, TOut>                     _table;
@@ -37,9 +38,12 @@ public class ReferenceValueTable<TIn, TOut> : ITable<TIn, TOut> where TIn : clas
 
 	public void Execute(Pair<TIn, TOut> parameter)
 	{
-		_table.Remove(parameter.Key);
-		_table.Add(parameter.Key, parameter.Value);
+		_table.AddOrUpdate(parameter.Key, parameter.Value);
 	}
 
 	public bool Remove(TIn key) => _table.Remove(key);
+
+	public bool TryPop(TIn parameter, out TOut result) => _table.Remove(parameter, out result!);
+
+	public bool TryGet(TIn parameter, out TOut result) => _table.TryGetValue(parameter, out result!);
 }

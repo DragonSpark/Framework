@@ -1,9 +1,9 @@
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
-using DragonSpark.Model.Results;
 using DragonSpark.Presentation.Environment.Browser;
 using Syncfusion.Blazor;
 using Syncfusion.Blazor.Data;
+using Switch = DragonSpark.Model.Results.Switch;
 
 namespace DragonSpark.SyncfusionRendering.Queries;
 
