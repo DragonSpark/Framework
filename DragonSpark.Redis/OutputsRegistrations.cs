@@ -1,6 +1,6 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Composition;
+﻿using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
+using Microsoft.AspNetCore.OutputCaching.StackExchangeRedis;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Redis;
@@ -13,13 +13,11 @@ sealed class OutputsRegistrations : ICommand<IServiceCollection>
 
 	public void Execute(IServiceCollection parameter)
 	{
-		parameter.Start<ManagedOptions>()
+		parameter.Start<Connect>()
 		         .Include(x => x.Dependencies.Recursive())
 		         .Singleton()
-		         //
-		         .Then.AddSingleton<
-			         ConfigureDistributedOutputs>(x => new(x.GetRequiredService<ManagedOptions>(), _name))
-		         //
-		         .AddStackExchangeRedisOutputCache(parameter.Deferred<ConfigureDistributedOutputs>().Assume());
+		         .Then.AddStackExchangeRedisOutputCache(x => x.InstanceName = _name)
+		         .AddOptions<RedisOutputCacheOptions>()
+		         .Configure<Connect>((to, connect) => to.ConnectionMultiplexerFactory = connect.Get);
 	}
 }

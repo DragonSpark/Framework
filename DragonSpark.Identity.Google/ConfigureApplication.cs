@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Application.AspNet.Security.Identity.Claims.Actions;
-using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Identity.Google.Claims;
 using DragonSpark.Model.Commands;
@@ -24,10 +23,16 @@ sealed class ConfigureApplication : ICommand<AuthenticationBuilder>
 
 	public void Execute(AuthenticationBuilder parameter)
 	{
-		var settings = parameter.Services.Deferred<GoogleApplicationSettings>();
-		parameter.Services.Register<GoogleApplicationSettings>()
-		         .Return(parameter)
-		         .AddGoogle(new ConfigureAuthentication(settings, _claims, _configure).Execute)
-			;
+		parameter.AddGoogle()
+		         .Services.Register<GoogleApplicationSettings>()
+		         .AddOptions<GoogleOptions>(GoogleDefaults.AuthenticationScheme)
+		         .Configure<GoogleApplicationSettings>((options, settings) =>
+		                                               {
+			                                               options.ClientId     = settings.Key;
+			                                               options.ClientSecret = settings.Secret;
+
+			                                               _claims.Execute(options.ClaimActions);
+			                                               _configure(options);
+		                                               });
 	}
 }

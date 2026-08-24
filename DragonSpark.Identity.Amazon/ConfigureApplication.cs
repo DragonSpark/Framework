@@ -14,8 +14,15 @@ sealed class ConfigureApplication : ICommand<AuthenticationBuilder>
 
 	public void Execute(AuthenticationBuilder parameter)
 	{
-		var settings = parameter.Services.Deferred<AmazonApplicationSettings>();
-		parameter.AddAmazon(new ConfigureAuthentication(settings, _configure).Execute);
-		parameter.Services.Register<AmazonApplicationSettings>();
+		parameter.AddAmazon()
+		         .Services.Register<AmazonApplicationSettings>()
+		         .AddOptions<AmazonAuthenticationOptions>(AmazonAuthenticationDefaults.AuthenticationScheme)
+		         .Configure<AmazonApplicationSettings>((options, settings) =>
+		                                               {
+			                                               options.ClientId     = settings.Key;
+			                                               options.ClientSecret = settings.Secret;
+
+			                                               _configure(options);
+		                                               });
 	}
 }

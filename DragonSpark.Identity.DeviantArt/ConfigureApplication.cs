@@ -28,8 +28,18 @@ sealed class ConfigureApplication : ICommand<AuthenticationBuilder>
 
 	public void Execute(AuthenticationBuilder parameter)
 	{
-		var settings = parameter.Services.Deferred<DeviantArtApplicationSettings>();
-		parameter.AddDeviantArt(new ConfigureAuthentication(settings, _claims, _configure).Execute);
-		parameter.Services.Register<DeviantArtApplicationSettings>();
+		parameter.AddDeviantArt()
+		         .Services.Register<DeviantArtApplicationSettings>()
+		         .AddOptions<DeviantArtAuthenticationOptions>(DeviantArtAuthenticationDefaults.AuthenticationScheme)
+		         .Configure<DeviantArtApplicationSettings>((options, settings) =>
+		                                                   {
+			                                                   options.ClientId     = settings.Key;
+			                                                   options.ClientSecret = settings.Secret;
+			                                                   options.UserInformationEndpoint =
+				                                                   settings.UserInformationEndpoint;
+
+			                                                   _claims.Execute(options.ClaimActions);
+			                                                   _configure(options);
+		                                                   });
 	}
 }

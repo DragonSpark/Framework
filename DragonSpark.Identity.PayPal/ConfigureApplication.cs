@@ -19,6 +19,31 @@ sealed class ConfigureApplication : ICommand<AuthenticationBuilder>
 		services.Register<PayPalApplicationSettings>();
 		services.TryDecorate<IClaims, Claims>();
 		services.TryDecorate<IKnownClaims, AdditionalClaims>();
-		parameter.AddPaypal(new ConfigureAuthentication(services, _configure).Execute);
+		parameter.AddPaypal()
+		         .Services.Register<PayPalApplicationSettings>()
+		         .AddOptions<PaypalAuthenticationOptions>(PaypalAuthenticationDefaults.AuthenticationScheme)
+		         .Configure<PayPalApplicationSettings>((to, from) =>
+		                                               {
+			                                               to.ClientId     = from.Key;
+			                                               to.ClientSecret = from.Secret;
+
+			                                               var x = from.Authentication;
+			                                               to.AuthorizationEndpoint   = x.AuthorizationEndpoint;
+			                                               to.TokenEndpoint           = x.TokenEndpoint;
+			                                               to.UserInformationEndpoint = x.UserInformationEndpoint;
+
+			                                               ClaimActions.Default.Execute(to.ClaimActions);
+
+			                                               if (x.Scopes is not null)
+			                                               {
+				                                               to.Scope.Clear();
+				                                               foreach (var scope in x.Scopes)
+				                                               {
+					                                               to.Scope.Add(scope);
+				                                               }
+			                                               }
+
+			                                               _configure(to);
+		                                               });
 	}
 }

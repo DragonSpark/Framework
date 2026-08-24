@@ -1,22 +1,18 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Composition;
-using DragonSpark.Model.Commands;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.Persist;
 
-sealed class ConfigureSecurityStamp : ICommand<SecurityStampValidatorOptions>
+sealed class ConfigureSecurityStamp : IConfigureOptions<SecurityStampValidatorOptions>
 {
 	readonly Func<SecurityStampRefreshingPrincipalContext, Task> _refresh;
 
-	public ConfigureSecurityStamp(IServiceCollection services)
-		: this(services.Deferred<RefreshPrincipal>().Start().Select(y => y.ToDelegate()).Then().Assume()) {}
+	public ConfigureSecurityStamp(RefreshPrincipal refresh) : this(refresh.Get) {}
 
 	public ConfigureSecurityStamp(Func<SecurityStampRefreshingPrincipalContext, Task> refresh) => _refresh = refresh;
 
-	public void Execute(SecurityStampValidatorOptions parameter)
+	public void Configure(SecurityStampValidatorOptions options)
 	{
-		parameter.OnRefreshingPrincipal = _refresh;
+		options.OnRefreshingPrincipal = _refresh;
 	}
 }

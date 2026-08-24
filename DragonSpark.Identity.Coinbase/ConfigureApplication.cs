@@ -14,8 +14,15 @@ sealed class ConfigureApplication : ICommand<AuthenticationBuilder>
 
 	public void Execute(AuthenticationBuilder parameter)
 	{
-		var settings = parameter.Services.Deferred<CoinbaseApplicationSettings>();
-		parameter.AddCoinbase(new ConfigureAuthentication(settings, _configure).Execute);
-		parameter.Services.Register<CoinbaseApplicationSettings>();
+		parameter.AddCoinbase()
+		         .Services.Register<CoinbaseApplicationSettings>()
+		         .AddOptions<CoinbaseAuthenticationOptions>(CoinbaseAuthenticationDefaults.AuthenticationScheme)
+		         .Configure<CoinbaseApplicationSettings>((options, settings) =>
+		                                                 {
+			                                                 options.ClientId     = settings.Key;
+			                                                 options.ClientSecret = settings.Secret;
+
+			                                                 _configure(options);
+		                                                 });
 	}
 }

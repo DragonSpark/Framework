@@ -1,5 +1,4 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Composition;
+﻿using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
@@ -15,10 +14,17 @@ sealed class ConfigureApplication : ICommand<AuthenticationBuilder>
 
 	public void Execute(AuthenticationBuilder parameter)
 	{
-		var settings = parameter.Services.Deferred<MicrosoftApplicationSettings>();
-		parameter.Services.Register<MicrosoftApplicationSettings>()
-		         .Return(parameter)
-		         .AddMicrosoftAccount(new ConfigureAuthentication(settings, _configure).Execute)
-			;
+		parameter.AddMicrosoftAccount()
+		         .Services.Register<MicrosoftApplicationSettings>()
+		         .AddOptions<MicrosoftAccountOptions>(MicrosoftAccountDefaults.AuthenticationScheme)
+		         .Configure<MicrosoftApplicationSettings>((to, from) =>
+		                                                  {
+			                                                  to.ClientId              = from.Key;
+			                                                  to.ClientSecret          = from.Secret;
+			                                                  to.AuthorizationEndpoint = from.AuthorizationEndpoint;
+			                                                  to.TokenEndpoint         = from.TokenEndpoint;
+
+			                                                  _configure(to);
+		                                                  });
 	}
 }

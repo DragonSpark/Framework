@@ -28,8 +28,16 @@ sealed class ConfigureApplication : ICommand<AuthenticationBuilder>
 
 	public void Execute(AuthenticationBuilder parameter)
 	{
-		var settings = parameter.Services.Deferred<RedditApplicationSettings>();
-		parameter.AddReddit(new ConfigureAuthentication(settings, _claims, _configure).Execute);
-		parameter.Services.Register<RedditApplicationSettings>();
+		parameter.AddReddit()
+		         .Services.Register<RedditApplicationSettings>()
+		         .AddOptions<RedditAuthenticationOptions>(RedditAuthenticationDefaults.AuthenticationScheme)
+		         .Configure<RedditApplicationSettings>((options, settings) =>
+		                                               {
+			                                               options.ClientId     = settings.Key;
+			                                               options.ClientSecret = settings.Secret;
+
+			                                               _claims.Execute(options.ClaimActions);
+			                                               _configure(options);
+		                                               });
 	}
 }

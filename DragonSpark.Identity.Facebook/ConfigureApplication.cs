@@ -14,8 +14,15 @@ sealed class ConfigureApplication : ICommand<AuthenticationBuilder>
 
 	public void Execute(AuthenticationBuilder parameter)
 	{
-		var settings = parameter.Services.Deferred<FacebookApplicationSettings>();
-		parameter.AddFacebook(new ConfigureAuthentication(settings, _configure).Execute);
-		parameter.Services.Register<FacebookApplicationSettings>();
+		parameter.AddFacebook()
+		         .Services.Register<FacebookApplicationSettings>()
+		         .AddOptions<FacebookOptions>(FacebookDefaults.AuthenticationScheme)
+		         .Configure<FacebookApplicationSettings>((options, settings) =>
+		                                                 {
+			                                                 options.ClientId     = settings.Key;
+			                                                 options.ClientSecret = settings.Secret;
+
+			                                                 _configure(options);
+		                                                 });
 	}
 }

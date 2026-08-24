@@ -1,6 +1,6 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Composition;
+﻿using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Redis;
@@ -13,11 +13,12 @@ sealed class MemoryRegistrations : ICommand<IServiceCollection>
 
 	public void Execute(IServiceCollection parameter)
 	{
-		parameter.Start<ManagedOptions>()
+		parameter.Start<Connect>()
 		         .Include(x => x.Dependencies)
 		         .Singleton()
-		         .Then.AddSingleton<ConfigureDistributedMemory>(x => new(x.GetRequiredService<ManagedOptions>(), _name))
 		         //
-		         .AddStackExchangeRedisCache(parameter.Deferred<ConfigureDistributedMemory>().Assume());
+		         .Then.AddStackExchangeRedisCache(x => x.InstanceName = _name)
+		         .AddOptions<RedisCacheOptions>()
+		         .Configure<Connect>((to, connect) => to.ConnectionMultiplexerFactory = connect.Get);
 	}
 }
