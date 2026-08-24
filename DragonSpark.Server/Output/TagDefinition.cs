@@ -1,4 +1,4 @@
-﻿using DragonSpark.Compose;
+using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Selection.Stop;
 using DragonSpark.Model.Operations.Stop;
@@ -31,7 +31,7 @@ public class TagDefinition<TIn, TOut, T> : IStopAware<TagDefinitionInput<TIn, TO
 		{
 			var ((input, output), stop) = parameter;
 			var item = output is not null ? _output.Get(output) : await _input.Off(new(input, stop));
-			tags?.Add(item);
+			tags.Add(item);
 		}
 	}
 }
