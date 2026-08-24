@@ -7,11 +7,6 @@ using Microsoft.AspNetCore.OutputCaching;
 
 namespace DragonSpark.Server.Output;
 
-public class ClearUserOutputs : ClearUserOutputs<uint>
-{
-	public ClearUserOutputs(IOutputCacheStore output, IUserOutputKey key) : base(output, key, x => x) {}
-}
-
 public class ClearUserOutputs<T> : IStopAware<T>
 {
 	readonly IStopAware<T, uint> _user;

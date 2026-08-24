@@ -10,15 +10,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Runtime\Invocation\Operations\**" />
+    <EmbeddedResource Remove="Runtime\Invocation\Operations\**" />
+    <None Remove="Runtime\Invocation\Operations\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AsyncUtilities" />
     <PackageReference Include="Ben.Demystifier" />
     <PackageReference Include="Microsoft.Extensions.Hosting" />
     <PackageReference Include="NetFabric.Hyperlinq" />
     <PackageReference Include="JetBrains.Annotations" />
     <PackageReference Include="Polly" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Runtime\Invocation\Operations\" />
   </ItemGroup>
 </Project>

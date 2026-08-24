@@ -1,11 +1,8 @@
-using System.Runtime.InteropServices;
 using DragonSpark.Compose;
-using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
+using System.Runtime.InteropServices;
 
 namespace DragonSpark.Runtime.Objects;
-
-public interface IMaterialize<out T> : ISelect<Array<byte>, T>;
 
 public sealed class Materialize<T> : IMaterialize<T>
 {
