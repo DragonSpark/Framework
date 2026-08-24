@@ -10,15 +10,18 @@ class ResizeMonitor {
 		observer: ResizeObserver = new ResizeObserver(entries => {
 			for (let entry of entries) {
 				const target = entry.target as HTMLElement;
-				const reference = references.get(target.dataset["ResizeMonitor.UniqueIdentifier"]);
-				if (reference) {
-					const size = (entry.contentBoxSize
-						? entry.contentBoxSize.length
-						? entry.contentBoxSize[0]
-						: entry.contentBoxSize
-						: entry.contentBoxSize) as ResizeObserverSize;
-					const value = size ? size.inlineSize : entry.contentRect.width;
-					reference[0].invokeMethodAsync("UpdateSize", value);
+				const key = target.dataset["ResizeMonitor.UniqueIdentifier"];
+				if (key) {
+					const reference = references.get(key);
+					if (reference) {
+						const size = (entry.contentBoxSize
+							? entry.contentBoxSize.length
+								? entry.contentBoxSize[0]
+								: entry.contentBoxSize
+							: entry.contentBoxSize) as ResizeObserverSize;
+						const value = size ? size.inlineSize : entry.contentRect.width;
+						reference[0].invokeMethodAsync("UpdateSize", value);
+					}
 				}
 			}
 		})) {
