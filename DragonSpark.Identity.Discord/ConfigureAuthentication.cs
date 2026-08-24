@@ -3,7 +3,7 @@ using DragonSpark.Model.Commands;
 
 namespace DragonSpark.Identity.Discord;
 
-sealed class ConfigureAuthentication : ICommand<DiscordAuthenticationOptions>
+sealed class ConfigureAuthentication : ICommand<DiscordAuthenticationOptions> // TODO
 {
 	readonly Func<DiscordIdentitySettings>        _settings;
 	readonly Action<DiscordAuthenticationOptions> _configure;

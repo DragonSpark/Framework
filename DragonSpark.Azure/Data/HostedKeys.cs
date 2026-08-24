@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.DataProtection;
 
 namespace DragonSpark.Azure.Data;
 
-public sealed class HostedKeys : IAlteration<IDataProtectionBuilder>
+sealed class HostedKeys : IAlteration<IDataProtectionBuilder>
 {
 	public static HostedKeys Default { get; } = new();
 

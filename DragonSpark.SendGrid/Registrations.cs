@@ -2,21 +2,23 @@
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.DependencyInjection;
+using SendGrid;
 using SendGrid.Extensions.DependencyInjection;
 
 namespace DragonSpark.SendGrid;
 
 sealed class Registrations : ICommand<IServiceCollection>
 {
-	public static Registrations Default { get; } = new ();
+	public static Registrations Default { get; } = new();
 
 	Registrations() {}
 
 	public void Execute(IServiceCollection parameter)
 	{
-		var register = new Register(parameter.Deferred<SendGridSettings>());
 		parameter.Register<SendGridSettings>()
-		         .AddSendGrid(register.Execute)
+		         .AddSendGrid(_ => {})
+		         .Services.AddOptions<SendGridClientOptions>()
+		         .Configure<SendGridSettings>((options, settings) => options.ApiKey = settings.ApiKey)
 		         .Services.Start<IEmailSender>()
 		         .Forward<EmailSender>()
 		         .Singleton();

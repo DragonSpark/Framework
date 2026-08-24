@@ -14,8 +14,15 @@ sealed class ConfigureApplication : ICommand<AuthenticationBuilder>
 
 	public void Execute(AuthenticationBuilder parameter)
 	{
-		var settings = parameter.Services.Deferred<YahooApplicationSettings>();
-		parameter.AddYahoo(new ConfigureAuthentication(settings, _configure).Execute);
-		parameter.Services.Register<YahooApplicationSettings>();
+		parameter.AddYahoo()
+		         .Services.Register<YahooApplicationSettings>()
+		         .AddOptions<YahooAuthenticationOptions>(YahooAuthenticationDefaults.AuthenticationScheme)
+		         .Configure<YahooApplicationSettings>((options, settings) =>
+		                                              {
+			                                              options.ClientId     = settings.Key;
+			                                              options.ClientSecret = settings.Secret;
+
+			                                              _configure(options);
+		                                              });
 	}
 }

@@ -55,8 +55,6 @@ public static class Extensions
 
 		public Func<T> DeferredEnhanced<T>() where T : class => new DeferredServiceEnhanced<T>(@this).Get;
 
-		public Func<T> Deferred<T>() where T : class => new DeferredService<T>(@this).Get;
-
 		public IServiceCollection Replace<T>(ServiceLifetime lifetime)
 			where T : class
 		{
@@ -156,10 +154,4 @@ public static class Extensions
 		public BuildHostContext ComposeUsing(Action<IServiceContainer> configure)
 			=> @this.WithComposition().Configure(new ConfigureContainer(configure));
 	}
-
-	/*public static BuildHostContext Decorate<T>(this BuildHostContext @this, Func<IServiceFactory, T, T> configure)
-		=> @this.ComposeUsing(new Decorate<T>(configure));
-
-	public static BuildHostContext Decorate<TFrom, TTo>(this BuildHostContext @this) where TTo : TFrom
-		=> @this.ComposeUsing(Composition.Decorate<TFrom, TTo>.Default);*/
 }

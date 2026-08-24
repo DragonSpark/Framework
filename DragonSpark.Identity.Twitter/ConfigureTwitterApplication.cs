@@ -1,6 +1,5 @@
 ﻿using AspNet.Security.OAuth.Twitter;
 using DragonSpark.Application.AspNet.Security.Identity.Claims.Actions;
-using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Authentication;
@@ -22,15 +21,19 @@ sealed class ConfigureTwitterApplication : ICommand<AuthenticationBuilder>
 
 	public void Execute(AuthenticationBuilder parameter)
 	{
-		var settings       = parameter.Services.Deferred<TwitterApplicationSettings>();
-		var authentication = new ConfigureTwitterAuthentication(settings, _action, _configure);
-		parameter.Services.Register<TwitterApplicationSettings>()
-		         .Return(parameter)
-		         .AddTwitter(authentication.Execute)
-		         //
-		         .Services
-		         .AddSingleton<IPostConfigureOptions<TwitterAuthenticationOptions>,
-			         PostConfigureAuthenticationOptions>()
-			;
+		parameter.AddTwitter()
+		         .Services.Register<TwitterApplicationSettings>()
+		         .AddOptions<TwitterAuthenticationOptions>(TwitterAuthenticationDefaults.AuthenticationScheme)
+		         .Configure<TwitterApplicationSettings>((options, settings) =>
+		                                                {
+			                                                options.ClientId     = settings.Key;
+			                                                options.ClientSecret = settings.Secret;
+
+			                                                _action.Execute(options.ClaimActions);
+			                                                _configure(options);
+		                                                });
+
+		parameter.Services.AddSingleton<IPostConfigureOptions<TwitterAuthenticationOptions>,
+			PostConfigureAuthenticationOptions>();
 	}
 }

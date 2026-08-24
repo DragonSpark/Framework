@@ -14,8 +14,15 @@ sealed class ConfigureApplication : ICommand<AuthenticationBuilder>
 
 	public void Execute(AuthenticationBuilder parameter)
 	{
-		var settings = parameter.Services.Deferred<DiscordIdentitySettings>();
-		parameter.AddDiscord(new ConfigureAuthentication(settings, _configure).Execute);
-		parameter.Services.Register<DiscordIdentitySettings>();
+		parameter.AddDiscord()
+		         .Services.Register<DiscordIdentitySettings>()
+		         .AddOptions<DiscordAuthenticationOptions>(DiscordAuthenticationDefaults.AuthenticationScheme)
+		         .Configure<DiscordIdentitySettings>((options, settings) =>
+		                                             {
+			                                             options.ClientId     = settings.Key;
+			                                             options.ClientSecret = settings.Secret;
+
+			                                             _configure(options);
+		                                             });
 	}
 }

@@ -1,6 +1,7 @@
 using Azure.Core.Serialization;
 using Azure.Messaging.EventHubs.Processor;
 using Azure.Messaging.ServiceBus;
+using DragonSpark.Azure.Data;
 using DragonSpark.Azure.Messaging.Messages.Queues.Durable;
 using DragonSpark.Azure.Storage;
 using DragonSpark.Compose;
@@ -8,6 +9,7 @@ using DragonSpark.Composition;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NetFabric.Hyperlinq;
@@ -105,7 +107,10 @@ public static class Extensions
 		public IServiceCollection AddAzureKeyVaultSecret()
 			=> Data.AddAzureKeyVaultSecret.Default.Parameter(@this);
 	}
-
+	extension(IDataProtectionBuilder @this)
+	{
+		public IDataProtectionBuilder Hosted() => HostedKeys.Default.Get(@this);
+	}
 	/**/
 
 	public static T Get<T>(this ISelect<IReadOnlyDictionary<string, object>, T> @this,

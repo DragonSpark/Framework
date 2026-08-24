@@ -1,4 +1,3 @@
-using DragonSpark.Application.AspNet.Compose;
 using DragonSpark.Application.AspNet.Entities.Diagnostics;
 using DragonSpark.Application.AspNet.Entities.Editing;
 using DragonSpark.Application.AspNet.Entities.Transactions;
@@ -10,7 +9,6 @@ using DragonSpark.Application.AspNet.Workers;
 using DragonSpark.Application.Model;
 using DragonSpark.Application.Security.Identity.Claims;
 using DragonSpark.Compose;
-using DragonSpark.Composition.Compose;
 using DragonSpark.Contracts.Queries;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Selection.Stop;
@@ -23,7 +21,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using System.Security.Claims;
 using Claim = System.Security.Claims.Claim;
 using IdentityUser = DragonSpark.Application.AspNet.Security.Identity.IdentityUser;
@@ -32,48 +29,34 @@ namespace DragonSpark.Application.AspNet;
 
 partial class Extensions
 {
-    public static BuildHostContext WithFrameworkConfigurations(this BuildHostContext @this)
-        => Configure.Default.Get(@this);
+    extension(Accessed @this)
+    {
+	    public string ValueOrDefault() => @this.ValueOrDefault(string.Empty);
 
-    public static ApplicationProfileContext Apply(this BuildHostContext @this, IApplicationProfile profile)
-        => new(@this, profile);
+	    public string ValueOrDefault(string @default)
+		    => @this.Exists ? @this.Value.Verify() : @default;
 
-    public static ApplicationProfileContext WithIdentityClaimsRelay(this ApplicationProfileContext @this)
-        => @this.Append(Security.Identity.Authentication.Persist.WithIdentityClaimsRelay.Default);
+	    public string Value()
+		    => @this.Exists ? @this.Value.Verify() : throw new InvalidOperationException($"{@this.Claim} not found.");
 
-    public static IServiceCollection AddHttpIdentity(this IServiceCollection @this)
-        => Communication.Http.Registrations.Default.Parameter(@this);
+	    public Claim? Claim() => @this.Exists ? new(@this.Claim, @this.Value.Verify()) : null;
+    }
 
-    public static BuildHostContext WithHostedConfiguration(this BuildHostContext @this)
-        => @this.Configure(Configuration.Registrations.Default);
+    extension(ClaimsPrincipal @this)
+    {
+	    public uint? Number() => UserNumber.Default.Get(@this);
 
-    public static BuildHostContext WithIssuedTokens(this BuildHostContext @this)
-        => @this.Configure(Security.Tokens.Registrations.Default);
+	    public ProviderIdentity AuthenticatedIdentity()
+		    => Security.Identity.AuthenticatedIdentity.Default.Get(@this);
 
-    /**/
+	    public ProviderIdentity Identity() => Identities.Default.Get(@this);
 
-    public static string ValueOrDefault(this Accessed @this) => @this.ValueOrDefault(string.Empty);
+	    public string DisplayName() => UserDisplayName.Default.Get(@this);
 
-    public static string ValueOrDefault(this Accessed @this, string @default)
-        => @this.Exists ? @this.Value.Verify() : @default;
+	    public string UserName() => Security.Identity.UserName.Default.Get(@this);
 
-    public static string Value(this Accessed @this)
-        => @this.Exists ? @this.Value.Verify() : throw new InvalidOperationException($"{@this.Claim} not found.");
-
-    public static Claim? Claim(this Accessed @this) => @this.Exists ? new(@this.Claim, @this.Value.Verify()) : null;
-
-    public static uint? Number(this ClaimsPrincipal @this) => UserNumber.Default.Get(@this);
-
-    public static ProviderIdentity AuthenticatedIdentity(this ClaimsPrincipal @this)
-        => Security.Identity.AuthenticatedIdentity.Default.Get(@this);
-
-    public static ProviderIdentity Identity(this ClaimsPrincipal @this) => Identities.Default.Get(@this);
-
-    public static string DisplayName(this ClaimsPrincipal @this) => UserDisplayName.Default.Get(@this);
-
-    public static string UserName(this ClaimsPrincipal @this) => Security.Identity.UserName.Default.Get(@this);
-
-    public static string Name(this ClaimsPrincipal @this) => @this.Identity.Verify().Name.Verify();
+	    public string Name() => @this.Identity.Verify().Name.Verify();
+    }
 
     public static string? Get(this IValueProvider @this, string key)
     {
@@ -122,47 +105,57 @@ partial class Extensions
     public static IStopAware<TIn, TOut> ReloadAware<TIn, TOut>(this IStopAware<TIn, TOut> @this)
 	    => new ReloadAware<TIn, TOut>(@this);
 
+    extension(ClaimsPrincipal @this)
+    {
+	    /**/
+	    public UserInput Input(Guid subject) => new(@this.Number().Value(), subject);
+
+	    public UserInput<T> Input<T>(T subject) => new(@this.Number() ?? 0, subject);
+    }
+
+    extension(HttpContext @this)
+    {
+	    public UserInput Input(Guid subject) => @this.User.Input(subject);
+
+	    public UserInput<T> Input<T>(T subject) => @this.User.Input(subject);
+
+	    public Stop<PageQueryInput<uint>> PagingUserInput(PageRequest page)
+		    => @this.PagingInput(@this.User.Number().Value(), page);
+
+	    public Stop<PageQueryInput<UserInput>> PagingUserInput(Guid parameter,
+	                                                           PageRequest page)
+		    => @this.PagingInput(new UserInput(@this.User.Number().Value(), parameter), page);
+
+	    public Stop<PageQueryInput<UserInput<T>>> PagingUserInput<T>(T parameter,
+	                                                                 PageRequest page)
+		    => @this.PagingInput(new UserInput<T>(@this.User.Number().Value(), parameter), page);
+
+	    public Stop<PageQueryInput<T>> PagingInput<T>(T parameter, PageRequest page)
+		    => new(new(parameter, page), @this.RequestAborted);
+
+	    public Stop<uint> UserInput()
+		    => new(@this.User.Number().Value(), @this.RequestAborted);
+
+	    public Stop<T> Stop<T>(T parameter) => new(parameter, @this.RequestAborted);
+
+	    public Stop<UserInput<T>> UserInput<T>(T subject)
+		    => new(@this.User.Input(subject), @this.RequestAborted);
+
+	    public Stop<UserInput> UserInput(Guid subject)
+		    => new(@this.User.Input(subject), @this.RequestAborted);
+    }
+
     /**/
-    public static UserInput Input(this ClaimsPrincipal @this, Guid subject) => new(@this.Number().Value(), subject);
 
-    public static UserInput<T> Input<T>(this ClaimsPrincipal @this, T subject) => new(@this.Number() ?? 0, subject);
+    extension(NavigationManager @this)
+    {
+	    public bool IsOn(string parameter)
+		    => Navigation.IsOn.Default.Get(new(@this, parameter));
 
-    public static UserInput Input(this HttpContext @this, Guid subject) => @this.User.Input(subject);
+	    public string RootPath() => Navigation.RootPath.Default.Get(@this);
 
-    public static UserInput<T> Input<T>(this HttpContext @this, T subject) => @this.User.Input(subject);
-
-    public static Stop<PageQueryInput<uint>> PagingUserInput(this HttpContext @this, PageRequest page)
-        => @this.PagingInput(@this.User.Number().Value(), page);
-
-    public static Stop<PageQueryInput<UserInput>> PagingUserInput(this HttpContext @this, Guid parameter,
-                                                                  PageRequest page)
-        => @this.PagingInput(new UserInput(@this.User.Number().Value(), parameter), page);
-
-    public static Stop<PageQueryInput<UserInput<T>>> PagingUserInput<T>(this HttpContext @this, T parameter,
-                                                                        PageRequest page)
-        => @this.PagingInput(new UserInput<T>(@this.User.Number().Value(), parameter), page);
-
-    public static Stop<PageQueryInput<T>> PagingInput<T>(this HttpContext @this, T parameter, PageRequest page)
-        => new(new(parameter, page), @this.RequestAborted);
-
-    public static Stop<uint> UserInput(this HttpContext @this)
-        => new(@this.User.Number().Value(), @this.RequestAborted);
-
-    public static Stop<T> Stop<T>(this HttpContext @this, T parameter) => new(parameter, @this.RequestAborted);
-
-    public static Stop<UserInput<T>> UserInput<T>(this HttpContext @this, T subject)
-        => new(@this.User.Input(subject), @this.RequestAborted);
-
-    public static Stop<UserInput> UserInput(this HttpContext @this, Guid subject)
-        => new(@this.User.Input(subject), @this.RequestAborted);
-    /**/
-
-    public static bool IsOn(this NavigationManager @this, string parameter)
-        => Navigation.IsOn.Default.Get(new(@this, parameter));
-
-    public static string RootPath(this NavigationManager @this) => Navigation.RootPath.Default.Get(@this);
-
-    public static string Path(this NavigationManager @this) => Navigation.Path.Default.Get(@this);
+	    public string Path() => Navigation.Path.Default.Get(@this);
+    }
 
     public static string Nonce(this HttpContext @this) => HttpContextNonce.Default.Get(@this);
 

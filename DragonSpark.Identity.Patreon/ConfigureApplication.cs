@@ -14,8 +14,15 @@ sealed class ConfigureApplication : ICommand<AuthenticationBuilder>
 
 	public void Execute(AuthenticationBuilder parameter)
 	{
-		var settings = parameter.Services.Deferred<PatreonApplicationSettings>();
-		parameter.AddPatreon(new ConfigureAuthentication(settings, _configure).Execute);
-		parameter.Services.Register<PatreonApplicationSettings>();
+		parameter.AddPatreon()
+		         .Services.Register<PatreonApplicationSettings>()
+		         .AddOptions<PatreonAuthenticationOptions>(PatreonAuthenticationDefaults.AuthenticationScheme)
+		         .Configure<PatreonApplicationSettings>((options, settings) =>
+		                                                {
+			                                                options.ClientId     = settings.Key;
+			                                                options.ClientSecret = settings.Secret;
+
+			                                                _configure(options);
+		                                                });
 	}
 }

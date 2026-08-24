@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.Persist;
@@ -17,6 +16,6 @@ sealed class WithIdentityClaimsRelay : ICommand<IServiceCollection>
 		         .Include(x => x.Dependencies)
 		         .Singleton()
 		         //
-				 .Then.Configure<SecurityStampValidatorOptions>(new ConfigureSecurityStamp(parameter).Execute);
+				 .Then.ConfigureOptions<ConfigureSecurityStamp>();
 	}
 }
