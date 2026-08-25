@@ -26,7 +26,7 @@ public static class Extensions
 		                                                                         byte receive = 32,
 		                                                                         params Assembly[] additional)
 		{
-			var configuration = new DefaultServiceConfiguration(OptimizedCircuitConfiguration.Default.Execute, receive);
+			var configuration = new DistributedAwareServiceConfiguration(receive);
 			var profile       = new BlazorApplicationProfile<T>(configuration.Execute, builder, additional);
 			return @this.Apply(profile);
 		}

@@ -15,14 +15,3 @@ public class Disposable : IDisposable, IActivateUsing<Action>
         _callback();
     }
 }
-
-[MustDisposeResource]
-public class Disposable<T>(T disposable) : IDisposable where T : IDisposable
-{
-    readonly T _disposable = disposable;
-
-    public void Dispose()
-    {
-        _disposable.Dispose();
-    }
-}
