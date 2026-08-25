@@ -1,0 +1,16 @@
+@using DragonSpark.Application.AspNet.Security.Identity.Authentication.Initialization
+@using DragonSpark.Compose
+
+@inject IInitializeAuthentication Initialize
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        var current = await State.On();
+        await Initialize.Off(current.User);
+    }
+
+    [CascadingParameter]
+    public required Task<AuthenticationState> State { get; set; }
+
+}

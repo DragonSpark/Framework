@@ -1,4 +1,4 @@
-﻿using DragonSpark.Compose;
+using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations.Results;
 using Microsoft.AspNetCore.Components.Authorization;
@@ -24,6 +24,6 @@ public sealed class AuthenticationStore : IResulting<AuthenticationState>, IComm
 
 	public void Execute(AuthenticationState parameter)
 	{
-		_environment.SetAuthenticationState(parameter.ToOperation().AsTask());
+		_environment.SetAuthenticationState(Task.FromResult(parameter));
 	}
 }

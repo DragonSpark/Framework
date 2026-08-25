@@ -7,15 +7,15 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Composition;
 
-sealed class ServiceEnhanced<T> : ISelect<IServiceCollection, T> where T : notnull
+sealed class Service<T> : ISelect<IServiceCollection, T> where T : notnull
 {
-    public static ServiceEnhanced<T> Default { get; } = new();
+    public static Service<T> Default { get; } = new();
 
-    ServiceEnhanced() : this(NewDefaultContainer.Default) {}
+    Service() : this(NewDefaultContainer.Default) {}
 
     readonly IResult<ServiceContainer> _services;
 
-    public ServiceEnhanced(IResult<ServiceContainer> services) => _services = services;
+    public Service(IResult<ServiceContainer> services) => _services = services;
 
     public T Get(IServiceCollection parameter)
     {

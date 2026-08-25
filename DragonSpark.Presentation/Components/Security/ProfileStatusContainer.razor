@@ -6,6 +6,5 @@
     [Parameter]
     public required RenderFragment<ProfileStatus> ChildContent { get; set; }
 
-    [CascadingParameter]
-    public required ProfileStatus Status { get; set; }
+    [CascadingParameter] public required ProfileStatus Status { get; set; }
 }
