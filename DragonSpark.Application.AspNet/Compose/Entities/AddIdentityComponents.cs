@@ -33,15 +33,9 @@ sealed class AddIdentityComponents<T> : ICommand<IServiceCollection> where T : I
                  //
                  .Then.Start<RefreshAuthenticationDisplayState<T>>()
                  .And<AuthenticationStore>()
-                 .And<ProfileStatusStore>()
                  .Scoped()
                  //
-                 .Then.Start<IAssignProfileStatus>()
-                 .Forward<AssignProfileStatus>()
-                 .Scoped()
-                 .Then.Start<IProfileStatus>()
-                 .Forward<RetrieveProfileStatus>()
-                 .Scoped()
+                 .Then.Start<IDefaultState>().Forward<DefaultState<T>>().Singleton()
                  //
                  .Then.Start<IAdapters>()
                  .Forward<Adapters<T>>()

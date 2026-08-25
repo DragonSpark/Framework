@@ -9,7 +9,7 @@ public static class Extensions
 {
     public static IServiceCollection AddRemoteConfiguration(this IServiceCollection @this,
                                                             ConfigurationManager configuration)
-        => configuration.AddRemoteConfiguration(@this.DeferredEnhanced<IRemoteConfigurationMessage>()).Return(@this);
+        => configuration.AddRemoteConfiguration(@this.Deferred<IRemoteConfigurationMessage>()).Return(@this);
 
     public static ConfigurationManager AddRemoteConfiguration(this ConfigurationManager @this,
                                                               Func<IRemoteConfigurationMessage> message)
