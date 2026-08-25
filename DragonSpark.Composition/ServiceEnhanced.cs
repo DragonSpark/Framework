@@ -21,7 +21,7 @@ sealed class ServiceEnhanced<T> : ISelect<IServiceCollection, T> where T : notnu
     {
         var       container = _services.Get();
         using var provider  = container.CreateServiceProvider(parameter).CreateScope();
-        var       next      = new ActivationAwareServiceProvider(provider.ServiceProvider);
+        var       next      = new ActivationAwareServiceProvider(container, provider.ServiceProvider);
         var       services  = new LocateAwareServiceProvider(next, parameter);
         var       result    = services.GetRequiredService<T>();
         return result;
