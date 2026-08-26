@@ -27,8 +27,7 @@ sealed class Factory : IServiceProviderFactory<IServiceContainer>
 		var services = (IKeyedServiceProvider)_factory.CreateServiceProvider(containerBuilder);
 		var result   = new ActivationAwareServiceProvider(services);
 		containerBuilder.Decorate<IServiceProvider>((_, provider) => _provider(containerBuilder, provider));
-		containerBuilder.Decorate<IServiceScopeFactory>((_, factory)
-			                                                => new ServiceScopeFactory(containerBuilder, factory));
+		containerBuilder.Decorate<IServiceScopeFactory>((_, factory) => new ServiceScopeFactory(factory));
 		return result;
 	}
 }
