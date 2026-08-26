@@ -7,7 +7,7 @@ using DragonSpark.Model.Operations;
 
 namespace DragonSpark.Grok.Chat;
 
-public sealed class ChatResponse : IChatResponse
+sealed class ChatResponse : IChatResponse
 {
     readonly Func<HttpClient>      _client;
     readonly JsonSerializerOptions _options;
@@ -15,7 +15,7 @@ public sealed class ChatResponse : IChatResponse
 
     public ChatResponse(IHttpClientFactory factory)
         : this(Start.A.Selection<string, HttpClient>(factory.CreateClient).Then().Bind(RegistrationName.Default.Get),
-               ChatOptions.Default, ToolChoice.Required) {}
+               ApiOptions.Default, ToolChoice.Required) {}
 
     [Candidate(false)]
     public ChatResponse(Func<HttpClient> client, JsonSerializerOptions options, ToolChoice tool)
