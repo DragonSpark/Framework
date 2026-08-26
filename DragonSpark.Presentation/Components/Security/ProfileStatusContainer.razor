@@ -1,10 +1,21 @@
 @using DragonSpark.Application.AspNet.Security.Identity.Authentication
+@using DragonSpark.Presentation.Components.Content.Templates
 
-@ChildContent(Status)
+@if (Status.HasValue)
+{
+    @ChildContent(Status.Value)
+}
+else
+{
+    @LoadingTemplate
+}
     
 @code {
     [Parameter]
     public required RenderFragment<ProfileStatus> ChildContent { get; set; }
 
-    [CascadingParameter] public required ProfileStatus Status { get; set; }
+    [Parameter]
+    public required RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
+
+    [CascadingParameter] public required ProfileStatus? Status { get; set; }
 }

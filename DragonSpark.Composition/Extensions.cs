@@ -20,16 +20,14 @@ public static class Extensions
 
 	extension(IConfiguration @this)
 	{
-		public T? Section<T>(string name) where T : class
-			=> new Section<T>(name).Get(@this);
+		public T? Section<T>(string name) where T : class => new Section<T>(name).Get(@this);
 
 		public T? Section<T>() where T : class => Composition.Section<T>.Default.Get(@this);
 	}
 
 	extension(IServiceCollection @this)
 	{
-		public T? Section<T>(string name) where T : class
-			=> @this.Configuration().Section<T>(name);
+		public T? Section<T>(string name) where T : class => @this.Configuration().Section<T>(name);
 
 		public T? Section<T>() where T : class => @this.Configuration().Section<T>();
 	}
@@ -38,8 +36,7 @@ public static class Extensions
 
 	extension(IServiceCollection @this)
 	{
-		public IConfigurationRoot ConfigurationRoot()
-			=> @this.Configuration().To<IConfigurationRoot>();
+		public IConfigurationRoot ConfigurationRoot() => @this.Configuration().To<IConfigurationRoot>();
 
 		public IConfiguration Configuration()
 			=> @this.Single(x => x.ServiceType == typeof(IConfiguration))
@@ -55,8 +52,7 @@ public static class Extensions
 
 		public Func<T> Deferred<T>() where T : class => new DeferredService<T>(@this).Get;
 
-		public IServiceCollection Replace<T>(ServiceLifetime lifetime)
-			where T : class
+		public IServiceCollection Replace<T>(ServiceLifetime lifetime) where T : class
 		{
 			var existing = @this.FirstOrDefault(x => x.ServiceType == typeof(T));
 			if (existing != null)
@@ -91,16 +87,13 @@ public static class Extensions
 			   )!
 				.To<T>();
 
-		public HostBuilderContext Context()
-			=> @this.GetRequiredInstance<HostBuilderContext>();
+		public HostBuilderContext Context() => @this.GetRequiredInstance<HostBuilderContext>();
 
-		public string EnvironmentName()
-			=> GetHostEnvironmentName.Default.Get(@this.Context());
+		public string EnvironmentName() => GetHostEnvironmentName.Default.Get(@this.Context());
 
 		public StartRegistration<T> Start<T>() where T : class => new(@this);
 
-		public IncludingRegistration ForDefinition<T>() where T : class
-			=> new GenericDefinitionRegistration<T>(@this);
+		public IncludingRegistration ForDefinition<T>() where T : class => new GenericDefinitionRegistration<T>(@this);
 	}
 
 	/**/
@@ -113,20 +106,16 @@ public static class Extensions
 	extension(BuildHostContext @this)
 	{
 		/**/
-		public BuildHostContext WithComposition()
-			=> Construction.WithComposition.Default.Get(@this);
+		public BuildHostContext WithComposition() => Construction.WithComposition.Default.Get(@this);
 
 		public BuildHostContext WithDefaultComposition()
 			=> @this.Configure(Registrations.Default).ComposeUsing<ConfigureDefaultActivation>();
 
-		public BuildHostContext WithDeferredRegistrations()
-			=> @this.Configure(AddDeferredRegistrations.Default);
+		public BuildHostContext WithDeferredRegistrations() => @this.Configure(AddDeferredRegistrations.Default);
 
-		public BuildHostContext RegisterModularity()
-			=> @this.Configure(Composition.RegisterModularity.Default);
+		public BuildHostContext RegisterModularity() => @this.Configure(Composition.RegisterModularity.Default);
 
-		public BuildHostContext WithPlatform(string platform)
-			=> @this.Configure(new AssignHostPlatform(platform));
+		public BuildHostContext WithPlatform(string platform) => @this.Configure(new AssignHostPlatform(platform));
 	}
 
 	public static ICommand<IServiceCollection> Deferred(this ICommand<IServiceCollection> @this) => new Deferred(@this);
@@ -140,12 +129,10 @@ public static class Extensions
 
 	extension(BuildHostContext @this)
 	{
-		public BuildHostContext ComposeUsingRoot<T>()
-			where T : ICompositionRoot, new()
+		public BuildHostContext ComposeUsingRoot<T>() where T : ICompositionRoot, new()
 			=> @this.WithComposition().Configure(ConfigureContainer<T>.Default);
 
-		public BuildHostContext ComposeUsing<T>()
-			where T : class, ICommand<IServiceContainer>
+		public BuildHostContext ComposeUsing<T>() where T : class, ICommand<IServiceContainer>
 			=> @this.ComposeUsing(DragonSpark.Compose.Start.An.Activation<T>().Activate());
 
 		public BuildHostContext ComposeUsing(ICommand<IServiceContainer> configure)
