@@ -2,7 +2,6 @@ using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Runtime;
 using DragonSpark.Runtime.Activation;
 using JetBrains.Annotations;
-using LightInject;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Composition;
@@ -15,16 +14,7 @@ sealed class ActivationAwareServiceProvider : IKeyedServiceProvider, IDisposable
 	readonly IKeyedServiceProvider _provider;
 
 	[MustDisposeResource(false)]
-	public ActivationAwareServiceProvider(IServiceContainer container, IServiceProvider provider) 
-		: this(new KeyedServiceProvider(container, provider)) {}
-
-	[MustDisposeResource(false)]
 	public ActivationAwareServiceProvider(IKeyedServiceProvider provider) : this(provider, CanActivate.Default) {}
-
-	[MustDisposeResource(false)]
-	public ActivationAwareServiceProvider(IServiceContainer container, IServiceProvider provider,
-	                                      ICondition<Type> condition)
-		: this(new KeyedServiceProvider(container, provider), condition) {}
 
 	[MustDisposeResource(false)]
 	public ActivationAwareServiceProvider(IKeyedServiceProvider provider, ICondition<Type> condition)
