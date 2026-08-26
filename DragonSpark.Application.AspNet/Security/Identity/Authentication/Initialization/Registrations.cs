@@ -21,6 +21,9 @@ sealed class Registrations<T> : ICommand<IServiceCollection> where T : IdentityU
 	{
 		parameter.Start<AuthenticationStateSource>()
 		         .Scoped()
+		         .Then.Start<IProfileStateInput>()
+		         .Forward<ProfileStateInput<T>>()
+		         .Scoped()
 		         .Then.Start<IAuthenticationStateMonitor>()
 		         .Forward<AuthenticationStateMonitor>()
 		         .Include(x => x.Dependencies)
@@ -28,12 +31,13 @@ sealed class Registrations<T> : ICommand<IServiceCollection> where T : IdentityU
 		         //
 		         .Then.Start<IProcessAuthentication<T>>()
 		         .Forward<ProcessAuthentication<T>>()
-		         .Include(x => x.Dependencies)
+		         .Include(x => x.Dependencies.Recursive())
 		         .Scoped()
 		         //
 		         .Then.Start<IProcessAuthenticationUpdate>()
 		         .Forward<ProcessAuthenticationUpdate>()
 		         .Decorate<ProcessAuthenticationUpdate<T>>()
+		         .Include(x => x.Dependencies.Recursive())
 		         .Scoped()
 		         //
 		         .Then.Start<IInitializeAuthentication>()
@@ -43,7 +47,7 @@ sealed class Registrations<T> : ICommand<IServiceCollection> where T : IdentityU
 		         .Scoped()
 		         //
 		         .Then.AddCascadingValue(_state)
-		         .AddCascadingValue<AuthenticationState<T>>(x => x.GetRequiredService<AuthenticationStateSource<T>>())
-		         .AddCascadingValue<ProfileStatus>(x => x.GetRequiredService<ProfileStatusSource>());
+		         .AddCascadingValue<AuthenticationState<T>?>(x => x.GetRequiredService<AuthenticationStateSource<T>>())
+		         .AddCascadingValue<ProfileStatus?>(x => x.GetRequiredService<ProfileStatusSource>());
 	}
 }
