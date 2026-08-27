@@ -1,0 +1,10 @@
+@using DragonSpark.Presentation.Runtime.Operations
+
+@inject IRequestToken Request
+
+<CascadingValue IsFixed="true" Value="@Request.Get()" ChildContent="@ChildContent" />
+
+@code {
+    [Parameter]
+    public required RenderFragment ChildContent { get; set; }
+}

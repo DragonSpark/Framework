@@ -1,4 +1,6 @@
+@using DragonSpark.Application.Runtime.Operations
 @using DragonSpark.Compose
+@using DragonSpark.Model.Operations
 @using DragonSpark.Presentation.Compose
 @inherits InteractiveComponentBase
 @ChildContent(_subject)
@@ -17,13 +19,32 @@
 	[Parameter]
 	public required bool PreserveNotificationOwner { get; set; } = true;
 
+	[Parameter]
+	public required string StopMessage { get; set; } = "An operation is active.  Press Cancel below to stop it.";
+
+	[Parameter]
+	public required IStopHandle? StopHandle { get; set; }
+
+	[Parameter]
+	public required IOperation? Stopped { get; set; }
+
 	public override async Task SetParametersAsync(ParameterView parameters)
 	{
-		var changed = parameters.DidParameterChange(nameof(Subject), Subject) || parameters.DidParameterChange(nameof(Owner), Owner);
+		var changed = parameters.DidParameterChange(nameof(Subject), Subject)
+					  || parameters.DidParameterChange(nameof(Owner), Owner)
+					  || parameters.DidParameterChange(nameof(StopHandle), StopHandle)
+					  || parameters.DidParameterChange(nameof(StopMessage), StopMessage)
+					  || parameters.DidParameterChange(nameof(Stopped), Stopped);
 		await base.SetParametersAsync(parameters).Off();
 		_subject = changed ? Create() : _subject;
 	}
 
 	OperationCallbackComposer Create()
-		=> Start.A.Callback(Subject, PreserveNotificationOwner ? Owner : null).UpdateActivity(Receiver).Handle(Exceptions, Owner.GetType());
+	{
+		var start  = Start.A.Callback(Subject, PreserveNotificationOwner ? Owner : null);
+		var next   = StopHandle is {} handle ? start.UpdateActivity(Receiver, new(StopMessage, handle, Canceled: Stopped)) : start.UpdateActivity(Receiver);
+		var result = next.Handle(Exceptions, Owner.GetType());
+		return result;
+	}
+
 }

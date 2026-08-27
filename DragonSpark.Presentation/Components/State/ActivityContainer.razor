@@ -3,7 +3,6 @@
 @using DragonSpark.Model.Commands
 @using DragonSpark.Model.Results
 @using DragonSpark.Presentation.Environment.Browser.Document
-@using MatBlazor
 
 @inherits Components.ComponentBase
 
@@ -23,44 +22,50 @@
 	</div>
 	@if (Active && _model.Current is CancelAwareActivityOptions cancel)
 	{
-		<div class="position-absolute top-0 d-flex w-100 h-100 flex-column align-items-center justify-content-center">
-			<div class="d-flex gap-2">
-				<div class="spinner-border" role="status"></div>
-				<div>@(_displaying ? "Please wait..." : cancel.Message)</div>
-			</div>
-			@if (!_displaying)
-			{
-				<ul class="actions">
-					<li><MatButton Class="small button" Type="button" Disabled="@_displaying" OnClick="@OnCancel">Cancel</MatButton></li>
-				</ul>
-			}
-		</div>
+        <div class="position-absolute top-0 d-flex w-100 h-100 flex-column align-items-center justify-content-center">
+            <div class="d-flex align-items-center gap-2">
+                <div class="spinner-border align-self-center" role="status"></div>
+                <span>@(_displaying ? "Please wait..." : cancel.Message)</span>
+            </div>
+            @if (!_displaying)
+            {
+                <ul class="@StopContainerCssClass">
+                    <li><button class="@StopButtonCssClass" type="button" disabled="@_displaying" @onclick="@OnCancel">Cancel</button></li>
+                </ul>
+            }
+        </div>
 	}
 </div>
 
 @code
 {
-	readonly Switch                _start   = false, _restore = false, _displaying = false, _render = true;
-	readonly ActivityReceiverModel _model   = new();
-	RenderFragment                 _content = null!;
-	string?                        _class, _outer;
+    readonly Switch                _start   = false, _restore = false, _displaying = false, _render = true;
+    readonly ActivityReceiverModel _model   = new();
+    RenderFragment                 _content = null!;
+    string?                        _class, _outer;
 
-	protected override void OnInitialized()
-	{
-		_content = ChildContent(this);
-		Monitor?.Add.Execute(this);
-		Parent?.Add.Execute(this);
-		base.OnInitialized();
-	}
+    protected override void OnInitialized()
+    {
+        _content = ChildContent(this);
+        Monitor?.Add.Execute(this);
+        Parent?.Add.Execute(this);
+        base.OnInitialized();
+    }
 
-	[Parameter]
-	public string CssClass { get; set; } = string.Empty;
+    [Parameter]
+    public string CssClass { get; set; } = string.Empty;
 
-	[Parameter]
-	public string ActiveStyle { get; set; } = "dragonspark-activity-active";
+    [Parameter]
+    public string ActiveStyle { get; set; } = "dragonspark-activity-active";
 
-	[Parameter]
-	public required RenderFragment<IActivityReceiver> ChildContent { get; set; }
+    [Parameter]
+    public required RenderFragment<IActivityReceiver> ChildContent { get; set; }
+
+    [Parameter]
+    public required string StopContainerCssClass { get; set; } = "actions";
+
+    [Parameter]
+    public required string StopButtonCssClass { get; set; } = "small button";
 
 	[CascadingParameter] IActivityMonitor? Monitor { get; set; }
 

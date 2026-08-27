@@ -1,29 +1,9 @@
-@using DragonSpark.Presentation.Runtime.Operations
-@using System.Threading
+@inject NavigationManager Navigation
 
-@inject IRequestToken Token
-@implements IDisposable
-
-<CascadingValue IsFixed="true" Value="@_combined.Token" ChildContent="@ChildContent"/>
-
+<DragonSpark.Presentation.Components.Navigation.CancelComponent
+    @key="Navigation.Uri" ChildContent="@ChildContent" />
+                                                                               
 @code {
-    readonly CancellationTokenSource _source   = new();
-    CancellationTokenSource          _combined = null!;
-
     [Parameter]
     public required RenderFragment? ChildContent { get; set; }
-
-    protected override void OnInitialized()
-    {
-        var token = Token.Get();
-        _combined = CancellationTokenSource.CreateLinkedTokenSource(token, _source.Token);
-        base.OnInitialized();
-    }
-
-    public void Dispose()
-    {
-        _source.Cancel();
-        _source.Dispose();
-    }
-
 }

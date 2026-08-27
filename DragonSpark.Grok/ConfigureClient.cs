@@ -1,7 +1,8 @@
 using System.Net.Http.Headers;
+using DragonSpark.Grok.Chat;
 using DragonSpark.Model.Commands;
 
-namespace DragonSpark.Grok.Chat;
+namespace DragonSpark.Grok;
 
 sealed class ConfigureClient : ICommand<HttpClient>
 {

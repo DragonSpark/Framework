@@ -1,3 +1,3 @@
-namespace DragonSpark.Grok.Chat;
+namespace DragonSpark.Grok;
 
 public readonly record struct ConfigureClientInput(IServiceProvider Services, HttpClient Subject);
