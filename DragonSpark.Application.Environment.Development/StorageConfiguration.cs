@@ -7,8 +7,8 @@ public sealed class StorageConfiguration : AspNet.Entities.Configure.StorageConf
 	public static StorageConfiguration Default { get; } = new();
 
 	StorageConfiguration()
-		: base(x => x.AddInterceptors(AzureAdAuthenticationDbConnectionInterceptor.Default,
-									  NonModelProjectionTrackingGuardInterceptor.Default)
+		: base(x => x.AddInterceptors(AzureAdAuthenticationDbConnectionInterceptor.Default/*,
+									  NonModelProjectionTrackingGuardInterceptor.Default*/)
 					 .EnableSensitiveDataLogging()
 					 .EnableDetailedErrors()
 					 .ConfigureWarnings(y => y.Throw(RelationalEventId.MultipleCollectionIncludeWarning)
