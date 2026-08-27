@@ -1,7 +1,7 @@
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace DragonSpark.Grok.Chat;
+namespace DragonSpark.Grok;
 
 sealed class ClientConfiguration : ICommand<ConfigureClientInput>
 {

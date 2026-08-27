@@ -1,9 +1,29 @@
 @using DragonSpark.Presentation.Runtime.Operations
-@inject IRequestToken Session
+@using System.Threading
 
-<CascadingValue IsFixed="true" Value="@Session.Get()" ChildContent="@ChildContent" />
+@inject IRequestToken Token
+@implements IDisposable
+
+<CascadingValue IsFixed="true" Value="@_combined.Token" ChildContent="@ChildContent" />
 
 @code {
+    readonly CancellationTokenSource _source   = new();
+    CancellationTokenSource          _combined = null!;
+
     [Parameter]
-    public required RenderFragment ChildContent { get; set; }
+    public required RenderFragment? ChildContent { get; set; }
+
+    protected override void OnInitialized()
+    {
+        var token = Token.Get();
+        _combined = CancellationTokenSource.CreateLinkedTokenSource(token, _source.Token);
+        base.OnInitialized();
+    }
+
+    public void Dispose()
+    {
+        _source.Cancel();
+        _combined.Dispose();
+        _source.Dispose();
+    }
 }
