@@ -6,7 +6,7 @@
 
 @code {
     [CascadingParameter]
-    ProfileStatus Status { get; set; }
+    ProfileStatus? Status { get; set; }
 
     [Parameter]
     public RenderFragment ChildContent { get; set; } = null!;
