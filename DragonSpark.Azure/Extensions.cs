@@ -23,6 +23,9 @@ public static class Extensions
 	{
 		public BuildHostContext WithAzureConfigurations() => Configure.Default.Get(@this);
 
+		public BuildHostContext WithBackgroundSweeper()
+			=> @this.Configure(Messaging.Messages.Queues.Durable.Registrations.Default);
+
 		public BuildHostContext WithUploadSupport() => @this.Configure(Azure.Storage.Uploads.Registrations.Default);
 	}
 
@@ -107,6 +110,7 @@ public static class Extensions
 		public IServiceCollection AddAzureKeyVaultSecret()
 			=> Data.AddAzureKeyVaultSecret.Default.Parameter(@this);
 	}
+
 	extension(IDataProtectionBuilder @this)
 	{
 		public IDataProtectionBuilder Hosted() => HostedKeys.Default.Get(@this);
@@ -114,7 +118,7 @@ public static class Extensions
 	/**/
 
 	public static T Get<T>(this ISelect<IReadOnlyDictionary<string, object>, T> @this,
-						   ProcessMessageEventArgs parameter) => @this.Get(parameter.Message);
+	                       ProcessMessageEventArgs parameter) => @this.Get(parameter.Message);
 
 	public static T Get<T>(this ISelect<IReadOnlyDictionary<string, object>, T> @this, ProcessEventArgs parameter)
 	{
@@ -124,7 +128,7 @@ public static class Extensions
 	}
 
 	public static T Get<T>(this ISelect<IReadOnlyDictionary<string, object>, T> @this,
-						   ServiceBusReceivedMessage parameter)
+	                       ServiceBusReceivedMessage parameter)
 		=> @this.Get(parameter.ApplicationProperties);
 
 	/**/

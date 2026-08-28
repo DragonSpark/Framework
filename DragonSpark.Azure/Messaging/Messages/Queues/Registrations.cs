@@ -1,10 +1,10 @@
-using System.Threading.Channels;
 using Azure.Messaging.ServiceBus;
 using DragonSpark.Azure.Messaging.Messages.Queues.Durable;
 using DragonSpark.Composition;
 using DragonSpark.Contracts.Messaging;
 using DragonSpark.Model.Commands;
 using Microsoft.Extensions.DependencyInjection;
+using System.Threading.Channels;
 
 namespace DragonSpark.Azure.Messaging.Messages.Queues;
 
@@ -44,12 +44,10 @@ sealed class Registrations : ICommand<IServiceCollection>
 		         .Singleton()
 		         //
 		         .Then.Start<ChannelProcessorBackgroundService>()
-		         .And<OutboxSweeperBackgroundService>()
 		         .Include(x => x.Dependencies.Recursive())
 		         .Singleton()
 		         //
 		         .Then.AddHostedService<ChannelProcessorBackgroundService>()
-		         .AddHostedService<OutboxSweeperBackgroundService>()
 			;
 	}
 }
