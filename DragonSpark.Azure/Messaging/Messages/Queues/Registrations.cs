@@ -44,12 +44,10 @@ sealed class Registrations : ICommand<IServiceCollection>
 		         .Singleton()
 		         //
 		         .Then.Start<ChannelProcessorBackgroundService>()
-		         .And<OutboxSweeperBackgroundService>()
 		         .Include(x => x.Dependencies.Recursive())
 		         .Singleton()
 		         //
 		         .Then.AddHostedService<ChannelProcessorBackgroundService>()
-		         //.AddHostedService<OutboxSweeperBackgroundService>() // TODO: 
 			;
 	}
 }
