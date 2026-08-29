@@ -3,6 +3,7 @@ using Azure.Messaging.EventHubs.Processor;
 using Azure.Messaging.ServiceBus;
 using DragonSpark.Azure.Data;
 using DragonSpark.Azure.Messaging.Messages.Queues.Durable;
+using DragonSpark.Azure.Configuration;
 using DragonSpark.Azure.Storage;
 using DragonSpark.Compose;
 using DragonSpark.Composition;
@@ -135,4 +136,7 @@ public static class Extensions
 
 	public static ModelBuilder WithDurableMessaging(this ModelBuilder parameter)
 		=> EnableDurableMessaging.Default.Get(parameter);
+
+	public static IServiceCollection WithEnvironmentalCredential(this IServiceCollection @this)
+		=> EnvironmentAwareConfiguration.Default.Parameter(@this);
 }
