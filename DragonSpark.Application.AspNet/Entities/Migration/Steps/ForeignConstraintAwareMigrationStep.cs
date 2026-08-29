@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Steps;
 
+// TODO
 /*
 sealed class ForeignConstraintAwareMigrationStep : IMigrationStep
 {

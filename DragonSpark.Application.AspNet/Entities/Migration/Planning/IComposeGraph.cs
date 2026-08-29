@@ -4,4 +4,4 @@ using NetFabric.Hyperlinq;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Planning;
 
-public interface IComposeGraph : ISelect<Lease<IEntityType>, Dictionary<IEntityType, HashSet<IEntityType>>>;
+public interface IComposeGraph : ISelect<Lease<IEntityType>, Dictionary<IEntityType, List<IEntityType>>>;

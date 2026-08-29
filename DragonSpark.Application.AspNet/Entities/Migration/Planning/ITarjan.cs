@@ -3,4 +3,4 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Planning;
 
-public interface ITarjan : ISelect<Dictionary<IEntityType, HashSet<IEntityType>>, Entities>;
+public interface ITarjan : ISelect<Dictionary<IEntityType, List<IEntityType>>, Entities>;

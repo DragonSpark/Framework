@@ -22,7 +22,7 @@ sealed class Tarjan : ITarjan
 
 	public Tarjan(IEqualityComparer<IEntityType> comparer) => _comparer = comparer;
 
-	public Entities Get(Dictionary<IEntityType, HashSet<IEntityType>> parameter)
+	public Entities Get(Dictionary<IEntityType, List<IEntityType>> parameter)
 	{
 		var index   = 0;
 		var stack   = new Stack<IEntityType>();

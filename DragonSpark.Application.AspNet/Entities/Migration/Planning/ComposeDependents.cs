@@ -14,7 +14,7 @@ sealed class ComposeDependents : IDetermineDependents
 
 	public ComposeDependents(ITarjan tarjan) => _tarjan = tarjan;
 
-	public Dependents Get(Dictionary<IEntityType, HashSet<IEntityType>> parameter)
+	public Dependents Get(Dictionary<IEntityType, List<IEntityType>> parameter)
 	{
 		var result = new Dependents();
 
