@@ -1,6 +1,7 @@
 ﻿using Azure.Core.Serialization;
 using Azure.Messaging.EventHubs.Processor;
 using Azure.Messaging.ServiceBus;
+using DragonSpark.Azure.Configuration;
 using DragonSpark.Azure.Messaging.Messages.Queues;
 using DragonSpark.Azure.Storage;
 using DragonSpark.Compose;
@@ -78,4 +79,7 @@ public static class Extensions
 	public static T Get<T>(this ISelect<IReadOnlyDictionary<string, object>, T> @this,
 	                       ServiceBusReceivedMessage parameter)
 		=> @this.Get(parameter.ApplicationProperties);
+
+	public static IServiceCollection WithEnvironmentalCredential(this IServiceCollection @this)
+		=> EnvironmentAwareConfiguration.Default.Parameter(@this);
 }
