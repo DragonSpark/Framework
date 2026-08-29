@@ -3,4 +3,4 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Planning;
 
-public interface IDetermineDependents : ISelect<Dictionary<IEntityType, HashSet<IEntityType>>, Dependents>;
+public interface IDetermineDependents : ISelect<Dictionary<IEntityType, List<IEntityType>>, Dependents>;

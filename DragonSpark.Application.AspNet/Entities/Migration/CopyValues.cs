@@ -35,7 +35,7 @@ public sealed class CopyValues : ICommand<MapInput>
 				var source = ExtractValueFromSource(name);
 				if (source is not null)
 				{
-					to.Property(name).CurrentValue = source;	
+					to.Property(name).CurrentValue = source;
 				}
 			}
 		}
@@ -46,6 +46,7 @@ public sealed class CopyValues : ICommand<MapInput>
 				to.Context.Add(to.Entity);
 				break;
 		}
+
 		return;
 
 		object? ExtractValueFromSource(string name)
