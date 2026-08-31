@@ -42,5 +42,5 @@ public partial class ExtensionMethods
 	public static Composer<TIn, TOut?> OrMaybe<TIn, TOut>(this Composer<TIn, TOut?> @this,
 														  Func<TIn, TOut?> next)
 		where TOut : class
-		=> new Maybe<TIn, TOut>(@this, next).Then();
+		=> new DragonSpark.Model.Selection.Maybe<TIn, TOut>(@this, next).Then();
 }
