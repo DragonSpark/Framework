@@ -1,9 +1,9 @@
 using Azure.Core.Serialization;
 using Azure.Messaging.EventHubs.Processor;
 using Azure.Messaging.ServiceBus;
+using DragonSpark.Azure.Configuration;
 using DragonSpark.Azure.Data;
 using DragonSpark.Azure.Messaging.Messages.Queues.Durable;
-using DragonSpark.Azure.Configuration;
 using DragonSpark.Azure.Storage;
 using DragonSpark.Compose;
 using DragonSpark.Composition;
@@ -71,8 +71,7 @@ public static class Extensions
 
 		public IAppend Append() => new Append(@this.Get());
 
-		public IMove Move(IContainer destination)
-			=> new Move(destination.Copy(), @this.Delete());
+		public IMove Move(IContainer destination) => new Move(destination.Copy(), @this.Delete());
 
 		public IMove Move() => new Move(@this.Copy(), @this.Delete());
 

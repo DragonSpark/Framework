@@ -1,5 +1,3 @@
-﻿using DragonSpark.Model.Operations.Selection.Stop;
+﻿namespace DragonSpark.Azure.Storage;
 
-namespace DragonSpark.Azure.Storage;
-
-public interface IMove : IStopAware<DestinationInput, IStorageEntry>;
+public interface IMove : ITransfer;

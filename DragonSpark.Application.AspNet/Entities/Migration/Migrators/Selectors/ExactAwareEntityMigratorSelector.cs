@@ -11,7 +11,7 @@ sealed class ExactAwareEntityMigratorSelector : IEntityMigratorSelector
 	readonly ISelect<ConstructEntityMigratorInput, IEntityMigrator> _exact;
 
 	public ExactAwareEntityMigratorSelector(IEntityMigratorSelector previous, params Type[] matches)
-		: this(previous, matches.ToImmutableHashSet(), ConstructExactEntityMigrator.Default) {}
+		: this(previous, [.. matches], ConstructExactEntityMigrator.Default) {}
 
 	public ExactAwareEntityMigratorSelector(IEntityMigratorSelector previous, ImmutableHashSet<Type> matches,
 	                                        ISelect<ConstructEntityMigratorInput, IEntityMigrator> exact)
