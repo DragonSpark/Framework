@@ -11,7 +11,7 @@ public class ThrottleOperation<T> : IOperation<T> where T : notnull
 	readonly TimeSpan                           _interval;
 	readonly ITable<T, CancellationTokenSource> _sources;
 
-	public ThrottleOperation(Func<T, Task> subject, TimeSpan interval) : this(subject, interval, Sources<T>.Default) {}
+	public ThrottleOperation(Func<T, Task> subject, TimeSpan interval) : this(subject, interval, new Sources<T>()) {}
 
 	public ThrottleOperation(Func<T, Task> subject, TimeSpan interval, ITable<T, CancellationTokenSource> sources)
 	{
