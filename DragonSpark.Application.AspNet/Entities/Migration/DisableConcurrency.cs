@@ -16,10 +16,14 @@ public sealed class DisableConcurrency : ICommand<ModelBuilder>
 		{
 			foreach (var property in entity.GetProperties())
 			{
-				if (property.IsConcurrencyToken)
+				if (property.IsConcurrencyToken || property.ClrType == typeof(byte[]))
 				{
 					property.IsConcurrencyToken = false;
 					property.ValueGenerated     = ValueGenerated.Never;
+					
+					// Clears the SQL Server ValueGenerationStrategy annotation directly
+					property.SetValueGenerationStrategy(null);
+					property.RemoveAnnotation("SqlServer:ValueGenerationStrategy");
 				}
 			}
 		}

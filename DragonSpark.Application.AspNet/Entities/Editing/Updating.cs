@@ -11,9 +11,6 @@ public class Updating<TIn, TOut> : Modifying<TIn, TOut> where TOut : class
 	protected Updating(IScopes scopes, IQuery<TIn, TOut> query, IModify<TOut> modify)
 		: this(scopes.Then().Use(query).Edit.Single(), modify) {}
 
-	/*protected Updating(IScopes scopes, ISelecting<TIn, TOut> selecting)
-		: this(scopes, selecting.AsStop()) {}*/
-
 	protected Updating(IScopes scopes, IStopAware<TIn, TOut> selecting)
 		: this(scopes, selecting, UpdateLocal<TOut>.Default) {}
 

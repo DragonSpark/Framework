@@ -12,8 +12,7 @@ sealed class ComposeConstraintInput : IStopAware<DatabaseFacade, ConstraintInput
 
 	ComposeConstraintInput() : this(ConcurrencyRowsQuery.Default, IndexesQuery.Default) {}
 
-	readonly string _columns;
-	readonly string _indexes;
+	readonly string _columns, _indexes;
 
 	public ComposeConstraintInput(string columns, string indexes)
 	{
