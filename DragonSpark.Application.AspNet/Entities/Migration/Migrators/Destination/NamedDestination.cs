@@ -26,12 +26,13 @@ sealed class NamedDestination : IDestination<Dictionary<string, object>, Diction
 			var schema     = _type.GetSchema();
 			var tableName  = (schema.IsAssigned() ? $"[{schema}]." : string.Empty) + $"[{_type.GetTableName()}]";
 
-			var sql = $@"
-            INSERT INTO {tableName} ({columns})
-            SELECT {parameters}
-            WHERE NOT EXISTS (
-                SELECT 1 FROM {tableName} WHERE {match}
-            );";
+			var sql = $"""
+			           	INSERT INTO {tableName} ({columns})
+			           	SELECT {parameters}
+			           	WHERE NOT EXISTS (
+			           		SELECT 1 FROM {tableName} WHERE {match}
+			           	);
+			           """;
 
 			await destination.Database.ExecuteSqlRawAsync(sql, values, stop).Off();
 		}

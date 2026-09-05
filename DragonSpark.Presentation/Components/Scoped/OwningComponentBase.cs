@@ -1,7 +1,5 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Composition.Scopes.Hierarchy;
+﻿using DragonSpark.Composition.Scopes.Hierarchy;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace DragonSpark.Presentation.Components.Scoped;
 
@@ -54,7 +52,7 @@ public abstract class OwningComponentBase : ComponentBase, IDisposable, IAsyncDi
 }
 
 
-public class OwningComponentBase<T> : OwningComponentBase where T : class
+/*public class OwningComponentBase<T> : OwningComponentBase where T : class
 {
 	T? _item;
 
@@ -83,4 +81,4 @@ public class OwningComponentBase<T> : OwningComponentBase where T : class
 			await disposable.DisposeAsync();
 		}
 	}
-}
+}*/
