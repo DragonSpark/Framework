@@ -11,15 +11,20 @@ public sealed class CopyValues : ICommand<MapInput>
 {
 	public static CopyValues Default { get; } = new();
 
-	CopyValues() : this(Names.Default, DetermineValue.Default) {}
+	CopyValues() : this(AssignValue.Default) {}
 
 	readonly ISelect<IEntityType, ImmutableHashSet<string>> _names;
 	readonly ISelect<DetermineValueInput, object?>          _value;
+	readonly IAssignValue                                   _assign;
 
-	public CopyValues(ISelect<IEntityType, ImmutableHashSet<string>> names, ISelect<DetermineValueInput, object?> value)
+	public CopyValues(IAssignValue assign) : this(Names.Default, DetermineValue.Default, assign) {}
+
+	public CopyValues(ISelect<IEntityType, ImmutableHashSet<string>> names, ISelect<DetermineValueInput, object?> value,
+	                  IAssignValue assign)
 	{
-		_names = names;
-		_value = value;
+		_names  = names;
+		_value  = value;
+		_assign = assign;
 	}
 
 	public void Execute(MapInput parameter)
@@ -30,13 +35,10 @@ public sealed class CopyValues : ICommand<MapInput>
 		foreach (var property in from.CurrentValues.Properties)
 		{
 			var name = property.Name;
-			if (names.Contains(name))
+			if (names.Contains(name) && from.CurrentValues[name] is {} value 
+			                         && _value.Get(new(name, value, to)) is {} source)
 			{
-				var source = ExtractValueFromSource(name);
-				if (source is not null)
-				{
-					to.Property(name).CurrentValue = source;
-				}
+				_assign.Execute(new(source, to.Property(name)));
 			}
 		}
 
@@ -45,15 +47,6 @@ public sealed class CopyValues : ICommand<MapInput>
 			case EntityState.Detached:
 				to.Context.Add(to.Entity);
 				break;
-		}
-
-		return;
-
-		object? ExtractValueFromSource(string name)
-		{
-			var value  = from.CurrentValues[name];
-			var result = value is not null ? _value.Get(new(name, value, to)) : null;
-			return result;
 		}
 	}
 }

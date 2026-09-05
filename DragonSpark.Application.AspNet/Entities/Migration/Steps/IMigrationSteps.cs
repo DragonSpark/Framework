@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators;
-using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
+using DragonSpark.Model.Sequences.Query;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Steps;
 
-public interface IMigrationSteps : ISelect<Array<IEntityMigrator>, IEnumerable<IMigrationStep>>;
+public interface IMigrationSteps : IYield<Array<IEntityMigrator>, IMigrationStep>;

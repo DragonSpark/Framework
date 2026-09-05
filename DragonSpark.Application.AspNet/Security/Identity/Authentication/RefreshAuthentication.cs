@@ -16,10 +16,8 @@ sealed class RefreshAuthentication<T> : IRefreshAuthentication<T> where T : Iden
 
 	public async ValueTask Get(T parameter)
 	{
-		var composition = await _compositions.Off();
-		if (composition != null)
+		if (await _compositions.Off() is var (properties, claims))
 		{
-			var (properties, claims) = composition.Value;
 			await _persist.Off(new(parameter, properties, claims));
 		}
 	}

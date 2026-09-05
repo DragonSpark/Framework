@@ -36,7 +36,9 @@ public static class Extensions
 
 		public IPath Path() => new Storage.Path(@this.Get());
 
-		public IEntry Entry() => new Entry(@this.Get());
+		public IEntry Entry() => new Entry(@this.Get(), LinkAwareClientEntry.Default);
+
+		public IEntry DirectEntry() => new Entry(@this.Get());
 
 		public ISnapshots Snapshots() => new Snapshots(new Snapshot(@this.Get()));
 	}

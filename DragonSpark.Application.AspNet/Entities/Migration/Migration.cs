@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 using DragonSpark.Application.AspNet.Entities.Migration.Steps;
-using DragonSpark.Application.Diagnostics.Initialization;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Sequences;
@@ -8,22 +7,18 @@ using Microsoft.Extensions.Logging;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration;
 
-public class Migration<T> : Migration
-{
-	protected Migration(MigrationInput input, IEntityMigrators processors, IMigrationSteps steps)
-		: this(steps, processors.Get(input)) {}
-
-	protected Migration(IMigrationSteps steps, params IEntityMigrator[] migrators)
-		: this(DefaultLog<T>.Default.Get(), steps.Get(migrators).ToArray()) {}
-
-	protected Migration(ILogger logger, params IMigrationStep[] steps) : base(logger, steps) {}
-}
-
 public class Migration : IMigration
 {
 	readonly ILogger               _logger;
 	readonly ushort                _batchSize;
 	readonly Array<IMigrationStep> _steps;
+
+	// ReSharper disable once TooManyDependencies
+	protected Migration(ILogger logger, MigrationInput input, IEntityMigrators processors, IMigrationSteps steps)
+		: this(logger, steps, processors.Get(input)) {}
+
+	protected Migration(ILogger logger, IMigrationSteps steps, params IEntityMigrator[] migrators)
+		: this(logger, [.. steps.Get(migrators)]) {}
 
 	protected Migration(ILogger logger, params IMigrationStep[] steps)
 		: this(logger, DefaultBatchSize.Default, steps) {}

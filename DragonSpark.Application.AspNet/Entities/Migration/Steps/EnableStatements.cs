@@ -11,13 +11,15 @@ sealed class EnableStatements : ISelect<ConstraintInput, IEnumerable<string>>
 	public IEnumerable<string> Get(ConstraintInput parameter)
 	{
 		var (targets, indexes) = parameter;
+
+		// 1. Drop temporary default constraints and convert back to native ROWVERSION
 		foreach (var (schema, table, column) in targets.Open())
 		{
+			yield return $"ALTER TABLE [{schema}].[{table}] DROP CONSTRAINT IF EXISTS [DF_{table}_{column}_Temp]";
 			yield return $"ALTER TABLE [{schema}].[{table}] DROP COLUMN [{column}]";
 			yield return $"ALTER TABLE [{schema}].[{table}] ADD [{column}] ROWVERSION";
 		}
 
-		// 4. Recreate all unique indexes + constraints
 		foreach (var group in indexes.Open())
 		{
 			var first = group.First();
@@ -38,7 +40,6 @@ sealed class EnableStatements : ISelect<ConstraintInput, IEnumerable<string>>
 				             ? $"ALTER TABLE [{schema}].[{table}] ADD CONSTRAINT [{indexName}] UNIQUE ({columns})"
 				             : $"CREATE UNIQUE INDEX [{indexName}] ON [{schema}].[{table}] ({columns}){includeClause}{filter}";
 		}
-
 		yield return "EXEC sp_msforeachtable 'ALTER TABLE ? WITH CHECK CHECK CONSTRAINT ALL';";
 	}
 }

@@ -4,7 +4,6 @@ using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Runtime;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Logging;
 
@@ -15,19 +14,22 @@ public class EntityMigrators : IEntityMigrators
 	readonly IArray<IModel, IEntityType>     _order;
 	readonly IComposeEntityComparisonResults _results;
 	readonly IEntityMigratorSelector         _selector;
+	readonly ILogger                         _logger;
 
-	protected EntityMigrators(IModelTypes types, IResult<IEntityMigratorSelector> selector)
-		: this(types, selector.Get()) {}
+	protected EntityMigrators(IModelTypes types, IResult<IEntityMigratorSelector> selector, ILogger logger)
+		: this(types, selector.Get(), logger) {}
 
-	protected EntityMigrators(IModelTypes types, IEntityMigratorSelector selector)
-		: this(MigrationOrder.Default, new ComposeEntityComparisonResults(types), selector) {}
+	protected EntityMigrators(IModelTypes types, IEntityMigratorSelector selector, ILogger logger)
+		: this(MigrationOrder.Default, new ComposeEntityComparisonResults(types), selector, logger) {}
 
+	// ReSharper disable once TooManyDependencies
 	protected EntityMigrators(IArray<IModel, IEntityType> order, IComposeEntityComparisonResults results,
-	                          IEntityMigratorSelector selector)
+	                          IEntityMigratorSelector selector, ILogger logger)
 	{
 		_order    = order;
 		_results  = results;
 		_selector = selector;
+		_logger   = logger;
 	}
 
 	public Array<IEntityMigrator> Get(MigrationInput parameter)
@@ -36,7 +38,7 @@ public class EntityMigrators : IEntityMigrators
 		var       order   = _order.Get(source.Model);
 		using var results = _results.Get(new(order, destination.Model));
 		using var result  = ArrayBuilder.New<IEntityMigrator>(results.Length);
-		var       logger  = destination.GetService<ILoggerFactory>().CreateLogger(GetType());
+		
 		foreach (var item in results)
 		{
 			var migrator = _selector.Get(new(source, destination, item));
@@ -46,7 +48,7 @@ public class EntityMigrators : IEntityMigrators
 			}
 			else
 			{
-				logger.LogWarning("No migrator found found for {Type}", item.From);
+				_logger.LogWarning("No migrator found found for {Type}", item.From);
 			}
 		}
 

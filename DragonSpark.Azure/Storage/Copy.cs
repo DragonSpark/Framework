@@ -22,8 +22,9 @@ sealed class Copy : ICopy
 	public async ValueTask<IStorageEntry> Get(Stop<DestinationInput> parameter)
 	{
 		var ((entry, destination), stop) = parameter;
-		var client    = _client.GetBlobClient(destination);
-		var operation = await client.StartCopyFromUriAsync(entry.Properties.Identity, cancellationToken: stop).Off();
+		var client = _client.GetBlobClient(destination);
+		var operation = await client.StartCopyFromUriAsync(entry.Properties.Identity, cancellationToken: stop)
+		                            .Off();
 		await operation.WaitForCompletionAsync(stop).Off();
 		var result = await _entry.Off(new(client, stop));
 		return result;

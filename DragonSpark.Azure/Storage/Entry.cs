@@ -10,7 +10,7 @@ sealed class Entry : IEntry
 	readonly BlobContainerClient                    _client;
 	readonly IStopAware<BlobClient, IStorageEntry?> _entry;
 
-	public Entry(BlobContainerClient client) : this(client, GetClientEntry.Default) {}
+	public Entry(BlobContainerClient client) : this(client, ClientEntry.Default) {}
 
 	public Entry(BlobContainerClient client, IStopAware<BlobClient, IStorageEntry?> entry)
 	{
