@@ -10,7 +10,7 @@ using System.Threading.Channels;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators.Destination;
 
-/*
+/* TODO: Enable Parallelism
 class DestinationBase<TFrom, TTo> : IDestination<TFrom, TTo> where TTo : class where TFrom : class
 {
 	readonly IRunner<TFrom, TTo> _runner;
