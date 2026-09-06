@@ -25,7 +25,7 @@ public class RequestFileResultBase : ISelecting<Server.Requests.Query<IStorageEn
 	public async ValueTask<IActionResult> Get(Server.Requests.Query<IStorageEntry> parameter)
 	{
 		var (owner, subject)                           = parameter;
-		var (_, _, name, type, _, _, modified, tag, _) = subject.Properties;
+		var (_, _, name, type, _, _, modified, tag, _, _) = subject.Properties;
 		var stop         = owner.HttpContext.RequestAborted;
 		var contents     = await subject.Get(stop).Off();
 		var entityTag    = new EntityTagHeaderValue(tag.ToString());
