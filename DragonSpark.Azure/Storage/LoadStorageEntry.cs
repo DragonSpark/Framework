@@ -19,7 +19,7 @@ sealed class LoadStorageEntry : ILoadStorageEntry
 		var name = _name.Get(parameter);
 		var properties = new StorageEntryProperties(client.Uri, client.Name, name, model.ContentType,
 		                                            (ulong)model.ContentLength, model.CreatedOn, model.LastModified,
-		                                            model.ETag, model.Metadata);
+		                                            model.ETag, model.Metadata, model.ContentHash);
 		var entry = new DefaultStorageEntry(client, properties);
 		return new(entry);
 	}
