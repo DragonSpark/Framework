@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
-public interface IContexts : IResult<DbContext> // TODO: Rename Destination
+public interface IDestination : IResult<DbContext>
 {
 	DatabaseFacade Database { get; }
 	IModel Model { get; }

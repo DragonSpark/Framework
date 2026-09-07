@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
-public readonly record struct EntityPreMigrationInput(ILogger Logger, IContexts Destination);
+public readonly record struct EntityPreMigrationInput(ILogger Logger, IDestination Destination);

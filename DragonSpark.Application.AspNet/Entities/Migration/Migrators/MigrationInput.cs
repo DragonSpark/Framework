@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
-public sealed record MigrationInput(DbContext Source, IContexts Destination);
+public sealed record MigrationInput(DbContext Source, IDestination Destination);

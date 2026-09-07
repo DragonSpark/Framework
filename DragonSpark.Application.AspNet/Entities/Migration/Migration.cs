@@ -17,11 +17,11 @@ public class Migration : IMigration
 		: this(logger, input.Destination, steps, processors.Get(input)) {}
 
 	// ReSharper disable once TooManyDependencies
-	protected Migration(ILogger logger, IContexts destination, IMigrationSteps steps,
+	protected Migration(ILogger logger, IDestination destination, IMigrationSteps steps,
 	                    params IEntityMigrator[] migrators)
 		: this(logger, destination, [.. steps.Get(migrators)]) {}
 
-	protected Migration(ILogger logger, IContexts destination, params IMigrationStep[] steps)
+	protected Migration(ILogger logger, IDestination destination, params IMigrationStep[] steps)
 		: this(new(logger, destination, DefaultBatchSize.Default), steps) {}
 
 	protected Migration(EntityMigratorInput input, params IMigrationStep[] steps)
