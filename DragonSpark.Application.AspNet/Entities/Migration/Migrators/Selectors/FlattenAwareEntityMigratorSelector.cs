@@ -2,26 +2,24 @@
 using DragonSpark.Compose;
 using DragonSpark.Model.Sequences;
 using DragonSpark.Reflection.Types;
-using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators.Selectors;
 
 public class FlattenAwareEntityMigratorSelector : IEntityMigratorSelector
 {
-	readonly IEntityMigratorSelector                               _previous;
-	readonly IGeneric<IEntityMigrator, DbContext, IEntityMigrator> _generic;
-	readonly Array<Type>                                           _candidates;
+	readonly IEntityMigratorSelector                    _previous;
+	readonly IGeneric<IEntityMigrator, IEntityMigrator> _generic;
+	readonly Array<Type>                                _candidates;
 
 	protected FlattenAwareEntityMigratorSelector(params Type[] candidates)
 		: this(EntityMigratorSelector.Default,
 		       Start.A.Generic(typeof(FlattenAwareEntityMigrator<>))
 		            .Of.Type<IEntityMigrator>()
-		            .WithParameterOf<IEntityMigrator>()
-		            .AndOf<DbContext>(),
+		            .WithParameterOf<IEntityMigrator>(),
 		       candidates) {}
 
 	public FlattenAwareEntityMigratorSelector(IEntityMigratorSelector previous,
-	                                          IGeneric<IEntityMigrator, DbContext, IEntityMigrator> generic,
+	                                          IGeneric<IEntityMigrator, IEntityMigrator> generic,
 	                                          params Type[] candidates)
 	{
 		_previous   = previous;
@@ -31,11 +29,11 @@ public class FlattenAwareEntityMigratorSelector : IEntityMigratorSelector
 
 	public IEntityMigrator? Get(EntityMigratorSelectorInput parameter)
 	{
-		var (_, destination, r) = parameter;
+		var (_, _, r) = parameter;
 		var previous = _previous.Get(parameter);
 		var result = previous is not null && r is MatchedEntityComparisonResult(var from, var to)
 		                                  && _candidates.Open().Contains(from.ClrType)
-			             ? _generic.Get(to.ClrType)(previous, destination)
+			             ? _generic.Get(to.ClrType)(previous)
 			             : previous;
 		return result;
 	}

@@ -18,9 +18,9 @@ public sealed class UpdateAwareMigrationStep : IMigrationBody
 
 	public async ValueTask Get(Stop<EntityMigratorInput> parameter)
 	{
-		var ((logger, batchSize), stop) = parameter;
+		var ((logger, destination, batchSize), stop) = parameter;
 		await _previous.Off(parameter);
-		var input = new UpdateEntityMigratorInput(logger, batchSize).Stop(stop);
+		var input = new UpdateEntityMigratorInput(logger, destination, batchSize).Stop(stop);
 		foreach (var migrator in _migrators.Open())
 		{
 			await migrator.Off(input);

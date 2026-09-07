@@ -13,8 +13,8 @@ public sealed class PreMigrationStep : IMigrationStep
 
 	public async ValueTask Get(Stop<EntityMigratorInput> parameter)
 	{
-		var ((logger, _), stop) = parameter;
-		var pre = new EntityPreMigrationInput(logger).Stop(stop);
+		var ((logger, destination, _), stop) = parameter;
+		var pre = new EntityPreMigrationInput(logger, destination).Stop(stop);
 		foreach (var migrator in _migrators.Open())
 		{
 			await migrator.Off(pre);

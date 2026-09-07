@@ -12,7 +12,7 @@ sealed class EntityMigratorSelector : IEntityMigratorSelector
 		: this(ConstructExactEntityMigrator.Default, ModifiedEntityComparisonResultFormatter.Default) {}
 
 	readonly ISelect<ConstructEntityMigratorInput, IEntityMigrator> _exact;
-	readonly IFormatter<ModifiedEntityComparisonResult>           _formatter;
+	readonly IFormatter<ModifiedEntityComparisonResult>             _formatter;
 
 	public EntityMigratorSelector(ISelect<ConstructEntityMigratorInput, IEntityMigrator> exact,
 	                              IFormatter<ModifiedEntityComparisonResult> formatter)

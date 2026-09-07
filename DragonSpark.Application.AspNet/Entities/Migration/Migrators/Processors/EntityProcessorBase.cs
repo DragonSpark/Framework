@@ -30,24 +30,22 @@ class EntityProcessorBase<TFrom, TTo> : IEntityProcessor<TFrom> where TFrom : cl
 			logger.LogInformation("{From} -> {To}: Starting...", A.Type<TFrom>(), A.Type<TTo>());
 			var watch = Stopwatch.StartNew();
 			var count = 0u;
-
-			await using var transaction = await destination.Database.BeginTransactionAsync(stop).Off();
 			await foreach (var page in _source.Get(parameter).AsAsyncEnumerable().Chunk(size).WithCancellation(stop))
 			{
-				var to = await _destination.Get(new(new(logger, source, destination, page, total), stop))
+				await using var workspace = destination.Get();
+				using var       _         = LogicalContext.Default.Assigned(workspace);
+				var to = await _destination.Get(new(new(logger, source, workspace, page, total), stop))
 				                           .ToArrayAsync()
 				                           .Off();
-				count += await _save.Off(new(new(logger, size, destination, to, total), stop));
-				destination.ChangeTracker.Clear();
+				count += await _save.Off(new(new(logger, size, workspace, to, total), stop));
+				workspace.ChangeTracker.Clear();
 			}
-			await transaction.CommitAsync().Off();
 
 			logger.LogInformation("{From} -> {To}: Batch of {Count} processed in {Elapsed:mm\\:ss\\.fff} ({Rate:F1} entities/sec)",
 			                      A.Type<TFrom>(), A.Type<TTo>(), count, watch.Elapsed,
 			                      count / watch.Elapsed.TotalSeconds);
 
 			source.ChangeTracker.Clear();
-			destination.ChangeTracker.Clear();
 		}
 		else
 		{

@@ -21,13 +21,13 @@ sealed class IdentityAwareEntityMigratorSelector : IEntityMigratorSelector
 	public IEntityMigrator? Get(EntityMigratorSelectorInput parameter)
 	{
 		var previous = _previous.Get(parameter);
-		if (previous is not null)
+		if (previous?.Get() is var (_, to))
 		{
-			var (_, to) = previous.Get();
-			var entityType = parameter.Destination.Model.FindEntityType(to);
+			var (_, destination, _) = parameter;
+			var entityType = destination.Model.FindEntityType(to);
 			if (entityType is not null && _identity.Get(entityType))
 			{
-				var migrator = new IdentityAwareEntityMigrator(previous, parameter.Destination, entityType);
+				var migrator = new IdentityAwareEntityMigrator(previous, destination.Database, entityType);
 				return previous is IUpdateAwareEntityMigrator
 					       ? new UpdateAwareEntityMigrator(migrator, previous)
 					       : migrator;

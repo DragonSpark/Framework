@@ -24,6 +24,7 @@ public sealed class ConstraintAwareMigrationStep : IMigrationStep
 
 	public async ValueTask Get(Stop<EntityMigratorInput> parameter)
 	{
+		var ((logger, _, _), _) = parameter;
 		try
 		{
 			await _disable.Off(parameter);
@@ -37,7 +38,7 @@ public sealed class ConstraintAwareMigrationStep : IMigrationStep
 			}
 			catch (Exception e)
 			{
-				parameter.Subject.Logger.LogError(e, "An exception occurred while re-applying constraints");
+				logger.LogError(e, "An exception occurred while re-applying constraints");
 				throw;
 			}
 		}

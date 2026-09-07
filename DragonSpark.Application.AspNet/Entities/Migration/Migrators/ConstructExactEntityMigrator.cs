@@ -15,13 +15,13 @@ sealed class ConstructExactEntityMigrator : ISelect<ConstructEntityMigratorInput
 		: this(Start.A.Generic(typeof(EntityMigrator<,>))
 		            .Of.Type<IEntityMigrator>()
 		            .WithParameterOf<DbContext>()
-		            .AndOf<DbContext>(),
+		            .AndOf<IModel>(),
 		       NamedModels.Default) {}
 
-	readonly IGeneric<DbContext, DbContext, IEntityMigrator> _generic;
-	readonly ICondition<IEntityType>                         _condition;
+	readonly IGeneric<DbContext, IModel, IEntityMigrator> _generic;
+	readonly ICondition<IEntityType>                      _condition;
 
-	public ConstructExactEntityMigrator(IGeneric<DbContext, DbContext, IEntityMigrator> generic,
+	public ConstructExactEntityMigrator(IGeneric<DbContext, IModel, IEntityMigrator> generic,
 	                                    ICondition<IEntityType> condition)
 	{
 		_generic   = generic;
@@ -32,7 +32,7 @@ sealed class ConstructExactEntityMigrator : ISelect<ConstructEntityMigratorInput
 	{
 		var (source, destination, from, to) = parameter;
 		return _condition.Get(to)
-			       ? new NamedEntityMigrator(new(source, destination, from.Name), to)
-			       : _generic.Get(from.ClrType, to.ClrType)(source, destination);
+			       ? new NamedEntityMigrator(new(source, destination.Model, from.Name), to)
+			       : _generic.Get(from.ClrType, to.ClrType)(source, destination.Model);
 	}
 }

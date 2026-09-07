@@ -12,8 +12,8 @@ sealed class IdentityAwareEntityMigrator : IEntityMigrator
 	readonly DatabaseFacade  _database;
 	readonly string          _template;
 
-	public IdentityAwareEntityMigrator(IEntityMigrator previous, DbContext context, IEntityType type)
-		: this(previous, context.Database, $"SET IDENTITY_INSERT [{type.GetSchema() ?? "dbo"}].[{type.GetTableName()}] {{0}}") {}
+	public IdentityAwareEntityMigrator(IEntityMigrator previous, DatabaseFacade database, IEntityType type)
+		: this(previous, database, $"SET IDENTITY_INSERT [{type.GetSchema() ?? "dbo"}].[{type.GetTableName()}] {{0}}") {}
 
 	public IdentityAwareEntityMigrator(IEntityMigrator previous, DatabaseFacade database, string template)
 	{

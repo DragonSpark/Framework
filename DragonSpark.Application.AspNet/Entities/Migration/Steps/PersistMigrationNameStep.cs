@@ -1,21 +1,22 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Selection.Stop;
 using DragonSpark.Model.Operations.Stop;
-using DragonSpark.Model.Selection;
 using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Steps;
 
 sealed class PersistMigrationNameStep : IMigrationStep
 {
-	readonly ISelect<CancellationToken, ValueTask<bool>> _first;
-	readonly IStopAware                                  _mark;
+	public static PersistMigrationNameStep Default { get; } = new();
 
-	public PersistMigrationNameStep(DbContext context)
-		: this(FirstRun.Default.Then().Bind(context).Get(), MarkRun.Default.Then().Bind(context).Out()) {}
+	PersistMigrationNameStep() : this(FirstRun.Default, MarkRun.Default) {}
 
-	public PersistMigrationNameStep(ISelect<CancellationToken, ValueTask<bool>> first, IStopAware mark)
+	readonly IStopAware<DbContext, bool> _first;
+	readonly IStopAware<DbContext>       _mark;
+
+	public PersistMigrationNameStep(IStopAware<DbContext, bool> first, IStopAware<DbContext> mark)
 	{
 		_first = first;
 		_mark  = mark;
@@ -23,11 +24,12 @@ sealed class PersistMigrationNameStep : IMigrationStep
 
 	public async ValueTask Get(Stop<EntityMigratorInput> parameter)
 	{
-		var (_, stop) = parameter;
-
-		if (await _first.Off(stop))
+		var ((_, destination, _), stop) = parameter;
+		await using var context = destination.Get();
+		var             input   = context.Stop(stop);
+		if (await _first.Off(input))
 		{
-			await _mark.Off(stop);
+			await _mark.Off(input);
 		}
 	}
 }

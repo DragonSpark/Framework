@@ -9,35 +9,37 @@ namespace DragonSpark.Application.AspNet.Entities.Migration;
 
 public class Migration : IMigration
 {
-	readonly ILogger               _logger;
-	readonly ushort                _batchSize;
+	readonly EntityMigratorInput   _input;
 	readonly Array<IMigrationStep> _steps;
 
 	// ReSharper disable once TooManyDependencies
 	protected Migration(ILogger logger, MigrationInput input, IEntityMigrators processors, IMigrationSteps steps)
-		: this(logger, steps, processors.Get(input)) {}
+		: this(logger, input.Destination, steps, processors.Get(input)) {}
 
-	protected Migration(ILogger logger, IMigrationSteps steps, params IEntityMigrator[] migrators)
-		: this(logger, [.. steps.Get(migrators)]) {}
+	// ReSharper disable once TooManyDependencies
+	protected Migration(ILogger logger, IContexts destination, IMigrationSteps steps,
+	                    params IEntityMigrator[] migrators)
+		: this(logger, destination, [.. steps.Get(migrators)]) {}
 
-	protected Migration(ILogger logger, params IMigrationStep[] steps)
-		: this(logger, DefaultBatchSize.Default, steps) {}
+	protected Migration(ILogger logger, IContexts destination, params IMigrationStep[] steps)
+		: this(new(logger, destination, DefaultBatchSize.Default), steps) {}
 
-	protected Migration(ILogger logger, ushort batchSize, params IMigrationStep[] steps)
+	protected Migration(EntityMigratorInput input, params IMigrationStep[] steps)
 	{
-		_logger    = logger;
-		_batchSize = batchSize;
-		_steps     = steps;
+		_input = input;
+		_steps = steps;
 	}
 
 	public async ValueTask Get(Stop<ushort> parameter)
 	{
-		var input = new EntityMigratorInput(_logger, parameter).Stop(parameter);
+		var (subject, stop) = parameter;
+		var updated = _input with { BatchSize = subject };
+		var input   = updated.Stop(stop);
 		foreach (var step in _steps.Open())
 		{
 			await step.Off(input);
 		}
 	}
 
-	public ValueTask Get(CancellationToken parameter) => Get(new(_batchSize, parameter));
+	public ValueTask Get(CancellationToken parameter) => Get(new(_input.BatchSize, parameter));
 }

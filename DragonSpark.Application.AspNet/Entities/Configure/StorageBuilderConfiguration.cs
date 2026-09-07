@@ -4,13 +4,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Application.AspNet.Entities.Configure;
 
-public class StorageBuilderConfiguration<T> : Commands<DbContextOptionsBuilder<T>> where T : DbContext
+public class StorageBuilderConfiguration<T> : Commands<DbContextOptionsBuilder<T>>, ICommand<DbContextOptionsBuilder>
+	where T : DbContext
 {
 	protected StorageBuilderConfiguration(Type migrations, params object[] services)
 		: this(migrations, _ => {}, services) {}
 
 	protected StorageBuilderConfiguration(Type migrations, Action<DbContextOptionsBuilder<T>> other,
-										  params object[] services)
+	                                      params object[] services)
 		: base(new UseSqlServer<T>(migrations), new ConfigureApplicationServices(services),
-			   Start.A.Command(other).Get()) {}
+		       Start.A.Command(other).Get()) {}
+
+	public void Execute(DbContextOptionsBuilder parameter)
+	{
+		base.Execute(parameter.To<DbContextOptionsBuilder<T>>());
+	}
 }
