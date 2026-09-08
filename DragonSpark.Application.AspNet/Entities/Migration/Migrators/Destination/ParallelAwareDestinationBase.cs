@@ -214,11 +214,13 @@ sealed class Element<TFrom, TTo> : IElement<TFrom, TTo> where TFrom : class wher
 	public async Task<TTo> Get(Stop<MappingInput<TFrom>> parameter)
 	{
 		var ((_, (source, destination), _, current), stop) = parameter;
-		var (to, values)                                   = await _entry.Off(parameter);
+		var (to, values)                                            = await _entry.Off(parameter);
 		var from  = source.Applied(current);
 		var entry = destination.Entry(to);
-		var next = entry.State == EntityState.Detached && values is not null
-			           ? destination.Attach(entry.Assigned(values).Entity)
+		var next = entry.State == EntityState.Detached
+			           ? values is not null
+				             ? destination.Attach(entry.Assigned(values).Entity)
+				             : destination.Add(entry.Assigned(current.CurrentValues).Entity)
 			           : entry;
 		await _map.Off(new(new(from, next), stop));
 		return to;

@@ -43,12 +43,12 @@ public class EntityMigratorBase<TFrom, TTo> : Instance<EntityTypeMapping>, IEnti
 
 	public async ValueTask Get(Stop<EntityMigratorInput> parameter)
 	{
-		var ((logger, destination, size), stop)            = parameter;
+		var ((logger, workspaces, size), stop)            = parameter;
 		var (source, _, _, subject) = _contexts;
 		try
 		{
 			var total = await subject.CountAsync().Off();
-			await _processor.Off(new(new(logger, size, source, destination, subject, total.Grade()), stop));
+			await _processor.Off(new(new(logger, size, source, workspaces, subject, total.Grade()), stop));
 		}
 		catch (Exception e)
 		{

@@ -2,6 +2,8 @@
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Sequences;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Steps;
 
@@ -18,12 +20,27 @@ public sealed class UpdateAwareMigrationStep : IMigrationBody
 
 	public async ValueTask Get(Stop<EntityMigratorInput> parameter)
 	{
-		var ((logger, destination, batchSize), stop) = parameter;
+		var ((logger, workspaces, batchSize), stop) = parameter;
 		await _previous.Off(parameter);
-		var input = new UpdateEntityMigratorInput(logger, destination, batchSize).Stop(stop);
+		var input = new UpdateEntityMigratorInput(logger, new UpdateAwareWorkspaces(workspaces), batchSize).Stop(stop);
 		foreach (var migrator in _migrators.Open())
 		{
 			await migrator.Off(input);
 		}
 	}
+}
+
+// TODO
+
+sealed class UpdateAwareWorkspaces : IWorkspaces
+{
+	readonly IWorkspaces _previous;
+
+	public UpdateAwareWorkspaces(IWorkspaces previous) => _previous = previous;
+
+	public Workspace Get() => _previous.Get();
+
+	public DatabaseFacade Database => _previous.Database;
+
+	public IModel Model => _previous.Model;
 }

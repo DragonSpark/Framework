@@ -7,6 +7,7 @@ using DragonSpark.Model.Sequences.Memory;
 using DragonSpark.Runtime.Invocation.Expressions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Metadata;
 using System.Linq.Expressions;
 using System.Reflection;
 
@@ -77,12 +78,30 @@ sealed class Assign : ICommand<AssignInput>
 	public void Execute(AssignInput parameter)
 	{
 		var (from, to) = parameter;
-		
+
 		foreach (var property in from.Properties)
 		{
 			var name = property.Name;
-			to[name] = from[name];
+			if (name is not "Id" && name != to.StructuralType.GetDiscriminatorPropertyName() &&
+			    Allow(property, to.Properties, name))
+			{
+				to[name] = from[name];
+			}
 		}
+	}
+
+	static bool Allow(IProperty source, IReadOnlyList<IProperty> properties, string name)
+	{
+		for (var i = 0; i < properties.Count; i++)
+		{
+			var destination = properties[i];
+			if (destination.Name == name && destination.ClrType.IsAssignableTo(source.ClrType))
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 }
 
