@@ -49,11 +49,15 @@ public sealed class Map : IMap
 {
 	public static Map Default { get; } = new();
 
-	Map() : this(CopyValues.Default, MapOwned.Default) {}
+	Map() : this([]) {}
 
 	readonly ICommand<MapInput>                _copy;
 	readonly ICommand<MapNavigationEntryInput> _owned;
-	
+
+	public Map(params string[] skip) : this(new CopyValues([..skip])) {}
+
+	public Map(ICommand<MapInput> copy) : this(copy, MapOwned.Default) {}
+
 	public Map(ICommand<MapInput> copy, ICommand<MapNavigationEntryInput> owned)
 	{
 		_copy  = copy;
@@ -70,9 +74,7 @@ public sealed class Map : IMap
 		                          .ToArray(ArrayPool<NavigationEntry>.Shared);
 		foreach (var navigation in from.Metadata.GetNavigations().Where(x => x.TargetEntityType.IsOwned()))
 		{
-			var entry = navigations.FirstOrDefault(x => x.Metadata.Name == navigation.Name);
-
-			if (entry is not null)
+			if (navigations.FirstOrDefault(x => x.Metadata.Name == navigation.Name) is {} entry)
 			{
 				_owned.Execute(new(from.Navigation(navigation.Name), entry));
 			}

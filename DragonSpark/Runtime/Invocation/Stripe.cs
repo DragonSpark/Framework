@@ -3,7 +3,7 @@ using DragonSpark.Runtime.Activation;
 
 namespace DragonSpark.Runtime.Invocation;
 
-sealed class Stripe<TIn, TOut> : ISelect<TIn, TOut>, IActivateUsing<Func<TIn, TOut>> where TIn : notnull
+public class Stripe<TIn, TOut> : ISelect<TIn, TOut>, IActivateUsing<Func<TIn, TOut>> where TIn : notnull
 {
 	readonly static Func<TIn, object> Lock = Locks<TIn>.Default.Get;
 
