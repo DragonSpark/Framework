@@ -26,7 +26,7 @@ sealed class PersistMigrationNameStep : IMigrationStep
 	{
 		var ((_, destination, _), stop) = parameter;
 		await using var context = destination.Get();
-		var             input   = context.Stop(stop);
+		var             input   = context.Destination.Stop(stop);
 		if (await _first.Off(input))
 		{
 			await _mark.Off(input);

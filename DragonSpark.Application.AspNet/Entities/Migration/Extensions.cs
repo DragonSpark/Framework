@@ -48,9 +48,22 @@ public static class Extensions
 			=> @this.State == EntityState.Detached ? @this.ReloadAsync(stop) : Task.CompletedTask;
 	}
 
-	extension<TEntity>(EntityEntry<TEntity> entry) where TEntity : class
+	extension<T>(EntityEntry<T> @this) where T : class
 	{
-		public Task Include<TProperty>(Expression<Func<TEntity, TProperty>> path, CancellationToken token = default)
-			=> LoadMembers.Default.Allocate(new(new(path.Body, entry), token));
+		public Task Include<TProperty>(Expression<Func<T, TProperty>> path, CancellationToken token = default)
+			=> LoadMembers.Default.Allocate(new(new(path.Body, @this), token));
+
+		public EntityEntry<T> Assigned(EntityEntry source) => @this.Assigned(source.CurrentValues);
+		public EntityEntry<T> Assigned(PropertyValues source)
+		{
+			Assign.Default.Execute(new(source, @this.CurrentValues));
+			return @this;
+		}
+	}
+
+	extension(DbContext @this)
+	{
+		public EntityEntry<T> Applied<T>(EntityEntry<T> entry) where T : class
+			=> AspNet.Entities.Migration.Applied<T>.Default.Get(new(@this, entry));
 	}
 }

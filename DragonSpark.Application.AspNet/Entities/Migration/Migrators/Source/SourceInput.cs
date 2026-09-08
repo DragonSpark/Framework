@@ -7,6 +7,6 @@ public sealed record SourceInput<T>(
 	ILogger Logger,
 	ushort PageSize,
 	DbContext Source,
-	IDestination Destination,
+	IWorkspaces Workspaces,
 	IQueryable<T> From,
 	uint Total);

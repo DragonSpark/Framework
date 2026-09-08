@@ -3,15 +3,15 @@ using DragonSpark.Model.Operations;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators.Save;
 
-sealed class Save<T> : ISave<T> where T : class
+sealed class Save : ISave
 {
-	public static Save<T> Default { get; } = new();
+	public static Save Default { get; } = new();
 
 	Save() {}
 
-	public async ValueTask<uint> Get(Stop<SaveInput<T>> parameter)
+	public async ValueTask<uint> Get(Stop<SaveInput> parameter)
 	{
-		var ((_, _, destination, _, _), stop) = parameter;
+		var ((_, _, destination, _), stop) = parameter;
 		return (uint)await destination.SaveChangesAsync(stop).Off();
 	}
 }

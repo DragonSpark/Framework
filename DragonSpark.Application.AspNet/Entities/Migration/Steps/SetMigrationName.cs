@@ -21,9 +21,9 @@ sealed class SetMigrationName : IMigrationStep
 
 	public ValueTask Get(Stop<EntityMigratorInput> parameter)
 	{
-		var ((_, contexts, _), _) = parameter;
-		using var destination = contexts.Get();
-		_store.Assign(destination.Model, _name);
+		var ((_, workspaces, _), _) = parameter;
+		using var workspace = workspaces.Get();
+		_store.Assign(workspace.Destination.Model, _name);
 		return ValueTask.CompletedTask;
 	}
 }

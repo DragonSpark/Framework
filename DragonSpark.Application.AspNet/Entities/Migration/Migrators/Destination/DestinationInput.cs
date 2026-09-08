@@ -7,6 +7,6 @@ namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators.Destinatio
 public sealed record DestinationInput<T>(
 	ILogger Logger,
 	DbContext Source,
-	DbContext Destination,
+	IWorkspaces Workspaces,
 	Array<T> From,
 	uint Total);

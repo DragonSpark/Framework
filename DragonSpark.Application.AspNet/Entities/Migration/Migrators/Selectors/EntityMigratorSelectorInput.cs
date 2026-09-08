@@ -5,5 +5,5 @@ namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators.Selectors;
 
 public readonly record struct EntityMigratorSelectorInput(
 	DbContext Source,
-	IDestination Destination,
+	IWorkspaces Workspaces,
 	EntityComparisonResult Result);

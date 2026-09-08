@@ -5,6 +5,6 @@ namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
 public readonly record struct ConstructEntityMigratorInput(
 	DbContext Source,
-	IDestination Destination,
+	IWorkspaces Workspaces,
 	IEntityType From,
 	IEntityType To);

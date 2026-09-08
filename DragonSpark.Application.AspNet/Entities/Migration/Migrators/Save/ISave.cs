@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators.Save;
 
-public interface ISave<T> : IStopAware<SaveInput<T>, uint> where T : class;
+public interface ISave : IStopAware<SaveInput, uint>;

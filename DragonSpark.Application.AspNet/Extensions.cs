@@ -32,8 +32,11 @@ partial class Extensions
 {
 	extension(IServiceCollection @this)
 	{
-		public IServiceCollection Register<T>(Action<DbContextOptionsBuilder> configure) where T : DbContext
-			=> Entities.Registrations<T>.Default.Parameter(@this.AddDbContext<T>().AddDbContextFactory<T>(configure));
+		public IServiceCollection Primary<T>(Action<DbContextOptionsBuilder> configure, ushort size = 1024) where T : DbContext
+			=> Entities.Registrations<T>.Default.Parameter(@this.AddPooledDbContextFactory<T>(configure, size));
+
+		public IServiceCollection Register<T>(Action<DbContextOptionsBuilder> configure, ushort size = 1024) where T : DbContext
+			=> Entities.GeneralConfiguration<T>.Default.Parameter(@this.AddPooledDbContextFactory<T>(configure, size));
 	}
 
 	extension(Accessed @this)

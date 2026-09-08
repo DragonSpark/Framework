@@ -28,8 +28,7 @@ public class EntityMigratorBase<TFrom, TTo> : Instance<EntityTypeMapping>, IEnti
 		: this(new(source, destination), new Map<TFrom, TTo>(map)) {}
 
 	protected EntityMigratorBase(Contexts<TFrom> contexts, IMap map)
-		: this(contexts,
-		       Processors<TFrom, TTo>.Default.Get(new(contexts, map))) {}
+		: this(contexts, Processors<TFrom, TTo>.Default.Get(new(contexts, map))) {}
 
 	protected EntityMigratorBase(Contexts<TFrom> contexts, IEntityProcessor<TFrom> processor)
 		: base(new(typeof(TFrom), typeof(TTo)))

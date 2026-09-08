@@ -8,6 +8,43 @@ using System.Buffers;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration;
 
+/*public sealed class Map : IMap
+{
+	public static Map Default { get; } = new();
+
+	Map() : this(CopyValues.Default, MapOwned.Default) {}
+
+	readonly ICommand<MapInput>      _copy;
+	readonly ICommand<MapOwnedInput> _owned;
+	
+	public Map(ICommand<MapInput> copy, ICommand<MapOwnedInput> owned)
+	{
+		_copy  = copy;
+		_owned = owned;
+	}
+
+	public ValueTask Get(Stop<MapInput> parameter)
+	{
+		var ((from, to), _) = parameter;
+		_copy.Execute(parameter);
+
+		using var navigations = to.Context.Entry(to.Entity)
+		                          .Navigations.AsValueEnumerable()
+		                          .ToArray(ArrayPool<NavigationEntry>.Shared);
+		foreach (var navigation in from.Metadata.GetNavigations().Where(x => x.TargetEntityType.IsOwned()))
+		{
+			var entry = navigations.FirstOrDefault(x => x.Metadata.Name == navigation.Name);
+
+			if (entry is not null)
+			{
+				_owned.Execute(new(navigation.PropertyInfo?.GetValue(from.Entity), entry, navigation));
+			}
+		}
+
+		return ValueTask.CompletedTask;
+	}
+}*/
+
 public sealed class Map : IMap
 {
 	public static Map Default { get; } = new();
@@ -44,8 +81,6 @@ public sealed class Map : IMap
 		return ValueTask.CompletedTask;
 	}
 }
-
-
 public sealed class Map<TFrom, TTo> : IMap
 {
 	readonly Func<Stop<MapInput<TFrom, TTo>>, ValueTask> _map;

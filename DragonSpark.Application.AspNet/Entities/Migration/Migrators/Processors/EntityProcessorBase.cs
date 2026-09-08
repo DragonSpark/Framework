@@ -11,11 +11,11 @@ namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators.Processors
 
 class EntityProcessorBase<TFrom, TTo> : IEntityProcessor<TFrom> where TFrom : class where TTo : class
 {
-	readonly ISource<TFrom>           _source;
-	readonly IDestination<TFrom, TTo> _destination;
-	readonly ISave<TTo>               _save;
+	readonly ISource<TFrom>      _source;
+	readonly IDestination<TFrom> _destination;
+	readonly ISave               _save;
 
-	protected EntityProcessorBase(ISource<TFrom> source, IDestination<TFrom, TTo> destination, ISave<TTo> save)
+	protected EntityProcessorBase(ISource<TFrom> source, IDestination<TFrom> destination, ISave save)
 	{
 		_source      = source;
 		_destination = destination;
@@ -32,13 +32,18 @@ class EntityProcessorBase<TFrom, TTo> : IEntityProcessor<TFrom> where TFrom : cl
 			var count = 0u;
 			await foreach (var page in _source.Get(parameter).AsAsyncEnumerable().Chunk(size).WithCancellation(stop))
 			{
-				await using var workspace = destination.Get();
-				using var       _         = LogicalContext.Default.Assigned(workspace);
-				var to = await _destination.Get(new(new(logger, source, workspace, page, total), stop))
-				                           .ToArrayAsync()
-				                           .Off();
-				count += await _save.Off(new(new(logger, size, workspace, to, total), stop));
-				workspace.ChangeTracker.Clear();
+				logger.LogInformation("{From} -> {To}: Processing {Page} Items...", A.Type<TFrom>(), A.Type<TTo>(),
+				                      page.Length);
+				await foreach (var workspace in
+				               _destination.Get(new(new(logger, source, destination, page, total), stop)))
+				{
+					await using (workspace.ConfigureAwait(false))
+					{
+						var save = await _save.Off(new(new(logger, size, workspace, total), stop));
+						count += save;
+					}
+				}
+				source.ChangeTracker.Clear();
 			}
 
 			logger.LogInformation("{From} -> {To}: Batch of {Count} processed in {Elapsed:mm\\:ss\\.fff} ({Rate:F1} entities/sec)",

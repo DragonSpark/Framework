@@ -14,15 +14,15 @@ public class Migration : IMigration
 
 	// ReSharper disable once TooManyDependencies
 	protected Migration(ILogger logger, MigrationInput input, IEntityMigrators processors, IMigrationSteps steps)
-		: this(logger, input.Destination, steps, processors.Get(input)) {}
+		: this(logger, input.Workspaces, steps, processors.Get(input)) {}
 
 	// ReSharper disable once TooManyDependencies
-	protected Migration(ILogger logger, IDestination destination, IMigrationSteps steps,
+	protected Migration(ILogger logger, IWorkspaces workspaces, IMigrationSteps steps,
 	                    params IEntityMigrator[] migrators)
-		: this(logger, destination, [.. steps.Get(migrators)]) {}
+		: this(logger, workspaces, [.. steps.Get(migrators)]) {}
 
-	protected Migration(ILogger logger, IDestination destination, params IMigrationStep[] steps)
-		: this(new(logger, destination, DefaultBatchSize.Default), steps) {}
+	protected Migration(ILogger logger, IWorkspaces workspaces, params IMigrationStep[] steps)
+		: this(new(logger, workspaces, DefaultBatchSize.Default), steps) {}
 
 	protected Migration(EntityMigratorInput input, params IMigrationStep[] steps)
 	{
