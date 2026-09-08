@@ -11,13 +11,16 @@ public sealed class CopyValues : ICommand<MapInput>
 {
 	public static CopyValues Default { get; } = new();
 
-	CopyValues() : this(AssignValue.Default) {}
+	CopyValues() : this([]) {}
 
 	readonly ISelect<IEntityType, ImmutableHashSet<string>> _names;
 	readonly ISelect<DetermineValueInput, object?>          _value;
 	readonly IAssignValue                                   _assign;
 
-	public CopyValues(IAssignValue assign) : this(Names.Default, DetermineValue.Default, assign) {}
+	public CopyValues(HashSet<string> skip) : this(new Names(skip)) {}
+
+	public CopyValues(ISelect<IEntityType, ImmutableHashSet<string>> names)
+		: this(names, DetermineValue.Default, AssignValue.Default) {}
 
 	public CopyValues(ISelect<IEntityType, ImmutableHashSet<string>> names, ISelect<DetermineValueInput, object?> value,
 	                  IAssignValue assign)
