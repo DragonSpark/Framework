@@ -23,9 +23,9 @@ sealed class UpdateAwareEntityMigrator : IExtendedEntityMigrator
 
 	public ValueTask Get(Stop<UpdateEntityMigratorInput> parameter)
 	{
-		var ((logger, batchSize), stop) = parameter;
+		var ((logger, destination, batchSize), stop) = parameter;
 		return _update is IExtendedEntityMigrator extended
 			       ? extended.Get(parameter)
-			       : _update.Get(new EntityMigratorInput(logger, batchSize).Stop(stop));
+			       : _update.Get(new EntityMigratorInput(logger, destination, batchSize).Stop(stop));
 	}
 }

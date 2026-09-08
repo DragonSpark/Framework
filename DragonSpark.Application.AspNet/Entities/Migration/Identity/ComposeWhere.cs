@@ -10,8 +10,7 @@ sealed class ComposeWhere<T> : ISelect<ComposeContainsInput, Expression<Func<T, 
 
 	ComposeWhere() : this(ComposeContains<T>.Default, ComposeCompositeContains<T>.Default) {}
 
-	readonly ISelect<ComposeContainsInput, Expression<Func<T, bool>>> _single;
-	readonly ISelect<ComposeContainsInput, Expression<Func<T, bool>>> _composite;
+	readonly ISelect<ComposeContainsInput, Expression<Func<T, bool>>> _single, _composite;
 
 	public ComposeWhere(ISelect<ComposeContainsInput, Expression<Func<T, bool>>> single,
 	                    ISelect<ComposeContainsInput, Expression<Func<T, bool>>> composite)
@@ -22,7 +21,8 @@ sealed class ComposeWhere<T> : ISelect<ComposeContainsInput, Expression<Func<T, 
 
 	public Expression<Func<T, bool>> Get(ComposeContainsInput parameter)
 	{
-		var select = parameter.Metadada.FindPrimaryKey().Verify().Properties.Count == 1 ? _single : _composite;
+		var (metadata, _) = parameter;
+		var select       = metadata.FindPrimaryKey().Verify().Properties.Count == 1 ? _single : _composite;
 		return select.Get(parameter);
 	}
 }

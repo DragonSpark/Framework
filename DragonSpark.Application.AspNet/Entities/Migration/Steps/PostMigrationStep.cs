@@ -13,7 +13,7 @@ public sealed class PostMigrationStep : IMigrationStep
 
 	public async ValueTask Get(Stop<EntityMigratorInput> parameter)
 	{
-		var ((logger, _), stop) = parameter;
+		var ((logger, _, _), stop) = parameter;
 		var pre = new EntityPostMigrationInput(logger).Stop(stop);
 		foreach (var migrator in _migrators.Open())
 		{

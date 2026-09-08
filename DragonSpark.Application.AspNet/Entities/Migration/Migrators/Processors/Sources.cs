@@ -11,21 +11,23 @@ sealed class Sources<TFrom, TTo> : ISelect<Contexts<TFrom>, ISource<TFrom>?> whe
 {
 	public static Sources<TFrom, TTo> Default { get; } = new();
 
-	Sources() : this(IsIdentityEntity.Default, IdentityExpressions.Default) {}
+	Sources() : this(IsIdentityEntity.Default, IdentityExpressions.Default, A.Type<TTo>()) {}
 
 	readonly ICondition<IEntityType>           _identity;
 	readonly IConditional<IEntityType, string> _expressions;
+	readonly Type                              _to;
 
-	public Sources(ICondition<IEntityType> identity, IConditional<IEntityType, string> expressions)
+	public Sources(ICondition<IEntityType> identity, IConditional<IEntityType, string> expressions, Type to)
 	{
 		_identity    = identity;
 		_expressions = expressions;
+		_to     = to;
 	}
 
 	public ISource<TFrom>? Get(Contexts<TFrom> parameter)
 	{
 		var (_, destination, type) = parameter;
-		var key      = destination.Set<TTo>().EntityType;
+		var key      = destination.FindEntityType(_to).Verify();
 		var identity = _identity.Get(key);
 		if (identity)
 		{

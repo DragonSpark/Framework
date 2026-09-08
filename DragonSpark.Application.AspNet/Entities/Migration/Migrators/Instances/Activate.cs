@@ -4,7 +4,7 @@ using DragonSpark.Model.Operations;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators.Instances;
 
-public sealed class Activate<TFrom, TTo> : IInstance<TFrom, TTo> where TFrom : class
+public sealed class Activate<TFrom, TTo> : IEntry<TFrom, TTo> where TFrom : class where TTo : class
 {
 	public static Activate<TFrom, TTo> Default { get; } = new();
 
@@ -14,5 +14,5 @@ public sealed class Activate<TFrom, TTo> : IInstance<TFrom, TTo> where TFrom : c
 
 	public Activate(Func<TTo> @new) => _new = @new;
 
-	public ValueTask<TTo> Get(Stop<MappingInput<TFrom>> parameter) => _new().ToOperation();
+	public ValueTask<Entry<TTo>> Get(Stop<MappingInput<TFrom>> parameter) => new Entry<TTo>(_new(), null).ToOperation();
 }

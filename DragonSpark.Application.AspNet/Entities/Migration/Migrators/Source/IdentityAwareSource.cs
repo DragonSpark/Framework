@@ -22,9 +22,10 @@ sealed class IdentityAwareSource<TFrom, TTo> : ISource<TFrom> where TFrom : clas
 	public IQueryable<TFrom> Get(Stop<SourceInput<TFrom>> parameter)
 	{
 		var (subject, stop) = parameter;
-		var max    = subject.Destination.Set<TTo>().Max(_column).Account() ?? 0;
-		var input  = subject with { From = subject.From.Where(_where, max) };
-		var result = _previous.Get(input.Stop(stop));
+		using var workspace = subject.Workspaces.Get();
+		var       max       = workspace.Destination.Set<TTo>().Max(_column).Account() ?? 0;
+		var       input     = subject with { From = subject.From.Where(_where, max) };
+		var       result    = _previous.Get(input.Stop(stop));
 		return result;
 	}
 }

@@ -11,38 +11,59 @@ namespace DragonSpark.Application.AspNet.Entities.Migration;
 
 public static class Extensions
 {
-	public static IMigrationSteps WithUpdateAwareness(this IMigrationSteps @this)
-		=> new UpdateAwareMigrationSteps(@this);
+	extension(IMigrationSteps @this)
+	{
+		public IMigrationSteps WithUpdateAwareness() => new UpdateAwareMigrationSteps(@this);
 
-	public static IMigrationSteps WithConstraintManagement(this IMigrationSteps @this, DbContext destination)
-		=> new ConstraintAwareMigrationSteps(@this, destination.Database);
-	
-	public static IMigrationSteps WithName(this IMigrationSteps @this, DbContext destination, string name)
-		=> new NameAwareMigrationSteps(@this, destination, name);
+		public IMigrationSteps WithConstraintManagement(DbContext destination)
+			=> new ConstraintAwareMigrationSteps(@this, destination.Database);
 
-	public static IEntityMigratorSelector Exact(this IEntityMigratorSelector @this, params Type[] matches)
-		=> new ExactAwareEntityMigratorSelector(@this, matches);
+		public IMigrationSteps WithName(string name)
+			=> new NameAwareMigrationSteps(@this, name);
+	}
 
-	public static IEntityMigratorSelector Ignoring(this IEntityMigratorSelector @this, params Type[] matches)
-		=> new IgnoreAwareEntityMigratorSelector(@this, matches);
+	extension(IEntityMigratorSelector @this)
+	{
+		public IEntityMigratorSelector Exact(params Type[] matches)
+			=> new ExactAwareEntityMigratorSelector(@this, matches);
 
-	public static IEntityMigratorSelector WithIdentityAwareness(this IEntityMigratorSelector @this)
-		=> new IdentityAwareEntityMigratorSelector(@this);
+		public IEntityMigratorSelector Ignoring(params Type[] matches)
+			=> new IgnoreAwareEntityMigratorSelector(@this, matches);
 
-	public static IEntityMigratorSelector WithExceptionAwareness(this IEntityMigratorSelector @this)
-		=> new ExceptionAwareEntityMigratorSelector(@this);
+		public IEntityMigratorSelector WithIdentityAwareness() => new IdentityAwareEntityMigratorSelector(@this);
 
-	public static DbContext Context(this IInfrastructure<IServiceProvider> @this)
-		=> @this.Instance.GetRequiredService<DbContext>();
+		public IEntityMigratorSelector WithExceptionAwareness() => new ExceptionAwareEntityMigratorSelector(@this);
+	}
 
-	public static EntityEntry<T> Of<T>(this EntityEntry @this) where T : class => @this.To<EntityEntry<T>>();
+	extension(IInfrastructure<IServiceProvider> @this)
+	{
+		public DbContext Context() => @this.Instance.GetRequiredService<DbContext>();
+	}
 
-	public static Task Load(this EntityEntry @this, CancellationToken stop)
-		=> @this.State == EntityState.Detached ? @this.ReloadAsync(stop) : Task.CompletedTask;
-	
-	public static Task Include<TEntity, TProperty>(this EntityEntry<TEntity> entry,
-	                                               Expression<Func<TEntity, TProperty>> path,
-	                                               CancellationToken token = default)
-		where TEntity : class
-		=> LoadMembers.Default.Allocate(new(new(path.Body, entry), token));
+	extension(EntityEntry @this)
+	{
+		public EntityEntry<T> Of<T>() where T : class => @this.To<EntityEntry<T>>();
+
+		public Task Load(CancellationToken stop)
+			=> @this.State == EntityState.Detached ? @this.ReloadAsync(stop) : Task.CompletedTask;
+	}
+
+	extension<T>(EntityEntry<T> @this) where T : class
+	{
+		public Task Include<TProperty>(Expression<Func<T, TProperty>> path, CancellationToken token = default)
+			=> LoadMembers.Default.Allocate(new(new(path.Body, @this), token));
+
+		public EntityEntry<T> Assigned(EntityEntry source) => @this.Assigned(source.CurrentValues);
+		public EntityEntry<T> Assigned(PropertyValues source)
+		{
+			Assign.Default.Execute(new(source, @this.CurrentValues));
+			return @this;
+		}
+	}
+
+	extension(DbContext @this)
+	{
+		public EntityEntry<T> Applied<T>(EntityEntry<T> entry) where T : class
+			=> AspNet.Entities.Migration.Applied<T>.Default.Get(new(@this, entry));
+	}
 }

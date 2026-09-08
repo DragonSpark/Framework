@@ -31,8 +31,9 @@ sealed class MapOwned : ICommand<MapNavigationEntryInput>
 					from.EntityEntry.Context.Attach(from.EntityEntry.Entity);
 					break;
 			}
+
 			_copy.Execute(new(source, destination));
-			
+
 			foreach (var nestedNav in source.Metadata.GetNavigations().Where(n => n.TargetEntityType.IsOwned()))
 			{
 				Execute(new(source.Navigation(nestedNav.Name), destination.Navigation(nestedNav.Name)));

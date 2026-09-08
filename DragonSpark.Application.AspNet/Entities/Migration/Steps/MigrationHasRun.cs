@@ -3,6 +3,7 @@ using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Selection.Stop;
 using DragonSpark.Model.Selection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Steps;
 
@@ -21,11 +22,10 @@ sealed class MigrationHasRun : IStopAware<DbContext, bool?>
 		           );
 		       """) {}
 
-	readonly ISelect<DbContext, string> _name;
-	readonly string                     _text;
-	readonly string                     _sql;
+	readonly ISelect<IModel, string> _name;
+	readonly string                  _text, _sql;
 
-	public MigrationHasRun(ISelect<DbContext, string> name, string text, string sql)
+	public MigrationHasRun(ISelect<IModel, string> name, string text, string sql)
 	{
 		_name = name;
 		_text = text;
@@ -35,7 +35,7 @@ sealed class MigrationHasRun : IStopAware<DbContext, bool?>
 	public async ValueTask<bool?> Get(Stop<DbContext> parameter)
 	{
 		var (subject, stop) = parameter;
-		var name = _name.Get(subject);
+		var name = _name.Get(subject.Model);
 		if (name.IsAssigned())
 		{
 			var rows   = await subject.Database.SqlQueryRaw<int>(_sql, [$"{_text}:{name}"]).ToArrayAsync(stop).Off();

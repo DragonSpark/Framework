@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using System.Security.Claims;
 using Claim = System.Security.Claims.Claim;
 using IdentityUser = DragonSpark.Application.AspNet.Security.Identity.IdentityUser;
@@ -29,6 +30,15 @@ namespace DragonSpark.Application.AspNet;
 
 partial class Extensions
 {
+	extension(IServiceCollection @this)
+	{
+		public IServiceCollection Primary<T>(Action<DbContextOptionsBuilder> configure, ushort size = 1024) where T : DbContext
+			=> Entities.Registrations<T>.Default.Parameter(@this.AddPooledDbContextFactory<T>(configure, size));
+
+		public IServiceCollection Register<T>(Action<DbContextOptionsBuilder> configure, ushort size = 1024) where T : DbContext
+			=> Entities.GeneralConfiguration<T>.Default.Parameter(@this.AddPooledDbContextFactory<T>(configure, size));
+	}
+
 	extension(Accessed @this)
 	{
 		public string ValueOrDefault() => @this.ValueOrDefault(string.Empty);
@@ -123,11 +133,11 @@ partial class Extensions
 			=> @this.PagingInput(@this.User.Number().Value(), page);
 
 		public Stop<PageQueryInput<UserInput>> PagingUserInput(Guid parameter,
-															   PageRequest page)
+		                                                       PageRequest page)
 			=> @this.PagingInput(new UserInput(@this.User.Number().Value(), parameter), page);
 
 		public Stop<PageQueryInput<UserInput<T>>> PagingUserInput<T>(T parameter,
-																	 PageRequest page)
+		                                                             PageRequest page)
 			=> @this.PagingInput(new UserInput<T>(@this.User.Number().Value(), parameter), page);
 
 		public Stop<PageQueryInput<T>> PagingInput<T>(T parameter, PageRequest page)

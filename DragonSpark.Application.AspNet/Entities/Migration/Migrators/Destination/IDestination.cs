@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection;
+using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators.Destination;
 
-public interface IDestination<TFrom, out TTo> : ISelect<Stop<DestinationInput<TFrom>>, IAsyncEnumerable<TTo>>;
+public interface IDestination<T> : ISelect<Stop<DestinationInput<T>>, IAsyncEnumerable<DbContext>>;

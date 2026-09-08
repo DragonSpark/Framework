@@ -2,28 +2,28 @@
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection.Stores;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Steps;
 
 sealed class SetMigrationName : IMigrationStep
 {
-	readonly DbContext                 _subject;
-	readonly string                    _name;
-	readonly ITable<DbContext, string> _store;
+	readonly string                 _name;
+	readonly ITable<IModel, string> _store;
 
-	public SetMigrationName(DbContext subject, string name) : this(subject, name, ContextName.Default) {}
+	public SetMigrationName(string name) : this(name, ContextName.Default) {}
 
-	public SetMigrationName(DbContext subject, string name, ITable<DbContext, string> store)
+	public SetMigrationName(string name, ITable<IModel, string> store)
 	{
-		_subject = subject;
 		_name    = name;
 		_store   = store;
 	}
 
 	public ValueTask Get(Stop<EntityMigratorInput> parameter)
 	{
-		_store.Assign(_subject, _name);
+		var ((_, workspaces, _), _) = parameter;
+		using var workspace = workspaces.Get();
+		_store.Assign(workspace.Destination.Model, _name);
 		return ValueTask.CompletedTask;
 	}
 }

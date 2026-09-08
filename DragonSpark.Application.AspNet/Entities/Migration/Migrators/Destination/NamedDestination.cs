@@ -5,13 +5,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators.Destination;
 
-sealed class NamedDestination : IDestination<Dictionary<string, object>, Dictionary<string, object>>
+sealed class NamedDestination : IDestination<Dictionary<string, object>>
 {
 	readonly IEntityType _type;
 
 	public NamedDestination(IEntityType type) => _type = type;
 
-	public async IAsyncEnumerable<Dictionary<string, object>> Get(
+	public async IAsyncEnumerable<DbContext> Get(
 		Stop<DestinationInput<Dictionary<string, object>>> parameter)
 	{
 		var ((_, _, destination, from, _), stop) = parameter;

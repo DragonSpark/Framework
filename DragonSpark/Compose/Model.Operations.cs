@@ -4,6 +4,7 @@ using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Allocated;
 using DragonSpark.Model.Operations.Results;
 using DragonSpark.Model.Operations.Selection;
+using DragonSpark.Model.Operations.Stop;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection;
 using System.Runtime.CompilerServices;
@@ -203,4 +204,7 @@ public static partial class ExtensionMethods
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static async ValueTask<T> Verifying<T>(this IResulting<T?> @this) => (await @this.Off()).Verify();
+
+	public static ValueTask Get<T>(this IStopAware<T> @this, T parameter, CancellationToken stop)
+		=> @this.Get(new(parameter, stop));
 }

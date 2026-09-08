@@ -1,9 +1,8 @@
 ﻿using DragonSpark.Model.Operations.Selection.Stop;
-using DragonSpark.Model.Selection;
-using DragonSpark.Model.Selection.Conditions;
-using Microsoft.EntityFrameworkCore;
+using DragonSpark.Model.Selection.Stores;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Identity;
 
 public interface IEntityMap<TFrom, TTo>
-	: ISelect<DbContext, IStopAware<IReadOnlyCollection<TFrom>, IConditional<object, TTo>>>;
+	: IStopAware<IReadOnlyCollection<TFrom>, IPopAware<object, Migrators.Instances.Entry<TTo>>>
+	where TTo : class;
