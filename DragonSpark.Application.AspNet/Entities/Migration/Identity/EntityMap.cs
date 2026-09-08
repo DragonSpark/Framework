@@ -2,14 +2,10 @@
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
-using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Stores;
-using DragonSpark.Model.Sequences;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using Microsoft.EntityFrameworkCore.Metadata;
 using System.Collections.Concurrent;
-using System.Linq.Expressions;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Identity;
 
@@ -45,28 +41,4 @@ sealed class EntityMap<TFrom, TTo> : IEntityMap<TFrom, TTo> where TFrom : class 
 		var store = new ConcurrentDictionary<object, Migrators.Instances.Entry<TTo>>(dictionary, _comparer);
 		return new ConcurrentTable<object, Migrators.Instances.Entry<TTo>>(store);
 	}
-}
-
-// TODO
-public interface IWhere<T> : ISelect<IEntityType, Expression<Func<T, bool>>>;
-
-sealed class ModelWhere<T> : ReferenceValueStore<IEntityType, Expression<Func<T, bool>>>, IWhere<T>
-{
-	public ModelWhere(Array<object> keys) : base(new ComposeModelWhere<T>(keys)) {}
-}
-
-sealed class ComposeModelWhere<T> : ISelect<IEntityType, Expression<Func<T, bool>>>
-{
-	readonly Array<object>                                            _keys;
-	readonly ISelect<ComposeContainsInput, Expression<Func<T, bool>>> _where;
-
-	public ComposeModelWhere(Array<object> keys) : this(keys, ComposeWhere<T>.Default) {}
-
-	public ComposeModelWhere(Array<object> keys, ISelect<ComposeContainsInput, Expression<Func<T, bool>>> where)
-	{
-		_keys  = keys;
-		_where = where;
-	}
-
-	public Expression<Func<T, bool>> Get(IEntityType parameter) => _where.Get(new(parameter, _keys));
 }

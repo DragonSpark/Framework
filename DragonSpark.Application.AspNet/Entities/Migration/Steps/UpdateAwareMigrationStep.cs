@@ -22,7 +22,7 @@ public sealed class UpdateAwareMigrationStep : IMigrationBody
 	{
 		var ((logger, workspaces, batchSize), stop) = parameter;
 		await _previous.Off(parameter);
-		var input = new UpdateEntityMigratorInput(logger, new UpdateAwareWorkspaces(workspaces), batchSize).Stop(stop);
+		var input = new UpdateEntityMigratorInput(logger, workspaces, batchSize).Stop(stop);
 		foreach (var migrator in _migrators.Open())
 		{
 			await migrator.Off(input);

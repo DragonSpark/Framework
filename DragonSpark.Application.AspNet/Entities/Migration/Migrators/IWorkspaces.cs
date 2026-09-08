@@ -1,6 +1,4 @@
-﻿using DragonSpark.Compose;
-using DragonSpark.Model.Results;
-using Microsoft.EntityFrameworkCore;
+﻿using DragonSpark.Model.Results;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -10,21 +8,4 @@ public interface IWorkspaces : IResult<Workspace>
 {
 	DatabaseFacade Database { get; }
 	IModel Model { get; }
-}
-
-// TODO
-
-public readonly record struct Workspace(DbContext Source, DbContext Destination) : IDisposable, IAsyncDisposable
-{
-	public void Dispose()
-	{
-		Source.Dispose();
-		Destination.Dispose();
-	}
-
-	public async ValueTask DisposeAsync()
-	{
-		await Source.DisposeAsync().Off();
-		await Destination.DisposeAsync().Off();
-	}
 }
