@@ -6,7 +6,7 @@ using System.Threading.Channels;
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators.Destination;
 
 public readonly record struct WriterInput<T>(
-	DbContext Source, // TODO
+	DbContext Origin,
 	IResult<Workspace> Workspaces,
 	Array<T> Items,
 	ChannelWriter<DbContext> Writer);
