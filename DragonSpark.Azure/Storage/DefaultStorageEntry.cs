@@ -1,4 +1,4 @@
-﻿using Azure.Storage.Blobs.Specialized;
+using Azure.Storage.Blobs.Specialized;
 using Azure.Storage.Sas;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;

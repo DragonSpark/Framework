@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using DragonSpark.Application;
 using DragonSpark.Application.Components.Validation;
 using DragonSpark.Application.Components.Validation.Expressions;
@@ -25,7 +26,6 @@ using DragonSpark.Presentation.Text;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Radzen;
-using System.Runtime.CompilerServices;
 using Action = System.Action;
 using ComponentBase = Microsoft.AspNetCore.Components.ComponentBase;
 using ValidationContext = DragonSpark.Presentation.Components.Forms.Validation.ValidationContext;
@@ -226,8 +226,8 @@ public static class Extensions
 	/**/
 	// ReSharper disable once TooManyArguments
 	public static CancelAwareActivityOptions Get(this IStopHandle @this, string message, IOperation? canceled = null,
-												 bool RedrawOnFinish = true)
-		=> new(message, @this, RedrawOnFinish: RedrawOnFinish, Canceled: canceled);
+												 bool redrawOnFinish = true)
+		=> new(message, @this, RedrawOnFinish: redrawOnFinish, Canceled: canceled);
 
 	extension(IResult<RenderState> @this)
 	{
