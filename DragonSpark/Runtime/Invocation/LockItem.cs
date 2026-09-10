@@ -7,7 +7,7 @@ namespace DragonSpark.Runtime.Invocation;
 /// <summary>
 /// Attribution: https://github.com/i3arnon/AsyncUtilities
 /// </summary>
-sealed class LockItem<T> : ISelect<int, (Array<T> Items, int Mask)>
+sealed class LockItem : ISelect<int, (Array<object> Items, int Mask)>
 {
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	static int GetStripeMask(int stripes)
@@ -20,15 +20,15 @@ sealed class LockItem<T> : ISelect<int, (Array<T> Items, int Mask)>
 		return stripes;
 	}
 
-	public static LockItem<T> Default { get; } = new();
+	public static LockItem Default { get; } = new();
 
-	LockItem() : this(Repeat<T>.Default.Get) {}
+	LockItem() : this(new Repeat<object>(() => new()).Get) {}
 
-	readonly Func<uint, Array<T>> _create;
+	readonly Func<uint, Array<object>> _create;
 
-	public LockItem(Func<uint, Array<T>> create) => _create = create;
+	public LockItem(Func<uint, Array<object>> create) => _create = create;
 
-	public (Array<T> Items, int Mask) Get(int parameter)
+	public (Array<object> Items, int Mask) Get(int parameter)
 	{
 		var mask   = GetStripeMask(parameter);
 		var result = (_create((uint)mask + 1), mask);

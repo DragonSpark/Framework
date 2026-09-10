@@ -4,21 +4,15 @@ using System.Runtime.CompilerServices;
 
 namespace DragonSpark.Runtime.Invocation;
 
-sealed class Locks<T> : Locks<T, object> where T : notnull
-{
-	public static Locks<T> Default { get; } = new();
-
-	Locks() : base(MaximumParallelismSafe.Default) {}
-}
-
 /// <summary>
 /// Attribution: https://github.com/i3arnon/AsyncUtilities
 /// </summary>
-/// <typeparam name="TKey"></typeparam>
-/// <typeparam name="TLock"></typeparam>
-public class Locks<TKey, TLock> : ISelect<TKey, TLock> where TKey : notnull
+public sealed class Locks<T> : ISelect<T, object> where T : notnull
 {
-	// ReSharper disable once ComplexConditionExpression
+	public static Locks<T> Default { get; } = new();
+
+	Locks() : this(MaximumParallelismSafe.Default) {}
+
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	static int SmearHashCode(int hashCode)
 	{
@@ -26,16 +20,16 @@ public class Locks<TKey, TLock> : ISelect<TKey, TLock> where TKey : notnull
 		return hashCode ^ (hashCode >> 7) ^ (hashCode >> 4);
 	}
 
-	readonly IEqualityComparer<TKey> _comparer;
+	readonly IEqualityComparer<T> _comparer;
 	readonly int                     _mask;
-	readonly Array<TLock>            _stripes;
+	readonly Array<object>            _stripes;
 
-	public Locks(int stripes) : this(LockItem<TLock>.Default.Get(stripes), EqualityComparer<TKey>.Default) {}
+	public Locks(int stripes) : this(LockItem.Default.Get(stripes), EqualityComparer<T>.Default) {}
 
-	public Locks((Array<TLock> Items, int Mask) item, IEqualityComparer<TKey> comparer)
+	public Locks((Array<object> Items, int Mask) item, IEqualityComparer<T> comparer)
 		: this(item.Mask, item.Items, comparer) {}
 
-	public Locks(int mask, Array<TLock> stripes, IEqualityComparer<TKey> comparer)
+	public Locks(int mask, Array<object> stripes, IEqualityComparer<T> comparer)
 	{
 		_mask     = mask;
 		_stripes  = stripes;
@@ -43,7 +37,7 @@ public class Locks<TKey, TLock> : ISelect<TKey, TLock> where TKey : notnull
 	}
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
-	int GetStripe(TKey key) => SmearHashCode(_comparer.GetHashCode(key) & int.MaxValue) & _mask;
+	int GetStripe(T key) => SmearHashCode(_comparer.GetHashCode(key) & int.MaxValue) & _mask;
 
-	public TLock Get(TKey parameter) => _stripes[GetStripe(parameter)];
+	public object Get(T parameter) => _stripes[GetStripe(parameter)];
 }

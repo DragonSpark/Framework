@@ -1,5 +1,6 @@
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection.Conditions;
+using DragonSpark.Runtime.Invocation;
 using System.Collections.Concurrent;
 
 namespace DragonSpark.Model.Selection.Stores;
@@ -14,11 +15,10 @@ public class ConcurrentTable<TIn, TOut> : ITable<TIn, TOut>, IPopAware<TIn, TOut
 	public ConcurrentTable(ISelect<TIn, TOut> select) : this(select.Get) {}
 	public ConcurrentTable(Func<TIn, TOut> select) : this([], select) {}
 
-	public ConcurrentTable(ConcurrentDictionary<TIn, TOut> table)
-		: this(table, _ => default!) {}
+	public ConcurrentTable(ConcurrentDictionary<TIn, TOut> table) : this(table, _ => default!) {}
 
 	public ConcurrentTable(ConcurrentDictionary<TIn, TOut> table, Func<TIn, TOut> select)
-		: this(new Condition<TIn>(table.ContainsKey), table, select) {}
+		: this(new Condition<TIn>(table.ContainsKey), table, new Stripe<TIn, TOut>(select).Get) {}
 
 	public ConcurrentTable(ICondition<TIn> condition, ConcurrentDictionary<TIn, TOut> table, Func<TIn, TOut> select)
 	{

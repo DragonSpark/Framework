@@ -24,7 +24,7 @@ class EntityProcessorBase<TFrom, TTo> : IEntityProcessor<TFrom> where TFrom : cl
 
 	public async ValueTask Get(Stop<SourceInput<TFrom>> parameter)
 	{
-		var ((logger, size, source, destination, _, total), stop) = parameter;
+		var ((logger, size, source, workspaces, _, total), stop) = parameter;
 		if (total > 0)
 		{
 			logger.LogInformation("{From} -> {To}: Starting...", A.Type<TFrom>(), A.Type<TTo>());
@@ -35,7 +35,7 @@ class EntityProcessorBase<TFrom, TTo> : IEntityProcessor<TFrom> where TFrom : cl
 				logger.LogInformation("{From} -> {To}: Processing {Page} Items...", A.Type<TFrom>(), A.Type<TTo>(),
 				                      page.Length);
 				await foreach (var workspace in
-				               _destination.Get(new(new(logger, source, destination, page, total), stop)))
+				               _destination.Get(new(new(logger, source, workspaces, page, total), stop)))
 				{
 					await using (workspace.ConfigureAwait(false))
 					{

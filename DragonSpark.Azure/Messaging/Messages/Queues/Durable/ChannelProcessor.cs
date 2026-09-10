@@ -18,9 +18,13 @@ sealed class ChannelProcessor : IStopAware
 
 	public async ValueTask Get(CancellationToken parameter)
 	{
-		while (await _reader.WaitToReadAsync(parameter).Off())
+		try
 		{
-			while (_reader.TryRead(out var message) && await _process.Off(new(message, parameter))) {}
+			while (await _reader.WaitToReadAsync(parameter).Off())
+			{
+				while (_reader.TryRead(out var message) && await _process.Off(new(message, parameter))) {}
+			}
 		}
+		catch (OperationCanceledException) when (parameter.IsCancellationRequested) {}
 	}
 }

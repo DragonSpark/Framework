@@ -17,8 +17,7 @@ sealed class LocateAwareEntry<TFrom, TTo> : IEntry<TFrom, TTo> where TTo : class
 	readonly IEntry<TFrom, TTo>           _previous;
 	readonly ISelect<EntityEntry, object> _key;
 
-	public LocateAwareEntry(IEntityMaps<TFrom, TTo> maps, IEntry<TFrom, TTo> previous,
-	                        ISelect<EntityEntry, object> key)
+	public LocateAwareEntry(IEntityMaps<TFrom, TTo> maps, IEntry<TFrom, TTo> previous, ISelect<EntityEntry, object> key)
 	{
 		_maps     = maps;
 		_previous = previous;

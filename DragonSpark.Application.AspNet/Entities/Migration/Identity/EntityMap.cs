@@ -20,9 +20,9 @@ sealed class EntityMap<TFrom, TTo> : IEntityMap<TFrom, TTo> where TFrom : class 
 
 	public EntityMap(IResult<Workspace> workspaces, Func<EntityEntry, object> keys, IEqualityComparer<object> comparer)
 	{
-		_workspaces    = workspaces;
-		_keys          = keys;
-		_comparer = comparer;
+		_workspaces = workspaces;
+		_keys       = keys;
+		_comparer   = comparer;
 	}
 
 	public async ValueTask<IPopAware<object, Migrators.Instances.Entry<TTo>>> Get(
@@ -31,11 +31,10 @@ sealed class EntityMap<TFrom, TTo> : IEntityMap<TFrom, TTo> where TFrom : class 
 		var (subject, stop) = parameter;
 		await using var workspace = _workspaces.Get();
 		var (source, destination) = workspace;
-		var to = destination.Set<TTo>();
-		var where =
-			new ModelWhere<TTo>(subject.Select(Start.A.Selection<object, EntityEntry>(source.Entry).Select(_keys).Get)
-			                           .Result());
-		var existing = await to.Where(where.Get(to.EntityType)).ToArrayAsync(stop).Off();
+		var to       = destination.Set<TTo>();
+		var keys     = subject.Select(Start.A.Selection<object, EntityEntry>(source.Entry).Select(_keys).Get).Result();
+		var where    = new WhereKeysExist<TTo>(keys).Get(to.EntityType);
+		var existing = await to.Where(where).ToArrayAsync(stop).Off();
 		var dictionary = existing.ToDictionary(Start.A.Selection<TTo, EntityEntry<TTo>>(to.Entry).Select(_keys).Get,
 		                                       x => new Migrators.Instances.Entry<TTo>(x, to.Entry(x).CurrentValues));
 		var store = new ConcurrentDictionary<object, Migrators.Instances.Entry<TTo>>(dictionary, _comparer);

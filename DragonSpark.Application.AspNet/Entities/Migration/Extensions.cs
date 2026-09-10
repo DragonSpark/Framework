@@ -56,14 +56,27 @@ public static class Extensions
 		public EntityEntry<T> Assigned(EntityEntry source) => @this.Assigned(source.CurrentValues);
 		public EntityEntry<T> Assigned(PropertyValues source)
 		{
-			Assign.Default.Execute(new(source, @this.CurrentValues));
+			AspNet.Entities.Migration.Identified.Default.Execute(new(source, @this.CurrentValues));
+			return @this;
+		}
+	}
+
+	extension(EntityEntry @this)
+	{
+		public EntityEntry Identified(EntityEntry source) => @this.Identified(source.CurrentValues);
+		public EntityEntry Identified(PropertyValues source)
+		{
+			AspNet.Entities.Migration.Identified.Default.Execute(new(source, @this.CurrentValues));
 			return @this;
 		}
 	}
 
 	extension(DbContext @this)
 	{
-		public EntityEntry<T> Applied<T>(EntityEntry<T> entry) where T : class
-			=> AspNet.Entities.Migration.Applied<T>.Default.Get(new(@this, entry));
+		/*public EntityEntry<T> Applied<T>(EntityEntry<T> entry) where T : class
+			=> AspNet.Entities.Migration.Applied.Default.Get(new(@this, entry)).To<EntityEntry<T>>();*/
+
+		public EntityEntry Applied(EntityEntry entry)
+			=> AspNet.Entities.Migration.Applied.Default.Get(new(@this, entry));
 	}
 }

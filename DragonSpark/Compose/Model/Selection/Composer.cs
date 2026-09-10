@@ -92,9 +92,8 @@ public class Composer<TIn, TOut> : IResult<ISelect<TIn, TOut>>, IActivateUsing<I
 	public Composer<TIn, TOut> Protect() => ProtectAlteration<TIn, TOut>.Default.Get(_subject).Then();
 
 #pragma warning disable 8714
-	public Composer<TIn, TOut> Stripe() => StripedAlteration<TIn, TOut>.Default.Get(_subject).Then();
-
-	public Composer<TIn, TOut> OnceStriped() => OncePerParameter<TIn, TOut>.Default.Get(_subject).Then();
+	
+	public Composer<TIn, TOut> Stripe() => new Stripe<TIn, TOut>(_subject.Get).Then();
 
 	public TableComposer<TIn, T> Table<T>() => Table(Tables<TOut, T>.Default.Get(_ => default!));
 

@@ -34,23 +34,6 @@ public sealed class ExtentsTests
 		     .NotThrow();
 	}
 
-	[Fact]
-	public void VerifyOnceStriped()
-	{
-		var count   = 0;
-		var counter = new Select<string, int>(_ => count++).Then().OnceStriped().Get();
-		count.Should().Be(0);
-		counter.Get("HelloWorld");
-		count.Should().Be(1);
-		counter.Get("HelloWorld");
-		count.Should().Be(1);
-		counter.Get("HelloWorld 1");
-		count.Should().Be(2);
-		counter.Get("HelloWorld 2");
-		count.Should().Be(3);
-		counter.Get("HelloWorld 2");
-		count.Should().Be(3);
-	}
 
 	[Fact]
 	public void VerifyOnlyOnce()
