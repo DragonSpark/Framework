@@ -1,4 +1,4 @@
-﻿using DragonSpark.Compose;
+using DragonSpark.Compose;
 using DragonSpark.Contracts.Uploads;
 using DragonSpark.Model;
 using DragonSpark.Presentation;

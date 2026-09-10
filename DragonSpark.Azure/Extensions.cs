@@ -1,3 +1,4 @@
+using System.Buffers;
 using Azure.Core.Serialization;
 using Azure.Messaging.EventHubs.Processor;
 using Azure.Messaging.ServiceBus;
@@ -14,7 +15,6 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NetFabric.Hyperlinq;
-using System.Buffers;
 
 namespace DragonSpark.Azure;
 
@@ -28,6 +28,8 @@ public static class Extensions
 			=> @this.Configure(Messaging.Messages.Queues.Durable.Registrations.Default);
 
 		public BuildHostContext WithUploadSupport() => @this.Configure(Azure.Storage.Uploads.Registrations.Default);
+
+		public BuildHostContext WithContentSafety() => @this.Configure(Content.Registrations.Default);
 	}
 
 	extension(IContainer @this)
