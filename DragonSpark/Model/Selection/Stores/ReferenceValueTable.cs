@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Model.Selection.Conditions;
+using DragonSpark.Runtime.Invocation;
 using System.Runtime.CompilerServices;
 
 namespace DragonSpark.Model.Selection.Stores;
@@ -17,7 +18,7 @@ public class ReferenceValueTable<TIn, TOut> : ITable<TIn, TOut>, IPopAware<TIn, 
 	public ReferenceValueTable(Func<TIn, TOut> factory) : this(new ConditionalWeakTable<TIn, TOut>(), factory) {}
 
 	public ReferenceValueTable(ConditionalWeakTable<TIn, TOut> table, Func<TIn, TOut> factory)
-		: this(table, new ConditionalWeakTable<TIn, TOut>.CreateValueCallback(factory)) {}
+		: this(table, new ConditionalWeakTable<TIn, TOut>.CreateValueCallback(new Stripe<TIn, TOut>(factory).Get)) {}
 
 	public ReferenceValueTable(ConditionalWeakTable<TIn, TOut> table,
 	                           ConditionalWeakTable<TIn, TOut>.CreateValueCallback callback)

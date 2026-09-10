@@ -4,6 +4,7 @@ using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Results;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
@@ -43,12 +44,13 @@ public class EntityMigratorBase<TFrom, TTo> : Instance<EntityTypeMapping>, IEnti
 
 	public async ValueTask Get(Stop<EntityMigratorInput> parameter)
 	{
-		var ((logger, workspaces, size), stop)            = parameter;
-		var (source, _, _, subject) = _contexts;
+		var ((logger, workspaces, size), stop) = parameter;
+		var (source, _, _, subject)            = _contexts;
 		try
 		{
-			var total = await subject.CountAsync().Off();
-			await _processor.Off(new(new(logger, size, source, workspaces, subject, total.Grade()), stop));
+			var total     = await subject.CountAsync().Off();
+			var decorated = new OriginAwareWorkspaces<TFrom>(workspaces, source);
+			await _processor.Off(new(new(logger, size, source, decorated, subject, total.Grade()), stop));
 		}
 		catch (Exception e)
 		{
@@ -57,4 +59,31 @@ public class EntityMigratorBase<TFrom, TTo> : Instance<EntityTypeMapping>, IEnti
 			throw;
 		}
 	}
+}
+
+sealed class OriginAwareWorkspaces<T> : IWorkspaces where T : class
+{
+	readonly IWorkspaces _previous;
+	readonly DbContext   _origin;
+
+	public OriginAwareWorkspaces(IWorkspaces previous, DbContext origin)
+	{
+		_previous = previous;
+		_origin   = origin;
+	}
+
+	public Workspace Get()
+	{
+		var result = _previous.Get();
+		foreach (var entry in _origin.ChangeTracker.Entries<T>())
+		{
+			result.Source.Applied(entry);
+		}
+
+		return result;
+	}
+
+	public DatabaseFacade Database => _previous.Database;
+
+	public IModel Model => _previous.Model;
 }

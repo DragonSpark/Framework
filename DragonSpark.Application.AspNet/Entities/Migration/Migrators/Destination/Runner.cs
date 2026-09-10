@@ -20,10 +20,10 @@ sealed class Runner<T> : IRunner<T>
 
 	public RunnerResult Get(Stop<DestinationInput<T>> parameter)
 	{
-		var ((_, source, workspaces, from, _), stop) = parameter;
+		var ((_, source, workspaces, page, _), stop) = parameter;
 
 		var channel = _channel.Get();
-		var work    = _writer.Get(new(new(source, workspaces, from, channel.Writer), stop));
+		var work    = _writer.Get(new(new(source, workspaces, page, channel.Writer), stop));
 		return new(work, channel.Reader);
 	}
 }
