@@ -1,13 +1,12 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations.Selection.Stop;
-using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection.Stores;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Identity;
 
 sealed class EntityMaps<TFrom, TTo>
-	: ReferenceValueStore<IResult<Workspace>,
+	: ReferenceValueStore<IOriginAware,
 		  IStopAware<IReadOnlyCollection<TFrom>, IPopAware<object, Migrators.Instances.Entry<TTo>>>>,
 	  IEntityMaps<TFrom, TTo>
 	where TFrom : class where TTo : class

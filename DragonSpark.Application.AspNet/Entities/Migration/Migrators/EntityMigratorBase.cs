@@ -60,8 +60,12 @@ public class EntityMigratorBase<TFrom, TTo> : Instance<EntityTypeMapping>, IEnti
 		}
 	}
 }
-
-sealed class OriginAwareWorkspaces<T> : IWorkspaces where T : class
+// TODO
+public interface IOriginAware : IWorkspaces
+{
+	Workspace Origin();
+}
+sealed class OriginAwareWorkspaces<T> : IOriginAware where T : class
 {
 	readonly IWorkspaces _previous;
 	readonly DbContext   _origin;
@@ -72,18 +76,22 @@ sealed class OriginAwareWorkspaces<T> : IWorkspaces where T : class
 		_origin   = origin;
 	}
 
-	public Workspace Get()
-	{
-		var result = _previous.Get();
-		foreach (var entry in _origin.ChangeTracker.Entries<T>())
-		{
-			result.Source.Applied(entry);
-		}
-
-		return result;
-	}
+	public Workspace Get() => _previous.Get();
 
 	public DatabaseFacade Database => _previous.Database;
 
 	public IModel Model => _previous.Model;
+
+	public Workspace Origin()
+	{
+		var result = _previous.Get();
+		var (source, _) = result;
+		
+		foreach (var entry in _origin.ChangeTracker.Entries<T>())
+		{
+			source.Applied(entry);
+		}
+
+		return result;
+	}
 }
