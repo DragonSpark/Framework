@@ -44,13 +44,20 @@ public static class Extensions
 	{
 		public EntityEntry<T> Of<T>() where T : class => @this.To<EntityEntry<T>>();
 
+		public Task Load<T>(Func<IQueryable<T>, IQueryable<T>> include, CancellationToken token)
+			where T : class
+			=> AspNet.Entities.Migration.Load<T>.Default.Get(new(new(@this, include), token));
+
 		public Task Load(CancellationToken stop)
 			=> @this.State == EntityState.Detached ? @this.ReloadAsync(stop) : Task.CompletedTask;
 	}
 
 	extension<T>(EntityEntry<T> @this) where T : class
 	{
-		public Task Include<TProperty>(Expression<Func<T, TProperty>> path, CancellationToken token = default)
+		public Task Load(Func<IQueryable<T>, IQueryable<T>> include, CancellationToken token)
+			=> AspNet.Entities.Migration.Load<T>.Default.Get(new(new(@this, include), token));
+
+		public Task Include<TProperty>(Expression<Func<T, TProperty>> path, CancellationToken token)
 			=> LoadMembers.Default.Allocate(new(new(path.Body, @this), token));
 
 		public EntityEntry<T> Assigned(EntityEntry source) => @this.Assigned(source.CurrentValues);
