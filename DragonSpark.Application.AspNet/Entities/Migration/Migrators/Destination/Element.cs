@@ -26,7 +26,8 @@ sealed class Element<TFrom, TTo> : IElement<TFrom, TTo> where TFrom : class wher
 				             ? destination.Attach(entry.Assigned(values).Entity)
 				             : destination.Add(entry.Assigned(current.CurrentValues).Entity)
 			           : entry;
-		await _map.Off(new(new(source.Applied(current), next), stop));
+		var from = source.Applied(current);
+		await _map.Off(new(new(from, next), stop));
 		return to;
 	}
 }
