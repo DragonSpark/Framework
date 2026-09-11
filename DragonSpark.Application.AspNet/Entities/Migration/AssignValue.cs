@@ -1,4 +1,6 @@
-﻿namespace DragonSpark.Application.AspNet.Entities.Migration;
+﻿using Microsoft.EntityFrameworkCore;
+
+namespace DragonSpark.Application.AspNet.Entities.Migration;
 
 sealed class AssignValue : IAssignValue
 {
@@ -9,6 +11,13 @@ sealed class AssignValue : IAssignValue
 	public void Execute(AssignValueInput parameter)
 	{
 		var (source, destination) = parameter;
-		destination.CurrentValue  = source;
+
+		var metadata    = destination.Metadata;
+		var entityEntry = destination.EntityEntry;
+
+		if (entityEntry.State == EntityState.Detached || (!metadata.IsKey() && !metadata.IsForeignKey()))
+		{
+			destination.CurrentValue = source;
+		}
 	}
 }
