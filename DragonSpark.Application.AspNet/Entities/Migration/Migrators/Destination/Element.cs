@@ -19,7 +19,6 @@ sealed class Element<TFrom, TTo> : IElement<TFrom, TTo> where TFrom : class wher
 	public async Task<TTo> Get(Stop<MappingInput<TFrom>> parameter)
 	{
 		var ((_, (source, destination), _, current), stop) = parameter;
-		var from = source.Entry(current.Entity);
 		var (to, values) = await _entry.Off(parameter);
 		var entry = destination.Entry(to);
 		var next = entry.State == EntityState.Detached
@@ -27,7 +26,7 @@ sealed class Element<TFrom, TTo> : IElement<TFrom, TTo> where TFrom : class wher
 				             ? destination.Attach(entry.Assigned(values).Entity)
 				             : destination.Add(entry.Assigned(current.CurrentValues).Entity)
 			           : entry;
-		await _map.Off(new(new(from, next), stop));
+		await _map.Off(new(new(source.Applied(current), next), stop));
 		return to;
 	}
 }
