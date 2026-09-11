@@ -1,20 +1,21 @@
 ﻿using AsyncUtilities;
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Stores;
+using DragonSpark.Runtime.Invocation;
 
 namespace DragonSpark.Model.Operations.Selection.Stop;
 
-public class LockAwareStoring<TIn, TOut> : IStopAware<TIn, TOut>
+public class LockAwareStoring<TIn, TOut> : IStopAware<TIn, TOut> where TIn : notnull
 {
 	readonly IStopAware<TIn, TOut> _previous;
-	readonly AsyncLock             _lock;
+	readonly StripedAsyncLock<TIn>      _lock;
 
 	public LockAwareStoring(ITable<TIn, TOut> store, Func<Stop<TIn>, ValueTask<TOut>> source)
 		: this(new Storing(store, source)) {}
 
-	public LockAwareStoring(IStopAware<TIn, TOut> previous) : this(previous, new()) {}
+	public LockAwareStoring(IStopAware<TIn, TOut> previous) : this(previous, new(MaximumParallelismSafe.Default)) {}
 
-	public LockAwareStoring(IStopAware<TIn, TOut> previous, AsyncLock @lock)
+	public LockAwareStoring(IStopAware<TIn, TOut> previous, StripedAsyncLock<TIn> @lock)
 	{
 		_previous = previous;
 		_lock     = @lock;

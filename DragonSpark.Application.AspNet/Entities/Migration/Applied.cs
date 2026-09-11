@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace DragonSpark.Application.AspNet.Entities.Migration;
 
 using DragonSpark.Model.Selection;
@@ -22,11 +24,11 @@ sealed class Applied : ISelect<ApplyInput, EntityEntry>
 			                 ?? source.Metadata;
 			var @internal  = context.GetService<IStateManager>().GetOrCreateEntry(source.Entity, entityType);
 			var entry = @internal.ToEntityEntry();
-			var result = context.Attach(entry.Identified(source).Entity);
-			/*if (entry.EntityState == EntityState.Detached)
+			var result = entry.Identified(source);
+			if (@internal.EntityState == EntityState.Detached)
 			{
-				entry.SetEntityState(EntityState.Unchanged);
-			}*/
+				@internal.SetEntityState(EntityState.Unchanged);
+			}
 
 			return result;
 		}
