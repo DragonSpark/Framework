@@ -29,7 +29,7 @@ public class FlattenAwareEntityMigratorSelector : IEntityMigratorSelector
 
 	public IEntityMigrator? Get(EntityMigratorSelectorInput parameter)
 	{
-		var (_, _, r) = parameter;
+		var (_, r) = parameter;
 		var previous = _previous.Get(parameter);
 		var result = previous is not null && r is MatchedEntityComparisonResult(var from, var to)
 		                                  && _candidates.Open().Contains(from.ClrType)

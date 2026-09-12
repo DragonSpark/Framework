@@ -19,12 +19,12 @@ sealed class Writer<TFrom, TTo> : IWriter<TFrom> where TFrom : class where TTo :
 
 	public async Task Get(Stop<WriterInput<TFrom>> parameter)
 	{
-		var ((origin, workspaces, from, writer), stop) = parameter;
+		var ((_, from, writer), stop) = parameter;
 		try
 		{
 			var options = new ParallelOptions { MaxDegreeOfParallelism = _parallelism, CancellationToken = stop };
 			await Parallel.ForEachAsync(from.Open(), options,
-			                            new Each<TFrom, TTo>(new(origin, workspaces, from, writer), _element).Get)
+			                            new Each<TFrom, TTo>(parameter, _element).Get)
 			              .Off();
 
 			writer.Complete();

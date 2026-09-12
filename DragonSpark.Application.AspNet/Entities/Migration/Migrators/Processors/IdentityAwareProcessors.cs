@@ -21,8 +21,8 @@ sealed class IdentityAwareProcessors<TFrom, TTo> : IProcessors<TFrom> where TFro
 
 	public IEntityProcessor<TFrom> Get(ProcessorsInput<TFrom> parameter)
 	{
-		var (_, map) = parameter;
-		var source = _source.Get(parameter.Contexts);
+		var (contexts, map) = parameter;
+		var source = _source.Get(contexts);
 		return source is not null
 			       ? new IdentityAwareEntityProcessor<TFrom, TTo>(source, map)
 			       : _previous.Get(parameter);

@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators;
+﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators.Workspaces;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Identity;
 

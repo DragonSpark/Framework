@@ -5,6 +5,6 @@ namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
 sealed class NamedEntityMigrator : EntityMigratorBase<Dictionary<string, object>, Dictionary<string, object>>
 {
-	public NamedEntityMigrator(Contexts<Dictionary<string, object>> contexts, IEntityType type)
-		: base(contexts, new NamedEntityProcessor(type)) {}
+	public NamedEntityMigrator(IEntityType type)
+		: base(d => d.Set<Dictionary<string, object>>(type.Name).Exact(), new NamedEntityProcessor(type)) {}
 }
