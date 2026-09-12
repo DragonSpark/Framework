@@ -33,8 +33,8 @@ public class EntityMigratorBase<TFrom, TTo> : Instance<EntityTypeMapping>, IEnti
 	protected EntityMigratorBase(Func<DbContext, IQueryable<TFrom>> query, IEntityProcessor<TFrom> processor)
 		: base(new(typeof(TFrom), typeof(TTo)))
 	{
-		_query = query;
-		_processor   = processor;
+		_query     = query;
+		_processor = processor;
 	}
 
 	public ValueTask Get(Stop<EntityPreMigrationInput> parameter) => ValueTask.CompletedTask;

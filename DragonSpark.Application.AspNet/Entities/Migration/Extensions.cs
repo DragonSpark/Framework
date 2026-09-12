@@ -18,8 +18,7 @@ public static class Extensions
 		public IMigrationSteps WithConstraintManagement(DbContext destination)
 			=> new ConstraintAwareMigrationSteps(@this, destination.Database);
 
-		public IMigrationSteps WithName(string name)
-			=> new NameAwareMigrationSteps(@this, name);
+		public IMigrationSteps WithName(string name) => new NameAwareMigrationSteps(@this, name);
 	}
 
 	extension(IEntityMigratorSelector @this)

@@ -41,5 +41,6 @@ sealed class EnableStatements : ISelect<ConstraintInput, IEnumerable<string>>
 				             : $"CREATE UNIQUE INDEX [{indexName}] ON [{schema}].[{table}] ({columns}){includeClause}{filter}";
 		}
 		yield return "EXEC sp_msforeachtable 'ALTER TABLE ? WITH CHECK CHECK CONSTRAINT ALL';";
+		yield return "EXEC sp_updatestats;";
 	}
 }
