@@ -16,6 +16,5 @@ sealed class Dependencies : ISelect<IEntityType, List<IEntityType>>
 		                .Where(t => t.FindPrimaryKey() != null)
 		                .SelectMany(x => x.GetDerivedTypes().Prepend(x))
 		                .Where(x => !x.IsAbstract())
-		                .Union(parameter.GetDerivedTypes().Where(x => !x.IsAbstract()))
 		                .Distinct());
 }
