@@ -23,10 +23,10 @@ sealed class EntityMigratorSelector : IEntityMigratorSelector
 
 	public IEntityMigrator? Get(EntityMigratorSelectorInput parameter)
 	{
-		var (source, destination, result) = parameter;
+		var (definition, result) = parameter;
 		return result switch
 		{
-			ExactEntityComparisonResult(var from, var to) => _exact.Get(new(source, destination, from, to)),
+			ExactEntityComparisonResult(var from, var to) => _exact.Get(new(definition, from, to)),
 			MissingEntityComparisonResult => null,
 			ModifiedEntityComparisonResult modified => throw new InvalidOperationException(_formatter.Get(modified)),
 			_ => throw new InvalidOperationException($"Could not find entity migrator for {result.From}")

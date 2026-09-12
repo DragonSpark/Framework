@@ -18,13 +18,13 @@ public class DestinationBase<TFrom, TTo> : IDestination<TFrom> where TFrom : cla
 
 	public async IAsyncEnumerable<DbContext> Get(Stop<DestinationInput<TFrom>> parameter)
 	{
-		var ((_, origin, workspaces, from, _), stop) = parameter;
-		var original = workspaces.Get();
-		var modified = original with { Source = origin };
+		var ((_, entities, from, _), stop) = parameter;
+		var original = entities.Get();
+		var modified = original with { Source = entities.Origin };
 		var (source, destination) = modified;
 		foreach (var x in from.Open())
 		{
-			var to = await _entry.Off(new(new(workspaces, modified, origin.Entry(x)), stop));
+			var to = await _entry.Off(new(new(entities, modified, entities.Origin.Entry(x)), stop));
 			await _map.Off(new(new(source.Entry(x), destination.Entry(to.Instance)), stop));
 		}
 

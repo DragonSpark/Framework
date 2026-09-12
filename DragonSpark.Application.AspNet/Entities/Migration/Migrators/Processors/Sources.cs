@@ -26,7 +26,7 @@ sealed class Sources<TFrom, TTo> : ISelect<Contexts<TFrom>, ISource<TFrom>?> whe
 
 	public ISource<TFrom>? Get(Contexts<TFrom> parameter)
 	{
-		var (_, type, destination) = parameter;
+		var (type, destination) = parameter;
 		var key      = destination.FindEntityType(_to).Verify();
 		var identity = _identity.Get(key);
 		if (identity)

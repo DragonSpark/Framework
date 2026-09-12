@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators;
+using DragonSpark.Application.AspNet.Entities.Migration.Migrators.Workspaces;
 using DragonSpark.Application.AspNet.Entities.Migration.Steps;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
@@ -13,15 +14,16 @@ public class Migration : IMigration
 	readonly Array<IMigrationStep> _steps;
 
 	// ReSharper disable once TooManyDependencies
-	protected Migration(ILogger logger, MigrationInput input, IEntityMigrators processors, IMigrationSteps steps)
-		: this(logger, input.Workspaces, steps, processors.Get(input)) {}
+	protected Migration(ILogger logger, IWorkspaceDefinition definition, IEntityMigrators processors,
+	                    IMigrationSteps steps)
+		: this(logger, definition, steps, processors.Get(definition)) {}
 
 	// ReSharper disable once TooManyDependencies
-	protected Migration(ILogger logger, IWorkspaces workspaces, IMigrationSteps steps,
+	protected Migration(ILogger logger, IWorkspaceDefinition definition, IMigrationSteps steps,
 	                    params IEntityMigrator[] migrators)
-		: this(logger, workspaces, [.. steps.Get(migrators)]) {}
+		: this(logger, definition, [.. steps.Get(migrators)]) {}
 
-	protected Migration(ILogger logger, IWorkspaces workspaces, params IMigrationStep[] steps)
+	protected Migration(ILogger logger, IWorkspaceDefinition workspaces, params IMigrationStep[] steps)
 		: this(new(logger, workspaces, DefaultBatchSize.Default), steps) {}
 
 	protected Migration(EntityMigratorInput input, params IMigrationStep[] steps)

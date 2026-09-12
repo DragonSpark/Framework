@@ -1,4 +1,5 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators.Selectors;
+using DragonSpark.Application.AspNet.Entities.Migration.Migrators.Workspaces;
 using DragonSpark.Application.AspNet.Entities.Migration.Planning;
 using DragonSpark.Compose;
 using DragonSpark.Model.Results;
@@ -32,16 +33,15 @@ public class EntityMigrators : IEntityMigrators
 		_logger   = logger;
 	}
 
-	public Array<IEntityMigrator> Get(MigrationInput parameter)
+	public Array<IEntityMigrator> Get(IWorkspaceDefinition parameter)
 	{
-		var (source, destination) = parameter;
-		var       order   = _order.Get(source.Model);
-		using var results = _results.Get(new(order, destination.Model));
+		var       order   = _order.Get(parameter.Source.Model);
+		using var results = _results.Get(new(order, parameter.Model));
 		using var result  = ArrayBuilder.New<IEntityMigrator>(results.Length);
 		
 		foreach (var item in results)
 		{
-			var migrator = _selector.Get(new(source, destination, item));
+			var migrator = _selector.Get(new(parameter, item));
 			if (migrator is not null)
 			{
 				result.UncheckedAdd(migrator);

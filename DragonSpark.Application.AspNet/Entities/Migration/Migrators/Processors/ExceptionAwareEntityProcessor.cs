@@ -18,7 +18,7 @@ sealed class ExceptionAwareEntityProcessor<TFrom, TTo> : IEntityProcessor<TFrom>
 		}
 		catch (Exception e)
 		{
-			var ((logger, _, _, _, _, _), _) = parameter;
+			var ((logger, _, _, _, _), _) = parameter;
 			logger.LogError(e, "{From} -> {To} - A problem was encountered while mapping these entities", typeof(TFrom),
 			                typeof(TTo));
 			throw;

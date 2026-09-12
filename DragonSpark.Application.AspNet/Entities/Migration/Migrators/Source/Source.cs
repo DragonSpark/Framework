@@ -8,5 +8,5 @@ public sealed class Source<T> : ISource<T>
 
 	Source() {}
 
-	public IQueryable<T> Get(Stop<SourceInput<T>> parameter) => parameter.Subject.From;
+	public IQueryable<T> Get(Stop<SourceInput<T>> parameter) => parameter.Subject.Source;
 }

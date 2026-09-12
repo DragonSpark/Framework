@@ -14,7 +14,7 @@ sealed class NamedDestination : IDestination<Dictionary<string, object>>
 	public async IAsyncEnumerable<DbContext> Get(
 		Stop<DestinationInput<Dictionary<string, object>>> parameter)
 	{
-		var ((_, _, destination, from, _), stop) = parameter;
+		var ((_, definition, from, _), stop) = parameter;
 
 		foreach (var item in from.Open())
 		{
@@ -34,7 +34,7 @@ sealed class NamedDestination : IDestination<Dictionary<string, object>>
 			           	);
 			           """;
 
-			await destination.Database.ExecuteSqlRawAsync(sql, values, stop).Off();
+			await definition.Database.ExecuteSqlRawAsync(sql, values, stop).Off();
 		}
 
 		yield break;

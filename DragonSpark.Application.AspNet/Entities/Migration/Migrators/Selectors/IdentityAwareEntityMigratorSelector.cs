@@ -23,7 +23,7 @@ sealed class IdentityAwareEntityMigratorSelector : IEntityMigratorSelector
 		var previous = _previous.Get(parameter);
 		if (previous?.Get() is var (_, to))
 		{
-			var (_, destination, _) = parameter;
+			var (destination, _) = parameter;
 			var entityType = destination.Model.FindEntityType(to);
 			if (entityType is not null && _identity.Get(entityType))
 			{

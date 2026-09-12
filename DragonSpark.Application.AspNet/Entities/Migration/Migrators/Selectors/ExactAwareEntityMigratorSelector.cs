@@ -24,6 +24,6 @@ sealed class ExactAwareEntityMigratorSelector : IEntityMigratorSelector
 	public IEntityMigrator? Get(EntityMigratorSelectorInput parameter)
 		=> _matches.Contains(parameter.Result.From.ClrType)
 		   && parameter.Result is MatchedEntityComparisonResult(var from, var to)
-			   ? _exact.Get(new(parameter.Source, parameter.Workspaces, from, to))
+			   ? _exact.Get(new(parameter.Definition, from, to))
 			   : _previous.Get(parameter);
 }

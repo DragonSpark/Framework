@@ -1,20 +1,21 @@
-﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators;
+﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators.Workspaces;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection.Stores;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Identity;
 
 sealed class EntityMap<TFrom, TTo> : IEntityMap<TFrom, TTo> where TFrom : class where TTo : class
 {
-	readonly IOriginAware              _workspaces;
-	readonly IBuildStore<TFrom, TTo>   _build;
+	readonly IResult<Workspace>      _enhanced;
+	readonly IBuildStore<TFrom, TTo> _build;
 
-	public EntityMap(IOriginAware workspaces) : this(workspaces, BuildStore<TFrom, TTo>.Default) {}
+	public EntityMap(IEntities entities) : this(entities.Enhanced, BuildStore<TFrom, TTo>.Default) {}
 
-	public EntityMap(IOriginAware workspaces, IBuildStore<TFrom, TTo> build)
+	public EntityMap(IResult<Workspace> enhanced, IBuildStore<TFrom, TTo> build)
 	{
-		_workspaces = workspaces;
+		_enhanced = enhanced;
 		_build = build;
 	}
 
@@ -22,7 +23,7 @@ sealed class EntityMap<TFrom, TTo> : IEntityMap<TFrom, TTo> where TFrom : class 
 		Stop<IReadOnlyCollection<TFrom>> parameter)
 	{
 		var (subject, stop) = parameter;
-		await using var workspace = _workspaces.Origin();
+		await using var workspace = _enhanced.Get();
 
 		var store = await _build.Off(new(new(workspace, subject), stop));
 		

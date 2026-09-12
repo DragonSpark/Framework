@@ -26,8 +26,8 @@ sealed class LocateAwareEntry<TFrom, TTo> : IEntry<TFrom, TTo> where TTo : class
 
 	public async ValueTask<Entry<TTo>> Get(Stop<MappingInput<TFrom>> parameter)
 	{
-		var ((workspaces, _, page, current), stop) = parameter;
-		var map = await _maps.Get(workspaces.To<IOriginAware>()).Off(new(page.Open(), stop));
+		var ((entities, _, page, current), stop) = parameter;
+		var map = await _maps.Get(entities).Off(new(page.Open(), stop));
 		var key = _key.Get(current);
 		var pop = map.TryPop(key, out var existing);
 		return pop ? existing : await _previous.Off(parameter);
