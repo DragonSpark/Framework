@@ -29,17 +29,15 @@ class EntityProcessorBase<TFrom, TTo> : IEntityProcessor<TFrom> where TFrom : cl
 		{
 			logger.LogInformation("{From} -> {To}: Starting with {Total} items...", A.Type<TFrom>(), A.Type<TTo>(),
 			                      total);
-			
-			var watch    = Stopwatch.StartNew();
+
+			var watch = Stopwatch.StartNew();
 			var graph = 0u;
-			var count    = 0u;
+			var count = 0u;
 
 			await foreach (var page in _source.Get(parameter).AsAsyncEnumerable().Chunk(size).WithCancellation(stop))
 			{
-				// TODO:
-				// await using var transaction = await workspaces.Database.BeginTransactionAsync(stop).Off();
 				count += (uint)page.Length;
-				logger.LogInformation("{From} -> {To}: Processing {Page} Items {Count}/{Total} ...", 
+				logger.LogInformation("{From} -> {To}: Processing {Page} Items {Count}/{Total} ...",
 				                      A.Type<TFrom>(), A.Type<TTo>(), page.Length, count, total);
 				await foreach (var workspace in
 				               _destination.Get(new(new(logger, entities, page, total), stop)))
@@ -52,7 +50,6 @@ class EntityProcessorBase<TFrom, TTo> : IEntityProcessor<TFrom> where TFrom : cl
 				}
 			}
 
-
 			logger.LogInformation("{From} -> {To}: Batch of {Count} processed in {Elapsed:mm\\:ss\\.fff} ({Rate:F1} entities/sec)",
 			                      A.Type<TFrom>(), A.Type<TTo>(), graph, watch.Elapsed,
 			                      graph / watch.Elapsed.TotalSeconds);
@@ -63,19 +60,3 @@ class EntityProcessorBase<TFrom, TTo> : IEntityProcessor<TFrom> where TFrom : cl
 		}
 	}
 }
-// TODO
-/*sealed class TransactionAwareWorkspaces : IWorkspaces
-{
-	readonly IWorkspaces _workspaces;
-
-	public TransactionAwareWorkspaces(IWorkspaces workspaces)
-	{
-		_workspaces = workspaces;
-	}
-
-	public Workspace Get() => _workspaces.Get();
-
-	public DatabaseFacade Database => _workspaces.Database;
-
-	public IModel Model => _workspaces.Model;
-}*/

@@ -5,7 +5,13 @@ namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
 public static class Extensions
 {
-	public static EntityMigratorRegistration Registered(this IEntityMigrator @this) => new(@this);
+	extension(IEntityMigrator @this)
+	{
+		public EntityMigratorRegistration Registered() => new(@this);
+
+		public IEntityMigrator AsPost(IWorkspaceDefinition definition)
+			=> new PostEntityMigrator(@this, definition);
+	}
 
 	public static IEntityMigrators Configured(this IEntityMigrators @this, Action<IWorkspaceDefinition> configure)
 		=> new ConfiguredEntityMigrators(@this, configure);
@@ -14,4 +20,6 @@ public static class Extensions
 
 	public static IQueryable<T> Exact<T>(this DbSet<T> @this) where T : class
 		=> Migrators.ExactSet<T>.Default.Get(@this);
+
+	
 }
