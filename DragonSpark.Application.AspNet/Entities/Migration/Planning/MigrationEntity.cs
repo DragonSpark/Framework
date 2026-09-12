@@ -8,5 +8,5 @@ sealed class MigrationEntity : Condition<IEntityType>
 {
 	public static MigrationEntity Default { get; } = new();
 
-	MigrationEntity() : base(x => x.IsOwned() && x.GetViewName() is null && x.FindPrimaryKey() != null) {}
+	MigrationEntity() : base(x => !x.IsOwned() && x.GetViewName() is null && x.FindPrimaryKey() != null) {}
 }
