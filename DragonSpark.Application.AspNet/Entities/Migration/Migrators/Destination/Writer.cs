@@ -1,20 +1,27 @@
-﻿using DragonSpark.Compose;
+﻿using DragonSpark.Application.AspNet.Diagnostics;
+using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Runtime.Invocation;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators.Destination;
 
 sealed class Writer<TFrom, TTo> : IWriter<TFrom> where TFrom : class where TTo : class
 {
-	readonly IElement<TFrom, TTo> _element;
-	readonly ushort               _parallelism;
+	readonly IElement<TFrom, TTo>  _element;
+	readonly ushort                _parallelism;
+	readonly ICondition<Exception> _process;
 
 	public Writer(IElement<TFrom, TTo> element) : this(element, MaximumParallelism.Default) {}
 
 	public Writer(IElement<TFrom, TTo> element, ushort parallelism)
+		: this(element, parallelism, ShouldProcess.Default) {}
+
+	public Writer(IElement<TFrom, TTo> element, ushort parallelism, ICondition<Exception> process)
 	{
 		_element     = element;
 		_parallelism = parallelism;
+		_process     = process;
 	}
 
 	public async Task Get(Stop<WriterInput<TFrom>> parameter)
@@ -29,7 +36,7 @@ sealed class Writer<TFrom, TTo> : IWriter<TFrom> where TFrom : class where TTo :
 
 			writer.Complete();
 		}
-		catch (Exception ex)
+		catch (Exception ex) when (_process.Get(ex))
 		{
 			writer.Complete(ex);
 		}

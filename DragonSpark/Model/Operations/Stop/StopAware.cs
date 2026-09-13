@@ -11,7 +11,7 @@ public class StopAware : Select<CancellationToken, ValueTask>, IStopAware
 
 public class StopAware<T> : Operation<Stop<T>>, IStopAware<T>
 {
-    protected StopAware(ISelect<Stop<T>, ValueTask> select) : base(select) {}
+    protected StopAware(ISelect<Stop<T>, ValueTask> previous) : base(previous) {}
 
     public StopAware(Func<Stop<T>, ValueTask> select) : base(select) {}
 }

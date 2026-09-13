@@ -2,6 +2,7 @@ using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
+using System.Collections.Immutable;
 
 namespace DragonSpark.Azure.Storage;
 
@@ -11,30 +12,26 @@ sealed class DeleteContents : IDeleteContents
 
 	public DeleteContents(BlobContainerClient client) => _client = client;
 
-	public async ValueTask<bool> Get(Stop<string> parameter)
+	public async ValueTask<ImmutableArray<DeleteContentResult>> Get(Stop<string> parameter)
 	{
 		var (subject, stop) = parameter;
-		var prefix = subject.EndsWith('/') ? subject : $"{subject}/";
-		var result = true;
-
+		var prefix  = subject.EndsWith('/') ? subject : $"{subject}/";
+		var builder = ImmutableArray.CreateBuilder<DeleteContentResult>();
 		await foreach (var page in _client.GetBlobsAsync(new() { Prefix = prefix }, cancellationToken: stop)
 		                                  .AsPages()
 		                                  .ConfigureAwait(false))
 		{
-			foreach (var item in page.Values)
+			foreach (var item in page.Values.Where(x => x.Name is not null).Select(x => x.Name.Verify()))
 			{
-				if (item?.Name == null) continue;
-
-				var response = await _client.GetBlobClient(item.Name)
-				                            .DeleteIfExistsAsync(DeleteSnapshotsOption.IncludeSnapshots, cancellationToken: stop)
+				var response = await _client.GetBlobClient(item)
+				                            .DeleteIfExistsAsync(DeleteSnapshotsOption.IncludeSnapshots,
+				                                                 cancellationToken: stop)
 				                            .Off();
-				if (!response.Value)
-				{
-					result = false; 
-				}
+				builder.Add(new(item, response.Value));
 			}
 		}
 
+		var result = builder.ToImmutable();
 		return result;
 	}
 }

@@ -1,4 +1,5 @@
-﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators.Selectors;
+﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators;
+using DragonSpark.Application.AspNet.Entities.Migration.Migrators.Selectors;
 using DragonSpark.Application.AspNet.Entities.Migration.Steps;
 using DragonSpark.Compose;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,9 @@ public static class Extensions
 			=> new ConstraintAwareMigrationSteps(@this, destination.Database);
 
 		public IMigrationSteps WithName(string name) => new NameAwareMigrationSteps(@this, name);
+
+		public IMigrationSteps WithSupplemental(IEntityMigrator supplemental)
+			=> new SupplementalSteps(@this, supplemental);
 	}
 
 	extension(IEntityMigratorSelector @this)

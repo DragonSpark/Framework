@@ -1,4 +1,5 @@
-﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators.Destination;
+﻿using DragonSpark.Application.AspNet.Diagnostics;
+using DragonSpark.Application.AspNet.Entities.Migration.Migrators.Destination;
 using DragonSpark.Application.AspNet.Entities.Migration.Migrators.Processors;
 using DragonSpark.Application.AspNet.Entities.Migration.Migrators.Workspaces;
 using DragonSpark.Compose;
@@ -54,7 +55,7 @@ public class EntityMigratorBase<TFrom, TTo> : Instance<EntityTypeMapping>, IEnti
 			var entities = new Workspaces.Entities(definition, origin, enhanced);
 			await _processor.Off(new(new(logger, entities, query, size, total.Grade()), stop));
 		}
-		catch (Exception e)
+		catch (Exception e) when (ShouldProcess.Default.Get(e))
 		{
 			logger.LogError(e, "A problem was encountered while processing the entities {From} -> {To}", typeof(TFrom),
 			                typeof(TTo));
