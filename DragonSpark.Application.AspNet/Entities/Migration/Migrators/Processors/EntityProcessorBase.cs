@@ -48,6 +48,7 @@ class EntityProcessorBase<TFrom, TTo> : IEntityProcessor<TFrom> where TFrom : cl
 						graph += save;
 					}
 				}
+				entities.Origin.ChangeTracker.Clear();
 			}
 
 			logger.LogInformation("{From} -> {To}: Batch of {Count} processed in {Elapsed:mm\\:ss\\.fff} ({Rate:F1} entities/sec)",
