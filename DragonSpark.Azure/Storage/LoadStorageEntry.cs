@@ -13,7 +13,7 @@ sealed class LoadStorageEntry : ILoadStorageEntry
 
 	public LoadStorageEntry(IFormatter<EntryInput> name) => _name = name;
 
-	public ValueTask<IStorageEntry> Get(Stop<EntryInput> parameter)
+	public ValueTask<IStorageEntry?> Get(Stop<EntryInput> parameter)
 	{
 		var ((client, model), _) = parameter;
 		var name = _name.Get(parameter);

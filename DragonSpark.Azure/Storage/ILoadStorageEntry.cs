@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Azure.Storage;
 
-public interface ILoadStorageEntry : IStopAware<EntryInput, IStorageEntry>;
+public interface ILoadStorageEntry : IStopAware<EntryInput, IStorageEntry?>;
