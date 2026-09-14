@@ -10,7 +10,7 @@ sealed class SelectUnsentNotifications
 	public static SelectUnsentNotifications Default { get; } = new();
 
 	SelectUnsentNotifications()
-		: base((p, x) => x.AvailableAt <= p,
+		: base((p, x) => x.AvailableAt == null || x.AvailableAt <= p,
 		       (d, p, q) => q.OrderBy(x => x.AvailableAt)
 		                     .Take(100)
 		                     .Select(x => new DurableMessageProperties(x.Id, x.Destination,
