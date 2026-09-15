@@ -21,12 +21,16 @@ sealed class Copy : ICopy
 
 	public async ValueTask<IStorageEntry> Get(Stop<DestinationInput> parameter)
 	{
-		var ((entry, destination), stop) = parameter;
-		var client = _client.GetBlobClient(destination);
-		var operation = await client.StartCopyFromUriAsync(entry.Properties.Identity, cancellationToken: stop)
-		                            .Off();
-		await operation.WaitForCompletionAsync(stop).Off();
-		var result = await _entry.Off(new(client, stop));
+		var ((entry, to, overwrite), stop) = parameter;
+		var destination = _client.GetBlobClient(to);
+		if (overwrite)
+		{
+			await destination.DeleteIfExistsAsync(cancellationToken: stop).Off();
+		}
+
+		var copy = await destination.StartCopyFromUriAsync(entry.Properties.Identity, cancellationToken: stop).Off();
+		await copy.WaitForCompletionAsync(stop).Off();
+		var result = await _entry.Off(new(destination, stop));
 		return result;
 	}
 }

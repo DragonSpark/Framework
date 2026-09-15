@@ -3,4 +3,4 @@ using System.Drawing.Imaging;
 
 namespace DragonSpark.Drawing;
 
-public abstract class PngFromBitmap(Bitmap source) : LoadImage(source, ImageFormat.Png);
+public abstract class PngFromBitmap(Bitmap source) : BitmapDataImage(source, ImageFormat.Png);

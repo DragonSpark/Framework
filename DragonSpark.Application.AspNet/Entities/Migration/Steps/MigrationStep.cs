@@ -13,7 +13,7 @@ public sealed class MigrationStep : IMigrationBody
 
 	public async ValueTask Get(Stop<EntityMigratorInput> parameter)
 	{
-		var ((logger, _, _), _) = parameter;
+		var ((logger, _, _), _) = parameter; // TODO:
 		var migrators = _migrators.Open();
 		for (var index = 0; index < migrators.Length; index++)
 		{
