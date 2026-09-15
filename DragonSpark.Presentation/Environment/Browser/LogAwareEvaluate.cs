@@ -1,4 +1,4 @@
-﻿using DragonSpark.Compose;
+using DragonSpark.Compose;
 using DragonSpark.Diagnostics.Logging;
 using DragonSpark.Model.Operations;
 using Microsoft.JSInterop;
@@ -19,7 +19,8 @@ sealed class LogAwareEvaluate : IEvaluate
 		}
 		catch (JSException e)
 		{
-			throw new TemplateException("Could not evaluate {Payload}", e, parameter);
+			var (subject, _) = parameter;
+			throw new TemplateException("Could not evaluate {Payload}", e, subject);
 		}
 	}
 }
