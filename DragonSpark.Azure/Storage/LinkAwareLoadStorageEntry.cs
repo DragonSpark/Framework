@@ -19,7 +19,7 @@ sealed class LinkAwareLoadStorageEntry : ILoadStorageEntry
 		_entry    = entry;
 	}
 
-	public async ValueTask<IStorageEntry> Get(Stop<EntryInput> parameter)
+	public async ValueTask<IStorageEntry?> Get(Stop<EntryInput> parameter)
 	{
 		var ((client, properties), stop) = parameter;
 
@@ -27,8 +27,16 @@ sealed class LinkAwareLoadStorageEntry : ILoadStorageEntry
 		while (input.Properties.Metadata.Count > 0 && _entry.Get(input.Properties.Metadata) is {} path)
 		{
 			var next     = input.Client.GetParentBlobContainerClient().GetBlobClient(path);
-			var response = await next.GetPropertiesAsync(cancellationToken: stop).Off();
-			input = new(next, response.Value);
+			if (await next.ExistsAsync(stop).Off())
+			{
+				var response = await next.GetPropertiesAsync(cancellationToken: stop).Off();
+				input = new(next, response.Value);	
+			}
+			else
+			{
+				return null;
+			}
+			
 		}
 
 		return await _previous.Off(new(input, stop));

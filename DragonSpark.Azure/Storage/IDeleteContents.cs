@@ -1,5 +1,6 @@
-using DragonSpark.Model.Operations.Selection.Stop.Conditions;
+using DragonSpark.Model.Operations.Selection.Stop;
+using System.Collections.Immutable;
 
 namespace DragonSpark.Azure.Storage;
 
-public interface IDeleteContents : IDepending<string>;
+public interface IDeleteContents : IStopAware<string, ImmutableArray<DeleteContentResult>>;

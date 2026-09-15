@@ -1,4 +1,5 @@
-﻿using DragonSpark.Compose;
+﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators.Workspaces;
+using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Sequences;
 
@@ -12,5 +13,5 @@ public sealed class DeferredEntityMigrators : IEntityMigrators
 
 	public DeferredEntityMigrators(IResult<IEntityMigrators> previous) => _previous = previous;
 
-	public Array<IEntityMigrator> Get(MigrationInput parameter) => _previous.Get().Get(parameter);
+	public Array<IEntityMigrator> Get(IWorkspaceDefinition parameter) => _previous.Get().Get(parameter);
 }

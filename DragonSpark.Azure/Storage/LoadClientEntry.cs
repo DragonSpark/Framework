@@ -5,7 +5,7 @@ using DragonSpark.Model.Operations.Selection.Stop;
 
 namespace DragonSpark.Azure.Storage;
 
-sealed class LoadClientEntry : IStopAware<BlobBaseClient, IStorageEntry>
+sealed class LoadClientEntry : IStopAware<BlobBaseClient, IStorageEntry?>
 {
 	public static LoadClientEntry Default { get; } = new();
 
@@ -15,11 +15,16 @@ sealed class LoadClientEntry : IStopAware<BlobBaseClient, IStorageEntry>
 
 	public LoadClientEntry(ILoadStorageEntry entry) => _entry = entry;
 
-	public async ValueTask<IStorageEntry> Get(Stop<BlobBaseClient> parameter)
+	public async ValueTask<IStorageEntry?> Get(Stop<BlobBaseClient> parameter)
 	{
 		var (subject, stop) = parameter;
-		var response = await subject.GetPropertiesAsync(cancellationToken: stop).Off();
-		var value    = response.Value;
-		return await _entry.Off(new(new(subject, value), stop));
+		if (await subject.ExistsAsync(stop).Off())
+		{
+			var response = await subject.GetPropertiesAsync(cancellationToken: stop).Off();
+			var value    = response.Value;
+			return await _entry.Off(new(new(subject, value), stop));
+		}
+
+		return null;
 	}
 }

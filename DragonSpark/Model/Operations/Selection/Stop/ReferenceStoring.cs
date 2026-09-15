@@ -3,7 +3,7 @@ using DragonSpark.Model.Selection.Stores;
 
 namespace DragonSpark.Model.Operations.Selection.Stop;
 
-public class ReferenceStoring<TIn, TOut> : Storing<TIn, TOut> where TIn : class where TOut : class?
+public class ReferenceStoring<TIn, TOut> : LockAwareStoring<TIn, TOut> where TIn : class where TOut : class?
 {
 	public ReferenceStoring(ISelect<Stop<TIn>, ValueTask<TOut>> previous) : this(previous.Get) {}
 

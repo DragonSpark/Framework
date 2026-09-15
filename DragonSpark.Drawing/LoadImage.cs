@@ -1,39 +1,44 @@
 ﻿using DragonSpark.Compose;
-using DragonSpark.Model.Operations.Results.Stop;
+using DragonSpark.Model.Operations;
+using DragonSpark.Model.Results;
 using System.Drawing;
 using System.Drawing.Imaging;
 using Image = SixLabors.ImageSharp.Image;
 
 namespace DragonSpark.Drawing;
 
-public class LoadImage : IStopAware<Image>
+public sealed class LoadImage : ILoadImage
 {
-	readonly Bitmap      _source;
-	readonly ImageFormat _format;
-	readonly object      _lock;
+	public static LoadImage Default { get; } = new();
 
-	protected LoadImage(Bitmap source, ImageFormat format) : this(source, format, new()) {}
+	LoadImage() : this(MemoryStreams.Default, "image/png") {}
 
-	protected LoadImage(Bitmap source, ImageFormat format, object @lock)
+	readonly IResult<Stream> _streams;
+	readonly string          _png;
+
+	public LoadImage(IResult<Stream> streams, string png)
 	{
-		_source = source;
-		_format = format;
-		_lock   = @lock;
+		_streams = streams;
+		_png     = png;
 	}
 
-	public ValueTask<Image> Get(CancellationToken parameter)
+	public async ValueTask<Image> Get(Stop<LoadImageInput> parameter)
 	{
-		using var stream = new MemoryStream();
-		Copy().Save(stream, _format);
-		stream.Seek(0, SeekOrigin.Begin);
-		return Image.LoadAsync(stream, parameter).ToOperation();
-	}
-
-	Bitmap Copy()
-	{
-		lock (_lock)
+		var ((stream, type), stop) = parameter;
+		try
 		{
-			return new(_source);
+			return await Image.LoadAsync(stream, stop).Off();
+		}
+		// ReSharper disable once UncatchableException
+		catch (IndexOutOfRangeException) when (type == _png)
+		{
+			stream.Position = 0;
+
+			using var       bitmap = new Bitmap(stream);
+			await using var next   = _streams.Get();
+			bitmap.Save(next, ImageFormat.Png);
+			next.Position = 0;
+			return await Image.LoadAsync(next, stop).Off();
 		}
 	}
 }

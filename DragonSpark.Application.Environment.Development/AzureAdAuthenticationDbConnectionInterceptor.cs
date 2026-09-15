@@ -13,8 +13,7 @@ sealed class AzureAdAuthenticationDbConnectionInterceptor : DbConnectionIntercep
 	public static AzureAdAuthenticationDbConnectionInterceptor Default { get; } = new();
 
 	AzureAdAuthenticationDbConnectionInterceptor()
-		: this(new DefaultAzureCredential(),
-		       new TokenRequestContext(new[] { "https://database.windows.net//.default" })) {}
+		: this(new DefaultAzureCredential(), new(["https://database.windows.net//.default"])) {}
 
 	readonly TokenCredential     _credential;
 	readonly TokenRequestContext _context;

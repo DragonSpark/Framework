@@ -44,8 +44,7 @@ public static partial class Extensions
 		                                                 string migrations)
 			=> @this.Append(new ConfigureSqlServerWithMigration(name, migrations));
 
-		public StorageConfigurationBuilder WithSqlServer<T>()
-			where T : DbContext => @this.WithSqlServer<T>(_ => {});
+		public StorageConfigurationBuilder WithSqlServer<T>() where T : DbContext => @this.WithSqlServer<T>(_ => {});
 
 		public StorageConfigurationBuilder WithSqlServer<T>(Action<SqlServerDbContextOptionsBuilder> configure)
 			where T : DbContext

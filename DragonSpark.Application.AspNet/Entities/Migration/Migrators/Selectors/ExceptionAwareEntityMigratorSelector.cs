@@ -14,7 +14,7 @@ sealed class ExceptionAwareEntityMigratorSelector : IEntityMigratorSelector
 		}
 		catch (Exception e)
 		{
-			var (_, _, result) = parameter;
+			var (_, result) = parameter;
 			throw new
 				InvalidOperationException($"A problem was encountered while selecting a migrator for {result.From}", e);
 		}

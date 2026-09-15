@@ -13,5 +13,6 @@ public sealed class EntityMigrator<TFrom, TTo> : EntityMigratorBase<TFrom, TTo> 
 
 	public EntityMigrator(Contexts<TFrom> contexts, IMap map) : base(contexts, map) {}
 
-	public EntityMigrator(Contexts<TFrom> contexts, IEntityProcessor<TFrom> processor) : base(contexts, processor) {}
+	public EntityMigrator(Contexts<TFrom> contexts, IEntityProcessor<TFrom> processor)
+		: base(contexts.Query, processor) {}
 }

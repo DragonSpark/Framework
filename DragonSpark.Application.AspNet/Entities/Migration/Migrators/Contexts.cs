@@ -3,16 +3,16 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
-public record Contexts(DbContext Source, IModel Destination, IEntityType From);
+public record Contexts(IEntityType SourceType, IModel Destination);
 
-public record Contexts<T>(DbContext Source, IModel Destination, IEntityType From, IQueryable<T> Subject)
-	: Contexts(Source, Destination, From) where T : class
+public record Contexts<T>(
+	Func<DbContext, IQueryable<T>> Query,
+	IEntityType SourceType,
+	IModel Destination)
+	: Contexts(SourceType, Destination) where T : class
 {
-	public Contexts(DbContext Source, IModel Destination, DbSet<T> subject)
-		: this(Source, Destination, subject.EntityType, subject.Exact()) {}
+	public Contexts(DbContext source, IModel destination) : this(source.Set<T>().EntityType, destination) {}
 
-	public Contexts(DbContext Source, IModel Destination) : this(Source, Destination, Source.Set<T>()) {}
-
-	public Contexts(DbContext Source, IModel Destination, string name)
-		: this(Source, Destination, Source.Set<T>(name)) {}
+	public Contexts(IEntityType SourceType, IModel Destination)
+		: this(d => d.Set<T>().Exact(), SourceType, Destination) {}
 }

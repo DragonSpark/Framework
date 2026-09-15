@@ -1,10 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators.Workspaces;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
 public readonly record struct ConstructEntityMigratorInput(
-	DbContext Source,
-	IWorkspaces Workspaces,
+	IWorkspaceDefinition Definition,
 	IEntityType From,
 	IEntityType To);
