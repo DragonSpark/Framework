@@ -20,6 +20,6 @@ public class SqlServerMigrations : ISqlServerConfiguration
 
 	public void Execute(SqlServerDbContextOptionsBuilder parameter)
 	{
-		parameter.MigrationsAssembly(_name).EnableRetryOnFailure();
+		parameter.MigrationsAssembly(_name);
 	}
 }
