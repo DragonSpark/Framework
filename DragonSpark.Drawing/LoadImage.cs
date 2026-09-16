@@ -30,13 +30,14 @@ public sealed class LoadImage : ILoadImage
 			return await Image.LoadAsync(stream, stop).Off();
 		}
 		// ReSharper disable once UncatchableException
-		catch (IndexOutOfRangeException) when (type == _png)
+		catch (IndexOutOfRangeException)
 		{
 			stream.Position = 0;
 
 			using var       bitmap = new Bitmap(stream);
 			await using var next   = _streams.Get();
-			bitmap.Save(next, ImageFormat.Png);
+			var             format = type == _png ? ImageFormat.Png : ImageFormat.Jpeg;
+			bitmap.Save(next, format);
 			next.Position = 0;
 			return await Image.LoadAsync(next, stop).Off();
 		}
