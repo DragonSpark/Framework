@@ -24,6 +24,6 @@ sealed class ComposePage<TIn, T> : IStopAware<DataManagerRequest, DataResult> wh
 		var (subject, stop) = parameter;
 		var input = _select.Get(subject);
 		var (page, total)  = await _page(new((TIn)input, stop)).Off();
-		return new() { Result = page, Count = total?.Degrade() ?? page.Length };
+		return new() { Result = page, Count = total?.Contract().Degrade() ?? page.Length };
 	}
 }
