@@ -2,6 +2,8 @@
 using DragonSpark.Application.AspNet.Entities.Migration.Migrators.Selectors;
 using DragonSpark.Application.AspNet.Entities.Migration.Steps;
 using DragonSpark.Compose;
+using DragonSpark.Model.Operations;
+using DragonSpark.Model.Selection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
@@ -21,7 +23,7 @@ public static class Extensions
 
 		public IMigrationSteps WithName(string name) => new NameAwareMigrationSteps(@this, name);
 
-		public IMigrationSteps WithSupplemental(IEntityMigrator supplemental)
+		public IMigrationSteps WithSupplemental(ISelect<Stop<EntityMigratorInput>, ValueTask> supplemental)
 			=> new SupplementalSteps(@this, supplemental);
 	}
 

@@ -26,6 +26,6 @@ sealed class ProcessRequest<T> : IDataRequest
 		var (subject, stop) = parameter;
 		var input = _select.Get(subject);
 		var (page, total) = await _pages.Off(new(input, stop));
-		return new() { Result = page, Count = total?.Degrade() ?? -1 };
+		return new() { Result = page, Count = total?.Contract().Degrade() ?? -1 };
 	}
 }

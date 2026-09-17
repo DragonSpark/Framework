@@ -1,9 +1,9 @@
-using System.Collections.ObjectModel;
-using System.Runtime.CompilerServices;
 using DragonSpark.Model;
 using DragonSpark.Model.Selection;
 using DragonSpark.Runtime;
 using JetBrains.Annotations;
+using System.Collections.ObjectModel;
+using System.Runtime.CompilerServices;
 
 namespace DragonSpark.Compose;
 
@@ -137,7 +137,7 @@ public static partial class ExtensionMethods
 
 	public static short Degrade(this in ushort @this) => (short)@this;
 
-	public static int Degrade(this in ulong @this) => (int)@this;
+	public static long Degrade(this in ulong @this) => (long)@this;
 
 	public static int Degrade(this in uint @this) => (int)@this;
 
