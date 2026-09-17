@@ -2,27 +2,26 @@
 {
     @ChildContent(_identity.Value)
 }
-else
-{
+else{
     @NotFoundTemplate
 }
 
 @code {
-    uint? _identity;
+    ulong? _identity;
 
     protected override void OnParametersSet()
     {
-        _identity = uint.TryParse(Input, out var identity) ? identity : null;
+        _identity = ulong.TryParse(Input, out var identity) ? identity : null;
         base.OnParametersSet();
     }
+
 
     [Parameter]
     public required string Input { get; set; }
 
     [Parameter]
-    public RenderFragment<uint> ChildContent { get; set; } = null!;
+    public RenderFragment<ulong> ChildContent { get; set; } = null!;
 
     [Parameter]
     public RenderFragment NotFoundTemplate { get; set; } = @<div>The identity could not be determined</div>;
-
 }
