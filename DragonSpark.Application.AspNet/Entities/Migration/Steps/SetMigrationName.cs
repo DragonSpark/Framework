@@ -24,6 +24,7 @@ sealed class SetMigrationName : IMigrationStep
 		var ((_, workspaces, _), _) = parameter;
 		using var workspace = workspaces.Get();
 		_store.Assign(workspace.Destination.Model, _name);
+		_store.Assign(workspaces.Model, _name);
 		return ValueTask.CompletedTask;
 	}
 }
