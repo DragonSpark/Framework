@@ -27,7 +27,7 @@
 
 	void OnChanged(QueryRenderState parameter)
 	{
-		_ready = parameter > QueryRenderState.Loading;
+		_ready |= parameter > QueryRenderState.Loading;
 	}
 
 }
