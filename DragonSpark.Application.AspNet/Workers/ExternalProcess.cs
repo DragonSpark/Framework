@@ -1,8 +1,5 @@
-using Microsoft.EntityFrameworkCore;
-
 namespace DragonSpark.Application.AspNet.Workers;
 
-[Index(nameof(Created), IsDescending = [true])]
 public abstract class ExternalProcess
 {
 	public Guid Id { get; set; }
