@@ -12,6 +12,9 @@ public class Where<T> : Where<None, T>, IQuery<T>
 
 	public Where(Expression<Func<DbContext, IQueryable<T>>> previous, Expression<Func<T, bool>> where)
 		: base(previous.Then().Accept(), where) {}
+
+	public Where(Expression<Func<DbContext, IQueryable<T>>> previous, Expression<Func<DbContext, T, bool>> where)
+		: base((d, _) => previous.Invoke(d), (d, _, x) => where.Invoke(d, x)) {}
 }
 
 public class Where<TIn, T> : Combine<TIn, T, T>
