@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using DragonSpark.Application.AspNet.Entities.Diagnostics;
 using DragonSpark.Application.AspNet.Entities.Editing;
 using DragonSpark.Application.AspNet.Entities.Transactions;
@@ -22,7 +23,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using System.Security.Claims;
 using Claim = System.Security.Claims.Claim;
 using IdentityUser = DragonSpark.Application.AspNet.Security.Identity.IdentityUser;
 
@@ -136,23 +136,19 @@ partial class Extensions
 		                                                       PageRequest page)
 			=> @this.PagingInput(new UserInput(@this.User.Number().Value(), parameter), page);
 
-		public Stop<PageQueryInput<UserInput<T>>> PagingUserInput<T>(T parameter,
-		                                                             PageRequest page)
+		public Stop<PageQueryInput<UserInput<T>>> PagingUserInput<T>(T parameter, PageRequest page)
 			=> @this.PagingInput(new UserInput<T>(@this.User.Number().Value(), parameter), page);
 
 		public Stop<PageQueryInput<T>> PagingInput<T>(T parameter, PageRequest page)
 			=> new(new(parameter, page), @this.RequestAborted);
 
-		public Stop<uint> UserInput()
-			=> new(@this.User.Number().Value(), @this.RequestAborted);
+		public Stop<uint> UserInput() => new(@this.User.Number().Value(), @this.RequestAborted);
 
 		public Stop<T> Stop<T>(T parameter) => new(parameter, @this.RequestAborted);
 
-		public Stop<UserInput<T>> UserInput<T>(T subject)
-			=> new(@this.User.Input(subject), @this.RequestAborted);
+		public Stop<UserInput<T>> UserInput<T>(T subject) => new(@this.User.Input(subject), @this.RequestAborted);
 
-		public Stop<UserInput> UserInput(Guid subject)
-			=> new(@this.User.Input(subject), @this.RequestAborted);
+		public Stop<UserInput> UserInput(Guid subject) => new(@this.User.Input(subject), @this.RequestAborted);
 	}
 
 	/**/
