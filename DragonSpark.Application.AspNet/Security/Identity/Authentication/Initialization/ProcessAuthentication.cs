@@ -22,7 +22,7 @@ sealed class ProcessAuthentication<T> : IProcessAuthentication<T> where T : Iden
 
 	public async ValueTask Get(AuthenticationState<T> parameter)
 	{
-		await _state.NotifyChangedAsync(parameter).Off();
+		await _state.NotifyChangedAsync(parameter).On();
 		var status = _status.Get(new(parameter.User, parameter.Profile));
 		await _profile.NotifyChangedAsync(status).Off();
 	}
