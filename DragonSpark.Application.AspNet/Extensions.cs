@@ -132,8 +132,7 @@ partial class Extensions
 		public Stop<PageQueryInput<uint>> PagingUserInput(PageRequest page)
 			=> @this.PagingInput(@this.User.Number().Value(), page);
 
-		public Stop<PageQueryInput<UserInput>> PagingUserInput(Guid parameter,
-		                                                       PageRequest page)
+		public Stop<PageQueryInput<UserInput>> PagingUserInput(Guid parameter, PageRequest page)
 			=> @this.PagingInput(new UserInput(@this.User.Number().Value(), parameter), page);
 
 		public Stop<PageQueryInput<UserInput<T>>> PagingUserInput<T>(T parameter, PageRequest page)
