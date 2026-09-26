@@ -8,12 +8,9 @@ public sealed class RelayRedirectResult : RedirectResult, IText
 	readonly string _url;
 	readonly string _cacheControl;
 
-	public RelayRedirectResult(string url) : this(url, DefaultRequestExpiration.Default) {}
+	public RelayRedirectResult(string url) : this(url, DefaultCacheControl.Default) {}
 
-	public RelayRedirectResult(string url, TimeSpan expire)
-		: this(url, expire == TimeSpan.Zero
-			            ? "no-cache, no-store, must-revalidate"
-			            : $"private, max-age={expire.TotalSeconds:0}") {}
+	public RelayRedirectResult(string url, TimeSpan expire) : this(url, CacheControl.Default.Get(expire)) {}
 
 	public RelayRedirectResult(string url, string cacheControl) : base(url)
 	{
