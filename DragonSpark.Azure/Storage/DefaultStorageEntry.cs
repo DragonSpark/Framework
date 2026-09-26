@@ -38,24 +38,26 @@ sealed class DefaultStorageEntry : IStorageEntry
 	public async ValueTask<Uri> Get(Stop<RelayInput> parameter)
 	{
 		var ((name, contentType, start, access, content), stop) = parameter;
-		var time = _time.Get();
+		var time    = _time.Get();
+		var expires = time + access;
+		var starts  = time + start;
 		var builder = new BlobSasBuilder
 		{
 			BlobContainerName  = _client.BlobContainerName,
 			BlobName           = _client.Name,
 			Resource           = "b",
-			StartsOn           = time.Add(start),
+			StartsOn           = starts,
 			ContentDisposition = name is not null ? @$"attachment; filename=""{name}""" : "inline",
 			ContentType        = contentType,
 			CacheControl       = $"private, max-age={content.TotalSeconds:0}",
-			ExpiresOn          = time.Add(access),
+			ExpiresOn          = expires,
 			Protocol           = SasProtocol.Https
 		};
 		builder.SetPermissions(BlobSasPermissions.Read);
 
 		var key = await _client.GetParentBlobContainerClient()
 		                       .GetParentBlobServiceClient()
-		                       .GetUserDelegationKeyAsync(new(time.Add(access)) { StartsOn = time.Add(start) }, stop)
+		                       .GetUserDelegationKeyAsync(new(expires) { StartsOn = starts }, stop)
 		                       .Off();
 
 		var parameters = builder.ToSasQueryParameters(key.Value, _client.AccountName);
