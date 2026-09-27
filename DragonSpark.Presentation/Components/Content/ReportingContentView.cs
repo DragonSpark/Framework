@@ -58,14 +58,6 @@ partial class ReportingContentView<TIn, TOut> where TIn : class
 	{
 		_exception = parameter.Exception;
 		_ready     = parameter is { IsCompletedSuccessfully: true };
-		try
-		{
-			StateHasChanged();
-		}
-		catch (Exception e)
-		{
-			Console.WriteLine(e);
-			throw;
-		}
+		StateHasChanged();
 	}
 }
