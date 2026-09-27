@@ -10,7 +10,7 @@ namespace DragonSpark.Application.AspNet.Entities.Migration.Identity;
 
 sealed class BuildStore<TFrom, TTo> : IBuildStore<TFrom, TTo> where TFrom : class where TTo : class
 {
-	public static BuildStore<TFrom,TTo> Default { get; } = new();
+	public static BuildStore<TFrom, TTo> Default { get; } = new();
 
 	BuildStore() : this(Keys.Default.Get, StructuralEqualityComparer.Default, BatchSize.Default) {}
 
@@ -25,7 +25,8 @@ sealed class BuildStore<TFrom, TTo> : IBuildStore<TFrom, TTo> where TFrom : clas
 		_size     = size;
 	}
 
-	public async ValueTask<IDictionary<object, Migrators.Instances.Entry<TTo>>> Get(Stop<BuildStoreInput<TFrom>> parameter)
+	public async ValueTask<IDictionary<object, Migrators.Instances.Entry<TTo>>> Get(
+		Stop<BuildStoreInput<TFrom>> parameter)
 	{
 		var (((from, destination), page), stop) = parameter;
 		var       to     = destination.Set<TTo>();
@@ -34,10 +35,8 @@ sealed class BuildStore<TFrom, TTo> : IBuildStore<TFrom, TTo> where TFrom : clas
 
 		foreach (var chunk in keys.Open().Chunk(_size))
 		{
-			var where    = new WhereKeysExist<TTo>(chunk).Get(to.EntityType);
-			var existing = await to.Where(where).ToArrayAsync(stop).Off();
-
-			foreach (var x in existing)
+			var where = new WhereKeysExist<TTo>(chunk).Get(to.EntityType);
+			await foreach (var x in to.Where(where).AsAsyncEnumerable().WithCancellation(stop))
 			{
 				var key = _keys(to.Entry(x));
 				result[key] = new Migrators.Instances.Entry<TTo>(x, to.Entry(x).CurrentValues);

@@ -6,5 +6,7 @@ public sealed class DefaultRequestExpiration : Instance<TimeSpan>
 {
 	public static DefaultRequestExpiration Default { get; } = new();
 
-	DefaultRequestExpiration() : base(DefaultAccessExpiration.Default.Get() / 2) {}
+	DefaultRequestExpiration() : this(DefaultAccessExpiration.Default) {}
+
+	public DefaultRequestExpiration(TimeSpan access) : base(access / 2) {}
 }

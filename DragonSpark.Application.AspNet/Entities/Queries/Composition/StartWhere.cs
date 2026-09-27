@@ -34,6 +34,8 @@ public class StartWhere<T> : Where<T> where T : class
 {
 	protected StartWhere(Expression<Func<T, bool>> where) : base(Set<T>.Default, where) {}
 
+	public StartWhere(Expression<Func<DbContext, T, bool>> where) : base(d => d.Set<T>(), where) {}
+
 	protected StartWhere(Expression<Func<IQueryable<T>, IQueryable<T>>> previous, Expression<Func<T, bool>> where)
 		: base(context => previous.Invoke(context.Set<T>()), where) {}
 }
