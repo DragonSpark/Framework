@@ -26,6 +26,7 @@ sealed class QueriedPages<T> : IPages<T>
 		var (subject, stop) = parameter;
 		using var session = await _queries.Off(stop);
 		var (query, count) = await _compose.Off(new(new(subject, session.Subject), stop));
+		throw new InvalidOperationException();
 		var page = await _materialize.Off(new(query, stop));
 		return new(page, count);
 	}
