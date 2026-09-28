@@ -6,5 +6,5 @@ namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
 
 sealed class PolicyAwarePages<T> : PolicyAware<PageInput, PageResult<T>>, IPages<T>
 {
-	public PolicyAwarePages(IPages<T> previous) : base(previous, DurableConnectionPolicy.Default) {}
+	public PolicyAwarePages(IPages<T> previous) : base(previous, DurableDataConnectionPolicy.Default) {}
 }

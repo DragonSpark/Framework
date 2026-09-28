@@ -6,5 +6,5 @@ namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators.Destinatio
 
 sealed class PolicyAwareEach<T> : PolicyAware<T> where T : class
 {
-	public PolicyAwareEach(IStopAware<T> previous) : base(previous, DurableConnectionPolicy.Default) {}
+	public PolicyAwareEach(IStopAware<T> previous) : base(previous, DurableDataConnectionPolicy.Default) {}
 }

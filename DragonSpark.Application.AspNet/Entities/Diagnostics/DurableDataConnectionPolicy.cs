@@ -6,12 +6,12 @@ using Policy = Polly.Policy;
 
 namespace DragonSpark.Application.AspNet.Entities.Diagnostics;
 
-public sealed class DurableConnectionPolicy : Deferred<IAsyncPolicy> // TODO: Rename DurableDataPolicy
+public sealed class DurableDataConnectionPolicy : Deferred<IAsyncPolicy>
 {
-	public static DurableConnectionPolicy Default { get; } = new();
+	public static DurableDataConnectionPolicy Default { get; } = new();
 
-	DurableConnectionPolicy() : this(IsDataException.Default.Get) {}
+	DurableDataConnectionPolicy() : this(IsDataException.Default.Get) {}
 
-	DurableConnectionPolicy(Func<Exception, bool> data)
+	DurableDataConnectionPolicy(Func<Exception, bool> data)
 		: base(Policy.Handle(data).OrInner(data).Start().Select(DefaultRetryPolicy.Default)) {}
 }
