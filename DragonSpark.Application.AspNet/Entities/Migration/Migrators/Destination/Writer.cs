@@ -31,7 +31,7 @@ sealed class Writer<TFrom, TTo> : IWriter<TFrom> where TFrom : class where TTo :
 		{
 			var options = new ParallelOptions { MaxDegreeOfParallelism = _parallelism, CancellationToken = stop };
 			await Parallel.ForEachAsync(from.Open(), options,
-			                            new Each<TFrom, TTo>(parameter, _element).Get)
+										new PolicyAwareEach<TFrom>(new Each<TFrom, TTo>(parameter, _element)).Get)
 			              .Off();
 
 			writer.Complete();
