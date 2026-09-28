@@ -12,7 +12,8 @@ sealed class Each<TFrom, TTo> : IStopAware<TFrom> where TFrom : class where TTo 
 	readonly IElement<TFrom, TTo> _element;
 	readonly IMutable<DbContext?> _logical;
 
-	public Each(WriterInput<TFrom> input, IElement<TFrom, TTo> element) : this(input, element, LogicalContext.Default) {}
+	public Each(WriterInput<TFrom> input, IElement<TFrom, TTo> element) 
+		: this(input, element, LogicalContext.Default) {}
 
 	public Each(WriterInput<TFrom> input, IElement<TFrom, TTo> element, IMutable<DbContext?> logical)
 	{
@@ -23,7 +24,7 @@ sealed class Each<TFrom, TTo> : IStopAware<TFrom> where TFrom : class where TTo 
 
 	public async ValueTask Get(Stop<TFrom> parameter)
 	{
-		var (subject, stop)                  = parameter;
+		var (subject, stop)          = parameter;
 		var (entities, page, writer) = _input;
 		var workspace = entities.Get();
 		var (source, destination) = workspace;
