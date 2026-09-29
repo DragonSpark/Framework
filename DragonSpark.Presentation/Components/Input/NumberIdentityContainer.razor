@@ -1,6 +1,6 @@
-@if (_identity.HasValue)
+@if (_identity is {} identity)
 {
-    @ChildContent(_identity.Value)
+    @ChildContent(identity)
 }
 else
 {
@@ -16,7 +16,7 @@ else
         base.OnParametersSet();
     }
 
-    [Parameter]
+    [Parameter, EditorRequired]
     public required string Input { get; set; }
 
     [Parameter]

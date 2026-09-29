@@ -1,0 +1,33 @@
+@typeparam T where T : struct
+
+@if (_identity is {} identity)
+{
+    @ChildContent(identity)
+}
+else
+{
+    @NotFoundTemplate
+}
+
+@code {
+    T? _identity;
+
+    protected override void OnParametersSet()
+    {
+        _identity = Enum.TryParse<T>(Input, IgnoreCase, out var identity) ? identity : null;
+        base.OnParametersSet();
+    }
+
+    [Parameter, EditorRequired]
+    public required string Input { get; set; }
+
+    [Parameter]
+    public required bool IgnoreCase { get; set; } = true;
+
+    [Parameter]
+    public RenderFragment<T> ChildContent { get; set; } = null!;
+
+    [Parameter]
+    public RenderFragment NotFoundTemplate { get; set; } = @<div>The enumeration value could not be determined</div>;
+
+}
