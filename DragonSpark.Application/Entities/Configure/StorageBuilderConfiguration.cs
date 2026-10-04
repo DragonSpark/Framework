@@ -12,6 +12,8 @@ public class StorageBuilderConfiguration<T> : Commands<DbContextOptionsBuilder<T
 		: base(new UseSqlServer<T>(migrations), new ConfigureApplicationServices(services),
 		       Start.A.Command(other).Get()) {}
 
+	public StorageBuilderConfiguration(params ICommand<DbContextOptionsBuilder<T>>[] items) : base(items) {}
+
 	public void Execute(DbContextOptionsBuilder parameter)
 	{
 		base.Execute(parameter.To<DbContextOptionsBuilder<T>>());
