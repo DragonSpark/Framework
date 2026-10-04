@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using DragonSpark.Application.AspNet.Entities.Diagnostics;
 using DragonSpark.Application.AspNet.Entities.Editing;
 using DragonSpark.Application.AspNet.Entities.Transactions;
@@ -23,6 +22,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System.Security.Claims;
 using Claim = System.Security.Claims.Claim;
 using IdentityUser = DragonSpark.Application.AspNet.Security.Identity.IdentityUser;
 
@@ -33,7 +33,7 @@ partial class Extensions
 	extension(IServiceCollection @this)
 	{
 		public IServiceCollection Primary<T>(Action<DbContextOptionsBuilder> configure, ushort size = 1024) where T : DbContext
-			=> Entities.Registrations<T>.Default.Parameter(@this.AddPooledDbContextFactory<T>(configure, size));
+			=> Entities.PrimaryRegistrations<T>.Default.Parameter(@this.AddPooledDbContextFactory<T>(configure, size));
 
 		public IServiceCollection Register<T>(Action<DbContextOptionsBuilder> configure, ushort size = 1024) where T : DbContext
 			=> Entities.GeneralConfiguration<T>.Default.Parameter(@this.AddPooledDbContextFactory<T>(configure, size));

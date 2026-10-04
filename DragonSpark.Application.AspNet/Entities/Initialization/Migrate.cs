@@ -10,5 +10,9 @@ public sealed class Migrate : IInitialize
 
 	Migrate() {}
 
-	public ValueTask Get(Stop<DbContext> parameter) => parameter.Subject.Database.MigrateAsync(parameter).ToOperation();
+	public ValueTask Get(Stop<DbContext> parameter)
+	{
+		var (subject, stop) = parameter;
+		return subject.Database.MigrateAsync(stop).ToOperation();
+	}
 }

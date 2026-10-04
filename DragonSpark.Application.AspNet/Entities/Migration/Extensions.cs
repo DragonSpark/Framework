@@ -40,6 +40,11 @@ public static class Extensions
 		public IEntityMigratorSelector WithExceptionAwareness() => new ExceptionAwareEntityMigratorSelector(@this);
 	}
 
+	extension(IMigration @this)
+	{
+		public ValueTask Get(CancellationToken parameter) => @this.Get(new (DefaultBatchSize.Default, parameter));
+	}
+
 	extension(IInfrastructure<IServiceProvider> @this)
 	{
 		public DbContext Context() => @this.Instance.GetRequiredService<DbContext>();

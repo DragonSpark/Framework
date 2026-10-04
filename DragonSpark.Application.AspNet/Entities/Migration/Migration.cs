@@ -10,7 +10,8 @@ namespace DragonSpark.Application.AspNet.Entities.Migration;
 
 public class Migration : IMigration
 {
-	readonly EntityMigratorInput   _input;
+	readonly ILogger               _logger;
+	readonly IWorkspaceDefinition  _workspaces;
 	readonly Array<IMigrationStep> _steps;
 
 	// ReSharper disable once TooManyDependencies
@@ -24,24 +25,20 @@ public class Migration : IMigration
 		: this(logger, definition, [.. steps.Get(migrators)]) {}
 
 	protected Migration(ILogger logger, IWorkspaceDefinition workspaces, params IMigrationStep[] steps)
-		: this(new(logger, workspaces, DefaultBatchSize.Default), steps) {}
-
-	protected Migration(EntityMigratorInput input, params IMigrationStep[] steps)
 	{
-		_input = input;
-		_steps = steps;
+		_logger     = logger;
+		_workspaces = workspaces;
+		_steps      = steps;
 	}
 
 	public async ValueTask Get(Stop<ushort> parameter)
 	{
 		var (subject, stop) = parameter;
-		var updated = _input with { BatchSize = subject };
+		var updated = new EntityMigratorInput(_logger, _workspaces, subject);
 		var input   = updated.Stop(stop);
 		foreach (var step in _steps.Open())
 		{
 			await step.Off(input);
 		}
 	}
-
-	public ValueTask Get(CancellationToken parameter) => Get(new(_input.BatchSize, parameter));
 }

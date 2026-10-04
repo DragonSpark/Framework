@@ -40,8 +40,7 @@ public static partial class Extensions
 		                                                 Action<SqlServerDbContextOptionsBuilder> configure)
 			=> @this.Append(new ConfigureSqlServer(name, configure));
 
-		public StorageConfigurationBuilder WithSqlServer(string name,
-		                                                 string migrations)
+		public StorageConfigurationBuilder WithSqlServer(string name, string migrations)
 			=> @this.Append(new ConfigureSqlServerWithMigration(name, migrations));
 
 		public StorageConfigurationBuilder WithSqlServer<T>() where T : DbContext => @this.WithSqlServer<T>(_ => {});
