@@ -2,7 +2,7 @@
 
 public class MessagingConfiguration
 {
-	public string Namespace { get; set; } = null!;
+	public required string Namespace { get; set; }
 
 	public string? Audience { get; set; }
 }

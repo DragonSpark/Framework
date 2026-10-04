@@ -66,7 +66,6 @@
     <PackageVersion Include="MatBlazor" Version="2.10.0" />
     <PackageVersion Include="Metalama.Extensions.DependencyInjection" Version="2026.1.27" />
     <PackageVersion Include="Metalama.Framework" Version="2026.1.27" />
-    <PackageVersion Include="Microsoft.ApplicationInsights" Version="3.1.2" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.Facebook" Version="$(FrameworkVersion)" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.Google" Version="$(FrameworkVersion)" />
     <PackageVersion Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="$(FrameworkVersion)" />
@@ -125,8 +124,6 @@
     <PackageVersion Include="Serilog.Extensions.Hosting" Version="10.0.0" />
     <PackageVersion Include="Serilog.Extensions.Logging" Version="10.0.0" />
     <PackageVersion Include="Serilog.Settings.Configuration" Version="10.0.1" />
-    <PackageVersion Include="Serilog.Sinks.ApplicationInsights" Version="4.0.0" />
-    <PackageVersion Include="Serilog.Sinks.AzureWebJobsTraceWriter-preview" Version="2.0.3-alpha" />
     <PackageVersion Include="Serilog.Sinks.Console" Version="6.1.1" />
     <PackageVersion Include="SerilogTracing" Version="2.4.0" />
     <PackageVersion Include="SixLabors.ImageSharp" Version="4.1.2" />
