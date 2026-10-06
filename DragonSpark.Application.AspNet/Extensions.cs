@@ -56,8 +56,7 @@ partial class Extensions
 	{
 		public uint? Number() => UserNumber.Default.Get(@this);
 
-		public ProviderIdentity AuthenticatedIdentity()
-			=> Security.Identity.AuthenticatedIdentity.Default.Get(@this);
+		public ProviderIdentity AuthenticatedIdentity() => Security.Identity.AuthenticatedIdentity.Default.Get(@this);
 
 		public ProviderIdentity Identity() => Identities.Default.Get(@this);
 
