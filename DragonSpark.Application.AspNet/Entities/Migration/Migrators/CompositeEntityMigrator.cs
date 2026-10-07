@@ -6,15 +6,17 @@ using NetFabric.Hyperlinq;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
-sealed class CompositeEntityMigrators : Instance<EntityTypeMapping>, IExtendedEntityMigrator
+public class CompositeEntityMigrator : Instance<EntityTypeMapping>, IExtendedEntityMigrator
 {
 	readonly Array<IEntityMigrator> _migrators;
 
-	public CompositeEntityMigrators(ReadOnlyMemory<IEntityMigrator> migrators)
+	public CompositeEntityMigrator(params IEntityMigrator[] migrators) : this(migrators.AsMemory()) {}
+
+	public CompositeEntityMigrator(ReadOnlyMemory<IEntityMigrator> migrators)
 		: this(migrators.AsValueEnumerable().Select(x => x.Get()).Distinct().Single().Verified(),
 		       migrators.ToArray()) {}
 
-	public CompositeEntityMigrators(EntityTypeMapping mapping, params IEntityMigrator[] migrators) : base(mapping)
+	public CompositeEntityMigrator(EntityTypeMapping mapping, params IEntityMigrator[] migrators) : base(mapping)
 		=> _migrators = migrators;
 
 	public async ValueTask Get(Stop<EntityPreMigrationInput> parameter)

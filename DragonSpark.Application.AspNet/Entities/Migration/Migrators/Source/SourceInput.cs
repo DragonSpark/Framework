@@ -5,7 +5,8 @@ namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators.Source;
 
 public sealed record SourceInput<T>(
 	ILogger Logger,
-	IEntities Entities,
+	Workspace Workspace,
 	IQueryable<T> Source,
-	ushort PageSize,
+	uint Start,
+	ushort Size,
 	uint Total);

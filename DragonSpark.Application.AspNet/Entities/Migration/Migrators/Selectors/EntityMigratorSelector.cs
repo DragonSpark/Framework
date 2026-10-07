@@ -4,7 +4,7 @@ using DragonSpark.Text;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators.Selectors;
 
-sealed class EntityMigratorSelector : IEntityMigratorSelector
+public sealed class EntityMigratorSelector : IEntityMigratorSelector
 {
 	public static EntityMigratorSelector Default { get; } = new();
 

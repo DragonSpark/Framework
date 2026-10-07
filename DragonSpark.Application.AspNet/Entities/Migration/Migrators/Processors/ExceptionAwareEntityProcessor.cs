@@ -19,17 +19,17 @@ sealed class ExceptionAwareEntityProcessor<TFrom, TTo> : IEntityProcessor<TFrom>
 		_process  = process;
 	}
 
-	public async ValueTask Get(Stop<SourceInput<TFrom>> parameter)
+	public async ValueTask<uint> Get(Stop<SourceInput<TFrom>> parameter)
 	{
 		try
 		{
-			await _previous.On(parameter);
+			return await _previous.On(parameter);
 		}
 		catch (Exception e)
 		{
 			if (_process.Get(e))
 			{
-				var ((logger, _, _, _, _), _) = parameter;
+				var ((logger, _, _, _, _, _), _) = parameter;
 				logger.LogError(e, "{From} -> {To} - A problem was encountered while mapping these entities",
 				                typeof(TFrom), typeof(TTo));
 			}

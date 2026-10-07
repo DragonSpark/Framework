@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators.Workspaces;
 
-public readonly record struct Workspace(DbContext Source, DbContext Destination) : IDisposable, IAsyncDisposable
+public sealed record Workspace(DbContext Source, DbContext Destination) : IDisposable, IAsyncDisposable
 {
 	public void Dispose()
 	{

@@ -5,15 +5,17 @@ using DragonSpark.Reflection.Types;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators.Selectors;
 
-public class FlattenAwareEntityMigratorSelector : IEntityMigratorSelector
+public sealed class FlattenAwareEntityMigratorSelector : IEntityMigratorSelector
 {
 	readonly IEntityMigratorSelector                    _previous;
 	readonly IGeneric<IEntityMigrator, IEntityMigrator> _generic;
 	readonly Array<Type>                                _candidates;
 
-	protected FlattenAwareEntityMigratorSelector(params Type[] candidates)
-		: this(EntityMigratorSelector.Default,
-		       Start.A.Generic(typeof(FlattenAwareEntityMigrator<>))
+	public FlattenAwareEntityMigratorSelector(params Type[] candidates)
+		: this(EntityMigratorSelector.Default, candidates) {}
+
+	public FlattenAwareEntityMigratorSelector(IEntityMigratorSelector previous, params Type[] candidates)
+		: this(previous, Start.A.Generic(typeof(FlattenAwareEntityMigrator<>))
 		            .Of.Type<IEntityMigrator>()
 		            .WithParameterOf<IEntityMigrator>(),
 		       candidates) {}

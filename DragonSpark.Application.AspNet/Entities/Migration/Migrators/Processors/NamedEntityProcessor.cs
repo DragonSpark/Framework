@@ -7,5 +7,5 @@ namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators.Processors
 sealed class NamedEntityProcessor : EntityProcessorBase<Dictionary<string, object>, Dictionary<string, object>>
 {
 	public NamedEntityProcessor(IEntityType type)
-		: base(Source<Dictionary<string, object>>.Default, new NamedDestination(type), Save.Save.Default) {}
+		: base(Source<Dictionary<string, object>>.Default, new NamedPage(type), Save.Save.Default) {}
 }

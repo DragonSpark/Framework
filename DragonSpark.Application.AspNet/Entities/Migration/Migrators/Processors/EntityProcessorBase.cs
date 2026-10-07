@@ -11,53 +11,33 @@ namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators.Processors
 
 class EntityProcessorBase<TFrom, TTo> : IEntityProcessor<TFrom> where TFrom : class where TTo : class
 {
-	readonly ISource<TFrom>      _source;
-	readonly IDestination<TFrom> _destination;
-	readonly ISave               _save;
+	readonly ISource<TFrom> _source;
+	readonly IPage<TFrom>   _page;
+	readonly ISave          _save;
 
-	protected EntityProcessorBase(ISource<TFrom> source, IDestination<TFrom> destination, ISave save)
+	protected EntityProcessorBase(ISource<TFrom> source, IPage<TFrom> page, ISave save)
 	{
-		_source      = source;
-		_destination = destination;
-		_save        = save;
+		_source = source;
+		_page   = page;
+		_save   = save;
 	}
 
-	public async ValueTask Get(Stop<SourceInput<TFrom>> parameter)
+	public async ValueTask<uint> Get(Stop<SourceInput<TFrom>> parameter)
 	{
-		var ((logger, entities, _, size, total), stop) = parameter;
-		if (total > 0)
-		{
-			logger.LogInformation("{From} -> {To}: Starting with {Total} items...", A.Type<TFrom>(), A.Type<TTo>(),
-			                      total);
+		var ((logger, workspace, _, start, size, total), stop) = parameter;
+		var watch  = Stopwatch.StartNew();
+		var page   = await _source.Get(parameter).Skip(start.Degrade()).Take(size).ToArrayAsync(stop).Off();
+		var result = page.Length.Grade();
+		logger.LogInformation("{From} -> {To}: Processing {Start}/{Count} Items of {Total} ...",
+		                      A.Type<TFrom>(), A.Type<TTo>(), start, result, total);
 
-			var watch = Stopwatch.StartNew();
-			var graph = 0u;
-			var count = 0u;
+		await _page.Off(new(new(logger, workspace, page, total), stop));
 
-			await foreach (var page in _source.Get(parameter).AsAsyncEnumerable().Chunk(size).WithCancellation(stop))
-			{
-				count += (uint)page.Length;
-				logger.LogInformation("{From} -> {To}: Processing {Page} Items {Count}/{Total} ...",
-				                      A.Type<TFrom>(), A.Type<TTo>(), page.Length, count, total);
-				await foreach (var workspace in
-				               _destination.Get(new(new(logger, entities, page, total), stop)))
-				{
-					await using (workspace.ConfigureAwait(false))
-					{
-						var save = await _save.Off(new(new(logger, size, workspace, total), stop));
-						graph += save;
-					}
-				}
-				entities.Origin.ChangeTracker.Clear();
-			}
+		var save = await _save.Off(new(new(logger, size, workspace.Destination, total), stop));
 
-			logger.LogInformation("{From} -> {To}: Batch of {Count} processed in {Elapsed:mm\\:ss\\.fff} ({Rate:F1} entities/sec)",
-			                      A.Type<TFrom>(), A.Type<TTo>(), graph, watch.Elapsed,
-			                      graph / watch.Elapsed.TotalSeconds);
-		}
-		else
-		{
-			logger.LogInformation("{From} -> {To}: No rows found in source", A.Type<TFrom>(), A.Type<TTo>());
-		}
+		logger.LogInformation("{From} -> {To}: Batch of {Count} ({Total} total/saved) processed in {Elapsed:mm\\:ss\\.fff} ({Rate:F1} entities/sec)",
+		                      A.Type<TFrom>(), A.Type<TTo>(), result, save, watch.Elapsed,
+		                      page.Length / watch.Elapsed.TotalSeconds);
+		return result;
 	}
 }

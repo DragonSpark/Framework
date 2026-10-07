@@ -17,7 +17,7 @@ sealed class ComposeEntityMigrators : ISelect<IEnumerable<IEntityMigrator>, IEnt
 		{
 			0 => throw new InvalidOperationException("At least one IEntityMigrator is expected"), 
 			1 => lease.Memory.Span[0],
-			_ => new CompositeEntityMigrators(lease.Memory)
+			_ => new CompositeEntityMigrator(lease.Memory)
 		};
 		return result;
 	}
