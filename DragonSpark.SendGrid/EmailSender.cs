@@ -1,3 +1,5 @@
+using DragonSpark.Compose;
+using DragonSpark.Composition;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using SendGrid;
 using SendGrid.Helpers.Mail;
@@ -13,6 +15,7 @@ sealed class EmailSender : IEmailSender
 	public EmailSender(ISendGridClient client, SendGridSettings settings)
 		: this(client, new(settings.FromAddress, settings.FromName), settings.ReplyTo) {}
 
+	[Candidate(false)]
 	public EmailSender(ISendGridClient client, EmailAddress from, EmailAddress? replyTo)
 	{
 		_client  = client;
@@ -20,7 +23,7 @@ sealed class EmailSender : IEmailSender
 		_replyTo = replyTo;
 	}
 
-	public Task SendEmailAsync(string email, string subject, string htmlMessage)
+	public async Task SendEmailAsync(string email, string subject, string htmlMessage)
 	{
 		var to      = new EmailAddress(email);
 		var message = MailHelper.CreateSingleEmail(_from, to, subject, null, htmlMessage);
@@ -29,7 +32,7 @@ sealed class EmailSender : IEmailSender
 			message.SetReplyTo(_replyTo);
 		}
 
-		var result = _client.SendEmailAsync(message);
-		return result;
+		var result = await _client.SendEmailAsync(message).Off();
+		System.Diagnostics.Debugger.Break();
 	}
 }
