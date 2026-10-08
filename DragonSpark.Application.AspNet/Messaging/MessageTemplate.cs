@@ -1,4 +1,4 @@
-﻿using DragonSpark.Compose;
+using DragonSpark.Compose;
 using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Application.AspNet.Messaging;
@@ -15,6 +15,9 @@ public class MessageTemplate<T> : IMessageTemplate<T>
 
 	protected MessageTemplate(Func<T, string> to, string title, Func<T, string> template)
 		: this(to, title.Accept, template) {}
+
+	protected MessageTemplate(Func<T, string> to, ISelect<T, string> title, ISelect<T, string> template) 
+		: this(to, title.Get, template.Get) {}
 
 	protected MessageTemplate(Func<T, string> to, Func<T, string> title, Func<T, string> template)
 	{
