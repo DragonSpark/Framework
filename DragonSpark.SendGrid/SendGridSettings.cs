@@ -1,10 +1,14 @@
+using SendGrid.Helpers.Mail;
+
 namespace DragonSpark.SendGrid;
 
 public sealed record SendGridSettings
 {
-	public string FromAddress { get; set; } = null!;
+	public required string FromAddress { get; set; }
 
-	public string FromName { get; set; } = null!;
+	public required string FromName { get; set; }
 
-	public string ApiKey { get; set; } = null!;
+	public EmailAddress? ReplyTo { get; set; }
+
+	public required string ApiKey { get; set; }
 }
