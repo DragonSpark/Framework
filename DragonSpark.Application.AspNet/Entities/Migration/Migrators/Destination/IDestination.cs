@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators.Destination;
 
-public interface IPage<T> : IStopAware<PageInput<T>>;
+public interface IDestination<T> : IStopAware<PageInput<T>>;

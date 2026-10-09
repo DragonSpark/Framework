@@ -8,5 +8,5 @@ public sealed record SourceInput<T>(
 	Workspace Workspace,
 	IQueryable<T> Source,
 	uint Start,
-	ushort Size,
+	uint Size,
 	uint Total);

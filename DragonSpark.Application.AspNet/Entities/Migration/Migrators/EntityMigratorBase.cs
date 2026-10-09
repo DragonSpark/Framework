@@ -35,7 +35,7 @@ public class EntityMigratorBase<TFrom, TTo> : Instance<EntityTypeMapping>, IEnti
 
 	public ValueTask Get(Stop<EntityPreMigrationInput> parameter) => ValueTask.CompletedTask;
 
-	public ValueTask Get(Stop<EntityPostMigrationInput> parameter) => ValueTask.CompletedTask;
-
 	public ValueTask Get(Stop<EntityMigratorInput> parameter) => _body.Get(parameter);
+
+	public ValueTask Get(Stop<EntityPostMigrationInput> parameter) => ValueTask.CompletedTask;
 }

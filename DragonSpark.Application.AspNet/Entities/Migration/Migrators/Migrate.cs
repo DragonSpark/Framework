@@ -12,11 +12,16 @@ sealed class Migrate<TFrom, TTo> : IStopAware<EntityMigratorInput>
 {
 	readonly IStopAware<IWorkspaces, uint>  _total;
 	readonly IStopAware<MigrateInput, uint> _steps;
+	readonly ushort                         _minimum;
 
 	public Migrate(IStopAware<IWorkspaces, uint> total, IStopAware<MigrateInput, uint> steps)
+		: this(total, steps, MinimumBatchSize.Default) {}
+
+	public Migrate(IStopAware<IWorkspaces, uint> total, IStopAware<MigrateInput, uint> steps, ushort minimum)
 	{
-		_total = total;
-		_steps = steps;
+		_total   = total;
+		_steps   = steps;
+		_minimum = minimum;
 	}
 
 	public async ValueTask Get(Stop<EntityMigratorInput> parameter)
@@ -28,9 +33,10 @@ sealed class Migrate<TFrom, TTo> : IStopAware<EntityMigratorInput>
 			logger.LogInformation("{From} -> {To}: Starting with {Total} items...", A.Type<TFrom>(), A.Type<TTo>(),
 			                      total);
 			var watch     = Stopwatch.StartNew();
-			var processed = await _steps.Off(new(new(logger, definition, size, total), stop));
-			logger.LogInformation("{From} -> {To}: Completed all {Total} items in {Elapsed:mm\\:ss\\.fff}",
-			                      A.Type<TFrom>(), A.Type<TTo>(), processed, watch.Elapsed);
+			var processed = await _steps.Off(new(new(logger, definition, new(_minimum, size, total)), stop));
+			logger.LogInformation("{From} -> {To}: Completed all {Total} items in {Elapsed:mm\\:ss\\.fff} ({Rate:F1} entities/sec)",
+			                      A.Type<TFrom>(), A.Type<TTo>(), processed, watch.Elapsed,
+			                      processed / watch.Elapsed.TotalSeconds);
 		}
 		else
 		{

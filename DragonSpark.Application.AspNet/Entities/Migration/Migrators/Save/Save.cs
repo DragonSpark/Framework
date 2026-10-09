@@ -14,4 +14,6 @@ sealed class Save : ISave
 		var ((_, _, destination, _), stop) = parameter;
 		return (uint)await destination.SaveChangesAsync(stop).Off();
 	}
+
+	public uint? Get() => null;
 }

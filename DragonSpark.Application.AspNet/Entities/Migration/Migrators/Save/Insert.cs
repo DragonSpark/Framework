@@ -17,10 +17,10 @@ sealed class Insert<T> : ISave where T : class
 		var ((logger, size, destination, total), stop) = parameter;
 		var configuration = new BulkConfig
 		{
-			BatchSize           = size,
+			BatchSize           = size.Degrade(),
 			SqlBulkCopyOptions  = SqlBulkCopyOptions.KeepIdentity,
-			PreserveInsertOrder = true, UseTempDB              = false,
-			NotifyAfter         = size, EnableShadowProperties = true,
+			PreserveInsertOrder = true, UseTempDB                        = false,
+			NotifyAfter         = size.Degrade(), EnableShadowProperties = true,
 			CalculateStats      = true,
 		};
 		var result   = 0u;
@@ -32,8 +32,7 @@ sealed class Insert<T> : ISave where T : class
 			using var entities = changed.Select(x => x.Entity).AsValueEnumerable().ToArray(ArrayPool<object>.Shared);
 
 			configuration.PropertiesToExclude?.Clear();
-			await destination.BulkInsertAsync(entities, configuration, progress, cancellationToken: stop)
-			                 .Off();
+			await destination.BulkInsertAsync(entities, configuration, progress, cancellationToken: stop).Off();
 
 			result += configuration.StatsInfo?.StatsNumberInserted is > 0 and var inserted
 				          ? (uint)inserted
@@ -42,4 +41,6 @@ sealed class Insert<T> : ISave where T : class
 
 		return result;
 	}
+
+	public uint? Get() => 100_000;
 }

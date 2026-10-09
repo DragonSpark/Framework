@@ -23,9 +23,8 @@ public static class Extensions
 
 		public IMigrationSteps WithName(string name) => new NameAwareMigrationSteps(@this, name);
 
-		public IMigrationSteps WithSupplemental(ISelect<Stop<EntityMigratorInput>, ValueTask> supplemental,
-		                                        ushort? batch = null)
-			=> new SupplementalSteps(@this, supplemental, batch);
+		public IMigrationSteps WithSupplemental(ISelect<Stop<EntityMigratorInput>, ValueTask> supplemental)
+			=> new SupplementalSteps(@this, supplemental);
 	}
 
 	extension(IEntityMigratorSelector @this)

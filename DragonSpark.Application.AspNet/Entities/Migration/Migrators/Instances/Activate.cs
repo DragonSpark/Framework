@@ -14,5 +14,5 @@ public sealed class Activate<TFrom, TTo> : IEntry<TFrom, TTo> where TFrom : clas
 
 	public Activate(Func<TTo> @new) => _new = @new;
 
-	public ValueTask<Entry<TTo>> Get(Stop<MappingInput<TFrom>> parameter) => new Entry<TTo>(_new(), null).ToOperation();
+	public ValueTask<Entry<TTo>> Get(Stop<MappingInput<TFrom>> parameter) => new(new Entry<TTo>(_new(), null));
 }

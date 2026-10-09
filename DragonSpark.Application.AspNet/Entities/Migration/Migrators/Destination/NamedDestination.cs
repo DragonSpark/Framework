@@ -5,11 +5,11 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators.Destination;
 
-sealed class NamedPage : IPage<Dictionary<string, object>>
+sealed class NamedDestination : IDestination<Dictionary<string, object>>
 {
 	readonly IEntityType _type;
 
-	public NamedPage(IEntityType type) => _type = type;
+	public NamedDestination(IEntityType type) => _type = type;
 
 	public async ValueTask Get(Stop<PageInput<Dictionary<string, object>>> parameter)
 	{

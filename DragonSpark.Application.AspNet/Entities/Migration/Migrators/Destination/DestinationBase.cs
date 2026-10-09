@@ -4,12 +4,12 @@ using DragonSpark.Model.Operations;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators.Destination;
 
-public class PageBase<TFrom, TTo> : IPage<TFrom> where TFrom : class where TTo : class
+public class DestinationBase<TFrom, TTo> : IDestination<TFrom> where TFrom : class where TTo : class
 {
 	readonly IEntry<TFrom, TTo> _entry;
 	readonly IMap               _map;
 
-	protected PageBase(IEntry<TFrom, TTo> entry, IMap map)
+	protected DestinationBase(IEntry<TFrom, TTo> entry, IMap map)
 	{
 		_entry = entry;
 		_map   = map;
@@ -22,7 +22,7 @@ public class PageBase<TFrom, TTo> : IPage<TFrom> where TFrom : class where TTo :
 		foreach (var x in page.Open())
 		{
 			var from = source.Entry(x);
-			var to   = await _entry.Off(new(new(workspace, from), stop));
+			var to   = await _entry.Off(new(new(workspace, page, from), stop));
 			await _map.Off(new(new(from, destination.Entry(to.Instance)), stop));
 		}
 	}

@@ -5,6 +5,6 @@ namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators.Save;
 
 public readonly record struct SaveInput(
 	ILogger Logger,
-	ushort PageSize,
+	uint PageSize,
 	DbContext Destination,
 	uint Total);

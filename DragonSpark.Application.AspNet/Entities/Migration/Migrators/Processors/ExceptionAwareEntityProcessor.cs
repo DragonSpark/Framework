@@ -37,4 +37,6 @@ sealed class ExceptionAwareEntityProcessor<TFrom, TTo> : IEntityProcessor<TFrom>
 			throw;
 		}
 	}
+
+	public uint? Get() => _previous.Get();
 }

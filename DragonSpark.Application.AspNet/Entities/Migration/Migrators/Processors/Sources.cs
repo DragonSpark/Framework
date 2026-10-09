@@ -21,15 +21,14 @@ sealed class Sources<TFrom, TTo> : ISelect<Contexts<TFrom>, ISource<TFrom>?> whe
 	{
 		_identity    = identity;
 		_expressions = expressions;
-		_to     = to;
+		_to          = to;
 	}
 
 	public ISource<TFrom>? Get(Contexts<TFrom> parameter)
 	{
 		var (type, destination) = parameter;
-		var key      = destination.FindEntityType(_to).Verify();
-		var identity = _identity.Get(key);
-		if (identity)
+		var key = destination.FindEntityType(_to).Verify();
+		if (_identity.Get(key))
 		{
 			var from = _expressions.TryGet(type, out var e1)
 				           ? e1
