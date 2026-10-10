@@ -2,4 +2,4 @@
 
 namespace DragonSpark.Application.AspNet.Entities.Migration;
 
-public interface IMigration : IStopAware<ushort>;
+public interface IMigration : IStopAware<ushort?>;

@@ -31,7 +31,7 @@ public class Migration : IMigration
 		_steps      = steps;
 	}
 
-	public async ValueTask Get(Stop<ushort> parameter)
+	public async ValueTask Get(Stop<ushort?> parameter)
 	{
 		var (subject, stop) = parameter;
 		var updated = new EntityMigratorInput(_logger, _workspaces, subject);

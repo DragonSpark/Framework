@@ -28,13 +28,13 @@ sealed class Pages<T> : IStopAware<MigrateInput, uint>
 
 	public async ValueTask<uint> Get(Stop<MigrateInput> parameter)
 	{
-		var ((logger, workspaces, (minimum, maximum, total)), stop) = parameter;
+		var ((logger, workspaces, (minimum, maximum, all)), stop) = parameter;
 
-		var batch   = _processor.Get() ?? (total < minimum ? total : Math.Clamp(total / _parallelism, minimum, maximum));
+		var batch   = _processor.Get() ?? (all < minimum ? all : Math.Clamp(all / _parallelism, minimum, maximum));
 		var results = new ConcurrentStack<uint>();
-		var input   = new PageInput<T>(logger, workspaces, _query, batch, total, results);
+		var input   = new PageInput<T>(logger, workspaces, _query, batch, all, results);
 		var page    = new Page<T>(_processor, input);
-		var pages   = (int)Math.Ceiling((double)total / batch);
+		var pages   = (int)Math.Ceiling((double)all / batch);
 		switch (pages)
 		{
 			case 1:

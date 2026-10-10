@@ -165,6 +165,9 @@ public static partial class Extensions
 	public static IQueryable<T> Includes<T>(this IQueryable<T> source, params string[] includes) where T : class
 		=> includes.Aggregate(source, (current, include) => current.Include(include));
 
+	public static IQueryable<T> ThenIncludes<T>(this IQueryable<T> source, params string[] includes) where T : class
+		=> includes.Aggregate(source, (current, include) => current.Include(include));
+
 	/**/
 	/*public static Compose.OperationResultComposer<_, T> Then<_, T>(this DragonSpark.Compose.Model.Operations.OperationResultComposer<_,T> @this)
 		=> new(@this.Out());*/

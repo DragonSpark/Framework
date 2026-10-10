@@ -14,7 +14,7 @@ public sealed class Local<TKey, T> : ISelecting<TKey, T?> where T : class
 
 	public Local(IScopes scope, Func<T, TKey> key, IEqualityComparer<TKey> equality)
 	{
-		_scope  = scope;
+		_scope    = scope;
 		_key      = key;
 		_equality = equality;
 	}
@@ -24,12 +24,13 @@ public sealed class Local<TKey, T> : ISelecting<TKey, T?> where T : class
 		var (subject, boundary) = _scope.Get();
 		using (boundary)
 		{
+			using var _ = subject.ChangeTracker.Disabled();
 			foreach (var local in subject.Set<T>().Local.AsValueEnumerable())
 			{
 				var entity = _key(local);
 				if (_equality.Equals(entity, parameter))
 				{
-					return local.ToOperation<T?>();
+					return new(local);
 				}
 			}
 

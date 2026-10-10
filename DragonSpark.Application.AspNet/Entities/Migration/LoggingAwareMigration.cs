@@ -20,7 +20,7 @@ public sealed class LoggingAwareMigration : IMigration
 		_workspaces = workspaces;
 	}
 
-	public async ValueTask Get(Stop<ushort> parameter)
+	public async ValueTask Get(Stop<ushort?> parameter)
 	{
 		{
 			await using var workspaces = _workspaces.Get();

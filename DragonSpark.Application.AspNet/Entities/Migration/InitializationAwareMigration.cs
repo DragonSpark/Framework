@@ -19,7 +19,7 @@ public sealed class InitializationAwareMigration<T> : IMigration where T : DbCon
 		_logger     = logger;
 	}
 
-	public async ValueTask Get(Stop<ushort> parameter)
+	public async ValueTask Get(Stop<ushort?> parameter)
 	{
 		_logger.LogInformation("Initializing Context...");
 		await _initialize.Off(parameter);

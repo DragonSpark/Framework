@@ -28,7 +28,7 @@ public class EntityMigratorBase<TFrom, TTo> : Instance<EntityTypeMapping>, IEnti
 		: this(contexts.Query, Processors<TFrom, TTo>.Default.Get(new(contexts, map))) {}
 
 	protected EntityMigratorBase(Func<DbContext, IQueryable<TFrom>> query, IEntityProcessor<TFrom> processor)
-		: this(ComposeMigrate<TFrom, TTo>.Default.Get(new(query, processor))) {}
+		: this(new Migrate<TFrom, TTo>(query, processor)) {}
 
 	protected EntityMigratorBase(IStopAware<EntityMigratorInput> body) : base(new(typeof(TFrom), typeof(TTo)))
 		=> _body = body;

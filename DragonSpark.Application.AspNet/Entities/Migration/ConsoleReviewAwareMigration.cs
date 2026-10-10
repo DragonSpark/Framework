@@ -16,7 +16,7 @@ public sealed class ConsoleReviewAwareMigration : IMigration
 		_workspaces = workspaces;
 	}
 
-	public async ValueTask Get(Stop<ushort> parameter)
+	public async ValueTask Get(Stop<ushort?> parameter)
 	{
 		var capture = Console.ForegroundColor;
 		{

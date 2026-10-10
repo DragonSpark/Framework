@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
-using DragonSpark.Model.Operations.Selection.Stop;
+using DragonSpark.Model.Operations.Selection.Stop.Conditions;
 using DragonSpark.Model.Operations.Stop;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,10 +13,10 @@ sealed class PersistMigrationNameStep : IMigrationStep
 
 	PersistMigrationNameStep() : this(FirstRun.Default, MarkRun.Default) {}
 
-	readonly IStopAware<DbContext, bool> _first;
-	readonly IStopAware<DbContext>       _mark;
+	readonly IDepending<DbContext> _first;
+	readonly IStopAware<DbContext> _mark;
 
-	public PersistMigrationNameStep(IStopAware<DbContext, bool> first, IStopAware<DbContext> mark)
+	public PersistMigrationNameStep(IDepending<DbContext> first, IStopAware<DbContext> mark)
 	{
 		_first = first;
 		_mark  = mark;

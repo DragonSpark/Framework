@@ -1,11 +1,12 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Selection.Stop;
+using DragonSpark.Model.Operations.Selection.Stop.Conditions;
 using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Steps;
 
-public sealed class FirstRun : IStopAware<DbContext, bool>
+public sealed class FirstRun : IDepending<DbContext>
 {
 	public static FirstRun Default { get; } = new();
 

@@ -17,10 +17,11 @@ sealed class ApplyConfiguration : ICommand<ApplyConfigurationInput>
 
 	public void Execute(ApplyConfigurationInput parameter)
 	{
-		var (subject, configuration) = parameter;
+		var (subject, configuration, sources) = parameter;
 
 		var filter = new ReloadableForwardedFilter(configuration);
 		ChangeToken.OnChange(configuration.GetSection(_name).GetReloadToken, filter.Execute);
-		subject.ReadFrom.Configuration(configuration).Filter.With(filter);
+		var start = subject.ReadFrom.Configuration(configuration).Filter;
+		_ = sources.Any() ? start.With(filter, new PolicyFilter(sources)) : start.With(filter);
 	}
 }

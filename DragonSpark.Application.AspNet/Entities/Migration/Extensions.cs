@@ -23,8 +23,8 @@ public static class Extensions
 
 		public IMigrationSteps WithName(string name) => new NameAwareMigrationSteps(@this, name);
 
-		public IMigrationSteps WithSupplemental(ISelect<Stop<EntityMigratorInput>, ValueTask> supplemental)
-			=> new SupplementalSteps(@this, supplemental);
+		public IMigrationSteps WithSupplemental(ISelect<Stop<EntityMigratorInput>, ValueTask> supplemental, ushort? batch = null)
+			=> new SupplementalSteps(@this, supplemental, batch);
 	}
 
 	extension(IEntityMigratorSelector @this)
@@ -45,7 +45,7 @@ public static class Extensions
 
 	extension(IMigration @this)
 	{
-		public ValueTask Get(CancellationToken parameter) => @this.Get(new(DefaultBatchSize.Default, parameter));
+		public ValueTask Get(CancellationToken parameter) => @this.Get(new(null, parameter));
 	}
 
 	extension(IInfrastructure<IServiceProvider> @this)

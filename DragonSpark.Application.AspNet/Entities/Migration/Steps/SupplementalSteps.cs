@@ -10,8 +10,9 @@ sealed class SupplementalSteps : IMigrationSteps
 	readonly IMigrationSteps _previous;
 	readonly IMigrationStep  _supplemental;
 
-	public SupplementalSteps(IMigrationSteps previous, ISelect<Stop<EntityMigratorInput>, ValueTask> supplemental)
-		: this(previous, new SupplementalStep(supplemental)) {}
+	public SupplementalSteps(IMigrationSteps previous, ISelect<Stop<EntityMigratorInput>, ValueTask> supplemental,
+	                         ushort? batch)
+		: this(previous, new SupplementalStep(supplemental, batch)) {}
 
 	public SupplementalSteps(IMigrationSteps previous, IMigrationStep supplemental)
 	{

@@ -6,5 +6,5 @@ public sealed class MinimumBatchSize : Instance<ushort>
 {
 	public static MinimumBatchSize Default { get; } = new();
 
-	MinimumBatchSize() : base(100) {}
+	MinimumBatchSize() : base(5) {}
 }
