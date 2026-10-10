@@ -40,7 +40,13 @@ sealed class EnableStatements : ISelect<ConstraintInput, IEnumerable<string>>
 				             ? $"ALTER TABLE [{schema}].[{table}] ADD CONSTRAINT [{indexName}] UNIQUE ({columns})"
 				             : $"CREATE UNIQUE INDEX [{indexName}] ON [{schema}].[{table}] ({columns}){includeClause}{filter}";
 		}
-		yield return "EXEC sp_msforeachtable 'ALTER TABLE ? WITH CHECK CHECK CONSTRAINT ALL';";
+		yield return @"
+			DECLARE @sql NVARCHAR(MAX) = N'';
+			SELECT @sql += N'ALTER TABLE ' + QUOTENAME(SCHEMA_NAME(schema_id)) + N'.' + QUOTENAME(name) + N' WITH CHECK CHECK CONSTRAINT ALL; '
+			FROM sys.tables;
+			EXEC sp_executesql @sql;
+		";
+		
 		yield return "EXEC sp_updatestats @resample = 'resample';";
 	}
 }

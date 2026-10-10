@@ -6,4 +6,4 @@ namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 public readonly record struct UpdateEntityMigratorInput(
 	ILogger Logger,
 	IWorkspaceDefinition Definition,
-	ushort BatchSize);
+	ushort? BatchSize);

@@ -10,8 +10,8 @@ public static class Extensions
 {
 	extension(BuildHostContext @this)
 	{
-		public BuildHostContext WithSerilog(bool preserveOutputs = true)
-			=> @this.WithSerilog(ConfigureLogging.Default.Execute, preserveOutputs);
+		public BuildHostContext WithSerilog(bool preserveOutputs = true, params string[] omitPolicySources)
+			=> @this.WithSerilog(new ConfigureLogging(omitPolicySources).Execute, preserveOutputs);
 
 		public BuildHostContext WithSerilog(Action<IServiceProvider, LoggerConfiguration> configure,
 		                                    bool preserveOutputs = true)

@@ -40,8 +40,7 @@ public static partial class Extensions
 		                                                 Action<SqlServerDbContextOptionsBuilder> configure)
 			=> @this.Append(new ConfigureSqlServer(name, configure));
 
-		public StorageConfigurationBuilder WithSqlServer(string name,
-		                                                 string migrations)
+		public StorageConfigurationBuilder WithSqlServer(string name, string migrations)
 			=> @this.Append(new ConfigureSqlServerWithMigration(name, migrations));
 
 		public StorageConfigurationBuilder WithSqlServer<T>() where T : DbContext => @this.WithSqlServer<T>(_ => {});
@@ -58,8 +57,7 @@ public static partial class Extensions
 			where T : DbContext
 			=> @this.Append(new ConfigureSqlServerWithMigration<T>(name, configure));
 
-		public StorageConfigurationBuilder ApplySeeding()
-			=> ApplySeeding(@this, ApplyMigrationRegistry.Default.Get);
+		public StorageConfigurationBuilder ApplySeeding() => @this.ApplySeeding(ApplyMigrationRegistry.Default.Get);
 
 		public StorageConfigurationBuilder ApplySeeding(Func<Stop<DbContext>, Task> configure)
 			=> @this.Append(_ => new ApplySeeding(configure).Execute);
@@ -165,6 +163,9 @@ public static partial class Extensions
 		=> includes.Aggregate(source, (current, include) => current.Include(include));
 
 	public static IQueryable<T> Includes<T>(this IQueryable<T> source, params string[] includes) where T : class
+		=> includes.Aggregate(source, (current, include) => current.Include(include));
+
+	public static IQueryable<T> ThenIncludes<T>(this IQueryable<T> source, params string[] includes) where T : class
 		=> includes.Aggregate(source, (current, include) => current.Include(include));
 
 	/**/

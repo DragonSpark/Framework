@@ -22,42 +22,25 @@ class EntityProcessorBase<TFrom, TTo> : IEntityProcessor<TFrom> where TFrom : cl
 		_save        = save;
 	}
 
-	public async ValueTask Get(Stop<SourceInput<TFrom>> parameter)
+	public async ValueTask<uint> Get(Stop<SourceInput<TFrom>> parameter)
 	{
-		var ((logger, entities, _, size, total), stop) = parameter;
-		if (total > 0)
-		{
-			logger.LogInformation("{From} -> {To}: Starting with {Total} items...", A.Type<TFrom>(), A.Type<TTo>(),
-			                      total);
+		var ((logger, workspace, _, start, size, total), stop) = parameter;
+		var watch  = Stopwatch.StartNew();
+		var page   = await _source.Get(parameter).Skip(start.Degrade()).Take(size.Degrade()).ToArrayAsync(stop).Off();
+		var result = page.Length.Grade();
 
-			var watch = Stopwatch.StartNew();
-			var graph = 0u;
-			var count = 0u;
+		logger.LogInformation("{From} -> {To}: Processing {Start}/{Count} Items of {Total} ...",
+		                      A.Type<TFrom>(), A.Type<TTo>(), start, result, total);
 
-			await foreach (var page in _source.Get(parameter).AsAsyncEnumerable().Chunk(size).WithCancellation(stop))
-			{
-				count += (uint)page.Length;
-				logger.LogInformation("{From} -> {To}: Processing {Page} Items {Count}/{Total} ...",
-				                      A.Type<TFrom>(), A.Type<TTo>(), page.Length, count, total);
-				await foreach (var workspace in
-				               _destination.Get(new(new(logger, entities, page, total), stop)))
-				{
-					await using (workspace.ConfigureAwait(false))
-					{
-						var save = await _save.Off(new(new(logger, size, workspace, total), stop));
-						graph += save;
-					}
-				}
-				entities.Origin.ChangeTracker.Clear();
-			}
+		await _destination.Off(new(new(logger, workspace, page, total), stop));
 
-			logger.LogInformation("{From} -> {To}: Batch of {Count} processed in {Elapsed:mm\\:ss\\.fff} ({Rate:F1} entities/sec)",
-			                      A.Type<TFrom>(), A.Type<TTo>(), graph, watch.Elapsed,
-			                      graph / watch.Elapsed.TotalSeconds);
-		}
-		else
-		{
-			logger.LogInformation("{From} -> {To}: No rows found in source", A.Type<TFrom>(), A.Type<TTo>());
-		}
+		var save = await _save.Off(new(new(logger, size, workspace.Destination, total), stop));
+
+		logger.LogInformation("{From} -> {To}: Batch of {Count} ({Total} total/saved) processed in {Elapsed:mm\\:ss\\.fff} ({Rate:F1} entities/sec)",
+		                      A.Type<TFrom>(), A.Type<TTo>(), result, save, watch.Elapsed,
+		                      page.Length / watch.Elapsed.TotalSeconds);
+		return result;
 	}
+
+	public uint? Get() => _save.Get();
 }

@@ -38,8 +38,9 @@ sealed class BuildStore<TFrom, TTo> : IBuildStore<TFrom, TTo> where TFrom : clas
 			var where = new WhereKeysExist<TTo>(chunk).Get(to.EntityType);
 			await foreach (var x in to.Where(where).AsAsyncEnumerable().WithCancellation(stop))
 			{
-				var key = _keys(to.Entry(x));
-				result[key] = new Migrators.Instances.Entry<TTo>(x, to.Entry(x).CurrentValues);
+				var entry = to.Entry(x);
+				var key   = _keys(entry);
+				result[key] = new(x, entry.CurrentValues);
 			}
 		}
 

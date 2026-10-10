@@ -1,4 +1,4 @@
-using System.Security.Claims;
+using DragonSpark.Application.AspNet.Entities;
 using DragonSpark.Application.AspNet.Entities.Diagnostics;
 using DragonSpark.Application.AspNet.Entities.Editing;
 using DragonSpark.Application.AspNet.Entities.Transactions;
@@ -22,7 +22,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.Extensions.DependencyInjection;
+using System.Security.Claims;
 using Claim = System.Security.Claims.Claim;
 using IdentityUser = DragonSpark.Application.AspNet.Security.Identity.IdentityUser;
 
@@ -33,10 +35,10 @@ partial class Extensions
 	extension(IServiceCollection @this)
 	{
 		public IServiceCollection Primary<T>(Action<DbContextOptionsBuilder> configure, ushort size = 1024) where T : DbContext
-			=> Entities.Registrations<T>.Default.Parameter(@this.AddPooledDbContextFactory<T>(configure, size));
+			=> PrimaryRegistrations<T>.Default.Parameter(@this.AddPooledDbContextFactory<T>(configure, size));
 
 		public IServiceCollection Register<T>(Action<DbContextOptionsBuilder> configure, ushort size = 1024) where T : DbContext
-			=> Entities.GeneralConfiguration<T>.Default.Parameter(@this.AddPooledDbContextFactory<T>(configure, size));
+			=> GeneralConfiguration<T>.Default.Parameter(@this.AddPooledDbContextFactory<T>(configure, size));
 	}
 
 	extension(Accessed @this)
@@ -166,6 +168,11 @@ partial class Extensions
 		public string RootPath() => Navigation.RootPath.Default.Get(@this);
 
 		public string Path() => Navigation.Path.Default.Get(@this);
+	}
+
+	extension(ChangeTracker @this)
+	{
+		public ApplyChangesScope Disabled() => new(@this);
 	}
 
 	public static string Nonce(this HttpContext @this) => HttpContextNonce.Default.Get(@this);

@@ -16,7 +16,8 @@ public sealed class ApplyMigrationRegistry : IAllocated<DbContext>
 
 	public ApplyMigrationRegistry(IResult<IDataMigrationRegistry?> registry) => _registry = registry;
 
-	public Task Get(Stop<DbContext> parameter) => _registry.Get().Verify("Migration registry not found").Allocate(parameter);
+	public Task Get(Stop<DbContext> parameter)
+		=> _registry.Get().Verify("Migration registry not found").Allocate(parameter);
 
 	public Task Get(DbContext parameter, bool seeded, CancellationToken stop) => Get(new(parameter, stop));
 }

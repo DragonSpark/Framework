@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators.Instances;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
-using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators.Destination;
 
@@ -16,19 +15,15 @@ public class DestinationBase<TFrom, TTo> : IDestination<TFrom> where TFrom : cla
 		_map   = map;
 	}
 
-	public async IAsyncEnumerable<DbContext> Get(Stop<DestinationInput<TFrom>> parameter)
+	public async ValueTask Get(Stop<PageInput<TFrom>> parameter)
 	{
-		var ((_, entities, from, _), stop) = parameter;
-		var original = entities.Get();
-		var modified = original with { Source = entities.Origin };
-		var (source, destination) = modified;
-		foreach (var x in from.Open())
+		var ((_, workspace, page, _), stop) = parameter;
+		var (source, destination)           = workspace;
+		foreach (var x in page.Open())
 		{
-			var to = await _entry.Off(new(new(entities, modified, entities.Origin.Entry(x)), stop));
-			await _map.Off(new(new(source.Entry(x), destination.Entry(to.Instance)), stop));
+			var from = source.Entry(x);
+			var to   = await _entry.Off(new(new(workspace, page, from), stop));
+			await _map.Off(new(new(from, destination.Entry(to.Instance)), stop));
 		}
-
-		await original.Source.DisposeAsync().Off();
-		yield return destination;
 	}
 }

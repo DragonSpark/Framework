@@ -11,10 +11,9 @@ sealed class NamedDestination : IDestination<Dictionary<string, object>>
 
 	public NamedDestination(IEntityType type) => _type = type;
 
-	public async IAsyncEnumerable<DbContext> Get(
-		Stop<DestinationInput<Dictionary<string, object>>> parameter)
+	public async ValueTask Get(Stop<PageInput<Dictionary<string, object>>> parameter)
 	{
-		var ((_, definition, from, _), stop) = parameter;
+		var ((_, (_, destination), from, _), stop) = parameter;
 
 		foreach (var item in from.Open())
 		{
@@ -34,9 +33,7 @@ sealed class NamedDestination : IDestination<Dictionary<string, object>>
 			           	);
 			           """;
 
-			await definition.Database.ExecuteSqlRawAsync(sql, values, stop).Off();
+			await destination.Database.ExecuteSqlRawAsync(sql, values, stop).Off();
 		}
-
-		yield break;
 	}
 }

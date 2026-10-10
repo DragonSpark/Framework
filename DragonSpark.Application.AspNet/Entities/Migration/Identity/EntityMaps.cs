@@ -6,7 +6,7 @@ using DragonSpark.Model.Selection.Stores;
 namespace DragonSpark.Application.AspNet.Entities.Migration.Identity;
 
 sealed class EntityMaps<TFrom, TTo>
-	: ReferenceValueStore<IEntities,
+	: ReferenceValueStore<Workspace,
 		  IStopAware<IReadOnlyCollection<TFrom>, IPopAware<object, Migrators.Instances.Entry<TTo>>>>,
 	  IEntityMaps<TFrom, TTo>
 	where TFrom : class where TTo : class

@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Operations;
+using DragonSpark.Model.Operations.Allocated.Stop;
 using Microsoft.EntityFrameworkCore;
 
 namespace DragonSpark.Application.AspNet.Entities.Configure;
@@ -8,6 +9,8 @@ namespace DragonSpark.Application.AspNet.Entities.Configure;
 public sealed class ApplySeeding : ICommand<DbContextOptionsBuilder>
 {
 	readonly Func<DbContext, bool, CancellationToken, Task> _configure;
+
+	public ApplySeeding(IAllocated<DbContext> configure) : this(configure.Get) {}
 
 	public ApplySeeding(Func<Stop<DbContext>, Task> configure)
 		: this((context, _, stop) => configure(context.Stop(stop))) {}

@@ -11,9 +11,13 @@ sealed class DisableStatements : ISelect<ConstraintInput, IEnumerable<string>>
 	public IEnumerable<string> Get(ConstraintInput parameter)
 	{
 		var (targets, indexes) = parameter;
-		yield return "EXEC sp_msforeachtable 'ALTER TABLE ? NOCHECK CONSTRAINT ALL';";
 
-		// 1. Drop unique indexes/constraints first
+		yield return @"
+		DECLARE @sql NVARCHAR(MAX) = N'';
+		SELECT @sql += N'ALTER TABLE ' + QUOTENAME(SCHEMA_NAME(schema_id)) + N'.' + QUOTENAME(name) + N' NOCHECK CONSTRAINT ALL; '
+		FROM sys.tables;
+		EXEC sp_executesql @sql;";
+
 		foreach (var group in indexes.Open())
 		{
 			var (schema, table, indexName) = group.Key;
@@ -24,11 +28,11 @@ sealed class DisableStatements : ISelect<ConstraintInput, IEnumerable<string>>
 				             : $"DROP INDEX [{indexName}] ON [{schema}].[{table}]";
 		}
 
-		// 2. Convert ROWVERSION to VARBINARY(8) NOT NULL with an explicit temporary default constraint
 		foreach (var (schema, table, column) in targets.Open())
 		{
 			yield return $"ALTER TABLE [{schema}].[{table}] DROP COLUMN [{column}]";
-			yield return $"ALTER TABLE [{schema}].[{table}] ADD [{column}] VARBINARY(8) NOT NULL CONSTRAINT [DF_{table}_{column}_Temp] DEFAULT 0x0000000000000000";
+			yield return
+				$"ALTER TABLE [{schema}].[{table}] ADD [{column}] VARBINARY(8) NOT NULL CONSTRAINT [DF_{table}_{column}_Temp] DEFAULT 0x0000000000000000";
 		}
 	}
 }

@@ -6,8 +6,6 @@ namespace DragonSpark.Application.AspNet.Entities.Configure;
 
 public sealed class UseSqlServer<T> : UseSqlServer
 {
-	public UseSqlServer(string name) : this(new SqlServerMigrations(name).Execute) {}
-
 	public UseSqlServer(Type migrations) : this(new SqlServerMigrations(migrations).Execute) {}
 
 	public UseSqlServer(Action<SqlServerDbContextOptionsBuilder> configure)
