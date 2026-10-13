@@ -35,7 +35,7 @@ public class EntityMigrators : IEntityMigrators
 
 	public Array<IEntityMigrator> Get(IWorkspaceDefinition parameter)
 	{
-		var       order   = _order.Get(parameter.Source.Model);
+		var       order   = _order.Get(parameter.Source);
 		using var results = _results.Get(new(order, parameter.Model));
 		using var result  = ArrayBuilder.New<IEntityMigrator>(results.Length);
 		

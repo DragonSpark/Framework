@@ -1,7 +1,6 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Migration.Migrators.Destination;
 using DragonSpark.Application.AspNet.Entities.Migration.Migrators.Processors;
 using DragonSpark.Model.Operations;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
@@ -10,13 +9,13 @@ public abstract class ExtendedEntityMigratorBase<TFrom, TTo> : IExtendedEntityMi
 {
 	readonly IExtendedEntityMigrator _migrator;
 
-	protected ExtendedEntityMigratorBase(DbContext source, IModel destination, 
+	protected ExtendedEntityMigratorBase(IModel source, IModel destination, 
 	                                     Func<Stop<MapInput<TFrom, TTo>>, ValueTask> map)
 		: this(source, destination, new Map<TFrom,TTo>(map, EmptyMap.Default)) {}
-	protected ExtendedEntityMigratorBase(DbContext source, IModel destination, Action<MapInput<TFrom, TTo>> map)
+	protected ExtendedEntityMigratorBase(IModel source, IModel destination, Action<MapInput<TFrom, TTo>> map)
 		: this(source, destination, new Map<TFrom,TTo>(map, EmptyMap.Default)) {}
 
-	protected ExtendedEntityMigratorBase(DbContext source, IModel destination, IMap secondary)
+	protected ExtendedEntityMigratorBase(IModel source, IModel destination, IMap secondary)
 		: this(new(source, destination), Map.Default, secondary) {}
 
 	protected ExtendedEntityMigratorBase(Contexts<TFrom> contexts, IMap secondary)

@@ -11,12 +11,12 @@ public class WorkspaceDefinitionBase<TFrom, TTo> : IWorkspaceDefinition where TF
 	readonly IDestination       _destination;
 
 	// ReSharper disable once TooManyDependencies
-	protected WorkspaceDefinitionBase(INewContext<TFrom> from, INewContext<TTo> to, DbContext source,
+	protected WorkspaceDefinitionBase(INewContext<TFrom> from, INewContext<TTo> to, IModel source,
 	                                  DbContext destination)
 		: this(from, to, source, new Destination(destination)) {}
 
 	// ReSharper disable once TooManyDependencies
-	protected WorkspaceDefinitionBase(INewContext<TFrom> from, INewContext<TTo> to, DbContext source,
+	protected WorkspaceDefinitionBase(INewContext<TFrom> from, INewContext<TTo> to, IModel source,
 	                                  IDestination destination)
 	{
 		Source       = source;
@@ -27,8 +27,7 @@ public class WorkspaceDefinitionBase<TFrom, TTo> : IWorkspaceDefinition where TF
 
 	public Workspace Get() => new(_from.Get(), _to.Get());
 
-	public DbContext Source { get; }
-
+	public IModel Source { get; }
 
 	public DatabaseFacade Database => _destination.Database;
 

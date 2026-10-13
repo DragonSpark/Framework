@@ -2,7 +2,6 @@
 using DragonSpark.Model.Selection;
 using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Reflection.Types;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
@@ -14,14 +13,14 @@ sealed class ConstructExactEntityMigrator : ISelect<ConstructEntityMigratorInput
 	ConstructExactEntityMigrator()
 		: this(Start.A.Generic(typeof(EntityMigrator<,>))
 		            .Of.Type<IEntityMigrator>()
-		            .WithParameterOf<DbContext>()
+		            .WithParameterOf<IModel>()
 		            .AndOf<IModel>(),
 		       NamedModels.Default) {}
 
-	readonly IGeneric<DbContext, IModel, IEntityMigrator> _generic;
-	readonly ICondition<IEntityType>                      _condition;
+	readonly IGeneric<IModel, IModel, IEntityMigrator> _generic;
+	readonly ICondition<IEntityType>                   _condition;
 
-	public ConstructExactEntityMigrator(IGeneric<DbContext, IModel, IEntityMigrator> generic,
+	public ConstructExactEntityMigrator(IGeneric<IModel, IModel, IEntityMigrator> generic,
 	                                    ICondition<IEntityType> condition)
 	{
 		_generic   = generic;
