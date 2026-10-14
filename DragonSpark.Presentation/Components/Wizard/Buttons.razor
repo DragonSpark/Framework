@@ -1,4 +1,4 @@
-﻿@using Microsoft.FluentUI.AspNetCore.Components
+@using Microsoft.FluentUI.AspNetCore.Components
 
 <div class="fluent-wizard-buttons" border-inside="@Border.HasFlag(WizardBorder.Inside)">
     @if (ButtonTemplate is not null)
@@ -8,21 +8,21 @@
     else
     {
         <ButtonContainerComponent>
-            @if (context.Previous is not null)
+            @if (context.Previous is {} previous)
             {
-                <FluentButton Appearance="Appearance.Neutral" OnClick="@context.Previous.Action" Disabled="@context.Active">@context.Previous.Text</FluentButton>
+                <FluentButton Appearance="ButtonAppearance.Default" OnClick="@previous.Action" Disabled="@context.Active">@previous.Text</FluentButton>
             }
 
             <span style="margin-right: 10px"></span>
 
-            <FluentButton Appearance="@Appearance.Accent" OnClick="@context.Next.Action" Disabled="@context.Active">@context.Next.Text</FluentButton>
+            <FluentButton Appearance="@ButtonAppearance.Primary" OnClick="@context.Next.Action" Disabled="@context.Active">@context.Next.Text</FluentButton>
         </ButtonContainerComponent>
     }
 </div>
 
 @code {
     [Parameter]
-    public WizardBorder Border { get; set; } = WizardBorder.None;
+    public WizardBorder Border { get; set; }
 
     [Parameter]
     public RenderFragment? ButtonTemplate { get; set; }
