@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Presentation.Components;
+namespace DragonSpark.Presentation.Components;
 
 public sealed class Instance<T>
 {
