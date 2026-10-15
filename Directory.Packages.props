@@ -96,8 +96,8 @@
     <PackageVersion Include="Microsoft.Extensions.Http.Polly" Version="$(FrameworkVersion)" />
     <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="10.11.0" />
     <PackageVersion Include="Microsoft.Extensions.Identity.Core" Version="$(FrameworkVersion)" />
-    <PackageVersion Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.14.5" />
-    <PackageVersion Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.14.5" />
+    <PackageVersion Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="5.0.1" />
+    <PackageVersion Include="Microsoft.FluentUI.AspNetCore.Components" Version="5.0.1" />
     <PackageVersion Include="Microsoft.Identity.Web.UI" Version="4.16.1" />
     <PackageVersion Include="Microsoft.IdentityModel.Protocols" Version="8.23.0" />
     <PackageVersion Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.23.0" />
