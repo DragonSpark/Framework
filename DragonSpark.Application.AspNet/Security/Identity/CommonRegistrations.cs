@@ -9,30 +9,40 @@ using Microsoft.Extensions.DependencyInjection;
 namespace DragonSpark.Application.AspNet.Security.Identity;
 
 sealed class CommonRegistrations<TContext, T> : ICommand<IServiceCollection>
-    where TContext : DbContext
-    where T : IdentityUser
+	where TContext : DbContext
+	where T : IdentityUser
 
 {
-    public static CommonRegistrations<TContext, T> Default { get; } = new();
+	public static CommonRegistrations<TContext, T> Default { get; } = new();
 
-    CommonRegistrations() : this(Entities.Configuration.Registrations.Default) {}
+	CommonRegistrations() : this(Entities.Configuration.Registrations.Default) {}
 
-    readonly ICommand<IServiceCollection> _previous;
+	readonly ICommand<IServiceCollection> _previous;
 
-    public CommonRegistrations(ICommand<IServiceCollection> previous) => _previous = previous;
+	public CommonRegistrations(ICommand<IServiceCollection> previous) => _previous = previous;
 
-    public void Execute(IServiceCollection parameter)
-    {
-        _previous.Execute(parameter);
-        parameter.Start<CurrentContextUser<object>>()
-                 .Generic()
-                 .Include(x => x.Dependencies.Recursive())
-                 .Singleton()
+	public void Execute(IServiceCollection parameter)
+	{
+		_previous.Execute(parameter);
+		parameter.Start<CurrentContextUser<object>>()
+		         .Generic()
+		         .Include(x => x.Dependencies.Recursive())
+		         .Singleton()
                  //
-                 .Then.AddSingleton<IKnownClaims>(KnownClaims.Default)
-                 .AddSingleton(typeof(IAuthentications<>), typeof(Authentications<>))
-                 .AddSingleton(typeof(IUsers<>), typeof(Users<>))
-                 .AddSingleton(typeof(ICurrent<>), typeof(Current<>))
-                 .AddSingleton(typeof(UserSessions<>));
-    }
+		         .Then.Start<CurrentContextSession<object>>()
+		         .Generic()
+		         .Singleton()
+                 //
+		         .Then.Start<ContextSession<object>>()
+		         .Generic()
+		         .Include(x => x.Dependencies)
+		         .Singleton()
+		         //
+		         .Then.AddSingleton<IKnownClaims>(KnownClaims.Default)
+		         .AddSingleton(typeof(IAuthentications<>), typeof(Authentications<>))
+		         .AddSingleton(typeof(IUsers<>), typeof(Users<>))
+		         .AddSingleton(typeof(ICurrent<>), typeof(Current<>))
+		         .AddSingleton(typeof(IContextSession<T>), typeof(ContextSession<T>))
+		         .AddSingleton(typeof(UserSessions<>));
+	}
 }
