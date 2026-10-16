@@ -1,6 +1,3 @@
-using Microsoft.FluentUI.AspNetCore.Components;
+﻿namespace DragonSpark.Presentation.Components.Forms;
 
-namespace DragonSpark.Presentation.Components.Forms;
-
-public sealed class FluentTextArea(LibraryConfiguration configuration)
-	: Microsoft.FluentUI.AspNetCore.Components.FluentTextArea(configuration);
+public sealed class FluentTextArea : Microsoft.FluentUI.AspNetCore.Components.FluentTextArea;

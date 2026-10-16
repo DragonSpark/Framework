@@ -1,4 +1,4 @@
-@using DragonSpark.Compose
+﻿@using DragonSpark.Compose
 @using DragonSpark.Presentation.Components.Forms.Validation
 @using Microsoft.FluentUI.AspNetCore.Components
 @using Microsoft.FluentUI.AspNetCore.Components.Extensions
@@ -23,21 +23,18 @@ class="@ClassValue" style="@StyleValue" @attributes="@AdditionalAttributes">
                 </div>
             }
         </div>
-        <div hidden-when="@FluentCompensations.GetHiddenAttribute(FluentWizard.StepTitleHiddenWhen)">
-            <FluentLabel Style="display: block" Class="fluent-wizard-title" Disabled="@Disabled">@Label</FluentLabel>
-            @if (Summary.IsAssigned())
-            {
-                <FluentLabel Style="display: block" Class="fluent-wizard-summary" Size="LabelSize.Small" Disabled="@Disabled">@Summary</FluentLabel>
-            }
+        <div hidden-when="@FluentGridItem.GetHiddenAttribute(FluentWizard.StepTitleHiddenWhen)">
+            <FluentLabel Class="fluent-wizard-title" Typo="Typography.Body" Disabled="@Disabled">@Label</FluentLabel>
+            <FluentLabel Class="fluent-wizard-summary" Typo="Typography.Body" Disabled="@Disabled">@Summary</FluentLabel>
         </div>
     }
     else
     {
-        @StepTemplate(new(Index, FluentWizard.Value))
+        @StepTemplate(new WizardStepArgs(Index, FluentWizard.Value))
     }
 </li>
 @code {
-    readonly HashSet<EditForm> _editForms = [];
+    private readonly HashSet<EditForm> _editForms = new ();
 
     /// <summary />
     protected string? ClassValue => new CssBuilder(Class).Build();
