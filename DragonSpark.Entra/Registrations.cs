@@ -1,10 +1,13 @@
-﻿using DragonSpark.Application.AspNet.Security.Identity.Profile;
+﻿using DragonSpark.Application.AspNet.Security.Identity.Authentication;
+using DragonSpark.Application.AspNet.Security.Identity.Profile;
+using DragonSpark.Compose;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
+using System.Security.Claims;
 
 namespace DragonSpark.Entra;
 
@@ -16,16 +19,17 @@ sealed class Registrations : ICommand<AuthenticationBuilder>
 
 	public void Execute(AuthenticationBuilder parameter)
 	{
-		parameter.Services.Register<EntraApplicationSettings>()
-		         .AddOptions<OpenIdConnectOptions>("Entra")
-		         .Configure<EntraApplicationSettings>((to, from) =>
-		                                              {
-			                                              to.Authority    = $"{from.Instance}{from.TenantId}/v2.0";
-			                                              to.ClientId     = from.ClientId;
-			                                              to.ClientSecret = from.ClientSecret;
-			                                              to.CallbackPath = from.CallbackPath;
-			                                              to.ResponseType = from.ResponseType;
-		                                              });
+		var services = parameter.Services;
+		services.Register<EntraApplicationSettings>()
+		        .AddOptions<OpenIdConnectOptions>("Entra")
+		        .Configure<EntraApplicationSettings>((to, from) =>
+		                                             {
+			                                             to.Authority    = $"{from.Instance}{from.TenantId}/v2.0";
+			                                             to.ClientId     = from.ClientId;
+			                                             to.ClientSecret = from.ClientSecret;
+			                                             to.CallbackPath = from.CallbackPath;
+			                                             to.ResponseType = from.ResponseType;
+		                                             });
 
 		parameter.AddOpenIdConnect("Entra", "Microsoft Entra ID", x =>
 		                                                          {
@@ -53,13 +57,24 @@ sealed class Registrations : ICommand<AuthenticationBuilder>
 					                               : "Entra";
 		                          });
 
-		parameter.Services.Configure<AuthenticationOptions>(o =>
-		                                                    {
-			                                                    o.DefaultAuthenticateScheme = "SmartAuthenticate";
-			                                                    o.DefaultChallengeScheme    = "SmartChallenge";
-			                                                    o.DefaultScheme             = "SmartAuthenticate";
-		                                                    });
+		services.Configure<AuthenticationOptions>(o =>
+		                                          {
+			                                          o.DefaultAuthenticateScheme = "SmartAuthenticate";
+			                                          o.DefaultChallengeScheme    = "SmartChallenge";
+			                                          o.DefaultScheme             = "SmartAuthenticate";
+		                                          });
 
-		parameter.Services.TryDecorate(typeof(ILocateUser<>), typeof(EntraAwareLocateUser<>));
+		services.TryDecorate(typeof(ILocateUser<>), typeof(EntraAwareLocateUser<>));
+		services.TryDecorate<IAuthenticationValidation, EntraAwareAuthenticationValidation>();
 	}
+}
+// TODO
+sealed class EntraAwareAuthenticationValidation : IAuthenticationValidation
+{
+	readonly IAuthenticationValidation _previous;
+
+	public EntraAwareAuthenticationValidation(IAuthenticationValidation previous) => _previous = previous;
+
+	public ValueTask<bool> Get(ClaimsPrincipal parameter)
+		=> parameter.Identity?.AuthenticationType == "EasyAuth" ? true.ToOperation() : _previous.Get(parameter);
 }
