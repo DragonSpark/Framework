@@ -18,12 +18,12 @@
 @code {
 
 	bool _ready;
-	
+
 	[Parameter]
 	public required bool EnableClientCover { get; set; } = true;
 
 	[Parameter]
-	public required bool EnableEmptyElements { get; set; }
+	public required bool EnableEmptyElements { get; set; } = true;
 
 	void OnChanged(QueryRenderState parameter)
 	{
