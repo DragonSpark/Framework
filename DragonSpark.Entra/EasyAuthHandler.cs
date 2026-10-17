@@ -26,10 +26,7 @@ sealed class EasyAuthHandler : AuthenticationHandler<AuthenticationSchemeOptions
 				                 .Select(c => new Claim(c.GetProperty("typ").GetString()!,
 				                                        c.GetProperty("val").GetString()!));
 
-				var authType = json.GetProperty("auth_typ").GetString();
-				var nameType = json.GetProperty("name_typ").GetString();
-				var roleType = json.GetProperty("role_typ").GetString();
-				var identity = new ClaimsIdentity(claims, authType, nameType, roleType);
+				var identity = new ClaimsIdentity(claims, "EasyAuth", "name", "roles");
 				var ticket   = new AuthenticationTicket(new(identity), Scheme.Name);
 
 				return Task.FromResult(AuthenticateResult.Success(ticket));
