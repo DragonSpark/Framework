@@ -26,12 +26,33 @@ sealed class Registrations : ICommand<AuthenticationBuilder>
 			                                              to.CallbackPath = from.CallbackPath;
 			                                              to.ResponseType = from.ResponseType;
 		                                              });
+
 		parameter.AddOpenIdConnect("Entra", "Microsoft Entra ID",
 		                           x =>
 		                           {
 			                           x.SignInScheme = IdentityConstants.ExternalScheme;
 			                           x.SaveTokens   = true;
 		                           });
+
+		parameter.AddScheme<AuthenticationSchemeOptions, EasyAuthHandler>("EasyAuth", null);
+
+		parameter.AddPolicyScheme("SmartAuth", null,
+		                          o =>
+		                          {
+			                          o.ForwardDefaultSelector =
+				                          c => c.Request.Headers.ContainsKey("X-MS-CLIENT-PRINCIPAL")
+					                               ? "EasyAuth"
+					                               : "Entra";
+		                          });
+
+		parameter.Services.Configure<AuthenticationOptions>(options =>
+		                                                    {
+			                                                    options.DefaultAuthenticateScheme = "SmartAuth";
+			                                                    options.DefaultChallengeScheme    = "SmartAuth";
+			                                                    options.DefaultScheme             = "SmartAuth";
+		                                                    });
+
+		// 5. Keep your user locator decorator
 		parameter.Services.TryDecorate(typeof(ILocateUser<>), typeof(EntraAwareLocateUser<>));
 	}
 }
