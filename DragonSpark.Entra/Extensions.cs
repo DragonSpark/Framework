@@ -6,6 +6,6 @@ public static class Extensions
 {
 	extension(AuthenticationContext @this)
 	{
-		public AuthenticationContext UsingEntra() => @this.Append(Registrations.Default);
+		public AuthenticationContext UsingEntra<T>() where T : class => @this.Append(Registrations<T>.Default);
 	}
 }
