@@ -20,15 +20,17 @@ sealed class EasyAuthHandler : AuthenticationHandler<AuthenticationSchemeOptions
 			try
 			{
 				var decoded = Convert.FromBase64String(header.ToString());
-				var content = JsonSerializer.Deserialize<JsonElement>(decoded);
+				var json    = JsonSerializer.Deserialize<JsonElement>(decoded);
+				var claims = json.GetProperty("claims")
+				                 .EnumerateArray()
+				                 .Select(c => new Claim(c.GetProperty("typ").GetString()!,
+				                                        c.GetProperty("val").GetString()!));
 
-				var claims = content.GetProperty("claims")
-				                    .EnumerateArray()
-				                    .Select(c => new Claim(c.GetProperty("typ").GetString()!,
-				                                           c.GetProperty("val").GetString()!));
-
-				var identity = new ClaimsIdentity(claims, content.GetProperty("auth_typ").GetString());
-				var ticket   = new AuthenticationTicket(new(identity), "EasyAuth");
+				var authType = json.GetProperty("auth_typ").GetString();
+				var nameType = json.GetProperty("name_typ").GetString();
+				var roleType = json.GetProperty("role_typ").GetString();
+				var identity = new ClaimsIdentity(claims, authType, nameType, roleType);
+				var ticket   = new AuthenticationTicket(new(identity), Scheme.Name);
 
 				return Task.FromResult(AuthenticateResult.Success(ticket));
 			}
