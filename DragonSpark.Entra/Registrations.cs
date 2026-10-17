@@ -27,16 +27,24 @@ sealed class Registrations : ICommand<AuthenticationBuilder>
 			                                              to.ResponseType = from.ResponseType;
 		                                              });
 
-		parameter.AddOpenIdConnect("Entra", "Microsoft Entra ID",
-		                           x =>
-		                           {
-			                           x.SignInScheme = IdentityConstants.ExternalScheme;
-			                           x.SaveTokens   = true;
-		                           });
+		parameter.AddOpenIdConnect("Entra", "Microsoft Entra ID", x =>
+		                                                          {
+			                                                          x.SignInScheme = IdentityConstants.ExternalScheme;
+			                                                          x.SaveTokens   = true;
+		                                                          });
 
 		parameter.AddScheme<AuthenticationSchemeOptions, EasyAuthHandler>("EasyAuth", null);
 
-		parameter.AddPolicyScheme("SmartAuth", null,
+		parameter.AddPolicyScheme("SmartAuthenticate", null,
+		                          o =>
+		                          {
+			                          o.ForwardDefaultSelector =
+				                          c => c.Request.Headers.ContainsKey("X-MS-CLIENT-PRINCIPAL")
+					                               ? "EasyAuth"
+					                               : IdentityConstants.ApplicationScheme;
+		                          });
+
+		parameter.AddPolicyScheme("SmartChallenge", null,
 		                          o =>
 		                          {
 			                          o.ForwardDefaultSelector =
@@ -45,14 +53,13 @@ sealed class Registrations : ICommand<AuthenticationBuilder>
 					                               : "Entra";
 		                          });
 
-		parameter.Services.Configure<AuthenticationOptions>(options =>
+		parameter.Services.Configure<AuthenticationOptions>(o =>
 		                                                    {
-			                                                    options.DefaultAuthenticateScheme = "SmartAuth";
-			                                                    options.DefaultChallengeScheme    = "SmartAuth";
-			                                                    options.DefaultScheme             = "SmartAuth";
+			                                                    o.DefaultAuthenticateScheme = "SmartAuthenticate";
+			                                                    o.DefaultChallengeScheme    = "SmartChallenge";
+			                                                    o.DefaultScheme             = "SmartAuthenticate";
 		                                                    });
 
-		// 5. Keep your user locator decorator
 		parameter.Services.TryDecorate(typeof(ILocateUser<>), typeof(EntraAwareLocateUser<>));
 	}
 }

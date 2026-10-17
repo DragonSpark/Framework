@@ -25,14 +25,15 @@ sealed class EntraAwareLocateUser<T> : ILocateUser<T> where T : IdentityUser
 
 	public async ValueTask<T?> Get(ExternalLoginInfo parameter)
 	{
-		var result = await _previous.Off(parameter);
+		var previous = await _previous.Off(parameter);
 
-		if (result is null && parameter.Principal.FindFirstValue(_claim) is {} email)
+		if (previous is null && parameter.Principal.FindFirstValue(_claim) is {} email)
 		{
-			using var users = _users.Get();
-			return await users.Subject.FindByEmailAsync(email).Off();
+			using var users  = _users.Get();
+			var       result = await users.Subject.FindByEmailAsync(email).Off();
+			return result;
 		}
 
-		return result;
+		return previous;
 	}
 }
