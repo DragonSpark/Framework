@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.Persist;
 
-sealed class ConfigureSecurityStamp : IConfigureOptions<SecurityStampValidatorOptions>
+sealed class ConfigureSecurityStamp : IConfigureOptions<SecurityStampValidatorOptions> // TODO: replace with IClaimsTransformation
 {
 	readonly Func<SecurityStampRefreshingPrincipalContext, Task> _refresh;
 
