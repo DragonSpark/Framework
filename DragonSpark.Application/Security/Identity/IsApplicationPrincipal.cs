@@ -1,24 +1,29 @@
-using System.Security.Claims;
 using DragonSpark.Model.Selection.Conditions;
+using DragonSpark.Model.Sequences;
+using System.Security.Claims;
 
 namespace DragonSpark.Application.Security.Identity;
 
 public sealed class IsApplicationPrincipal : ICondition<ClaimsPrincipal>
 {
-    public static IsApplicationPrincipal Default { get; } = new();
+	public static IsApplicationPrincipal Default { get; } = new();
 
-    IsApplicationPrincipal()
-        : this("Identity.Application", "http://schemas.microsoft.com/claims/authnmethodsreferences") {}
+	IsApplicationPrincipal()
+		: this(WellKnownApplicationSchemes.Default, "http://schemas.microsoft.com/claims/authnmethodsreferences") {}
 
-    readonly string _scheme;
-    readonly string _amr;
+	readonly Array<string> _schemes;
+	readonly string        _amr;
 
-    public IsApplicationPrincipal(string scheme, string amr)
-    {
-        _scheme   = scheme;
-        _amr = amr;
-    }
+	public IsApplicationPrincipal(Array<string> schemes, string amr)
+	{
+		_schemes = schemes;
+		_amr     = amr;
+	}
 
-    public bool Get(ClaimsPrincipal parameter)
-        => parameter.Identity?.AuthenticationType == _scheme || parameter.FindFirstValue(_amr) == _scheme;
+	public bool Get(ClaimsPrincipal parameter)
+	{
+		var schemes = _schemes.Open();
+		return (parameter.Identity?.AuthenticationType is {} scheme && schemes.Contains(scheme)) ||
+		       schemes.Contains(parameter.FindFirstValue(_amr));
+	}
 }

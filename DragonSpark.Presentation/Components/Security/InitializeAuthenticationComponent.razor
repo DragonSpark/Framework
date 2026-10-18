@@ -3,24 +3,13 @@
 
 @inject IInitializeAuthentication Initialize
 
-@if (ChildContent is not null && _current is not null)
-{
-	@ChildContent(_current)
-}
-
 @code {
-	AuthenticationState? _current;
-
     protected override async Task OnInitializedAsync()
     {
-        _current = await State.On();
-		await Initialize.Off(_current.User);
+        var current = await State.On();
+		await Initialize.Off(current.User);
     }
 
     [CascadingParameter]
     public required Task<AuthenticationState> State { get; set; }
-
-
-    [Parameter]
-    public RenderFragment<AuthenticationState>? ChildContent { get; set; }
 }
