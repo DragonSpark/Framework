@@ -18,11 +18,10 @@ public sealed class ConfiguredApplicationConfiguration : ICommand<IApplicationBu
 	public void Execute(IApplicationBuilder parameter)
 	{
 		parameter.UseWarmupAwareHttpsRedirection()
-		         .UseAuthentication()
 		         .UseRouting()
 		         .UseCors()
+		         .UseAuthentication()
 		         .UseAuthorization()
-				 .UseOutputCache()
+		         .UseOutputCache()
 		         .UseEndpoints(_endpoints);
-	}
-}
+	}}
