@@ -1,5 +1,4 @@
-﻿using DragonSpark.Application.AspNet.Security.Identity.Authentication;
-using DragonSpark.Application.AspNet.Security.Identity.Profile;
+﻿using DragonSpark.Application.AspNet.Security.Identity.Profile;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Authentication;
@@ -63,7 +62,6 @@ sealed class Registrations<T> : ICommand<AuthenticationBuilder> where T : class
 		                                          });
 
 		services.TryDecorate(typeof(ILocateUser<>), typeof(EntraAwareLocateUser<>));
-		services.TryDecorate<IAuthenticationValidation, EntraAwareAuthenticationValidation>();
 		services.Start<LocateEasyAuthUser<T>>().Singleton();
 		services.AddScoped<IClaimsTransformation, EasyAuthClaimsTransformation<T>>();
 	}
