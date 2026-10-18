@@ -96,15 +96,15 @@
     <PackageVersion Include="Microsoft.Extensions.Http.Polly" Version="$(FrameworkVersion)" />
     <PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="10.11.0" />
     <PackageVersion Include="Microsoft.Extensions.Identity.Core" Version="$(FrameworkVersion)" />
-    <PackageVersion Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="5.0.0" />
-    <PackageVersion Include="Microsoft.FluentUI.AspNetCore.Components" Version="5.0.0" />
-    <PackageVersion Include="Microsoft.Identity.Web.UI" Version="4.14.2" />
-    <PackageVersion Include="Microsoft.IdentityModel.Protocols" Version="8.22.0" />
-    <PackageVersion Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.22.0" />
+    <PackageVersion Include="Microsoft.FluentUI.AspNetCore.Components.Icons" Version="4.14.5" />
+    <PackageVersion Include="Microsoft.FluentUI.AspNetCore.Components" Version="4.14.5" />
+    <PackageVersion Include="Microsoft.Identity.Web.UI" Version="4.16.1" />
+    <PackageVersion Include="Microsoft.IdentityModel.Protocols" Version="8.23.0" />
+    <PackageVersion Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.23.0" />
     <PackageVersion Include="Microsoft.IO.RecyclableMemoryStream" Version="3.0.1" />
     <PackageVersion Include="Microsoft.Maui.Controls" Version="10.0.110" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.11.0" />
-    <PackageVersion Include="MockQueryable.Moq" Version="10.0.8" />
+    <PackageVersion Include="MockQueryable.Moq" Version="10.0.12" />
     <PackageVersion Include="NetFabric.Hyperlinq" Version="3.0.0-beta48" />
     <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.19.1" />
     <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.19.1" />
@@ -154,6 +154,6 @@
     <PackageVersion Include="xunit.runner.visualstudio" Version="4.0.1" />
   </ItemGroup>
   <ItemGroup>
-    <GlobalPackageReference Include="Nerdbank.GitVersioning" Version="3.7.115" Condition="'$(Configuration)'=='Release'" />
+    <GlobalPackageReference Include="Nerdbank.GitVersioning" Version="3.10.94" Condition="'$(Configuration)'=='Release'" />
   </ItemGroup>
 </Project>

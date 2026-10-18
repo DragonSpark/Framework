@@ -54,40 +54,39 @@
 
 @code
 {
-    readonly Switch _focus = new(), _active = new();
-    readonly Timer  _timer = new(750) { AutoReset = false };
-    Func<Task>      _tick  = null!;
-    FieldIdentifier _identifier;
-    string          _stored = string.Empty, _current = string.Empty;
+	readonly Switch _focus = new(), _active = new();
+	readonly Timer  _timer = new(750) { AutoReset = false };
+	Func<Task>      _tick  = null!;
+	FieldIdentifier _identifier;
+	string          _stored = string.Empty, _current = string.Empty;
 
-    [Parameter]
-    public string Value { get; set; } = null!;
+	protected override void OnInitialized()
+	{
+		_timer.Elapsed += OnTick;
+		_tick          =  Tick;
+		base.OnInitialized();
+	}
 
-    [Parameter]
-    public EventCallback<string> ValueChanged { get; set; }
+	public override async Task SetParametersAsync(ParameterView parameters)
+	{
+		var changed = parameters.DidParameterChange(nameof(ValueExpression), ValueExpression);
+		await base.SetParametersAsync(parameters).Off();
+		if (changed)
+		{
+			_identifier = FieldIdentifier.Create(ValueExpression);
+		}
+	}
 
-    [Parameter]
-    public Expression<Func<string>> ValueExpression
-    {
-        get;
-        set
-        {
-            if (field != value)
-            {
-                field       = value;
-                _identifier = FieldIdentifier.Create(ValueExpression);
-            }
-        }
-    } = null!;
+	[Parameter]
+	public required string Value { get; set; }
+
+	[Parameter]
+	public EventCallback<string> ValueChanged { get; set; }
+
+	[Parameter]
+	public required Expression<Func<string>> ValueExpression { get; set; }
 
     string Current => _active ? _stored : Value;
-
-    protected override void OnInitialized()
-    {
-        _timer.Elapsed += OnTick;
-        _tick = Tick;
-        base.OnInitialized();
-    }
 
     Task HandleOnFocus(FocusEventArgs parameter)
     {
@@ -157,7 +156,7 @@
 
     async Task EndEdit()
     {
-        await Commit();
+        await Commit().On();
         if (_focus.Down())
         {
             await Task.Delay(250, Stop).On();

@@ -27,5 +27,7 @@ sealed class StateViewMemoryKey : IFormatter<ClaimsPrincipal>
 	}
 
 	public string Get(ClaimsPrincipal parameter)
-		=> _application.Get(parameter) ? _key.Get(parameter.Number().Value()) : _identifier.Get(parameter).Verify();
+		=> _application.Get(parameter) && parameter.Number() is {} number
+			   ? _key.Get(number)
+			   : _identifier.Get(parameter).Verify();
 }

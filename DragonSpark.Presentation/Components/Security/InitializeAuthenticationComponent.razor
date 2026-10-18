@@ -7,10 +7,9 @@
     protected override async Task OnInitializedAsync()
     {
         var current = await State.On();
-        await Initialize.Off(current.User);
+		await Initialize.Off(current.User);
     }
 
     [CascadingParameter]
     public required Task<AuthenticationState> State { get; set; }
-
 }

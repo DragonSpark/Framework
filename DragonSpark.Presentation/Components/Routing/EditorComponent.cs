@@ -41,7 +41,7 @@ public class EditorComponent : NavigationAwareComponent
 		}
 	}
 
-	protected virtual bool HasChanges() => EditContext.IsModified();
+	protected virtual bool HasChanges() => EditContext?.IsModified() == true;
 
 	protected override async ValueTask<bool> Allow(LocationChangingContext parameter)
 	{
@@ -55,7 +55,7 @@ public class EditorComponent : NavigationAwareComponent
 
 	protected override Task Exit()
 	{
-		EditContext.MarkAsUnmodified();
+		EditContext?.MarkAsUnmodified();
 
 		return base.Exit();
 	}

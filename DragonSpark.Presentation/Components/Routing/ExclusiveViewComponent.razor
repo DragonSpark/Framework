@@ -1,0 +1,85 @@
+﻿@using DragonSpark.Compose
+@using DragonSpark.Presentation.Environment.Browser
+
+@inherits Components.ComponentBase
+@implements IAsyncDisposable
+
+@inject IJSRuntime Runtime
+@inject NavigationManager Navigation
+
+@if (_allowed)
+{
+	@ChildContent
+}
+else
+{
+	@LockedTemplate(_focus)
+}
+
+@code {
+	IJSObjectReference?                            _module, _instance;
+	DotNetObjectReference<ExclusiveViewComponent>? _this;
+	bool                                           _allowed = true;
+	EventCallback                                  _focus;
+
+	[Parameter, EditorRequired]
+	public required RenderFragment ChildContent { get; set; }
+
+	[Parameter, EditorRequired]
+	public required RenderFragment<EventCallback> LockedTemplate { get; set; }
+
+	protected override void OnInitialized()
+	{
+		_this  = DotNetObjectReference.Create(this);
+		_focus = Start.A.Callback(FocusExistingTab);
+		base.OnInitialized();
+	}
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+		{
+			var key  = $"exclusive_view_{new Uri(Navigation.Uri).AbsolutePath.ToLowerInvariant()}";
+			var path = $"./{ModulePath.Default.Get(GetType())}";
+			_module   = await Runtime.InvokeAsync<IJSObjectReference>("import", Stop, path);
+			_instance = await _module.InvokeAsync<IJSObjectReference>("createLock", _this, key);
+		}
+	}
+
+	[JSInvokable]
+	public void HandleLockOut()
+	{
+		_allowed = false;
+		StateHasChanged();
+	}
+
+	async Task FocusExistingTab()
+	{
+		if (_instance is not null)
+		{
+			await _instance.InvokeVoidAsync("focusExisting").Off();
+		}
+	
+		await Runtime.InvokeVoidAsync("close").Off(); 
+	}
+
+	public async ValueTask DisposeAsync()
+	{
+		try
+		{
+			if (_instance is not null)
+			{
+				await _instance.InvokeVoidAsync("dispose").Off();
+				await _instance.DisposeAsync().Off();
+			}
+
+			if (_module is not null)
+			{
+				await _module.DisposeAsync().Off();
+			}
+			_this?.Dispose();
+		}
+		catch (JSDisconnectedException) {}
+	}
+
+}

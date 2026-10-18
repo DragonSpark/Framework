@@ -5,7 +5,6 @@ using FluentAssertions;
 using NetFabric.Hyperlinq;
 using System.Buffers;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace DragonSpark.Testing.Compose.Model.Memory;
 
@@ -53,10 +52,6 @@ public sealed class LeaseComposerTests
 		sut.AsSpan().Length.Should().Be(3);
 	}
 
-	readonly ITestOutputHelper _output;
-
-	public LeaseComposerTests(ITestOutputHelper output) => _output = output;
-
 	[Fact]
 	public void VerifySum()
 	{
@@ -67,20 +62,12 @@ public sealed class LeaseComposerTests
 		using var other  = second.Hide().AsValueEnumerable().Then();
 		var       memory = other.AsMemory();
 
-		for (int i = 0; i < memory.Length; i++)
-		{
-			_output.WriteLine(memory.Span[i].ToString());
-		}
 		using var sut  = first.Hide().AsValueEnumerable().Then().Then().Concat(memory).Result();
 		var       span = sut.AsSpan();
-
-		_output.WriteLine($"{memory.Length} - {span.Length}");
-
 
 		for (var i = 0; i < sut.Length; i++)
 		{
 			var i1 = span[i];
-			_output.WriteLine(i1.ToString());
 			result += i1;
 		}
 

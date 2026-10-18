@@ -1,10 +1,10 @@
-using System.ComponentModel.DataAnnotations;
 using DragonSpark.Application.Components.Validation.Objects;
 using DragonSpark.Compose;
 using DragonSpark.Model.Selection.Conditions;
 using JetBrains.Annotations;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using System.ComponentModel.DataAnnotations;
 
 namespace DragonSpark.Application.AspNet.Components.Validation;
 
@@ -71,8 +71,8 @@ public sealed class ObjectGraphDataAnnotationsValidator : ComponentBase, IDispos
 
 	void FieldChanged(object? sender, FieldChangedEventArgs e)
 	{
-		var edit    = EditContext.Verify();
-		var field   = e.FieldIdentifier;
+		var edit  = EditContext.Verify();
+		var field = e.FieldIdentifier;
 		if (field.FieldName.IsAssigned())
 		{
 			var value = _delegates.Get(field);

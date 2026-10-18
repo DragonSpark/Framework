@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Selection;
+﻿using DragonSpark.Compose;
+using DragonSpark.Model.Selection;
 using System.Security.Claims;
 
 namespace DragonSpark.Application.AspNet.Security.Identity;
@@ -14,7 +15,7 @@ sealed class AuthenticationIdentifier : ISelect<ClaimsPrincipal, string?>
 	public AuthenticationIdentifier(string claim) => _claim = claim;
 
 	public string? Get(ClaimsPrincipal parameter)
-		=> parameter.Identity?.IsAuthenticated ?? false
-			   ? $"{parameter.Identity.AuthenticationType}_{parameter.FindFirstValue(_claim)}"
+		=> parameter.IsAuthenticated()
+			   ? $"{parameter.Identity.Verify().AuthenticationType}_{parameter.FindFirstValue(_claim)}"
 			   : null;
 }
