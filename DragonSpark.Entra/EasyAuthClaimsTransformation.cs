@@ -1,10 +1,13 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Composition;
 using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
-using System.Security.Claims;
 
 namespace DragonSpark.Entra;
+
+using Microsoft.AspNetCore.Identity;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 sealed class EasyAuthClaimsTransformation<T> : IClaimsTransformation where T : class
 {
@@ -30,7 +33,8 @@ sealed class EasyAuthClaimsTransformation<T> : IClaimsTransformation where T : c
 		    && await _claims.CreateAsync(user).Off() is { Identity: ClaimsIdentity identity })
 		{
 			identity.AddClaim(_marker);
-			principal.AddIdentity(identity);
+
+			return new(new[] { identity }.Concat(principal.Identities));
 		}
 
 		return principal;
