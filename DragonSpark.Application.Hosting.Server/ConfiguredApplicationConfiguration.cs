@@ -24,4 +24,5 @@ public sealed class ConfiguredApplicationConfiguration : ICommand<IApplicationBu
 		         .UseAuthorization()
 		         .UseOutputCache()
 		         .UseEndpoints(_endpoints);
-	}}
+	}
+}
