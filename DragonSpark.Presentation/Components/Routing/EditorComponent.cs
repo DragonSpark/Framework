@@ -10,14 +10,14 @@ namespace DragonSpark.Presentation.Components.Routing;
 public class EditorComponent : NavigationAwareComponent
 {
 	[CascadingParameter]
-	EditContext EditContext
+	EditContext? EditContext
 	{
 		get;
 		set
 		{
 			if (field != value)
 			{
-				if (field.Account() != null)
+				if (field != null)
 				{
 					field.OnFieldChanged -= OnChanged;
 				}
@@ -35,7 +35,7 @@ public class EditorComponent : NavigationAwareComponent
 
 	void OnChanged(object? sender, FieldChangedEventArgs e)
 	{
-		if (EditContext.IsModified(e.FieldIdentifier))
+		if (HasChanges())
 		{
 			StateHasChanged();
 		}
@@ -45,8 +45,7 @@ public class EditorComponent : NavigationAwareComponent
 
 	protected override async ValueTask<bool> Allow(LocationChangingContext parameter)
 	{
-		var focused = await Focus.GetFocusedElementAsync();
-		if (focused.Account() is not null)
+		if (await Focus.GetFocusedElementAsync().On() is {} focused)
 		{
 			await focused.InvokeVoidAsync("blur").Off();
 		}
