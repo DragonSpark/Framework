@@ -1,10 +1,10 @@
+using System.Text.Json;
 using DragonSpark.Compose;
 using DragonSpark.Text;
-using System.Text.Json;
 
 namespace DragonSpark.Application.Runtime.Objects;
 
-public class Serializer<T> : Formatter<T>, ISerializer<T> where T : notnull
+public class Serializer<T> : Formatter<T>, ISerializer<T>
 {
 	protected Serializer(JsonSerializerOptions options)
 		: this(new Serialize<T>(options),

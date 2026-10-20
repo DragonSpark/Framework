@@ -1,5 +1,5 @@
-﻿using DragonSpark.Model.Commands;
+using DragonSpark.Model.Commands;
 
 namespace DragonSpark.Text;
 
-public interface ITarget<T> : ICommand<TargetInput<T>> where T : notnull;
+public interface ITarget<T> : ICommand<TargetInput<T>>;

@@ -1,4 +1,4 @@
-﻿using DragonSpark.Compose;
+using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
 using Microsoft.AspNetCore.Components;
@@ -31,7 +31,7 @@ public class Persist<T> : ICommand<T>, IResult<Pop<T>>, IDisposable
 		var store = _store.Get();
 		if (store is not null)
 		{
-			throw new InvalidOperationException($"The {GetType().Namespace}'s value has already been set!");
+			throw new InvalidOperationException($"The {GetType().Name}'s value has already been set!");
 		}
 
 		var assignment = _subscription.Get(parameter);

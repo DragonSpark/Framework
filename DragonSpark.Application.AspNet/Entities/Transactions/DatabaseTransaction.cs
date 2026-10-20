@@ -16,8 +16,8 @@ sealed class DatabaseTransaction(DbContext context, DatabaseFacade facade) : ITr
 	public async ValueTask Get(CancellationToken parameter)
 	{
 		await context.SaveChangesAsync(parameter).Off();
-		var transaction = facade.CurrentTransaction;
-		if (transaction is not null)
+		
+		if (facade.CurrentTransaction is {} transaction)
 		{
 			await transaction.CommitAsync(parameter).Off();
 		}
