@@ -45,14 +45,17 @@ public class Persist<T> : ICommand<T>, IResult<Pop<T>>, IDisposable
 
 	public Pop<T> Get()
 	{
-		var stored = _result.Get();
-		if (stored is null)
+		if (_result.Get() is {} stored)
 		{
-			var pop = _subscription.Get();
-			_result.Execute(pop);
-			return pop;
+			return stored;
 		}
 
-		return stored.Value;
+		var result = _subscription.Get();
+		if (result.Success)
+		{
+			_result.Execute(result);
+		}
+
+		return result;
 	}
 }
