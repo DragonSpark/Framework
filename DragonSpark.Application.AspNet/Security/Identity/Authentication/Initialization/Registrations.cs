@@ -47,7 +47,7 @@ sealed class Registrations<T> : ICommand<IServiceCollection> where T : IdentityU
 		         .Scoped()
 		         //
 		         .Then.AddCascadingValue(_state)
-		         .AddCascadingValue<AuthenticationState<T>?>(x => x.GetRequiredService<AuthenticationStateSource<T>>())
+		         .AddCascadingValue<AuthenticationState<T>>(x => x.GetRequiredService<AuthenticationStateSource<T>>())
 		         .AddCascadingValue<ProfileStatus?>(x => x.GetRequiredService<ProfileStatusSource>());
 	}
 }
