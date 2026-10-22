@@ -38,8 +38,7 @@ public sealed class ConstraintAwareMigrationStep : IMigrationStep
 			}
 			catch (Exception e)
 			{
-				logger.LogError(e, "An exception occurred while re-applying constraints");
-				throw;
+				logger.LogWarning(e, "An exception occurred while re-applying constraints");
 			}
 		}
 	}
