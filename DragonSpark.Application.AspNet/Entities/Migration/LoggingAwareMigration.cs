@@ -29,7 +29,15 @@ public sealed class LoggingAwareMigration : IMigration
 		}
 
 		var stopwatch = Stopwatch.StartNew();
-		await _previous.Off(parameter);
-		_log.LogInformation("Migration Completed: {Elapsed}", stopwatch.Elapsed);
+		try
+		{
+			await _previous.Off(parameter);
+			_log.LogInformation("Migration Completed Successfully: {Elapsed}", stopwatch.Elapsed);
+		}
+		catch (Exception e)
+		{
+			_log.LogCritical(e, "A problem was encountered when running the migration at {Elapsed}", stopwatch.Elapsed);
+		}
+		
 	}
 }
