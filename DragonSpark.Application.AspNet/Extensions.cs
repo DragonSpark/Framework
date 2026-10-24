@@ -119,7 +119,7 @@ partial class Extensions
 	extension(ClaimsPrincipal @this)
 	{
 		/**/
-		public UserInput Input(Guid subject) => new(@this.Number().Value(), subject);
+		public UserInput Input(Guid subject) => new(@this.Number() ?? 0, subject);
 
 		public UserInput<T> Input<T>(T subject) => new(@this.Number() ?? 0, subject);
 	}

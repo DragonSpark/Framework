@@ -1,34 +1,29 @@
-﻿using DragonSpark.Compose;
+using DragonSpark.Compose;
 using Majorsoft.Blazor.Components.Common.JsInterop.Focus;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.JSInterop;
+using Radzen;
 
 namespace DragonSpark.Presentation.Components.Routing;
 
 public class EditorComponent : NavigationAwareComponent
 {
-	[CascadingParameter]
-	EditContext? EditContext
+	public override async Task SetParametersAsync(ParameterView parameters)
 	{
-		get;
-		set
+		var previous = EditContext;
+		var changed  = parameters.DidParameterChange(nameof(EditContext), EditContext);
+		await base.SetParametersAsync(parameters).Off();
+		if (changed)
 		{
-			if (field != value)
-			{
-				if (field != null)
-				{
-					field.OnFieldChanged -= OnChanged;
-				}
-
-				if ((field = value) != null)
-				{
-					field.OnFieldChanged += OnChanged;
-				}
-			}
+			previous?.OnFieldChanged    -= OnChanged;
+			EditContext?.OnFieldChanged += OnChanged;
 		}
-	} = null!;
+	}
+
+	[CascadingParameter]
+	EditContext? EditContext { get; set; }
 
 	[Inject]
 	IFocusHandler Focus { get; set; } = null!;

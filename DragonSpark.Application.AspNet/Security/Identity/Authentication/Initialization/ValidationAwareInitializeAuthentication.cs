@@ -5,10 +5,10 @@ namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.Initia
 
 sealed class ValidationAwareInitializeAuthentication : IInitializeAuthentication
 {
-	readonly IInitializeAuthentication _previous;
 	readonly ValidateUser              _validate;
+	readonly IInitializeAuthentication _previous;
 
-	public ValidationAwareInitializeAuthentication(IInitializeAuthentication previous, ValidateUser validate)
+	public ValidationAwareInitializeAuthentication(ValidateUser validate, IInitializeAuthentication previous)
 	{
 		_previous = previous;
 		_validate = validate;

@@ -1,4 +1,4 @@
-﻿using DragonSpark.Compose;
+using DragonSpark.Compose;
 using DragonSpark.Model.Operations.Allocated;
 using Microsoft.AspNetCore.Components;
 
@@ -24,9 +24,5 @@ sealed class Subscription<T> : ISubscription<T>
 	public PersistingComponentStateSubscription Get(T parameter)
 		=> _state.RegisterOnPersisting(_persist.Then().Bind(parameter));
 
-	public Pop<T> Get()
-	{
-		var take = _state.TryTakeFromJson<T>(_key, out var stored);
-		return new(take, stored);
-	}
+	public Pop<T> Get() => new(_state.TryTakeFromJson<T>(_key, out var stored), stored);
 }

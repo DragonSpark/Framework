@@ -7,73 +7,77 @@ using Microsoft.AspNetCore.Http;
 
 namespace DragonSpark.Application.AspNet.Runtime;
 
-public class SessionVariable<T> : IProperty<HttpContext, T?> where T : notnull
+public class SessionVariable<T> : IProperty<HttpContext, T?>
 {
-    readonly string          _key;
-    readonly Func<T, byte[]> _formatter;
-    readonly Func<byte[], T> _parser;
+	readonly string          _key;
+	readonly Func<T, byte[]> _formatter;
+	readonly Func<byte[], T> _parser;
 
-    protected SessionVariable(string key) : this(key, DefaultSerializer<T>.Default) {}
+	protected SessionVariable(Type type) : this(type.AssemblyQualifiedName.Verify()) {}
 
-    protected SessionVariable(string key, ISerializer<T> serializer)
-        : this(key, serializer.Then().Select(TextAsBinary.Default), serializer.Get) {}
+	protected SessionVariable(string key) : this(key, DefaultSerializer<T>.Default) {}
 
-    protected SessionVariable(string key, Func<T, byte[]> formatter, Func<byte[], T> parser)
-    {
-        _key       = key;
-        _formatter = formatter;
-        _parser    = parser;
-    }
+	protected SessionVariable(string key, ISerializer<T> serializer)
+		: this(key, serializer.Then().Select(TextAsBinary.Default), serializer.Get) {}
 
-    public T? Get(HttpContext parameter)
-        => parameter.Session.TryGetValue(_key, out var value) ? _parser(value) : default;
+	protected SessionVariable(string key, Func<T, byte[]> formatter, Func<byte[], T> parser)
+	{
+		_key       = key;
+		_formatter = formatter;
+		_parser    = parser;
+	}
 
-    public void Execute(Pair<HttpContext, T?> parameter)
-    {
-        var (subject, value) = parameter;
+	public T? Get(HttpContext parameter)
+		=> parameter.Session.TryGetValue(_key, out var value) ? _parser(value) : default;
 
-        if (value is not null)
-        {
-            subject.Session.Set(_key, _formatter(value));
-        }
-        else
-        {
-            subject.Session.Remove(_key);
-        }
-    }
+	public void Execute(Pair<HttpContext, T?> parameter)
+	{
+		var (subject, value) = parameter;
+
+		if (value is not null)
+		{
+			subject.Session.Set(_key, _formatter(value));
+		}
+		else
+		{
+			subject.Session.Remove(_key);
+		}
+	}
 }
 
 public class SessionVariable : SessionVariable<string>
 {
-    protected SessionVariable(string key) : base(key, Serializer.Default) {}
+	protected SessionVariable(Type type) : this(type.AssemblyQualifiedName.Verify()) {}
 
-    sealed class Serializer : Serializer<string>
-    {
-        public static Serializer Default { get; } = new();
+	protected SessionVariable(string key) : base(key, Serializer.Default) {}
 
-        Serializer() : base(Formatter.Instance, SelfParser.Instance, SelfTarget.Instance) {}
+	sealed class Serializer : Serializer<string>
+	{
+		public static Serializer Default { get; } = new();
 
-        sealed class Formatter : Formatter<string>
-        {
-            public static Formatter Instance { get; } = new();
+		Serializer() : base(Formatter.Instance, SelfParser.Instance, SelfTarget.Instance) {}
 
-            Formatter() : base(x => x) {}
-        }
+		sealed class Formatter : Formatter<string>
+		{
+			public static Formatter Instance { get; } = new();
 
-        sealed class SelfParser : Parser<string>
-        {
-            public static SelfParser Instance { get; } = new();
+			Formatter() : base(x => x) {}
+		}
 
-            SelfParser() : base(x => x) {}
-        }
+		sealed class SelfParser : Parser<string>
+		{
+			public static SelfParser Instance { get; } = new();
 
-        sealed class SelfTarget : ITarget<string>
-        {
-            public static SelfTarget Instance { get; } = new();
+			SelfParser() : base(x => x) {}
+		}
 
-            SelfTarget() {}
+		sealed class SelfTarget : ITarget<string>
+		{
+			public static SelfTarget Instance { get; } = new();
 
-            public void Execute(TargetInput<string> parameter) {}
-        }
-    }
+			SelfTarget() {}
+
+			public void Execute(TargetInput<string> parameter) {}
+		}
+	}
 }

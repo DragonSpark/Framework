@@ -1,3 +1,5 @@
+using System.Buffers;
+using System.Security.Claims;
 using DragonSpark.Application.Components.Validation;
 using DragonSpark.Application.Components.Validation.Expressions;
 using DragonSpark.Application.Compose.Runtime;
@@ -19,8 +21,6 @@ using DragonSpark.Text;
 using Humanizer;
 using Microsoft.Extensions.Hosting;
 using NetFabric.Hyperlinq;
-using System.Buffers;
-using System.Security.Claims;
 
 namespace DragonSpark.Application;
 
@@ -138,6 +138,6 @@ partial class Extensions
     }
 
     /**/
-    public static T Get<T>(this ISerializer<T> @this, byte[] parameter) where T : notnull
+    public static T Get<T>(this ISerializer<T> @this, byte[] parameter)
         => @this.Parser.Get(BinaryAsText.Default.Get(parameter));
 }

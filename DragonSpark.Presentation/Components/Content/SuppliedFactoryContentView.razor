@@ -7,7 +7,7 @@
 
 @inherits ContentComponentBase<T>
 
-<ApplicationContentView TValue="T" Content="@Content" ChildContent="@ChildContent" NotFoundTemplate="@NotFoundTemplate" ForceRender="@ForceRender" />
+<ApplicationContentView TValue="T" Content="@Content" ChildContent="@ChildContent" LoadingTemplate="@LoadingTemplate" NotFoundTemplate="@NotFoundTemplate" ExceptionTemplate="@ExceptionTemplate" ForceRender="@ForceRender" />
 
 @code {
 
@@ -25,6 +25,12 @@
 
     [Parameter]
     public bool ForceRender { get; set; }
+
+    [Parameter]
+    public virtual RenderFragment LoadingTemplate { get; set; } = DefaultLoadingTemplate.Default;
+
+    [Parameter]
+    public virtual RenderFragment<Exception> ExceptionTemplate { get; set; } = DefaultExceptionTemplate.Default;
 
     protected override ValueTask<T?> GetContent() => Factory(Stop).ToOperation();
 
