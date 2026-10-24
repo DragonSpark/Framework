@@ -11,7 +11,7 @@ sealed class RemoveLogin<T>(IUsers<T> users) : IRemoveLogin<T> where T : Identit
 	public async ValueTask<IdentityResult> Get(Stop<RemoveLoginInput<T>> parameter)
 	{
 		using var users = _users.Get();
-		var ((user, (provider, identity)), _) = parameter;
+		var ((user, (provider, _, identity)), _) = parameter;
 		var found  = await users.Subject.FindByIdAsync(user.Id.ToString()).Off();
 		var verify = found.Verify();
 		var result = await users.Subject.RemoveLoginAsync(verify, provider, identity).Off();
