@@ -21,9 +21,9 @@ sealed class ConfigureTwitterApplication : ICommand<AuthenticationBuilder>
 
 	public void Execute(AuthenticationBuilder parameter)
 	{
-		parameter.AddTwitter()
+		parameter.AddTwitter(TwitterAlternateName.Default, _ => {})
 		         .Services.Register<TwitterApplicationSettings>()
-		         .AddOptions<TwitterAuthenticationOptions>(TwitterAuthenticationDefaults.AuthenticationScheme)
+		         .AddOptions<TwitterAuthenticationOptions>(TwitterAlternateName.Default)
 		         .Configure<TwitterApplicationSettings>((options, settings) =>
 		                                                {
 			                                                options.ClientId     = settings.Key;
