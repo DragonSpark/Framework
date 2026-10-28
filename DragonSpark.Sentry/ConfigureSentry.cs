@@ -1,4 +1,5 @@
-﻿using DragonSpark.Composition;
+﻿using DragonSpark.Compose;
+using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,6 +27,9 @@ sealed class ConfigureSentry : ICommand<IHostApplicationBuilder>
 	{
 		_apply.Execute(new(parameter.Configuration, _name));
 
-		parameter.Services.GetRequiredInstance<WebApplicationBuilder>().WebHost.UseSentry(_use);
+		if (parameter.Configuration["Sentry:dsn"].IsAssigned())
+		{
+			parameter.Services.GetRequiredInstance<WebApplicationBuilder>().WebHost.UseSentry(_use);
+		}
 	}
 }
