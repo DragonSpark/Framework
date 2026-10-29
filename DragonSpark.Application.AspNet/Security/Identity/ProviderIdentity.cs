@@ -6,6 +6,5 @@ public readonly record struct ProviderIdentity(string Provider, string Name, str
 {
 	public static implicit operator ProviderIdentity(ExternalLoginInfo instance) => instance.AsIdentity();
 
-	public ProviderIdentity(string Provider, string Identity)
-		: this(Provider, Provider == "Twitter" ? "X" : Provider, Identity) {} // TODO: Get this passed in legitimately
+	public ProviderIdentity(string Provider, string Identity) : this(Provider, Provider, Identity) {}
 }

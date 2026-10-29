@@ -26,17 +26,16 @@ sealed class LinkAwareLoadStorageEntry : ILoadStorageEntry
 		var input = new EntryInput(client, properties);
 		while (input.Properties.Metadata.Count > 0 && _entry.Get(input.Properties.Metadata) is {} path)
 		{
-			var next     = input.Client.GetParentBlobContainerClient().GetBlobClient(path);
+			var next = input.Client.GetParentBlobContainerClient().GetBlobClient(path);
 			if (await next.ExistsAsync(stop).Off())
 			{
 				var response = await next.GetPropertiesAsync(cancellationToken: stop).Off();
-				input = new(next, response.Value);	
+				input = new(next, response.Value);
 			}
 			else
 			{
 				return null;
 			}
-			
 		}
 
 		return await _previous.Off(new(input, stop));
