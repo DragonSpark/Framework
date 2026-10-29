@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.OutputCaching;
 
 namespace DragonSpark.Server.Output;
 
-public class OutputsAware<T> : Appending<Stop<T>> where T : notnull
+public class OutputsAware<T> : Model.Operations.Stop.Appending<T> where T : notnull
 {
 	protected OutputsAware(IStopAware<T> previous, IOutputCacheStore output, params IOutputKey[] keys)
 		: this(previous, new Evict(output, keys)) {}
