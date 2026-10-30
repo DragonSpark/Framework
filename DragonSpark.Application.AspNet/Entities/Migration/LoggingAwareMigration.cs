@@ -37,6 +37,7 @@ public sealed class LoggingAwareMigration : IMigration
 		catch (Exception e)
 		{
 			_log.LogCritical(e, "A problem was encountered when running the migration at {Elapsed}", stopwatch.Elapsed);
+			Environment.Exit(2);
 		}
 		
 	}

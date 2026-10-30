@@ -6,5 +6,5 @@ public sealed class DefaultWindowSize : Instance<uint>
 {
 	public static DefaultWindowSize Default { get; } = new();
 
-	DefaultWindowSize() : base(100_000) {}
+	DefaultWindowSize() : base(50_000) {}
 }
