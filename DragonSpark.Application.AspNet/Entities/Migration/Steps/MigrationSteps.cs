@@ -11,9 +11,8 @@ public sealed class MigrationSteps : IMigrationSteps
 
 	public IEnumerable<IMigrationStep> Get(Array<IEntityMigrator> parameter)
 	{
-		/*yield return new PreMigrationStep(parameter);
+		yield return new PreMigrationStep(parameter);
 		yield return new MigrationStep(parameter);
-		yield return new PostMigrationStep(parameter);*/
-		yield break; // TODO
+		yield return new PostMigrationStep(parameter);
 	}
 }
