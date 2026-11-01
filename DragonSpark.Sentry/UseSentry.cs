@@ -24,6 +24,4 @@ sealed class UseSentry : ICommand<SentryAspNetCoreOptions>
 				                                           : null;
 			                           return result;
 		                           });
-
-		parameter.AddInAppInclude("DragonSpark");
 	}}
