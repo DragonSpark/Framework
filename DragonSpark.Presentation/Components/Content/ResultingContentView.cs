@@ -4,25 +4,33 @@ using DragonSpark.Model;
 using DragonSpark.Model.Operations.Results;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection.Conditions;
+using DragonSpark.Presentation.Components.Content.History;
 using DragonSpark.Presentation.Components.Content.Rendering;
 using Microsoft.AspNetCore.Components;
+using Microsoft.Extensions.Caching.Memory;
 using Radzen;
 
 namespace DragonSpark.Presentation.Components.Content;
 
-partial class ResultingContentView<T> : ICompleted<T?>
+partial class ResultingContentView<T> : ICompleted<T?>, IDisposable
 {
-	readonly Switch _render = true;
-	RenderFragment? _fragment;
-	Worker?         _subject;
-	Workers<T?>     _workers = null!;
-	Exception?      _exception;
+	readonly Switch                 _render = true;
+	HistoryVariable<RenderFragment> _store  = null!;
+	RenderFragment?                 _fragment;
+	Worker?                         _subject;
+	Workers<T?>                     _workers = null!;
+	Exception?                      _exception;
 
 	protected override void OnInitialized()
 	{
-		_workers = new Workers<T?>(this);
+		_store    = new HistoryVariable<RenderFragment>(Memory, Key.Get(this));
+		_fragment = _store.Pop(out var previous) ? previous : null;
+		_workers  = new Workers<T?>(this);
 		base.OnInitialized();
 	}
+
+	[Inject] public required IMemoryCache Memory { get; set; }
+	[Inject] public required IRenderContentKey Key { get; set; }
 
 	[Parameter, EditorRequired]
 	public required IResulting<T?> Content { get; set; }
@@ -112,4 +120,12 @@ partial class ResultingContentView<T> : ICompleted<T?>
 	}
 
 	public bool Get(IResulting<T?> parameter) => parameter == Content;
+
+	public void Dispose()
+	{
+		if (_fragment is not null)
+		{
+			_store.Execute(_fragment);	
+		}
+	}
 }
