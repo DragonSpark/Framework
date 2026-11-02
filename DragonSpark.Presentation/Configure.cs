@@ -4,7 +4,6 @@ using DragonSpark.Composition;
 using DragonSpark.Composition.Compose;
 using DragonSpark.Model.Selection.Alterations;
 using DragonSpark.Presentation.Components.Content;
-using DragonSpark.Presentation.Components.Content.History;
 using DragonSpark.Presentation.Components.Content.Rendering;
 using DragonSpark.Presentation.Components.Content.Rendering.Sequences;
 using DragonSpark.Presentation.Environment;
@@ -27,7 +26,7 @@ sealed class Configure : IAlteration<BuildHostContext>
 		                       Registrations.Default)
 		            .ComposeUsing(Composing.Default)
 		            .ComposeUsing(x => x.Decorate(typeof(IActiveContents<>), typeof(RenderingAwareActiveContents<>))
-		                                .Decorate(typeof(IActiveContents<>), typeof(HistoryAwareActiveContents<>))
+		                                // .Decorate(typeof(IActiveContents<>), typeof(HistoryAwareActiveContents<>))
 		                                .Decorate(typeof(IActiveContents<>), typeof(ExceptionAwareActiveContents<>))
 		                                .Decorate(typeof(IPaging<>), typeof(RenderAwarePaging<>))
 		                                .Decorate<ICurrentContext, StoreAwareCurrentContext>());
