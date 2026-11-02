@@ -23,10 +23,11 @@ public sealed class ConfigureHttpBuilder : ICommand<IHttpClientBuilder>
 		parameter.AddStandardResilienceHandler(x =>
 		                                       {
 			                                       _options(x);
-			                                       
-			                                       /*x.AttemptTimeout.Timeout = TimeSpan.FromSeconds(20); // TODO: Cleanup
 
-			                                       x.TotalRequestTimeout.Timeout = TimeSpan.FromMinutes(2);*/
+			                                       x.AttemptTimeout.Timeout = TimeSpan.FromSeconds(20); // TODO: Cleanup
+			                                       x.CircuitBreaker.SamplingDuration = TimeSpan.FromSeconds(45);
+
+			                                       x.TotalRequestTimeout.Timeout = TimeSpan.FromMinutes(2);
 		                                       });
 	}
 }
