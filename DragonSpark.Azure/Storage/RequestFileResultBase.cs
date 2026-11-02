@@ -4,7 +4,7 @@ using DragonSpark.Model.Selection.Conditions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
 
-namespace DragonSpark.Azure.Storage.Uploads;
+namespace DragonSpark.Azure.Storage;
 
 public class RequestFileResultBase : ISelecting<Server.Requests.Query<IStorageEntry>, IActionResult>
 {
@@ -31,8 +31,9 @@ public class RequestFileResultBase : ISelecting<Server.Requests.Query<IStorageEn
 		var entityTag    = new EntityTagHeaderValue(tag.ToString());
 		var streamable   = _streams.Get(type);
 		var downloadable = _downloadable(new(contents, type, name, modified, entityTag, streamable));
-		var address      = await subject.Get(new RelayInput(downloadable ? name : null).Stop(stop)).Off();
-		var result       = new RelayRedirectResult(address.ToString());
+		var result = downloadable
+			             ? owner.File(contents, type, name, modified, entityTag, streamable)
+			             : owner.File(contents, type, modified, entityTag, streamable);
 		return result;
 	}
 }

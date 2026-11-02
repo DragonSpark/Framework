@@ -1,6 +1,6 @@
 ﻿using Microsoft.Net.Http.Headers;
 
-namespace DragonSpark.Azure.Storage.Uploads;
+namespace DragonSpark.Azure.Storage;
 
 public readonly record struct RequestFileResultInput(
 	Stream Stream,

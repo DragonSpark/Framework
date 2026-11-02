@@ -1,8 +1,8 @@
 ﻿using DragonSpark.Text;
 
-namespace DragonSpark.Azure.Storage.Uploads;
+namespace DragonSpark.Azure.Storage;
 
-sealed class CacheControl : Formatter<TimeSpan>
+public sealed class CacheControl : Formatter<TimeSpan>
 {
 	public static CacheControl Default { get; } = new();
 

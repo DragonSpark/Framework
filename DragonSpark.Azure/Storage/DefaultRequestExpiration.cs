@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Model.Results;
 
-namespace DragonSpark.Azure.Storage.Uploads;
+namespace DragonSpark.Azure.Storage;
 
 public sealed class DefaultRequestExpiration : Instance<TimeSpan>
 {

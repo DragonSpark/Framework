@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Azure.Storage.Uploads;
+﻿namespace DragonSpark.Azure.Storage;
 
 sealed class DefaultCacheControl : Text.Text
 {
