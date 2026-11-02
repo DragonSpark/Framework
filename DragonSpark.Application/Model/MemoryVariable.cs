@@ -1,11 +1,13 @@
 ﻿using DragonSpark.Compose;
+using DragonSpark.Model;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Results;
+using DragonSpark.Model.Selection.Conditions;
 using Microsoft.Extensions.Caching.Memory;
 
 namespace DragonSpark.Application.Model;
 
-public class MemoryVariable<T> : IMutable<T?>
+public class MemoryVariable<T> : IMutable<T?>, ICondition
 {
 	readonly Func<string>         _key;
 	readonly MemoryAssignment<T?> _assignment;
@@ -45,4 +47,6 @@ public class MemoryVariable<T> : IMutable<T?>
 		var key = _key();
 		_assignment.Assign(key, parameter);
 	}
+
+	public bool Get(None parameter) => _assignment.Contains(_key());
 }
