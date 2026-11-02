@@ -24,9 +24,9 @@ public sealed class ConfigureHttpBuilder : ICommand<IHttpClientBuilder>
 		                                       {
 			                                       _options(x);
 			                                       
-			                                       x.AttemptTimeout.Timeout = TimeSpan.FromSeconds(20); // TODO: Cleanup
+			                                       /*x.AttemptTimeout.Timeout = TimeSpan.FromSeconds(20); // TODO: Cleanup
 
-			                                       x.TotalRequestTimeout.Timeout = TimeSpan.FromMinutes(2);
+			                                       x.TotalRequestTimeout.Timeout = TimeSpan.FromMinutes(2);*/
 		                                       });
 	}
 }
