@@ -1,9 +1,15 @@
 ﻿using DragonSpark.Model.Commands;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Http.Resilience;
 using Polly;
 
 namespace DragonSpark.Application.AspNet.Diagnostics;
+
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Http.Resilience;
+using Polly;
+using Polly.Timeout;
+using System;
+using System.Net;
+using System.Net.Http;
 
 public sealed class ConfigureHttpBuilder : ICommand<IHttpClientBuilder>
 {
@@ -14,7 +20,12 @@ public sealed class ConfigureHttpBuilder : ICommand<IHttpClientBuilder>
 	readonly Action<HttpStandardResilienceOptions> _options;
 
 	public ConfigureHttpBuilder(Func<Exception, bool> condition)
-		: this(x => x.Retry.ShouldHandle = new PredicateBuilder<HttpResponseMessage>().Handle(condition)) {}
+		: this(x => x.Retry.ShouldHandle = new PredicateBuilder<HttpResponseMessage>()
+		                                   .Handle<TimeoutRejectedException>()
+		                                   .Handle<HttpRequestException>()
+		                                   .Handle(condition)
+		                                   .HandleResult(y => (int)y.StatusCode >= 500 ||
+		                                                      y.StatusCode == HttpStatusCode.RequestTimeout)) {}
 
 	public ConfigureHttpBuilder(Action<HttpStandardResilienceOptions> options) => _options = options;
 
@@ -22,12 +33,13 @@ public sealed class ConfigureHttpBuilder : ICommand<IHttpClientBuilder>
 	{
 		parameter.AddStandardResilienceHandler(x =>
 		                                       {
-			                                       _options(x);
-
-			                                       x.AttemptTimeout.Timeout = TimeSpan.FromSeconds(20); // TODO: Cleanup
+			                                       // 1. Core timeouts
+			                                       x.AttemptTimeout.Timeout          = TimeSpan.FromSeconds(20);
 			                                       x.CircuitBreaker.SamplingDuration = TimeSpan.FromSeconds(45);
+			                                       x.TotalRequestTimeout.Timeout     = TimeSpan.FromMinutes(1);
 
-			                                       x.TotalRequestTimeout.Timeout = TimeSpan.FromMinutes(2);
+			                                       // 2. Run initial options delegate (sets ShouldHandle from constructor)
+			                                       _options(x);
 		                                       });
 	}
 }

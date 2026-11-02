@@ -3,7 +3,7 @@
 @inherits PagingContainerBase<T>
 
 <DragonSpark.Presentation.Components.Content.ApplicationPrincipalAwareContentView>
-	<DragonSpark.Presentation.Components.Rendering.GatedClientCover Enabled="@(EnableClientCover && !_ready)">
+	<DragonSpark.Presentation.Components.Rendering.GatedClientCover Enabled="@false">
 		<PagingContentContainer T="T" Content="@Content" Compose="@Compose" Pagination="@Pagination"
 		                        ReportedType="@ReportedType" HeaderTemplate="@HeaderTemplate" 
 		                        FooterTemplate="@FooterTemplate" ChildContent="@ChildContent" 
