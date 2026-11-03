@@ -4,53 +4,41 @@ using DragonSpark.Model;
 using DragonSpark.Model.Operations.Results;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection.Conditions;
-using DragonSpark.Presentation.Components.Content.History;
 using DragonSpark.Presentation.Components.Content.Rendering;
 using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Caching.Memory;
 using Radzen;
 
 namespace DragonSpark.Presentation.Components.Content;
 
-partial class ResultingContentView<T> : ICompleted<T?>, IDisposable
+partial class ResultingContentView<T> : ICompleted<T?>
 {
-	readonly Switch                 _render = true;
-	HistoryVariable<RenderFragment> _store  = null!;
-	RenderFragment?                 _fragment;
-	Worker?                         _subject;
-	Workers<T?>                     _workers = null!;
-	Exception?                      _exception;
+	readonly Switch _render = true, _first = false;
+	RenderFragment? _fragment;
+	Worker?         _subject;
+	Workers<T?>     _workers = null!;
+	Exception?      _exception;
 
 	protected override void OnInitialized()
 	{
-		_store    = new HistoryVariable<RenderFragment>(Memory, Key.Get(this));
-		_fragment = _store.Pop(out var previous) ? previous : null;
-		_workers  = new Workers<T?>(this);
+		_workers = new Workers<T?>(this);
 		base.OnInitialized();
-	}
 
-	[Inject] public required IMemoryCache Memory { get; set; }
-	[Inject] public required IRenderContentKey Key { get; set; }
+		if (History.Get(this) is T cachedEntry)
+		{
+			_fragment = CreateFragment(cachedEntry);
+		}
+	}
 
 	[Parameter, EditorRequired]
 	public required IResulting<T?> Content { get; set; }
 
 	protected override bool ShouldRender() => _render || !_render.Up();
 
-	[Parameter]
-	public ICondition<None>? UpdateMonitor { get; set; }
-
-	[Parameter]
-	public EventCallback<T> Rendering { get; set; }
-
-	[Parameter]
-	public EventCallback<T> Rendered { get; set; }
-
-	[Parameter]
-	public EventCallback<T> Refreshed { get; set; }
-
-	[Parameter]
-	public bool ForceRender { get; set; }
+	[Parameter] public ICondition<None>? UpdateMonitor { get; set; }
+	[Parameter] public EventCallback<T> Rendering { get; set; }
+	[Parameter] public EventCallback<T> Rendered { get; set; }
+	[Parameter] public EventCallback<T> Refreshed { get; set; }
+	[Parameter] public bool ForceRender { get; set; }
 
 	public override Task SetParametersAsync(ParameterView parameters)
 	{
@@ -81,12 +69,13 @@ partial class ResultingContentView<T> : ICompleted<T?>, IDisposable
 
 	protected override Task OnParametersSetAsync()
 	{
-		var @new                            = _subject is null;
+		var @new = _subject is null;
 		var (monitor, complete) = _subject ??= _workers.Get(Content);
+		
 		return monitor.IsCompleted
 			       ? complete.Get()
 			       : @new && (ForceRender || Render > RenderState.Default) &&
-			         !(_fragment is null ? Rendered : Refreshed).HasDelegate
+			         !(_first ? Rendered : Refreshed).HasDelegate
 				       ? monitor
 				       : base.OnParametersSetAsync();
 	}
@@ -96,19 +85,22 @@ partial class ResultingContentView<T> : ICompleted<T?>, IDisposable
 		_exception = null;
 		if (parameter is { IsCompletedSuccessfully: true })
 		{
-			// ReSharper disable once AsyncApostle.AsyncWait
 			var result = parameter.Result;
 			if (result is not null)
 			{
 				await Rendering.On(result);
 			}
+			
+			// Update history with the fresh result
+			History.Execute(this, result);
+			
+			// Swap fragment with fresh content and trigger re-render
+			_fragment = CreateFragment(result);
+			StateHasChanged();
 
-			var refresh = _fragment is not null;
-			_fragment = ContentTemplate?.Invoke(result) ??
-			            (result is not null ? ChildContent(result) : NotFoundTemplate);
 			if (result is not null)
 			{
-				var callback = refresh ? Refreshed : Rendered;
+				var callback = _first.Up() ? Rendered : Refreshed;
 				await callback.InvokeAsync(result).Off();
 			}
 		}
@@ -119,13 +111,8 @@ partial class ResultingContentView<T> : ICompleted<T?>, IDisposable
 		}
 	}
 
-	public bool Get(IResulting<T?> parameter) => parameter == Content;
+	RenderFragment CreateFragment(T? result)
+		=> ContentTemplate?.Invoke(result) ?? (result is not null ? ChildContent(result) : NotFoundTemplate);
 
-	public void Dispose()
-	{
-		if (_fragment is not null)
-		{
-			_store.Execute(_fragment);	
-		}
-	}
+	public bool Get(IResulting<T?> parameter) => parameter == Content;
 }

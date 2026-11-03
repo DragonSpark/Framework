@@ -2,16 +2,10 @@
 
 @using DragonSpark.Compose
 @using DragonSpark.Model.Results
+@using DragonSpark.Presentation.Components.Content.History
 @inherits StateViewBase<T>
 
-@if (_content is not null)
-{
-    @ChildContent(_content)
-}
-else
-{
-    @LoadingTemplate
-}
+<RecentContentComponent T="T" Input="@_content" ChildContent="@ChildContent" LoadingTemplate="@LoadingTemplate" />
 
 @code
 {

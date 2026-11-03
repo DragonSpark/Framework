@@ -1,8 +1,10 @@
 ﻿@using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination
+@using DragonSpark.Presentation.Components.Content.History
 @typeparam T
 @inherits PagingContainerBase<T>
 
 @inject IPaging<T> Paging
+@inject HistoryTracker History
 
 <ContentView TValue="IPages<T>" Content="@_subject" NotFoundTemplate="@NotFoundTemplate">
 	@HeaderTemplate?.Invoke(new(_error, _state))

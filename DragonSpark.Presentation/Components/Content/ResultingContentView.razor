@@ -1,10 +1,12 @@
 ﻿@typeparam T
 
+@using DragonSpark.Presentation.Components.Content.History
 @using DragonSpark.Presentation.Components.Content.Rendering
 
 @inherits Templates.ActiveContentTemplateComponentBase<T>
 
 @inject RenderStateStore Render
+@inject HistoryTracker History
 
 @if (_exception is not null)
 {
