@@ -5,6 +5,10 @@ let targetScrollY = null;
 let isHistoryNavigation = false;
 let cacheVaultLocked = false;
 
+let lastDocumentHeight = 0;
+let stableFrameCount = 0;
+const REQUIRED_STABLE_FRAMES = 5;
+
 function checkUrlLifecycle() {
 	const currentUrl = window.location.href;
 
@@ -18,24 +22,28 @@ function checkUrlLifecycle() {
 			window.scrollTo(window.scrollX, 0);
 		}
 
+		lastDocumentHeight = 0;
+		stableFrameCount = 0;
 		isHistoryNavigation = false;
+
 		setTimeout(() => { cacheVaultLocked = false; }, 100);
 	}
 
-	// Only apply targeted scroll correction if we are actively restoring history
 	if (targetScrollY !== null) {
-		const maxScrollable = document.documentElement.scrollHeight - window.innerHeight;
+		const currentHeight = document.documentElement.scrollHeight;
 
-		// If the document hasn't grown tall enough yet to reach our target, 
-		// pin to the current max or keep trying gently without forcing past content bounds
-		if (maxScrollable >= targetScrollY) {
-			window.scrollTo(window.scrollX, targetScrollY);
-			// Release target once successfully applied
+		window.scrollTo(window.scrollX, targetScrollY);
+
+		if (currentHeight === lastDocumentHeight && currentHeight > window.innerHeight) {
+			stableFrameCount++;
+		} else {
+			stableFrameCount = 0;
+			lastDocumentHeight = currentHeight;
+		}
+
+		if (stableFrameCount >= REQUIRED_STABLE_FRAMES) {
 			targetScrollY = null;
 			cacheVaultLocked = false;
-		} else {
-			// Interim position while massive grids are still rendering/expanding
-			window.scrollTo(window.scrollX, Math.min(targetScrollY, maxScrollable));
 		}
 	}
 

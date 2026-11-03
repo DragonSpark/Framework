@@ -1,3 +1,3 @@
 ﻿namespace DragonSpark.Presentation.Components.Content.History;
 
-public readonly record struct HistoryEntry(string Key, object? Result, DateTimeOffset When);
+public readonly record struct HistoryEntry<T>(string Key, T? Result, DateTimeOffset When);

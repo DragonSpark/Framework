@@ -63,7 +63,7 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Scoped()
 		         //
 		         .Then.Start<ScrollToFirstValidationMessage>()
-		         .And<ResourceExistsValidation>().And<HistoryTracker>()
+		         .And<ResourceExistsValidation>().And<RecentContentTracker>().And<RecentHeightTracker>()
 		         .Scoped()
 		         //
 		         .Then.AddScoped(typeof(IPublisher<>), typeof(Publisher<>))

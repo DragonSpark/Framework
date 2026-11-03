@@ -3,7 +3,7 @@
 
 @typeparam T where T : struct
 
-@inject HistoryTracker History
+@inject RecentContentTracker Recent
 
 @if (_input is { } input)
 {
@@ -19,7 +19,7 @@ else
 
 	protected override void OnInitialized()
 	{
-		if (History.Get(this) is T input)
+		if (Recent.Get(this) is T input)
 		{
 			_input = input;
 		}
@@ -43,7 +43,7 @@ else
 		if (changed)
 		{
 			_input = Input;
-			History.Execute(this, Input);
+			Recent.Execute(this, Input);
 		}
 	}
 }

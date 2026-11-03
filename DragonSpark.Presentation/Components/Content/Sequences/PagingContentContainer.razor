@@ -4,7 +4,7 @@
 @inherits PagingContainerBase<T>
 
 @inject IPaging<T> Paging
-@inject HistoryTracker History
+@inject RecentContentTracker Recent
 
 <ContentView TValue="IPages<T>" Content="@_subject" NotFoundTemplate="@NotFoundTemplate">
 	@HeaderTemplate?.Invoke(new(_error, _state))

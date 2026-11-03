@@ -23,7 +23,7 @@ partial class ResultingContentView<T> : ICompleted<T?>
 		_workers = new Workers<T?>(this);
 		base.OnInitialized();
 
-		if (History.Get(this) is T cachedEntry)
+		if (Recent.Get(this) is T cachedEntry)
 		{
 			_fragment = CreateFragment(cachedEntry);
 		}
@@ -92,7 +92,7 @@ partial class ResultingContentView<T> : ICompleted<T?>
 			}
 			
 			// Update history with the fresh result
-			History.Execute(this, result);
+			Recent.Execute(this, result);
 			
 			// Swap fragment with fresh content and trigger re-render
 			_fragment = CreateFragment(result);

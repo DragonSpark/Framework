@@ -11,7 +11,7 @@ public abstract class RecentContentComponentBase<T> : ComponentBase
 
 	protected override void OnInitialized()
 	{
-		if (History.Get(this) is T input)
+		if (Recent.Get(this) is T input)
 		{
 			_input = input;	
 		}
@@ -19,7 +19,7 @@ public abstract class RecentContentComponentBase<T> : ComponentBase
 		base.OnInitialized();
 	}
 
-	[Inject] HistoryTracker History { get; set; } = null!;
+	[Inject] RecentContentTracker Recent { get; set; } = null!;
 
 	[Parameter]
 	public required T? Input { get; set; }
@@ -37,7 +37,7 @@ public abstract class RecentContentComponentBase<T> : ComponentBase
 		if (changed)
 		{
 			_input = Input;
-			History.Execute(this, Input);
+			Recent.Execute(this, Input);
 		}
 	}
 }

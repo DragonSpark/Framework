@@ -26,7 +26,7 @@ partial class PagingContentContainer<T> : IPageContainer<T>
 		{
 			_subject = Paging.Get(new(this, Content.Verify(), Compose));
 			_error   = null;
-			if (History.Get(this) is PageResult<T> entry)
+			if (Recent.Get(this) is PageResult<T> entry)
 			{
 				await Get(entry).Off();
 			}
@@ -65,7 +65,7 @@ partial class PagingContentContainer<T> : IPageContainer<T>
 	public async ValueTask Get(PageResult<T> parameter)
 	{
 		_error = null;
-		History.Execute(this, parameter);
+		Recent.Execute(this, parameter);
 		await Update(parameter.Total is > 0).On();
 		if (Parent is not null)
 		{
@@ -76,7 +76,7 @@ partial class PagingContentContainer<T> : IPageContainer<T>
 	public async ValueTask Get(Exception parameter)
 	{
 		_error = parameter;
-		History.Execute(this, null);
+		Recent.Execute(this, null);
 		await Update(null).On();
 		if (Parent is not null)
 		{

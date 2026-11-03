@@ -1,5 +1,4 @@
-﻿using DragonSpark.Composition;
-using DragonSpark.Model;
+﻿using DragonSpark.Model;
 using DragonSpark.Model.Commands;
 using DragonSpark.Model.Selection;
 using DragonSpark.Presentation.Components.Content.Rendering;
@@ -8,25 +7,36 @@ using System.Collections.Concurrent;
 
 namespace DragonSpark.Presentation.Components.Content.History;
 
-sealed class HistoryTracker : ISelect<object, object?>, IAssign<object, object?>
+sealed class RecentContentTracker : Tracker<Microsoft.AspNetCore.Components.ComponentBase, object?>
 {
-	readonly IRenderContentKey                          _key;
-	readonly ConcurrentDictionary<string, HistoryEntry> _entries;
-	readonly ITime                                      _time;
+	public RecentContentTracker(IRenderContentKey key) : base(key.Get) {}
+}
 
-	public HistoryTracker(IRenderContentKey key) : this(key, [], Time.Default) {}
+// TODO
 
-	[Candidate(false)]
-	public HistoryTracker(IRenderContentKey key, ConcurrentDictionary<string, HistoryEntry> entries, ITime time)
+sealed class RecentHeightTracker : Tracker<string, double?>
+{
+	public RecentHeightTracker() : base(s => s) {}
+}
+
+public class Tracker<TIn, TOut> : ISelect<TIn, TOut?>, IAssign<TIn, TOut?>
+{
+	readonly Func<TIn, string>                                _key;
+	readonly ConcurrentDictionary<string, HistoryEntry<TOut>> _entries;
+	readonly ITime                                            _time;
+
+	protected Tracker(Func<TIn, string> key) : this(key, [], Time.Default) {}
+
+	protected Tracker(Func<TIn, string> key, ConcurrentDictionary<string, HistoryEntry<TOut>> entries, ITime time)
 	{
 		_key     = key;
 		_entries = entries;
 		_time    = time;
 	}
 
-	public object? Get(object parameter)
+	public TOut? Get(TIn parameter)
 	{
-		var key = _key.Get(parameter);
+		var key = _key(parameter);
 		if (_entries.TryGetValue(key, out var entry))
 		{
 			var updated = entry with { When = _time.Get() };
@@ -34,13 +44,13 @@ sealed class HistoryTracker : ISelect<object, object?>, IAssign<object, object?>
 			return entry.Result;
 		}
 
-		return null;
+		return default;
 	}
 
-	public void Execute(Pair<object, object?> parameter)
+	public void Execute(Pair<TIn, TOut?> parameter)
 	{
 		var (component, value) = parameter;
-		var key = _key.Get(component);
+		var key = _key(component);
 		var now = _time.Get();
 
 		if (_entries.TryGetValue(key, out var entry))
