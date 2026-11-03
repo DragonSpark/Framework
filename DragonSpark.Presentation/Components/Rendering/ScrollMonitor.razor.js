@@ -4,10 +4,16 @@ let lastKnownUrl = window.location.href;
 let targetScrollY = null;
 let isHistoryNavigation = false;
 let cacheVaultLocked = false;
+let isRestoringScroll = false;
 
+// Stability tracking variables
 let lastDocumentHeight = 0;
 let stableFrameCount = 0;
-const REQUIRED_STABLE_FRAMES = 5;
+const REQUIRED_STABLE_FRAMES = 10;
+
+if ('scrollRestoration' in history) {
+	history.scrollRestoration = 'manual';
+}
 
 function checkUrlLifecycle() {
 	const currentUrl = window.location.href;
@@ -17,8 +23,11 @@ function checkUrlLifecycle() {
 
 		if (isHistoryNavigation && typeof scrollCache[currentUrl] !== 'undefined') {
 			targetScrollY = scrollCache[currentUrl];
+			isRestoringScroll = true;
+			window.scrollTo(window.scrollX, 0);
 		} else {
-			targetScrollY = 0;
+			targetScrollY = null;
+			isRestoringScroll = false;
 			window.scrollTo(window.scrollX, 0);
 		}
 
@@ -26,24 +35,30 @@ function checkUrlLifecycle() {
 		stableFrameCount = 0;
 		isHistoryNavigation = false;
 
-		setTimeout(() => { cacheVaultLocked = false; }, 100);
+		requestAnimationFrame(() => {
+			cacheVaultLocked = false;
+		});
 	}
 
 	if (targetScrollY !== null) {
 		const currentHeight = document.documentElement.scrollHeight;
 
-		window.scrollTo(window.scrollX, targetScrollY);
+		if (currentHeight >= targetScrollY) {
+			window.scrollTo(window.scrollX, targetScrollY);
 
-		if (currentHeight === lastDocumentHeight && currentHeight > window.innerHeight) {
-			stableFrameCount++;
-		} else {
-			stableFrameCount = 0;
-			lastDocumentHeight = currentHeight;
-		}
+			// Measure height stability across animation frames
+			if (currentHeight === lastDocumentHeight) {
+				stableFrameCount++;
+			} else {
+				stableFrameCount = 0;
+				lastDocumentHeight = currentHeight;
+			}
 
-		if (stableFrameCount >= REQUIRED_STABLE_FRAMES) {
-			targetScrollY = null;
-			cacheVaultLocked = false;
+			if (stableFrameCount >= REQUIRED_STABLE_FRAMES) {
+				targetScrollY = null;
+				cacheVaultLocked = false;
+				isRestoringScroll = false;
+			}
 		}
 	}
 
@@ -51,9 +66,11 @@ function checkUrlLifecycle() {
 }
 
 window.addEventListener('scroll', () => {
-	if (cacheVaultLocked || targetScrollY !== null) return;
-	if (window.scrollY > 0) {
-		scrollCache[window.location.href] = window.scrollY;
+	const currentY = window.scrollY;
+	if (cacheVaultLocked || targetScrollY !== null || isRestoringScroll) return;
+
+	if (currentY > 0) {
+		scrollCache[window.location.href] = currentY;
 	}
 }, true);
 
