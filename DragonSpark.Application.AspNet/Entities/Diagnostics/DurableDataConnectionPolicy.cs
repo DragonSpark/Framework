@@ -12,6 +12,6 @@ public sealed class DurableDataConnectionPolicy : Deferred<IAsyncPolicy>
 
 	DurableDataConnectionPolicy() : this(IsDataException.Default.Get) {}
 
-	DurableDataConnectionPolicy(Func<Exception, bool> data)
+	public DurableDataConnectionPolicy(Func<Exception, bool> data)
 		: base(Policy.Handle(data).OrInner(data).Start().Select(DefaultRetryPolicy.Default)) {}
 }
