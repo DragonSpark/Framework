@@ -1,4 +1,4 @@
-// JavaScript Module for ScrollMonitor component (v2.29.0-stable)
+// JavaScript Module for ScrollMonitor component (v2.30.0-stable)
 const scrollCache = {};
 let lastKnownUrl = window.location.href;
 let targetScrollY = null;
@@ -63,18 +63,19 @@ window.addEventListener('scroll', (e) => {
 	if (restoring) return;
 	if (vaultLocked || Date.now() - lastRestored < 600) return;
 
-	const y = window.scrollY;
-	if (y > 0) scrollCache[window.location.href] = y;
+	scrollCache[window.location.href] = window.scrollY;
 }, true);
 
 window.addEventListener('wheel', abortRestoration, { passive: true, capture: true });
 window.addEventListener('touchstart', abortRestoration, { passive: true, capture: true });
 window.addEventListener('popstate', () => { isHistory = true; vaultLocked = true; restoring = false; });
 window.addEventListener('beforeunload', () => { vaultLocked = true; });
+
 window.addEventListener('click', (e) => {
 	const a = e.target.closest('a');
 	if (a && a.href && !a.closest('.e-pager') && !a.getAttribute('href').startsWith('#') && !a.getAttribute('href').startsWith('javascript:')) {
 		vaultLocked = true;
+		scrollCache[window.location.href] = window.scrollY;
 	}
 }, true);
 
