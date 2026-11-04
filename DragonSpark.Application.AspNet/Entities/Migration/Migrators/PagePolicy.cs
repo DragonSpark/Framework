@@ -1,16 +1,17 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Diagnostics;
+using DragonSpark.Compose;
 using DragonSpark.Model.Results;
 using Microsoft.Data.SqlClient;
 using Polly;
 
 namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
-sealed class StepPolicy : Result<IAsyncPolicy>
+sealed class PagePolicy : Result<IAsyncPolicy>
 {
-	public static StepPolicy Default { get; } = new();
+	public static PagePolicy Default { get; } = new();
 
-	StepPolicy() : this(SevereCommandException.Default.Get) {}
+	PagePolicy() : this(IsSqlDataException.Default.Then().Or(SevereCommandException.Default)) {}
 
-	public StepPolicy(Func<SqlException, bool> handle) 
+	public PagePolicy(Func<SqlException, bool> handle)
 		: base(new DurableDataConnectionPolicy(new IsDataException(handle).Get)) {}
 }

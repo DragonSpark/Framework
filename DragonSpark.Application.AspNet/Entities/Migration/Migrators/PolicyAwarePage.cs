@@ -5,5 +5,5 @@ namespace DragonSpark.Application.AspNet.Entities.Migration.Migrators;
 
 sealed class PolicyAwarePage : PolicyAware<uint>
 {
-	public PolicyAwarePage(IStopAware<uint> previous) : base(previous, StepPolicy.Default) {}
+	public PolicyAwarePage(IStopAware<uint> previous) : base(previous, PagePolicy.Default) {}
 }
