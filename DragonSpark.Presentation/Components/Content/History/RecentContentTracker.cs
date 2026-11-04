@@ -1,8 +1,11 @@
-﻿using DragonSpark.Presentation.Components.Content.Rendering;
+﻿namespace DragonSpark.Presentation.Components.Content.History;
 
-namespace DragonSpark.Presentation.Components.Content.History;
-
-sealed class RecentContentTracker : Tracker<Microsoft.AspNetCore.Components.ComponentBase, object?>
+/*sealed class RecentContentTracker : EmptyTracker<ComponentKeyInput, object?>
 {
-	public RecentContentTracker(IRenderContentKey key) : base(key.Get, HistoryCount.Default) {}
+	public RecentContentTracker() : base(_ => string.Empty, 0) {}
+}*/
+// TODO
+sealed class RecentContentTracker : Tracker<ComponentKeyInput, int, object?>
+{
+	public RecentContentTracker(IComponentKey key) : base(key.Get, HistoryCount.Default) {}
 }

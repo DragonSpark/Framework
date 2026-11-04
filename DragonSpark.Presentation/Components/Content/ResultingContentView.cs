@@ -4,6 +4,7 @@ using DragonSpark.Model;
 using DragonSpark.Model.Operations.Results;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection.Conditions;
+using DragonSpark.Presentation.Components.Content.History;
 using DragonSpark.Presentation.Components.Content.Rendering;
 using Microsoft.AspNetCore.Components;
 using Radzen;
@@ -23,7 +24,7 @@ partial class ResultingContentView<T> : ICompleted<T?>
 		_workers = new Workers<T?>(this);
 		base.OnInitialized();
 
-		if (Recent.Get(this) is T cachedEntry)
+		if (Recent.Get(new(this, Scope?.Scope)) is T cachedEntry)
 		{
 			_fragment = CreateFragment(cachedEntry);
 		}
@@ -39,6 +40,7 @@ partial class ResultingContentView<T> : ICompleted<T?>
 	[Parameter] public EventCallback<T> Rendered { get; set; }
 	[Parameter] public EventCallback<T> Refreshed { get; set; }
 	[Parameter] public bool ForceRender { get; set; }
+	[CascadingParameter] ContentScope? Scope { get; set; }
 
 	public override Task SetParametersAsync(ParameterView parameters)
 	{
@@ -91,10 +93,8 @@ partial class ResultingContentView<T> : ICompleted<T?>
 				await Rendering.On(result);
 			}
 			
-			// Update history with the fresh result
-			Recent.Execute(this, result);
+			Recent.Execute(new(this, Scope?.Scope), result);
 			
-			// Swap fragment with fresh content and trigger re-render
 			_fragment = CreateFragment(result);
 			StateHasChanged();
 

@@ -1,22 +1,30 @@
 ﻿using DragonSpark.Model;
-using DragonSpark.Model.Commands;
-using DragonSpark.Model.Selection;
 using DragonSpark.Runtime;
 using System.Collections.Concurrent;
 
 namespace DragonSpark.Presentation.Components.Content.History;
 
-public class Tracker<TIn, TOut> : ISelect<TIn, TOut?>, IAssign<TIn, TOut?>
+public class Tracker<TIn, TOut> : Tracker<TIn, string, TOut>
 {
-	readonly Func<TIn, string>                                _key;
-	readonly ConcurrentDictionary<string, HistoryEntry<TOut>> _entries;
-	readonly byte                                             _size;
-	readonly ITime                                            _time;
-
-	protected Tracker(Func<TIn, string> key, byte size) : this(key, [], size, Time.Default) {}
+	protected Tracker(Func<TIn, string> key, byte size) : base(key, size) {}
 
 	// ReSharper disable once TooManyDependencies
 	protected Tracker(Func<TIn, string> key, ConcurrentDictionary<string, HistoryEntry<TOut>> entries, byte size,
+	                  ITime time)
+		: base(key, entries, size, time) {}
+}
+
+public class Tracker<TIn, TKey, TOut> : ITracker<TIn, TOut> where TKey : notnull
+{
+	readonly Func<TIn, TKey>                                _key;
+	readonly ConcurrentDictionary<TKey, HistoryEntry<TOut>> _entries;
+	readonly byte                                           _size;
+	readonly ITime                                          _time;
+
+	protected Tracker(Func<TIn, TKey> key, byte size) : this(key, [], size, Time.Default) {}
+
+	// ReSharper disable once TooManyDependencies
+	protected Tracker(Func<TIn, TKey> key, ConcurrentDictionary<TKey, HistoryEntry<TOut>> entries, byte size,
 	                  ITime time)
 	{
 		_key     = key;
@@ -41,16 +49,16 @@ public class Tracker<TIn, TOut> : ISelect<TIn, TOut?>, IAssign<TIn, TOut?>
 	public void Execute(Pair<TIn, TOut?> parameter)
 	{
 		var (component, value) = parameter;
-		var key = _key(component);
-		var now = _time.Get();
-
+		var key  = _key(component);
+		var now  = _time.Get();
+		var next = new HistoryEntry<TOut>(value, now);
 		if (_entries.TryGetValue(key, out var entry))
 		{
-			_entries.TryUpdate(key, entry with { Result = value, When = now }, entry);
+			_entries.TryUpdate(key, next, entry);
 		}
 		else
 		{
-			_entries.TryAdd(key, new(key, value, now));
+			_entries.TryAdd(key, next);
 		}
 
 		EnforceCapacity();
@@ -60,7 +68,7 @@ public class Tracker<TIn, TOut> : ISelect<TIn, TOut?>, IAssign<TIn, TOut?>
 	{
 		if (_entries.Count > _size)
 		{
-			foreach (var item in _entries.Values.OrderBy(x => x.When).Take(_entries.Count - _size))
+			foreach (var item in _entries.OrderBy(x => x.Value.When).Take(_entries.Count - _size))
 			{
 				_entries.TryRemove(item.Key, out _);
 			}

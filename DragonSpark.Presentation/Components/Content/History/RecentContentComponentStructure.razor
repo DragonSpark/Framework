@@ -1,11 +1,12 @@
 ﻿@using DragonSpark.Compose
+@using DragonSpark.Model.Results
 @using DragonSpark.Presentation.Components.Content.Templates
 
 @typeparam T where T : struct
 
 @inject RecentContentTracker Recent
 
-@if (_input is { } input)
+@if (_input is {} input)
 {
 	@ChildContent(input)
 }
@@ -15,11 +16,12 @@ else
 }
 
 @code {
-	T? _input;
+	readonly Switch _first = false;
+	T?              _input;
 
 	protected override void OnInitialized()
 	{
-		if (Recent.Get(this) is T input)
+		if (Recent.Get(new(this, Scope?.Scope)) is T input)
 		{
 			_input = input;
 		}
@@ -36,14 +38,16 @@ else
 	[Parameter]
 	public required RenderFragment<T> ChildContent { get; set; }
 
+	[CascadingParameter] ContentScope? Scope { get; set; }
+
 	public override async Task SetParametersAsync(ParameterView parameters)
 	{
-		var changed = parameters.DidParameterChange(nameof(Input), Input);
+		var changed = parameters.DidParameterChange(nameof(Input), Input) || parameters.DidParameterChange(nameof(Scope), Scope);
 		await base.SetParametersAsync(parameters).Off();
-		if (changed)
+		if (!_first.Up() && changed)
 		{
 			_input = Input;
-			Recent.Execute(this, Input);
+			Recent.Execute(new(this, Scope?.Scope), Input);
 		}
 	}
 }

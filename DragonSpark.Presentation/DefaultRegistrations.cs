@@ -62,8 +62,15 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Include(x => x.Dependencies)
 		         .Scoped()
 		         //
+		         .Then.Start<IComponentKey>()
+		         .Forward<ComponentKey>()
+		         .Include(x => x.Dependencies.Recursive())
+		         .Scoped()
+		         //
 		         .Then.Start<ScrollToFirstValidationMessage>()
-		         .And<ResourceExistsValidation>().And<RecentContentTracker>().And<RecentHeightTracker>()
+		         .And<ResourceExistsValidation>()
+		         .And<RecentContentTracker>()
+		         .And<RecentHeightTracker>()
 		         .Scoped()
 		         //
 		         .Then.AddScoped(typeof(IPublisher<>), typeof(Publisher<>))

@@ -1,0 +1,10 @@
+﻿
+<CascadingValue Value="@(new ContentScope(Input))" ChildContent="@ChildContent" />
+
+@code {
+	[Parameter, EditorRequired]
+	public required object? Input { get; set; }
+
+	[Parameter, EditorRequired]
+	public required RenderFragment ChildContent { get; set; }
+}
