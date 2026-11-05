@@ -1,29 +1,41 @@
 @using DragonSpark.Presentation.Runtime.Operations
 @using System.Threading
-
-@inject IRequestToken Token
 @implements IDisposable
 
-<CascadingValue IsFixed="true" Value="@_combined.Token" ChildContent="@ChildContent" />
+@inject IRequestToken Token
+
+<CascadingValue Value="@(_combined?.Token ?? CancellationToken.None)" ChildContent="@ChildContent"/>
 
 @code {
-    readonly CancellationTokenSource _source   = new();
-    CancellationTokenSource          _combined = null!;
+	CancellationTokenSource  _source = new();
+	CancellationTokenSource? _combined;
 
-    [Parameter]
-    public required RenderFragment? ChildContent { get; set; }
+	[Parameter]
+	public required RenderFragment? ChildContent { get; set; }
 
-    protected override void OnInitialized()
-    {
-        var token = Token.Get();
-        _combined = CancellationTokenSource.CreateLinkedTokenSource(token, _source.Token);
-        base.OnInitialized();
-    }
+	public override Task SetParametersAsync(ParameterView parameters)
+	{
+		var result = base.SetParametersAsync(parameters);
 
-    public void Dispose()
-    {
-        _source.Cancel();
-        _combined.Dispose();
-        _source.Dispose();
-    }
+		_source.Cancel();
+		CreateNewTokens();
+
+		return result;
+	}
+
+	void CreateNewTokens()
+	{
+		_source.Dispose();
+		_source = new();
+		var token = Token.Get();
+		_combined?.Dispose();
+		_combined = CancellationTokenSource.CreateLinkedTokenSource(token, _source.Token);
+	}
+
+	public void Dispose()
+	{
+		_source.Cancel();
+		_combined?.Dispose();
+		_source.Dispose();
+	}
 }

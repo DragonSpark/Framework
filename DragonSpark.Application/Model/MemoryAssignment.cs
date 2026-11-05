@@ -43,4 +43,6 @@ public sealed class MemoryAssignment<T> : IAssign<string, T?>, ISelect<string, T
 	}
 
 	public T? Get(string parameter) => _subject.TryGetValue(parameter, out var stored) ? (T?)stored : default;
+
+	public bool Contains(string parameter) => _subject.TryGetValue(parameter, out _);
 }

@@ -3,103 +3,116 @@
 @using DragonSpark.Compose
 @using DragonSpark.Model.Results
 @using DragonSpark.Model.Selection.Conditions
+@using DragonSpark.Presentation.Components.Content.History
 @using DragonSpark.Presentation.Components.Content.Templates
 @using DragonSpark.Presentation.Components.Interaction
+
+@inject RecentContentTracker Recent
 
 @typeparam T
 
 @if (_rendered)
 {
-    @if (Binding is not null)
-    {
-        @ChildContent(Binding)
-    }
+	@if (_binding is not null)
+	{
+		@ChildContent(_binding)
+	}
 }
 else
 {
-    @LoadingTemplate
+	@LoadingTemplate
 }
 
 
 @code
 {
-    readonly Switch                   _rendered = new(), _requested = new(), _initialize = new();
-    ProtectedBrowserStorageResult<T>? _result;
+	readonly Switch                   _rendered = new(), _requested = new(), _initialize = new();
+	ProtectedBrowserStorageResult<T>? _result;
+	Binding<T>?                       _binding;
 
-    [Parameter]
-    public required IClientVariable<T> Store { get; set; }
+	protected override void OnInitialized()
+	{
+		if (Recent.Get(new(this, null)) is Binding<T> binding)
+		{
+			_binding = new(binding.Value, RequestUpdate, Comparer);
+			_rendered.Up();
+		}
+		base.OnInitialized();
+	}
 
-    [Parameter]
-    public T Value { get; set; } = default!;
+	[Parameter]
+	public required IClientVariable<T> Store { get; set; }
 
-    [Parameter]
-    public Func<T>? AssignedValue { get; set; }
+	[Parameter]
+	public T Value { get; set; } = default!;
 
-    [Parameter]
-    public EventCallback<T> ValueChanged { get; set; }
+	[Parameter]
+	public Func<T>? AssignedValue { get; set; }
 
-    [Parameter]
-    public EventCallback<Binding<T>> Loaded { get; set; }
+	[Parameter]
+	public EventCallback<T> ValueChanged { get; set; }
 
-    [Parameter]
-    public IEqualityComparer<T> Comparer { get; set; } = EqualityComparer<T>.Default;
+	[Parameter]
+	public EventCallback<Binding<T>> Loaded { get; set; }
 
-    [Parameter]
-    public ICondition<T> Allowed { get; set; } = Is.Always<T>().Out();
+	[Parameter]
+	public IEqualityComparer<T> Comparer { get; set; } = EqualityComparer<T>.Default;
 
-    [Parameter]
-    public RenderFragment<Binding<T>> ChildContent { get; set; } = null!;
+	[Parameter]
+	public ICondition<T> Allowed { get; set; } = Is.Always<T>().Out();
 
-    [Parameter]
-    public RenderFragment LoadingTemplate { get; set; } = MinimalLoadingTemplate.Default;
+	[Parameter]
+	public RenderFragment<Binding<T>> ChildContent { get; set; } = null!;
 
-    void RequestUpdate(T parameter)
-    {
-        if (_rendered && _requested.Up())
-        {
-            StateHasChanged();
-        }
-    }
+	[Parameter]
+	public RenderFragment LoadingTemplate { get; set; } = MinimalLoadingTemplate.Default;
+	
+	void RequestUpdate(T parameter)
+	{
+		if (_rendered && _requested.Up())
+		{
+			StateHasChanged();
+		}
+	}
 
-    Binding<T>? Binding { get; set; }
+	protected override async Task OnParametersSetAsync()
+	{
+		if (_requested.Down() && _binding is {} binding)
+		{
+			await ValueChanged.Invoke(Value = binding.Value);
+			if (Allowed.Get(binding.Value))
+			{
+				await Store.Off(binding.Value);
+			}
+		}
+	}
 
-    protected override async Task OnParametersSetAsync()
-    {
-        if (_requested.Down() && Binding is not null)
-        {
-            await ValueChanged.Invoke(Value = Binding.Value);
-            if (Allowed.Get(Binding.Value))
-            {
-                await Store.Off(Binding.Value);
-            }
-        }
-    }
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (_result is null && _initialize.Up())
+		{
+			_result = await Store.Get();
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (_result is null && _initialize.Up())
-        {
-            _result = await Store.Get();
-
-            if (_result?.Success ?? false)
-            {
-                var value = _result.Value.Value ?? (AssignedValue is not null ? AssignedValue() : Value);
-                Binding = new Binding<T>(value, RequestUpdate, Comparer);
-                await Loaded.Invoke(Binding);
-                await ValueChanged.Invoke(Value = Binding.Value);
-            }
-            else if (AssignedValue is not null)
-            {
-                var value = AssignedValue();
-                Binding = new Binding<T>(value, RequestUpdate, Comparer);
-                await ValueChanged.Invoke(Value = value);
-            }
-            else
-            {
-                Binding = new Binding<T>(Value, RequestUpdate, Comparer);
-            }
-            _rendered.Up();
-            StateHasChanged();
-        }
-    }
+			if (_result?.Success ?? false)
+			{
+				var value = _result.Value.Value ?? (AssignedValue is not null ? AssignedValue() : Value);
+				_binding = new(value, RequestUpdate, Comparer);
+				await Loaded.Invoke(_binding);
+				await ValueChanged.Invoke(Value = _binding.Value);
+			}
+			else if (AssignedValue is not null)
+			{
+				var value = AssignedValue();
+				_binding = new(value, RequestUpdate, Comparer);
+				await ValueChanged.Invoke(Value = value);
+			}
+			else
+			{
+				_binding = new(Value, RequestUpdate, Comparer);
+			}
+			_rendered.Up();
+			Recent.Execute(new(this, null), _binding);
+			StateHasChanged();
+		}
+	}
 }

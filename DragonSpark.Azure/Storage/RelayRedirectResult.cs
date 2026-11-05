@@ -1,7 +1,7 @@
 ﻿using DragonSpark.Text;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DragonSpark.Azure.Storage.Uploads;
+namespace DragonSpark.Azure.Storage;
 
 public sealed class RelayRedirectResult : RedirectResult, IText
 {

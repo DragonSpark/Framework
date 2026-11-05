@@ -4,6 +4,7 @@ using DragonSpark.Model;
 using DragonSpark.Model.Operations.Results;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection.Conditions;
+using DragonSpark.Presentation.Components.Content.History;
 using DragonSpark.Presentation.Components.Content.Rendering;
 using Microsoft.AspNetCore.Components;
 using Radzen;
@@ -12,7 +13,7 @@ namespace DragonSpark.Presentation.Components.Content;
 
 partial class ResultingContentView<T> : ICompleted<T?>
 {
-	readonly Switch _render = true;
+	readonly Switch _render = true, _first = false;
 	RenderFragment? _fragment;
 	Worker?         _subject;
 	Workers<T?>     _workers = null!;
@@ -22,6 +23,11 @@ partial class ResultingContentView<T> : ICompleted<T?>
 	{
 		_workers = new Workers<T?>(this);
 		base.OnInitialized();
+
+		if (Recent.Get(new(this, Scope?.Scope)) is T cachedEntry)
+		{
+			_fragment = CreateFragment(cachedEntry);
+		}
 	}
 
 	[Parameter, EditorRequired]
@@ -29,20 +35,12 @@ partial class ResultingContentView<T> : ICompleted<T?>
 
 	protected override bool ShouldRender() => _render || !_render.Up();
 
-	[Parameter]
-	public ICondition<None>? UpdateMonitor { get; set; }
-
-	[Parameter]
-	public EventCallback<T> Rendering { get; set; }
-
-	[Parameter]
-	public EventCallback<T> Rendered { get; set; }
-
-	[Parameter]
-	public EventCallback<T> Refreshed { get; set; }
-
-	[Parameter]
-	public bool ForceRender { get; set; }
+	[Parameter] public ICondition<None>? UpdateMonitor { get; set; }
+	[Parameter] public EventCallback<T> Rendering { get; set; }
+	[Parameter] public EventCallback<T> Rendered { get; set; }
+	[Parameter] public EventCallback<T> Refreshed { get; set; }
+	[Parameter] public bool ForceRender { get; set; }
+	[CascadingParameter] ContentScope? Scope { get; set; }
 
 	public override Task SetParametersAsync(ParameterView parameters)
 	{
@@ -73,12 +71,13 @@ partial class ResultingContentView<T> : ICompleted<T?>
 
 	protected override Task OnParametersSetAsync()
 	{
-		var @new                            = _subject is null;
+		var @new = _subject is null;
 		var (monitor, complete) = _subject ??= _workers.Get(Content);
+		
 		return monitor.IsCompleted
 			       ? complete.Get()
 			       : @new && (ForceRender || Render > RenderState.Default) &&
-			         !(_fragment is null ? Rendered : Refreshed).HasDelegate
+			         !(_first ? Rendered : Refreshed).HasDelegate
 				       ? monitor
 				       : base.OnParametersSetAsync();
 	}
@@ -88,19 +87,20 @@ partial class ResultingContentView<T> : ICompleted<T?>
 		_exception = null;
 		if (parameter is { IsCompletedSuccessfully: true })
 		{
-			// ReSharper disable once AsyncApostle.AsyncWait
 			var result = parameter.Result;
 			if (result is not null)
 			{
 				await Rendering.On(result);
 			}
+			
+			Recent.Execute(new(this, Scope?.Scope), result);
+			
+			_fragment = CreateFragment(result);
+			StateHasChanged();
 
-			var refresh = _fragment is not null;
-			_fragment = ContentTemplate?.Invoke(result) ??
-			            (result is not null ? ChildContent(result) : NotFoundTemplate);
 			if (result is not null)
 			{
-				var callback = refresh ? Refreshed : Rendered;
+				var callback = _first.Up() ? Rendered : Refreshed;
 				await callback.InvokeAsync(result).Off();
 			}
 		}
@@ -110,6 +110,9 @@ partial class ResultingContentView<T> : ICompleted<T?>
 			StateHasChanged();
 		}
 	}
+
+	RenderFragment CreateFragment(T? result)
+		=> ContentTemplate?.Invoke(result) ?? (result is not null ? ChildContent(result) : NotFoundTemplate);
 
 	public bool Get(IResulting<T?> parameter) => parameter == Content;
 }

@@ -1,0 +1,14 @@
+﻿@using DragonSpark.Compose
+@using DragonSpark.Presentation.Components.Routing
+@inject ReferencePaths References
+
+<NavigationMonitor Changed="@OnChanged" />
+
+@code {
+
+	void OnChanged()
+	{
+		References.Execute();
+	}
+
+}

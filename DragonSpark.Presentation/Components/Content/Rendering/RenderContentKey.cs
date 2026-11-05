@@ -15,3 +15,4 @@ sealed class RenderContentKey : IRenderContentKey
 
 	public string Get(object parameter) => $"{_identifier.Get()}/{_key.Get(new(parameter))}";
 }
+

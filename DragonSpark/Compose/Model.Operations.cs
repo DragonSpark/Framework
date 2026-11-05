@@ -16,20 +16,21 @@ namespace DragonSpark.Compose;
 public static partial class ExtensionMethods
 {
 	public static OperationResultComposer<TIn, TOut> Or<TIn, TOut>(this OperationResultComposer<TIn, TOut?> @this,
-																   ISelecting<TIn, TOut> second)
+	                                                               ISelecting<TIn, TOut> second)
 		where TOut : class => @this.Or(second.Off);
 
 	public static OperationResultComposer<TIn, TOut> Or<TIn, TOut>(this OperationResultComposer<TIn, TOut?> @this,
-																   DragonSpark.Model.Operations.Await<TIn, TOut> next)
+	                                                               DragonSpark.Model.Operations.Await<TIn, TOut> next)
 		where TOut : class
 		=> new DragonSpark.Model.Operations.Selection.Coalesce<TIn, TOut>(@this, next).Then();
 
 	public static OperationResultComposer<TIn, TOut?> OrMaybe<TIn, TOut>(this OperationResultComposer<TIn, TOut?> @this,
-																		 ISelecting<TIn, TOut?> second)
+	                                                                     ISelecting<TIn, TOut?> second)
 		where TOut : class => @this.OrMaybe(second.Off);
 
 	public static OperationResultComposer<TIn, TOut?> OrMaybe<TIn, TOut>(this OperationResultComposer<TIn, TOut?> @this,
-																		 DragonSpark.Model.Operations.Await<TIn, TOut?> next)
+	                                                                     DragonSpark.Model.Operations.Await<TIn, TOut?>
+		                                                                     next)
 		where TOut : class
 		=> new DragonSpark.Model.Operations.Selection.Maybe<TIn, TOut>(@this, next).Then();
 
@@ -46,16 +47,19 @@ public static partial class ExtensionMethods
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining), Obsolete("Use Off instead")]
 	public static ConfiguredTaskAwaitable<T> Await<T>(this Task<T> @this) => @this.ConfigureAwait(false);
+
 	[MethodImpl(MethodImplOptions.AggressiveInlining), Obsolete("Use Off instead")]
 	public static ConfiguredValueTaskAwaitable<T> Await<T>(this ValueTask<T> @this) => @this.ConfigureAwait(false);
+
 	[MethodImpl(MethodImplOptions.AggressiveInlining), Obsolete("Use Off instead")]
 	public static ConfiguredTaskAwaitable Await(this Task @this) => @this.ConfigureAwait(false);
+
 	[MethodImpl(MethodImplOptions.AggressiveInlining), Obsolete("Use Off instead")]
 	public static ConfiguredValueTaskAwaitable Await(this ValueTask @this) => @this.ConfigureAwait(false);
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining), Obsolete("Use Off instead")]
 	public static ConfiguredValueTaskAwaitable<TOut> Await<TIn, TOut>(this ISelect<TIn, ValueTask<TOut>> @this,
-																	  TIn parameter)
+	                                                                  TIn parameter)
 		=> @this.Get(parameter).ConfigureAwait(false);
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining), Obsolete("Use Off instead")]
@@ -110,16 +114,19 @@ public static partial class ExtensionMethods
 	/**/
 	[MethodImpl(MethodImplOptions.AggressiveInlining), Obsolete("Use On instead")]
 	public static ConfiguredTaskAwaitable<T> Go<T>(this Task<T> @this) => @this.ConfigureAwait(true);
+
 	[MethodImpl(MethodImplOptions.AggressiveInlining), Obsolete("Use On instead")]
 	public static ConfiguredValueTaskAwaitable<T> Go<T>(this ValueTask<T> @this) => @this.ConfigureAwait(true);
+
 	[MethodImpl(MethodImplOptions.AggressiveInlining), Obsolete("Use On instead")]
 	public static ConfiguredTaskAwaitable Go(this Task @this) => @this.ConfigureAwait(true);
+
 	[MethodImpl(MethodImplOptions.AggressiveInlining), Obsolete("Use On instead")]
 	public static ConfiguredValueTaskAwaitable Go(this ValueTask @this) => @this.ConfigureAwait(true);
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining), Obsolete("Use On instead")]
 	public static ConfiguredValueTaskAwaitable<TOut> Go<TIn, TOut>(this ISelect<TIn, ValueTask<TOut>> @this,
-																   TIn parameter)
+	                                                               TIn parameter)
 		=> @this.Get(parameter).ConfigureAwait(true);
 
 	[MethodImpl(MethodImplOptions.AggressiveInlining), Obsolete("Use On instead")]
@@ -174,9 +181,12 @@ public static partial class ExtensionMethods
 	public static Task Allocate(this IOperation<None> @this) => @this.Get().AsTask();
 
 	public static Task Allocate(this IResult<ValueTask> @this) => @this.Get().AsTask();
+
 	public static Task<T> Allocate<T>(this IResult<ValueTask<T>> @this) => @this.Get().AsTask();
+
 	public static Task Allocate(this Func<CancellationToken, ValueTask> @this, CancellationToken parameter)
 		=> @this(parameter).AsTask();
+
 	public static Task Allocate(this Func<ValueTask> @this) => @this().AsTask();
 
 	public static Task Allocate<T>(this ISelect<T, ValueTask> @this, T parameter) => @this.Get(parameter).AsTask();
@@ -194,6 +204,11 @@ public static partial class ExtensionMethods
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	public static async ValueTask<TOut> Verifying<TIn, TOut>(this ISelecting<TIn, TOut?> @this, TIn parameter)
 		=> (await @this.Off(parameter)).Verify();
+
+	[MethodImpl(MethodImplOptions.AggressiveInlining)]
+	public static async ValueTask<TOut> Verifying<TIn, TOut>(this ISelecting<TIn, TOut?> @this, TIn parameter,
+	                                                         string message)
+		=> (await @this.Off(parameter)).Verify(message);
 
 	public static ISelecting<TIn, TOut> Verifying<TIn, TOut>(this ISelecting<TIn, TOut?> @this)
 		=> new Verifying<TIn, TOut>(@this);

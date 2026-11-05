@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Model.Selection.Conditions;
 
-namespace DragonSpark.Azure.Storage.Uploads;
+namespace DragonSpark.Azure.Storage;
 
 public sealed class IsStreamable : ICondition<string>
 {

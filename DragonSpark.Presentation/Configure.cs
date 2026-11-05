@@ -26,6 +26,7 @@ sealed class Configure : IAlteration<BuildHostContext>
 		                       Registrations.Default)
 		            .ComposeUsing(Composing.Default)
 		            .ComposeUsing(x => x.Decorate(typeof(IActiveContents<>), typeof(RenderingAwareActiveContents<>))
+		                                // .Decorate(typeof(IActiveContents<>), typeof(HistoryAwareActiveContents<>))
 		                                .Decorate(typeof(IActiveContents<>), typeof(ExceptionAwareActiveContents<>))
 		                                .Decorate(typeof(IPaging<>), typeof(RenderAwarePaging<>))
 		                                .Decorate<ICurrentContext, StoreAwareCurrentContext>());

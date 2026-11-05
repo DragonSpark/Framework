@@ -5,6 +5,7 @@ using DragonSpark.Application.Security.Identity;
 using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using DragonSpark.Presentation.Components.Content;
+using DragonSpark.Presentation.Components.Content.History;
 using DragonSpark.Presentation.Components.Content.Rendering;
 using DragonSpark.Presentation.Components.Content.Rendering.Sequences;
 using DragonSpark.Presentation.Components.Diagnostics;
@@ -61,8 +62,15 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         .Include(x => x.Dependencies)
 		         .Scoped()
 		         //
+		         .Then.Start<IComponentKey>()
+		         .Forward<ComponentKey>()
+		         .Include(x => x.Dependencies.Recursive())
+		         .Scoped()
+		         //
 		         .Then.Start<ScrollToFirstValidationMessage>()
 		         .And<ResourceExistsValidation>()
+		         .And<RecentContentTracker>()
+		         .And<RecentHeightTracker>()
 		         .Scoped()
 		         //
 		         .Then.AddScoped(typeof(IPublisher<>), typeof(Publisher<>))

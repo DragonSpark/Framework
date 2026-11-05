@@ -1,0 +1,14 @@
+﻿@inherits RecentContentComponentBase<T>
+
+@typeparam T
+
+@if (_input is {} input)
+{
+	@ChildContent(input)
+}
+else
+{
+	@LoadingTemplate
+}
+
+@code {}

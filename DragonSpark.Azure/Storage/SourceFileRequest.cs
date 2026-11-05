@@ -1,4 +1,4 @@
-﻿namespace DragonSpark.Azure.Storage.Uploads;
+﻿namespace DragonSpark.Azure.Storage;
 
 public sealed class SourceFileRequest : RequestFileResultBase
 {

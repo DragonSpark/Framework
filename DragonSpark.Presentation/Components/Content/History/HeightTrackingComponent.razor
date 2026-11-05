@@ -1,0 +1,52 @@
+﻿@implements IDisposable
+
+@inject IJSRuntime Runtime
+@inject NavigationManager Navigation
+@inject RecentHeightTracker HeightTracker
+
+<div @ref="_containerRef" class="application-content-wrapper" style="@_style">
+	@ChildContent
+</div>
+
+@code {
+	ElementReference    _containerRef;
+	IDisposable?        _registration;
+	IJSObjectReference? _module;
+	string?             _style;
+
+	[Parameter]
+	public required RenderFragment? ChildContent { get; set; }
+	
+	protected override void OnInitialized()
+	{
+		_registration = Navigation.RegisterLocationChangingHandler(OnLocationChanging);
+	}
+
+	protected override void OnParametersSet()
+	{
+		_style = HeightTracker.Get(Navigation.Uri) is {} height and > 0 ? $"min-height: {height}px;" : string.Empty;
+	}
+
+	async ValueTask OnLocationChanging(LocationChangingContext context)
+	{
+		if (_module is not null
+		    && await _module.InvokeAsync<double>("getElementHeight", _containerRef) is var height and > 0)
+		{
+			HeightTracker.Execute(new(Navigation.Uri, height));
+		}
+	}
+
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if (firstRender)
+		{
+			_module = await Runtime.InvokeAsync<IJSObjectReference>("import", $"./{Assets.Path<HeightTrackingComponent>()}");
+		}
+	}
+
+	public void Dispose()
+	{
+		_registration?.Dispose();
+		_module?.DisposeAsync();
+	}
+}

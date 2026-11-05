@@ -33,7 +33,7 @@ sealed class Pages<T> : IStopAware<MigrateInput, uint>
 		var batch   = _processor.Get() ?? (all < minimum ? all : Math.Clamp(all / _parallelism, minimum, maximum));
 		var results = new ConcurrentStack<uint>();
 		var input   = new PageInput<T>(logger, workspaces, _query, batch, all, results);
-		var page    = new Page<T>(_processor, input);
+		var page    = new PolicyAwarePage(new Page<T>(_processor, input));
 		var pages   = (int)Math.Ceiling((double)all / batch);
 		switch (pages)
 		{

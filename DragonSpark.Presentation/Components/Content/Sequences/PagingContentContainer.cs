@@ -1,6 +1,7 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
 using DragonSpark.Compose;
 using DragonSpark.Contracts.Queries;
+using DragonSpark.Presentation.Components.Content.History;
 using Microsoft.AspNetCore.Components;
 using Radzen;
 
@@ -16,6 +17,7 @@ partial class PagingContentContainer<T> : IPageContainer<T>
 	public EventCallback<QueryRenderState> Changed { get; set; }
 
 	[CascadingParameter] IPageContainer<T>? Parent { get; set; }
+	[CascadingParameter] ContentScope? Scope { get; set; }
 
 	public override async Task SetParametersAsync(ParameterView parameters)
 	{
@@ -26,8 +28,16 @@ partial class PagingContentContainer<T> : IPageContainer<T>
 		{
 			_subject = Paging.Get(new(this, Content.Verify(), Compose));
 			_error   = null;
-			_state   = QueryRenderState.Loading;
-			await Changed.Off(_state);
+			if (Recent.Get(new(this, Scope?.Scope)) is PageResult<T> entry)
+			{
+				await Get(entry).Off();
+			}
+			else
+			{
+				_state = QueryRenderState.Loading;
+				await Changed.Off(_state);
+			}
+			
 		}
 	}
 	
@@ -57,6 +67,7 @@ partial class PagingContentContainer<T> : IPageContainer<T>
 	public async ValueTask Get(PageResult<T> parameter)
 	{
 		_error = null;
+		Recent.Execute(new(this, Scope?.Scope), parameter);
 		await Update(parameter.Total is > 0).On();
 		if (Parent is not null)
 		{
@@ -67,6 +78,7 @@ partial class PagingContentContainer<T> : IPageContainer<T>
 	public async ValueTask Get(Exception parameter)
 	{
 		_error = parameter;
+		Recent.Execute(new(this, Scope?.Scope), null);
 		await Update(null).On();
 		if (Parent is not null)
 		{
