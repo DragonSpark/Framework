@@ -8,23 +8,18 @@ let isRestoring = false;
 
 if ('scrollRestoration' in history) {
 	history.scrollRestoration = 'manual';
-	console.log('[ScrollMonitor v2.33.7] scrollRestoration set to manual');
 }
 
 function saveCurrentScrollForUrl(url) {
-	// NEVER save scroll if we are currently in the middle of a restoration or recent transition
 	if (isRestoring || Date.now() - lastRestoredTime < 500) return;
 
 	if (url) {
 		const currentY = window.scrollY;
-		// Only overwrite if it's a meaningful position or we don't have it yet, 
-		// but never let a accidental 0 overwrite a deep scroll position during teardown!
 		if (currentY > 0 || typeof scrollCache[url] === 'undefined') {
 			scrollCache[url] = currentY;
 			try {
 				sessionStorage.setItem(`scroll_${url}`, currentY);
 			} catch (e) { }
-			console.log(`[ScrollMonitor v2.33.7] [CAPTURE] Saved Y: ${currentY} for URL: ${url}`);
 		}
 	}
 }
@@ -48,25 +43,16 @@ function getStoredScroll(url) {
 setInterval(() => {
 	const currentUrl = window.location.href;
 	if (currentUrl !== previousUrl) {
-		console.log(`[ScrollMonitor v2.33.7] [URL CHANGE DETECTED] ${previousUrl} -> ${currentUrl}`);
-
-		// Lock out captures immediately
 		isRestoring = true;
-
-		// Save scroll of the page we are leaving ONLY if it's valid
 		saveCurrentScrollForUrl(previousUrl);
-
 		previousUrl = currentUrl;
 
-		// Check if we have a saved scroll position for the new URL
 		const targetY = getStoredScroll(currentUrl);
 		const navId = ++activeNavigationId;
 
 		if (typeof targetY !== 'undefined' && targetY > 5) {
-			console.log(`[ScrollMonitor v2.33.7] [SPA RESTORE] Restoring Y: ${targetY} for URL: ${currentUrl}`);
 			performRestoration(targetY, navId);
 		} else {
-			console.log(`[ScrollMonitor v2.33.7] [SPA NEW / TOP] Resetting to top for URL: ${currentUrl}`);
 			window.scrollTo(0, 0);
 			lastRestoredTime = Date.now();
 			isRestoring = false;
@@ -100,7 +86,6 @@ function performRestoration(targetY, navId) {
 
 		if ((Math.abs(currentY - clampedTarget) < 2 && stableFrames >= 15) || stableFrames > 60) {
 			window.scrollTo(0, clampedTarget);
-			console.log(`[ScrollMonitor v2.33.7] [RESTORE FINISHED] Final Y: ${window.scrollY}`);
 			lastRestoredTime = Date.now();
 			isRestoring = false;
 			return;
@@ -121,7 +106,6 @@ window.addEventListener('scroll', () => {
 // Handle explicit browser back/forward buttons
 window.addEventListener('popstate', () => {
 	const currentUrl = window.location.href;
-	console.log(`[ScrollMonitor v2.33.7] [POPSTATE] Arrived at: ${currentUrl}`);
 
 	isRestoring = true;
 	saveCurrentScrollForUrl(previousUrl);
@@ -131,10 +115,8 @@ window.addEventListener('popstate', () => {
 	const navId = ++activeNavigationId;
 
 	if (typeof targetY !== 'undefined' && targetY > 5) {
-		console.log(`[ScrollMonitor v2.33.7] [POPSTATE RESTORE] Restoring Y: ${targetY}`);
 		performRestoration(targetY, navId);
 	} else {
-		console.log(`[ScrollMonitor v2.33.7] [POPSTATE TOP] Resetting to top.`);
 		window.scrollTo(0, 0);
 		lastRestoredTime = Date.now();
 		isRestoring = false;
