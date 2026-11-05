@@ -1,6 +1,4 @@
-﻿@using DragonSpark.Compose
-
-@if (_class is not null)
+﻿@if (_class is not null)
 {
     <div class="@_class" @onclick:preventDefault="@(AllowView)">@ChildContent</div>
 }
@@ -25,13 +23,8 @@ else
     [Parameter]
     public required RenderFragment ChildContent { get; set; }
 
-    public override async Task SetParametersAsync(ParameterView parameters)
+    protected override void OnParametersSet()
     {
-        var changed = parameters.DidParameterChange(nameof(Enabled), Enabled) || parameters.DidParameterChange(nameof(CssClass), CssClass);
-        await base.SetParametersAsync(parameters).Off();
-        if (changed)
-        {
-            _class = Enabled ? CssClass : null;
-        }
+	    _class = Enabled ? CssClass : null;
     }
 }
