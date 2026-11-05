@@ -1,82 +1,133 @@
-// JavaScript Module for ScrollMonitor component (v2.30.0-stable)
+// JavaScript Module for ScrollMonitor component (v2.33.7-stable)
 const scrollCache = {};
-let lastKnownUrl = window.location.href;
-let targetScrollY = null;
-let isHistory = false, vaultLocked = false, restoring = false;
-let lastHeight = 0, stableFrames = 0, lastAttempt = 0, lastRestored = 0;
+let activeNavigationId = 0;
+let activeRestorationId = 0;
+let lastRestoredTime = 0;
+let previousUrl = window.location.href;
+let isRestoring = false;
 
-if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+if ('scrollRestoration' in history) {
+	history.scrollRestoration = 'manual';
+}
 
-function abortRestoration() {
-	if (restoring && Date.now() - lastAttempt >= 80) {
-		restoring = false;
-		stableFrames = lastHeight = targetScrollY = 0;
-		lastRestored = Date.now();
+function saveCurrentScrollForUrl(url) {
+	if (isRestoring || Date.now() - lastRestoredTime < 500) return;
+
+	if (url) {
+		const currentY = window.scrollY;
+		if (currentY > 0 || typeof scrollCache[url] === 'undefined') {
+			scrollCache[url] = currentY;
+			try {
+				sessionStorage.setItem(`scroll_${url}`, currentY);
+			} catch (e) { }
+		}
 	}
 }
 
-function performRestoration(y) {
-	restoring = true;
-	stableFrames = lastHeight = 0;
-	lastAttempt = Date.now();
+function getStoredScroll(url) {
+	if (typeof scrollCache[url] !== 'undefined') {
+		return scrollCache[url];
+	}
+	try {
+		const saved = sessionStorage.getItem(`scroll_${url}`);
+		if (saved !== null) {
+			const val = parseFloat(saved);
+			scrollCache[url] = val;
+			return val;
+		}
+	} catch (e) { }
+	return undefined;
+}
 
-	const attempt = () => {
-		if (!restoring || targetScrollY === null) return;
-		const h = document.documentElement.scrollHeight;
-		const target = Math.max(0, Math.min(y, h - window.innerHeight));
+// Continuously monitor URL changes (handles Blazor SPA navigation seamlessly)
+setInterval(() => {
+	const currentUrl = window.location.href;
+	if (currentUrl !== previousUrl) {
+		isRestoring = true;
+		saveCurrentScrollForUrl(previousUrl);
+		previousUrl = currentUrl;
 
-		window.scrollTo(0, target);
+		const targetY = getStoredScroll(currentUrl);
+		const navId = ++activeNavigationId;
 
-		if (h === lastHeight && h > 0) stableFrames++;
-		else { stableFrames = 0; lastHeight = h; }
+		if (typeof targetY !== 'undefined' && targetY > 5) {
+			performRestoration(targetY, navId);
+		} else {
+			window.scrollTo(0, 0);
+			lastRestoredTime = Date.now();
+			isRestoring = false;
+		}
+	}
+}, 50);
 
-		if ((Math.abs(window.scrollY - target) < 2 && stableFrames >= 15) || stableFrames > 60) {
-			window.scrollTo(0, target);
-			restoring = false;
-			stableFrames = lastHeight = vaultLocked = targetScrollY = 0;
-			lastRestored = Date.now();
+function performRestoration(targetY, navId) {
+	const restorationId = ++activeRestorationId;
+	isRestoring = true;
+	let stableFrames = 0;
+	let lastHeight = 0;
+
+	const attemptRestoration = () => {
+		if (navId !== activeNavigationId || restorationId !== activeRestorationId) {
 			return;
 		}
-		requestAnimationFrame(attempt);
-	};
-	requestAnimationFrame(attempt);
-}
 
-function checkLifecycle() {
-	const url = window.location.href;
-	if (!restoring && url !== lastKnownUrl) {
-		lastKnownUrl = url;
-		if (isHistory && typeof scrollCache[url] !== 'undefined') {
-			targetScrollY = scrollCache[url];
-			performRestoration(targetScrollY);
+		const docHeight = document.documentElement.scrollHeight;
+		const clampedTarget = Math.max(0, Math.min(targetY, docHeight - window.innerHeight));
+
+		window.scrollTo(0, clampedTarget);
+		const currentY = window.scrollY;
+
+		if (docHeight === lastHeight && docHeight > 0) {
+			stableFrames++;
 		} else {
-			targetScrollY = restoring = stableFrames = lastHeight = 0;
-			window.scrollTo(0, 0);
+			stableFrames = 0;
+			lastHeight = docHeight;
 		}
-		isHistory = vaultLocked = false;
-	}
-	requestAnimationFrame(checkLifecycle);
+
+		if ((Math.abs(currentY - clampedTarget) < 2 && stableFrames >= 15) || stableFrames > 60) {
+			window.scrollTo(0, clampedTarget);
+			lastRestoredTime = Date.now();
+			isRestoring = false;
+			return;
+		}
+
+		requestAnimationFrame(attemptRestoration);
+	};
+
+	requestAnimationFrame(() => requestAnimationFrame(attemptRestoration));
 }
 
-window.addEventListener('scroll', (e) => {
-	if (e.target !== document && e.target !== document.documentElement && e.target !== window) return;
-	if (restoring) return;
-	if (vaultLocked || Date.now() - lastRestored < 600) return;
+// Track scrolling on the current active URL
+window.addEventListener('scroll', () => {
+	if (isRestoring || Date.now() - lastRestoredTime < 500) return;
+	saveCurrentScrollForUrl(window.location.href);
+}, { passive: true, capture: true });
 
-	scrollCache[window.location.href] = window.scrollY;
-}, true);
+// Handle explicit browser back/forward buttons
+window.addEventListener('popstate', () => {
+	const currentUrl = window.location.href;
 
-window.addEventListener('wheel', abortRestoration, { passive: true, capture: true });
-window.addEventListener('touchstart', abortRestoration, { passive: true, capture: true });
-window.addEventListener('popstate', () => { isHistory = true; vaultLocked = true; restoring = false; });
-window.addEventListener('beforeunload', () => { vaultLocked = true; });
+	isRestoring = true;
+	saveCurrentScrollForUrl(previousUrl);
+	previousUrl = currentUrl;
 
-window.addEventListener('click', (e) => {
-	const a = e.target.closest('a');
-	if (a && a.href && !a.closest('.e-pager') && !a.getAttribute('href').startsWith('#') && !a.getAttribute('href').startsWith('javascript:')) {
-		vaultLocked = true;
-		scrollCache[window.location.href] = window.scrollY;
+	const targetY = getStoredScroll(currentUrl);
+	const navId = ++activeNavigationId;
+
+	if (typeof targetY !== 'undefined' && targetY > 5) {
+		performRestoration(targetY, navId);
+	} else {
+		window.scrollTo(0, 0);
+		lastRestoredTime = Date.now();
+		isRestoring = false;
 	}
-}, true);
+});
 
-requestAnimationFrame(checkLifecycle);
+const userInterrupt = () => {
+	if (Date.now() - lastRestoredTime < 400) {
+		activeRestorationId++;
+		isRestoring = false;
+	}
+};
+window.addEventListener('wheel', userInterrupt, { passive: true, capture: true });
+window.addEventListener('touchstart', userInterrupt, { passive: true, capture: true });
