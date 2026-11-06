@@ -24,7 +24,7 @@ sealed class Connect : IAllocatedResult<IConnectionMultiplexer>
 
 	public async Task<IConnectionMultiplexer> Get()
 	{
-		var configuration = await _options.ConfigureForAzureWithTokenCredentialAsync(_credential).Off();
+		var configuration = await _options.ConfigureForAzureWithSystemAssignedManagedIdentityAsync().Off();
 		return await ConnectionMultiplexer.ConnectAsync(configuration).Off();
 	}
 }
