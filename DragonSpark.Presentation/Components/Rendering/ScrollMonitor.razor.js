@@ -1,10 +1,11 @@
-// JavaScript Module for ScrollMonitor component (v2.33.7-stable)
+// JavaScript Module for ScrollMonitor component (v2.33.15-production)
 const scrollCache = {};
 let activeNavigationId = 0;
 let activeRestorationId = 0;
 let lastRestoredTime = 0;
 let previousUrl = window.location.href;
 let isRestoring = false;
+let isBackForwardNav = false;
 
 if ('scrollRestoration' in history) {
 	history.scrollRestoration = 'manual';
@@ -39,25 +40,42 @@ function getStoredScroll(url) {
 	return undefined;
 }
 
+function processNavigation(currentUrl) {
+	if (currentUrl === previousUrl) return;
+
+	isRestoring = true;
+	saveCurrentScrollForUrl(previousUrl);
+	previousUrl = currentUrl;
+
+	const targetY = getStoredScroll(currentUrl);
+	const navId = ++activeNavigationId;
+
+	if (isBackForwardNav && typeof targetY !== 'undefined' && targetY > 5) {
+		performRestoration(targetY, navId);
+	} else {
+		window.scrollTo(0, 0);
+		lastRestoredTime = Date.now();
+		isRestoring = false;
+	}
+
+	isBackForwardNav = false;
+}
+
+// Proactive link click capture
+window.addEventListener('click', (e) => {
+	const anchor = e.target.closest('a');
+	if (!anchor) return;
+	const href = anchor.getAttribute('href');
+	if (!href || (href.startsWith('http') && !href.startsWith(window.location.origin)) || anchor.target === '_blank') {
+		return;
+	}
+	isBackForwardNav = false;
+	saveCurrentScrollForUrl(previousUrl);
+}, { passive: true, capture: true });
+
 // Continuously monitor URL changes (handles Blazor SPA navigation seamlessly)
 setInterval(() => {
-	const currentUrl = window.location.href;
-	if (currentUrl !== previousUrl) {
-		isRestoring = true;
-		saveCurrentScrollForUrl(previousUrl);
-		previousUrl = currentUrl;
-
-		const targetY = getStoredScroll(currentUrl);
-		const navId = ++activeNavigationId;
-
-		if (typeof targetY !== 'undefined' && targetY > 5) {
-			performRestoration(targetY, navId);
-		} else {
-			window.scrollTo(0, 0);
-			lastRestoredTime = Date.now();
-			isRestoring = false;
-		}
-	}
+	processNavigation(window.location.href);
 }, 50);
 
 function performRestoration(targetY, navId) {
@@ -105,22 +123,8 @@ window.addEventListener('scroll', () => {
 
 // Handle explicit browser back/forward buttons
 window.addEventListener('popstate', () => {
-	const currentUrl = window.location.href;
-
-	isRestoring = true;
-	saveCurrentScrollForUrl(previousUrl);
-	previousUrl = currentUrl;
-
-	const targetY = getStoredScroll(currentUrl);
-	const navId = ++activeNavigationId;
-
-	if (typeof targetY !== 'undefined' && targetY > 5) {
-		performRestoration(targetY, navId);
-	} else {
-		window.scrollTo(0, 0);
-		lastRestoredTime = Date.now();
-		isRestoring = false;
-	}
+	isBackForwardNav = true;
+	processNavigation(window.location.href);
 });
 
 const userInterrupt = () => {
