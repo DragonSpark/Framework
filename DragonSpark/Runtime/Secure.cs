@@ -6,22 +6,21 @@ namespace DragonSpark.Runtime;
 
 public sealed class Secure : ISelect<string, SecureString>
 {
-    public static Secure Default { get; } = new();
+	public static Secure Default { get; } = new();
 
-    Secure() { }
+	Secure() { }
 
-    [MustDisposeResource]
-    public SecureString Get(string parameter)
-    {
-	    // ReSharper disable once RedundantUnsafeContext ISSUE: 
-	    unsafe
-        {
-            fixed (char* psz = parameter)
-            {
-                var result = new SecureString(psz, parameter.Length);
-                result.MakeReadOnly();
-                return result;
-            }
-        }
-    }
+	[MustDisposeResource]
+	public SecureString Get(string parameter)
+	{
+		unsafe
+		{
+			fixed (char* psz = parameter)
+			{
+				var result = new SecureString(psz, parameter.Length);
+				result.MakeReadOnly();
+				return result;
+			}
+		}
+	}
 }
