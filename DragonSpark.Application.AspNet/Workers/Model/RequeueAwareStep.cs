@@ -28,7 +28,7 @@ sealed class RequeueAwareStep<T> : IStopAware<T> where T : ExternalProcess
 		catch (RequeueProcessException error)
 		{
 			var (subject, stop) = parameter;
-			await _send.Off(new(subject.Id, stop));
+			await _send.Off(new(new(subject.Id.ToString(), Guid.NewGuid()), stop));
 			await _status.Off(new(new(subject, ProcessStatus.Queued, error.Reason), stop));
 		}
 	}
