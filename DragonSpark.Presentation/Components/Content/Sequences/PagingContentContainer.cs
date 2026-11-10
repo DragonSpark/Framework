@@ -1,6 +1,6 @@
 ﻿using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
 using DragonSpark.Compose;
-using DragonSpark.Contracts.Queries;
+using DragonSpark.Model.Results;
 using DragonSpark.Presentation.Components.Content.History;
 using Microsoft.AspNetCore.Components;
 using Radzen;
@@ -9,9 +9,9 @@ namespace DragonSpark.Presentation.Components.Content.Sequences;
 
 partial class PagingContentContainer<T> : IPageContainer<T>
 {
-	QueryRenderState _state;
-	Exception?       _error;
-	IPages<T>?       _subject;
+	Variable<QueryRenderState> _state = new();
+	Exception?                 _error;
+	IPages<T>?                 _subject;
 
 	[Parameter]
 	public EventCallback<QueryRenderState> Changed { get; set; }
@@ -28,29 +28,23 @@ partial class PagingContentContainer<T> : IPageContainer<T>
 		{
 			_subject = Paging.Get(new(this, Content.Verify(), Compose));
 			_error   = null;
-			if (Recent.Get(new(this, Scope?.Scope)) is PageResult<T> entry)
+			if (Recent.Get(new(this, Scope?.Scope)) is PageStatus<T> entry)
 			{
 				await Get(entry).Off();
 			}
 			else
 			{
-				_state = QueryRenderState.Loading;
+				_state.Execute(QueryRenderState.Loading);
 				await Changed.Off(_state);
 			}
 			
 		}
 	}
 	
-	Task Update(bool? parameter)
+	Task Update(QueryRenderState? parameter)
 	{
-		_state = _error is not null
-			         ? QueryRenderState.Error
-			         : parameter is null
-				         ? QueryRenderState.Loading
-				         : parameter.Value
-					         ? QueryRenderState.Ready
-					         : QueryRenderState.Empty;
-		if (Parent is null)
+		var state = _error is not null ? QueryRenderState.Error : parameter ?? QueryRenderState.Loading;
+		if (_state.Assign(state) && Parent is null)
 		{
 			if (Changed.HasDelegate)
 			{
@@ -64,11 +58,12 @@ partial class PagingContentContainer<T> : IPageContainer<T>
 
 	public Type Get() => ReportedType ?? GetType();
 
-	public async ValueTask Get(PageResult<T> parameter)
+	public async ValueTask Get(PageStatus<T> parameter)
 	{
-		_error = null;
+		var (subject, filtered) = parameter;
+		_error                  = null;
 		Recent.Execute(new(this, Scope?.Scope), parameter);
-		await Update(parameter.Total is > 0).On();
+		await Update(subject.Total is > 0 || filtered ? QueryRenderState.Ready : QueryRenderState.Empty).On();
 		if (Parent is not null)
 		{
 			await Parent.Off(parameter);

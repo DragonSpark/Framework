@@ -2,15 +2,15 @@
 
 sealed class Paging<T> : IPaging<T>
 {
-	public static Paging<T> Default { get; } = new();
+	readonly IFiltered _filtered;
 
-	Paging() {}
+	public Paging(IFiltered filtered) => _filtered = filtered;
 
 	public IPages<T> Get(PagingInput<T> parameter)
 	{
 		var (owner, queries, compose) = parameter;
 		var previous = new QueriedPages<T>(queries, compose);
 		var pages    = owner.Get(previous);
-		return new ContainerAwarePages<T>(owner, pages);
+		return new ContainerAwarePages<T>(owner, pages, _filtered);
 	}
 }

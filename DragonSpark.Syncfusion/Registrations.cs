@@ -1,4 +1,5 @@
-﻿using DragonSpark.Composition;
+﻿using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
+using DragonSpark.Composition;
 using DragonSpark.Model.Commands;
 using DragonSpark.SyncfusionRendering.Queries;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,6 +24,8 @@ sealed class Registrations : ICommand<IServiceCollection>
 		         .Forward<DataRequests>()
 		         .Decorate<RenderAwareDataRequests>()
 		         .Include(x => x.Dependencies)
-		         .Scoped();
+		         .Scoped()
+				 //
+		         .Then.TryDecorate<IFiltered, Filtered>();
 	}
 }
