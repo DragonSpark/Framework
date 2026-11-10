@@ -10,5 +10,5 @@ sealed class ShouldObserve : ICondition<Exception>
 	ShouldObserve() {}
 
 	public bool Get(Exception parameter)
-		=> parameter is JSDisconnectedException || parameter?.StackTrace?.Contains("RemoteJSRuntime") == true;
+		=> parameter is JSDisconnectedException || parameter.StackTrace?.Contains("RemoteJSRuntime") == true;
 }
