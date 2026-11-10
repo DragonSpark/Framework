@@ -24,6 +24,7 @@ public sealed class IdentityStorageType<T, TContext> where TContext : DbContext 
 	public IdentityStorageUsing<T, TContext> Application()
 		=> new(_subject.Append(ApplicationRegistrations<TContext, T>.Default, AddIdentityComponents<T>.Default, 
 		                       Security.Identity.Authentication.Initialization.Registrations<T>.Default, 
+		                       AspNet.Entities.Queries.Runtime.Pagination.Registrations.Default,
 		                       AspNet.Entities.Registrations<TContext>.Default, 
 		                       Registrations.Default)
 		               .Configure(x => x.ComposeUsing(Security.Identity.Compose.Default)
