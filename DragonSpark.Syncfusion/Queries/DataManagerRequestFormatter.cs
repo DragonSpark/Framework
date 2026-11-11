@@ -1,6 +1,4 @@
-﻿using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
-using DragonSpark.Compose;
-using DragonSpark.Contracts.Queries;
+﻿using DragonSpark.Compose;
 using DragonSpark.Text;
 using Syncfusion.Blazor;
 using Empty = DragonSpark.Model.Empty;
@@ -36,23 +34,5 @@ public sealed class DataManagerRequestFormatter : IFormatter<DataManagerRequest>
 
 		var result = $"{select}_{where}_{search}_{sorted}_{parameter.Take}_{parameter.Skip}";
 		return result;
-	}
-}
-
-// TODO
-
-sealed class Filtered : IFiltered
-{
-	readonly IFiltered _previous;
-
-	public Filtered(IFiltered previous) => _previous = previous;
-
-	public bool Get(PageInput parameter)
-	{
-		var previous = _previous.Get(parameter);
-
-		return !previous && parameter is SyncfusionPageInput { Request: var request }
-			       ? request.Sorted?.Any() == true || request.Where?.Any() == true || request.Search?.Any() == true
-			       : previous;
 	}
 }
