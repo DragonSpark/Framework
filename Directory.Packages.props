@@ -2,9 +2,9 @@
   <PropertyGroup>
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
     <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
-    <FrameworkVersion>10.0.14</FrameworkVersion>
+    <FrameworkVersion>10.0.15</FrameworkVersion>
     <RefitVersion>16.4.0</RefitVersion>
-    <SyncfusionVersion>35.1.43</SyncfusionVersion>
+    <SyncfusionVersion>35.1.46</SyncfusionVersion>
   </PropertyGroup>
   <ItemGroup>
     <PackageVersion Include="Aspire.Azure.Security.KeyVault" Version="8.2.0" />
@@ -103,19 +103,19 @@
     <PackageVersion Include="Microsoft.IdentityModel.Protocols.OpenIdConnect" Version="8.23.0" />
     <PackageVersion Include="Microsoft.IO.RecyclableMemoryStream" Version="4.0.1" />
     <PackageVersion Include="Microsoft.Maui.Controls" Version="10.0.110" />
-    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.11.0" />
+    <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.11.1" />
     <PackageVersion Include="MockQueryable.Moq" Version="10.0.13" />
     <PackageVersion Include="NetFabric.Hyperlinq" Version="3.0.0-beta48" />
     <PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.20.1" />
     <PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.20.1" />
-    <PackageVersion Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.20.1" />
-    <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.20.1" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.AspNetCore" Version="1.20.2" />
+    <PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.20.2" />
     <PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.20.1" />
     <PackageVersion Include="PeterO.Cbor" Version="4.5.5" />
     <PackageVersion Include="Plugin.Firebase.CloudMessaging" Version="4.0.1" />
     <PackageVersion Include="Plugin.Maui.Biometric" Version="0.1.2" />
-    <PackageVersion Include="Polly" Version="8.9.0" />
-    <PackageVersion Include="Radzen.Blazor" Version="12.1.11" />
+    <PackageVersion Include="Polly" Version="8.9.1" />
+    <PackageVersion Include="Radzen.Blazor" Version="13.0.0" />
     <PackageVersion Include="Refit.HttpClientFactory" Version="$(RefitVersion)" />
     <PackageVersion Include="Scrutor" Version="7.0.0" />
     <PackageVersion Include="SendGrid.Extensions.DependencyInjection" Version="1.0.1" />
