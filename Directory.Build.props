@@ -10,6 +10,9 @@
 		<Import Project="Default.Build.props"
 		        Condition="Exists('Default.Build.props') And !Exists($(ParentDirectoryBuildPropsPath))" />
 	</ImportGroup>
+	<ItemGroup>
+		<Using Include="System.Globalization" />
+	</ItemGroup>
 
 	<PropertyGroup>
 		<ImplicitUsings>true</ImplicitUsings>

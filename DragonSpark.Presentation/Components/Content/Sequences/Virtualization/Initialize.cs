@@ -6,5 +6,5 @@ sealed class Initialize : CreateReference<InitializeInput>
 {
 	public static Initialize Default { get; } = new();
 
-	Initialize() : base(nameof(Initialize).ToLower()) {}
+	Initialize() : base(nameof(Initialize).ToLowerInvariant()) {}
 }

@@ -4,5 +4,5 @@ public sealed class Description : TwitterClaim
 {
 	public static Description Default { get; } = new();
 
-	Description() : base(nameof(Description).ToLower()) {}
+	Description() : base(nameof(Description).ToLowerInvariant()) {}
 }

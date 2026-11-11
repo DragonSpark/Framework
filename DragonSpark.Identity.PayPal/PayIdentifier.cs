@@ -4,5 +4,5 @@ public sealed class PayIdentifier : PayPalClaim
 {
 	public static PayIdentifier Default { get; } = new();
 
-	PayIdentifier() : base(nameof(PayIdentifier).ToLower()) {}
+	PayIdentifier() : base(nameof(PayIdentifier).ToLowerInvariant()) {}
 }

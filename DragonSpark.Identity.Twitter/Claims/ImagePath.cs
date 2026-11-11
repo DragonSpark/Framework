@@ -4,5 +4,5 @@ public sealed class ImagePath : TwitterClaim
 {
 	public static ImagePath Default { get; } = new();
 
-	ImagePath() : base(nameof(ImagePath).ToLower()) {}
+	ImagePath() : base(nameof(ImagePath).ToLowerInvariant()) {}
 }

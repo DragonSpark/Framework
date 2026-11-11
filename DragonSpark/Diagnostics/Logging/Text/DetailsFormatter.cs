@@ -7,11 +7,16 @@ sealed class DetailsFormatter : IFormatter<Details>
 {
 	public static DetailsFormatter Default { get; } = new();
 
-	DetailsFormatter() : this(TimestampFormat.Default) {}
+	DetailsFormatter() : this(TimestampFormat.Default, CultureInfo.InvariantCulture) {}
 
-	readonly string _format;
+	readonly string      _format;
+	readonly CultureInfo _culture;
 
-	public DetailsFormatter(string format) => _format = format;
+	public DetailsFormatter(string format, CultureInfo culture)
+	{
+		_format  = format;
+		_culture = culture;
+	}
 
-	public string Get(Details parameter) => $"[{parameter.Observed.ToString(_format)}] {parameter.Name}";
+	public string Get(Details parameter) => $"[{parameter.Observed.ToString(_format, _culture)}] {parameter.Name}";
 }

@@ -4,5 +4,5 @@ public sealed class DisplayName : DeviantArtClaim
 {
 	public static DisplayName Default { get; } = new();
 
-	DisplayName() : base(nameof(DisplayName).ToLower()) {}
+	DisplayName() : base(nameof(DisplayName).ToLowerInvariant()) {}
 }

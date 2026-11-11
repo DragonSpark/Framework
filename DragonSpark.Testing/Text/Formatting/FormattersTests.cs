@@ -17,8 +17,8 @@ public sealed class FormattersTests
 		sut.ToString("I", provider).Should().Be(AppDomain.CurrentDomain.Id.ToString());
 		var @default = DefaultApplicationDomainFormatter.Default.Get(AppDomain.CurrentDomain);
 		sut.ToString("x3", provider).Should().Be(@default);
-		sut.ToString("x3", null).Should().Be(@default);
-		sut.ToString(string.Empty, null).Should().Be(@default);
-		sut.ToString(null, null).Should().Be(@default);
+		sut.ToString("x3", CultureInfo.InvariantCulture).Should().Be(@default);
+		sut.ToString(string.Empty, CultureInfo.InvariantCulture).Should().Be(@default);
+		sut.ToString(null, CultureInfo.InvariantCulture).Should().Be(@default);
 	}
 }

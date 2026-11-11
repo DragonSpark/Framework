@@ -19,5 +19,5 @@ public sealed class GravatarImagePath : IAlteration<string>
 		_template = template;
 	}
 
-	public string Get(string parameter) => string.Format(_template, _hash(parameter.Trim().ToLower()));
+	public string Get(string parameter) => string.Format(_template, _hash(parameter.Trim().ToLowerInvariant()));
 }
