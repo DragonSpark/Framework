@@ -7,5 +7,5 @@ public sealed class Assemblies : Instances<Assembly>
 {
 	public static Assemblies Default { get; } = new();
 
-	Assemblies() : base(AppDomain.CurrentDomain.GetAssemblies().OrderBy(x => x.FullName)) {}
+	Assemblies() : base(AppDomain.CurrentDomain.GetAssemblies().OrderBy(x => x.FullName, StringComparer.Ordinal)) {}
 }

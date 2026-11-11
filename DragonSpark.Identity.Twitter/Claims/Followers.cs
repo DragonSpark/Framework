@@ -4,5 +4,5 @@ public sealed class Followers : TwitterClaim
 {
 	public static Followers Default { get; } = new();
 
-	Followers() : base(nameof(Followers).ToLower()) {}
+	Followers() : base(nameof(Followers).ToLowerInvariant()) {}
 }

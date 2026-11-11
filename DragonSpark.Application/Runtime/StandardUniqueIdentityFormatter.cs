@@ -13,5 +13,5 @@ public sealed class StandardUniqueIdentityFormatter : IFormatter<Guid>
 
 	public StandardUniqueIdentityFormatter(IAlteration<Guid> previous) => _previous = previous;
 
-	public string Get(Guid parameter) => _previous.Get(parameter).ToString().ToLower();
+	public string Get(Guid parameter) => _previous.Get(parameter).ToString().ToLowerInvariant();
 }

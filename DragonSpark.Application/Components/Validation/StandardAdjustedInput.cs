@@ -6,5 +6,5 @@ public sealed class StandardAdjustedInput : Alteration<string>
 {
 	public static StandardAdjustedInput Default { get; } = new();
 
-	StandardAdjustedInput() : base(x => x.Trim().ToLower()) {}
+	StandardAdjustedInput() : base(x => x.Trim().ToLowerInvariant()) {}
 }

@@ -25,9 +25,9 @@ sealed class ToolCallConverter : JsonConverter<ToolCall>
         {
             return JsonSerializer.Deserialize<FunctionToolCall>(root.GetRawText(), options)!;
         }
-        catch
+        catch (Exception error)
         {
-            throw new JsonException("Unknown or unsupported tool call format");
+            throw new JsonException("Unknown or unsupported tool call format", error);
         }
     }
 

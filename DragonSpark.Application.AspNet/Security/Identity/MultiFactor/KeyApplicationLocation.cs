@@ -2,7 +2,6 @@
 using DragonSpark.Reflection.Assemblies;
 using DragonSpark.Runtime.Environment;
 using Microsoft.Extensions.Hosting;
-using System.Globalization;
 using System.Text.Encodings.Web;
 
 namespace DragonSpark.Application.AspNet.Security.Identity.MultiFactor;

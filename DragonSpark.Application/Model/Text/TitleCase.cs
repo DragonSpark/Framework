@@ -1,5 +1,4 @@
 ﻿using DragonSpark.Text;
-using System.Globalization;
 
 namespace DragonSpark.Application.Model.Text;
 

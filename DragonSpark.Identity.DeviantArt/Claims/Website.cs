@@ -4,5 +4,5 @@ public sealed class Website : DeviantArtClaim
 {
 	public static Website Default { get; } = new ();
 
-	Website() : base(nameof(Website).ToLower()) {}
+	Website() : base(nameof(Website).ToLowerInvariant()) {}
 }

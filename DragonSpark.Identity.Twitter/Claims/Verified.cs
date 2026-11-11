@@ -4,5 +4,5 @@ public sealed class Verified : TwitterClaim
 {
 	public static Verified Default { get; } = new();
 
-	Verified() : base(nameof(Verified).ToLower()) {}
+	Verified() : base(nameof(Verified).ToLowerInvariant()) {}
 }
