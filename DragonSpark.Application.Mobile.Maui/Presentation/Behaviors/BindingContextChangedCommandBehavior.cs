@@ -1,4 +1,3 @@
-using System.Globalization;
 using System.Windows.Input;
 
 namespace DragonSpark.Application.Mobile.Maui.Presentation.Behaviors;
