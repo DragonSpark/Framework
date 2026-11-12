@@ -2,7 +2,7 @@
 
 namespace DragonSpark.Application.AspNet.Middleware;
 
-abstract class MiddlewareBase : IMiddleware
+public abstract class MiddlewareBase : IMiddleware
 {
 	public abstract Task Get(MiddlewareInput parameter);
 
