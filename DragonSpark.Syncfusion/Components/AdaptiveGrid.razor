@@ -152,19 +152,19 @@ else
 	async Task OnLoad(object parameter)
 	{
 		var store = await _store.On();
-		if (store.Success && store.Value.IsAssigned())
+		if (store.Success && store.Value.IsAssigned() && _subject is {} subject)
 		{
-			var grid = _subject.Verify();
-			await grid.SetPersistDataAsync(store.Value).On();
+			await subject.SetPersistDataAsync(store.Value).On();
 		}
 		await Load.Off(parameter);
 	}
 
 	async Task OnActionComplete(ActionEventArgs<T> args)
 	{
-		if (args.RequestType is Action.Sorting or Action.Filtering or Action.Paging or Action.Refresh)
+		if (args.RequestType is Action.Sorting or Action.Filtering or Action.Paging or Action.Refresh or Action.ClearFiltering 
+		    && _subject is {} subject)
 		{
-			var state = await _subject.Verify().GetPersistDataAsync().Off();
+			var state = await subject.GetPersistDataAsync().Off();
 			await _store.Off(state);
 		}
 	}
