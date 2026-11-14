@@ -8,10 +8,16 @@ public sealed class SentryCircuitHandler : CircuitHandler
 
 	public SentryCircuitHandler(IHub hub) => _hub = hub;
 
-	public override Task OnCircuitOpenedAsync(Circuit circuit, CancellationToken cancellationToken)
-	{
-		_hub.ConfigureScope(static (scope, circuitId) => scope.SetTag("CircuitId", circuitId), circuit.Id);
+	public override Func<CircuitInboundActivityContext, Task> CreateInboundActivityHandler(
+		Func<CircuitInboundActivityContext, Task> next)
+		=> async context =>
+		   {
+			   using (_hub.PushScope())
+			   {
+				   _hub.ConfigureScope(static (scope, circuitId) => scope.SetTag("CircuitId", circuitId),
+				                       context.Circuit.Id);
 
-		return base.OnCircuitOpenedAsync(circuit, cancellationToken);
-	}
+				   await next(context);
+			   }
+		   };
 }
