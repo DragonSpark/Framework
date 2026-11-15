@@ -1,12 +1,13 @@
 ﻿@using DragonSpark.Compose
-@using DragonSpark.Model.Results
 @using DragonSpark.Presentation.Components.Content.Templates
 
 @typeparam T where T : struct
 
+@implements IDisposable
+
 @inject RecentContentTracker Recent
 
-@if (_input is {} input)
+@if ((Input ?? _input) is {} input)
 {
 	@ChildContent(input)
 }
@@ -16,12 +17,11 @@ else
 }
 
 @code {
-	readonly Switch _first = false;
-	T?              _input;
+	T? _input;
 
 	protected override void OnInitialized()
 	{
-		if (Recent.Get(new(this, Scope?.Scope)) is T input)
+		if (Recent.TryPop(new(this, Scope?.Scope), out var entry) && entry is T input)
 		{
 			_input = input;
 		}
@@ -44,10 +44,15 @@ else
 	{
 		var changed = parameters.DidParameterChange(nameof(Input), Input) || parameters.DidParameterChange(nameof(Scope), Scope);
 		await base.SetParametersAsync(parameters).Off();
-		if (!_first.Up() && changed)
+		if (changed && Input is not null)
 		{
-			_input = Input;
-			Recent.Execute(new(this, Scope?.Scope), Input);
+			_input = null;
 		}
 	}
+
+	public void Dispose()
+	{
+		Recent.Execute(new(this, Scope?.Scope), Input);
+	}
+
 }

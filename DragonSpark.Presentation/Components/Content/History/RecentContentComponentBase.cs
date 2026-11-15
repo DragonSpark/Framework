@@ -2,20 +2,17 @@
 using DragonSpark.Presentation.Components.Content.Templates;
 using Microsoft.AspNetCore.Components;
 using Radzen;
-using Switch = DragonSpark.Model.Results.Switch;
 
 namespace DragonSpark.Presentation.Components.Content.History;
 
-public abstract class RecentContentComponentBase<T> : ComponentBase
+public abstract class RecentContentComponentBase<T> : ComponentBase, IDisposable
 {
-	readonly  Switch _assigned = false;
-	protected T?     _input;
+	protected T? _input;
 
 	protected override void OnInitialized()
 	{
-		if (Recent.Get(new(this, Scope?.Scope)) is T i)
+		if (Recent.TryPop(new(this, Scope?.Scope), out var entry) && entry is T i)
 		{
-			_assigned.Up();
 			_input = i;	
 		}
 		
@@ -39,10 +36,14 @@ public abstract class RecentContentComponentBase<T> : ComponentBase
 	{
 		var changed = parameters.DidParameterChange(nameof(Input), Input) ;
 		await base.SetParametersAsync(parameters).Off();
-		if ((!_assigned || !_assigned.Down()) && changed)
+		if (changed && Input is not null)
 		{
-			_input = Input;
-			Recent.Execute(new(this, Scope?.Scope), Input);
+			_input = default;
 		}
+	}
+
+	public void Dispose()
+	{
+		Recent.Execute(new(this, Scope?.Scope), Input);
 	}
 }

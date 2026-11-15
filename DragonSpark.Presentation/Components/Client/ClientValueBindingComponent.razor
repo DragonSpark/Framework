@@ -7,6 +7,8 @@
 @using DragonSpark.Presentation.Components.Content.Templates
 @using DragonSpark.Presentation.Components.Interaction
 
+@implements IDisposable
+
 @inject RecentContentTracker Recent
 
 @typeparam T
@@ -32,7 +34,7 @@ else
 
 	protected override void OnInitialized()
 	{
-		if (Recent.Get(new(this, null)) is Binding<T> binding)
+		if (Recent.TryPop(new(this, null), out var entry) && entry is Binding<T> binding)
 		{
 			_binding = new(binding.Value, RequestUpdate, Comparer);
 			_rendered.Up();
@@ -111,8 +113,12 @@ else
 				_binding = new(Value, RequestUpdate, Comparer);
 			}
 			_rendered.Up();
-			Recent.Execute(new(this, null), _binding);
 			StateHasChanged();
 		}
+	}
+
+	public void Dispose()
+	{
+		Recent.Execute(new(this, null), _binding);
 	}
 }

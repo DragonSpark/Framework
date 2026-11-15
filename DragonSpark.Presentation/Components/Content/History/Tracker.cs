@@ -33,19 +33,6 @@ public class Tracker<TIn, TKey, TOut> : ITracker<TIn, TOut> where TKey : notnull
 		_time    = time;
 	}
 
-	public TOut? Get(TIn parameter)
-	{
-		var key = _key(parameter);
-		if (_entries.TryGetValue(key, out var entry))
-		{
-			var updated = entry with { When = _time.Get() };
-			_entries.TryUpdate(key, updated, entry);
-			return entry.Result;
-		}
-
-		return default;
-	}
-
 	public void Execute(Pair<TIn, TOut?> parameter)
 	{
 		var (component, value) = parameter;
@@ -73,5 +60,18 @@ public class Tracker<TIn, TKey, TOut> : ITracker<TIn, TOut> where TKey : notnull
 				_entries.TryRemove(item.Key, out _);
 			}
 		}
+	}
+
+	public bool TryPop(TIn parameter, out TOut? result)
+	{
+		var key = _key(parameter);
+		if (_entries.TryRemove(key, out var entry))
+		{
+			result = entry.Result;
+			return true;
+		}
+
+		result = default;
+		return false;
 	}
 }
