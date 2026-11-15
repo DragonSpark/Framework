@@ -7,11 +7,12 @@ using Radzen;
 
 namespace DragonSpark.Presentation.Components.Content.Sequences;
 
-partial class PagingContentContainer<T> : IPageContainer<T>
+partial class PagingContentContainer<T> : IPageContainer<T>, IDisposable
 {
-	Variable<QueryRenderState> _state = new();
-	Exception?                 _error;
-	IPages<T>?                 _subject;
+	readonly Variable<QueryRenderState> _state = new();
+	Exception?                          _error;
+	IPages<T>?                          _subject;
+	PageStatus<T>?                       _last;
 
 	[Parameter]
 	public EventCallback<QueryRenderState> Changed { get; set; }
@@ -28,9 +29,9 @@ partial class PagingContentContainer<T> : IPageContainer<T>
 		{
 			_subject = Paging.Get(new(this, Content.Verify(), Compose));
 			_error   = null;
-			if (Recent.Get(new(this, Scope?.Scope)) is PageStatus<T> entry)
+			if (Recent.TryPop(new(this, Scope?.Scope), out var entry) && entry is PageStatus<T> status)
 			{
-				await Get(entry).Off();
+				await Get(status).Off();
 			}
 			else
 			{
@@ -62,7 +63,7 @@ partial class PagingContentContainer<T> : IPageContainer<T>
 	{
 		var (subject, filtered) = parameter;
 		_error                  = null;
-		Recent.Execute(new(this, Scope?.Scope), parameter);
+		_last                   = parameter;
 		await Update(subject.Total is > 0 || filtered ? QueryRenderState.Ready : QueryRenderState.Empty).On();
 		if (Parent is not null)
 		{
@@ -73,11 +74,17 @@ partial class PagingContentContainer<T> : IPageContainer<T>
 	public async ValueTask Get(Exception parameter)
 	{
 		_error = parameter;
+		_last  = null;
 		Recent.Execute(new(this, Scope?.Scope), null);
 		await Update(null).On();
 		if (Parent is not null)
 		{
 			await Parent.Off(parameter);
 		}
+	}
+
+	public void Dispose()
+	{
+		Recent.Execute(new(this, Scope?.Scope), _last);
 	}
 }

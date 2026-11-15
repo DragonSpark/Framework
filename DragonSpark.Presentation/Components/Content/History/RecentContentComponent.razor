@@ -2,7 +2,7 @@
 
 @typeparam T
 
-@if (_input is {} input)
+@if ((Input ?? _input) is {} input)
 {
 	@ChildContent(input)
 }

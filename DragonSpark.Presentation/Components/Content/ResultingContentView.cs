@@ -24,7 +24,7 @@ partial class ResultingContentView<T> : ICompleted<T?>
 		_workers = new Workers<T?>(this);
 		base.OnInitialized();
 
-		if (Recent.Get(new(this, Scope?.Scope)) is T cachedEntry)
+		if (Recent.TryPop(new(this, Scope?.Scope), out var entry) && entry is T cachedEntry)
 		{
 			_fragment = CreateFragment(cachedEntry);
 		}

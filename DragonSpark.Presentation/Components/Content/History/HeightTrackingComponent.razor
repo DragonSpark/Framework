@@ -20,17 +20,12 @@
 	protected override void OnInitialized()
 	{
 		_registration = Navigation.RegisterLocationChangingHandler(OnLocationChanging);
-	}
-
-	protected override void OnParametersSet()
-	{
-		_style = HeightTracker.Get(Navigation.Uri) is {} height and > 0 ? $"min-height: {height}px;" : string.Empty;
+		_style        = HeightTracker.TryPop(Navigation.Uri, out var entry) && entry is {} height and > 0 ? $"min-height: {height}px;" : string.Empty;
 	}
 
 	async ValueTask OnLocationChanging(LocationChangingContext context)
 	{
-		if (_module is not null
-		    && await _module.InvokeAsync<double>("getElementHeight", _containerRef) is var height and > 0)
+		if (_module is {} m && await m.InvokeAsync<double>("getElementHeight", _containerRef) is var height and > 0)
 		{
 			HeightTracker.Execute(new(Navigation.Uri, height));
 		}
