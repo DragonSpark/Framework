@@ -7,6 +7,6 @@ sealed class PlatformAgents : Instances<string>
 	public static PlatformAgents Default { get; } = new();
 
 	PlatformAgents()
-		: base("Googlebot", "Bingbot", "facebookexternalhit", "Facebot", "Twitterbot", "Pinterest", "LinkedInBot",
-		       "Discordbot", "Slackbot", "Applebot") {}
+		: base("Googlebot", "Bingbot", "facebookexternalhit", "Facebot", "Twitterbot", "Xbot", "Twitter",
+		       "Pinterest", "LinkedInBot", "Discordbot", "Slackbot", "WhatsApp", "TelegramBot", "Applebot") {}
 }
