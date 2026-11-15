@@ -44,6 +44,8 @@ public class OperationComposer<T> : Composer<T, ValueTask>
 
 	public OperationComposer Bind(Func<ValueTask<T>> parameter) => new(new Binding<T>(this.Out(), parameter));
 
+	public OperationComposer<T> Protecting() => Protecting(new());
+
 	public OperationComposer<T> Protecting(AsyncLock @lock) => new(new Protecting<T>(Get(), @lock));
 
 	public OperationComposer<T> Watching(CancellationToken token) => Watching(Start.A.Result(token));
