@@ -6,11 +6,13 @@ namespace DragonSpark.Presentation.Components.Content.History;
 
 public abstract class RecentContentComponentBase<T> : ComponentBase, IDisposable
 {
+	protected T? _input;
+
 	protected override void OnInitialized()
 	{
-		if (Input is null && Recent.TryPop(new(this, Scope?.Scope), out var entry) && entry is T i)
+		if (Recent.TryPop(new(this, Scope?.Scope), out var entry) && entry is T i)
 		{
-			Input = i;
+			_input   = i;
 		}
 		
 		base.OnInitialized();

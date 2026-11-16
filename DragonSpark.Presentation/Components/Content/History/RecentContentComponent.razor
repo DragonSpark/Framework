@@ -6,6 +6,10 @@
 {
 	@ChildContent(input)
 }
+else if (_input is {} preview)
+{
+	@ChildContent(preview)
+}
 else
 {
 	@LoadingTemplate
