@@ -19,7 +19,7 @@
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (firstRender || (Refresh?.Down() ?? false))
+        if (firstRender || Refresh?.Down() == true)
         {
             await RefreshContent().On();
             StateHasChanged();
