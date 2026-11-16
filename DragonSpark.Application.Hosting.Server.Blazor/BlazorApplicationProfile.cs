@@ -32,7 +32,11 @@ sealed class BlazorApplicationProfile<T> : ApplicationProfile
 
 	public BlazorApplicationProfile(Action<IServiceCollection> services, Action<IApplicationBuilder> configure,
 	                                params Assembly[] additional)
-		: this(services, configure, new ApplyBlazorWebApplication<T>(additional).Execute) {}
+		: this(services, configure, _ => {}, additional) {}
+
+	public BlazorApplicationProfile(Action<IServiceCollection> services, Action<IApplicationBuilder> configure,
+	                                Action<IApplicationBuilder> post, params Assembly[] additional)
+		: this(services, configure, new ApplyBlazorWebApplication<T>(additional).Then().Append(post)) {}
 
 	public BlazorApplicationProfile(Action<IServiceCollection> services, Action<IApplicationBuilder> configure,
 	                                Action<IApplicationBuilder> post)
