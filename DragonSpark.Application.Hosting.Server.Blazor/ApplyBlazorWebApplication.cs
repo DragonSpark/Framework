@@ -1,6 +1,5 @@
 ﻿using DragonSpark.Compose;
 using DragonSpark.Model.Commands;
-using DragonSpark.Model.Sequences;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Routing;
 using System.Reflection;
@@ -9,24 +8,33 @@ namespace DragonSpark.Application.Hosting.Server.Blazor;
 
 sealed class ApplyBlazorWebApplication<T> : ICommand<IApplicationBuilder>
 {
-	readonly string          _name;
-	readonly Array<Assembly> _assemblies;
+	readonly string                                             _name;
+	readonly ICommand<RazorComponentsEndpointConventionBuilder> _endpoint;
+	readonly Action<IApplicationBuilder>                        _configure;
 
-	public ApplyBlazorWebApplication(Array<Assembly> assemblies) : this("__EndpointRouteBuilder", assemblies) {}
+	public ApplyBlazorWebApplication(Assembly[] assemblies, Action<IApplicationBuilder> configure)
+		: this(assemblies.AsConfiguration(), configure) {}
 
-	public ApplyBlazorWebApplication(string name, Array<Assembly> assemblies)
+	public ApplyBlazorWebApplication(ICommand<RazorComponentsEndpointConventionBuilder> endpoints,
+	                                 Action<IApplicationBuilder> configure)
+		: this("__EndpointRouteBuilder", endpoints, configure) {}
+
+	public ApplyBlazorWebApplication(string name, ICommand<RazorComponentsEndpointConventionBuilder> endpoint,
+	                                 Action<IApplicationBuilder> configure)
 	{
-		_name       = name;
-		_assemblies = assemblies;
+		_name      = name;
+		_endpoint  = endpoint;
+		_configure = configure;
 	}
 
 	public void Execute(IApplicationBuilder parameter)
 	{
-		parameter.Properties[_name]
-		         .Verify()
-		         .To<IEndpointRouteBuilder>()
-		         .MapRazorComponents<T>()
-		         .AddInteractiveServerRenderMode()
-		         .AddAdditionalAssemblies(_assemblies);
+		var builder = parameter.Properties[_name]
+		                       .Verify()
+		                       .To<IEndpointRouteBuilder>()
+		                       .MapRazorComponents<T>()
+		                       .AddInteractiveServerRenderMode();
+		_endpoint.Execute(builder);
+		_configure(parameter);
 	}
 }
