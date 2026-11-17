@@ -1,6 +1,8 @@
+using DragonSpark.Compose;
+
 namespace DragonSpark.Application.AspNet.Security.Identity.Authentication.Passwordless;
 
 public class SignInWithCode<T> : SignInBase<T>, ISignInWithCode<T> where T : class
 {
-    protected SignInWithCode(IAuthentications<T> signin) : base(ValidateCode<T>.Default, signin) {}
+    protected SignInWithCode(IAuthentications<T> signin) : base(ValidateCode<T>.Default.AsStop().Out(), signin) {}
 }

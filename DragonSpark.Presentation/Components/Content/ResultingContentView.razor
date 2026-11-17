@@ -1,4 +1,4 @@
-﻿@typeparam T
+@typeparam T
 
 @using DragonSpark.Presentation.Components.Content.History
 @using DragonSpark.Presentation.Components.Content.Rendering
@@ -8,13 +8,13 @@
 @inject RenderStateStore Render
 @inject RecentContentTracker Recent
 
-@if (_exception is not null)
+@if (_exception is {} exception)
 {
-	@ExceptionTemplate(_exception)
+	@ExceptionTemplate(exception)
 }
-else if (_fragment is not null)
+else if (_fragment is {} fragment)
 {
-	@_fragment
+	@fragment
 }
 else
 {
