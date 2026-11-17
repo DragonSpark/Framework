@@ -23,11 +23,12 @@ public static class Extensions
 			=> @this.Apply(new BlazorApplicationProfile<T>(builder, additional));
 
 		public ApplicationProfileContext WithOptimizedBlazorServerApplication<T>(Action<IApplicationBuilder> builder,
+		                                                                         Action<IApplicationBuilder> post,
 		                                                                         byte receive = 32,
 		                                                                         params Assembly[] additional)
 		{
 			var configuration = new DistributedAwareServiceConfiguration(receive);
-			var profile       = new BlazorApplicationProfile<T>(configuration.Execute, builder, additional);
+			var profile       = new BlazorApplicationProfile<T>(configuration.Execute, builder, post, additional);
 			return @this.Apply(profile);
 		}
 	}
