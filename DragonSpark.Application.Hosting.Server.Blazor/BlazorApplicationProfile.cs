@@ -2,7 +2,6 @@
 using DragonSpark.Compose;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
 
 namespace DragonSpark.Application.Hosting.Server.Blazor;
 
@@ -19,26 +18,4 @@ sealed class BlazorApplicationProfile : ApplicationProfile
 
 	public BlazorApplicationProfile(Action<IServiceCollection> services, Action<IApplicationBuilder> configure)
 		: base(services, Start.A.Command(configure).Append(DefaultApplicationConfiguration.Default)) {}
-}
-
-sealed class BlazorApplicationProfile<T> : ApplicationProfile
-{
-	public static BlazorApplicationProfile<T> Default { get; } = new();
-
-	BlazorApplicationProfile() : this(_ => {}) {}
-
-	public BlazorApplicationProfile(Action<IApplicationBuilder> configure, params Assembly[] additional)
-		: this(DefaultServiceConfiguration.Default.Execute, configure, additional) {}
-
-	public BlazorApplicationProfile(Action<IServiceCollection> services, Action<IApplicationBuilder> configure,
-	                                params Assembly[] additional)
-		: this(services, configure, _ => {}, additional) {}
-
-	public BlazorApplicationProfile(Action<IServiceCollection> services, Action<IApplicationBuilder> configure,
-	                                Action<IApplicationBuilder> post, params Assembly[] additional)
-		: this(services, configure, new ApplyBlazorWebApplication<T>(additional).Then().Append(post)) {}
-
-	public BlazorApplicationProfile(Action<IServiceCollection> services, Action<IApplicationBuilder> configure,
-	                                Action<IApplicationBuilder> post)
-		: base(services, Start.A.Command(configure).Append(DefaultApplicationConfiguration.Default).Append(post)) {}
 }
