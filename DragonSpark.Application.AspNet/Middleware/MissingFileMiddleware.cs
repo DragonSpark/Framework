@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 
-namespace DragonSpark.Application.AspNet.Middleware.Agents;
+namespace DragonSpark.Application.AspNet.Middleware;
 
 public sealed class MissingFileMiddleware : MiddlewareBase
 {
