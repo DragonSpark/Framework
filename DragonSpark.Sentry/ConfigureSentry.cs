@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Sentry.AspNetCore;
+using Sentry.Extensibility;
 
 namespace DragonSpark.Sentry;
 
@@ -13,7 +14,10 @@ sealed class ConfigureSentry : ICommand<IHostApplicationBuilder>
 	readonly Action<SentryAspNetCoreOptions> _use;
 	readonly ICommand<ApplyDsnInput>         _apply;
 
-	public ConfigureSentry(string? name) : this(name, UseSentry.Default.Execute, ApplyDsn.Default) {}
+	public ConfigureSentry(string? name, IExceptionFilter process)
+		: this(name, new UseSentry(process).Execute) {}
+
+	public ConfigureSentry(string? name, Action<SentryAspNetCoreOptions> use) : this(name, use, ApplyDsn.Default) {}
 
 	public ConfigureSentry(string? name, Action<SentryAspNetCoreOptions> use, ICommand<ApplyDsnInput> apply)
 	{
