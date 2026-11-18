@@ -2,9 +2,11 @@
 
 namespace DragonSpark.Sentry;
 
-sealed class ShouldProcess : AllCondition<SentryEvent>
+sealed class ShouldProcess : ICondition<SentryEvent>
 {
-	public static ShouldProcess Default { get; } = new();
+	readonly Func<Exception, bool> _process;
 
-	ShouldProcess() : base(ProcessedException.Default, ProcessedExceptions.Default) {}
+	public ShouldProcess(Func<Exception, bool> process) => _process = process;
+
+	public bool Get(SentryEvent parameter) => parameter.Exception is not {} exception || _process(exception);
 }

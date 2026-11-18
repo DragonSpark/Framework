@@ -1,14 +1,12 @@
-﻿using DragonSpark.Model.Selection.Conditions;
+﻿using DragonSpark.Application.Diagnostics;
 using Microsoft.JSInterop;
 
 namespace DragonSpark.Presentation.Environment;
 
-sealed class ShouldObserve : ICondition<Exception>
+public sealed class ShouldObserve : ProcessedExceptionCondition
 {
 	public static ShouldObserve Default { get; } = new();
 
-	ShouldObserve() {}
-
-	public bool Get(Exception parameter)
-		=> parameter is JSDisconnectedException || parameter.StackTrace?.Contains("RemoteJSRuntime") == true;
+	ShouldObserve()
+		: base(x => x is JSDisconnectedException or JSException || x.StackTrace?.Contains("RemoteJSRuntime") == true) {}
 }
