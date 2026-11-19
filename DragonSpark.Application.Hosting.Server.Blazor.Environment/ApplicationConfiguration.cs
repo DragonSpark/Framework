@@ -14,7 +14,7 @@ public sealed class ApplicationConfiguration : IApplicationConfiguration
 
 	public ApplicationConfiguration(string handler, bool createScope = true)
 	{
-		_handler          = handler;
+		_handler     = handler;
 		_createScope = createScope;
 	}
 
