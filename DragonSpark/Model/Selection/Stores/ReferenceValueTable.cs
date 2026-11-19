@@ -1,4 +1,4 @@
-﻿using DragonSpark.Model.Selection.Conditions;
+using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Runtime.Invocation;
 using System.Runtime.CompilerServices;
 

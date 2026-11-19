@@ -1,4 +1,4 @@
-﻿using DragonSpark.Model.Selection;
+using DragonSpark.Model.Selection;
 using DragonSpark.Model.Sequences;
 using System.Runtime.CompilerServices;
 
@@ -7,7 +7,7 @@ namespace DragonSpark.Runtime.Invocation;
 /// <summary>
 /// Attribution: https://github.com/i3arnon/AsyncUtilities
 /// </summary>
-public sealed class Locks<T> : ISelect<T, object> where T : notnull
+public sealed class Locks<T> : ISelect<T, Lock> where T : notnull
 {
 	public static Locks<T> Default { get; } = new();
 
@@ -21,15 +21,15 @@ public sealed class Locks<T> : ISelect<T, object> where T : notnull
 	}
 
 	readonly IEqualityComparer<T> _comparer;
-	readonly int                     _mask;
-	readonly Array<object>            _stripes;
+	readonly int                  _mask;
+	readonly Array<Lock>          _stripes;
 
 	public Locks(int stripes) : this(LockItem.Default.Get(stripes), EqualityComparer<T>.Default) {}
 
-	public Locks((Array<object> Items, int Mask) item, IEqualityComparer<T> comparer)
+	public Locks((Array<Lock> Items, int Mask) item, IEqualityComparer<T> comparer)
 		: this(item.Mask, item.Items, comparer) {}
 
-	public Locks(int mask, Array<object> stripes, IEqualityComparer<T> comparer)
+	public Locks(int mask, Array<Lock> stripes, IEqualityComparer<T> comparer)
 	{
 		_mask     = mask;
 		_stripes  = stripes;
@@ -39,5 +39,5 @@ public sealed class Locks<T> : ISelect<T, object> where T : notnull
 	[MethodImpl(MethodImplOptions.AggressiveInlining)]
 	int GetStripe(T key) => SmearHashCode(_comparer.GetHashCode(key) & int.MaxValue) & _mask;
 
-	public object Get(T parameter) => _stripes[GetStripe(parameter)];
+	public Lock Get(T parameter) => _stripes[GetStripe(parameter)];
 }
