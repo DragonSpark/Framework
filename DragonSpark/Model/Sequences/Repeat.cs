@@ -1,13 +1,7 @@
-﻿using DragonSpark.Runtime.Activation;
-
 namespace DragonSpark.Model.Sequences;
 
 sealed class Repeat<T> : IArray<uint, T>
 {
-	public static Repeat<T> Default { get; } = new();
-
-	Repeat() : this(New<T>.Default.Get) {}
-
 	readonly Func<T> _create;
 
 	public Repeat(Func<T> create) => _create = create;

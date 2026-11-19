@@ -1,17 +1,15 @@
-﻿using DragonSpark.Model.Selection;
+using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Runtime.Invocation;
 
-public class Stripe<TIn, TOut> : ISelect<TIn, TOut> where TIn : notnull
+public sealed class Stripe<TIn, TOut> : ISelect<TIn, TOut> where TIn : notnull
 {
-	readonly static Func<TIn, object> Lock = Locks<TIn>.Default.Get;
+	readonly ISelect<TIn, Lock> _lock;
+	readonly Func<TIn, TOut>    _source;
 
-	readonly Func<TIn, object> _lock;
-	readonly Func<TIn, TOut>   _source;
+	public Stripe(Func<TIn, TOut> source) : this(Locks<TIn>.Default, source) {}
 
-	public Stripe(Func<TIn, TOut> source) : this(Lock, source) {}
-
-	public Stripe(Func<TIn, object> @lock, Func<TIn, TOut> source)
+	public Stripe(ISelect<TIn, Lock> @lock, Func<TIn, TOut> source)
 	{
 		_lock   = @lock;
 		_source = source;
@@ -19,7 +17,7 @@ public class Stripe<TIn, TOut> : ISelect<TIn, TOut> where TIn : notnull
 
 	public TOut Get(TIn parameter)
 	{
-		lock (_lock(parameter))
+		lock (_lock.Get(parameter))
 		{
 			return _source(parameter);
 		}
