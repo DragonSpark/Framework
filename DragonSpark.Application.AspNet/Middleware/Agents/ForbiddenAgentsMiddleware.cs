@@ -10,7 +10,7 @@ public class ForbiddenAgentsMiddleware : MiddlewareBase
 
 	protected ForbiddenAgentsMiddleware(params string[] forbidden) => _forbidden = forbidden;
 
-	public override async Task Get(MiddlewareInput parameter)
+	public override Task Get(MiddlewareInput parameter)
 	{
 		var (context, next) = parameter;
 
@@ -18,10 +18,9 @@ public class ForbiddenAgentsMiddleware : MiddlewareBase
 		    _forbidden.Open().Contains(agent, StringComparer.OrdinalIgnoreCase))
 		{
 			context.Response.StatusCode = StatusCodes.Status403Forbidden;
-			await context.Response.WriteAsync("Forbidden").Off();
-			return;
+			return context.Response.WriteAsync("Forbidden");
 		}
 
-		await next(context).Off();
+		return next(context);
 	}
 }
