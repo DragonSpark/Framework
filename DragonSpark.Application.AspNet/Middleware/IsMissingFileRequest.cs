@@ -8,20 +8,15 @@ sealed class IsMissingFileRequest : ICondition<HttpRequest>
 {
 	public static IsMissingFileRequest Default { get; } = new();
 
-	IsMissingFileRequest() {}
+	IsMissingFileRequest() : this(HasFileExtension.Default) {}
+
+	readonly ICondition<string> _extension;
+
+	public IsMissingFileRequest(ICondition<string> extension) => _extension = extension;
 
 	public bool Get(HttpRequest parameter)
-		=> parameter.HttpContext.GetEndpoint() is null // TODO: Remove this?
-		   && !parameter.Path.StartsWithSegments("/_framework")
-		   && !parameter.Path.StartsWithSegments("/_vs")
+		=> parameter.HttpContext.GetEndpoint() is null
 		   && (HttpMethods.IsGet(parameter.Method) || HttpMethods.IsHead(parameter.Method))
 		   && parameter.Path.Value.NullIfEmpty() is {} path
-		   && HasFileExtension(path);
-
-	static bool HasFileExtension(string path)
-	{
-		var lastSlash = path.LastIndexOf('/');
-		var lastDot   = path.LastIndexOf('.');
-		return lastDot > lastSlash && lastDot < path.Length - 1;
-	}
+		   && _extension.Get(path);
 }
