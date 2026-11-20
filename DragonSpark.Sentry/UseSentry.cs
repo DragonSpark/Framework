@@ -13,11 +13,7 @@ sealed class UseSentry : ICommand<SentryAspNetCoreOptions>
 	public void Execute(SentryAspNetCoreOptions parameter)
 	{
 		parameter.AddExceptionFilter(_filter);
-		parameter.SetBeforeSend(x => x.Exception is not null
-		                             || x.Message?.Formatted?.Contains("System.OperationCanceledException",
-		                                                               StringComparison.Ordinal) != true
-			                             ? x
-			                             : null);
+		parameter.SetBeforeSend(x => x.Exception is not null ? x : null);
 		parameter.SetBeforeSendLog(x => !x.TryGetAttribute("sentry.origin", out var origin) 
 		                                || origin is not "auto.log.extensions_logging"
 			                                ? x
