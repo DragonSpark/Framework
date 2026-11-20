@@ -1,30 +1,18 @@
 ﻿using DragonSpark.Model.Selection.Conditions;
 using DragonSpark.Model.Sequences;
+using System.Buffers;
 
 namespace DragonSpark.Application.AspNet.Middleware.Agents;
 
 sealed class IsEnforcedPath : ICondition<string>
 {
-	readonly Array<string>    _paths;
-	readonly StringComparison _comparison;
+	readonly SearchValues<string> _paths;
 
 	public IsEnforcedPath(Array<string> paths,
-	                      StringComparison comparison = StringComparison.InvariantCultureIgnoreCase)
-	{
-		_paths      = paths;
-		_comparison = comparison;
-	}
+	                      StringComparison comparison = StringComparison.OrdinalIgnoreCase)
+		: this(SearchValues.Create(paths.Open(), comparison)) {}
 
-	public bool Get(string parameter)
-	{
-		for (var i = 0; i < _paths.Length; i++)
-		{
-			if (parameter.StartsWith(_paths[i], _comparison))
-			{
-				return true;
-			}
-		}
+	public IsEnforcedPath(SearchValues<string> paths) => _paths = paths;
 
-		return false;
-	}
+	public bool Get(string parameter) => parameter.AsSpan().IndexOfAny(_paths) is 0;
 }
