@@ -1,4 +1,4 @@
-﻿using DragonSpark.Model.Selection.Conditions;
+using DragonSpark.Model.Selection.Conditions;
 using Microsoft.Data.SqlClient;
 using Microsoft.JSInterop;
 
@@ -8,18 +8,16 @@ public sealed class IgnoreException : ICondition<Exception>
 {
 	public static IgnoreException Default { get; } = new();
 
-	IgnoreException() : this("Operation cancelled by user.") {}
+	IgnoreException() : this(HasCancellationLanguage.Default) {}
 
-	readonly string _message;
+	readonly ICondition<string> _message;
 
-	public IgnoreException(string message) => _message = message;
+	public IgnoreException(ICondition<string> message) => _message = message;
 
 	public bool Get(Exception parameter) => parameter switch
 	{
-		SqlException x => x.Number == 0 || x.Message.Contains(_message),
-		InvalidOperationException x => x.Message.Contains(_message),
-		OperationCanceledException => true,
-		JSDisconnectedException => true,
-		_ => false
+		SqlException x => x.Number is 0 || _message.Get(x.Message),
+		OperationCanceledException or JSDisconnectedException => true,
+		_ => _message.Get(parameter.Message)
 	};
 }
