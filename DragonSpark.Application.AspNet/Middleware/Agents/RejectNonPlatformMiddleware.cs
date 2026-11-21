@@ -7,7 +7,7 @@ public sealed class RejectNonPlatformMiddleware : MiddlewareBase
 {
 	public static RejectNonPlatformMiddleware Default { get; } = new();
 
-	RejectNonPlatformMiddleware() : this("/wp-", "/.env", "/.git", "/xmlrpc", "/phpmyadmin") {}
+	RejectNonPlatformMiddleware() : this("/wp-", "/.env", "/.git", "/xmlrpc", "/phpmyadmin", "/mcp") {}
 
 	public RejectNonPlatformMiddleware(params string[] paths)
 		: this(SearchValues.Create(paths, StringComparison.OrdinalIgnoreCase), Respond.Default) {}
