@@ -20,7 +20,12 @@ public sealed class ApplicationConfiguration : IApplicationConfiguration
 
 	public void Execute(IApplicationBuilder parameter)
 	{
-		parameter.UseExceptionHandler(_handler, createScopeForErrors: _createScope)
+		parameter.UseExceptionHandler(new ExceptionHandlerOptions
+		         {
+			         ExceptionHandlingPath      = _handler,
+			         AllowStatusCode404Response = true,
+			         CreateScopeForErrors       = _createScope
+		         })
 		         .UseHsts(); // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 	}
 }
