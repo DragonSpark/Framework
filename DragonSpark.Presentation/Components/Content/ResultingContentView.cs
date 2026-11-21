@@ -96,7 +96,7 @@ partial class ResultingContentView<T> : ICompleted<T?>
 			Recent.Execute(new(this, Scope?.Scope), result);
 			
 			_fragment = CreateFragment(result);
-			StateHasChanged();
+			await UpdateState().On();
 
 			if (result is not null)
 			{
@@ -107,7 +107,20 @@ partial class ResultingContentView<T> : ICompleted<T?>
 		else if (parameter is { IsFaulted: true })
 		{
 			_exception = parameter.AsTask().Exception;
+			await UpdateState().Off();
+		}
+	}
+
+	Task UpdateState()
+	{
+		try
+		{
 			StateHasChanged();
+			return Task.CompletedTask;
+		}
+		catch (Exception e)
+		{
+			return DispatchExceptionAsync(e);
 		}
 	}
 
