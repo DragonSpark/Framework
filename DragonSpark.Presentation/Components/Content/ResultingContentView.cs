@@ -111,16 +111,22 @@ partial class ResultingContentView<T> : ICompleted<T?>
 		}
 	}
 
-	Task UpdateState()
+	async Task UpdateState()
 	{
 		try
 		{
 			StateHasChanged();
-			return Task.CompletedTask;
 		}
 		catch (Exception e)
 		{
-			return DispatchExceptionAsync(e);
+			try
+			{
+				await DispatchExceptionAsync(e).Off();
+			}
+			catch
+			{
+				// ignored - handled by Blazor's dispatch
+			}
 		}
 	}
 
