@@ -20,7 +20,8 @@ readonly struct Loaded<T> : IResult<Task<T?>?>, IDisposable
 
 	public void Dispose()
 	{
+		
 		_loaded.Down();
-		// _ = _previous.ContinueWith(t => _ = t.Exception, TaskContinuationOptions.OnlyOnFaulted);
+		// _ = _previous;
 	}
 }
