@@ -23,8 +23,7 @@ sealed class Complete<T> : ICompleted
 	{
 		if (_completed.Get(_previous))
 		{
-			var task = _loaded.Get();
-			if (task is not null)
+			if (_loaded.Get() is {} task)
 			{
 				return _completed.Get(task.ToOperation());
 			}
@@ -33,7 +32,6 @@ sealed class Complete<T> : ICompleted
 		{
 			Dispose();
 		}
-
 
 		return Task.CompletedTask;
 	}
