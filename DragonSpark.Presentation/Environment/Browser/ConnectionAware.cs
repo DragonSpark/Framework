@@ -13,5 +13,5 @@ public class ConnectionAware : PolicyAware
 
 public class ConnectionAware<T> : PolicyAware<T>
 {
-	public ConnectionAware(IStopAware<T> previous) : base(previous, ConnectionAwarePolicy.Default) {}
+	protected ConnectionAware(IStopAware<T> previous) : base(previous, ConnectionAwarePolicy.Default) {}
 }

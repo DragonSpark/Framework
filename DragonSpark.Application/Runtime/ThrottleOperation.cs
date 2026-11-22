@@ -2,6 +2,7 @@
 using DragonSpark.Model;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection.Stores;
+using System.Diagnostics;
 
 namespace DragonSpark.Application.Runtime;
 
@@ -43,6 +44,10 @@ public class ThrottleOperation<T> : IOperation<T> where T : notnull
 			await _subject(parameter).Off();
 		}
 		catch (OperationCanceledException) {}
+		catch
+		{
+			Debugger.Break();
+		}
 		finally
 		{
 			if (_sources.TryPop(parameter, out var current) && current == source)

@@ -25,7 +25,11 @@ sealed class Complete<T> : ICompleted
 		{
 			if (_loaded.Get() is {} task)
 			{
-				return _completed.Get(task.ToOperation());
+				return _completed.Get(task.ToOperation())
+				                 .ContinueWith(static t => _ = t.Exception,
+				                               CancellationToken.None,
+				                               TaskContinuationOptions.OnlyOnFaulted | TaskContinuationOptions.ExecuteSynchronously,
+				                               TaskScheduler.Default);
 			}
 		}
 		else
