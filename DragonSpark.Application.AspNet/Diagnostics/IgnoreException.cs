@@ -1,4 +1,5 @@
 using DragonSpark.Model.Selection.Conditions;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Data.SqlClient;
 using Microsoft.JSInterop;
 
@@ -17,7 +18,7 @@ public sealed class IgnoreException : ICondition<Exception>
 	public bool Get(Exception parameter) => parameter switch
 	{
 		SqlException x => x.Number is 0 || _message.Get(x.Message),
-		OperationCanceledException or JSDisconnectedException => true,
+		OperationCanceledException or JSDisconnectedException or NavigationException => true,
 		_ => _message.Get(parameter.Message)
 	};
 }
