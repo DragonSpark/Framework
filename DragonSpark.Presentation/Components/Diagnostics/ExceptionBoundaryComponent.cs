@@ -1,4 +1,5 @@
-﻿using DragonSpark.Application.Diagnostics;
+﻿using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
+using DragonSpark.Application.Diagnostics;
 using DragonSpark.Compose;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
@@ -9,10 +10,10 @@ namespace DragonSpark.Presentation.Components.Diagnostics;
 public sealed class ExceptionBoundaryComponent : ErrorBoundary
 {
 	[Parameter]
-	public required Type? ReportedType { get; set; }
+	public required IReportedTypeAware? ReportedType { get; set; }
 
 	[Inject] public required IExceptionLogger Exceptions { get; set; }
 
 	protected override Task OnErrorAsync(Exception exception)
-		=> Exceptions.Allocate(new(ReportedType ?? GetType(), exception));
+		=> Exceptions.Allocate(new(ReportedType?.Get() ?? GetType(), exception));
 }
