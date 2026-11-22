@@ -20,13 +20,9 @@ sealed class ClientStateAwareInitializeConnection : IInitializeConnection
 	public void Execute(None parameter)
 	{
 		_previous.Execute(parameter);
-		if (!_state.Get().Success)
+		if (!_state.Get().Success && _current.Get() is {} current)
 		{
-			var current = _current.Get();
-			if (current is not null)
-			{
-				_state.Execute(current);
-			}
+			_state.Execute(current);
 		}
 	}
 }

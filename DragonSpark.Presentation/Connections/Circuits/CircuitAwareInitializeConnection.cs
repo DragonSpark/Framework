@@ -23,8 +23,7 @@ sealed class CircuitAwareInitializeConnection : IInitializeConnection
 	public void Execute(None parameter)
 	{
 		_previous.Execute(parameter);
-		var current = _store.Get();
-		if (current is not null)
+		if (_store.Get() is {} current)
 		{
 			_destination.Execute(current);
 		}

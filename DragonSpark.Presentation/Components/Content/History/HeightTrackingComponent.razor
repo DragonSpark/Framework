@@ -1,4 +1,6 @@
-﻿@implements IDisposable
+﻿@using DragonSpark.Compose
+@using DragonSpark.Presentation.Environment.Browser.Document
+@implements IAsyncDisposable
 
 @inject IJSRuntime Runtime
 @inject NavigationManager Navigation
@@ -35,13 +37,26 @@
 	{
 		if (firstRender)
 		{
-			_module = await Runtime.InvokeAsync<IJSObjectReference>("import", $"./{Assets.Path<HeightTrackingComponent>()}");
+			var reference = await Runtime.InvokeAsync<IJSObjectReference>("import", $"./{Assets.Path<HeightTrackingComponent>()}");
+			_module = new PolicyAwareJSObjectReference(reference);
 		}
 	}
 
-	public void Dispose()
+	public async ValueTask DisposeAsync()
 	{
-		_registration?.Dispose();
-		_module?.DisposeAsync();
+		if (_registration is IAsyncDisposable disposable)
+		{
+			await disposable.DisposeAsync().Off();
+		}
+		else
+		{
+			_registration?.Dispose();
+		}
+
+		if (_module is not null)
+		{
+			await _module.DisposeAsync().Off();
+		}
 	}
+
 }
