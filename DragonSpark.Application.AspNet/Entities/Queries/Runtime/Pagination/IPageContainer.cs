@@ -1,4 +1,5 @@
-﻿using DragonSpark.Model.Operations;
+﻿using DragonSpark.Application.Diagnostics;
+using DragonSpark.Model.Operations;
 using DragonSpark.Model.Selection.Alterations;
 
 namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;

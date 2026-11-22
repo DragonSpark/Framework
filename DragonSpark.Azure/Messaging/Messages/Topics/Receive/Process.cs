@@ -1,4 +1,4 @@
-﻿using DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
+﻿using DragonSpark.Application.Diagnostics;
 using DragonSpark.Compose;
 using DragonSpark.Model.Operations;
 using DragonSpark.Model.Operations.Stop;
