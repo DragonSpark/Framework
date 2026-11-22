@@ -1,5 +1,5 @@
 ﻿using DragonSpark.Model.Results;
 
-namespace DragonSpark.Application.AspNet.Entities.Queries.Runtime.Pagination;
+namespace DragonSpark.Application.Diagnostics;
 
 public interface IReportedTypeAware : IResult<Type>;
