@@ -11,7 +11,7 @@ public class PollingBackgroundService : BackgroundService
 	readonly TimeSpan   _pollingInterval;
 
 	protected PollingBackgroundService(IStopAware previous, TimeSpan pollingInterval)
-		: this(new Always(previous), pollingInterval) {}
+		: this(new AlwaysAdapter(previous), pollingInterval) {}
 
 	protected PollingBackgroundService(IDepending action, TimeSpan pollingInterval)
 	{
