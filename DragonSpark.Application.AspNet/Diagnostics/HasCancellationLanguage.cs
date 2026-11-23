@@ -8,8 +8,8 @@ sealed class HasCancellationLanguage : ICondition<string>
 	public static HasCancellationLanguage Default { get; } = new();
 
 	HasCancellationLanguage()
-		: this("Operation cancelled by user.", "The operation was canceled", "TaskCanceledException",
-		       "OperationCanceledException") {}
+		: this("Operation cancelled by user.", "A task was canceled.", "The operation was canceled",
+		       "TaskCanceledException", "OperationCanceledException") {}
 
 	public HasCancellationLanguage(params string[] messages)
 		: this(SearchValues.Create(messages, StringComparison.OrdinalIgnoreCase)) {}
