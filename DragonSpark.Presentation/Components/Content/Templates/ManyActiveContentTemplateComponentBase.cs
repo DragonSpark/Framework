@@ -5,5 +5,8 @@ namespace DragonSpark.Presentation.Components.Content.Templates;
 public class ManyActiveContentTemplateComponentBase<T> : ActiveContentTemplateComponentBase<T>
 {
 	[Parameter]
+	public required bool EnableEmptyElements { get; set; } = true;
+
+	[Parameter]
 	public virtual RenderFragment EmptyElementsTemplate { get; set; } = DefaultEmptySequenceTemplate.Default;
 }
