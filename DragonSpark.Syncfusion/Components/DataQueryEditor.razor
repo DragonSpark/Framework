@@ -31,6 +31,7 @@
             Editing="@Editing"
             Created="@(Start.A.Callback<T>(OnCreate).Handle(Exceptions, ReportedType).UpdateActivity(receiver))"
             Updated="@(Start.A.Callback<Updated<T>>(OnUpdate).Handle(Exceptions, ReportedType).UpdateActivity(receiver))"
+			EnableEmptyElements="false"
             EmptyElementsTemplate="@EmptyElementsTemplate"
             NotFoundTemplate="@NotFoundTemplate"
             ExceptionTemplate="@ExceptionTemplate"
