@@ -3,7 +3,7 @@
 @inherits ConfirmResultComponent
 
 <ConfirmResult @ref="_result"
-	EnableFocus="@EnableFocus"
+	EnableFocus="@EnableFocus" EnablePrimary="@EnablePrimary"
 	PrimaryClass="@PrimaryClass" SecondaryClass="@SecondaryClass"
 	PrimaryText="@PrimaryText" SecondaryText="@SecondaryText"
 	ContentClass="@ContentClass" Confirmation="@Confirmation"
@@ -11,9 +11,6 @@
 
 @code {
 	ConfirmResult _result = null!;
-
-	[Parameter]
-	public bool EnableFocus { get; set; } = true;
 
 	[Parameter]
 	public required ICommand<ConfirmResult?> Assignment { get; set; }

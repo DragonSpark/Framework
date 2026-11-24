@@ -7,7 +7,7 @@
 @inject DialogService Dialogs
 @inject IExceptions Exceptions
 
-<DragonSpark.Presentation.Components.Dialogs.DefaultEscapeContainer Escaped="@(() => Cancel.Invoke(null!))" EnableFocus="@EnableFocus">
+<DragonSpark.Presentation.Components.Dialogs.DefaultEscapeContainer Escaped="@(() => Cancel.Invoke(null))" EnableFocus="@EnableFocus">
 	<ActivityReceiverContainer Context="receiver">
 		<RelayValueComponent T="IActivityReceiver" Input="@receiver" Changed="@OnChanged" />
 		<div class="card">
