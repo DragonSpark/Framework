@@ -21,6 +21,12 @@ public class ConfirmResultComponent : ComponentBase
 	public string ContentClass { get; set; } = "ds-dialog-content card-body";
 
 	[Parameter]
+	public required bool EnablePrimary { get; set; } = true;
+
+	[Parameter]
+	public bool EnableFocus { get; set; } = true;
+
+	[Parameter]
 	public Func<ValueTask<bool>> Confirmation { get; set; } = () => true.ToOperation();
 
 	[Parameter]
