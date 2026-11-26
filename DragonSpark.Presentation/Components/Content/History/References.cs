@@ -2,7 +2,7 @@
 
 namespace DragonSpark.Presentation.Components.Content.History;
 
-sealed class References : StandardTable<string, StandardTable<Type, List<object>>>
+sealed class References : StandardTable<string, StandardTable<Type, List<object?>>>
 {
-	public References() : base(_ => new(_ => [])) {}
+	public References(IDictionary<string, StandardTable<Type, List<object?>>> store) : base(store, _ => new(_ => [])) {}
 }

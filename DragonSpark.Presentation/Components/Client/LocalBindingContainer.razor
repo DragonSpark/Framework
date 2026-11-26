@@ -1,12 +1,10 @@
 ﻿@typeparam T
 
 @using DragonSpark.Presentation.Components.Interaction
-@using DragonSpark.Model.Selection.Conditions
-@using DragonSpark.Compose
 @inherits ComponentStateComponentBase
 
 <LocalStateComponent T="T" Owner="Owner" ProvidedKey="@ProvidedKey" Qualifier="@Qualifier">
-    <ClientValueBindingComponent T="T" Value="@Value" AssignedValue="@AssignedValue" Store="context" ChildContent="@ChildContent" Loaded="@Loaded" Allowed="@Allowed" ValueChanged="@OnChange" Comparer="@Comparer" />
+    <ClientValueBindingComponent T="T" Value="@Value" AssignedValue="@AssignedValue" Store="context" ChildContent="@ChildContent" ValueChanged="@OnChange" Comparer="@Comparer" />
 </LocalStateComponent>
 
 @code {
@@ -20,13 +18,7 @@
     public EventCallback<T> ValueChanged { get; set; }
 
     [Parameter]
-    public EventCallback<Binding<T>> Loaded { get; set; }
-
-    [Parameter]
     public RenderFragment<Binding<T>> ChildContent { get; set; } = null!;
-
-    [Parameter]
-    public ICondition<T> Allowed { get; set; } = Is.Always<T>().Out();
 
     [Parameter]
     public IEqualityComparer<T> Comparer { get; set; } = EqualityComparer<T>.Default;

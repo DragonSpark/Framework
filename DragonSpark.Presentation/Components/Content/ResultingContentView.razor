@@ -6,7 +6,8 @@
 @inherits Templates.ActiveContentTemplateComponentBase<T>
 
 @inject RenderStateStore Render
-@inject RecentContentTracker Recent
+
+<RecentContentComponent @bind-Input="@_last" @bind-Input:after="Assign"></RecentContentComponent>
 
 @if (_exception is {} exception)
 {

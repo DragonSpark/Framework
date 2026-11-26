@@ -1,12 +1,14 @@
 ﻿@using DragonSpark.Compose
 @using DragonSpark.Presentation.Environment.Browser.Document
+@using Microsoft.Extensions.Logging
 @implements IAsyncDisposable
 
+@inject ILogger<HeightTrackingComponent> Logger
 @inject IJSRuntime Runtime
 @inject NavigationManager Navigation
 @inject RecentHeightTracker HeightTracker
 
-<div @ref="_containerRef" class="application-content-wrapper" style="@_style">
+<div @ref="_containerRef" class="application-content-wrapper">
 	@ChildContent
 </div>
 
@@ -14,20 +16,34 @@
 	ElementReference    _containerRef;
 	IDisposable?        _registration;
 	IJSObjectReference? _module;
-	string?             _style;
 
 	[Parameter]
 	public required RenderFragment? ChildContent { get; set; }
 	
 	protected override void OnInitialized()
 	{
-		_registration = Navigation.RegisterLocationChangingHandler(OnLocationChanging);
-		_style        = HeightTracker.TryPop(Navigation.Uri, out var entry) && entry is {} height and > 0 ? $"min-height: {height}px;" : string.Empty;
+		_registration              =  Navigation.RegisterLocationChangingHandler(OnLocationChanging);
+		Navigation.LocationChanged += NavigationOnLocationChanged;
+	}
+
+	async void NavigationOnLocationChanged(object? sender, LocationChangedEventArgs e)
+	{
+		try
+		{
+			if (_module is {} m && HeightTracker.TryPop(Navigation.Uri, out var entry) && entry is { } height and > 0)
+			{
+				await m.InvokeVoidAsync("setElementMinHeight", _containerRef, height).Off();
+			}
+		}
+		catch (Exception error)
+		{
+			Logger.LogWarning(error, "A problem was encountered while setting the minimal height of component");
+		}
 	}
 
 	async ValueTask OnLocationChanging(LocationChangingContext context)
 	{
-		if (_module is {} m && await m.InvokeAsync<double>("getElementHeight", _containerRef) is var height and > 0)
+		if (_module is {} m && await m.InvokeAsync<double>("getElementHeight", _containerRef).Off() is var height and > 0)
 		{
 			HeightTracker.Execute(new(Navigation.Uri, height));
 		}
@@ -44,6 +60,8 @@
 
 	public async ValueTask DisposeAsync()
 	{
+		Navigation.LocationChanged -= NavigationOnLocationChanged;
+
 		if (_registration is IAsyncDisposable disposable)
 		{
 			await disposable.DisposeAsync().Off();
@@ -58,5 +76,4 @@
 			await _module.DisposeAsync().Off();
 		}
 	}
-
 }

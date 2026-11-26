@@ -3,44 +3,70 @@
 @using DragonSpark.Compose
 @using DragonSpark.Model.Results
 @using DragonSpark.Presentation.Components.Content.History
+@using MatBlazor
 @inherits StateViewBase<T>
 
-<RecentContentComponent T="T" Input="@_content" ChildContent="@ChildContent" LoadingTemplate="@LoadingTemplate" />
+<RecentContentComponent @bind-Input="@_content" />
+
+@if (_content is {} content)
+{
+	<VersionedComponent Version="@_version">@ChildContent(content)</VersionedComponent>
+}
+else
+{
+	@LoadingTemplate
+}
 
 @code
 {
-    T? _content;
+	void ForceRefresh()
+	{
+		_version++;
+	}
 
-    [Parameter]
-    public EventCallback<IMutable<T?>> Ready { get; set; }
+	uint _version;
+	T?   _content;
 
-    [Parameter]
-    public Switch? Refresh { get; set; }
+	[Parameter]
+	public EventCallback<IMutable<T?>> Ready { get; set; }
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender || Refresh?.Down() == true)
-        {
-            await RefreshContent().On();
-            StateHasChanged();
-        }
-    }
+	[Parameter]
+	public Switch? Refresh { get; set; }
 
-    async Task RefreshContent()
-    {
-        var current = await Definition.On();
-        _content = await ComposeContent(current.Success ? current.Value : New.Get()).Off();
-    }
+	[Parameter]
+	public IEqualityComparer<T> Comparer { get; set; } = EqualityComparer<T>.Default;
 
-    async Task<T?> ComposeContent(T? parameter)
-    {
-        if (Ready.HasDelegate)
-        {
-            var store = new Variable<T>(parameter);
-            await Ready.Off(store);
-            return store.Get();
-        }
+	protected override async Task OnAfterRenderAsync(bool firstRender)
+	{
+		if ((firstRender || Refresh?.Down() == true) && await RefreshContent().On())
+		{
+			_version++;
+			StateHasChanged();
+		}
+	}
 
-        return parameter;
-    }
+	async Task<bool> RefreshContent()
+	{
+		var previous = _content;
+		var current  = await Definition.On();
+		var content = await ComposeContent(current.Success ? current.Value : New.Get()).Off();
+		var result = !Comparer.Equals(previous, content);
+		if (result)
+		{
+			_content = content;
+		}
+		return result;
+	}
+
+	async Task<T?> ComposeContent(T? parameter)
+	{
+		if (Ready.HasDelegate)
+		{
+			var store = new Variable<T>(parameter);
+			await Ready.Off(store);
+			return store.Get();
+		}
+
+		return parameter;
+	}
 }

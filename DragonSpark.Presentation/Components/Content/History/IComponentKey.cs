@@ -1,5 +1,8 @@
-﻿using DragonSpark.Model.Selection;
+﻿using DragonSpark.Model.Commands;
+using DragonSpark.Model.Selection;
 
 namespace DragonSpark.Presentation.Components.Content.History;
 
-public interface IComponentKey : ISelect<ComponentKeyInput, int>;
+public interface IComponentKey : ISelect<ComponentKeyInput, ComponentKeyHash>,
+                                 ISelect<ComponentEntryKey, int>,
+                                 ICommand<ComponentEntryKey>;

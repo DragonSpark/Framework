@@ -13,8 +13,8 @@
 {
 	IClientVariable<T> _store = null!;
 
-	[Parameter]
-	public ProtectedBrowserStorage Storage { get; set; } = null!;
+	[Parameter, EditorRequired]
+	public required ProtectedBrowserStorage Storage { get; set; }
 
 	protected override void OnInitialized()
 	{

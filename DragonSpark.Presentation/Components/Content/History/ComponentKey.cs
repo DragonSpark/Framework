@@ -13,21 +13,17 @@ sealed class ComponentKey : IComponentKey
 		_comparer = comparer;
 	}
 
-	public int Get(ComponentKeyInput parameter)
+	public ComponentKeyHash Get(ComponentKeyInput parameter)
 	{
-		var (subject, scope) = parameter;
-		var hash = new HashCode();
-		if (scope is string s)
-		{
-			hash.Add(s, _comparer);
-		}
-		else if (scope is not null)
-		{
-			hash.Add(scope);
-		}
-
-		hash.Add(_paths.Get(subject), _comparer);
-
-		return hash.ToHashCode();
+		var (scope, key) = _paths.Get(parameter);
+		var hash = _comparer.GetHashCode(key);
+		return new(scope, hash);
 	}
+
+	public void Execute(ComponentEntryKey parameter)
+	{
+		_paths.Execute(parameter);
+	}
+
+	public int Get(ComponentEntryKey parameter) => _comparer.GetHashCode(_paths.Get(parameter));
 }

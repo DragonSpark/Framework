@@ -4,7 +4,6 @@ using DragonSpark.Model;
 using DragonSpark.Model.Operations.Results;
 using DragonSpark.Model.Results;
 using DragonSpark.Model.Selection.Conditions;
-using DragonSpark.Presentation.Components.Content.History;
 using DragonSpark.Presentation.Components.Content.Rendering;
 using Microsoft.AspNetCore.Components;
 using Radzen;
@@ -13,21 +12,17 @@ namespace DragonSpark.Presentation.Components.Content;
 
 partial class ResultingContentView<T> : ICompleted<T?>
 {
-	readonly Switch _render = true, _first = false;
-	RenderFragment? _fragment;
-	Worker?         _subject;
-	Workers<T?>     _workers = null!;
-	Exception?      _exception;
+	readonly Switch   _render = true, _first = false;
+	RenderFragment?   _fragment;
+	Worker?           _subject;
+	Workers<T?>       _workers = null!;
+	Exception?        _exception;
+	T?                _last;
 
 	protected override void OnInitialized()
 	{
 		_workers = new Workers<T?>(this);
 		base.OnInitialized();
-
-		if (Recent.TryPop(new(this, Scope?.Scope), out var entry) && entry is T cachedEntry)
-		{
-			_fragment = CreateFragment(cachedEntry);
-		}
 	}
 
 	[Parameter, EditorRequired]
@@ -40,7 +35,6 @@ partial class ResultingContentView<T> : ICompleted<T?>
 	[Parameter] public EventCallback<T> Rendered { get; set; }
 	[Parameter] public EventCallback<T> Refreshed { get; set; }
 	[Parameter] public bool ForceRender { get; set; }
-	[CascadingParameter] ContentScope? Scope { get; set; }
 
 	public override Task SetParametersAsync(ParameterView parameters)
 	{
@@ -87,21 +81,19 @@ partial class ResultingContentView<T> : ICompleted<T?>
 		_exception = null;
 		if (parameter is { IsCompletedSuccessfully: true })
 		{
-			var result = parameter.Result;
-			if (result is not null)
+			_last = parameter.Result;
+			if (_last is not null)
 			{
-				await Rendering.On(result);
+				await Rendering.On(_last);
 			}
-			
-			Recent.Execute(new(this, Scope?.Scope), result);
-			
-			_fragment = CreateFragment(result);
+
+			Assign();
 			StateHasChanged();
 
-			if (result is not null)
+			if (_last is not null)
 			{
 				var callback = _first.Up() ? Rendered : Refreshed;
-				await callback.InvokeAsync(result).Off();
+				await callback.InvokeAsync(_last).Off();
 			}
 		}
 		else if (parameter is { IsFaulted: true })
@@ -115,4 +107,9 @@ partial class ResultingContentView<T> : ICompleted<T?>
 		=> ContentTemplate?.Invoke(result) ?? (result is not null ? ChildContent(result) : NotFoundTemplate);
 
 	public bool Get(IResulting<T?> parameter) => parameter == Content;
+
+	void Assign()
+	{
+		_fragment = CreateFragment(_last);
+	}
 }

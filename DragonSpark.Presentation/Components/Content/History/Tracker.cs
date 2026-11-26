@@ -33,7 +33,7 @@ public class Tracker<TIn, TKey, TOut> : ITracker<TIn, TOut> where TKey : notnull
 		_time    = time;
 	}
 
-	public void Execute(Pair<TIn, TOut?> parameter)
+	public virtual void Execute(Pair<TIn, TOut?> parameter)
 	{
 		var (component, value) = parameter;
 		var key  = _key(component);

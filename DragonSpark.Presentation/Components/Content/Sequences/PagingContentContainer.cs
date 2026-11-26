@@ -12,7 +12,8 @@ partial class PagingContentContainer<T> : IPageContainer<T>, IDisposable
 	readonly Variable<QueryRenderState> _state = new();
 	Exception?                          _error;
 	IPages<T>?                          _subject;
-	PageStatus<T>?                       _last;
+	PageStatus<T>?                      _last;
+	ComponentEntryKey?                  _key;
 
 	[Parameter]
 	public EventCallback<QueryRenderState> Changed { get; set; }
@@ -29,16 +30,16 @@ partial class PagingContentContainer<T> : IPageContainer<T>, IDisposable
 		{
 			_subject = Paging.Get(new(this, Content.Verify(), Compose));
 			_error   = null;
-			if (Recent.TryPop(new(this, Scope?.Scope), out var entry) && entry is PageStatus<T> status)
+			if (Recent.TryPop(new(this, Scope?.Scope), out var entry) && entry.Content is {} content)
 			{
-				await Get(status).Off();
+				await Get(content).Off();
 			}
 			else
 			{
 				_state.Execute(QueryRenderState.Loading);
 				await Changed.Off(_state);
 			}
-			
+			_key = entry.Key;
 		}
 	}
 	
@@ -75,7 +76,8 @@ partial class PagingContentContainer<T> : IPageContainer<T>, IDisposable
 	{
 		_error = parameter;
 		_last  = null;
-		Recent.Execute(new(this, Scope?.Scope), null);
+		Assign(null);
+		
 		await Update(null).On();
 		if (Parent is not null)
 		{
@@ -83,8 +85,16 @@ partial class PagingContentContainer<T> : IPageContainer<T>, IDisposable
 		}
 	}
 
+	void Assign(PageStatus<T>? parameter)
+	{
+		if (_key is {} key)
+		{
+			Recent.Execute(key, parameter);	
+		}
+	}
+
 	public void Dispose()
 	{
-		Recent.Execute(new(this, Scope?.Scope), _last);
+		Assign(_last);
 	}
 }

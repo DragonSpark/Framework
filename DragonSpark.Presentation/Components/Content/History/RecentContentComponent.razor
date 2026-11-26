@@ -1,18 +1,32 @@
-﻿@inherits RecentContentComponentBase<T>
+﻿@typeparam T
 
-@typeparam T
+@using DragonSpark.Compose
+@implements IDisposable
 
-@if (Input is {} input)
-{
-	@ChildContent(input)
-}
-else if (_input is {} preview)
-{
-	@ChildContent(preview)
-}
-else
-{
-	@LoadingTemplate
-}
+@inject RecentContentTracker<T> Recent
 
-@code {}
+@code {
+	ComponentEntryKey _key;
+
+	protected override Task OnInitializedAsync()
+	{
+		var pop = Recent.TryPop(new(this, Scope?.Scope), out var entry);
+		_key = entry.Key;
+		return pop ? InputChanged.Invoke(Input = entry.Content) : base.OnInitializedAsync();
+	}
+
+	[CascadingParameter] ContentScope? Scope { get; set; }
+
+	[Parameter]
+	public required T? Input { get; set; }
+
+	[Parameter]
+	public EventCallback<T?> InputChanged { get; set; }
+
+	public void Dispose()
+	{
+		Recent.Execute(_key, Input);
+	}
+
+
+}

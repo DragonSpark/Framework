@@ -4,5 +4,5 @@ sealed class HistoryCount : DragonSpark.Model.Results.Instance<byte>
 {
 	public static HistoryCount Default { get; } = new();
 
-	HistoryCount() : base(32) {}
+	HistoryCount() : base(8) {}
 }

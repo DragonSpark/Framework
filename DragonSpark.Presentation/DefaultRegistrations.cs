@@ -69,8 +69,10 @@ sealed class DefaultRegistrations : ICommand<IServiceCollection>
 		         //
 		         .Then.Start<ScrollToFirstValidationMessage>()
 		         .And<ResourceExistsValidation>()
-		         .And<RecentContentTracker>()
 		         .And<RecentHeightTracker>()
+		         .Scoped()
+		         .Then.Start<RecentContentTracker<object>>()
+		         .Generic()
 		         .Scoped()
 		         //
 		         .Then.AddScoped(typeof(IPublisher<>), typeof(Publisher<>))
