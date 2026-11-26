@@ -3,7 +3,7 @@
 @using DragonSpark.Compose
 @using DragonSpark.Model.Results
 @using DragonSpark.Presentation.Components.Content.History
-@using MatBlazor
+
 @inherits StateViewBase<T>
 
 <RecentContentComponent @bind-Input="@_content" />
@@ -19,11 +19,6 @@ else
 
 @code
 {
-	void ForceRefresh()
-	{
-		_version++;
-	}
-
 	uint _version;
 	T?   _content;
 

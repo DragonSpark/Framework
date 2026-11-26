@@ -4,7 +4,8 @@
 @inherits PagingContainerBase<T>
 
 @inject IPaging<T> Paging
-@inject RecentContentTracker<PageStatus<T>?> Recent
+
+<RecentContentComponent @bind-Input="@_last" @bind-Input:after="Assign"></RecentContentComponent>
 
 <ContentView TValue="IPages<T>" Content="@_subject" NotFoundTemplate="@NotFoundTemplate">
 	@HeaderTemplate?.Invoke(new(_error, _state))

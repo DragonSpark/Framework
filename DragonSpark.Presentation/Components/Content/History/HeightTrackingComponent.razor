@@ -32,7 +32,8 @@
 		{
 			if (_module is {} m && HeightTracker.TryPop(Navigation.Uri, out var entry) && entry is { } height and > 0)
 			{
-				await m.InvokeVoidAsync("setElementMinHeight", _containerRef, height).Off();
+				await m.InvokeVoidAsync("setElementMinHeight", _containerRef, height).On();
+				StateHasChanged();
 			}
 		}
 		catch (Exception error)

@@ -7,14 +7,13 @@ using Radzen;
 
 namespace DragonSpark.Presentation.Components.Content.Sequences;
 
-partial class PagingContentContainer<T> : IPageContainer<T>, IDisposable
+partial class PagingContentContainer<T> : IPageContainer<T>
 {
 	readonly Variable<QueryRenderState> _state = new();
 	Exception?                          _error;
 	IPages<T>?                          _subject;
 	PageStatus<T>?                      _last;
-	ComponentEntryKey?                  _key;
-
+	
 	[Parameter]
 	public EventCallback<QueryRenderState> Changed { get; set; }
 
@@ -30,16 +29,8 @@ partial class PagingContentContainer<T> : IPageContainer<T>, IDisposable
 		{
 			_subject = Paging.Get(new(this, Content.Verify(), Compose));
 			_error   = null;
-			if (Recent.TryPop(new(this, Scope?.Scope), out var entry) && entry.Content is {} content)
-			{
-				await Get(content).Off();
-			}
-			else
-			{
-				_state.Execute(QueryRenderState.Loading);
-				await Changed.Off(_state);
-			}
-			_key = entry.Key;
+			_state.Execute(QueryRenderState.Loading);
+			await Changed.Off(_state);
 		}
 	}
 	
@@ -76,7 +67,6 @@ partial class PagingContentContainer<T> : IPageContainer<T>, IDisposable
 	{
 		_error = parameter;
 		_last  = null;
-		Assign(null);
 		
 		await Update(null).On();
 		if (Parent is not null)
@@ -85,16 +75,5 @@ partial class PagingContentContainer<T> : IPageContainer<T>, IDisposable
 		}
 	}
 
-	void Assign(PageStatus<T>? parameter)
-	{
-		if (_key is {} key)
-		{
-			Recent.Execute(key, parameter);	
-		}
-	}
-
-	public void Dispose()
-	{
-		Assign(_last);
-	}
+	Task Assign() => _last is {} last ? Get(last).AsTask() : Task.CompletedTask;
 }
