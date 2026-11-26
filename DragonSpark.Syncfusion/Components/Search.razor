@@ -4,57 +4,60 @@
 @using Syncfusion.Blazor.Inputs
 @using System.Threading
 
-<SfTextBox @ref="_subject" Created="@OnCreated" Value="@_value" Placeholder="@Placeholder" Width="250px" CssClass="e-corner" Input="@OnChanged" FloatLabelType="@FloatLabelType.Never" ShowClearButton="true"/>
+<SfTextBox @ref="_subject" Created="@OnCreated" Value="@_value" Placeholder="@Placeholder" Width="250px" CssClass="e-corner" Input="@OnChanged" FloatLabelType="@FloatLabelType.Never" ShowClearButton="true" />
 
 @code {
-    string                  _value    = string.Empty;
-    CancellationTokenSource _source   = new();
-    Func<Task, Task>        _start    = null!;
-    Func<Task>              _continue = null!;
-    SfTextBox               _subject  = null!;
+	string                  _value    = string.Empty;
+	CancellationTokenSource _source   = new();
+	Func<Task, Task>        _start    = null!;
+	Func<Task>              _continue = null!;
+	SfTextBox               _subject  = null!;
 
-    [Parameter]
-    public string Input { get; set; } = string.Empty;
+	[Parameter]
+	public string Input { get; set; } = string.Empty;
 
-    [Parameter]
-    public string Placeholder { get; set; } = "Enter search term";
+	[Parameter]
+	public string Placeholder { get; set; } = "Enter search term";
 
-    [Parameter]
-    public EventCallback<string> InputChanged { get; set; }
+	[Parameter]
+	public EventCallback<string> InputChanged { get; set; }
 
-    [Parameter]
-    public TimeSpan Delay { get; set; } = TimeSpan.FromMilliseconds(750);
+	[Parameter]
+	public TimeSpan Delay { get; set; } = TimeSpan.FromMilliseconds(750);
 
-    protected override void OnInitialized()
-    {
-        _start    = StartContinue;
-        _continue = Continue;
-        base.OnInitialized();
-    }
+	[Parameter, EditorRequired]
+	public required DateTimeOffset Tag { get; set; }
+	
+	protected override void OnInitialized()
+	{
+		_start    = StartContinue;
+		_continue = Continue;
+		base.OnInitialized();
+	}
 
-    public override async Task SetParametersAsync(ParameterView parameters)
-    {
-        var changed = parameters.DidParameterChange(nameof(Input), Input);
-        await base.SetParametersAsync(parameters).Off();
-        if (changed)
-        {
-            _value = Input;
-        }
-    }
+	public override async Task SetParametersAsync(ParameterView parameters)
+	{
+		var changed = parameters.DidParameterChange(nameof(Input), Input);
+		await base.SetParametersAsync(parameters).Off();
+		if (changed)
+		{
+			_value = Input;
+		}
+	}
 
-    Task OnCreated() => _subject.AddIconAsync("prepend", "e-upload-picture");
+	Task OnCreated() => _subject.AddIconAsync("prepend", "e-upload-picture");
 
-    Task OnChanged(InputEventArgs parameter)
-    {
-        var value = parameter.Value.Account();
-        _value = value ?? string.Empty;
-        _source.Cancel();
-        _source = new();
-        return Task.Delay(value is null ? TimeSpan.Zero : Delay, _source.Token).ContinueWith(_start, _source.Token);
-    }
+	Task OnChanged(InputEventArgs parameter)
+	{
+		var value = parameter.Value.Account();
+		_value = value ?? string.Empty;
+		_source.Cancel();
+		_source = new();
+		return Task.Delay(value is null ? TimeSpan.Zero : Delay, _source.Token).ContinueWith(_start, _source.Token);
+	}
 
-    Task StartContinue(Task _) => InvokeAsync(_continue);
+	Task StartContinue(Task _) => InvokeAsync(_continue);
 
-    Task Continue() => InputChanged.Invoke(Input = _value);
+	Task Continue() => InputChanged.Invoke(Input = _value);
 
 }

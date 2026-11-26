@@ -1,9 +1,9 @@
 ﻿@ChildContent
 
 @code {
-	[Parameter]
+	[Parameter, EditorRequired]
 	public required uint Version { get; set; }
 
-	[Parameter]
+	[Parameter, EditorRequired]
 	public required RenderFragment ChildContent { get; set; }
 }
