@@ -8,6 +8,6 @@ public sealed class DefaultNonPlatformEndpoints : Instances<string>
 
 	DefaultNonPlatformEndpoints()
 		: base("/wp-", "/.env", "/.git", "/.svn", "/.hg", "/.aws", "/.DS_Store", "/xml", "/phpmyadmin",
-		       "/cgi-bin", "/actuator", "/vendor", "/config", "/boaform", "/HNAP1", "/yii", "/zend",
+		       "/cgi-bin", "/actuator", "/vendor/", "/config/", "/boaform", "/HNAP1", "/yii", "/zend/",
 		       "/_rsc", "/__rsc", "/__nextjs_action", "/_next/image", "/_next", "/_middleware", "/.action") {}
 }
