@@ -2,6 +2,7 @@
 @using DragonSpark.Model.Operations.Results.Stop
 @using DragonSpark.Model.Results
 @using DragonSpark.Model.Selection.Conditions
+@using DragonSpark.Presentation.Components.Content.History
 @using DragonSpark.Presentation.Components.Content.Templates
 
 @typeparam T where T : class
@@ -10,11 +11,13 @@
 
 @inject ProblemLoadingState ProblemLoading
 
-@if (_error.Get() is not null)
+<RecentContentComponent T="T" @bind-Input="@_model" />
+
+@if (_error.Get() is {} error)
 {
-	@ExceptionTemplate(_error.Get().Verify())
+	@ExceptionTemplate(error)
 }
-else if (_model is not null)
+else if (_model is {} model)
 {
 	@ChildContent(_model)
 }
@@ -24,7 +27,7 @@ else
 }
 
 @code {
-	readonly IMutable<Exception?> _error = new Variable<Exception>();
+	readonly Variable<Exception?> _error = new();
 	T?                            _model;
 	EventCallback                 _load;
 

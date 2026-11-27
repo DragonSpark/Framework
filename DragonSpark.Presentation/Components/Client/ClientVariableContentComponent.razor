@@ -1,5 +1,6 @@
 ﻿@using DragonSpark.Compose
 @using DragonSpark.Model.Results
+@using DragonSpark.Presentation.Components.Content.History
 @using DragonSpark.Presentation.Components.Content.Templates
 @using DragonSpark.Presentation.Environment.Browser
 @using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
@@ -8,13 +9,15 @@
 
 @inherits Components.ComponentBase
 
+<RecentContentComponent T="ProtectedBrowserStorageResult<T>?" @bind-Input="@_input" @bind-Input:after="OnAssigned" />
+
 @if (_input is null)
 {
 	@LoadingTemplate
 }
-else if (_input.Value.Success)
+else if (_input is { Success: true } input)
 {
-	@ChildContent(_input.Value.Value)
+	@ChildContent(input.Value)
 }
 else
 {
@@ -22,9 +25,8 @@ else
 }
 
 @code {
-
 	ProtectedBrowserStorageResult<T>? _input;
-
+	
 	[Parameter]
 	public required IClientVariable<T> Input { get; set; }
 
@@ -55,15 +57,20 @@ else
 		{
 			try
 			{
-				_input = await Input.On();
-				if (Ready.HasDelegate)
+				var input = await Input.On();
+				if (_input is not {} current || input.Success != current.Success
+				                             || !EqualityComparer<T?>.Default.Equals(input.Value, current.Value))
 				{
-					await Ready.Off(_input.Value);
-				}
-				else
-				{
-					StateHasChanged();
-				}
+					_input = input;
+					if (Ready.HasDelegate)
+					{
+						await Ready.Off(input);
+					}
+					else
+					{
+						StateHasChanged();
+					}	
+				}				
 			}
 			catch (Exception e) when (e is not OperationCanceledException)
 			{
@@ -71,4 +78,7 @@ else
 			}
 		}
 	}
+
+	Task OnAssigned() => _input is {} input ? Ready.Invoke(input) : Task.CompletedTask;
+
 }

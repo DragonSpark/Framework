@@ -61,7 +61,7 @@ sealed class ReferencePaths : ISelect<ComponentKeyInput, ReferencePath>, IFormat
 
 	public void Execute(None parameter)
 	{
-		var address = _navigation.Uri;
+		var address = $"{_navigation.Uri}#";
 		foreach (var key in _keys)
 		{
 			if (key.StartsWith(address, StringComparison.Ordinal))
