@@ -1,19 +1,15 @@
-﻿@using DragonSpark.Model.Selection
-@using DragonSpark.Compose
-@typeparam TValue
+﻿@typeparam TValue
 
 @inherits Templates.ActiveContentTemplateComponentBase<TValue>
 <DragonSpark.Presentation.Components.Content.ApplicationPrincipalAwareContentView ForceRender="@ForceRender">
 	<ActivityReceiverContainer Action="@Action" CssClass="@CssClass">
-		<ActivityContainerContent TValue="TValue" Input="@_contents" ForceRender="@ForceRender" ChildContent="@ChildContent" LoadingTemplate="@LoadingTemplate" ContentTemplate="@ContentTemplate"
+		<ActivityContainerContent TValue="TValue" Input="@Content" ForceRender="@ForceRender" ChildContent="@ChildContent" LoadingTemplate="@LoadingTemplate" ContentTemplate="@ContentTemplate"
 		                          NotFoundTemplate="@NotFoundTemplate" ExceptionTemplate="@ExceptionTemplate" Rendered="@Rendered" Refreshed="@Refreshed"/>
 	</ActivityReceiverContainer>
 </DragonSpark.Presentation.Components.Content.ApplicationPrincipalAwareContentView>
 
 @code
 {
-	ISelect<IActivityReceiver, IActiveContent<TValue>> _contents = null!;
-
 	[Parameter]
 	public required ActivityReceiverContextAction Action { get; set; } = ActivityReceiverContextAction.New;
 
@@ -32,13 +28,4 @@
 	[Parameter]
 	public EventCallback<TValue> Refreshed { get; set; }
 
-	public override async Task SetParametersAsync(ParameterView parameters)
-	{
-		var changed = parameters.DidParameterChange(nameof(Content), Content);
-		await base.SetParametersAsync(parameters).Off();
-		if (changed)
-		{
-			_contents = new ActivityContents<TValue>(Content).Then().Stores().New();
-		}
-	}
 }
