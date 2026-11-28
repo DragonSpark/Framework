@@ -9,9 +9,8 @@ namespace DragonSpark.Presentation.Components;
 
 public class DataList<T> : RadzenDataList<T>, IRefreshAware
 {
-	Switch? _ready;
-	Switch  _update = new (true);
-
+	readonly Switch       _update = true;
+	Switch?               _ready;
 	IgnoreEntryOperation? _reload;
 
 	protected override void OnInitialized()
@@ -47,7 +46,7 @@ public class DataList<T> : RadzenDataList<T>, IRefreshAware
 		}
 	}
 
-	public override Task Reload() => _reload?.Get().AsTask() ?? Task.CompletedTask;
+	public override Task Reload() => _reload?.Allocate() ?? Task.CompletedTask;
 
 	async ValueTask ReloadBody()
 	{
@@ -100,6 +99,7 @@ public class DataList<T> : RadzenDataList<T>, IRefreshAware
 	public override void Dispose()
 	{
 		_reload?.Dispose();
+		_reload   = null;
 		Container = null;
 		base.Dispose();
 	}
