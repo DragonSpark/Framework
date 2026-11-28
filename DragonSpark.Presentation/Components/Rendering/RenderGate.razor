@@ -2,6 +2,8 @@
 @using DragonSpark.Model.Results
 @using System.Timers
 
+@implements IDisposable
+
 @ChildContent
 
 @code {
@@ -38,6 +40,12 @@
         _timer.Stop();
         _timer.Start();
         return false;
+    }
+
+    public void Dispose()
+    {
+	    _timer.Elapsed -= OnTick;
+	    _timer.Dispose();
     }
 
 }
