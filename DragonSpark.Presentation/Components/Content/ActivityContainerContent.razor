@@ -1,26 +1,30 @@
 ﻿@inherits Templates.ActiveContentTemplateComponentBase<TValue>
 
-@using DragonSpark.Model.Selection
-@using DragonSpark.Compose
-
 @typeparam TValue
 
-<ResultingContentView T="TValue" Content="@_content" UpdateMonitor="@_content.Condition"
-					  ForceRender="@ForceRender"
-					  ChildContent="@ChildContent"
-					  LoadingTemplate="@LoadingTemplate"
-					  NotFoundTemplate="@NotFoundTemplate"
-					  ExceptionTemplate="@ExceptionTemplate"
-					  ContentTemplate="@ContentTemplate"
-					  Rendered="@Rendered"
-					  Refreshed="@Refreshed"
-/>
+@if (_content is not null)
+{
+	<ResultingContentView T="TValue" Content="@_content" UpdateMonitor="@_content.Condition"
+	                      ForceRender="@ForceRender"
+	                      ChildContent="@ChildContent"
+	                      LoadingTemplate="@LoadingTemplate"
+	                      NotFoundTemplate="@NotFoundTemplate"
+	                      ExceptionTemplate="@ExceptionTemplate"
+	                      ContentTemplate="@ContentTemplate"
+	                      Rendered="@Rendered"
+	                      Refreshed="@Refreshed"
+	/>
+}
+else
+{
+	@NotFoundTemplate
+}
 
 @code {
-	IActiveContent<TValue> _content = null!;
+	IActiveContent<TValue>? _content;
 
-	[Parameter]
-	public required ISelect<IActivityReceiver, IActiveContent<TValue>> Input { get; set; }
+	[Parameter, EditorRequired]
+	public required IActiveContent<TValue> Input { get; set; }
 
 	[Parameter]
 	public bool ForceRender { get; set; }
@@ -36,10 +40,18 @@
 
 	[CascadingParameter] IActivityReceiver? Receiver { get; set; }
 
-	public override async Task SetParametersAsync(ParameterView parameters)
+	public override Task SetParametersAsync(ParameterView parameters)
 	{
-		var changed = parameters.DidParameterChange(nameof(Input), Input);
-		await base.SetParametersAsync(parameters).Off();
-		_content = changed ? Input.Get(Receiver ?? EmptyActivityReceiver.Default) : _content;
+		if (parameters.DidParameterChange(nameof(Input), Input) || parameters.DidParameterChange(nameof(Receiver), Receiver))
+		{
+			_content = null;
+		}
+		return base.SetParametersAsync(parameters);
+	}
+
+	protected override void OnParametersSet()
+	{
+		_content ??= new ActivityAwareActiveContent<TValue>(Input, Receiver ?? EmptyActivityReceiver.Default);
+		base.OnParametersSet();
 	}
 }
