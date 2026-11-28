@@ -99,7 +99,11 @@ public class TimerComponent : Microsoft.AspNetCore.Components.ComponentBase, IDi
 
 	public void Dispose()
 	{
-		_timer?.Stop();
-		_timer?.Dispose();
+		if (_timer is {} timer)
+		{
+			timer.Elapsed -= OnElapsed;
+			timer.Stop();
+			timer.Dispose();
+		}
 	}
 }
