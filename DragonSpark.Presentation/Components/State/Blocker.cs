@@ -1,38 +1,23 @@
-using AsyncUtilities;
 using DragonSpark.Compose;
 using DragonSpark.Model;
 using DragonSpark.Model.Operations.Selection.Conditions;
-using DragonSpark.Model.Results;
 
 namespace DragonSpark.Presentation.Components.State;
 
 sealed class Blocker : IDepending
 {
-	readonly Switch              _active;
-	readonly AsyncLock           _lock;
-	readonly System.Timers.Timer _timer;
+	readonly long _duration;
+	long          _until;
 
-	public Blocker(TimeSpan duration)
-		: this(new(), new(), new() { AutoReset = false, Enabled = false, Interval = duration.TotalMilliseconds }) {}
+	public Blocker(TimeSpan duration) : this((long)duration.TotalMilliseconds) {}
 
-	public Blocker(Switch active, AsyncLock @lock, System.Timers.Timer timer)
+	public Blocker(long duration) => _duration = duration;
+
+	public ValueTask<bool> Get(None parameter)
 	{
-		_active        =  active;
-		_lock          =  @lock;
-		_timer         =  timer;
-		_timer.Elapsed += (_, _) => _active.Down();
-	}
-
-	public async ValueTask<bool> Get(None parameter)
-	{
-		using var _      = await _lock.LockAsync().On();
-		var       result = _active.Up();
-		if (result)
-		{
-			_timer.Stop();
-			_timer.Start();
-		}
-
-		return result;
+		var now    = System.Environment.TickCount64;
+		var until  = Volatile.Read(ref _until);
+		var result = now >= until && Interlocked.CompareExchange(ref _until, now + _duration, until) == until;
+		return result.ToOperation();
 	}
 }

@@ -99,6 +99,7 @@ public class DataList<T> : RadzenDataList<T>, IRefreshAware
 
 	public override void Dispose()
 	{
+		_reload?.Dispose();
 		Container = null;
 		base.Dispose();
 	}

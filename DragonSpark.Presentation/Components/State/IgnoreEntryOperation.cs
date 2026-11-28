@@ -7,7 +7,7 @@ using System.Timers;
 
 namespace DragonSpark.Presentation.Components.State;
 
-sealed class IgnoreEntryOperation : IOperation, ICommand
+sealed class IgnoreEntryOperation : IOperation, ICommand, IDisposable
 {
 	readonly IOperation          _operation;
 	readonly FirstBase           _active;
@@ -68,5 +68,11 @@ sealed class IgnoreEntryOperation : IOperation, ICommand
 	{
 		_timer.Stop();
 		_active.Execute();
+	}
+
+	public void Dispose()
+	{
+		_timer.Elapsed -= TimerOnElapsed;
+		_timer.Dispose();
 	}
 }
